@@ -3,7 +3,7 @@ import { SIM_SERVER, STORE_VARIANT } from './data';
 
 /** POST to the sim server: the vite dev proxy first (no CORS needed), then the server directly. */
 async function post<T>(path: string, body: unknown): Promise<T> {
-  const init: RequestInit = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...(body as object), store: STORE_VARIANT?.id }) };
+  const init: RequestInit = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...(body as object), store: STORE_VARIANT?.id ?? 'standard' }) };
   let res = await fetch(path, init).catch(() => null);
   if (!res || !(res.headers.get('content-type') ?? '').includes('json')) res = await fetch(`${SIM_SERVER}${path}`, init);
   const data = await res.json();

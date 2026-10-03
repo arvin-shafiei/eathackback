@@ -1,5 +1,6 @@
 import type { Agent, Arm, Persona, Run, SimEvent } from './types';
 import { isAI } from './types';
+import { isFailed, isSecondary, pickedUp } from './events';
 
 /** Wilson score interval. source: Wilson (1927) JASA 22(158); standard binomial CI for small n. */
 export function wilson(k: number, n: number, z = 1.96): [number, number] {
@@ -32,16 +33,16 @@ export function productStats(run: Run, code: string, arm: Arm, personas: Record<
   let s = 0, ns = 0;
   for (const a of run.agents.filter(armFilter(arm))) {
     for (const e of a.events) {
-      if (e.product !== code) continue;
+      if (e.product !== code || isFailed(e)) continue;
       out.shown++;
       const k = archetypeOf(a, personas);
       arch[k] ??= { shown: 0, picked: 0 };
       arch[k].shown++;
       if (e.noticed) { out.noticed++; if (typeof e.sentiment === 'number') { s += e.sentiment; ns++; } }
-      if (e.decision === 'pick' || e.decision === 'reject') out.considered++;
+      if (pickedUp(e)) out.considered++;
       if (e.decision === 'pick') { out.picked++; arch[k].picked++; }
-      if (e.decision === 'reject') { out.rejected++; (rej[e.mechanism || 'unspecified'] ??= []).push({ agent: a, event: e }); }
-      if (e.decision === 'walk_past') out.walk_past++;
+      if (e.decision === 'reject' && pickedUp(e)) { out.rejected++; if (!isSecondary(e)) (rej[e.mechanism || 'unspecified'] ??= []).push({ agent: a, event: e }); }
+      if (e.noticed && !pickedUp(e)) out.walk_past++;
       if (e.decision !== 'not_noticed') out.decisions.push({ agent: a, event: e });
     }
   }
@@ -57,6 +58,7 @@ export function productStats(run: Run, code: string, arm: Arm, personas: Record<
 export function pickRates(run: Run, arm: Arm) {
   const m: Record<string, { shown: number; picked: number; rate: number; ci: [number, number] }> = {};
   for (const a of run.agents.filter(armFilter(arm))) for (const e of a.events) {
+    if (isFailed(e)) continue;
     const r = (m[e.product] ??= { shown: 0, picked: 0, rate: 0, ci: [0, 0] });
     r.shown++; if (e.decision === 'pick') r.picked++;
   }

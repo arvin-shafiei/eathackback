@@ -40,10 +40,12 @@ if (!copy(path.join(ROOT, 'data', 'personas', 'personas.json'), path.join(OUT, '
   }
 }
 
-// AI-agent archetypes (data/personas/lens/*.json with kind "ai_agent") → personas_ai.json, merged into the persona list by src/data.ts
+// The runs use lens persona IDs, not just the earlier staged persona IDs.
 {
   const lensDir = path.join(ROOT, 'data', 'personas', 'lens');
-  const ai = fs.existsSync(lensDir) ? fs.readdirSync(lensDir).filter((f) => f.endsWith('.json')).map((f) => { try { return { ...JSON.parse(fs.readFileSync(path.join(lensDir, f), 'utf8')), _file: `data/personas/lens/${f}` }; } catch { return null; } }).filter((p) => p && p.kind === 'ai_agent') : [];
+  const lens = fs.existsSync(lensDir) ? fs.readdirSync(lensDir).filter((f) => f.endsWith('.json')).map((f) => { try { return { ...JSON.parse(fs.readFileSync(path.join(lensDir, f), 'utf8')), _file: `data/personas/lens/${f}` }; } catch { return null; } }).filter(Boolean) : [];
+  if (lens.length) { fs.writeFileSync(path.join(OUT, 'personas_lens.json'), JSON.stringify(lens, null, 1)); copied.push(`data/personas/lens (${lens.length}) → personas_lens.json`); }
+  const ai = lens.filter((p) => p.kind === 'ai_agent');
   if (ai.length) { fs.writeFileSync(path.join(OUT, 'personas_ai.json'), JSON.stringify(ai, null, 1)); copied.push(`data/personas/lens (kind ai_agent: ${ai.length}) → personas_ai.json`); }
 }
 

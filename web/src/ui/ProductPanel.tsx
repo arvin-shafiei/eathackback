@@ -9,9 +9,10 @@ import { aiArchOf, aiLabel, modelName, shopperLabel } from './aiArch';
 interface Props {
   run: Run; product: Product; arm: Arm; personas: Record<string, Persona>; slot?: string;
   onTrace: (agentId: string, step: number) => void; onClose: () => void;
+  onAnalytics: () => void;
 }
 
-export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, onClose }: Props) {
+export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, onClose, onAnalytics }: Props) {
   const s = useMemo(() => productStats(run, p.code, arm, personas), [run, p.code, arm, personas]);
   const human = useMemo(() => productStats(run, p.code, 'human', personas), [run, p.code, personas]);
   const ai = useMemo(() => productStats(run, p.code, 'ai', personas), [run, p.code, personas]);
@@ -21,7 +22,7 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
   const funnel = [
     { k: 'shown', v: s.shown, why: 'agent stood at this slot' },
     { k: 'noticed', v: s.noticed, why: 'p_notice roll succeeded' },
-    { k: 'considered', v: s.considered, why: 'picked or actively rejected' },
+    { k: 'picked up', v: s.considered, why: 'recorded handling, inferred from the decision in older runs' },
     { k: 'picked', v: s.picked, why: 'went in the basket' },
   ];
   const maxArch = Math.max(0.01, ...s.byArch.map((b) => b.rate));
@@ -48,6 +49,7 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
       </header>
       {p.pack_copy && <p className="pack">“{p.pack_copy}”</p>}
       <p className="src-line">price: <Src s={p.price_source} />{p.off_url && <> · <a href={p.off_url} target="_blank" rel="noreferrer">open food facts ↗</a></>}</p>
+      <button className="btn btn-brand" onClick={onAnalytics}>view product analytics →</button>
 
       <section>
         <h3>pick rate <span className="muted">({arm === 'both' ? 'everyone' : arm === 'ai' ? 'ai agents' : 'humans'})</span></h3>
