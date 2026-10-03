@@ -1,69 +1,65 @@
-"""Pull UK grocery products from the Open Food Facts parquet dump (HF) into data/products/.
+"""Stream the Open Food Facts CSV dump (S3) and keep UK grocery products -> data/products/.
 
-Keeps products sold in the UK with ingredients + NOVA + Nutri-Score present, flattens
-nested fields (English name/ingredients, key nutriments, front image URL) and writes
-uk_products.parquet + uk_products.csv. Licence: ODbL (data), CC BY-SA (images).
+Filters: sold in the UK, has ingredients, NOVA group and a Nutri-Score grade. One pass, no full
+download kept on disk. Licence: ODbL (data), CC BY-SA (images).
+Usage: python3 scripts/off_uk_products.py
 """
-import duckdb, json, os
+import csv, gzip, io, os, sys, urllib.request
 
-SRC = "https://huggingface.co/datasets/openfoodfacts/product-database/resolve/main/food.parquet"
-OUT = os.path.join(os.path.dirname(__file__), "..", "data", "products")
+URL = "https://openfoodfacts-ds.s3.eu-west-3.amazonaws.com/en.openfoodfacts.org.products.csv.gz"
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "products")
 os.makedirs(OUT, exist_ok=True)
+csv.field_size_limit(sys.maxsize)
 
-con = duckdb.connect()
-con.execute("LOAD httpfs;")
-con.execute(f"""
-CREATE TABLE uk AS
-SELECT code, brands, brands_tags, categories_tags, food_groups_tags, labels_tags, additives_n, additives_tags,
-       allergens_tags, ingredients_analysis_tags, ingredients_n, ingredients_from_palm_oil_n, nova_group,
-       nutriscore_grade, nutriscore_score, environmental_score_grade, environmental_score_score,
-       nutrient_levels_tags, packaging_tags, packaging_recycling_tags, origins, stores_tags, quantity,
-       product_quantity, product_quantity_unit, serving_size, with_sweeteners, with_non_nutritive_sweeteners,
-       unique_scans_n, popularity_key, completeness, product_name, ingredients_text, nutriments, images, link
-FROM '{SRC}'
-WHERE list_contains(countries_tags, 'en:united-kingdom')
-  AND nova_group IS NOT NULL AND nutriscore_grade IN ('a','b','c','d','e')
-  AND ingredients_n > 0 AND NOT coalesce(obsolete, false)
-""")
-print("uk rows", con.execute("select count(*) from uk").fetchone())
-con.execute(f"COPY uk TO '{OUT}/uk_products_raw.parquet' (FORMAT parquet)")
+KEEP = {  # output name -> candidate source columns (first present wins)
+    "code": ["code"], "name": ["product_name_en", "product_name"], "brand": ["brands"],
+    "categories": ["categories_tags"], "labels": ["labels_tags"], "additives_n": ["additives_n"],
+    "additives": ["additives_tags"], "allergens": ["allergens_tags", "allergens"],
+    "analysis": ["ingredients_analysis_tags"], "ingredients_n": ["ingredients_n"],
+    "palm_oil_n": ["ingredients_from_palm_oil_n"], "nova": ["nova_group"], "nutriscore": ["nutriscore_grade"],
+    "ecoscore": ["environmental_score_grade", "ecoscore_grade"], "packaging": ["packaging_tags"],
+    "recycling": ["packaging_recycling_tags"], "stores": ["stores_tags", "stores"], "quantity": ["quantity"],
+    "sweeteners": ["with_sweeteners"], "scans": ["unique_scans_n"], "completeness": ["completeness"],
+    "ingredients_text": ["ingredients_text_en", "ingredients_text"],
+    "energy-kcal_100g": ["energy-kcal_100g"], "fat_100g": ["fat_100g"], "saturated-fat_100g": ["saturated-fat_100g"],
+    "sugars_100g": ["sugars_100g"], "salt_100g": ["salt_100g"], "fiber_100g": ["fiber_100g"],
+    "proteins_100g": ["proteins_100g"], "image": ["image_front_url", "image_url"],
+}
 
 
-def en(struct_list):
-    if not struct_list:
-        return None
-    for s in struct_list:
-        if s.get("lang") in ("en", "main"):
-            return s.get("text")
-    return struct_list[0].get("text")
+def main():
+    req = urllib.request.Request(URL, headers={"User-Agent": "eathack/0.1 (adjib2005@gmail.com)"})
+    resp = urllib.request.urlopen(req, timeout=120)
+    text = io.TextIOWrapper(gzip.GzipFile(fileobj=resp), encoding="utf-8", errors="replace", newline="")
+    reader = csv.reader(text, delimiter="\t", quoting=csv.QUOTE_NONE)
+    header = next(reader)
+    idx = {h: i for i, h in enumerate(header)}
+    src = {k: next((idx[c] for c in cands if c in idx), None) for k, cands in KEEP.items()}
+    ci = idx["countries_tags"]
+    out_path = os.path.join(OUT, "uk_products.csv.tmp")
+    n = kept = 0
+    with open(out_path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(list(KEEP) + ["off_url"])
+        for row in reader:
+            n += 1
+            if n % 500000 == 0:
+                print(f"scanned {n:,} kept {kept:,}", flush=True)
+            if len(row) != len(header) or "en:united-kingdom" not in row[ci]:
+                continue
+            get = lambda k: row[src[k]] if src[k] is not None else ""
+            if not get("ingredients_text") or get("nova") == "" or get("nutriscore") not in ("a", "b", "c", "d", "e"):
+                continue
+            vals = [get(k).replace(",", "|") if k in ("categories", "labels", "additives", "allergens", "analysis",
+                                                        "packaging", "recycling", "stores") else get(k) for k in KEEP]
+            w.writerow(vals + [f"https://world.openfoodfacts.org/product/{get('code')}"])
+            kept += 1
+    os.replace(out_path, os.path.join(OUT, "uk_products.csv"))
+    import pandas as pd
+    df = pd.read_csv(os.path.join(OUT, "uk_products.csv"), dtype={"code": str}, low_memory=False)
+    df.to_parquet(os.path.join(OUT, "uk_products.parquet"), index=False)
+    print(f"DONE scanned {n:,} kept {len(df):,}")
 
 
-NUT = ["energy-kcal", "fat", "saturated-fat", "sugars", "salt", "fiber", "proteins"]
-df = con.execute("select * from uk").fetchdf()
-rows = []
-for r in df.to_dict("records"):
-    nut = {n["name"]: n.get("100g") for n in (r["nutriments"] if r["nutriments"] is not None else []) if n.get("name") in NUT}
-    img = None
-    for im in (r["images"] if r["images"] is not None else []):
-        if str(im.get("key", "")).startswith("front"):
-            img = f"https://images.openfoodfacts.org/images/products/{r['code']}/{im['key']}.{im.get('rev', 1)}.400.jpg"
-            break
-    rows.append({
-        "code": r["code"], "name": en(list(r["product_name"]) if r["product_name"] is not None else None), "brand": r["brands"],
-        "categories": "|".join(r["categories_tags"] or []), "labels": "|".join(r["labels_tags"] or []),
-        "additives_n": r["additives_n"], "additives": "|".join(r["additives_tags"] or []),
-        "allergens": "|".join(r["allergens_tags"] or []), "analysis": "|".join(r["ingredients_analysis_tags"] or []),
-        "ingredients_n": r["ingredients_n"], "palm_oil_n": r["ingredients_from_palm_oil_n"], "nova": r["nova_group"],
-        "nutriscore": r["nutriscore_grade"], "ecoscore": r["environmental_score_grade"],
-        "packaging": "|".join(r["packaging_tags"] or []), "recycling": "|".join(r["packaging_recycling_tags"] or []),
-        "stores": "|".join(r["stores_tags"] or []), "quantity": r["quantity"], "sweeteners": r["with_sweeteners"],
-        "scans": r["unique_scans_n"], "completeness": r["completeness"],
-        "ingredients_text": en(list(r["ingredients_text"]) if r["ingredients_text"] is not None else None),
-        **{f"{k}_100g": nut.get(k) for k in NUT},
-        "image": img, "off_url": f"https://world.openfoodfacts.org/product/{r['code']}",
-    })
-import pandas as pd
-flat = pd.DataFrame(rows)
-flat.to_parquet(f"{OUT}/uk_products.parquet", index=False)
-flat.to_csv(f"{OUT}/uk_products.csv", index=False)
-print("flat rows", len(flat), "with image", flat.image.notna().sum())
+if __name__ == "__main__":
+    main()
