@@ -64,13 +64,39 @@ def load_json(path):
 # which store layout to simulate: None = the standard 8-unit store, "xl" = data/store/store_xl.config.json with
 # planogram_xl.json and catalog_xl.json. sim/server.py sets it per request (under its run lock) from "store".
 STORE_VARIANT = None
-STORE_VARIANTS = (None, "xl")
+FORMATS = ("express", "metro", "superstore")  # data/store/formats/<f>.config.json + planogram_<f>.json + catalog_superstore.json
+
+
+def _named_store_formats() -> dict:
+    """named example stores (data/store/stores.json, e.g. express_office) -> their format."""
+    try:
+        with open(os.path.join(ROOT, "data/store/stores.json")) as f:
+            d = json.load(f)
+        items = d if isinstance(d, list) else d.get("stores", [])
+        return {x["id"]: x.get("format") for x in items if isinstance(x, dict) and x.get("id") and x.get("format") in FORMATS}
+    except Exception:
+        return {}
+
+
+STORE_VARIANTS = (None, "xl", *FORMATS, *_named_store_formats().keys())
+
+
+def _format_of(variant):
+    return variant if variant in FORMATS else _named_store_formats().get(variant)
 
 
 def _variant_file(path: str) -> str:
-    """data/store/planogram.json -> data/store/planogram_xl.json when the xl store is selected and the file exists."""
+    """data/store/planogram.json -> data/store/planogram_xl.json when the xl store is selected and the file exists.
+    express/metro/superstore (or a named store of that format) -> data/store/formats/... + catalog_superstore.json."""
     if not STORE_VARIANT:
         return path
+    fmt = _format_of(STORE_VARIANT)
+    if fmt:
+        tail = os.path.basename(path)
+        alt = {"store.config.json": os.path.join(ROOT, f"data/store/formats/{fmt}.config.json"),
+               "planogram.json": os.path.join(ROOT, f"data/store/formats/planogram_{fmt}.json"),
+               "catalog.json": os.path.join(ROOT, "data/products/catalog_superstore.json")}.get(tail)
+        return alt if alt and os.path.exists(alt) else path
     head, tail = os.path.split(path)
     stem, ext = tail.split(".", 1)
     alt = os.path.join(head, f"{stem}_{STORE_VARIANT}.{ext}")
