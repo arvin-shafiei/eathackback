@@ -131,7 +131,8 @@ def _unit_plan(store, plan, catalog, unit, obs, objective, agents, seed, max_swa
     total_w = sum(w for w, *_ in shoppers) or 1.0
     # sim/run.py sends each shopper to ONE of the units that share a category, picked uniformly
     twins = sum(1 for x in store["units"] if x["category"] == unit["category"]) or 1
-    reach = sum(w for w, *_ in shoppers) / max(1, len(shoppers)) / twins
+    # shoppers are grouped by persona with summed weights, so the denominator is the head count, not the group count
+    reach = sum(w for w, *_ in shoppers) / max(1, int(agents)) / twins
 
     cache = {}
 
