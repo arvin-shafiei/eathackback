@@ -17,12 +17,12 @@ export interface TrafficHeatProps {
   lastMinutes?: number | null;
   /** replay clock (App's timeRef); only needed when lastMinutes is set */
   timeRef?: MutableRefObject<number>;
-  /** 0..1 on the colour scale: cells below it are hidden (0 = show all, 0.5 = only yellow→red busy areas) */
+  /** 0..1 on the colour scale: cells below it are hidden (0 = show all, 0.5 = only orange→red busy areas) */
   minLevel?: number;
 }
 
-/** cool → hot ramp (blue, teal, yellow, orange, red). k in 0..1 */
-const RAMP: [number, number, number][] = [[40, 90, 220], [20, 180, 190], [250, 220, 60], [250, 130, 30], [225, 30, 40]];
+/** one warm ramp (pale sand, amber, orange, red), so only the busy floor draws the eye. k in 0..1 */
+const RAMP: [number, number, number][] = [[255, 232, 170], [255, 190, 80], [250, 125, 30], [225, 30, 40]];
 function ramp(k: number): [number, number, number] {
   const x = Math.max(0, Math.min(1, k)) * (RAMP.length - 1), i = Math.min(RAMP.length - 2, Math.floor(x)), f = x - i;
   const a = RAMP[i], b = RAMP[i + 1];
@@ -40,7 +40,8 @@ function paint(g: OccGrid, data: Uint8Array, minLevel = 0) {
     const k = Math.sqrt(d / max);
     if (k < minLevel) { data[o + 3] = 0; continue; }
     const c = ramp(k);
-    data[o] = c[0]; data[o + 1] = c[1]; data[o + 2] = c[2]; data[o + 3] = Math.round(90 + 140 * k);
+    // quiet cells stay faint; opacity climbs steeply towards the hotspots
+    data[o] = c[0]; data[o + 1] = c[1]; data[o + 2] = c[2]; data[o + 3] = Math.round(18 + 222 * Math.pow(k, 1.7));
   }
 }
 

@@ -54,10 +54,10 @@ export function OwnerPanel({ cfg, planogram, products, timelines, run, onToggleH
         <div className="ow-row">
           <label className="ow-toggle"><input type="checkbox" checked={heat} onChange={(e) => { setHeat(e.target.checked); onToggleHeat(e.target.checked); }} /> show floor heatmap</label>
           {onHeatMin && (
-            <label className="ow-toggle" title="hide quiet floor cells so only the busy (yellow → red) areas show">
+            <label className="ow-toggle" title="hide quiet floor cells so only the busy (orange → red) areas show">
               hide quiet areas
               <input type="range" min={0} max={0.8} step={0.05} value={heatMin} onChange={(e) => { const v = Number(e.target.value); setHeatMin(v); onHeatMin(v); }} />
-              <span className="muted">{heatMin === 0 ? 'show all' : heatMin < 0.35 ? 'hide blue' : heatMin < 0.6 ? 'busy only' : 'hotspots only'}</span>
+              <span className="muted">{heatMin === 0 ? 'show all' : heatMin < 0.35 ? 'hide quietest' : heatMin < 0.6 ? 'busy only' : 'hotspots only'}</span>
             </label>
           )}
           {onHeatWindow && (
