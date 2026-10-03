@@ -49,11 +49,11 @@ export function InsightsPanel(props: InsightsProps) {
           <Story own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined}
             onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
           <BreakdownSection run={run} code={p.code} personas={personas} aiLoaded={sample.ai_loaded} />
-          <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
           <LostToSection run={run} code={p.code} products={products} aiLoaded={sample.ai_loaded} onPickProduct={onPickProduct} />
           <RejectSection run={run} code={p.code} personas={personas} onTrace={onTrace} />
           <InterviewSection run={run} code={p.code} name={p.name} personas={personas} />
           <NeighbourSection codes={slotProducts(planogram, slot)} me={p.code} slot={slot} human={human} products={products} onPickProduct={onPickProduct} />
+          <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
         </div>
       )}
       <div ref={placementRef} className="ins-placement">
@@ -187,13 +187,35 @@ function Story({ own, ai, aiLoaded, d, unit, onPlacement }: StoryProps) {
   );
 }
 
-/** a closed row: the question, and its one-line answer, so the page reads without opening anything */
-function Fold({ q, a, children }: { q: string; a?: ReactNode; children: ReactNode }) {
+interface MiniRow { key: string; label: string; value: number; right: string; me?: boolean }
+/** up to four bars, scaled to the largest, so a tile shows its answer without being opened */
+function MiniBars({ rows, color, empty }: { rows: MiniRow[]; color?: string; empty: string }) {
+  if (!rows.length) return <p className="q-empty muted">{empty}</p>;
+  const max = Math.max(...rows.map((r) => r.value), 0) || 1;
   return (
-    <details className="tile t-12 fold">
-      <summary><span className="fold-q">{q}</span>{a && <span className="fold-a">{a}</span>}</summary>
-      <div className="fold-body">{children}</div>
-    </details>
+    <div className="q-bars">
+      {rows.map((r) => (
+        <div key={r.key} className={`q-bar ${r.me ? 'is-me' : ''}`}>
+          <span className="q-bar-l" title={r.label}>{r.label}</span>
+          <span className="q-bar-t"><i style={{ width: `${Math.max(0, r.value / max) * 100}%`, background: r.me ? 'var(--hot)' : color }} /></span>
+          <span className="q-bar-r">{r.right}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** one question on the overview: a small chart, the takeaway in a sentence, and the full detail on demand */
+function Fold({ q, a, viz, span = 4, children }: { q: string; a?: ReactNode; viz?: ReactNode; span?: 4 | 6; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <section className={`tile ${open ? 't-12' : `t-${span}`} qtile`}>
+      <h3>{q}</h3>
+      {viz}
+      {a && <p className="q-take">{a}</p>}
+      <button className="link-btn q-more" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? 'show less' : 'see all'}</button>
+      {open && <div className="fold-body">{children}</div>}
+    </section>
   );
 }
 
@@ -209,7 +231,14 @@ function BehaviourSection({ run, code, name, personas }: { run: Run; code: strin
   const per100 = (x: number | null) => (x === null ? '–' : x.toFixed(1));
   const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged on mock</span>);
   return (
-    <Fold q="what did each shopper do?" a={`${b.rows.length} shoppers logged`}>
+    <Fold q="how do shoppers behave at it?" span={6} a={`${b.rows.length} shoppers logged, one row each. download them as a csv under "see all".`}
+      viz={(
+        <div className="q-stats">
+          <div><b>{per100(b.buys_per_100_visits)}</b><span>buys per 100 store visits</span></div>
+          <div><b>{secs(b.seconds.walk_past.mean)}</b><span>at the shelf, walked past</span></div>
+          <div><b>{secs(b.seconds.reject.mean)}</b><span>at the shelf, put it back</span></div>
+        </div>
+      )}>
       <button className="btn btn-white ins-dl" onClick={download} disabled={!b.rows.length}>download csv</button>
       <div className="beh-stats">
         <div><span className="kpi-l">buying frequency</span><b className="beh-n">{per100(b.buys_per_100_visits)}</b><span className="kpi-s">buys per 100 store visits · {b.store_shoppers} visits</span></div>
@@ -251,9 +280,12 @@ function BreakdownSection({ run, code, personas, aiLoaded }: { run: Run; code: s
   const rows = useMemo(() => breakdown(run, code, dim, personas), [run, code, dim, personas]);
   const arm = DIMENSION_ARM[dim];
   const color = (key: string) => (dim === 'archetype' ? archColor(key) : dim === 'model' ? AI_COLOR : HUMAN_COLOR);
-  const top = useMemo(() => breakdown(run, code, 'archetype', personas).find((r) => r.picked > 0), [run, code, personas]);
+  const byType = useMemo(() => breakdown(run, code, 'archetype', personas), [run, code, personas]);
+  const top = byType.find((r) => r.picked > 0);
   return (
-    <Fold q="who buys it?" a={top ? `${archLabel(top.key)}, ${pct(top.rate)}` : 'nobody yet'}>
+    <Fold q="who buys it?" a={top ? `${archLabel(top.key)} shoppers buy it most: ${top.picked} of ${top.shown}.` : 'nobody has bought it yet. these types walk past it most.'}
+      viz={<MiniBars color={HUMAN_COLOR} empty="no shopper passed it." rows={(top ? byType : [...byType].sort((x, y) => y.shown - x.shown)).slice(0, 4).map((r) => (
+        { key: r.key, label: archLabel(r.key), value: top ? r.rate : r.shown, right: top ? `${r.picked} of ${r.shown}` : `${r.shown} passed` }))} />}>
       <div className="seg small">
         {DIMENSIONS.map((d) => <button key={d.key} className={`seg-btn ${dim === d.key ? 'on' : ''}`} onClick={() => setDim(d.key)}>by {d.label}</button>)}
       </div>
@@ -304,7 +336,10 @@ function LostToSection({ run, code, products, aiLoaded, onPickProduct }: LostToP
   const human = useMemo(() => lostTo(run, code, 'human'), [run, code]);
   const ai = useMemo(() => lostTo(run, code, 'ai'), [run, code]);
   return (
-    <Fold q="what do they buy instead?" a={human.rows[0] ? prodLabel(products[human.rows[0].code], human.rows[0].code) : 'nothing else'}>
+    <Fold q="what do they buy instead?"
+      a={human.rows[0] ? `${human.rows[0].count} of ${human.denominator} who skipped it bought ${products[human.rows[0].code]?.brand || 'this'} instead.` : 'shoppers who skipped it bought nothing else nearby.'}
+      viz={<MiniBars color={HUMAN_COLOR} empty="no rival picked up its shoppers." rows={human.rows.slice(0, 4).map((r) => (
+        { key: r.code, label: prodLabel(products[r.code], r.code), value: r.share, right: `${r.count}` }))} />}>
       <LostList lost={human} arm="human" products={products} onPickProduct={onPickProduct} />
       <h4 className="ins-sub">ai agents</h4>
       {aiLoaded ? <LostList lost={ai} arm="ai" products={products} onPickProduct={onPickProduct} /> : <p className="muted">no ai arm loaded.</p>}
@@ -340,7 +375,10 @@ function RejectSection({ run, code, personas, onTrace }: RejectProps) {
   const human = useMemo(() => rejections(run, code, 'human'), [run, code]);
   const ai = useMemo(() => rejections(run, code, 'ai'), [run, code]);
   return (
-    <Fold q="why do they put it back?" a={human.groups[0] ? `${mechLabel(human.groups[0].mechanism)} (${human.groups[0].items.length})` : 'no one did'}>
+    <Fold q="why do they put it back?"
+      a={human.groups[0] ? <>“{human.groups[0].items[0]?.event.reason || mechLabel(human.groups[0].mechanism)}”</> : 'nobody picked it up and put it back.'}
+      viz={<MiniBars color="var(--bad)" empty="no rejections in this run." rows={human.groups.slice(0, 4).map((g) => (
+        { key: g.mechanism, label: mechLabel(g.mechanism), value: g.items.length, right: `${g.items.length} of ${human.total}` }))} />}>
       {human.total > 0 ? <RejectList rej={human} personas={personas} onTrace={onTrace} /> : <p className="muted">no shopper put it back with a reason in this run.</p>}
       {human.secondary > 0 && <p className="why">{plural(human.secondary, 'more rejection')} left out: the shopper was looking at something else.</p>}
       {ai.total > 0 && (
@@ -365,7 +403,9 @@ function NeighbourSection({ codes, me, slot, human, products, onPickProduct }: N
     : !human[me]?.shown ? 'no shopper passed it'
     : `${ahead + 1} of ${codes.length} on its shelf${level ? `, level with ${level}` : ''}`;
   return (
-    <Fold q="how does it compare with its neighbours?" a={answer}>
+    <Fold q="how does it compare with its shelf?" a={answer} span={6}
+      viz={<MiniBars color="var(--ink)" empty="it is not on a shelf in this plan." rows={codes.map((c) => (
+        { key: c, label: prodLabel(products[c], c), value: human[c]?.pick_rate ?? 0, right: human[c]?.shown ? `${pct(human[c].pick_rate)} bought` : 'not passed', me: c === me }))} />}>
       {!codes.length && <p className="muted">this product is not on this shelf plan.</p>}
       {codes.length > 0 && (
         <table className="kv ins-table">

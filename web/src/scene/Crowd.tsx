@@ -139,6 +139,14 @@ function wrap(g: CanvasRenderingContext2D, text: string, maxW: number, maxLines:
   return lines;
 }
 /** pill sticker (emoji + optional word) or speech/thought bubble with a product line */
+/** decoration only: a word of minion-speak for a bubble heading, chosen by the beat id. never part of a logged reason */
+const MINIONESE: Record<string, string[]> = {
+  pick: ['baboi!', 'banana!', 'tank yu!', 'bello!'],
+  reject: ['bee-do bee-do', 'no no no', 'poka?'],
+  glance: ['poopaye', 'la la la', 'hmm'],
+};
+const minionese = (kind: string, id: number) => { const w = MINIONESE[kind] ?? MINIONESE.glance; return w[Math.abs(id) % w.length]; };
+
 function labelTex(key: string, draw: () => { lines: string[]; head?: string; color: string; bubble: boolean }) {
   const hit = texCache.get(key); if (hit) return hit;
   const { lines, head, color, bubble } = draw();
@@ -531,7 +539,9 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           const key = `t:${b.id}`;
           setSlot(sl, key, () => labelTex(key, () => {
             const cv = document.createElement('canvas').getContext('2d')!; cv.font = '600 26px system-ui, sans-serif';
-            return { head: `${emoji} ${prod ? prod.brand : b.code}`, lines: wrap(cv, b.reason, 380, b.kind === 'reject' ? 3 : 2), color: dk.color, bubble: true };
+            // the reason is the shopper's logged words and stays untouched; only the bubble's heading gets a chirp
+            const chirp = s.ai ? '' : ` · ${minionese(b.kind, b.id)}`;
+            return { head: `${emoji} ${prod ? prod.brand : b.code}${chirp}`, lines: wrap(cv, b.reason, 380, b.kind === 'reject' ? 3 : 2), color: dk.color, bubble: true };
           }), (b.kind === 'reject' ? 0.62 : 0.5) * grow);
         } else {
           const key = `s:${b.kind}:${s.ai ? 1 : 0}:${isNear ? 1 : 0}`;
