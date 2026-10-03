@@ -24,7 +24,7 @@ export function ComparePanel({ run, products, onProduct, onClose }: Props) {
   return (
     <section className="card compare" aria-label="human vs ai compare">
       <button className="x" onClick={onClose} aria-label="close compare">×</button>
-      <h2 className="display">same shelf, two shoppers</h2>
+      <h2 className="display">simsbury · same shelf, two shoppers</h2>
       <p className="muted">{nH} human shopper{nH === 1 ? "" : "s"} walk the store. {nA} ai agent{nA === 1 ? "" : "s"} read the same catalogue as a feed. pick rate = picked ÷ times shown. a ★ means the 95% cis don't overlap.</p>
       {!nA && <p className="notice">this run has no ai-agent arm yet (no ai-agent archetypes, e.g. p_ai_assistant_general).</p>}
       <div className="seg">

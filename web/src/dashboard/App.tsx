@@ -33,14 +33,14 @@ export default function App() {
     window.addEventListener('hashchange', on);
     return () => window.removeEventListener('hashchange', on);
   }, []);
-  useEffect(() => { document.title = `${TABS.find((t) => t.id === tab)?.label} · same shelf`; }, [tab]);
+  useEffect(() => { document.title = `${TABS.find((t) => t.id === tab)?.label} · simsbury`; }, [tab]);
   const Active = TABS.find((t) => t.id === tab)!.C;
   return (
     <div className="d-app">
       <header className="d-top">
         <div className="d-top-inner">
           <div className="d-brandmark">
-            <h1 className="d-logo"><span>same shelf</span></h1>
+            <h1 className="d-logo"><span>simsbury</span></h1>
             <p className="d-tagline">evidence dashboard · every number links to its source</p>
           </div>
           <div className="d-top-right">

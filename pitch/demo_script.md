@@ -43,7 +43,7 @@ Record at 1080p, 60 fps. Lowercase captions of 8 words or fewer.
 | **1:20–1:32** AI shoppers | **Tab E** `#ai`. The position-bias bars. | "Now the shopper that isn't human. On a shuffled product feed, GPT-4.1-mini put 16% of its picks in slot one and Gemini Flash 13%, when chance is 3.5%. Jev doesn't show that bias: 2.5%." | Jev: `data/sim/runs/agent_20261003_115907_s1_jev_5945.json` → `position_bias` (2/80, CI [0.7, 8.7]%); LLMs: `agent_20261003_114253_s1_eda5.json` (OpenRouter comparison run: 13/80 GPT-4.1-mini, 10/76 Gemini) |
 | **1:32–1:45** retailer | **Tab F** `#retailer`, blended objective. Show the move list and the HFSS-checked end-caps. | "For the retailer: a layout optimiser that respects chilled units and UK HFSS rules. Every move has a reason and a confidence interval. Prices are assumptions, and it says so." | `data/sim/layout/summary.json`, `report_blended.json` (don't read the % aloud: revenue rests on 85/96 assumed prices) |
 | **1:45–1:55** add product | **Tab G.** Click **＋ add product**, paste a Tesco link, show the draft with its field sources, pick the product to replace, and click **send the shoppers**. Cut when analytics opens and the engine badge is visible. | "A brand pastes its Tesco link, takes a slot, and the shoppers come back with a funnel." | `sim/tesco.py`, `sim/uploads.py`. If credits are out, this run is mock or router: keep the badge in shot |
-| **1:55–2:00** close | End card: **same shelf**. "the shoppers EPOS never sees, traced to source." Repo URL. | "same shelf. No black box." | none |
+| **1:55–2:00** close | End card: **simsbury**. "the shoppers EPOS never sees, traced to source." Repo URL. | "simsbury. No black box." | none |
 
 ## Lines you must NOT say
 

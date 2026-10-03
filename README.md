@@ -1,4 +1,4 @@
-# same shelf 🛒🤖
+# simsbury 🛒🤖
 
 **The shoppers EPOS never sees, traced to source.**
 
@@ -16,7 +16,7 @@ RGC's judges say *"a number that cannot be traced back to its source is worse th
 
 ## the pitch
 
-EPOS records the sale. It never sees the shopper who noticed a product, picked it up and put it back. **same shelf** is a 3D supermarket stocked with real UK products from Open Food Facts and walked by synthetic shoppers. Each shopper is grounded in 10,642 coded Reddit comments, published shelf-effect research and Big Five traits. Code decides what each shopper *notices*: shelf row, facings, centrality and mission, using a literature-calibrated logit. **TypeSafe Jev** then returns calibrated probabilities for *pick up → put back or take*, and for which of the shopper's rejection triggers fired. Every number clicks through to a paper, a Reddit thread, an Open Food Facts field, a Jev distribution or a labelled assumption. The tool gives brands a funnel diagnosis and legal pack-claim tests, and gives retailers an HFSS-aware layout optimiser. An AI-agent arm checks how a machine shopper reads the same range. **The non-obvious finding:** once noticed, challengers are picked up as often as incumbents but kept less often. They lose *in the hand*, at a stage EPOS can't see.
+EPOS records the sale. It never sees the shopper who noticed a product, picked it up and put it back. **simsbury** (same shelf, two shoppers) is a 3D supermarket stocked with real UK products from Open Food Facts and walked by synthetic shoppers. Each shopper is grounded in 10,642 coded Reddit comments, published shelf-effect research and Big Five traits. Code decides what each shopper *notices*: shelf row, facings, centrality and mission, using a literature-calibrated logit. **TypeSafe Jev** then returns calibrated probabilities for *pick up → put back or take*, and for which of the shopper's rejection triggers fired. Every number clicks through to a paper, a Reddit thread, an Open Food Facts field, a Jev distribution or a labelled assumption. The tool gives brands a funnel diagnosis and legal pack-claim tests, and gives retailers an HFSS-aware layout optimiser. An AI-agent arm checks how a machine shopper reads the same range. **The non-obvious finding:** once noticed, challengers are picked up as often as incumbents but kept less often. They lose *in the hand*, at a stage EPOS can't see.
 
 ## what's real vs simulated
 
