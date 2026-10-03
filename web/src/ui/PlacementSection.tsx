@@ -77,7 +77,7 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
   const toggle = (c: PlacementCandidate) => setPicked((cur) => {
     const k = keyOf(c);
     if (cur.includes(k)) return cur.filter((x) => x !== k);
-    return cur.length >= MAX_TESTS ? cur : [...cur, k];
+    return [...cur, k].slice(-MAX_TESTS);
   });
 
   const runExperiment = () => {

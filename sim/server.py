@@ -397,6 +397,8 @@ class H(BaseHTTPRequestHandler):
             self._send(400, {"error": str(e)[:1500]})
         except ValueError as e:
             self._send(400, {"error": str(e)[:500]})
+        except RuntimeError as e:  # raised with a sentence meant for the user (import failed, no run, no key)
+            self._send(400, {"error": str(e)[:500]})
         except Exception as e:
             self._send(500, {"error": repr(e)[:500]})
 

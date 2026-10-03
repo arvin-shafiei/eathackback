@@ -188,7 +188,7 @@ function Story({ own, ai, aiLoaded, d, unit, onPlacement, best, rowNames, topRej
         <ol>
           {best && (
             <li>
-              <span><b>move it to the {rowNames[String(best.spot.row)] ?? best.spot.row_name} shelf, spot {best.spot.pos + 1}.</b> noticed by {pct(best.spot.notice_rate)} there, {pct(best.now)} now.</span>
+              <span><b>move it to the {rowNames[String(best.spot.row)] ?? best.spot.row_name} shelf, spot {best.spot.pos + 1}.</b> the notice model gives it {pct(best.spot.notice_rate)} there, {pct(best.now)} where it is.</span>
               <button className="btn btn-white" onClick={onPlacement}>test this spot</button>
             </li>
           )}
@@ -210,7 +210,7 @@ function Story({ own, ai, aiLoaded, d, unit, onPlacement, best, rowNames, topRej
         <summary>how this was decided</summary>
         <p>
           shoppers only. three steps: noticed ÷ passed, considered ÷ noticed, bought ÷ considered. each is compared with the median of the other products in unit {unit ?? '?'}; the step furthest below is where it loses shoppers.
-          pick rate {pct(own.pick_rate)}, 95% ci {pct(own.ci95[0])}–{pct(own.ci95[1])}. {own.walk_past} walked past, {own.rejected} put it back.
+          pick rate {pct(own.pick_rate)}, 95% ci {pct(own.ci95[0])}–{pct(own.ci95[1])}. {own.walk_past} noticed it and moved on, {own.rejected} put it back.
           {text.arm && <> {text.arm}</>}
         </p>
         <table className="kv ins-table">

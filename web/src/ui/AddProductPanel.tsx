@@ -151,6 +151,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
   const fillExample = () => {
     setF({ ...EXAMPLE, category: categories.includes(EXAMPLE.category) ? EXAMPLE.category : categories[0] ?? '' });
     setPick(null); setErrs({}); setIsExample(true);
+    setImage(''); setImp({ busy: false, err: null, draft: null });
   };
 
   const submit = (ev: FormEvent) => {
@@ -177,6 +178,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
       ingredients_text: f.ingredients_text.trim() || undefined, nutriscore: f.nutriscore || undefined,
       image: image || undefined, brand_supplied: true,
       off_url: imp.draft?.off_url, imported_from: imp.draft?.imported_from, field_sources: imp.draft?.field_sources,
+      additives: imp.draft?.additives, nova: imp.draft?.nova,
     };
     onSubmit(product, pick.slot, pick.code);
   };

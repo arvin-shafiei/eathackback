@@ -133,7 +133,9 @@ def scan(product, planogram=None, extra_products=None, agents=200, seed=1):
         shoppers.append((1.0 if on_mission else browse_p, on_mission, a["ocean"],
                          persona.get("sim_parameters", {}) or {}))
     total_w = sum(w for w, *_ in shoppers)
-    reach = round(total_w / len(shoppers), 4) if shoppers else 0.0
+    # sim/run.py sends each shopper to ONE of the units that share a category, picked uniformly
+    twins = sum(1 for x in store["units"] if x["category"] == category) or 1
+    reach = round(total_w / len(shoppers) / twins, 4) if shoppers else 0.0
 
     def notice_rate(row, facings, pos, n):
         if not total_w:

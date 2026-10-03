@@ -260,7 +260,7 @@ def mock_decide(persona, ocean, cards, budget_left, rng_key):
     if worst and worst_s < -0.6:
         return {"decision": "reject", "product": worst["code"], "reason": f"{worst_why}",
                 "attributes_cited": ["ingredients_text" if "in it" in worst_why else "price_gbp"],
-                "feeling": "meh", "sentiment": -0.4, "mechanism": "gimmick_reactance" if "gimmick" in worst_why else "price_anchor",
+                "feeling": "meh", "sentiment": -0.4, "mechanism": "gimmick_reactance" if "gimmick" in worst_why else "health_cue" if "in it" in worst_why else "price_anchor",
                 "others": {}}
     return {"decision": "walk_past", "product": cards[0]["code"], "reason": "don't need any of that today",
             "attributes_cited": [], "feeling": "indifferent", "sentiment": 0.0, "mechanism": "indifference", "others": {}}
