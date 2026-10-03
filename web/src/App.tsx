@@ -29,7 +29,10 @@ type Panel =
   | { kind: 'trace'; agentId: string; step: number; back?: Panel }
   | null;
 type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange';
-const MODE_LABEL: Record<Mode, string> = { replay: '▶ replay', compare: '🧍 vs 🤖', edit: '✏️ edit shelf', add: '＋ add product', insights: '📊 analytics', rearrange: '🔀 rearrange' };
+const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange' };
+/** the four things a brand does; the rest sit behind "options" */
+const MAIN_MODES: Mode[] = ['replay', 'add', 'insights', 'rearrange'];
+const ALL_MODES: Mode[] = ['replay', 'compare', 'edit', 'add', 'insights', 'rearrange'];
 /** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
 const UPLOAD_AGENTS = 150;
 const UPLOAD_AI_RUNS = 3;
@@ -98,6 +101,7 @@ export default function App() {
   const [editSel, setEditSel] = useState<string | null>(null);
   const [rerun, setRerun] = useState<{ busy: boolean; msg: string | null; ok?: boolean }>({ busy: false, msg: null });
   const [showLegend, setShowLegend] = useState(true);
+  const [opts, setOpts] = useState(false);
   const [focus, setFocus] = useState<string | null>(null);
   const [job, setJob] = useState<{ busy: boolean; msg: string | null }>({ busy: false, msg: null });
   const [preview, setPreview] = useState<Planogram | null>(null);
@@ -359,13 +363,14 @@ export default function App() {
           <span className="brand-chip" aria-hidden>🛒🤖</span>
         </div>
         <nav className="seg seg-main" aria-label="mode">
-          {(['replay', 'compare', 'edit', 'add', 'insights', 'rearrange'] as Mode[]).map((m) => (
+          {(opts ? ALL_MODES : ALL_MODES.filter((m) => MAIN_MODES.includes(m) || m === mode)).map((m) => (
             <button key={m} className={`seg-btn ${mode === m ? 'on' : ''}`} onClick={() => { setMode(m); if (m === 'edit') setPanel(null); }}>
               {MODE_LABEL[m]}
             </button>
           ))}
+          <button className={`seg-btn ${opts ? 'on' : ''}`} aria-pressed={opts} onClick={() => setOpts((v) => !v)} title="runs, camera, thought bubbles, heat, sound">options</button>
         </nav>
-        <div className="tools">
+        {opts && <div className="tools">
           <Select
             ariaLabel="run" prefix="run" searchable value={runId ?? ''} onChange={setRunId}
             options={runs.filter((r) => !isAgentArm(r)).map((r) => ({ value: r.run_id, label: `${r.run_id}${r.fixture ? ' (fixture)' : ''}`, hint: r.agents ? `${r.agents} agents` : undefined }))}
@@ -380,7 +385,7 @@ export default function App() {
             {(['both', 'human', 'ai'] as Arm[]).map((a) => <button key={a} className={`seg-btn ${arm === a ? 'on' : ''}`} onClick={() => setArm(a)}>{a === 'both' ? 'everyone' : a === 'human' ? 'humans' : 'ai agents'}</button>)}
           </div>
           <button className={`icon-btn ${soundOn ? 'on' : ''}`} onClick={() => setSoundOn((v) => !v)} aria-pressed={soundOn} aria-label={soundOn ? 'mute sound' : 'turn sound on'} title="cartoon sounds (off by default)">{soundOn ? '🔊' : '🔇'}</button>
-        </div>
+        </div>}
       </header>
 
       {mode === 'replay' && view && !intro && <Leaderboard run={view} arm={arm} products={products} engine={engineInfo} onProduct={(code) => setPanel({ kind: 'product', code })} />}
@@ -398,7 +403,7 @@ export default function App() {
         </div>
       )}
 
-      {mode === 'replay' && !intro && (
+      {mode === 'replay' && !intro && opts && (
         <div className="lefttools">
           <div className="card mini">
             <div className="mini-h">camera</div>

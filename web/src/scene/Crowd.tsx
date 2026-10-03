@@ -14,7 +14,7 @@ import { isAI } from '../types';
 import { BEAT, G, TILL, categoryHeight, sampleTimeline, storePlan, type CheckoutPlan, type Timeline } from '../layout';
 import { archColor, archLabel, carrierFor, DECISION, BRAND_A, type Carrier } from '../theme';
 import { archetypeOf } from '../stats';
-import { accessoriesFor, aiKindOf, robotPartsFor, AI_KIND, type AiKind, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, type PartUse } from './parts';
+import { accessoriesFor, aiKindOf, robotPartsFor, AI_KIND, type AiKind, PARTS, GEO, BODY, SHOPPER_SKIN, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, type PartUse } from './parts';
 import type { Beat, Beats } from './beats';
 import { bus, sfx } from './fx';
 import { stackLocal } from './Basket';
@@ -227,6 +227,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const beanGeo = GEO.bean(), robotGeo = GEO.robot(), eyeGeo = GEO.eyeWhite(), armGeo = GEO.arm();
     const bean = mk(beanGeo, bodyMat, humans.length);
     const beanInk = mk(beanGeo, inkHull(0.028), humans.length);
+    const overalls = mk(GEO.overalls(), new THREE.MeshStandardMaterial({ roughness: 0.6 }), humans.length);
+    const goggles = mk(GEO.goggles(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.3, metalness: 0.35 }), humans.length);
     const robot = mk(robotGeo, robotMat, robots.length);
     const robotInk = mk(robotGeo, inkHull(0.028), robots.length);
     const eye = mk(eyeGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.2 }), humans.length * 2);
@@ -239,10 +241,11 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const basket = mk(basketGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.4 }), baskets.length);
     const beanIdx = new Int32Array(shoppers.length).fill(-1), robotIdx = new Int32Array(shoppers.length).fill(-1), carIdx = new Int32Array(shoppers.length).fill(-1);
     const armC = new THREE.Color();
-    humans.forEach((s, i) => { beanIdx[s.si] = i; bean.setColorAt(i, s.color); armC.copy(s.color).multiplyScalar(0.82); arm.setColorAt(s.si * 2, armC); arm.setColorAt(s.si * 2 + 1, armC); });
+    // yellow skin for everyone; the shopper-type colour is worn as dungarees
+    humans.forEach((s, i) => { beanIdx[s.si] = i; bean.setColorAt(i, armC.set(SHOPPER_SKIN)); overalls.setColorAt(i, s.color); armC.multiplyScalar(0.9); arm.setColorAt(s.si * 2, armC); arm.setColorAt(s.si * 2 + 1, armC); });
     robots.forEach((s, i) => { robotIdx[s.si] = i; robot.setColorAt(i, s.color); armC.set(AI_KIND[s.aiKind ?? 'general'].arm); arm.setColorAt(s.si * 2, armC); arm.setColorAt(s.si * 2 + 1, armC); });
     if (!shoppers.length) arm.setColorAt(0, armC.set('#fff'));
-    if (!humans.length) bean.setColorAt(0, armC.set('#fff'));
+    if (!humans.length) { bean.setColorAt(0, armC.set('#fff')); overalls.setColorAt(0, armC); }
     if (!robots.length) robot.setColorAt(0, armC.set('#fff'));
     trolleys.forEach((s, i) => { carIdx[s.si] = i; });
     baskets.forEach((s, i) => { carIdx[s.si] = i; });
@@ -260,11 +263,11 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     if (!np) pack.setColorAt(0, pc.set('#fff'));
     const bag = mk(bagGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.7 }), humans.length);
     const beam = mk(new THREE.ConeGeometry(0.16, 1, 10, 1, true).rotateX(Math.PI).translate(0, 0.5, 0), new THREE.MeshBasicMaterial({ color: '#7CFFCB', transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }), robots.length);
-    for (const m of [bean, robot, arm, pack]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
+    for (const m of [bean, overalls, robot, arm, pack]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
     const group = new THREE.Group();
-    group.add(beanInk, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, ...Object.values(parts));
-    const all = [bean, beanInk, robot, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, ...Object.values(parts)];
-    return { group, all, bean, beanInk, robot, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, packIdx, packSize, parts, partIdx, beanIdx, robotIdx, carIdx, beanList: humans, robotList: robots };
+    group.add(beanInk, overalls, goggles, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, ...Object.values(parts));
+    const all = [bean, beanInk, overalls, goggles, robot, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, ...Object.values(parts)];
+    return { group, all, bean, beanInk, overalls, goggles, robot, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, packIdx, packSize, parts, partIdx, beanIdx, robotIdx, carIdx, beanList: humans, robotList: robots };
   }, [shoppers, products]);
   useEffect(() => () => {
     for (const m of meshes.all) { m.geometry.dispose(); (Array.isArray(m.material) ? m.material : [m.material]).forEach((x) => x.dispose()); }
@@ -551,6 +554,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   function hideShopper(s: Shopper, bi: number) {
     const M = meshes;
     (s.ai ? M.robot : M.bean).setMatrixAt(bi, ZERO); (s.ai ? M.robotInk : M.beanInk).setMatrixAt(bi, ZERO);
+    if (!s.ai) { M.overalls.setMatrixAt(bi, ZERO); M.goggles.setMatrixAt(bi, ZERO); }
     for (let k = 0; k < 2; k++) { M.arm.setMatrixAt(s.si * 2 + k, ZERO); if (!s.ai) { M.eye.setMatrixAt(bi * 2 + k, ZERO); M.pupil.setMatrixAt(bi * 2 + k, ZERO); M.foot.setMatrixAt(bi * 2 + k, ZERO); } }
     M.blob.setMatrixAt(s.si, ZERO);
     if (!s.ai) M.bag.setMatrixAt(bi, ZERO); else M.beam.setMatrixAt(bi, ZERO);
@@ -617,6 +621,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const sc = s.ai ? AI_SCALE : 1;
     R.compose(tmpV.set(s.px, hop, s.pz), tmpQ, tmpS.set((1 - st * 0.55) * sc, (1 + st) * sc, (1 - st * 0.55) * sc));
     (s.ai ? M.robot : M.bean).setMatrixAt(bi, R); (s.ai ? M.robotInk : M.beanInk).setMatrixAt(bi, R);
+    if (!s.ai) { M.overalls.setMatrixAt(bi, R); M.goggles.setMatrixAt(bi, R); }
     M.blob.setMatrixAt(s.si, tmpM.compose(tmpV.set(s.px, 0.012, s.pz), tmpQ2.identity(), tmpS.setScalar(1 - hop * 0.8)));
 
     // arms: blend toward the IK aim for the grabbing arm, rubber-stretch to reach the facing
