@@ -1355,6 +1355,11 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       const tJoin = t;
       let pos = queueSlotPos(sp, group, kq);
       go({ ...pos, walkway: null }, 'queue', group === 'self' ? selfL[0]?.id : group);
+      // someone may have been called while we walked up: close the gap so slot k always means k people ahead
+      for (let guard = 0; guard < 4; guard++) {
+        const k2 = ahead(group, t); if (k2 >= kq) break;
+        kq = k2; pos = queueSlotPos(sp, group, kq); go({ ...pos, walkway: null }, 'queue', group === 'self' ? selfL[0]?.id : group);
+      }
       // ---- service start: FIFO behind everyone already in this line
       const prev = starts[group].length ? Math.max(...starts[group]) : 0;
       let L = choice.L;
