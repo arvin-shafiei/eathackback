@@ -159,7 +159,33 @@ export const GEO = {
   arm: () => mergeGeometries([new THREE.CapsuleGeometry(0.055, 0.24, 4, 10).translate(0, -0.17, 0), new THREE.SphereGeometry(0.078, 12, 8).translate(0, -BODY.armLen, 0)]),
   foot: () => new THREE.SphereGeometry(0.1, 12, 8).scale(1, 0.5, 1.45),
   blob: () => new THREE.CircleGeometry(0.46, 24).rotateX(-Math.PI / 2),
+  /** dungarees: the lower shell of the bean, a hair wider so it sits over the body, plus a bib. tinted per shopper */
+  overalls: () => {
+    const shell = new THREE.CapsuleGeometry(BODY.r * 1.045, 0.6, 8, 22).translate(0, BODY.center, 0).toNonIndexed();
+    const src = shell.attributes.position, nrm = shell.attributes.normal, uv = shell.attributes.uv;
+    const P: number[] = [], N: number[] = [], U: number[] = [];
+    for (let i = 0; i < src.count; i += 3) {
+      if (Math.max(src.getY(i), src.getY(i + 1), src.getY(i + 2)) > OVERALLS_WAIST) continue;
+      for (let k = i; k < i + 3; k++) { P.push(src.getX(k), src.getY(k), src.getZ(k)); N.push(nrm.getX(k), nrm.getY(k), nrm.getZ(k)); U.push(uv.getX(k), uv.getY(k)); }
+    }
+    const lower = new THREE.BufferGeometry();
+    lower.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+    lower.setAttribute('normal', new THREE.Float32BufferAttribute(N, 3));
+    lower.setAttribute('uv', new THREE.Float32BufferAttribute(U, 2));
+    const bib = new THREE.BoxGeometry(0.3, 0.2, 0.06).translate(0, OVERALLS_WAIST + 0.07, BODY.r * 0.97).toNonIndexed();
+    return mergeGeometries([lower, bib]);
+  },
+  /** goggles: a dark strap round the head and a silver ring at each eye */
+  goggles: () => mergeGeometries([
+    colored(new THREE.TorusGeometry(BODY.r + 0.012, 0.034, 8, 30).rotateX(Math.PI / 2).translate(0, BODY.eyeY, 0), '#141014'),
+    colored(new THREE.TorusGeometry(0.128, 0.036, 8, 22).translate(BODY.eyeX + 0.01, BODY.eyeY, BODY.eyeZ + 0.03), '#c9ced6'),
+    colored(new THREE.TorusGeometry(0.128, 0.036, 8, 22).translate(-BODY.eyeX - 0.01, BODY.eyeY, BODY.eyeZ + 0.03), '#c9ced6'),
+  ]),
 };
+/** where the dungarees stop (bean spans y 0..1.2) */
+const OVERALLS_WAIST = 0.52;
+/** every human shopper's skin; the shopper-type colour moves to the dungarees */
+export const SHOPPER_SKIN = '#FFD83D';
 
 // ---------- carriers ----------
 function colored(g: THREE.BufferGeometry, color: string) {
