@@ -69,7 +69,14 @@ export interface Timeline { segs: Seg[]; start: number; end: number }
 
 const walkwayOf = (cfg: StoreConfig, u: Unit) => (u.side === 'L' ? u.aisle - 1 : u.aisle); // walkway index 0..aisles
 
-function standPoint(cfg: StoreConfig, units: Record<string, Unit>, plan: Planogram, slot: string, code: string | null, jitter: number): WP | null {
+/** events from the ai-agent arm use slot "feed:<mission>"; place them at the product's shelf slot */
+export function shelfSlotFor(plan: Planogram, slot: string, code: string | null): string {
+  if (plan[slot] || !code) return slot;
+  return Object.keys(plan).find((k) => plan[k]?.products?.includes(code)) ?? slot;
+}
+
+function standPoint(cfg: StoreConfig, units: Record<string, Unit>, plan: Planogram, rawSlot: string, code: string | null, jitter: number): WP | null {
+  const slot = shelfSlotFor(plan, rawSlot, code);
   const { unit } = parseSlot(slot);
   const u = units[unit];
   if (!u) return null;
@@ -118,7 +125,7 @@ export function buildTimeline(cfg: StoreConfig, plan: Planogram, agent: Agent, s
     if (!sp) continue;
     moveTo(sp);
     const dwell = e.decision === 'not_noticed' ? 0.25 : e.decision === 'walk_past' ? 1.1 : 2.2;
-    const u = units[parseSlot(e.slot).unit];
+    const u = units[parseSlot(shelfSlotFor(plan, e.slot, e.product || null)).unit];
     const face = u ? Math.atan2(-unitFrame(cfg, u).dir, 0) : 0;
     segs.push({ t0: t, t1: t + dwell, a: cur, b: cur, kind: 'dwell', event: e, slot: e.slot, face });
     t += dwell;

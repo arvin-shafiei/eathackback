@@ -15,6 +15,12 @@ const ARCH: Record<string, string> = {
   protein_gym: '#ff6b35', protein_sceptic_gimmick_reactant: '#e63946', habit_loyalist_shrinkflation_angry: '#8d6e63',
   meal_deal_office: '#3a86ff', vegan_ethical: '#80b918', allergen_coeliac: '#f4a3c8', ai_delegator: '#9b5de5', novelty_seeker_tiktok: '#ff4ecd',
 };
+/** "brand name" without repeating the brand when the OFF name already starts with it */
+export const prodLabel = (p: { brand?: string; name?: string } | undefined, fallback = '') => {
+  if (!p) return fallback;
+  const b = (p.brand ?? '').trim(), n = (p.name ?? '').trim();
+  return b && n.toLowerCase().startsWith(b.toLowerCase()) ? n : `${b} ${n}`.trim();
+};
 export const AI_COLOR = '#6d28d9';
 export function archColor(arch: string) {
   if (arch.startsWith('ai')) return AI_COLOR;

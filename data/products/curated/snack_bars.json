@@ -1,0 +1,2140 @@
+{
+ "category": "snack_bars",
+ "rules": "data/products/curated/snack_bars_rules.md",
+ "row_themes": {
+  "1": "oat / cereal bars",
+  "2": "fruit & nut bars",
+  "3": "protein bars"
+ },
+ "rows": {
+  "1": [
+   "8410076600790",
+   "5060482840179",
+   "5024121100475",
+   "20422684"
+  ],
+  "2": [
+   "5060088701478",
+   "4056489239918",
+   "5000159558396",
+   "8000500417195"
+  ],
+  "3": [
+   "5060811384084",
+   "5060088709047",
+   "5060411920040",
+   "20402167"
+  ]
+ },
+ "products": [
+  {
+   "code": "8410076600790",
+   "name": "Nature Valley Crunchy Oats & Honey",
+   "brand": "Nature Valley",
+   "category": "snack_bars",
+   "row": 1,
+   "role": "incumbent",
+   "price_gbp": 2.5,
+   "price_source": "assumption: typical UK RRP for Nature Valley Crunchy 5x42g multipack in Tesco/Sainsbury's (~£2.50, 2025-26), not fetched",
+   "price_per_100g": 1.19,
+   "price_per_unit": 0.5,
+   "units_per_pack": 5,
+   "pack_g": 210,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "nature valley crunchy oats & honey",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 2,
+   "additives": [
+    "en:e322",
+    "en:e500",
+    "en:e500ii"
+   ],
+   "labels": [],
+   "allergens": [],
+   "traces": [
+    "en:gluten",
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ],
+   "ingredients_n": 10,
+   "ingredients_text": "Whole Grain Rolled Oats (60%), Sugar, Vegetable Oils (Sunflower, Rapeseed in varying proportions), Honey (3%), Salt, Molasses, Emulsifier (Lecithins), Raising Agent (Sodium Bicarbonate)",
+   "energy-kcal_100g": 467.0,
+   "fat_100g": 18.1,
+   "saturated-fat_100g": 2.2,
+   "sugars_100g": 26.8,
+   "fiber_100g": 6.4,
+   "proteins_100g": 8.7,
+   "salt_100g": 0.85,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [
+    "en:card-box"
+   ],
+   "stores": [],
+   "quantity": "210 g",
+   "scans": 122.0,
+   "completeness": 0.79,
+   "image": "https://images.openfoodfacts.org/images/products/841/007/660/0790/front_en.28.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/8410076600790",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.54,
+     "why": [
+      "additives_n=2 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.35,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "sugars_100g=26.8 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.385,
+     "why": [
+      "proteins_100g=8.7 (OFF)",
+      "energy-kcal_100g=467.0 (OFF) -> 10x test fail",
+      "fiber_100g=6.4 (OFF)",
+      "sugars_100g=26.8 (OFF)",
+      "unit size=42g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.847,
+     "why": [
+      "price_per_100g=£1.19 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.222,
+     "why": [
+      "proteins_100g=8.7 (OFF)",
+      "10x test fail (kcal 467.0 vs 10x protein)",
+      "sugars_100g=26.8 (OFF)",
+      "protein per £=7.3g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.49,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "ingredients_n=10 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.969,
+     "why": [
+      "role=incumbent",
+      "scans=122.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.19"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.591,
+     "why": [
+      "units_per_pack=5 (OFF quantity)",
+      "proteins_100g=8.7 (OFF)",
+      "price_per_unit=£0.5"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.21,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.3,
+     "why": [
+      "no-gluten label=False (OFF labels)",
+      "allergens=[] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:gluten', 'en:nuts', 'en:peanuts', 'en:soybeans']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.577,
+     "why": [
+      "nutriscore=d (OFF)",
+      "additives_n=2 (OFF)",
+      "completeness=0.79 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "scans=122.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=False"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060482840179",
+   "name": "Apple & raisin oat bars",
+   "brand": "Deliciously ella",
+   "category": "snack_bars",
+   "row": 1,
+   "role": "challenger",
+   "price_gbp": 2.5,
+   "price_source": "assumption: typical UK RRP for Deliciously Ella oat bar 3x50g multipack (~£2.50), not fetched",
+   "price_per_100g": 1.67,
+   "price_per_unit": 0.83,
+   "units_per_pack": 3,
+   "pack_g": 150,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "deliciously ella apple & raisin oat bars — vegan, gluten free, source of fibre, no artificial additives",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 3,
+   "nutriscore": "e",
+   "ecoscore": "c",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:no-gluten",
+    "en:source-of-fibre",
+    "en:vegan",
+    "en:no-artificial-additives"
+   ],
+   "allergens": [
+    "en:gluten"
+   ],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 9,
+   "ingredients_text": "Gluten Free _Oats_ 44%, Rice Syrup, Coconut Oil, Raisins 8%, Coconut Sugar, Rapeseed Oil, Dried Apple Pieces 5%, Cinnamon (Cassia).",
+   "energy-kcal_100g": 426.0,
+   "fat_100g": 17.0,
+   "saturated-fat_100g": 9.5,
+   "sugars_100g": 29.0,
+   "fiber_100g": 4.9,
+   "proteins_100g": 5.6,
+   "salt_100g": 0.29,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [
+    "en:card-box",
+    "en:paper-wrapper"
+   ],
+   "stores": [
+    "Sainsbury’s"
+   ],
+   "quantity": "150g",
+   "scans": 105.0,
+   "completeness": 0.9,
+   "image": "https://images.openfoodfacts.org/images/products/506/048/284/0179/front_en.66.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060482840179",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=c (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.641,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "sugars_100g=29.0 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.313,
+     "why": [
+      "proteins_100g=5.6 (OFF)",
+      "energy-kcal_100g=426.0 (OFF) -> 10x test fail",
+      "fiber_100g=4.9 (OFF)",
+      "sugars_100g=29.0 (OFF)",
+      "unit size=50g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.71,
+     "why": [
+      "price_per_100g=£1.67 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.126,
+     "why": [
+      "proteins_100g=5.6 (OFF)",
+      "10x test fail (kcal 426.0 vs 10x protein)",
+      "sugars_100g=29.0 (OFF)",
+      "protein per £=3.4g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.775,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "ingredients_n=9 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.583,
+     "why": [
+      "role=challenger",
+      "scans=105.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.67"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.544,
+     "why": [
+      "units_per_pack=3 (OFF quantity)",
+      "proteins_100g=5.6 (OFF)",
+      "price_per_unit=£0.83"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.825,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=c (OFF)",
+      "ethical cert=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:gluten'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=[]"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.57,
+     "why": [
+      "nutriscore=e (OFF)",
+      "additives_n=0 (OFF)",
+      "completeness=0.9 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.509,
+     "why": [
+      "role=challenger",
+      "scans=105.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=False"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5024121100475",
+   "name": "Raspberry & Apple Soft Oaty Bars",
+   "brand": "Organix",
+   "category": "snack_bars",
+   "row": 1,
+   "role": "challenger",
+   "price_gbp": 2.25,
+   "price_source": "assumption: typical UK RRP for Organix Soft Oaty Bars 6x23g (~£2.25), not fetched",
+   "price_per_100g": 1.63,
+   "price_per_unit": 0.38,
+   "units_per_pack": 6,
+   "pack_g": 138,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "organix raspberry & apple soft oaty bars — organic, soil association organic",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "a",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:organic",
+    "en:fsc",
+    "en:fsc-mix",
+    "en:soil-association-organic"
+   ],
+   "allergens": [],
+   "traces": [
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 8,
+   "ingredients_text": "Wholegrain oats 49.0%, Raisins (contains sunflower oil) 20.6%, Sunflower oil 11.3%, Apple juice concentrate 8.8%, Agave fibre (inulin) 7.8%, Raspberry juice concentrate 2.5%.",
+   "energy-kcal_100g": 411.0,
+   "fat_100g": 15.0,
+   "saturated-fat_100g": 1.9,
+   "sugars_100g": 22.0,
+   "fiber_100g": 13.0,
+   "proteins_100g": 7.5,
+   "salt_100g": 0.01,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [],
+   "stores": [],
+   "quantity": "6 bars",
+   "scans": 40.0,
+   "completeness": 0.8,
+   "image": "https://images.openfoodfacts.org/images/products/502/412/110/0475/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5024121100475",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 1.0,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a (OFF)",
+      "organic label=True (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.417,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "sugars_100g=22.0 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.535,
+     "why": [
+      "proteins_100g=7.5 (OFF)",
+      "energy-kcal_100g=411.0 (OFF) -> 10x test fail",
+      "fiber_100g=13.0 (OFF)",
+      "sugars_100g=22.0 (OFF)",
+      "unit size=23g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.722,
+     "why": [
+      "price_per_100g=£1.63 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.203,
+     "why": [
+      "proteins_100g=7.5 (OFF)",
+      "10x test fail (kcal 411.0 vs 10x protein)",
+      "sugars_100g=22.0 (OFF)",
+      "protein per £=4.6g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.55,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "ingredients_n=8 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.526,
+     "why": [
+      "role=challenger",
+      "scans=40.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.63"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.573,
+     "why": [
+      "units_per_pack=6 (OFF quantity)",
+      "proteins_100g=7.5 (OFF)",
+      "price_per_unit=£0.38"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 1.0,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=a (OFF)",
+      "ethical cert=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.3,
+     "why": [
+      "no-gluten label=False (OFF labels)",
+      "allergens=[] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:milk', 'en:nuts', 'en:soybeans']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.84,
+     "why": [
+      "nutriscore=b (OFF)",
+      "additives_n=0 (OFF)",
+      "completeness=0.8 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.568,
+     "why": [
+      "role=challenger",
+      "scans=40.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=False"
+     ]
+    }
+   }
+  },
+  {
+   "code": "20422684",
+   "name": "Muesli Bars Chocolate",
+   "brand": "Crownfield",
+   "category": "snack_bars",
+   "row": 1,
+   "role": "own_label",
+   "price_gbp": 1.29,
+   "price_source": "assumption: Lidl Crownfield multipack bars typically £1.19-£1.49 (8x25g), not fetched",
+   "price_per_100g": 0.65,
+   "price_per_unit": 0.16,
+   "units_per_pack": 8,
+   "pack_g": 200,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "crownfield muesli bars chocolate — no added sugar, low sugar, fairtrade cocoa",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "c",
+   "additives_n": 3,
+   "additives": [
+    "en:e322",
+    "en:e422",
+    "en:e965"
+   ],
+   "labels": [
+    "en:low-or-no-sugar",
+    "en:sustainable-farming",
+    "en:fsc",
+    "en:fsc-mix",
+    "en:made-in-germany",
+    "en:no-added-sugar",
+    "en:nutriscore",
+    "en:nutriscore-grade-a",
+    "en:pure-cocoa-butter",
+    "en:utz-certified",
+    "en:utz-certified-cocoa",
+    "en:fairer-handel",
+    "en:fairtrade-kokao",
+    "en:fsc-c017110",
+    "en:mit-sonnenblumenol",
+    "en:mit-sussstoffen"
+   ],
+   "allergens": [
+    "en:gluten",
+    "en:milk",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "traces": [
+    "en:\u001fen:nuts\u001f  \u001fen:sesame-seeds\u001f  \u001fen:soybeans\u001f  \u001fen:sulphur-dioxide-and-sulphites"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ],
+   "ingredients_n": 29,
+   "ingredients_text": "35% Wholegrain Cereal Flakes (Wheat, Oat), Sweetener: Maltitols; 8% Chocolate Flavoured Puffed Cereals (Wheat Flour, Rice Flour, Maize, Fat Reduced Cocoa Powder, Barley Malt Flour, Salt), 8% Sugar Free** Milk Chocolate with Sweetener (Sweetener: Maltitols; Cocoa Butter, Whole Milk Powder, Cocoa Mass, Whey Powder (Milk), Emulsifier: Lecithins), 8% Wholegrain Wheat Flour, Rapeseed Oil, Chopped Roasted Peanuts, Humectant: Glycerol; 2% Corn Flakes (Maize, Salt, Barley Malt Extract), Salt, Natural Flavouring, Emulsifier: Lecithins.",
+   "energy-kcal_100g": 343.0,
+   "fat_100g": 9.0,
+   "saturated-fat_100g": 2.5,
+   "sugars_100g": 1.5,
+   "fiber_100g": 6.2,
+   "proteins_100g": 7.6,
+   "salt_100g": 0.26,
+   "sweeteners": 1,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [
+    "en:plastic",
+    "en:paper-or-cardboard",
+    "en:cardboard",
+    "en:card-carton",
+    "en:fsc-mixte",
+    "en:film-plastique",
+    "en:sachet-plastique"
+   ],
+   "stores": [
+    "Lidl"
+   ],
+   "quantity": "8x25 gram",
+   "scans": 36.0,
+   "completeness": 0.89,
+   "image": "https://images.openfoodfacts.org/images/products/000/002/042/2684/front_en.404.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/20422684",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.53,
+     "why": [
+      "additives_n=3 (OFF)",
+      "ecoscore=c (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.319,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "sugars_100g=1.5 (OFF)",
+      "sweeteners=1 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.511,
+     "why": [
+      "proteins_100g=7.6 (OFF)",
+      "energy-kcal_100g=343.0 (OFF) -> 10x test fail",
+      "fiber_100g=6.2 (OFF)",
+      "sugars_100g=1.5 (OFF)",
+      "unit size=25g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 1.0,
+     "why": [
+      "price_per_100g=£0.65 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.367,
+     "why": [
+      "proteins_100g=7.6 (OFF)",
+      "10x test fail (kcal 343.0 vs 10x protein)",
+      "sugars_100g=1.5 (OFF)",
+      "protein per £=11.8g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.21,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "ingredients_n=29 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.725,
+     "why": [
+      "role=own_label",
+      "scans=36.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£0.65"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.574,
+     "why": [
+      "units_per_pack=8 (OFF quantity)",
+      "proteins_100g=7.6 (OFF)",
+      "price_per_unit=£0.16"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.325,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=c (OFF)",
+      "ethical cert=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.075,
+     "why": [
+      "no-gluten label=False (OFF labels)",
+      "allergens=['en:gluten', 'en:milk', 'en:peanuts', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:\\x1fen:nuts\\x1f  \\x1fen:sesame-seeds\\x1f  \\x1fen:soybeans\\x1f  \\x1fen:sulphur-dioxide-and-sulphites']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.777,
+     "why": [
+      "nutriscore=b (OFF)",
+      "additives_n=3 (OFF)",
+      "completeness=0.89 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.275,
+     "why": [
+      "role=own_label",
+      "scans=36.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060088701478",
+   "name": "cocoa orange",
+   "brand": "nakd.",
+   "category": "snack_bars",
+   "row": 2,
+   "role": "incumbent",
+   "price_gbp": 2.4,
+   "price_source": "assumption: typical UK RRP for Nakd 4x35g multipack (~£2.40), not fetched",
+   "price_per_100g": 1.71,
+   "price_per_unit": 0.6,
+   "units_per_pack": 4,
+   "pack_g": 140,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "nakd. cocoa orange — vegan, gluten free, no added sugar, source of fibre, kosher",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:no-gluten",
+    "en:kosher",
+    "en:source-of-fibre",
+    "en:vegan",
+    "en:fsc",
+    "en:fsc-mix",
+    "en:kashrut-division-of-the-london-beth-din",
+    "en:natural-product",
+    "en:no-added-sugar",
+    "en:no-milk"
+   ],
+   "allergens": [
+    "en:nuts"
+   ],
+   "traces": [
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 6,
+   "ingredients_text": "Dates 40%, Cashews 40%, Raisins 14%, Cocoa 5%, Orange Oil, Natural Flavouring",
+   "energy-kcal_100g": 394.29,
+   "fat_100g": 15.43,
+   "saturated-fat_100g": 3.14,
+   "sugars_100g": 42.86,
+   "fiber_100g": 8.57,
+   "proteins_100g": 8.57,
+   "salt_100g": 0.03,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [
+    "en:RECYCLE WITH BAGS AT LARGE SUPERMARKET Don't recycle at home",
+    "en:recycle"
+   ],
+   "packaging": [
+    "en:plastic",
+    "en:film"
+   ],
+   "stores": [
+    "dunnes stores",
+    "Sainsbury's"
+   ],
+   "quantity": "4 x 35g",
+   "scans": 117.0,
+   "completeness": 1.0,
+   "image": "https://images.openfoodfacts.org/images/products/506/008/870/1478/front_en.65.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060088701478",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.62,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.35,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "sugars_100g=42.86 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.474,
+     "why": [
+      "proteins_100g=8.57 (OFF)",
+      "energy-kcal_100g=394.29 (OFF) -> 10x test fail",
+      "fiber_100g=8.57 (OFF)",
+      "sugars_100g=42.86 (OFF)",
+      "unit size=35g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.699,
+     "why": [
+      "price_per_100g=£1.71 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.184,
+     "why": [
+      "proteins_100g=8.57 (OFF)",
+      "10x test fail (kcal 394.29 vs 10x protein)",
+      "sugars_100g=42.86 (OFF)",
+      "protein per £=5.0g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.55,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "ingredients_n=6 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.937,
+     "why": [
+      "role=incumbent",
+      "scans=117.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.71"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.589,
+     "why": [
+      "units_per_pack=4 (OFF quantity)",
+      "proteins_100g=8.57 (OFF)",
+      "price_per_unit=£0.6"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.91,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.925,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:nuts'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:nuts', 'en:peanuts', 'en:soybeans']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.7,
+     "why": [
+      "nutriscore=d (OFF)",
+      "additives_n=0 (OFF)",
+      "completeness=1.0 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.203,
+     "why": [
+      "role=incumbent",
+      "scans=117.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "4056489239918",
+   "name": "Cacao & Orange 5 Raw Fruit & Nut Bars",
+   "brand": "Alesto,Lidl",
+   "category": "snack_bars",
+   "row": 2,
+   "role": "own_label",
+   "price_gbp": 1.79,
+   "price_source": "assumption: Lidl Alesto raw fruit & nut 5x35g typically ~£1.79, not fetched",
+   "price_per_100g": 1.02,
+   "price_per_unit": 0.36,
+   "units_per_pack": 5,
+   "pack_g": 175,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "alesto cacao & orange 5 raw fruit & nut bars — vegan, gluten free, rainforest alliance cocoa",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:no-gluten",
+    "en:vegan",
+    "en:rainforest-alliance",
+    "en:rainforest-alliance-cocoa"
+   ],
+   "allergens": [
+    "en:nuts"
+   ],
+   "traces": [
+    "en:milk",
+    "en:nuts",
+    "en:peanuts"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 6,
+   "ingredients_text": "45% Date Paste, 30% Cashew Nut Pieces, 15% Raisins, 10% Cocoa Powder, Natural Chocolate Flavouring, Orange Oil.",
+   "energy-kcal_100g": 425.71,
+   "fat_100g": 14.29,
+   "saturated-fat_100g": 3.71,
+   "sugars_100g": 33.43,
+   "fiber_100g": 8.29,
+   "proteins_100g": 9.14,
+   "salt_100g": 0.03,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [
+    "en:recycle",
+    "en:recycle-with-plastics"
+   ],
+   "packaging": [],
+   "stores": [
+    "Lidl"
+   ],
+   "quantity": "5 x 35 g",
+   "scans": 34.0,
+   "completeness": 0.8,
+   "image": "https://images.openfoodfacts.org/images/products/405/648/923/9918/front_en.34.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/4056489239918",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.62,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.375,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "sugars_100g=33.43 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.492,
+     "why": [
+      "proteins_100g=9.14 (OFF)",
+      "energy-kcal_100g=425.71 (OFF) -> 10x test fail",
+      "fiber_100g=8.29 (OFF)",
+      "sugars_100g=33.43 (OFF)",
+      "unit size=35g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.895,
+     "why": [
+      "price_per_100g=£1.02 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.226,
+     "why": [
+      "proteins_100g=9.14 (OFF)",
+      "10x test fail (kcal 425.71 vs 10x protein)",
+      "sugars_100g=33.43 (OFF)",
+      "protein per £=8.9g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.55,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "ingredients_n=6 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.701,
+     "why": [
+      "role=own_label",
+      "scans=34.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.02"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.597,
+     "why": [
+      "units_per_pack=5 (OFF quantity)",
+      "proteins_100g=9.14 (OFF)",
+      "price_per_unit=£0.36"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.91,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.925,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:nuts'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:milk', 'en:nuts', 'en:peanuts']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.64,
+     "why": [
+      "nutriscore=d (OFF)",
+      "additives_n=0 (OFF)",
+      "completeness=0.8 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.278,
+     "why": [
+      "role=own_label",
+      "scans=34.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5000159558396",
+   "name": "Chocolate Chip cashew",
+   "brand": "Kind",
+   "category": "snack_bars",
+   "row": 2,
+   "role": "challenger",
+   "price_gbp": 3.0,
+   "price_source": "assumption: typical UK RRP for KIND 3x30g multipack (~£3.00), not fetched",
+   "price_per_100g": 3.33,
+   "price_per_unit": 1.0,
+   "units_per_pack": 3,
+   "pack_g": 90,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "kind chocolate chip cashew — kosher",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "unknown",
+   "additives_n": 1,
+   "additives": [
+    "en:e322",
+    "en:e322i"
+   ],
+   "labels": [
+    "en:kosher"
+   ],
+   "allergens": [
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 16,
+   "ingredients_text": "Cashews, peanuts, almonds, fructo-oligosaccharide, honey, glucose syrup, dark chocolate chip pieces (sugar, cocoa mass, cocoa butter, emulsifier soya lecithin, natural flavouring), cocoa mass, sea salt, natural flavouring.",
+   "energy-kcal_100g": 556.0,
+   "fat_100g": 41.0,
+   "saturated-fat_100g": 6.7,
+   "sugars_100g": 9.9,
+   "fiber_100g": 12.0,
+   "proteins_100g": 17.0,
+   "salt_100g": 0.39,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [
+    "en:recycle"
+   ],
+   "packaging": [],
+   "stores": [],
+   "quantity": "3 x 30 g",
+   "scans": 34.0,
+   "completeness": 0.7,
+   "image": "https://images.openfoodfacts.org/images/products/500/015/955/8396/front_en.5.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5000159558396",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.58,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.438,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "sugars_100g=9.9 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.679,
+     "why": [
+      "proteins_100g=17.0 (OFF)",
+      "energy-kcal_100g=556.0 (OFF) -> 10x test fail",
+      "fiber_100g=12.0 (OFF)",
+      "sugars_100g=9.9 (OFF)",
+      "unit size=30g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.239,
+     "why": [
+      "price_per_100g=£3.33 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.426,
+     "why": [
+      "proteins_100g=17.0 (OFF)",
+      "10x test fail (kcal 556.0 vs 10x protein)",
+      "sugars_100g=9.9 (OFF)",
+      "protein per £=5.1g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.27,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "ingredients_n=16 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.419,
+     "why": [
+      "role=challenger",
+      "scans=34.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£3.33"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.715,
+     "why": [
+      "units_per_pack=3 (OFF quantity)",
+      "proteins_100g=17.0 (OFF)",
+      "price_per_unit=£1.0"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.21,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.075,
+     "why": [
+      "no-gluten label=False (OFF labels)",
+      "allergens=['en:nuts', 'en:peanuts', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=[]"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.68,
+     "why": [
+      "nutriscore=c (OFF)",
+      "additives_n=1 (OFF)",
+      "completeness=0.7 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.778,
+     "why": [
+      "role=challenger",
+      "scans=34.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "8000500417195",
+   "name": "Eat Natural Dark Chocolate With Cranberries And Macadam",
+   "brand": "Eat Natural",
+   "category": "snack_bars",
+   "row": 2,
+   "role": "incumbent",
+   "price_gbp": 1.25,
+   "price_source": "assumption: typical UK single-bar RRP for Eat Natural 40g (~£1.25), not fetched",
+   "price_per_100g": 3.12,
+   "price_per_unit": 1.25,
+   "units_per_pack": 1,
+   "pack_g": 40,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "eat natural dark chocolate with cranberries and macadam — gluten free, source of fibre",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "e",
+   "ecoscore": "unknown",
+   "additives_n": 1,
+   "additives": [
+    "en:e322",
+    "en:e322i"
+   ],
+   "labels": [
+    "en:no-gluten",
+    "en:source-of-fibre",
+    "en:fsc",
+    "en:fsc-mix"
+   ],
+   "allergens": [
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "traces": [
+    "en:milk",
+    "en:peanuts"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 20,
+   "ingredients_text": "Shredded coconut 21%, dark chocolate 20% (cocoa mass, sugar, cocoa butter, emulsifier: SOYA lecithin), sultanas 16% (sultanas, sunflower oil), glucose syrup, crisped rice (rice flour, rice bran, sugar), dried cranberries 8% (sugar, cranberries, sunflower oil), honey, MACADAMIA NUTS 6%.",
+   "energy-kcal_100g": 477.0,
+   "fat_100g": 26.2,
+   "saturated-fat_100g": 17.7,
+   "sugars_100g": 35.5,
+   "fiber_100g": 7.6,
+   "proteins_100g": 4.3,
+   "salt_100g": 0.01,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [],
+   "stores": [],
+   "quantity": "40 gram",
+   "scans": 41.0,
+   "completeness": 0.8,
+   "image": "https://images.openfoodfacts.org/images/products/800/050/041/7195/front_en.29.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/8000500417195",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.58,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.342,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "sugars_100g=35.5 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.415,
+     "why": [
+      "proteins_100g=4.3 (OFF)",
+      "energy-kcal_100g=477.0 (OFF) -> 10x test fail",
+      "fiber_100g=7.6 (OFF)",
+      "sugars_100g=35.5 (OFF)",
+      "unit size=40g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.298,
+     "why": [
+      "price_per_100g=£3.12 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.083,
+     "why": [
+      "proteins_100g=4.3 (OFF)",
+      "10x test fail (kcal 477.0 vs 10x protein)",
+      "sugars_100g=35.5 (OFF)",
+      "protein per £=1.4g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.27,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "ingredients_n=20 (OFF)",
+      "protein claim=False (OFF name/labels/categories); penalty=0"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.793,
+     "why": [
+      "role=incumbent",
+      "scans=41.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£3.12"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.764,
+     "why": [
+      "units_per_pack=1 (OFF quantity)",
+      "proteins_100g=4.3 (OFF)",
+      "price_per_unit=£1.25"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.31,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.85,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:nuts', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:milk', 'en:peanuts']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.51,
+     "why": [
+      "nutriscore=e (OFF)",
+      "additives_n=1 (OFF)",
+      "completeness=0.8 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.267,
+     "why": [
+      "role=incumbent",
+      "scans=41.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060811384084",
+   "name": "Grenade High Protein Oreo",
+   "brand": "Grenade",
+   "category": "snack_bars",
+   "row": 3,
+   "role": "challenger",
+   "price_gbp": 2.5,
+   "price_source": "assumption: typical UK single-bar RRP for Grenade 60g protein bar (~£2.50), not fetched",
+   "price_per_100g": 4.17,
+   "price_per_unit": 2.5,
+   "units_per_pack": 1,
+   "pack_g": 60,
+   "pack_g_source": "assumption: OFF quantity missing; Grenade bars are sold as 60g",
+   "pack_copy": "grenade high protein oreo — high protein, low sugar, oreo collab",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "not-applicable",
+   "ecoscore": "unknown",
+   "additives_n": 8,
+   "additives": [
+    "en:e1200",
+    "en:e322",
+    "en:e322i",
+    "en:e422",
+    "en:e500",
+    "en:e503",
+    "en:e524",
+    "en:e955",
+    "en:e965"
+   ],
+   "labels": [],
+   "allergens": [
+    "en:gluten",
+    "en:milk",
+    "en:soybeans"
+   ],
+   "traces": [
+    "en:nuts"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 38,
+   "ingredients_text": "Protein Blend (Calcium Caseinate (Milk), Whey NUTRIT Protein Isolate (Milk)), Milk Chocolate with Sweetener (20%) INFORM (Sweetener: Maltitol: Cocoa Butter, Whole Milk Powder, Cocoa Mass, Emulsifier: Soy Lecithin; Natural Flavouring), Bovine Collagen Energy (kJ Hydrolysate, Humectant: Glycerol; Sweeteners: Maltitol, Sucralose; Energy (ko Palm Oil, Water, Fat - reduced Cocoa Powder (3%), Wheat Flour, Wheat Starch, Rapeseed Oil, Bulking Agent: Polydextrose; Sea Salt, Emulsifier: Soy Lecithin; Raising Agents: Ammonium Carbonates, Sodium Carbonates; Acidity Regulator: Sodium Hydroxide; Flavouring. ALLERGY ADVICE: For allergens including cereals containing gluten, see ingredients in bold. May also contain Nuts.",
+   "energy-kcal_100g": 388.57,
+   "fat_100g": 17.14,
+   "saturated-fat_100g": 9.43,
+   "sugars_100g": 1.71,
+   "fiber_100g": null,
+   "proteins_100g": 34.29,
+   "salt_100g": 0.6,
+   "sweeteners": 2,
+   "palm_oil_n": 1,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [],
+   "stores": [],
+   "quantity": null,
+   "scans": 6,
+   "completeness": 0.575,
+   "image": "https://images.openfoodfacts.org/images/products/506/081/138/4084/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060811384084",
+   "data_source": "OFF API v2 /product/5060811384084 (not in UK pool: Grenade absent from bulk export filter)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.2,
+     "why": [
+      "additives_n=8 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=1 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.194,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=8 (OFF)",
+      "sugars_100g=1.71 (OFF)",
+      "sweeteners=2 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.456,
+     "why": [
+      "proteins_100g=34.29 (OFF)",
+      "energy-kcal_100g=388.57 (OFF) -> 10x test fail",
+      "fiber_100g=0 (OFF)",
+      "sugars_100g=1.71 (OFF)",
+      "unit size=60g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.0,
+     "why": [
+      "price_per_100g=£4.17 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.71,
+     "why": [
+      "proteins_100g=34.29 (OFF)",
+      "10x test fail (kcal 388.57 vs 10x protein)",
+      "sugars_100g=1.71 (OFF)",
+      "protein per £=8.2g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.0,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=8 (OFF)",
+      "ingredients_n=38 (OFF)",
+      "protein claim=True (OFF name/labels/categories); penalty=0.35"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.271,
+     "why": [
+      "role=challenger",
+      "scans=6 (OFF unique scans, log-scaled)",
+      "price_per_100g=£4.17"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.8,
+     "why": [
+      "units_per_pack=1 (OFF quantity)",
+      "proteins_100g=34.29 (OFF)",
+      "price_per_unit=£2.5"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.06,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=1",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.15,
+     "why": [
+      "no-gluten label=False (OFF labels)",
+      "allergens=['en:gluten', 'en:milk', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:nuts']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.393,
+     "why": [
+      "nutriscore=not-applicable (OFF)",
+      "additives_n=8 (OFF)",
+      "completeness=0.575 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.879,
+     "why": [
+      "role=challenger",
+      "scans=6 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060088709047",
+   "name": "Protein flapjacks salted caramel",
+   "brand": "TREK",
+   "category": "snack_bars",
+   "row": 3,
+   "role": "incumbent",
+   "price_gbp": 2.75,
+   "price_source": "assumption: typical UK RRP for TREK protein flapjack 3x50g (~£2.75), not fetched",
+   "price_per_100g": 1.83,
+   "price_per_unit": 0.92,
+   "units_per_pack": 3,
+   "pack_g": 150,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "trek protein flapjacks salted caramel — protein flapjack, vegan, gluten free, source of fibre, sustainable palm oil",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "e",
+   "ecoscore": "unknown",
+   "additives_n": 2,
+   "additives": [
+    "en:e160c",
+    "en:e322"
+   ],
+   "labels": [
+    "en:sustainable",
+    "en:vegetarian",
+    "en:no-gluten",
+    "en:source-of-fibre",
+    "en:sustainable-palm-oil",
+    "en:vegan",
+    "en:fsc",
+    "en:fsc-mix",
+    "en:natural-ingredients"
+   ],
+   "allergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "traces": [
+    "en:milk",
+    "en:nuts",
+    "en:peanuts"
+   ],
+   "analysis": [
+    "en:palm-oil",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 31,
+   "ingredients_text": "Gluten free _oats_ 26%, rice syrup, _soya_ protein crispies 16% (_soya_ protein isolate, tapioca starch, salt), salted caramel flavour topping 13% (vegetable oils (palm kernel, palm), sugar, rice powder (dried rice syrup, rice starch, rice flour), rice flour, fat-reduced cocoa powder, sea salt, natural flavouring, emulsifier (lecithins), colour (paprika extract)), vegetable oils (rapeseed, palm), dark brown sugar, _soya_ flour, natural flavourings, sea salt 0.4%, salt.",
+   "energy-kcal_100g": 447.0,
+   "fat_100g": 20.0,
+   "saturated-fat_100g": 9.6,
+   "sugars_100g": 23.0,
+   "fiber_100g": 3.7,
+   "proteins_100g": 19.0,
+   "salt_100g": 1.2,
+   "sweeteners": 0,
+   "palm_oil_n": 3,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [
+    "en:card-box"
+   ],
+   "stores": [
+    "Sainsbury’s"
+   ],
+   "quantity": "150 g",
+   "scans": 30.0,
+   "completeness": 1.0,
+   "image": "https://images.openfoodfacts.org/images/products/506/008/870/9047/front_en.40.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060088709047",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.44,
+     "why": [
+      "additives_n=2 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=3 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.364,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "sugars_100g=23.0 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.465,
+     "why": [
+      "proteins_100g=19.0 (OFF)",
+      "energy-kcal_100g=447.0 (OFF) -> 10x test fail",
+      "fiber_100g=3.7 (OFF)",
+      "sugars_100g=23.0 (OFF)",
+      "unit size=50g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.665,
+     "why": [
+      "price_per_100g=£1.83 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.437,
+     "why": [
+      "proteins_100g=19.0 (OFF)",
+      "10x test fail (kcal 447.0 vs 10x protein)",
+      "sugars_100g=23.0 (OFF)",
+      "protein per £=10.4g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.0,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "ingredients_n=31 (OFF)",
+      "protein claim=True (OFF name/labels/categories); penalty=0.35"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.847,
+     "why": [
+      "role=incumbent",
+      "scans=30.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.83"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.745,
+     "why": [
+      "units_per_pack=3 (OFF quantity)",
+      "proteins_100g=19.0 (OFF)",
+      "price_per_unit=£0.92"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.76,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_n=3",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.925,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:gluten', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:milk', 'en:nuts', 'en:peanuts']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.54,
+     "why": [
+      "nutriscore=e (OFF)",
+      "additives_n=2 (OFF)",
+      "completeness=1.0 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.286,
+     "why": [
+      "role=incumbent",
+      "scans=30.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=True"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060411920040",
+   "name": "Sweet & salty almond",
+   "brand": "Bounce",
+   "category": "snack_bars",
+   "row": 3,
+   "role": "challenger",
+   "price_gbp": 2.5,
+   "price_source": "assumption: typical Holland & Barrett price for a Bounce 90g pack (~£2.50), not fetched",
+   "price_per_100g": 2.78,
+   "price_per_unit": 2.5,
+   "units_per_pack": 1,
+   "pack_g": 90,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "bounce sweet & salty almond — gluten free, no added sugar, high in protein, source of fibre, no artificial preservatives",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 2,
+   "additives": [
+    "en:e1400",
+    "en:e322",
+    "en:e322i"
+   ],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:no-artificial-preservatives",
+    "en:no-gmos",
+    "en:source-of-fibre",
+    "en:no-added-sugar",
+    "en:high-in-protein"
+   ],
+   "allergens": [
+    "en:milk",
+    "en:nuts",
+    "en:soybeans"
+   ],
+   "traces": [
+    "en:crustaceans",
+    "en:nuts",
+    "en:soybeans",
+    "en:sulphur-dioxide-and-sulphites",
+    "en:Nut shells"
+   ],
+   "analysis": [
+    "en:may-contain-palm-oil",
+    "en:non-vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 16,
+   "ingredients_text": "sultanas, _almonds_ (_nuts_), sunflower seeds, whey protein concentrate 8% (from _milk_), gluten free grain dextrins (from brown rice), whey protein isolate 6% (from _milk_), rice flour, water, natural caramel flavour, sea salt flakes 0.4%, _soya_ lecithin (emulsifier), vegetable oil",
+   "energy-kcal_100g": 440.4,
+   "fat_100g": 21.0,
+   "saturated-fat_100g": 2.2,
+   "sugars_100g": 26.0,
+   "fiber_100g": 5.7,
+   "proteins_100g": 22.0,
+   "salt_100g": 0.8,
+   "sweeteners": 0,
+   "palm_oil_n": 0.5,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [
+    "en:plastic-film"
+   ],
+   "stores": [
+    "Holland & Barret"
+   ],
+   "quantity": "90 g",
+   "scans": null,
+   "completeness": 0.89,
+   "image": "https://images.openfoodfacts.org/images/products/506/041/192/0040/front_en.10.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060411920040",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.44,
+     "why": [
+      "additives_n=2 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0.5 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.353,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "sugars_100g=26.0 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.473,
+     "why": [
+      "proteins_100g=22.0 (OFF)",
+      "energy-kcal_100g=440.4 (OFF) -> 10x test fail",
+      "fiber_100g=5.7 (OFF)",
+      "sugars_100g=26.0 (OFF)",
+      "unit size=90g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.395,
+     "why": [
+      "price_per_100g=£2.78 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.452,
+     "why": [
+      "proteins_100g=22.0 (OFF)",
+      "10x test fail (kcal 440.4 vs 10x protein)",
+      "sugars_100g=26.0 (OFF)",
+      "protein per £=7.9g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.0,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "ingredients_n=16 (OFF)",
+      "protein claim=True (OFF name/labels/categories); penalty=0.35"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.229,
+     "why": [
+      "role=challenger",
+      "scans=None (OFF unique scans, log-scaled)",
+      "price_per_100g=£2.78"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.8,
+     "why": [
+      "units_per_pack=1 (OFF quantity)",
+      "proteins_100g=22.0 (OFF)",
+      "price_per_unit=£2.5"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.06,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=0.5",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.775,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:milk', 'en:nuts', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=['en:crustaceans', 'en:nuts', 'en:soybeans', 'en:sulphur-dioxide-and-sulphites', 'en:Nut shells']"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.607,
+     "why": [
+      "nutriscore=d (OFF)",
+      "additives_n=2 (OFF)",
+      "completeness=0.89 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.8,
+     "why": [
+      "role=challenger",
+      "scans=None (fewer = less familiar)",
+      "indulgent/collab flavour in name=False"
+     ]
+    }
+   }
+  },
+  {
+   "code": "20402167",
+   "name": "Deluxe Fruit & Nut protein bars",
+   "brand": "Lidl,Deluxe",
+   "category": "snack_bars",
+   "row": 3,
+   "role": "own_label",
+   "price_gbp": 1.99,
+   "price_source": "assumption: Lidl Deluxe protein bars 3x45g typically ~£1.99, not fetched",
+   "price_per_100g": 1.47,
+   "price_per_unit": 0.66,
+   "units_per_pack": 3,
+   "pack_g": 135,
+   "pack_g_source": "OFF quantity field",
+   "pack_copy": "lidl deluxe fruit & nut protein bars — gluten free",
+   "pack_copy_source": "derived from OFF labels + product_name",
+   "nova": 4,
+   "nutriscore": "e",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:no-gluten"
+   ],
+   "allergens": [
+    "en:milk",
+    "en:nuts",
+    "en:peanuts",
+    "en:soybeans"
+   ],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ],
+   "ingredients_n": 19,
+   "ingredients_text": "51% peanuts, glucose syrup, 10% soya protein crisp pieces (soya protein isolate, tapioca starch, salt), 7% dates (dates, rice flour), honey, 6% almonds, 5% salted caramel (muscovado sugar, buttermilk powder (milk), natural flavourings, cream powder (milk), rice flour, carob flour, salt),",
+   "energy-kcal_100g": 514.0,
+   "fat_100g": 31.7,
+   "saturated-fat_100g": 6.0,
+   "sugars_100g": 20.3,
+   "fiber_100g": 4.2,
+   "proteins_100g": 26.7,
+   "salt_100g": 0.93,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "count of OFF additives in E420/E421/E950-E969 (sweetener/polyol range); pool 'sweeteners' column was empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; 0.5 if OFF analysis says may-contain-palm-oil; pool 'palm_oil_n' column was empty"
+   },
+   "recycling": [],
+   "packaging": [],
+   "stores": [],
+   "quantity": "3 x 45 g",
+   "scans": 31.0,
+   "completeness": 0.69,
+   "image": "https://images.openfoodfacts.org/images/products/000/002/040/2167/front_en.14.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/20402167",
+   "data_source": "OFF UK pool (data/products/uk_products.parquet)",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.62,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic label=False (OFF labels)",
+      "palm_oil_n=0 (derived from OFF ingredients_text)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.424,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "sugars_100g=20.3 (OFF)",
+      "sweeteners=0 (derived from OFF additives)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.553,
+     "why": [
+      "proteins_100g=26.7 (OFF)",
+      "energy-kcal_100g=514.0 (OFF) -> 10x test fail",
+      "fiber_100g=4.2 (OFF)",
+      "sugars_100g=20.3 (OFF)",
+      "unit size=45g (OFF quantity)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.767,
+     "why": [
+      "price_per_100g=£1.47 (price assumption / OFF quantity)",
+      "min-max scaled within snack_bars shelf (£0.65-£4.17/100g)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.643,
+     "why": [
+      "proteins_100g=26.7 (OFF)",
+      "10x test fail (kcal 514.0 vs 10x protein)",
+      "sugars_100g=20.3 (OFF)",
+      "protein per £=18.1g"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.0,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "ingredients_n=19 (OFF)",
+      "protein claim=True (OFF name/labels/categories); penalty=0.35"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.669,
+     "why": [
+      "role=own_label",
+      "scans=31.0 (OFF unique scans, log-scaled)",
+      "price_per_100g=£1.47"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.76,
+     "why": [
+      "units_per_pack=3 (OFF quantity)",
+      "proteins_100g=26.7 (OFF)",
+      "price_per_unit=£0.66"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.21,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_n=0",
+      "ecoscore=unknown (OFF)",
+      "ethical cert=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no-gluten label=True (OFF labels)",
+      "allergens=['en:milk', 'en:nuts', 'en:peanuts', 'en:soybeans'] (OFF; en:gluten from 'gluten free oats' ignored when GF-labelled)",
+      "traces=[]"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.507,
+     "why": [
+      "nutriscore=e (OFF)",
+      "additives_n=0 (OFF)",
+      "completeness=0.69 (OFF data legibility)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.084,
+     "why": [
+      "role=own_label",
+      "scans=31.0 (fewer = less familiar)",
+      "indulgent/collab flavour in name=False"
+     ]
+    }
+   }
+  }
+ ]
+}

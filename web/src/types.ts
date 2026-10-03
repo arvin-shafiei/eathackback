@@ -46,11 +46,11 @@ export interface SimEvent {
   step: number; slot: string; product: string; p_notice: number;
   notice_factors?: Record<string, unknown>;
   noticed: boolean; decision: Decision; reason?: string;
-  attributes_cited?: string[]; feeling?: string; sentiment?: number;
+  attributes_cited?: string[]; feeling?: string; sentiment?: number | null;
   mechanism?: string; source_refs?: string[];
 }
 export interface Agent {
-  agent_id: string; persona_id: string; model?: string; ocean?: Ocean;
+  agent_id: string; persona_id: string; archetype?: string; mission?: string; model?: string; ocean?: Ocean;
   path: string[]; events: SimEvent[];
 }
 export interface ProductStats {
@@ -64,9 +64,11 @@ export interface Run {
   agents: Agent[];
   stats?: { per_product?: Record<string, ProductStats> };
   notice_model?: Record<string, unknown>;
+  planogram_inline?: Planogram;
+  arm?: string; label?: string; mock?: boolean;
   _fixture?: string;
 }
-export interface RunIndexEntry { run_id: string; file: string; created?: string; agents?: number; fixture?: boolean }
+export interface RunIndexEntry { run_id: string; file: string; created?: string; agents?: number; ai_agents?: number; fixture?: boolean }
 
 export type Arm = 'human' | 'ai' | 'both';
 export const isAI = (a: Agent) => a.persona_id === 'ai_agent' || a.persona_id.startsWith('ai_');

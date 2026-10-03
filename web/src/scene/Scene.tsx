@@ -26,7 +26,7 @@ function CameraRig({ mode, nonce, cfg, follow, timeRef }: { mode: CamMode; nonce
 
   useEffect(() => {
     const zMid = G.zCentre;
-    if (mode === 'overview') goal.current = { pos: new THREE.Vector3(14, 17, -9), target: new THREE.Vector3(0, 0, zMid), until: performance.now() + 1200 };
+    if (mode === 'overview') goal.current = { pos: new THREE.Vector3(13.5, 13, -5), target: new THREE.Vector3(0, 0.4, zMid + 0.5), until: performance.now() + 1200 };
     if (mode === 'walk') {
       const x = gondolaX(cfg, 0.5 + Math.floor(cfg.aisles / 2));
       goal.current = { pos: new THREE.Vector3(x, 1.6, cfg.entrance.z + 3), target: new THREE.Vector3(x, 1.25, cfg.entrance.z + 9), until: performance.now() + 1200 };
@@ -86,17 +86,17 @@ export interface SceneProps {
 
 export function Scene(p: SceneProps) {
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [14, 17, -9], fov: 42, near: 0.1, far: 200 }} onPointerMissed={p.onBackground} gl={{ antialias: true, alpha: true }}>
-      <hemisphereLight args={['#fff4ec', '#f3c9d6', 0.9]} />
-      <directionalLight position={[8, 18, -6]} intensity={1.4} castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-20} shadow-camera-right={20} shadow-camera-top={20} shadow-camera-bottom={-20} />
-      <ambientLight intensity={0.35} />
+    <Canvas flat shadows dpr={[1, 2]} camera={{ position: [13.5, 13, -5], fov: 42, near: 0.1, far: 200 }} onPointerMissed={p.onBackground} gl={{ antialias: true, alpha: true }}>
+      <hemisphereLight args={['#fff4ec', '#f3c9d6', 1.1]} />
+      <directionalLight position={[8, 18, -6]} intensity={1.6} castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-20} shadow-camera-right={20} shadow-camera-top={20} shadow-camera-bottom={-20} />
+      <ambientLight intensity={0.5} />
       <Clock timeRef={p.timeRef} playing={p.playing} speed={p.speed} duration={p.duration} />
       <Store cfg={p.cfg} planogram={p.planogram} products={p.products} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
       {!p.editMode && (
         <Shoppers agents={p.agents} timelines={p.timelines} timeRef={p.timeRef} personas={p.personas} products={p.products} selectedAgent={p.selectedAgent} onAgent={p.onAgent} onEvent={p.onEvent} thoughts={p.thoughts} />
       )}
-      <Html position={[p.cfg.entrance.x, 0.4, p.cfg.entrance.z]} center distanceFactor={14}><div className="sticker sticker-brand">in</div></Html>
-      <Html position={[p.cfg.checkout.x, 1.4, p.cfg.checkout.z + 1.2]} center distanceFactor={14}><div className="sticker">checkout</div></Html>
+      <Html position={[p.cfg.entrance.x, 0.4, p.cfg.entrance.z]} center distanceFactor={14} zIndexRange={[5, 0]}><div className="sticker sticker-brand">in</div></Html>
+      <Html position={[p.cfg.checkout.x, 1.4, p.cfg.checkout.z + 1.2]} center distanceFactor={14} zIndexRange={[5, 0]}><div className="sticker">checkout</div></Html>
       <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.04} minDistance={1.5} maxDistance={60} target={[0, 0, G.zCentre]} />
       <CameraRig mode={p.cam} nonce={p.camNonce} cfg={p.cfg} follow={p.selectedAgent ? p.timelines[p.selectedAgent] ?? null : null} timeRef={p.timeRef} />
     </Canvas>

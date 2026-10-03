@@ -34,7 +34,7 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
         </div>
         <div>
           <div className="eyebrowless muted">{catLabel(p.category)}{slot ? ` · ${slot}` : ''}</div>
-          <h2 className="display">{p.brand} <span className="thin">{p.name}</span></h2>
+          <h2 className="display">{p.brand} <span className="thin">{p.brand && p.name.toLowerCase().startsWith(p.brand.toLowerCase()) ? p.name.slice(p.brand.length).trim() : p.name}</span></h2>
           <div className="chips">
             <Sticker tone={p.role === 'challenger' ? 'yellow' : p.role === 'incumbent' ? 'ink' : 'white'}>{String(p.role).replace('_', ' ')}</Sticker>
             <Sticker title={p.price_source}>£{Number(p.price_gbp).toFixed(2)}</Sticker>
@@ -109,8 +109,8 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
           <button className="link-btn" onClick={() => setShowLens((v) => !v)}>{showLens ? 'hide' : 'show'} lens grades (how each archetype scores it)</button>
           {showLens && Object.entries(p.lens_grades).map(([k, g]) => (
             <div key={k} className="lens-row">
-              <Bar label={archLabel(k)} value={g.score} color={archColor(k)} right={g.score.toFixed(2)} />
-              <div className="why">{g.why.join(' · ')}</div>
+              <Bar label={archLabel(k)} value={Number(g?.score ?? 0)} color={archColor(k)} right={Number(g?.score ?? 0).toFixed(2)} />
+              <div className="why">{(g?.why ?? []).join(' · ')}</div>
             </div>
           ))}
         </section>

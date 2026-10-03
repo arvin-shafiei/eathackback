@@ -1,0 +1,841 @@
+{
+ "run_id": "agent_20261003_112840_s1_b2fd",
+ "created": "2026-10-03T11:28:40",
+ "arm": "ai_agent",
+ "planogram": "feed (randomised order)",
+ "models": [
+  "google/gemini-2.5-flash"
+ ],
+ "seed": 1,
+ "missions": [
+  {
+   "id": "work_drink_snack",
+   "categories": [
+    "soft_drinks",
+    "snack_bars"
+   ],
+   "text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "source": "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+  }
+ ],
+ "inputs": {
+  "catalog": [
+   "sim/fixtures/catalog.json"
+  ]
+ },
+ "agents": [
+  {
+   "agent_id": "ai_gemini-2.5-flash_work_drink_snack_0",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "google/gemini-2.5-flash",
+   "ocean": {},
+   "mission": "work_drink_snack",
+   "mission_text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "path": [
+    "feed:work_drink_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0001",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "This prebiotic soda is a healthy-ish fizzy drink option, with no added sugar, 6g fibre, and it's well within the £4 budget.",
+     "attributes_cited": [
+      "name",
+      "pack_copy",
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "LLM google/gemini-2.5-flash (agent prompt sim/prompts.py)",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0002",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "LLM google/gemini-2.5-flash (agent prompt sim/prompts.py)",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "LLM google/gemini-2.5-flash (agent prompt sim/prompts.py)",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "LLM google/gemini-2.5-flash (agent prompt sim/prompts.py)",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "LLM google/gemini-2.5-flash (agent prompt sim/prompts.py)",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0003",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "LLM google/gemini-2.5-flash (agent prompt sim/prompts.py)",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 1,
+    "cached": 0,
+    "cost": 0.0007262,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 6
+  }
+ ],
+ "stats": {
+  "per_product": {
+   "FX0001": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 1,
+    "picked": 1,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "N_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    },
+    "pick_rate": 1.0,
+    "ci95": [
+     0.2065,
+     1.0
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 1.0,
+    "ci95_given_noticed": [
+     0.2065,
+     1.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Gutsy Pop raspberry prebiotic soda 330ml",
+    "role": "challenger",
+    "by_model": {
+     "google/gemini-2.5-flash": {
+      "shown": 1,
+      "picked": 1,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    }
+   },
+   "FX0002": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Cola Zero 330ml",
+    "role": "incumbent",
+    "by_model": {
+     "google/gemini-2.5-flash": {
+      "shown": 1,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    }
+   },
+   "FX0004": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Protein bar chocolate brownie 60g",
+    "role": "incumbent",
+    "by_model": {
+     "google/gemini-2.5-flash": {
+      "shown": 1,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    }
+   },
+   "FX0006": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Protein bar caramel 40g",
+    "role": "own_label",
+    "by_model": {
+     "google/gemini-2.5-flash": {
+      "shown": 1,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    }
+   },
+   "FX0005": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Nutty Crunch oat & nut bar 35g",
+    "role": "challenger",
+    "by_model": {
+     "google/gemini-2.5-flash": {
+      "shown": 1,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    }
+   },
+   "FX0003": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Light cola 330ml",
+    "role": "own_label",
+    "by_model": {
+     "google/gemini-2.5-flash": {
+      "shown": 1,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    }
+   }
+  },
+  "method": {
+   "pick_rate": "picked / shown (shown = agent passed the slot)",
+   "ci95": "Wilson score interval, z=1.96",
+   "by_ocean_segment": "trait >= 0.5 is high, else low (agent's jittered OCEAN)"
+  }
+ },
+ "position_bias": {
+  "google/gemini-2.5-flash": {
+   "runs": 1,
+   "picks": 1,
+   "pick_at_1": 1,
+   "positions": [
+    1
+   ],
+   "share_at_1": 1.0,
+   "ci95": [
+    0.2065,
+    1.0
+   ],
+   "expected_share_at_1": 0.167
+  }
+ },
+ "cost": {
+  "usd": 0.00073,
+  "llm_calls": 1,
+  "cached": 0,
+  "errors": 0
+ }
+}

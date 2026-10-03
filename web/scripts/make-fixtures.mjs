@@ -241,6 +241,7 @@ const ATTRS = { eco_low_chemical: ['additives_n', 'ecoscore'], upf_avoider_paren
 
 const unitById = Object.fromEntries(units.map((u) => [u.id, u]));
 const byCode = Object.fromEntries(catalog.map((p) => [p.code, p]));
+const aiScoreOf = (p) => r2(0.55 * p.lens_grades.ai_delegator.score + 0.25 * (p.role === 'incumbent' ? 1 : p.role === 'own_label' ? 0.5 : 0.05) + 0.2 * (1 - p.price_gbp / 5));
 const MODELS = ['google/gemini-2.5-flash', 'openai/gpt-4.1-mini', 'anthropic/claude-haiku-4.5', 'meta-llama/llama-3.3-70b-instruct'];
 const agents = [];
 const N_HUMAN = 32, N_AI = 8;
@@ -250,7 +251,7 @@ for (let i = 0; i < N_HUMAN + N_AI; i++) {
   const arche = isAI ? 'ai_agent' : persona.archetype;
   const ocean = isAI ? {} : Object.fromEntries(Object.entries(persona.ocean).map(([k, v]) => [k, r2(clamp01(v + rr(-0.08, 0.08)))]));
   // path: a handful of units visited in aisle order, 1-2 rows each (humans), feed slots (ai)
-  const nUnits = isAI ? 4 : ri(3, 6);
+  const nUnits = isAI ? 6 : ri(3, 6);
   const visit = shuffle(units).slice(0, nUnits).sort((a, b) => a.aisle - b.aisle || (a.side < b.side ? -1 : 1));
   const slotPath = [];
   for (const u of visit) {
@@ -261,6 +262,8 @@ for (let i = 0; i < N_HUMAN + N_AI; i++) {
   for (const slot of slotPath) {
     const pl = planogram[slot]; const rowName = storeConfig.row_names[slot.split('-r')[1]];
     let pickedHere = false;
+    // ai agents rank the whole set by structured fields and take the top one (choice concentrates, research/04 line 54)
+    const aiRank = isAI ? [...pl.products].sort((x, y) => aiScoreOf(byCode[y]) - aiScoreOf(byCode[x]))[0] : null;
     pl.products.forEach((code, idx) => {
       const p = byCode[code];
       const f = pl.facings[code] || 1;
@@ -270,21 +273,22 @@ for (let i = 0; i < N_HUMAN + N_AI; i++) {
       const z = NOTICE.a0.value + NOTICE.row[rowName].value + NOTICE.facings.value * Math.log(f) + NOTICE.centrality.value * centrality + trait;
       const pn = isAI ? 1 : r2(sig(z));
       const noticed = isAI ? true : rnd() < pn;
-      const score = p.lens_grades[isAI ? 'ai_delegator' : arche]?.score ?? 0.5;
-      const aiScore = isAI ? r2(0.55 * score + 0.25 * (p.role === 'incumbent' ? 1 : p.role === 'own_label' ? 0.5 : 0.05) + 0.2 * (1 - p.price_gbp / 5)) : score;
+      const score = isAI ? aiScoreOf(p) : (p.lens_grades[arche]?.score ?? 0.5);
       let decision = 'not_noticed';
-      if (noticed) {
-        const pp = sig(7 * (aiScore - 0.62));
+      if (noticed && isAI) {
+        decision = code === aiRank && rnd() < 0.7 ? 'pick' : score < 0.5 ? 'reject' : 'walk_past';
+      } else if (noticed) {
+        const pp = sig(7 * (score - 0.62));
         const u = rnd();
         if (!pickedHere && u < pp) { decision = 'pick'; pickedHere = true; }
-        else if (aiScore < 0.45 || u > 0.75) decision = 'reject';
+        else if (score < 0.45 || u > 0.75) decision = 'reject';
         else decision = 'walk_past';
       }
       const ev = {
         step: step++, slot, product: code, p_notice: pn,
         notice_factors: isAI ? { row: 'feed (shelf position not visible)', facings: f, trait_boost: 0, centrality: 0 } : { row: rowName, facings: f, trait_boost: trait, centrality },
         noticed, decision,
-        reason: decision === 'not_noticed' ? '' : decision === 'walk_past' ? REASONS.walk_past(p) : REASONS[decision][arche](p),
+        reason: decision === 'not_noticed' ? '' : decision === 'walk_past' ? (isAI ? `ranked below ${byCode[aiRank].brand} on nutriscore, price and review signal.` : REASONS.walk_past(p)) : REASONS[decision][arche](p),
         attributes_cited: decision === 'not_noticed' ? [] : ATTRS[arche],
         feeling: decision === 'pick' ? pick(['relieved', 'pleased', 'curious', 'fine']) : decision === 'reject' ? pick(['annoyed', 'suspicious', 'meh', 'wary']) : decision === 'walk_past' ? 'indifferent' : '',
         sentiment: decision === 'pick' ? r2(rr(0.3, 0.9)) : decision === 'reject' ? r2(rr(-0.9, -0.3)) : decision === 'walk_past' ? r2(rr(-0.2, 0.2)) : 0,

@@ -21,10 +21,23 @@ const copy = (src, dst) => {
   fs.copyFileSync(src, dst); copied.push(path.relative(ROOT, src)); return true;
 };
 
+// real pipeline first; if a file is missing fall back to the sim's own fixtures (sim/fixtures/) so the
+// catalog/planogram always match the product codes used in data/sim/runs.
+const SIMFX = path.join(ROOT, 'sim', 'fixtures');
 const storeDir = path.join(ROOT, 'data', 'store');
-if (fs.existsSync(storeDir)) for (const f of fs.readdirSync(storeDir)) if (f.endsWith('.json')) copy(path.join(storeDir, f), path.join(OUT, f));
-copy(path.join(ROOT, 'data', 'products', 'catalog.json'), path.join(OUT, 'catalog.json'));
-copy(path.join(ROOT, 'data', 'personas', 'personas.json'), path.join(OUT, 'personas.json'));
+for (const f of ['store.config.json', 'planogram.json']) {
+  copy(path.join(storeDir, f), path.join(OUT, f)) || copy(path.join(SIMFX, f), path.join(OUT, f));
+}
+if (fs.existsSync(storeDir)) for (const f of fs.readdirSync(storeDir)) if (f.endsWith('.json') && !['store.config.json', 'planogram.json'].includes(f)) copy(path.join(storeDir, f), path.join(OUT, f));
+copy(path.join(ROOT, 'data', 'products', 'catalog.json'), path.join(OUT, 'catalog.json')) || copy(path.join(SIMFX, 'catalog.json'), path.join(OUT, 'catalog.json'));
+if (!copy(path.join(ROOT, 'data', 'personas', 'personas.json'), path.join(OUT, 'personas.json'))) {
+  const dir = path.join(SIMFX, 'personas');
+  if (fs.existsSync(dir)) {
+    const list = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
+    fs.writeFileSync(path.join(OUT, 'personas.json'), JSON.stringify(list, null, 1));
+    copied.push(`sim/fixtures/personas/*.json (${list.length}) → personas.json`);
+  }
+}
 
 const runsDir = path.join(ROOT, 'data', 'sim', 'runs');
 const realRuns = [];
@@ -43,7 +56,8 @@ if (fs.existsSync(runsDir)) {
 const idxPath = path.join(OUT, 'runs', 'index.json');
 let existing = [];
 try { existing = JSON.parse(fs.readFileSync(idxPath, 'utf8')); } catch { existing = []; }
-const fixtures = existing.filter((r) => r.fixture && fs.existsSync(path.join(OUT, 'runs', r.file)) && !realRuns.some((x) => x.file === r.file));
+// fixture runs use the web fixture catalog; once real runs exist they would mismatch, so drop them from the index
+const fixtures = realRuns.length ? [] : existing.filter((r) => r.fixture && fs.existsSync(path.join(OUT, 'runs', r.file)));
 realRuns.sort((a, b) => String(b.created).localeCompare(String(a.created)));
 fs.writeFileSync(idxPath, JSON.stringify([...realRuns, ...fixtures], null, 1));
 

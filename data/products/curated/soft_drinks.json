@@ -1,0 +1,1782 @@
+{
+ "category": "soft_drinks",
+ "row_themes": {
+  "1": "gut & fermented sodas (prebiotic / kombucha)",
+  "2": "colas: full sugar vs zero vs organic vs own-label",
+  "3": "lemonade, flavoured water & light 'functional' sodas"
+ },
+ "rows": {
+  "1": [
+   "5060512671247",
+   "5060494810665",
+   "9350271002014",
+   "5060587580055"
+  ],
+  "2": [
+   "5000112545326",
+   "5000112630688",
+   "5013665116417",
+   "4056489010104"
+  ],
+  "3": [
+   "5059697704932",
+   "50271511",
+   "5060489730657",
+   "5024115330055"
+  ]
+ },
+ "rules": "data/products/curated/soft_drinks_rules.md",
+ "source_pool": "data/products/uk_products.parquet (Open Food Facts UK)",
+ "products": [
+  {
+   "code": "5060512671247",
+   "name": "Gut Lovin' Soda Cola",
+   "brand": "Hip Pop",
+   "category": "soft_drinks",
+   "role": "challenger",
+   "row": 1,
+   "price_gbp": 1.8,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); premium prebiotic-soda 330ml can tier (£1.60-£2.00)",
+   "price_per_litre_gbp": 5.45,
+   "pack_copy": "gut lovin' soda cola - prebiotic, no sweeteners, live cultures, low sugar, high fibre",
+   "pack_copy_source": "OFF front image text (front_en.3) + OFF labels en:source-of-fibre|en:high-fibres; name/brand read from OFF front image because OFF name/brand fields are empty",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 2,
+   "additives": [
+    "en:e150a",
+    "en:e296"
+   ],
+   "labels": [
+    "en:source-of-fibre",
+    "en:high-fibres"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "WATER, CHICORY ROOT FIBRE, CANE SUGAR, PLAIN CARAMEL (COLOUR), MALIC ACID, LEMON, ORANGE, LIME, NATURAL FLAVOURS (VANILLA, CINNAMON, COLA, ORANGE NUTMEG, CORIANDER), LIVING CULTURES (BACILLUS COAGULANS)",
+   "sugars_100g": 2.1,
+   "fiber_100g": 2.4,
+   "proteins_100g": 1.1,
+   "salt_100g": 0.1,
+   "energy_kcal_100g": 21.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "330 ml",
+   "stores": null,
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/506/051/267/1247/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060512671247",
+   "completeness": 0.3875,
+   "scans": 3.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.645,
+     "why": [
+      "additives_n=2 (OFF)",
+      "ecoscore=b (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.539,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=2.1 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.793,
+     "why": [
+      "sugars_100g=2.1 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=2.4 (OFF)",
+      "energy-kcal_100g=21.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.309,
+     "why": [
+      "price_per_litre=£5.45 (price_gbp/330ml; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.331,
+     "why": [
+      "proteins_100g=1.1 (OFF)",
+      "sugars_100g=2.1 (OFF)",
+      "energy-kcal_100g=21.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.36,
+     "why": [
+      "functional_claims=['prebiotic/probiotic', 'gut', 'live cultures'] (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=2 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.373,
+     "why": [
+      "role=challenger",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£5.45 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.637,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='unknown' (OFF) / role=challenger",
+      "sugars_100g=2.1 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.18,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.355,
+     "why": [
+      "completeness=0.39 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060494810665",
+   "name": "Raspberry Probiotic Soda",
+   "brand": "Dalston's",
+   "category": "soft_drinks",
+   "role": "challenger",
+   "row": 1,
+   "price_gbp": 1.5,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Dalston's 250ml can (H&B listing in OFF stores)",
+   "price_per_litre_gbp": 6.0,
+   "pack_copy": "raspberry soda with dalston's prebio blend (chicory root & corn fibre), magnesium + zinc, no additives",
+   "pack_copy_source": "OFF ingredients_text + additives_n=0",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "not-applicable",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [],
+   "allergens": [
+    "en:apple"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "SPARKLING WATER, FRUIT JUICES FROM CONCENTRATE (APPLE, RASPBERRY [14%]), DALSTON'S PREBIO BLEND (CHICORY ROOT FIBRE, CORN FIBRE, BAOBAB EXTRACT, LEMON BALM EXTRACT), NATURAL FLAVOURINGS, MINERALS (MAGNESIUM, ZINC)",
+   "sugars_100g": 2.4,
+   "fiber_100g": 1.2,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 10.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "250 ml",
+   "stores": "Holland & Barrett",
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/506/049/481/0665/front_en.7.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060494810665",
+   "completeness": 0.6875,
+   "scans": 1.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.576,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=2.4 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.752,
+     "why": [
+      "sugars_100g=2.4 (OFF)",
+      "pack=250ml (OFF quantity)",
+      "fiber_100g=1.2 (OFF)",
+      "energy-kcal_100g=10.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.243,
+     "why": [
+      "price_per_litre=£6.00 (price_gbp/250ml; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.308,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=2.4 (OFF)",
+      "energy-kcal_100g=10.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.6,
+     "why": [
+      "functional_claims=['prebiotic/probiotic', 'added vitamins/minerals'] (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.357,
+     "why": [
+      "role=challenger",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£6.00 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.628,
+     "why": [
+      "pack=250ml single-serve (OFF quantity)",
+      "stores='Holland & Barrett' (OFF) / role=challenger",
+      "sugars_100g=2.4 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.18,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=['en:apple'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.775,
+     "why": [
+      "completeness=0.69 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "9350271002014",
+   "name": "Remedy Kombucha Ginger Lemon",
+   "brand": "Remedy",
+   "category": "soft_drinks",
+   "role": "incumbent",
+   "row": 1,
+   "price_gbp": 1.6,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Remedy 330ml can, category leader kombucha",
+   "price_per_litre_gbp": 4.85,
+   "pack_copy": "raw kombucha with ginger & lemon - sugar free (sweetened with erythritol + stevia)",
+   "pack_copy_source": "OFF ingredients_text, sugars_100g=0; role incumbent = assumption: Remedy is the most-scanned kombucha brand in OFF pool (8 SKUs)",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 2,
+   "additives": [
+    "en:e960",
+    "en:e968"
+   ],
+   "labels": [],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Raw kombucha (carbonated water, black tea leaves, green tea leaves, kombucha culture), ginger juice (2%), flavour enhancer: erythritol, lemon juice, natural ginger flavouring, sweetener: steviol glycosides",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.5,
+   "salt_100g": 0.025,
+   "energy_kcal_100g": 11.0,
+   "sweeteners": 2,
+   "sweeteners_list": [
+    "e960",
+    "e968"
+   ],
+   "palm_oil_n": 0,
+   "quantity": "330ml",
+   "stores": "Tesco",
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/935/027/100/2014/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/9350271002014",
+   "completeness": 0.6875,
+   "scans": 7.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.645,
+     "why": [
+      "additives_n=2 (OFF)",
+      "ecoscore=b (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.36,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "sweeteners=['e960', 'e968'] (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=0.0 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.751,
+     "why": [
+      "sugars_100g=0.0 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=11.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.383,
+     "why": [
+      "price_per_litre=£4.85 (price_gbp/330ml; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.381,
+     "why": [
+      "proteins_100g=0.5 (OFF)",
+      "sugars_100g=0.0 (OFF)",
+      "energy-kcal_100g=11.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.36,
+     "why": [
+      "functional_claims=['live cultures', 'kombucha'] (OFF name/labels/ingredients_text)",
+      "sweeteners=['e960', 'e968'] (OFF)",
+      "additives_n=2 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.89,
+     "why": [
+      "role=incumbent",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£4.85 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 1.0,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='Tesco' (OFF) / role=incumbent",
+      "sugars_100g=0.0 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.3,
+     "why": [
+      "vegan_signal=0.5 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.675,
+     "why": [
+      "completeness=0.69 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=incumbent",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060587580055",
+   "name": "Ginger kombucha",
+   "brand": "One Living",
+   "category": "soft_drinks",
+   "role": "challenger",
+   "row": 1,
+   "price_gbp": 2.2,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); 275ml glass craft kombucha",
+   "price_per_litre_gbp": 8.0,
+   "pack_copy": "organic ginger kombucha with live cultures, turmeric & black pepper - vegan society approved",
+   "pack_copy_source": "OFF labels en:organic|en:vegan|en:the-vegan-society + ingredients_text",
+   "nova": 1,
+   "nutriscore": "c",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:organic",
+    "en:vegetarian",
+    "en:eu-organic",
+    "en:non-eu-agriculture",
+    "en:vegan",
+    "en:eu-agriculture",
+    "en:eu-non-eu-agriculture",
+    "en:ie-org-03",
+    "en:the-vegan-society"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "KOMBUCHA (FILTERED WATER, GOLDEN CANE SUGAR SENCHA GREEN TEA, LIVE KOMBUCHA CULTURES) GINGER JUICE&quot; (1.5%), GINGER&quot; (0.14%), TUMERIC&quot; (0.14%), BLACK PEPPER&quot;",
+   "sugars_100g": 4.1,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.3,
+   "energy_kcal_100g": 17.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "275ml",
+   "stores": null,
+   "recycling": [
+    "en:glass-bottle"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/506/058/758/0055/front_en.15.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060587580055",
+   "completeness": 0.7875,
+   "scans": 12.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 1.0,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF; not-applicable/unknown->0.5)",
+      "organic=True (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.959,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=4.1 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.581,
+     "why": [
+      "sugars_100g=4.1 (OFF)",
+      "pack=275ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=17.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.0,
+     "why": [
+      "price_per_litre=£8.00 (price_gbp/275ml; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.242,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=4.1 (OFF)",
+      "energy-kcal_100g=17.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.6,
+     "why": [
+      "functional_claims=['live cultures', 'kombucha'] (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.3,
+     "why": [
+      "role=challenger",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£8.00 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.577,
+     "why": [
+      "pack=275ml single-serve (OFF quantity)",
+      "stores='unknown' (OFF) / role=challenger",
+      "sugars_100g=4.1 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 1.0,
+     "why": [
+      "vegan_signal=1.0 (OFF labels/analysis)",
+      "organic=True (OFF labels)",
+      "ethical_labels=['en:the-vegan-society'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.515,
+     "why": [
+      "completeness=0.79 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5000112545326",
+   "name": "Coca-Cola Original Taste",
+   "brand": "Coca-Cola",
+   "category": "soft_drinks",
+   "role": "incumbent",
+   "row": 2,
+   "price_gbp": 1.15,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); single 330ml can",
+   "price_per_litre_gbp": 3.48,
+   "pack_copy": "coca-cola original taste 330ml can",
+   "pack_copy_source": "OFF name + quantity",
+   "nova": 4,
+   "nutriscore": "e",
+   "ecoscore": "not-applicable",
+   "additives_n": 3,
+   "additives": [
+    "en:e150d",
+    "en:e290",
+    "en:e338"
+   ],
+   "labels": [],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Vand, sukker, kuldioxid, farvestof (karamel E150d), surhedsregulerende middel (E338), , naturlige aromaer(inkl. koffein).",
+   "sugars_100g": 10.6,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 42.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "330 ml",
+   "stores": null,
+   "recycling": [
+    "en:metal",
+    "en:can",
+    "en:drink-can",
+    "en:aluminium-can"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/500/011/254/5326/front_en.67.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5000112545326",
+   "completeness": 0.9,
+   "scans": 38.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.53,
+     "why": [
+      "additives_n=3 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.44,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=10.6 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.263,
+     "why": [
+      "sugars_100g=10.6 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=42.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.548,
+     "why": [
+      "price_per_litre=£3.48 (price_gbp/330ml; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.013,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=10.6 (OFF)",
+      "energy-kcal_100g=42.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.94,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=3 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.929,
+     "why": [
+      "role=incumbent",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£3.48 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.7,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='unknown' (OFF) / role=incumbent",
+      "sugars_100g=10.6 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.48,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.36,
+     "why": [
+      "completeness=0.90 (OFF)",
+      "nutriscore=e (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5000112630688",
+   "name": "Coke Zero",
+   "brand": "Coca Cola",
+   "category": "soft_drinks",
+   "role": "incumbent",
+   "row": 2,
+   "price_gbp": 1.85,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); 1L bottle",
+   "price_per_litre_gbp": 1.85,
+   "pack_copy": "coke zero sugar 1L - zero sugar, contains a source of phenylalanine",
+   "pack_copy_source": "OFF name, sugars_100g=0, labels en:contains-a-source-of-phenylalanine",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "not-applicable",
+   "additives_n": 5,
+   "additives": [
+    "en:e150d",
+    "en:e331",
+    "en:e338",
+    "en:e950",
+    "en:e951"
+   ],
+   "labels": [
+    "en:contains-a-source-of-phenylalanine",
+    "en:green-dot"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Carbonated Water, Colour (Caramel E150d). Acid (Phosphoric Acid), Sweeteners (Aspartame, Acesulfame K), Natural Flavourings, Caffeine Flavouring. Acidity Regulator (Sodium Citrates). Contains a Source of Phenylalanine",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.02,
+   "energy_kcal_100g": 0.3,
+   "sweeteners": 2,
+   "sweeteners_list": [
+    "e950",
+    "e951"
+   ],
+   "palm_oil_n": 0,
+   "quantity": "1L",
+   "stores": null,
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/500/011/263/0688/front_en.18.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5000112630688",
+   "completeness": 0.7,
+   "scans": 1.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.45,
+     "why": [
+      "additives_n=5 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.3,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=5 (OFF)",
+      "sweeteners=['e950', 'e951'] (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=0.0 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.549,
+     "why": [
+      "sugars_100g=0.0 (OFF)",
+      "pack=1000ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=0.3 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.747,
+     "why": [
+      "price_per_litre=£1.85 (price_gbp/1000ml; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.399,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=0.0 (OFF)",
+      "energy-kcal_100g=0.3 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.7,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=['e950', 'e951'] (OFF)",
+      "additives_n=5 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.976,
+     "why": [
+      "role=incumbent",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£1.85 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.6,
+     "why": [
+      "pack=1000ml single-serve (OFF quantity)",
+      "stores='unknown' (OFF) / role=incumbent",
+      "sugars_100g=0.0 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.3,
+     "why": [
+      "vegan_signal=0.5 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.48,
+     "why": [
+      "completeness=0.70 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5013665116417",
+   "name": "Organic Cola",
+   "brand": "Whole Earth",
+   "category": "soft_drinks",
+   "role": "challenger",
+   "row": 2,
+   "price_gbp": 1.1,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Whole Earth organic soda 330ml can",
+   "price_per_litre_gbp": 3.33,
+   "pack_copy": "organic cola made with grape & lemon juice - no additives",
+   "pack_copy_source": "OFF labels en:organic|en:eu-organic, ingredients_text, additives_n=0",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "not-applicable",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:organic",
+    "en:eu-organic"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Fruit juice from concentrate* (grape juice (61%) lemon juice (5%), Carbonated Water, Natural Barley malt flavouring, Natural Lemon flavouring Natural Citrus and Spice flavouring, Natural Cola flavouring.",
+   "sugars_100g": 8.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 32.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "330 ml",
+   "stores": null,
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/501/366/511/6417/front_en.17.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5013665116417",
+   "completeness": 0.575,
+   "scans": 6.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.85,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=True (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.52,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=8.0 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.378,
+     "why": [
+      "sugars_100g=8.0 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=32.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.567,
+     "why": [
+      "price_per_litre=£3.33 (price_gbp/330ml; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.098,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=8.0 (OFF)",
+      "energy-kcal_100g=32.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.433,
+     "why": [
+      "role=challenger",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£3.33 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.46,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='unknown' (OFF) / role=challenger",
+      "sugars_100g=8.0 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.38,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=True (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten source in ingredients: ['barley', 'malt'] (OFF ingredients_text)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.43,
+     "why": [
+      "completeness=0.57 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.55,
+     "why": [
+      "role=challenger",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "4056489010104",
+   "name": "Cola",
+   "brand": "Freeway",
+   "category": "soft_drinks",
+   "role": "own_label",
+   "row": 2,
+   "price_gbp": 0.35,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Lidl Freeway 330ml can, discounter own-label tier",
+   "price_per_litre_gbp": 1.06,
+   "pack_copy": "freeway cola 330ml - suitable for vegans",
+   "pack_copy_source": "OFF labels en:vegan|en:vegetarian, stores=Lidl",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "not-applicable",
+   "additives_n": 4,
+   "additives": [
+    "en:e150d",
+    "en:e338",
+    "en:e950",
+    "en:e955"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:vegan"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Carbonated Water, Sugar, Colour: Sulphite Ammonia Caramel; Acid:  Phosphoric Acid; Flavouring: Caffeine; Sweeteners: Sucralose, Acesulfame-K; Natural Flavouring.",
+   "sugars_100g": 4.5,
+   "fiber_100g": 0.1,
+   "proteins_100g": 0.1,
+   "salt_100g": 0.01,
+   "energy_kcal_100g": 18.0,
+   "sweeteners": 2,
+   "sweeteners_list": [
+    "e950",
+    "e955"
+   ],
+   "palm_oil_n": 0,
+   "quantity": "33 cl",
+   "stores": "Lidl",
+   "recycling": [
+    "fr:canette-aluminium"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/405/648/901/0104/front_en.40.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/4056489010104",
+   "completeness": 0.8,
+   "scans": 14.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.49,
+     "why": [
+      "additives_n=4 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.275,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=4 (OFF)",
+      "sweeteners=['e950', 'e955'] (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=4.5 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.569,
+     "why": [
+      "sugars_100g=4.5 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.1 (OFF)",
+      "energy-kcal_100g=18.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.993,
+     "why": [
+      "price_per_litre=£1.06 (price_gbp/330ml; price is assumption)",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.236,
+     "why": [
+      "proteins_100g=0.1 (OFF)",
+      "sugars_100g=4.5 (OFF)",
+      "energy-kcal_100g=18.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.72,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=['e950', 'e955'] (OFF)",
+      "additives_n=4 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.198,
+     "why": [
+      "role=own_label",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=True (OFF sugars_100g + additives)",
+      "price_per_litre=£1.06 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.865,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='Lidl' (OFF) / role=own_label",
+      "sugars_100g=4.5 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1.0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.62,
+     "why": [
+      "completeness=0.80 (OFF)",
+      "nutriscore=d (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=own_label",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5059697704932",
+   "name": "Diet lemonade",
+   "brand": "Tesco",
+   "category": "soft_drinks",
+   "role": "own_label",
+   "row": 3,
+   "price_gbp": 0.35,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Tesco own-label 330ml can",
+   "price_per_litre_gbp": 1.06,
+   "pack_copy": "tesco diet lemonade - no added sugar, no artificial colours or flavours, suitable for vegans",
+   "pack_copy_source": "OFF labels en:no-added-sugar|en:no-artificial-colours-or-flavours|en:vegan",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "not-applicable",
+   "additives_n": 5,
+   "additives": [
+    "en:e202",
+    "en:e330",
+    "en:e331",
+    "en:e331iii",
+    "en:e950",
+    "en:e955"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:no-artificial-flavors",
+    "en:vegan",
+    "en:no-added-sugar",
+    "en:no-artificial-colors",
+    "en:no-artificial-colours-or-flavours",
+    "en:with-sweeteners"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Carbonated Water, Lemon Juice from Concentrate 2%, Citric Acid, Acidity Regulator (Trisodium Citrate), Flavourings, Sweeteners (Acesulfame K, Sucralose), Preservative (Potassium Sorbate).",
+   "sugars_100g": 0.1,
+   "fiber_100g": 0.1,
+   "proteins_100g": 0.1,
+   "salt_100g": 0.04,
+   "energy_kcal_100g": 1.0,
+   "sweeteners": 2,
+   "sweeteners_list": [
+    "e950",
+    "e955"
+   ],
+   "palm_oil_n": 0,
+   "quantity": "330ml",
+   "stores": "Tesco",
+   "recycling": [
+    "en:aluminium-tin"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/505/969/770/4932/front_en.19.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5059697704932",
+   "completeness": 0.9,
+   "scans": 5.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.45,
+     "why": [
+      "additives_n=5 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.299,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=5 (OFF)",
+      "sweeteners=['e950', 'e955'] (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=0.1 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.799,
+     "why": [
+      "sugars_100g=0.1 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.1 (OFF)",
+      "energy-kcal_100g=1.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.993,
+     "why": [
+      "price_per_litre=£1.06 (price_gbp/330ml; price is assumption)",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.4,
+     "why": [
+      "proteins_100g=0.1 (OFF)",
+      "sugars_100g=0.1 (OFF)",
+      "energy-kcal_100g=1.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.7,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=['e950', 'e955'] (OFF)",
+      "additives_n=5 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.498,
+     "why": [
+      "role=own_label",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£1.06 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.997,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='Tesco' (OFF) / role=own_label",
+      "sugars_100g=0.1 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1.0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.76,
+     "why": [
+      "completeness=0.90 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=own_label",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "50271511",
+   "name": "IRN-BRU Original and Best",
+   "brand": "IRN-BRU",
+   "category": "soft_drinks",
+   "role": "incumbent",
+   "row": 3,
+   "price_gbp": 1.5,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); 500ml PET on-the-go",
+   "price_per_litre_gbp": 3.0,
+   "pack_copy": "irn-bru original & best 500ml",
+   "pack_copy_source": "OFF name + quantity (warning: contains Sunset Yellow & Ponceau 4R, per ingredients_text)",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "not-applicable",
+   "additives_n": 5,
+   "additives": [
+    "en:e110",
+    "en:e124",
+    "en:e211",
+    "en:e330",
+    "en:e950"
+   ],
+   "labels": [
+    "en:contains-a-source-of-phenylalanine"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Carbonated Water, Sugar, Acid (Citric Acid), Flavourings including Caffeine, Ammonium Ferric Citrate & Quinine), Sweeteners tartane Acesulfame K), Preservative (E211), Colours (Sunset Yellow FOR Ponceau 4R). Sunset Yellow FCF & Ponceau 4R:",
+   "sugars_100g": 4.5,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.5,
+   "salt_100g": 2.5e-05,
+   "energy_kcal_100g": 19.0,
+   "sweeteners": 1,
+   "sweeteners_list": [
+    "e950"
+   ],
+   "palm_oil_n": 0,
+   "quantity": "500 mL",
+   "stores": null,
+   "recycling": [
+    "en:pet-bottle"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/000/005/027/1511/front_en.64.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/50271511",
+   "completeness": 0.8,
+   "scans": 10.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.45,
+     "why": [
+      "additives_n=5 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.155,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=5 (OFF)",
+      "sweeteners=['e950'] (OFF additives/ingredients_text)",
+      "azo_dyes=['e110', 'e124'] (OFF additives)",
+      "sugars_100g=4.5 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.433,
+     "why": [
+      "sugars_100g=4.5 (OFF)",
+      "pack=500ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=19.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.607,
+     "why": [
+      "price_per_litre=£3.00 (price_gbp/500ml; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.256,
+     "why": [
+      "proteins_100g=0.5 (OFF)",
+      "sugars_100g=4.5 (OFF)",
+      "energy-kcal_100g=19.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.7,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=['e950'] (OFF)",
+      "additives_n=5 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.643,
+     "why": [
+      "role=incumbent",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=True (OFF sugars_100g + additives)",
+      "price_per_litre=£3.00 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.865,
+     "why": [
+      "pack=500ml single-serve (OFF quantity)",
+      "stores='unknown' (OFF) / role=incumbent",
+      "sugars_100g=4.5 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.18,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.42,
+     "why": [
+      "completeness=0.80 (OFF)",
+      "nutriscore=d (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060489730657",
+   "name": "Dash Lime Sparkling Water",
+   "brand": "DASH",
+   "category": "soft_drinks",
+   "role": "challenger",
+   "row": 3,
+   "price_gbp": 1.0,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Dash 330ml can",
+   "price_per_litre_gbp": 3.03,
+   "pack_copy": "lime sparkling water - no sugar, no sweeteners, no calories, vegan, climatepartner certified",
+   "pack_copy_source": "OFF labels en:no-added-sugar|en:without-sweeteners|en:no-calories|en:vegan|en:climatepartner-certified",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "not-applicable",
+   "additives_n": 1,
+   "additives": [
+    "en:e330"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:no-artificial-sweeteners",
+    "en:vegan",
+    "en:keto",
+    "en:no-added-sugar",
+    "en:suitable-for-diabetics",
+    "en:without-sweeteners",
+    "en:climatepartner-certified",
+    "en:no-calories"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Carbonated Spring Water, Lime Extract, Natural Flavourings, Acid, Citric Acid.",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.001,
+   "energy_kcal_100g": 2.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "330ml",
+   "stores": "Tesco",
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/506/048/973/0657/front_en.19.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060489730657",
+   "completeness": 0.675,
+   "scans": 27.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.61,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.58,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=0.0 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.791,
+     "why": [
+      "sugars_100g=0.0 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=2.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.603,
+     "why": [
+      "price_per_litre=£3.03 (price_gbp/330ml; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.391,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=0.0 (OFF)",
+      "energy-kcal_100g=2.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.98,
+     "why": [
+      "functional_claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=1 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.442,
+     "why": [
+      "role=challenger",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£3.03 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 1.0,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='Tesco' (OFF) / role=challenger",
+      "sugars_100g=0.0 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan_signal=1.0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:climatepartner-certified'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.77,
+     "why": [
+      "completeness=0.68 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.55,
+     "why": [
+      "role=challenger",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5024115330055",
+   "name": "Purdey's Rejuvenate Natural Energy",
+   "brand": "purdey's",
+   "category": "soft_drinks",
+   "role": "challenger",
+   "row": 3,
+   "price_gbp": 1.9,
+   "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); Purdey's 330ml glass bottle",
+   "price_per_litre_gbp": 5.76,
+   "pack_copy": "rejuvenate natural energy - fruit juice, botanicals & b vitamins, vegetarian society approved vegan",
+   "pack_copy_source": "OFF name + ingredients_text + labels en:vegetarian-society-approved-vegan",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "not-applicable",
+   "additives_n": 1,
+   "additives": [
+    "en:e330"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:vegan",
+    "en:vegetarian-society-approved",
+    "en:vegetarian-society-approved-vegan"
+   ],
+   "allergens": [],
+   "ingredients_n": null,
+   "ingredients_text": "Fruit Juices from Concentrate (Grape 41%, Apple 16%), Carbonated Spring Water (41%), Natural Peach Flavouring,Natural Flavourings, Botanical Extracts (Damiana, Oak bark and Chinese Ginseng), Citric Acid, Vitamins (C,Niacin, Thiamin, B6, Riboflavin, Folic Acid, B12).",
+   "sugars_100g": 3.9,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 20.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "quantity": "330ml",
+   "stores": "Tesco",
+   "recycling": [
+    "en:bottle",
+    "en:aluminium-lid",
+    "en:glass-bottle"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/502/411/533/0055/front_en.55.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5024115330055",
+   "completeness": 0.7875,
+   "scans": 23.0,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.61,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=not-applicable (OFF; not-applicable/unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.541,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "azo_dyes=none (OFF additives)",
+      "sugars_100g=3.9 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.575,
+     "why": [
+      "sugars_100g=3.9 (OFF)",
+      "pack=330ml (OFF quantity)",
+      "fiber_100g=0.0 (OFF)",
+      "energy-kcal_100g=20.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.272,
+     "why": [
+      "price_per_litre=£5.76 (price_gbp/330ml; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.233,
+     "why": [
+      "proteins_100g=0.0 (OFF)",
+      "sugars_100g=3.9 (OFF)",
+      "energy-kcal_100g=20.0 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.58,
+     "why": [
+      "functional_claims=['energy/botanicals', 'added vitamins/minerals'] (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF)",
+      "additives_n=1 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.364,
+     "why": [
+      "role=challenger",
+      "sugar+sweetener blend (sugar-tax reformulation signal)=False (OFF sugars_100g + additives)",
+      "price_per_litre=£5.76 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.883,
+     "why": [
+      "pack=330ml single-serve (OFF quantity)",
+      "stores='Tesco' (OFF) / role=challenger",
+      "sugars_100g=3.9 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan_signal=1.0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:vegetarian-society-approved', 'en:vegetarian-society-approved-vegan'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.815,
+     "why": [
+      "completeness=0.79 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(kombucha/prebiotic/gut/natural energy)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  }
+ ]
+}

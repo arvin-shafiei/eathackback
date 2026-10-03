@@ -1,0 +1,2946 @@
+{
+ "run_id": "run_20261003_112839_s7_26b0",
+ "created": "2026-10-03T11:28:39",
+ "label": "openrouter smoke test",
+ "planogram": "sim/fixtures/planogram.json",
+ "models": [
+  "google/gemini-2.5-flash"
+ ],
+ "seed": 7,
+ "mock": false,
+ "inputs": {
+  "store": "sim/fixtures/store.config.json",
+  "catalog": [
+   "sim/fixtures/catalog.json"
+  ],
+  "personas": "data/personas/lens/*.json",
+  "coefficients": "sim/coefficients.json",
+  "max_tokens": 250
+ },
+ "agents": [
+  {
+   "agent_id": "a001",
+   "persona_id": "p_protein_sceptic_gimmick_reactant",
+   "archetype": "protein_sceptic_gimmick_reactant",
+   "model": "google/gemini-2.5-flash",
+   "ocean": {
+    "O": 0.523,
+    "C": 0.569,
+    "E": 0.525,
+    "A": 0.304,
+    "N": 0.449
+   },
+   "mission": "weekly_shop",
+   "reads_labels": false,
+   "budget_gbp": 65.0,
+   "budget_left": 60.35,
+   "path": [
+    "U2-r1",
+    "U2-r2",
+    "U2-r3",
+    "U4-r2",
+    "U4-r3",
+    "U5-r1",
+    "U5-r2",
+    "U6-r2",
+    "U7-r3",
+    "U8-r2"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "U2-r1",
+     "product": "FX0009",
+     "p_notice": 0.631,
+     "notice_factors": {
+      "row": "top",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.349,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": 0.0
+      },
+      "trait_boost": 0.0,
+      "trait_terms": []
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Not on the list for today. Don't need crisps.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 1,
+     "slot": "U2-r2",
+     "product": "FX0007",
+     "p_notice": 0.8023,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.009
+      },
+      "trait_boost": -0.009,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.009,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Not on the list for today. Don't need crisps.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 2,
+     "slot": "U2-r3",
+     "product": "FX0008",
+     "p_notice": 0.5048,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.243
+      },
+      "trait_boost": -0.243,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.018,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": -0.225,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "U4-r2",
+     "product": "FX0010",
+     "p_notice": 0.8023,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.009
+      },
+      "trait_boost": -0.009,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.009,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "pick",
+     "reason": "Standard wheat biscuits, no fuss, good for breakfast. Always get these.",
+     "attributes_cited": [
+      "name",
+      "brand",
+      "price_gbp",
+      "pack_copy"
+     ],
+     "feeling": "routine",
+     "sentiment": 0.5,
+     "mechanism": "habit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 4,
+     "slot": "U4-r3",
+     "product": "FX0011",
+     "p_notice": 0.5048,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.243
+      },
+      "trait_boost": -0.243,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.018,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": -0.225,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "U5-r1",
+     "product": "FX0012",
+     "p_notice": 0.631,
+     "notice_factors": {
+      "row": "top",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.349,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": 0.0
+      },
+      "trait_boost": 0.0,
+      "trait_terms": []
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "U5-r2",
+     "product": "FX0013",
+     "p_notice": 0.8023,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.009
+      },
+      "trait_boost": -0.009,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.009,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Not on my list, and not for me. I'm after my Greek yoghurt.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 7,
+     "slot": "U6-r2",
+     "product": "FX0014",
+     "p_notice": 0.8023,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.009
+      },
+      "trait_boost": -0.009,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.009,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Got wholewheat biscuits already. Don't need these.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 8,
+     "slot": "U7-r3",
+     "product": "FX0015",
+     "p_notice": 0.5048,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.243
+      },
+      "trait_boost": -0.243,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.018,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": -0.225,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 9,
+     "slot": "U8-r2",
+     "product": "FX0016",
+     "p_notice": 0.8023,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 7.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.039,
+       "ocean": -0.009
+      },
+      "trait_boost": -0.009,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.009,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "pick",
+     "reason": "Just a plain tin of tomato soup, does the job. No fuss.",
+     "attributes_cited": [
+      "pack_copy",
+      "brand"
+     ],
+     "feeling": "straightforward",
+     "sentiment": 0.5,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    }
+   ],
+   "calls": {
+    "llm": 6,
+    "cached": 0,
+    "cost": 0.0048365000000000005,
+    "errors": []
+   }
+  },
+  {
+   "agent_id": "a002",
+   "persona_id": "p_eco_low_chemical",
+   "archetype": "eco_low_chemical",
+   "model": "google/gemini-2.5-flash",
+   "ocean": {
+    "O": 0.668,
+    "C": 0.639,
+    "E": 0.486,
+    "A": 0.593,
+    "N": 0.486
+   },
+   "mission": "weekly_shop",
+   "reads_labels": false,
+   "budget_gbp": 75.0,
+   "budget_left": 70.35,
+   "path": [
+    "U2-r1",
+    "U2-r2",
+    "U2-r3",
+    "U3-r1",
+    "U3-r2",
+    "U3-r3",
+    "U4-r2",
+    "U4-r3",
+    "U5-r1",
+    "U5-r2",
+    "U6-r2",
+    "U7-r3",
+    "U8-r2"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "U2-r1",
+     "product": "FX0009",
+     "p_notice": 0.6388,
+     "notice_factors": {
+      "row": "top",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.349,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": 0.0
+      },
+      "trait_boost": 0.0,
+      "trait_terms": []
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Just a standard multipack, nothing special. I'm not really looking for crisps today.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 1,
+     "slot": "U2-r2",
+     "product": "FX0007",
+     "p_notice": 0.806,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.019
+      },
+      "trait_boost": -0.019,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.019,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Just standard crisps, nothing special. I'm not looking for anything specific here.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "indifference",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 2,
+     "slot": "U2-r3",
+     "product": "FX0008",
+     "p_notice": 0.5645,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.035
+      },
+      "trait_boost": -0.035,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.037,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": 0.002,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Not really feeling lentil puffs today, and I'm not looking for 'less fat' crisps.",
+     "attributes_cited": [
+      "name",
+      "pack_copy"
+     ],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 3,
+     "slot": "U3-r1",
+     "product": "FX0006",
+     "p_notice": 0.4511,
+     "notice_factors": {
+      "row": "top",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": false,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.349,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": -0.8,
+       "time": 0.072,
+       "ocean": 0.034
+      },
+      "trait_boost": 0.034,
+      "trait_terms": [
+       {
+        "trait": "C",
+        "id": "C1_impulse_notice",
+        "term": 0.034,
+        "effect": "Conscientiousness lowers impulse noticing of off-mission products",
+        "file": "data/personas/ocean/C.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "High protein bars usually mean sweeteners in disguise. Not what I'm looking for today.",
+     "attributes_cited": [
+      "pack_copy"
+     ],
+     "feeling": "skeptical",
+     "sentiment": -0.4,
+     "mechanism": "gimmick_reactance",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 4,
+     "slot": "U3-r2",
+     "product": "FX0004",
+     "p_notice": 0.6588,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": false,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": -0.8,
+       "time": 0.072,
+       "ocean": 0.015
+      },
+      "trait_boost": 0.015,
+      "trait_terms": [
+       {
+        "trait": "C",
+        "id": "C1_impulse_notice",
+        "term": 0.034,
+        "effect": "Conscientiousness lowers impulse noticing of off-mission products",
+        "file": "data/personas/ocean/C.json"
+       },
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.019,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Not on my list and 'high protein' usually means sweeteners, so not interested.",
+     "attributes_cited": [
+      "pack_copy"
+     ],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "gimmick_reactance",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 5,
+     "slot": "U3-r3",
+     "product": "FX0005",
+     "p_notice": 0.3759,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": false,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": -0.8,
+       "time": 0.072,
+       "ocean": -0.002
+      },
+      "trait_boost": -0.002,
+      "trait_terms": [
+       {
+        "trait": "C",
+        "id": "C1_impulse_notice",
+        "term": 0.034,
+        "effect": "Conscientiousness lowers impulse noticing of off-mission products",
+        "file": "data/personas/ocean/C.json"
+       },
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.037,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": 0.002,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "U4-r2",
+     "product": "FX0010",
+     "p_notice": 0.806,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.019
+      },
+      "trait_boost": -0.019,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.019,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "pick",
+     "reason": "It's the usual, so easy choice. Standard breakfast cereal, does the job.",
+     "attributes_cited": [
+      "brand",
+      "name"
+     ],
+     "feeling": "routine",
+     "sentiment": 0.5,
+     "mechanism": "habit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 7,
+     "slot": "U4-r3",
+     "product": "FX0011",
+     "p_notice": 0.5645,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.035
+      },
+      "trait_boost": -0.035,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.037,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": 0.002,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 8,
+     "slot": "U5-r1",
+     "product": "FX0012",
+     "p_notice": 0.6388,
+     "notice_factors": {
+      "row": "top",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.349,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": 0.0
+      },
+      "trait_boost": 0.0,
+      "trait_terms": []
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 9,
+     "slot": "U5-r2",
+     "product": "FX0013",
+     "p_notice": 0.806,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.019
+      },
+      "trait_boost": -0.019,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.019,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "walk_past",
+     "reason": "Not buying kids' yoghurt, it's just me and my partner. Plus, probably full of sugar.",
+     "attributes_cited": [],
+     "feeling": "indifferent",
+     "sentiment": 0.0,
+     "mechanism": "mission_fit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 10,
+     "slot": "U6-r2",
+     "product": "FX0014",
+     "p_notice": 0.806,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.019
+      },
+      "trait_boost": -0.019,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.019,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "reject",
+     "reason": "No way, they've shrunk the pack again! And they put it on the front. That's just taking the mickey.",
+     "attributes_cited": [
+      "pack_copy",
+      "name"
+     ],
+     "feeling": "annoyed",
+     "sentiment": -0.8,
+     "mechanism": "gimmick_reactance",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    },
+    {
+     "step": 11,
+     "slot": "U7-r3",
+     "product": "FX0015",
+     "p_notice": 0.5645,
+     "notice_factors": {
+      "row": "bottom",
+      "facings": 1,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": -0.624,
+       "facings": 0.0,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.035
+      },
+      "trait_boost": -0.035,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.037,
+        "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+        "file": "data/personas/ocean/E.json"
+       },
+       {
+        "trait": "O",
+        "id": "",
+        "term": 0.002,
+        "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challen",
+        "file": "data/personas/ocean/O.json"
+       }
+      ]
+     },
+     "noticed": false,
+     "decision": "not_noticed",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "sim/coefficients.json"
+     ]
+    },
+    {
+     "step": 12,
+     "slot": "U8-r2",
+     "product": "FX0016",
+     "p_notice": 0.806,
+     "notice_factors": {
+      "row": "eye",
+      "facings": 4,
+      "centrality": 1.0,
+      "on_mission": true,
+      "seconds_at_shelf": 8.0,
+      "logit_terms": {
+       "alpha0": 0.847,
+       "row": 0.0,
+       "facings": 0.524,
+       "centre": 0.0,
+       "mission": 0.0,
+       "time": 0.072,
+       "ocean": -0.019
+      },
+      "trait_boost": -0.019,
+      "trait_terms": [
+       {
+        "trait": "E",
+        "id": "",
+        "term": -0.019,
+        "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extrav",
+        "file": "data/personas/ocean/E.json"
+       }
+      ]
+     },
+     "noticed": true,
+     "decision": "pick",
+     "reason": "Just a standard tomato soup, no fuss. Always have it in the cupboard for a quick lunch.",
+     "attributes_cited": [
+      "name",
+      "brand",
+      "price_gbp"
+     ],
+     "feeling": "routine",
+     "sentiment": 0.2,
+     "mechanism": "habit",
+     "source_refs": [
+      "sim/coefficients.json",
+      "LLM google/gemini-2.5-flash (persona prompt sim/prompts.py)"
+     ],
+     "label_read": false
+    }
+   ],
+   "calls": {
+    "llm": 9,
+    "cached": 0,
+    "cost": 0.007747200000000001,
+    "errors": []
+   }
+  }
+ ],
+ "stats": {
+  "per_product": {
+   "FX0009": {
+    "shown": 2,
+    "noticed": 2,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 2,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.6576
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.0,
+    "name": "Ready salted crisps 6x25g",
+    "role": "own_label"
+   },
+   "FX0007": {
+    "shown": 2,
+    "noticed": 2,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 2,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.6576
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.0,
+    "name": "Sea salt crisps 150g",
+    "role": "incumbent"
+   },
+   "FX0008": {
+    "shown": 2,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 0.5,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.0,
+    "name": "Lentil puffs sour cream 90g",
+    "role": "challenger"
+   },
+   "FX0010": {
+    "shown": 2,
+    "noticed": 2,
+    "considered": 2,
+    "picked": 2,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    },
+    "pick_rate": 1.0,
+    "ci95": [
+     0.3424,
+     1.0
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 1.0,
+    "ci95_given_noticed": [
+     0.3424,
+     1.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.5,
+    "name": "Wholegrain wheat biscuits 24pk",
+    "role": "incumbent"
+   },
+   "FX0011": {
+    "shown": 2,
+    "noticed": 0,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 0.0,
+    "pick_rate_given_noticed": 0,
+    "ci95_given_noticed": [
+     0.0,
+     0.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Protein granola 400g",
+    "role": "challenger"
+   },
+   "FX0012": {
+    "shown": 2,
+    "noticed": 0,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 0.0,
+    "pick_rate_given_noticed": 0,
+    "ci95_given_noticed": [
+     0.0,
+     0.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Natural greek style yoghurt 500g",
+    "role": "own_label"
+   },
+   "FX0013": {
+    "shown": 2,
+    "noticed": 2,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 2,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.6576
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.0,
+    "name": "Kids yoghurt tubes strawberry 8x37g",
+    "role": "incumbent"
+   },
+   "FX0014": {
+    "shown": 2,
+    "noticed": 2,
+    "considered": 1,
+    "picked": 0,
+    "rejected": 1,
+    "walk_past": 1,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 1,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 1,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 1,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 0,
+      "rejected": 1,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 1,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 1,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.6576
+    ],
+    "top_reject_reasons": [
+     {
+      "mechanism": "gimmick_reactance",
+      "count": 1,
+      "examples": [
+       {
+        "reason": "No way, they've shrunk the pack again! And they put it on the front. That's just taking the mickey.",
+        "mechanism": "gimmick_reactance",
+        "persona_id": "p_eco_low_chemical",
+        "agent_id": "a002"
+       }
+      ]
+     }
+    ],
+    "mean_sentiment": -0.4,
+    "name": "Chocolate digestives 300g",
+    "role": "incumbent"
+   },
+   "FX0015": {
+    "shown": 2,
+    "noticed": 0,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.6576
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ],
+    "notice_rate": 0.0,
+    "pick_rate_given_noticed": 0,
+    "ci95_given_noticed": [
+     0.0,
+     0.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Oat drink barista 1L",
+    "role": "challenger"
+   },
+   "FX0016": {
+    "shown": 2,
+    "noticed": 2,
+    "considered": 2,
+    "picked": 2,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "protein_sceptic_gimmick_reactant": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "C_high": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "E_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "A_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "N_low": {
+      "shown": 2,
+      "noticed": 2,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.3424,
+       1.0
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 1.0,
+      "ci95": [
+       0.2065,
+       1.0
+      ]
+     }
+    },
+    "pick_rate": 1.0,
+    "ci95": [
+     0.3424,
+     1.0
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 1.0,
+    "ci95_given_noticed": [
+     0.3424,
+     1.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.35,
+    "name": "Tomato soup 400g",
+    "role": "incumbent"
+   },
+   "FX0006": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": -0.4,
+    "name": "Protein bar caramel 40g",
+    "role": "own_label"
+   },
+   "FX0004": {
+    "shown": 1,
+    "noticed": 1,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 1,
+    "by_archetype": {
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 1,
+      "noticed": 1,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.7935
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": 0.0,
+    "name": "Protein bar chocolate brownie 60g",
+    "role": "incumbent"
+   },
+   "FX0005": {
+    "shown": 1,
+    "noticed": 0,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 0,
+    "by_archetype": {
+     "eco_low_chemical": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "C_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "E_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "A_high": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     },
+     "N_low": {
+      "shown": 1,
+      "noticed": 0,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.7935
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ],
+    "notice_rate": 0.0,
+    "pick_rate_given_noticed": 0,
+    "ci95_given_noticed": [
+     0.0,
+     0.0
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Nutty Crunch oat & nut bar 35g",
+    "role": "challenger"
+   }
+  },
+  "method": {
+   "pick_rate": "picked / shown (shown = agent passed the slot)",
+   "ci95": "Wilson score interval, z=1.96",
+   "by_ocean_segment": "trait >= 0.5 is high, else low (agent's jittered OCEAN)"
+  }
+ },
+ "notice_model": {
+  "formula": "p_notice = sigmoid(alpha0 + alpha_row[row] + alpha_f*ln(min(facings,cap)) + alpha_c*(centrality-1) + mission + time + sum(OCEAN terms))",
+  "derived": {
+   "alpha0": {
+    "value": 0.2006706954621514,
+    "source": "logit(p_ref_eye_centre_1facing)"
+   },
+   "alpha_row": {
+    "eye": {
+     "value": 0.0,
+     "source": "reference row"
+    },
+    "top": {
+     "value": -0.3491442854052152,
+     "source": "derived from eye_vs_bottom_sales_ratio and top_vs_bottom_notice_ratio"
+    },
+    "bottom": {
+     "value": -0.6241543090729941,
+     "source": "derived from eye_vs_bottom_sales_ratio"
+    }
+   },
+   "alpha_f": {
+    "value": 0.3777777777777778,
+    "source": "derived from facings_elasticity at p_ref"
+   },
+   "alpha_c": {
+    "value": 0.28768207245178073,
+    "source": "derived from centre_vs_edge_ratio"
+   }
+  },
+  "inputs": {
+   "p_ref_eye_centre_1facing": {
+    "value": 0.55,
+    "source": "assumption: baseline chance a shopper notices one product at eye level, centre, 1 facing, on a unit relevant to their mission. Sits between the skeptic-calibrated persona eye-level priors (0.55-0.80, data/personas/staged_personas_v1.json verdict.sim_parameters.p_notice_eye_level). When a persona carries its own p_notice_eye_level it replaces this value (see persona_eye_override)."
+   },
+   "eye_vs_bottom_sales_ratio": {
+    "value": 1.39,
+    "source": "Eye level vs worst shelf height = +39% sales. research/04-3d-sim-evidence-and-tech.md section 1, citing the field study in https://en.wikipedia.org/wiki/Planogram",
+    "derivation": "Assumes the full sales gap runs through noticing (Chandon et al. 2009, J. Marketing 73(6), https://journals.sagepub.com/doi/10.1509/jmkg.73.6.1: the shelf effects act through attention). p_bottom = p_ref / 1.39, so alpha_row.bottom = logit(p_bottom) - logit(p_ref)."
+   },
+   "top_vs_bottom_notice_ratio": {
+    "value": 1.17,
+    "source": "Top shelf is 17% more likely to be noticed than bottom (20% more likely chosen). research/04-3d-sim-evidence-and-tech.md section 1; matches Chandon et al. 2009 https://journals.sagepub.com/doi/10.1509/jmkg.73.6.1",
+    "derivation": "p_top = p_bottom * 1.17, so alpha_row.top = logit(p_top) - logit(p_ref)."
+   },
+   "facings_elasticity": {
+    "value": 0.17,
+    "source": "Mean shelf-space elasticity 0.17 across 1,268 estimates (Eisend 2014, J. Retailing meta-analysis), summarised at https://en.wikipedia.org/wiki/Planogram; research/04-3d-sim-evidence-and-tech.md section 1",
+    "derivation": "In p = sigmoid(... + alpha_f * ln(facings)), dln(p)/dln(facings) = alpha_f * (1 - p). Setting this to 0.17 at p_ref gives alpha_f = 0.17 / (1 - p_ref). Diminishing returns come from the log and the sigmoid ceiling, as in Drèze, Hoch & Purk 1994 (J. Retailing)."
+   },
+   "facings_cap": {
+    "value": 6,
+    "source": "assumption: Drèze, Hoch & Purk 1994 found facings changes of about ±50% had little effect above a minimum threshold (research/04 section 1), so ln(facings) is capped at 6 facings to stop the optimiser buying lift with absurd space."
+   },
+   "centre_vs_edge_ratio": {
+    "value": 1.15,
+    "source": "Best vs worst horizontal position gives about +15% (research/04-3d-sim-evidence-and-tech.md section 3 calibration target). Direction from Atalay, Bodur & Rasolofoarison 2012, JCR 39(4), https://academic.oup.com/jcr/article/39/4/848/1798003 (central gaze cascade)",
+    "derivation": "alpha_c = logit(p_ref) - logit(p_ref / 1.15). centrality runs 0 (edge of the slot set) to 1 (centre). The term is alpha_c * (centrality - 1), so the centre is the reference."
+   },
+   "mission_relevance_logit": {
+    "value": 0.0,
+    "off_mission_value": -0.8,
+    "source": "assumption: a unit outside the shopper's mission is browsed, not searched. Goal-directed (top-down) attention raises noticing (Chandon et al. 2009 separate top-down from bottom-up effects), but no paper here gives the size. -0.8 logit roughly halves the odds while browsing. Flagged as unsourced magnitude."
+   },
+   "seconds_at_shelf_logit_per_ln": {
+    "value": 0.25,
+    "ref_seconds": 6,
+    "source": "assumption: more seconds at the shelf means more fixations, so more products get noticed. Per-persona seconds_at_shelf come from the skeptic-calibrated params (data/personas/staged_personas_v1.json verdict.sim_parameters.seconds_at_shelf). The 0.25 per ln(seconds/6) slope is unsourced."
+   },
+   "persona_eye_override": {
+    "value": true,
+    "source": "When a persona carries sim_parameters.p_notice_eye_level (skeptic-calibrated, data/personas/staged_personas_v1.json), alpha0 = logit(that value). The literature row, facings and centre offsets are then applied on top, so the persona sets the level and the literature sets the shape."
+   },
+   "ocean_jitter_sd": {
+    "value": 0.08,
+    "source": "assumption: each spawned agent gets its persona's OCEAN plus N(0, 0.08) noise, clipped to 0-1, so agents of one archetype are not clones. The size is a choice, not a measurement."
+   },
+   "browse_prob": {
+    "value": 0.25,
+    "source": "assumption: chance a shopper walks an off-mission unit. Unplanned buying is common, but no aisle-level visit rate is sourced here (research/04 section 3: 'give each item walked past a small impulse probability')."
+   }
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "coef": -0.25,
+    "applies": "off_mission",
+    "z_mean": 0.6625,
+    "z_sd": 0.175,
+    "z_convention": "(C01 - 0.6625) / 0.175",
+    "id": "C1_impulse_notice",
+    "effect": "Conscientiousness lowers impulse noticing of off-mission products",
+    "sim_mapping": "sim/notice.py: coef * C_z added to the p_notice logit only when the product is off-mission (on_mission=False). r=-.18 -> d=-.366 -> logOR -.66 per SD; x0.4 shrink (assumption: survey impulse-buying tendency, not observed noticing) -> -0.27, rounded to -0.25.",
+    "source": "Personality puzzle: a comprehensive analysis of its impact on three buying behaviors. Frontiers in Psychiatry 2023;14:1179257. doi:10.3389/fpsyt.2023.1179257, PMC10475610 (r=-.18; beta=-.15, CI -.28 to -.07). Verplanken B, Herabadi A (2001). Individual differences in impulse buying tendency: feeling and no thinking. European Journal of Personality 15:S71-S83. doi:10.1002/per.423. Sci Rep 2025 doi:",
+    "confidence": "medium",
+    "file": "data/personas/ocean/C.json"
+   },
+   {
+    "trait": "C",
+    "coef": 0.25,
+    "applies": "label",
+    "z_mean": 0.6625,
+    "z_sd": 0.175,
+    "z_convention": "(C01 - 0.6625) / 0.175",
+    "id": "C7_read_nutrition_label",
+    "effect": "label/read stage: Conscientiousness raises chance of reading the nutrition label (inferred via health interest)",
+    "sim_mapping": "label/read stage: p_read_label = sigma(logit(0.27) + coef*C_z) = sigma(-0.99 + 0.25*C_z). That gives 22% at -1 SD, 27% at the mean and 32% at +1 SD. The baseline is sourced. The 0.25 is an assumption (about logOR .365 from r=.10, shrunk by 0.7 because the path is inferred), ROUNDED UP to keep the RE",
+    "source": "Baseline: Grunert KG, Wills JM, Fernandez-Celemin L (2010). Nutrition knowledge, and use and understanding of nutrition information on food labels among consumers in the UK. Appetite 55(2):177-189. doi:10.1016/j.appet.2010.05.045. Trait link: Mottus et al. 2012 doi:10.1037/a0027041. Magnitude: assumption: no published C-to-label-use r found; inferred path, shrink stated.",
+    "confidence": "low",
+    "file": "data/personas/ocean/C.json"
+   },
+   {
+    "trait": "E",
+    "coef": 0.1,
+    "applies": "hfss",
+    "z_mean": 0.56,
+    "z_sd": 0.2,
+    "z_convention": "(E01 - 0.56) / 0.20",
+    "id": "",
+    "effect": "External eating (eating in response to food cues: sight/smell/display) -> more sweet & savoury snacks, soft drinks and m",
+    "sim_mapping": "(a) notice alpha_trait for products with strong visual food cues (promo end, eye-level HFSS, OFF nutriscore_grade d/e in categories snacks/confectionery/soft drinks): + coef * z_E. Derivation: beta .05 ~ r .05 -> d .10 -> logit .18; NO attenuation applied because external eating is itself a cue-resp",
+    "source": "Keller, C., & Siegrist, M. (2015). Does personality influence eating styles and food choices? Direct and indirect effects. Appetite, 84, 128-138. https://doi.org/10.1016/j.appet.2014.10.003 (PMID 25308432; abstract: 'Extraversion promoted sweet and savory, meat and soft drink consumption via promoting external eating')",
+    "confidence": "medium",
+    "file": "data/personas/ocean/E.json"
+   },
+   {
+    "trait": "E",
+    "coef": 0.1,
+    "applies": "challenger",
+    "z_mean": 0.56,
+    "z_sd": 0.2,
+    "z_convention": "(E01 - 0.56) / 0.20",
+    "id": "",
+    "effect": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+    "sim_mapping": "notice alpha_trait for products flagged trending/novelty (e.g. lens archetype novelty_seeker_tiktok, or OFF 'new' / limited edition in product_name): + coef * z_E. Derivation: r=.10 -> d=.20 -> logit .36 -> x0.3 = 0.11, rounded 0.10. Reddit grounding of the mechanism: 'my system lately has been scro",
+    "source": "Liu, D., & Campbell, W. K. (2017). The Big Five personality traits, Big Two metatraits and social media: A meta-analysis. Journal of Research in Personality, 70, 229-240. https://doi.org/10.1016/j.jrp.2017.08.004 (preprint https://doi.org/10.31234/osf.io/9bbns)",
+    "confidence": "low",
+    "file": "data/personas/ocean/E.json"
+   },
+   {
+    "trait": "E",
+    "coef": 0.05,
+    "applies": "incumbent",
+    "z_mean": 0.56,
+    "z_sd": 0.2,
+    "z_convention": "(E01 - 0.56) / 0.20",
+    "id": "",
+    "effect": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extraverted people",
+    "sim_mapping": "notice alpha_trait for brands already in the agent's habits/favourites list: + coef * z_E. Kept very small because of tiny-N fMRI evidence (assumption: 0.05 logit, roughly a quarter of the impulse effect).",
+    "source": "Schaefer, M., Knuth, M., & Rumpel, F. (2011). Striatal response to favorite brands as a function of neuroticism and extraversion. Brain Research, 1425, 83-89. https://doi.org/10.1016/j.brainres.2011.09.055 (PMID 22035566)",
+    "confidence": "low",
+    "file": "data/personas/ocean/E.json"
+   },
+   {
+    "trait": "E",
+    "coef": -0.05,
+    "applies": "label",
+    "z_mean": 0.56,
+    "z_sd": 0.2,
+    "z_convention": "(E01 - 0.56) / 0.20",
+    "id": "",
+    "effect": "Label reading / deliberation (dwell on nutrition panel, number of attributes cited)",
+    "sim_mapping": "notice/attention to nutrition fields (OFF nutriments, nutriscore_grade) for high-E agents: coef * z_E with coef -0.05 (assumption: deliberately tiny; Conscientiousness, not E, should carry label attention per CONTRACT example).",
+    "source": "assumption: no direct study found; directional support from Verplanken & Herabadi (2001) https://doi.org/10.1002/per.423",
+    "confidence": "low",
+    "file": "data/personas/ocean/E.json"
+   },
+   {
+    "trait": "N",
+    "coef": 0.1,
+    "applies": "label",
+    "z_mean": 0.5,
+    "z_sd": 0.5,
+    "z_convention": "n_c = 2*(N - 0.5)",
+    "id": "",
+    "effect": "Health anxiety -> more attention to 'warning' attributes (additives, allergens, 'ultra-processed', E-numbers, sugar/salt",
+    "sim_mapping": "notice: alpha_trait for 'warning' attributes (additives_n, allergens, nova_group=4, high-sugar/salt traffic lights) += 0.10*n_c, meaning more likely to notice and cite them. Lens: weight on additives_n/nova_group *= (1 + 0.10*n_c). Kept small because the N -> label-reading link is inferred, not dire",
+    "source": "Ferguson E (2000) Hypochondriacal concerns and the five factor model of personality. Journal of Personality 68(4):705-724, https://doi.org/10.1111/1467-6494.00113 (PMID 10934687)",
+    "confidence": "low-medium",
+    "file": "data/personas/ocean/N.json"
+   },
+   {
+    "trait": "O",
+    "coef": 0.25,
+    "applies": "challenger",
+    "z_mean": 0.667,
+    "z_sd": 0.16,
+    "z_convention": "(O01 - 0.667) / 0.160",
+    "id": "",
+    "effect": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challenger-brand products o",
+    "sim_mapping": "sim/notice.py: alpha_trait_novel * O_z added to the p_notice logit only when the product is 'unfamiliar' to the agent (brand not in persona habits[], or OFF created_t within the last 18 months, or a challenger brand flagged in the store layout). r=-.23 -> d=.47 -> logOR .86/SD; x0.3 shrink because n",
+    "source": "Knaapila A, Silventoinen K, Broms U, Rose RJ, Perola M, Kaprio J, Tuorila HM (2011). Food neophobia in young adults: genetic architecture and relation to personality... a twin study. Behavior Genetics 41(4). doi:10.1007/s10519-010-9403-8",
+    "confidence": "medium",
+    "file": "data/personas/ocean/O.json"
+   }
+  ]
+ },
+ "mission_categories": {
+  "_source": "assumption: which store units each mission sends a shopper to; built from the mission descriptions in data/personas/staged_personas_v1.json (e.g. meal deal = main+snack+drink). A persona can override with mission_categories.",
+  "weekly_shop": [
+   "breakfast_cereal",
+   "yoghurt",
+   "plant_milk_dairy_alt",
+   "biscuits_chocolate",
+   "ready_meals_soup",
+   "crisps_savoury"
+  ],
+  "meal_deal": [
+   "soft_drinks",
+   "crisps_savoury",
+   "snack_bars"
+  ],
+  "top_up": [
+   "plant_milk_dairy_alt",
+   "yoghurt",
+   "ready_meals_soup"
+  ],
+  "treat": [
+   "biscuits_chocolate",
+   "crisps_savoury",
+   "soft_drinks"
+  ],
+  "gym": [
+   "snack_bars",
+   "yoghurt",
+   "soft_drinks"
+  ]
+ },
+ "cost": {
+  "usd": 0.01258,
+  "llm_calls": 15,
+  "cached": 0,
+  "errors": 0
+ }
+}

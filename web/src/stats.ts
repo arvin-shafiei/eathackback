@@ -13,7 +13,7 @@ export const armFilter = (arm: Arm) => (a: Agent) => (arm === 'both' ? true : ar
 
 export function archetypeOf(a: Agent, personas: Record<string, Persona>) {
   if (isAI(a)) return a.model ? `ai · ${a.model.split('/').pop()}` : 'ai_agent';
-  return personas[a.persona_id]?.archetype ?? a.persona_id.replace(/^p_/, '');
+  return a.archetype ?? personas[a.persona_id]?.archetype ?? a.persona_id.replace(/^p_/, '');
 }
 
 export interface DecisionRef { agent: Agent; event: SimEvent }
