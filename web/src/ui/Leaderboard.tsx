@@ -3,11 +3,12 @@ import type { Arm, Product, Run } from '../types';
 import { isAI } from '../types';
 import { armFilter, pct, wilson } from '../stats';
 import { catColor, prodLabel } from '../theme';
+import { EngineBadge, type EngineInfo } from './engineBadge';
 
 interface Row { code: string; k: number; n: number; note: string; big: string; tone: 'good' | 'warn' | 'ai' }
 
 /** three headline counts, each a plain count of logged decisions in the loaded run(s) */
-export function Leaderboard({ run, arm, products, onProduct }: { run: Run; arm: Arm; products: Record<string, Product>; onProduct: (code: string) => void }) {
+export function Leaderboard({ run, arm, products, onProduct, engine = null }: { run: Run; arm: Arm; products: Record<string, Product>; onProduct: (code: string) => void; engine?: EngineInfo | null }) {
   const rows = useMemo(() => {
     const per: Record<string, { shown: number; picked: number; walk: number; hs: number; hp: number; as: number; ap: number }> = {};
     for (const a of run.agents) {
@@ -55,6 +56,7 @@ export function Leaderboard({ run, arm, products, onProduct }: { run: Run; arm: 
           </button>
         );
       })}
+      <EngineBadge info={engine} className="lb-engine" />
     </div>
   );
 }

@@ -169,6 +169,10 @@ export class PackAtlas {
   private queue: string[] = [];
   private inflight = 0;
   private dead = false;
+  /** per-product average front colour (photo average ignoring the white backdrop, else the pack colour) for the far LOD */
+  private avgs = new Map<string, THREE.Color>();
+  avgVersion = 0;
+  avg(code: string) { return this.avgs.get(code); }
 
   constructor(n: number) {
     // keep GPU memory sane as the catalogue grows (2,400 SKUs fit in ~5 pages at the smallest size)
@@ -194,6 +198,7 @@ export class PackAtlas {
       [(px + 1.5) / PAGE, 1 - (py + h - 1.5) / PAGE, (w - 3) / PAGE, (h - 3) / PAGE];
     const cell: AtlasCell = { idx, page, front: uv(x, y, this.cellW, this.frontH), tag: uv(x, y + this.frontH, this.cellW, this.tagH) };
     this.cells.set(p.code, cell); this.prods.set(p.code, p);
+    this.avgs.set(p.code, new THREE.Color(packColor(p)));
     const ctx = this.canvases[page].getContext('2d')!;
     this.drawFallback(ctx, p, x, y);
     this.drawTag(ctx, tag, x, y + this.frontH);
@@ -280,6 +285,7 @@ export class PackAtlas {
           ctx.drawImage(img, o.x + (W - dw) / 2, o.y + (H - dh) / 2, dw, dh);
           ctx.restore();
           this.photo.add(code); this.dirty.add(c.page);
+          const a = photoAverage(img); if (a) { this.avgs.get(code)?.copy(a); this.avgVersion++; }
         } catch { ctx.restore(); }
       };
       img.onerror = () => { this.inflight--; };
@@ -292,6 +298,29 @@ export class PackAtlas {
   }
 
   dispose() { this.dead = true; this.queue.length = 0; this.textures.forEach((t) => t.dispose()); }
+}
+
+/** average colour of a pack photo on a tiny canvas, skipping the near-white studio backdrop; saturation nudged up so
+ *  a whole shelf of averages still reads as colourful packaging from the overview (not grey) */
+let _avgCanvas: HTMLCanvasElement | null = null;
+function photoAverage(img: HTMLImageElement): THREE.Color | null {
+  try {
+    const N = 16; _avgCanvas ??= document.createElement('canvas'); _avgCanvas.width = N; _avgCanvas.height = N;
+    const ctx = _avgCanvas.getContext('2d', { willReadFrequently: true })!; ctx.clearRect(0, 0, N, N); ctx.drawImage(img, 0, 0, N, N);
+    const d = ctx.getImageData(0, 0, N, N).data;
+    let r = 0, g = 0, b = 0, n = 0, wsat = 0;
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i + 3] < 128) continue;
+      const R = d[i], G = d[i + 1], B = d[i + 2], mx = Math.max(R, G, B), mn = Math.min(R, G, B);
+      if (mn > 225) continue; // white backdrop
+      const w = 0.35 + (mx - mn) / 255; // colourful pixels dominate the average
+      r += R * w; g += G * w; b += B * w; n += w; wsat++;
+    }
+    if (wsat < 8) return null;
+    const c = new THREE.Color().setRGB(r / n / 255, g / n / 255, b / n / 255, THREE.SRGBColorSpace);
+    const hsl = { h: 0, s: 0, l: 0 }; c.getHSL(hsl);
+    return c.setHSL(hsl.h, Math.min(0.95, hsl.s * 1.35 + 0.08), Math.min(0.68, Math.max(0.3, hsl.l)));
+  } catch { return null; }
 }
 
 /** shared uniforms for every pack material: selected product's atlas index + clock */
@@ -317,7 +346,17 @@ export function packMaterial(map: THREE.Texture) {
     s.fragmentShader = s.fragmentShader
       .replace('#include <common>', `#include <common>\nuniform sampler2D uAtlas; uniform float uSel; uniform float uTime;\n${vary}`)
       .replace('#include <map_fragment>', `
-        if (vFace > 0.5) {
+        if (vFace > 0.5 && vCell.z < 0.0) {
+          // far LOD: no atlas lookup (mipmapping a tiled atlas averages to grey); the product's average colour,
+          // with a light label band and pack seams so the run still reads as rows of packs
+          vec2 t = fract(vBoxUv * max(vTile.xy, vec2(1.0)));
+          vec3 c = vTint.rgb;
+          float band = smoothstep(0.3, 0.36, t.y) * (1.0 - smoothstep(0.66, 0.72, t.y));
+          c = mix(c, mix(c, vec3(1.0), 0.45), band);
+          vec2 e = min(t, 1.0 - t);
+          c *= mix(0.72, 1.0, smoothstep(0.0, 0.06, min(e.x, e.y)));
+          diffuseColor.rgb *= c;
+        } else if (vFace > 0.5) {
           vec2 t = fract(vBoxUv * max(vTile.xy, vec2(1.0)));
           vec4 tx = texture2D(uAtlas, vCell.xy + t * vCell.zw);
           diffuseColor.rgb *= tx.rgb;
@@ -333,7 +372,7 @@ export function packMaterial(map: THREE.Texture) {
         totalEmissiveRadiance += vTint.w * vec3(0.55, 0.85, 1.0) * 0.16;
         if (uSel >= 0.0 && abs(vTile.w - uSel) < 0.5) totalEmissiveRadiance += vec3(1.0, 0.25, 0.47) * (0.32 + 0.16 * sin(uTime * 5.0));`);
   };
-  m.customProgramCacheKey = () => 'pack-atlas-v1';
+  m.customProgramCacheKey = () => 'pack-atlas-v2';
   return m;
 }
 

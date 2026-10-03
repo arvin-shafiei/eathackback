@@ -78,7 +78,7 @@ interface Stack { lx: number; y: number }
 interface Group {
   key: string; unitId: string; page: number; centre: THREE.Vector3;
   near: THREE.InstancedMesh; far: THREE.InstancedMesh; nearRecs: Rec[]; farRecs: Rec[];
-  nearTile: THREE.InstancedBufferAttribute; farTile: THREE.InstancedBufferAttribute; dirty: boolean;
+  nearTile: THREE.InstancedBufferAttribute; farTile: THREE.InstancedBufferAttribute; farTint: THREE.InstancedBufferAttribute; dirty: boolean;
 }
 interface Rec {
   key: string; slot: string; code: string; unit: Unit; base: THREE.Matrix4; rotY: number;
@@ -305,7 +305,7 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
       return { m, cell, tint, tile };
     };
     const N = mk(nN), F = mk(nF);
-    const grp: Group = { key, unitId: list[0].unit.id, page: list[0].page, centre: new THREE.Vector3(), near: N.m, far: F.m, nearRecs: [], farRecs: [], nearTile: N.tile, farTile: F.tile, dirty: true };
+    const grp: Group = { key, unitId: list[0].unit.id, page: list[0].page, centre: new THREE.Vector3(), near: N.m, far: F.m, nearRecs: [], farRecs: [], nearTile: N.tile, farTile: F.tile, farTint: F.tint, dirty: true };
     let i = 0;
     list.forEach((p, fi) => {
       const { page: _pg, tint, glow, cell, ...rest } = p; void _pg;
@@ -314,7 +314,7 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
         N.cell.setXYZW(i, ...cell.front); N.tint.setXYZW(i, tint.r, tint.g, tint.b, glow); N.tile.setXYZW(i, 1, 1, r.D, r.idx);
         grp.nearRecs.push(r);
       }
-      F.cell.setXYZW(fi, ...cell.front); F.tint.setXYZW(fi, tint.r, tint.g, tint.b, glow); F.tile.setXYZW(fi, r.cols, r.layers, r.D, r.idx);
+      F.cell.setXYZW(fi, cell.front[0], cell.front[1], -1, cell.front[3]); const av = atlas.avg(p.code) ?? tint; F.tint.setXYZW(fi, av.r, av.g, av.b, glow); F.tile.setXYZW(fi, r.cols, r.layers, r.D, r.idx);
       grp.farRecs.push(r);
       applyRec(r, 0);
       recs.push(r);
@@ -401,7 +401,7 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     };
   }, [built, planogram]);
 
-  const lastV = useRef(-1), lastSig = useRef('');
+  const lastV = useRef(-1), lastSig = useRef(''), lastAvg = useRef(-1);
   // dev only: ?shelfcam=x,y,z,tx,ty,tz pins the camera for headless shelf screenshots
   const pin = useMemo(() => { try { const v = new URLSearchParams(location.search).get('shelfcam'); const n = v?.split(',').map(Number); return n && n.length === 6 && n.every(Number.isFinite) ? n : null; } catch { return null; } }, []);
   const scene = useThree((s) => s.scene);
@@ -416,6 +416,14 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     packUniforms.uTime.value = now;
     packUniforms.uSel.value = selectedProduct ? atlasKit.atlas.cell(selectedProduct)?.idx ?? -1 : -1;
     atlasKit.atlas.tick(now);
+    // far LOD colours follow the photo averages as product images stream in
+    if (atlasKit.atlas.avgVersion !== lastAvg.current) {
+      lastAvg.current = atlasKit.atlas.avgVersion;
+      for (const g of built.groups) {
+        g.farRecs.forEach((r, i) => { const c = atlasKit.atlas.avg(r.code); if (c) g.farTint.setXYZ(i, c.r, c.g, c.b); });
+        g.farTint.needsUpdate = true;
+      }
+    }
     // LOD per bay
     for (const g of built.groups) {
       const near = camera.position.distanceTo(g.centre) < lodDistance;

@@ -25,9 +25,16 @@ function Clock({ timeRef, playing, speed, duration }: { timeRef: MutableRefObjec
   return null;
 }
 
+/** overview: the whole store from the FRONT (street side, above the checkouts) at a 3/4 angle, so the back chillers
+ *  read at the far end instead of being hidden behind the back wall. Distance is fitted to the store footprint
+ *  (fov 42, ~16:9) so it works for express through superstore. */
 function overviewPose(cfg: StoreConfig) {
   const B = storeBounds(cfg);
-  return { pos: new THREE.Vector3(B.cx + B.w * 0.5, Math.max(B.w, B.d) * 0.68, B.zMin - B.d * 0.32), target: new THREE.Vector3(B.cx, 0, B.cz - 1) };
+  const dist = Math.max(B.w * 0.78, B.d * 1.15) + 8;
+  const elev = 0.66, yaw = 0.1; // ~38 deg down, slightly off-axis
+  const target = new THREE.Vector3(B.cx, 0, B.cz + B.d * 0.06);
+  const pos = target.clone().add(new THREE.Vector3(Math.sin(yaw) * Math.cos(elev), Math.sin(elev), Math.cos(yaw) * Math.cos(elev)).multiplyScalar(dist));
+  return { pos, target, dist };
 }
 
 function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: number; cfg: StoreConfig; onIntroDone: () => void }) {
@@ -54,7 +61,7 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
       intro.current = {
         t0: performance.now(), el: 0,
         pos: new THREE.CatmullRomCurve3([
-          new THREE.Vector3(B.cx + 3, 30, B.zMin - 26),
+          new THREE.Vector3(B.cx + 3, 30, B.zMax + 26),
           new THREE.Vector3(P.entrances[0].x + 1.2, 3.4, front - 8),
           new THREE.Vector3(P.entrances[0].x + 0.2, 1.9, front + 2.4),
           new THREE.Vector3(ax, 2.4, z0 - 1.2),
@@ -166,11 +173,11 @@ export function Scene(p: SceneProps) {
   const shadowR = Math.max(B.w, B.d) * 0.62;
   return (
     <Canvas
-      flat shadows dpr={[1, 2]} camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: 400 }}
+      flat shadows dpr={[1, 2]} camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: Math.max(400, ov.dist * 4) }}
       onPointerMissed={p.onBackground} onPointerDown={p.onUserCamera} onWheel={p.onUserCamera}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
-      <fog attach="fog" args={['#ffe6dc', 70, 170]} />
+      <fog attach="fog" args={['#ffe6dc', Math.max(70, ov.dist * 0.95), Math.max(170, ov.dist * 2.3)]} />
       <hemisphereLight args={['#fff4ec', '#f3c9d6', 1.15]} />
       <Sun cx={B.cx} cz={B.cz} zMin={B.zMin} r={shadowR} />
       <ambientLight intensity={0.45} />
@@ -186,7 +193,7 @@ export function Scene(p: SceneProps) {
           )}
         </Physics>
       </Suspense>
-      <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.04} minDistance={1.5} maxDistance={90} target={ov.target.toArray()} />
+      <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.04} minDistance={1.5} maxDistance={Math.max(90, ov.dist * 1.35)} target={ov.target.toArray()} />
       <CameraRig mode={p.cam} nonce={p.camNonce} cfg={p.cfg} onIntroDone={p.onIntroDone} />
     </Canvas>
   );

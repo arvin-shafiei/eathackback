@@ -3,7 +3,8 @@ import type { Arm, Persona, Planogram, Product, Run, RunIndexEntry } from './typ
 import { isAI } from './types';
 import { loadAll, loadRun, SIM_SERVER, type Loaded } from './data';
 import { api } from './api';
-import { buildTimeline, scheduleCheckouts, type Timeline } from './layout';
+import { buildTimeline, scheduleCheckouts, storePlan, QUEUE, TILL, type Timeline } from './layout';
+import { EngineBadge, engineOfAll } from './ui/engineBadge';
 import { armFilter, pickRates, archetypeOf } from './stats';
 import { Scene, type CamMode } from './scene/Scene';
 import type { ThoughtMode } from './scene/Crowd';
@@ -36,6 +37,10 @@ const SPEEDS = [0.5, 1, 2, 4, 8];
 /** share of replayed human shoppers who stop at the café before leaving.
  *  assumption: visual only (the ops engine owns café occupancy, turnaway and revenue from its own sourced inputs) */
 const CAFE_SHARE = 0.15;
+/** assumption: shoppers arrive at ≤70% of checkout capacity (a busy but not overloaded hour); visual pacing only */
+const ARRIVAL_UTIL = 0.7;
+/** assumption: nobody joins a checkout line 6+ deep; they keep browsing until it shortens (visual only) */
+const QUEUE_CAP = 6;
 const hash01 = (s: string) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; };
 /** deep links for demos: ?t=40 starts the replay at 40s, ?nointro skips the fly-through */
 const START_T = (() => { const v = Number(new URLSearchParams(location.search).get('t')); return Number.isFinite(v) && v > 0 ? v : 0; })();
@@ -135,14 +140,19 @@ export default function App() {
   const agents = useMemo(() => (view ? view.agents.filter(armFilter(arm)) : []), [view, arm]);
   const timelines = useMemo(() => {
     if (!data || !view || !basePlan) return {} as Record<string, Timeline>;
-    const out: Record<string, Timeline> = {};
-    // stream shoppers in through the doors: ~90s for the whole crowd, never closer than 0.45s apart (visual pacing only)
-    const gap = Math.max(0.45, Math.min(1.4, 90 / Math.max(1, view.agents.length)));
+    // ARRIVALS (assumption, visual pacing only): shoppers stream in at no more than ARRIVAL_UTIL of the store's checkout
+    // capacity, so the queues reflect the layout rather than everyone arriving in the first 90 s. gap between arrivals =
+    // mean service time per customer / (lanes x ARRIVAL_UTIL), never closer than 0.45 s. The ops engine owns real footfall.
+    const sp = storePlan(data.config);
+    const nLanes = Math.max(1, sp.lanes.length);
+    const humanItems = view.agents.filter((a) => !isAI(a)).map((a) => a.events.filter((e) => e.decision === 'pick' && e.product).length);
+    const meanItems = humanItems.length ? humanItems.reduce((s, n) => s + n, 0) / humanItems.length : 3;
+    const svcMean = meanItems * TILL.scanPer + QUEUE.overhead; // s per customer at a till (layout's replay pacing)
+    const gap = Math.max(0.45, svcMean / (nLanes * ARRIVAL_UTIL));
     const items: Record<string, number> = {}, carriers: Record<string, string> = {};
     const aiIds = new Set<string>(), cafeIds = new Set<string>();
-    view.agents.forEach((a, i) => {
+    view.agents.forEach((a) => {
       const ai = isAI(a);
-      out[a.agent_id] = buildTimeline(data.config, basePlan, a, 0.6 + i * gap, i, ai);
       items[a.agent_id] = ai ? 0 : a.events.filter((e) => e.decision === 'pick' && e.product).length;
       const arch = ai ? 'ai_agent' : archetypeOf(a, personas);
       carriers[a.agent_id] = carrierFor(arch, a.mission ?? personas[a.persona_id]?.mission, ai);
@@ -150,7 +160,29 @@ export default function App() {
       // café visit: CAFE_SHARE of human shoppers, picked by a stable hash of the agent id (visual only, see CAFE_SHARE)
       else if (hash01(a.agent_id) < CAFE_SHARE) cafeIds.add(a.agent_id);
     });
-    scheduleCheckouts(data.config, out, items, carriers, aiIds, cafeIds);
+    // QUEUE CAP (assumption): nobody joins a line already QUEUE_CAP deep. Instead they keep browsing in the aisle where
+    // they finished (a held dwell, no decision attached) until the line has room, then walk up. Iterated a few times
+    // because delaying one shopper reshapes everyone's queue.
+    const delay: Record<string, number> = {};
+    const lanesOf = (g: string) => (g === 'self' ? Math.max(1, sp.lanes.filter((l) => l.kind === 'self').length) : 1);
+    let out: Record<string, Timeline> = {};
+    for (let pass = 0; pass < 5; pass++) {
+      out = {};
+      view.agents.forEach((a, i) => {
+        const tl = buildTimeline(data.config, basePlan, a, 0.6 + i * gap, i, isAI(a));
+        const d = delay[a.agent_id] ?? 0;
+        const last = tl.segs[tl.segs.length - 1];
+        if (d > 0 && last) { tl.segs.push({ t0: tl.end, t1: tl.end + d, a: last.b, b: last.b, kind: 'dwell' }); tl.end += d; }
+        out[a.agent_id] = tl;
+      });
+      scheduleCheckouts(data.config, out, items, carriers, aiIds, cafeIds);
+      let over = 0;
+      for (const id in out) {
+        const q = out[id].queue; const k = q?.slots[0]?.k ?? 0;
+        if (q && k >= QUEUE_CAP) { over++; delay[id] = (delay[id] ?? 0) + ((k - QUEUE_CAP + 1) * svcMean) / lanesOf(q.group); }
+      }
+      if (!over) break;
+    }
     return out;
   }, [data, view, basePlan, personas]);
   const duration = useMemo(() => Math.max(10, ...agents.map((a) => timelines[a.agent_id]?.end ?? 0)) + 1, [agents, timelines]);
@@ -279,6 +311,7 @@ export default function App() {
   const nShoppers = view?.agents.length ?? 0;
   const nProducts = Object.keys(basePlan).reduce((s, k) => s + (basePlan[k]?.products?.length ?? 0), 0);
   const intro = cam === 'intro';
+  const engineInfo = engineOfAll(run, aiRun && aiRun.run_id !== run?.run_id ? aiRun : null);
 
   return (
     <div className={`app mode-${mode} ${intro ? 'is-intro' : ''}`}>
@@ -330,7 +363,7 @@ export default function App() {
         </div>
       </header>
 
-      {mode === 'replay' && view && !intro && <Leaderboard run={view} arm={arm} products={products} onProduct={(code) => setPanel({ kind: 'product', code })} />}
+      {mode === 'replay' && view && !intro && <Leaderboard run={view} arm={arm} products={products} engine={engineInfo} onProduct={(code) => setPanel({ kind: 'product', code })} />}
 
       {(run?._fixture || STORE_VARIANT?.fixture) && <div className="fixture-banner" title={run?._fixture}>{STORE_VARIANT?.fixture ? `fixture store layout (${STORE_VARIANT.label ?? STORE_VARIANT.id}): proves the 3d scales, not results` : 'fixture data: synthetic decisions to exercise the ui, not results'}</div>}
 
@@ -414,6 +447,7 @@ export default function App() {
           <input type="range" min={0} max={duration} step={0.1} value={uiTime} onChange={(e) => { timeRef.current = Number(e.target.value); setUiTime(timeRef.current); }} aria-label="replay time" />
           <span className="time">{fmt(uiTime)} / {fmt(duration)}</span>
           <div className="seg small">{SPEEDS.map((s) => <button key={s} className={`seg-btn ${speed === s ? 'on' : ''}`} onClick={() => setSpeed(s)}>{s}×</button>)}</div>
+          <EngineBadge info={engineInfo} className="hud-engine" />
           <div className="counts">
             <span className="count count-good" title="picked so far">✅ {counts.pick ?? 0}</span>
             <span className="count count-bad" title="rejected so far">✖ {counts.reject ?? 0}</span>
