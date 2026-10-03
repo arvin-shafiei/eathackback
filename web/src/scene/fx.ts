@@ -10,8 +10,9 @@ export const bus = {
   flash: {} as Record<string, number>,
   /** EAS gate alarm: gate id → clock seconds until which it flashes + beeps */
   alarm: {} as Record<string, number>,
-  /** live crowd positions for staff avoidance / hud (xz pairs) */
-  live: 0,
+  /** ops clock (minute of day) and the ops log's stock share per slot at that minute */
+  opsMin: 0,
+  stock: null as Record<string, number> | null,
   /** screen-shake energy, decays in the camera rig */
   shake: 0,
   shakeOn: false,

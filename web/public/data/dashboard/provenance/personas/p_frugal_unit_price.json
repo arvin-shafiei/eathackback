@@ -1,0 +1,1697 @@
+{
+ "persona_id": "p_frugal_unit_price",
+ "name": "Dev",
+ "archetype": "frugal_unit_price",
+ "kind": "lens",
+ "source_file": "data/personas/lens/frugal_unit_price.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 30,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[4] dossier.profile: 'weekly food budget is about £25-35' (midpoint). assumption: student-budget figure, not a measured sample. Meal-deal budget £3.50-£3.85 (Clubcard/Nectar price) per lunch, same source."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "staged_personas_v1.json[4] dossier.profile: 'weekly food budget is about £25-35' (midpoint). assumption: student-budget figure, not a measured sample. Meal-deal budget £3.50-£3.85 (Clubcard/Nectar price) per lunch, same source."
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[4]: ~70% discounter in store, ~25% convenience/meal deal, <5% online (assumption-level estimate in the staged dossier)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "staged_personas_v1.json[4]: ~70% discounter in store, ~25% convenience/meal deal, <5% online (assumption-level estimate in the staged dossier)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "weekly_shop",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/frugal_unit_price.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.price_per_100g",
+   "kind": "lens_weight",
+   "label": "lens: price_per_100g (w=0.36)",
+   "value": 0.36,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 14,
+     "verbatim": "False offers really get my fucking goat. When you look at the price per 100g and the one on \"offer",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1scat6b",
+     "thread_id": "1scat6b",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 1,
+     "verbatim": "Always assess the value of a product by looking at the price per kilo gram",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "derived: price_gbp / product_quantity(g or ml) × 100 (OFF product_quantity + catalog price_gbp)",
+   "direction": "lower_better",
+   "why": "This is his main decision rule. He compares the shelf-edge unit price, not the headline price, and treats an 'offer' that is worse per gram as a betrayal.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.role",
+   "kind": "lens_weight",
+   "label": "lens: role (w=0.2)",
+   "value": 0.2,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/13u6xww",
+     "thread_id": "13u6xww",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 3,
+     "verbatim": "I've always started with the cheapest and worked my way up by price until I've found the one I like",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 2,
+     "verbatim": "I never go for the bottom tier own brand though",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bq1qcm",
+     "thread_id": "1bq1qcm",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 4,
+     "verbatim": "They just change the wrapper for different customers",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "catalog role (own_label | incumbent | challenger)",
+   "direction": "own_label > incumbent > challenger",
+   "why": "Default ladder: start with own-label (middle tier, not bottom 'value' tier), trade up only after a bad trial. Believes 'same factory'.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_gbp",
+   "kind": "lens_weight",
+   "label": "lens: price_gbp (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/82m9zj",
+     "thread_id": "82m9zj",
+     "subreddit": "ukpolitics",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "I know the rough price, but not the weight.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "budget from staged_personas_v1.json[4] (£25-35/wk)"
+    }
+   ],
+   "measured_by_off_field": "catalog price_gbp (headline shelf price)",
+   "direction": "lower_better",
+   "why": "A fixed weekly budget of about £30 makes the headline price a hard filter before he ever reads the unit price. Most shoppers remember the rough price, not the pack weight.",
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.premium_claim_gimmick",
+   "kind": "lens_weight",
+   "label": "lens: premium_claim_gimmick (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 34,
+     "verbatim": "Aldi briefly sold \"protein",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1k4ayi9",
+     "thread_id": "1k4ayi9",
+     "subreddit": "UKFrugal",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "if I buy a protein shake and protein yogurt in meal deal then it gets better",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "pack_copy (regex: protein|high protein|new recipe|artisan|superfood) × price_per_100g premium vs category own-label",
+   "direction": "penalty_when_claim_carries_price_premium",
+   "why": "A claim used to charge more reads as a price grab. He only accepts 'protein' when the meal deal makes it effectively free.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.proteins_100g_per_gbp",
+   "kind": "lens_weight",
+   "label": "lens: proteins_100g_per_gbp (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "a friend of mine at uni worked out that the best price per calorie of the Tesco mealdeals was...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1k4ayi9",
+     "thread_id": "1k4ayi9",
+     "subreddit": "UKFrugal",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "proteins_100g ÷ price_per_100g (OFF nutriments.proteins_100g + catalog price)",
+   "direction": "higher_better",
+   "why": "A value-per-pound heuristic (protein or calories per £) used mainly for meal-deal snack slots and post-gym top-ups.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.first_ingredient_water",
+   "kind": "lens_weight",
+   "label": "lens: first_ingredient_water (w=0.06)",
+   "value": 0.06,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1scat6b",
+     "thread_id": "1scat6b",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 1,
+     "verbatim": "if you're buying mayonnaise and the first ingredients in the list is water then you aren't buying mayonnaise",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 743,
+     "score_is": "post_score(thread)",
+     "thread_title": "The supermarkets appear to have moved into phase 2 of shrinkflation - Wetflation",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "ingredients_text (first token) / ingredients_n",
+   "direction": "penalty_if_water_first_in_sauces",
+   "why": "A minor check that a cheap unit price isn't diluted value ('wetflation'). Applies to sauces and condiments only, and is rarely used in the 8 store categories.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.nutriscore",
+   "kind": "lens_weight",
+   "label": "lens: nutriscore (w=0.04)",
+   "value": 0.04,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: staged_personas_v1.json[4] trust_signals lists 'Lower sugar or salt than the branded equivalent... a bonus, not a driver'. No direct verbatim, so the weight is kept minimal"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: staged_personas_v1.json[4] trust_signals lists 'Lower sugar or salt than the branded equivalent... a bonus, not a driver'. No direct verbatim, so the weight is kept minimal"
+    }
+   ],
+   "measured_by_off_field": "nutriscore_grade",
+   "direction": "better_is_a (bonus, not driver)",
+   "why": "Lower sugar or salt than the branded equivalent is a nice-to-have tiebreaker. It never outweighs price.",
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Tries new things only when a deal takes the risk away (meal-deal slot, Clubcard price, clearance). Default is the known own-label dupe."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: frugal_unit_price 0"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.35 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=-0.25)",
+   "value": -0.25,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (n=716): food-neophobia 'approach' factor positively related to Openness, and the 'avoidance' factor negatively related to Openness and Extraversion. coef magnitude = assumption: scaled to the staged trust_new_brand_0_1=0.15",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (n=716): food-neophobia 'approach' factor positively related to Openness, and the 'avoidance' factor negatively related to Openness and Extraversion. coef magnitude = assumption: scaled to the staged trust_new_brand_0_1=0.15"
+    }
+   ],
+   "effect": "low O → lower p_notice and lower trial for unfamiliar challenger brands; novelty is not a reward on its own",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.62",
+   "value": 0.62,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Disciplined about the budget and checks the shelf-edge unit price, but the reading is narrow: price per 100g and the headline price, not the full nutrition panel."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: frugal_unit_price +0.5 (planning and deliberation, effects C1 and C8, plus Reddit 'I do always compare the price per 100g' https://www.reddit.com/comments/1ow5fne)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.62 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.3)",
+   "value": 0.3,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 14,
+     "verbatim": "When you look at the price per 100g and the one on \"offer",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Lastovicka et al. 1999, 'Lifestyle of the Tight and Frugal', J. Consumer Research 26(1), doi:10.1086/209552: frugality is defined as restraint in acquiring and resourceful use of goods to reach longer-term goals (a self-control construct close to C). Behaviour verbatim: 'When ...",
+     "url": "https://doi.org/10.1086/209552:"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Lastovicka et al. 1999, 'Lifestyle of the Tight and Frugal', J. Consumer Research 26(1), doi:10.1086/209552: frugality is defined as restraint in acquiring and resourceful use of goods to reach longer-term goals (a self-control construct close to C). Behaviour verbatim: 'When ..."
+    }
+   ],
+   "effect": "C → +attention to the shelf-edge price/100g field and to offer-vs-standard comparisons. Does NOT extend to the ingredients/nutrition fields (reads_structured_data stays 0.15)",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "About average. Picks up specific dupes from housemates and Reddit word of mouth, not from social display."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.45 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 11,
+     "verbatim": "Get the six packs of lidls own brand mccoys. Really nice!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Reply in a shrinkflation thread: 'Get the six packs of lidls own brand mccoys. Really nice!' https://www.reddit.com/comments/1tsbmt5. E value = assumption: no archetype-specific evidence, so set near the mean"
+    }
+   ],
+   "effect": "peer recommendation acts as a trust signal for own-label dupes (small effect)",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.4",
+   "value": 0.4,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Below average. Branded price gaps feel like gouging and he reacts with boycotts rather than benefit of the doubt."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.4 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.2)",
+   "value": 0.2,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1b4i3rn",
+     "thread_id": "1b4i3rn",
+     "subreddit": "ukpolitics",
+     "theme": "own_brand_vs_branded",
+     "score": 120,
+     "verbatim": "How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "'How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!' https://www.reddit.com/comments/1b4i3rn. Mapping low A → reactance = assumption: no direct Big Five study found for brand-boycott behaviour"
+    }
+   ],
+   "effect": "low A → stronger fairness backlash when a brand costs about 2-3x own-label per 100g (adds to rejection probability)",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Slightly above average. Strong 'pain of paying' and anger at false offers and shrinkflation, but it mostly turns into grumbling rather than switching."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits.",
+     "citation": "Rick, Cryder & Loewenstein 2008, 'Tightwads and Spendthrifts', J. Consumer Research 34(6), doi:10.1086/523285 (an anticipatory pain-of-paying construct). YouGov 2025: among concerned shoppers, brand switching fell from 50% to 36%, https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits. N→pain mapping and coef = assumption"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Rick, Cryder & Loewenstein 2008, 'Tightwads and Spendthrifts', J. Consumer Research 34(6), doi:10.1086/523285 (an anticipatory pain-of-paying construct). YouGov 2025: among concerned shoppers, brand switching fell from 50% to 36%, https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits. N→pain mapping and coef = assumption",
+     "url": "https://doi.org/10.1086/523285"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Rick, Cryder & Loewenstein 2008, 'Tightwads and Spendthrifts', J. Consumer Research 34(6), doi:10.1086/523285 (an anticipatory pain-of-paying construct). YouGov 2025: among concerned shoppers, brand switching fell from 50% to 36%, https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits. N→pain mapping and coef = assumption"
+    }
+   ],
+   "effect": "N → amplifies the negative sentiment on false offers and shrinkflation. Switching is capped by the YouGov resignation effect",
+   "classes": [
+    "paper",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Brand or challenger price_per_100g ≥ ~2-3x the own-label equivalent on the same ...",
+   "value": "Brand or challenger price_per_100g ≥ ~2-3x the own-label equivalent on the same shelf",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1b4i3rn",
+     "thread_id": "1b4i3rn",
+     "subreddit": "ukpolitics",
+     "theme": "own_brand_vs_branded",
+     "score": 120,
+     "verbatim": "more than three times the price?! It's just tomatoes and sugar!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "'Offer' price whose per-100g price is worse than the standard pack",
+   "value": "'Offer' price whose per-100g price is worse than the standard pack",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 14,
+     "verbatim": "False offers really get my fucking goat. When you look at the price per 100g and the one on “offer” is more expensive per gram ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Protein/'new recipe' claim carrying a price premium on the open shelf (outside ...",
+   "value": "Protein/'new recipe' claim carrying a price premium on the open shelf (outside a meal deal)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 34,
+     "verbatim": "Aldi briefly sold “protein” chicken sausages right next to their usual chicken sausages. I think they had about 1g more protein per 100g and cost ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 28,
+     "verbatim": "I am not paying £3 for a chocolate bar with a little bit of whey added",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Unknown brand at full price with no deal mechanic (no meal-deal tag, ...",
+   "value": "Unknown brand at full price with no deal mechanic (no meal-deal tag, member price, or clearance)",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[4] rejection_triggers + verdict correction ('A is rejected by the tag filter alone')"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Known shrinkflation by an incumbent → long boycott, but only for emotionally ...",
+   "value": "Known shrinkflation by an incumbent → long boycott, but only for emotionally salient brands (switching is capped by resignation)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 61,
+     "verbatim": "Kettle Chips after they covertly reduced their bags from 150g to 130g",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits",
+     "citation": "YouGov 2025 50%→36% switching https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "YouGov 2025 50%→36% switching https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits",
+     "url": null
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "web_other": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Premium/'artisan' pack look read as advertising spend rather than product",
+   "value": "Premium/'artisan' pack look read as advertising spend rather than product",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 2,
+     "verbatim": "brands spend the money on advertising, while off brand spend the money on the product",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Meal-deal item with low standalone value (e.g. water) seen as wasting the ...",
+   "value": "Meal-deal item with low standalone value (e.g. water) seen as wasting the slot",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 990,
+     "verbatim": "If I fancy a water on a meal deal day I’ll get a smoothie or some other overpriced abomination that’s in the deal but retailing ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Lowest price per 100g on the shelf-edge label",
+   "value": "Lowest price per 100g on the shelf-edge label",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "it literally says the price per gram on the same label on the edge of the shelf",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "Own-label 'dupe' of a known brand (middle tier)",
+   "value": "Own-label 'dupe' of a known brand (middle tier)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/r38ifw",
+     "thread_id": "r38ifw",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 4,
+     "verbatim": "Aldi hoops are great because they are exactly Hula hoops",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 51,
+     "score_is": "post_score(thread)",
+     "thread_title": "Grocery shopping - do you buy mostly branded or not?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Blind-test result where own-label beats the brand",
+   "value": "Blind-test result where own-label beats the brand",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/r2udam",
+     "thread_id": "r2udam",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 98,
+     "verbatim": "channel 4 did it. Branston won, Tesco everyday value came second and Heinz was third",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Meal-deal eligibility, plus a high standalone price that makes the slot feel ...",
+   "value": "Meal-deal eligibility, plus a high standalone price that makes the slot feel 'won'",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 990,
+     "verbatim": "If I fancy a water on a meal deal day I’ll get a smoothie or some other overpriced abomination that’s in the deal but retailing ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Member price (Clubcard/Nectar) or clearance/reduced sticker",
+   "value": "Member price (Clubcard/Nectar) or clearance/reduced sticker",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[4] trust_signals"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "verdict: ambient challengers reach the reduced shelf only as range-out clearance ('Reduced to clear section still had them for months', corpus/protein_gimmick.md)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "'Same factory' lore / housemate recommendation of a specific dupe",
+   "value": "'Same factory' lore / housemate recommendation of a specific dupe",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bq1qcm",
+     "thread_id": "1bq1qcm",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 4,
+     "verbatim": "As a student I used to pack Rich Tea biscuits for extra cash. They just change the wrapper for different customers. The biscuit was just ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 61,
+     "score_is": "post_score(thread)",
+     "thread_title": "What products do you now refuse to buy because of shrinkflation?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "Habitual meal-deal combo grabbed in about 3-5 s without re-evaluation. Full slot ...",
+   "value": "Habitual meal-deal combo grabbed in about 3-5 s without re-evaluation. Full slot maths only on a first visit or when the usual item is out of stock",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 5,
+     "verbatim": "a coworker who gets almost the exact same one every single day",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "staged verdict correction (collapse Stage 3 to 3-5 s)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "Keeps 2-4 'hero' brands locked in by one past bad own-label trial",
+   "value": "Keeps 2-4 'hero' brands locked in by one past bad own-label trial",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/13u6xww",
+     "thread_id": "13u6xww",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "Own brand for everything except: Branston Beans... Mutti Tomatoes... Yorkshire Tea",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "Prefers the low-choice discounter shelf: one or two options, in and out",
+   "value": "Prefers the low-choice discounter shelf: one or two options, in and out",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 5,
+     "verbatim": "There's usually only one, maybe two, options for each product... zero decision fatigue",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "Puts 'protein' items in the meal deal because they are effectively free, ...",
+   "value": "Puts 'protein' items in the meal deal because they are effectively free, then mocks them on the open shelf",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1k4ayi9",
+     "thread_id": "1k4ayi9",
+     "subreddit": "UKFrugal",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 61,
+     "score_is": "post_score(thread)",
+     "thread_title": "What products do you now refuse to buy because of shrinkflation?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[4]",
+   "kind": "habit",
+   "label": "Value loyalty, not retailer loyalty: will defect from a discounter if own-label ...",
+   "value": "Value loyalty, not retailer loyalty: will defect from a discounter if own-label quality visibly drops",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 35,
+     "verbatim": "The quality of Lidl own brand is now so bad I've been back at Tesco for the last 12 weeks",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Shape anchored on eye-level vs floor +39% sales (Wikipedia Planogram field study) and Chandon et al. 2009 J. Marketing 73(6) eye tracking, via research/04-3d-sim-evidence-and-tech.md",
+     "url": null
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Shape anchored on eye-level vs floor +39% sales (Wikipedia Planogram field study) and Chandon et al. 2009 J. Marketing 73(6) eye tracking, via research/04-3d-sim-evidence-and-tech.md"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Wikipedia'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Shape anchored on eye-level vs floor +39% sales (Wikipedia Planogram field study) and Chandon et al. 2009 J. Marketing 73(6) eye tracking, via research/04-3d-sim-evidence-and-tech.md"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Shape anchored on eye-level vs floor +39% sales (Wikipedia Planogram field study) and Chandon et al. 2009 J. Marketing 73(6) eye tracking, via research/04-3d-sim-evidence-and-tech.md"
+    }
+   ],
+   "classes": [
+    "paper",
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "web_other": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.08",
+   "value": 0.08,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Low because he scans for the purple/meal-deal tag and the yellow label, not the ankle shelf. Skeptic: 'does not bend down to read a bottom-shelf cola he is not buying'. Exception: own-label value lines ..."
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Low because he scans for the purple/meal-deal tag and the yellow label, not the ankle shelf. Skeptic: 'does not bend down to read a bottom-shelf cola he is not buying'. Exception: own-label value lines ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Low because he scans for the purple/meal-deal tag and the yellow label, not the ankle shelf. Skeptic: 'does not bend down to read a bottom-shelf cola he is not buying'. Exception: own-label value lines ..."
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 5,
+     "verbatim": "a coworker who gets almost the exact same one every single day",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). 'a coworker who gets almost the exact same one every single day' https://www.reddit.com/comments/1qazvyk"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). 'a coworker who gets almost the exact same one every single day' https://www.reddit.com/comments/1qazvyk"
+    },
+    {
+     "url": "https://www.reddit.com/comments/13u6xww",
+     "thread_id": "13u6xww",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 3,
+     "verbatim": "I've always started with the cheapest and worked my way up by price until I've found the one I like",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.88",
+   "value": 0.88,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 14,
+     "verbatim": "False offers really get my fucking goat. When you look at the price per 100g and the one on “offer” is more expensive per gram ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). https://www.reddit.com/comments/eraymp"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). https://www.reddit.com/comments/eraymp"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1b4i3rn",
+     "thread_id": "1b4i3rn",
+     "subreddit": "ukpolitics",
+     "theme": "own_brand_vs_branded",
+     "score": 120,
+     "verbatim": "Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times the price?! ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "budget £25-35/wk"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.15",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Unknown brand at full price outside a deal is rejected by the tag filter alone (verdict correction). Low O per Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Unknown brand at full price outside a deal is rejected by the tag filter alone (verdict correction). Low O per Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Unknown brand at full price outside a deal is rejected by the tag filter alone (verdict correction). Low O per Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007"
+    }
+   ],
+   "classes": [
+    "paper",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 34,
+     "verbatim": "Aldi briefly sold “protein” chicken sausages right next to their usual chicken sausages. I think they had about 1g more protein per 100g and cost ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1k4ayi9",
+     "thread_id": "1k4ayi9",
+     "subreddit": "UKFrugal",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Moderate, not high: strong scorn on the open shelf (https://www.reddit.com/comments/1wqczct) but acceptance inside the meal deal (https://www.reddit.com/comments/1k4ayi9), so it averages to ~0.45"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Moderate, not high: strong scorn on the open shelf (https://www.reddit.com/comments/1wqczct) but acceptance inside the meal deal (https://www.reddit.com/comments/1k4ayi9), so it averages to ~0.45"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.15",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1scat6b",
+     "thread_id": "1scat6b",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 1,
+     "verbatim": "Always assess the value of a product by looking at the price per kilo gram",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Reads only the price/100g and headline price. Ingredients only for 'watery' sauces (https://www.reddit.com/comments/1scat6b)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Reads only the price/100g and headline price. Ingredients only for 'watery' sauces (https://www.reddit.com/comments/1scat6b)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 6",
+   "value": 6,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Verdict: habitual repeat picks take 3-5 s, and first-visit or out-of-stock evaluations take longer"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Verdict: habitual repeat picks take 3-5 s, and first-visit or out-of-stock evaluations take longer"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "6 s is the blended mean (assumption on the mix)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 990,
+     "verbatim": "If I fancy a water on a meal deal day I’ll get a smoothie or some other overpriced abomination that’s in the deal but retailing ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). https://www.reddit.com/comments/1bc79kh (990 upvotes, slot maximising)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). https://www.reddit.com/comments/1bc79kh (990 upvotes, slot maximising)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'Skeptic'",
+     "citation": "damped by 'what I fancy' (104 upvotes, same thread). Skeptic: making a challenger meal-deal eligible converts ~20-35% of first-week noticed visits, not all"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "False offers really get my fucking goat. When you look at the price per 100g and the one on “offer” is more expensive per gram than the standard one.",
+   "url": "https://www.reddit.com/comments/eraymp",
+   "subreddit": "UKPersonalFinance",
+   "score": 14
+  },
+  {
+   "quote": "Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!",
+   "url": "https://www.reddit.com/comments/1b4i3rn",
+   "subreddit": "ukpolitics",
+   "score": 120
+  },
+  {
+   "quote": "I've always started with the cheapest and worked my way up by price until I've found the one I like",
+   "url": "https://www.reddit.com/comments/13u6xww",
+   "subreddit": "AskUK",
+   "score": 3
+  },
+  {
+   "quote": "If I fancy a water on a meal deal day I’ll get a smoothie or some other overpriced abomination that’s in the deal but retailing separately at £2.50 and get the 80p water outside of the meal deal purchase. I ...",
+   "url": "https://www.reddit.com/comments/1bc79kh",
+   "subreddit": "CasualUK",
+   "score": 990
+  },
+  {
+   "quote": "Aldi briefly sold “protein” chicken sausages right next to their usual chicken sausages. I think they had about 1g more protein per 100g and cost about £1 more. Absolutely pointless.",
+   "url": "https://www.reddit.com/comments/1wqczct",
+   "subreddit": "AskUK",
+   "score": 34
+  },
+  {
+   "quote": "As a student I used to pack Rich Tea biscuits for extra cash. They just change the wrapper for different customers. The biscuit was just the same",
+   "url": "https://www.reddit.com/comments/1bq1qcm",
+   "subreddit": "AskUK",
+   "score": 4
+  },
+  {
+   "quote": "Always assess the value of a product by looking at the price per kilo gram",
+   "url": "https://www.reddit.com/comments/1scat6b",
+   "subreddit": "AskBrits",
+   "score": 1
+  },
+  {
+   "quote": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+   "url": "https://www.reddit.com/comments/1k4ayi9",
+   "subreddit": "UKFrugal",
+   "score": 1
+  }
+ ],
+ "built_from": null,
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 49.5,
+   "reddit_inferred": 0.0,
+   "paper": 4.4,
+   "off_field": 0.0,
+   "sales_data": 0.0,
+   "staged_persona": 13.5,
+   "web_other": 1.9,
+   "internal_research": 8.2,
+   "assumption": 22.5
+  },
+  "headline": {
+   "reddit": 49.5,
+   "paper": 4.4,
+   "off_field": 0.0,
+   "assumption": 22.5,
+   "other (sales, staged, web, internal)": 23.6
+  },
+  "n_fields": 47,
+  "fields_by_primary_class": {
+   "staged_persona": 7,
+   "assumption": 4,
+   "reddit": 30,
+   "internal_research": 2,
+   "paper": 4
+  },
+  "pct_fields_with_any": {
+   "reddit": 63.8,
+   "paper": 12.8,
+   "staged_persona": 31.9,
+   "web_other": 6.4,
+   "internal_research": 23.4,
+   "assumption": 40.4
+  },
+  "pct_fields_with_any_assumption": 40.4,
+  "lens_fields_measured_by_off_field": {
+   "n": 7,
+   "of": 7,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}

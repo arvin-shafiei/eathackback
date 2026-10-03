@@ -1,0 +1,3605 @@
+{
+ "surface": "shopper_basket_swaps",
+ "created": "2026-10-03T12:05:25",
+ "persona": {
+  "id": "p_upf_avoider_parent",
+  "name": "Hannah",
+  "archetype": "upf_avoider_parent",
+  "lens": [
+   {
+    "attribute": "visible additives (E-numbers, 'emulsifier')",
+    "off_field": "additives_n",
+    "direction": "lower_better",
+    "weight": 0.2,
+    "why": "her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cue heuristic, not NOVA",
+    "source": "verbatim: 'a lot of branded stuff tends to have filler ingredients to give a better texture (e.g emulsifiers)... I'll go for the cheaper option' https://www.reddit.com/comments/1ow5fne; Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)"
+   },
+   {
+    "attribute": "sweeteners in a kids' or 'healthy' product",
+    "off_field": "sweeteners",
+    "direction": "lower_better (any >0 is a near-hard reject for lunchbox items)",
+    "weight": 0.18,
+    "why": "sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires",
+    "source": "verbatim: 'High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.' https://www.reddit.com/comments/191icpc; 'Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.' https://www.reddit.com/comments/1tbf6zw"
+   },
+   {
+    "attribute": "sugar",
+    "off_field": "sugars_100g",
+    "direction": "lower_better",
+    "weight": 0.16,
+    "why": "'avoid sugar for the kids' is the one stated rule she actually checks on the nutrition panel",
+    "source": "verbatim: 'Yes it may have 20g of protien but it also has 500 calories and 20g of sugar ffs.' https://www.reddit.com/comments/1oqtnv1; staged Priya dossier behavioural driver 'Say-do gap on UPF' (weight 0.85)"
+   },
+   {
+    "attribute": "short ingredient list",
+    "off_field": "ingredients_n",
+    "direction": "lower_better",
+    "weight": 0.14,
+    "why": "'4 ingredients' reads as clean; a long list reads as UPF",
+    "source": "verbatim: 'Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.' https://www.reddit.com/comments/1buwayp; 'the ingredients list was so good and simple… no unnecessary stuff' https://www.reddit.com/comments/1e8k6o1; Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)"
+   },
+   {
+    "attribute": "nuts (nut-free school lunchbox rule)",
+    "off_field": "allergens (en:nuts, en:peanuts)",
+    "direction": "absent_required for lunchbox items",
+    "weight": 0.1,
+    "why": "most UK primary schools run nut-free lunchbox policies, so a nut product is out for the lunchbox whatever its UPF status",
+    "source": "skeptic verdict in data/personas/staged_personas_v1.json[0].verdict.unrealistic_claims ('Nut-free schools'); assumption: no national statistic was pulled for the share of schools with a nut-free policy"
+   },
+   {
+    "attribute": "unit price vs own-label",
+    "off_field": "price_gbp / price per 100g (catalog price_gbp + quantity)",
+    "direction": "lower_better",
+    "weight": 0.09,
+    "why": "she pays a premium only for 'hero' items the kids eat on their own; for everything else own-label wins on price",
+    "source": "Mumsnet: 'I can't afford to buy the organic/non upf versions of these staples for my family, our food bill is ridiculous as it is' https://www.mumsnet.com/talk/food_and_recipes/4922485 (cited in research/02-issue-discovery.md); verbatim: 'I don't buy hardly anything branded anymore either except a few things the children like.' https://www.reddit.com/comments/1qgcwyr"
+   },
+   {
+    "attribute": "front-of-pack reassurance claims ('no added sugar', 'made with real fruit', 'no preservatives')",
+    "off_field": "pack_copy (+ labels e.g. en:no-added-sugar, en:no-preservatives)",
+    "direction": "presence_better",
+    "weight": 0.08,
+    "why": "front-of-pack claims are what she sees in her ~5 seconds at the shelf; she trusts the 'clean' claims and distrusts 'high protein'",
+    "source": "Mumsnet: 'brands of their bread have no preservatives. Not totally UPF free but better than having emulsifiers and E numbers' https://www.mumsnet.com/talk/am_i_being_unreasonable/5386544 (cited in staged Priya dossier)"
+   },
+   {
+    "attribute": "actual processing level",
+    "off_field": "nova",
+    "direction": "lower_better",
+    "weight": 0.05,
+    "why": "deliberately small: she says she avoids UPF, but she cannot see NOVA. A clean-looking NOVA 4 passes and a NOVA 3 with one 'scary' word fails. This low weight encodes the say-do gap",
+    "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs); UPF is 50.7% of UK household purchased energy https://pmc.ncbi.nlm.nih.gov/articles/PMC8921104/"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+    "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw"
+   },
+   {
+    "trigger": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+    "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)"
+   },
+   {
+    "trigger": "nuts in a lunchbox item (nut-free school)",
+    "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence"
+   },
+   {
+    "trigger": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+    "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw"
+   },
+   {
+    "trigger": "the kids refuse it once (one-strike veto, never re-trialled)",
+    "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)"
+   },
+   {
+    "trigger": "unit price well above own-label for a non-hero item",
+    "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr"
+   }
+  ]
+ },
+ "basket": [
+  {
+   "code": "4025500277031",
+   "name": "Vanilla Chocolate Balls",
+   "category": "yoghurt",
+   "price_gbp": 0.62,
+   "lens_score": 0.15
+  },
+  {
+   "code": "7394376620713",
+   "name": "Whole Oat Drink",
+   "category": "plant_milk_dairy_alt",
+   "price_gbp": 2.2,
+   "lens_score": 0.554
+  },
+  {
+   "code": "5000157062673",
+   "name": "Cream of Tomato Soup",
+   "category": "ready_meals_soup",
+   "price_gbp": 1.5,
+   "lens_score": 0.33
+  },
+  {
+   "code": "5033665206864",
+   "name": "Charlie Bingham Lasagne",
+   "category": "ready_meals_soup",
+   "price_gbp": 8.0,
+   "lens_score": 0.31
+  }
+ ],
+ "basket_codes_missing_from_catalog": [],
+ "basket_source": {
+  "run_id": "run_20261003_120130_s3_jev_c554",
+  "run_file": "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
+  "agent_id": "a004",
+  "model": "jev-1.13.0"
+ },
+ "method": {
+  "filter": "same category; lens_grades[archetype] delta > 0.02; >=1 OFF health field improves by a meaningful amount (fibre +1g, sugar -2g, protein +3g, salt -0.2g, additives/sweeteners/NOVA/palm oil -1, or gains organic); persona hard gates; top 2 per basket item by lens delta",
+  "thresholds_source": "assumption: minimum deltas a shopper would notice on a label; nutrient claim thresholds from Regulation (EC) No 1924/2006 Annex (retained in UK law): HIGH FIBRE >=6g/100g or >=3g/100kcal; SOURCE OF FIBRE >=3g/100g or >=1.5g/100kcal; HIGH PROTEIN >=20% of energy from protein; SOURCE OF PROTEIN >=12%; LOW SUGARS <=5g/100g (<=2.5g/100ml liquids); NO ADDED SUGARS = no mono/disaccharides or sugar-used-for-sweetening added. https://www.legislation.gov.uk/eur/2006/1924/annex",
+  "jev": "one fan-out request per swap: accept Noul, benefit Score, price_worth Noul, trigger Nouls on both products (docs.typesafe.ai/patterns/fan-out.md, primitives/noul.md, primitives/score.md)",
+  "numbers_to_words": "all deltas bucketed into words in code (docs model-jaggedness/jev-1.13 #2)",
+  "rank": "P(accept) x lens delta",
+  "price_caveat": "most catalog prices are curator assumptions (see price_sources per swap)"
+ },
+ "top": [
+  {
+   "basket_item": {
+    "code": "4025500277031",
+    "name": "Vanilla Chocolate Balls",
+    "brand": "müller corner",
+    "off_url": "https://world.openfoodfacts.org/product/4025500277031",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5054781763529",
+    "name": "Plain Soya - Yogurt Alternative",
+    "brand": "Asda",
+    "off_url": "https://world.openfoodfacts.org/product/5054781763529",
+    "role": "own_label",
+    "claims": [
+     "gut"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/505/478/176/3529/front_en.131.400.jpg"
+   },
+   "category": "yoghurt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.15,
+    "alternative": 1,
+    "delta": 0.85,
+    "why_basket": [
+     "nova=4 (OFF)",
+     "additives_n=7 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=17.0 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=0.0 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "sugars_100g",
+     "basket": 17.0,
+     "alternative": 0.0,
+     "delta": -17.0,
+     "better": true,
+     "words": "far less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5054781763529)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 7.0,
+     "alternative": 0.0,
+     "delta": -7.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5054781763529)"
+    },
+    {
+     "field": "nova",
+     "basket": 4.0,
+     "alternative": 1.0,
+     "delta": -3.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5054781763529)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 0.62,
+    "alternative_price_gbp": 1.15,
+    "delta_gbp": 0.53,
+    "delta_pct": 85.5,
+    "unit_price_100_basket": 0.5,
+    "unit_price_100_alternative": 0.23,
+    "unit": "g",
+    "unit_delta_pct": -54.0,
+    "unit_price_method": [
+     "price_gbp / catalog pack_size_g",
+     "price_gbp / catalog pack_size_g"
+    ],
+    "words": "about 53p more per pack (about double the price); better value per 100g/ml",
+    "price_sources": [
+     "https://www.trolley.co.uk/product/muller-corner-vanilla-yogurt-with-chocolate-balls/RWH321 (trolley.co.uk, fetched 2026-10-03)",
+     "assumption: ASDA own-label plain soya 500g not found on trolley; typical own-label 500g plant pot £0.95-£1.15 per trolley.co.uk/search/?q=asda+plain+soya+yogurt+alternative+500g (fetched 2026-10-03); took upper bound"
+    ],
+    "price_is_assumption": [
+     false,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "gut": 53.7
+   },
+   "jev": {
+    "p_accept": 0.33,
+    "p_price_worth": 0.55,
+    "benefit": {
+     "score": 3.6,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.01,
+      "2": 0.02,
+      "3": 0.26,
+      "4": 0.69
+     },
+     "confidence": 0.66
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.06,
+      "p_basket_item": 0.06
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.14,
+      "p_basket_item": 0.29
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.04
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.6,
+      "p_basket_item": 0.06
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.06
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.07,
+      "p_basket_item": 0.08
+     }
+    },
+    "refusal_reasons": [
+     {
+      "trigger": "trigger_3",
+      "p": 0.6,
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw"
+     }
+    ],
+    "triggers_removed_by_swap": [],
+    "verbatims": [
+     {
+      "trigger": "trigger_3",
+      "quote": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+      "url": "https://www.reddit.com/comments/1tbf6zw",
+      "method": "persona verbatim from the trigger's cited thread"
+     }
+    ],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "2d1216c3ffa60af4110c933f10a27d46d39c75783ed7335a85da517937f20905",
+     "cached": false,
+     "input_tokens": 3568,
+     "output_tokens": 292,
+     "cost_usd": 0.00014986,
+     "cost_if_uncached_usd": 0.00014986,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:4025500277031->5054781763529"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "yoghurt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Vanilla Chocolate Balls",
+      "brand": "müller corner",
+      "brand_type": "big familiar brand",
+      "price": "£0.62, the cheapest in this set",
+      "pack_copy": "Müller Corner · vanilla yogurt with chocolate balls · flip-the-corner treat pot",
+      "pack_size": "124g",
+      "on_pack_badges": [
+       "green dot"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "fat: amber (medium)",
+        "saturated fat: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "source of protein; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "a long list of additives (6+)",
+       "processing": "ultra-processed (NOVA 4)",
+       "allergens": "gluten, milk",
+       "ingredients_start": "yogurt (milk), sugar, water, wheat flour (gluten), rice flour, cocoa butter, milk powder, cocoa mass, modified starch, flavourings, glucose syrup, coconut oil, stabiliser: pectins,",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Plain Soya - Yogurt Alternative",
+      "brand": "Asda",
+      "brand_type": "supermarket own-label",
+      "price": "£1.15, about 2x the cheapest here",
+      "pack_copy": "ASDA plain soya yogurt alternative · vegan · with vitamins D & B12 · live cultures",
+      "pack_size": "500 g",
+      "on_pack_badges": [
+       "vegetarian",
+       "vegan"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "fat: green (low)",
+        "saturated fat: green (low)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "soybeans",
+       "ingredients_start": "Water, Soya Beans (9%), Tricalcium Phosphate, Bacterial Cultures [Bifidus, Lactobacillus acidophilus], Potassium lodate, Vitamin D. Vitamin B12",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "gut"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "far less sugar (now low sugar)",
+       "no additives",
+       "unprocessed / minimally processed"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about 53p more per pack (about double the price); better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.2805,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Vanilla Chocolate Balls -> Plain Soya - Yogurt Alternative: far less sugar (now low sugar), no additives, unprocessed / minimally processed; about 53p more per pack (about double the price); better value per 100g/ml; P(accept)=0.33, lens +0.85; main refusal risk: 'high protein' or gym-style front of pack on a kids' snack, read as a  (p=0.60)",
+   "rank": 1
+  },
+  {
+   "basket_item": {
+    "code": "4025500277031",
+    "name": "Vanilla Chocolate Balls",
+    "brand": "müller corner",
+    "off_url": "https://world.openfoodfacts.org/product/4025500277031",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5060337220415",
+    "name": "kefir drink original",
+    "brand": "Biotiful gut health",
+    "off_url": "https://world.openfoodfacts.org/product/5060337220415",
+    "role": "challenger",
+    "claims": [
+     "gut"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/506/033/722/0415/front_en.36.400.jpg"
+   },
+   "category": "yoghurt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.15,
+    "alternative": 0.981,
+    "delta": 0.831,
+    "why_basket": [
+     "nova=4 (OFF)",
+     "additives_n=7 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=17.0 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=2.8 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "fiber_100g",
+     "basket": 1.64945454545455,
+     "alternative": 0.0,
+     "delta": -1.65,
+     "better": false,
+     "words": "a bit less fibre",
+     "source": "OFF fiber_100g (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    },
+    {
+     "field": "sugars_100g",
+     "basket": 17.0,
+     "alternative": 2.8,
+     "delta": -14.2,
+     "better": true,
+     "words": "much less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 7.0,
+     "alternative": 0.0,
+     "delta": -7.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    },
+    {
+     "field": "nova",
+     "basket": 4.0,
+     "alternative": 1.0,
+     "delta": -3.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 0.62,
+    "alternative_price_gbp": 2.0,
+    "delta_gbp": 1.38,
+    "delta_pct": 222.6,
+    "unit_price_100_basket": 0.5,
+    "unit_price_100_alternative": 0.4,
+    "unit": "g",
+    "unit_delta_pct": -20.0,
+    "unit_price_method": [
+     "price_gbp / catalog pack_size_g",
+     "price_gbp / catalog pack_size_g"
+    ],
+    "words": "about £1.38 more per pack (several times the price); better value per 100g/ml",
+    "price_sources": [
+     "https://www.trolley.co.uk/product/muller-corner-vanilla-yogurt-with-chocolate-balls/RWH321 (trolley.co.uk, fetched 2026-10-03)",
+     "https://www.trolley.co.uk/product/biotiful-kefir-original/JFY133 (trolley.co.uk, fetched 2026-10-03)"
+    ],
+    "price_is_assumption": [
+     false,
+     false
+    ]
+   },
+   "claim_premium_context": {
+    "gut": 53.7
+   },
+   "jev": {
+    "p_accept": 0.28,
+    "p_price_worth": 0.3,
+    "benefit": {
+     "score": 3.53,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.01,
+      "2": 0.02,
+      "3": 0.34,
+      "4": 0.61
+     },
+     "confidence": 0.61
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.06
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.27
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.04
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.55,
+      "p_basket_item": 0.07
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.05
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.4,
+      "p_basket_item": 0.08
+     }
+    },
+    "refusal_reasons": [
+     {
+      "trigger": "trigger_3",
+      "p": 0.55,
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw"
+     }
+    ],
+    "triggers_removed_by_swap": [],
+    "verbatims": [
+     {
+      "trigger": "trigger_3",
+      "quote": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+      "url": "https://www.reddit.com/comments/1tbf6zw",
+      "method": "persona verbatim from the trigger's cited thread"
+     }
+    ],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "11070c48d1b529d8d494ac67781b5fcf2408b6507898888cd2443fc6cc768840",
+     "cached": false,
+     "input_tokens": 3587,
+     "output_tokens": 292,
+     "cost_usd": 0.00015065,
+     "cost_if_uncached_usd": 0.00015065,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:4025500277031->5060337220415"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "yoghurt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Vanilla Chocolate Balls",
+      "brand": "müller corner",
+      "brand_type": "big familiar brand",
+      "price": "£0.62, the cheapest in this set",
+      "pack_copy": "Müller Corner · vanilla yogurt with chocolate balls · flip-the-corner treat pot",
+      "pack_size": "124g",
+      "on_pack_badges": [
+       "green dot"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "fat: amber (medium)",
+        "saturated fat: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "source of protein; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "a long list of additives (6+)",
+       "processing": "ultra-processed (NOVA 4)",
+       "allergens": "gluten, milk",
+       "ingredients_start": "yogurt (milk), sugar, water, wheat flour (gluten), rice flour, cocoa butter, milk powder, cocoa mass, modified starch, flavourings, glucose syrup, coconut oil, stabiliser: pectins,",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "kefir drink original",
+      "brand": "Biotiful gut health",
+      "brand_type": "small challenger brand (newer, less familiar)",
+      "price": "£2.00, about 3x the cheapest here",
+      "pack_copy": "Biotiful kefir drink original · live kefir cultures · Great Taste award · just fermented milk",
+      "pack_size": "500 ml",
+      "on_pack_badges": [
+       "vegetarian",
+       "great taste awards"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "fat: green (low)",
+        "saturated fat: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "milk",
+       "ingredients_start": "Pasteurised Cow’s Milk fermented with Live Kefir Cultures*. Bifidobacterium, Lactobacillus acidophilus, Lactobacillus plantarum, Lactobacillus casei, Lactobacillus rhamnosus",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "gut"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "much less sugar (now low sugar)",
+       "no additives",
+       "unprocessed / minimally processed"
+      ],
+      "worse_on": [
+       "a bit less fibre"
+      ],
+      "price_change": "about £1.38 more per pack (several times the price); better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.23268,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Vanilla Chocolate Balls -> kefir drink original: much less sugar (now low sugar), no additives, unprocessed / minimally processed; about £1.38 more per pack (several times the price); better value per 100g/ml; P(accept)=0.28, lens +0.83; main refusal risk: 'high protein' or gym-style front of pack on a kids' snack, read as a  (p=0.55)",
+   "rank": 2
+  },
+  {
+   "basket_item": {
+    "code": "7394376620713",
+    "name": "Whole Oat Drink",
+    "brand": "Oatly",
+    "off_url": "https://world.openfoodfacts.org/product/7394376620713",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5060362072263",
+    "name": "Organic soya drink",
+    "brand": "Plenish",
+    "off_url": "https://world.openfoodfacts.org/product/5060362072263",
+    "role": "challenger",
+    "claims": [
+     "organic"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/506/036/207/2263/front_en.3.400.jpg"
+   },
+   "category": "plant_milk_dairy_alt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.554,
+    "alternative": 1.0,
+    "delta": 0.446,
+    "why_basket": [
+     "nova=3 (OFF)",
+     "additives_n=1 (OFF)",
+     "sugars_100g=3.4 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sugars_100g=0.0 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "sugars_100g",
+     "basket": 3.4,
+     "alternative": 0.0,
+     "delta": -3.4,
+     "better": true,
+     "words": "a bit less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5060362072263)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 1.0,
+     "alternative": 0.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5060362072263)"
+    },
+    {
+     "field": "nova",
+     "basket": 3.0,
+     "alternative": 1.0,
+     "delta": -2.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5060362072263)"
+    },
+    {
+     "field": "organic",
+     "basket": false,
+     "alternative": true,
+     "delta": null,
+     "better": true,
+     "words": "organic (the basket item is not)",
+     "source": "OFF labels en:organic / catalog organic"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 2.2,
+    "alternative_price_gbp": 2.0,
+    "delta_gbp": -0.2,
+    "delta_pct": -9.1,
+    "unit_price_100_basket": 0.22,
+    "unit_price_100_alternative": null,
+    "unit": null,
+    "unit_delta_pct": null,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '1l'",
+     "no parsable quantity"
+    ],
+    "words": "about 20p cheaper per pack",
+    "price_sources": [
+     "assumption: typical UK RRP for Oatly 1L chilled; corroborated by reddit verbatim: \"Lidl's super cheap £1.09 oat milk is better than the £2.20 Oatly stuff\" (https://www.reddit.com/comments/1bq1qcm)",
+     "assumption: Plenish organic soya 1L typical UK RRP ~£2.00"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "organic": 8.2
+   },
+   "jev": {
+    "p_accept": 0.31,
+    "p_price_worth": 0.8,
+    "benefit": {
+     "score": 3.3,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.01,
+      "2": 0.03,
+      "3": 0.56,
+      "4": 0.39
+     },
+     "confidence": 0.61
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.04
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.34
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.31,
+      "p_basket_item": 0.04
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.04
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.23
+     }
+    },
+    "refusal_reasons": [],
+    "triggers_removed_by_swap": [],
+    "verbatims": [],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "02671c0b370818663bb8b7a98a825ec602ce24c88bf782e1806d41eb57d863a4",
+     "cached": false,
+     "input_tokens": 3559,
+     "output_tokens": 292,
+     "cost_usd": 0.00014948,
+     "cost_if_uncached_usd": 0.00014948,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:7394376620713->5060362072263"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "plant milk dairy alt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Whole Oat Drink",
+      "brand": "Oatly",
+      "brand_type": "big familiar brand",
+      "price": "£2.20, a little dearer than the cheapest here",
+      "pack_copy": "whole oat drink · vegan · with calcium, iodine & vitamins D2, riboflavin, B12",
+      "pack_size": "1l",
+      "value": "a bit more per litre than the best value here",
+      "on_pack_badges": [
+       "vegetarian",
+       "vegan",
+       "fsc",
+       "fsc mix"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "not a protein food; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "one or two additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "gluten",
+       "ingredients_start": "Water, OATS 10%, rapeseed oil, acidity regulator (dipotassium phosphate), minerals (calcium carbonate, potassium iodide), salt, vitamins (D2, riboflavin, B12).",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Organic soya drink",
+      "brand": "Plenish",
+      "brand_type": "small challenger brand (newer, less familiar)",
+      "price": "£2.00, the cheapest in this set",
+      "pack_copy": "organic soya drink · just spring water & organic soybeans (8%) · soil association organic",
+      "pack_size": "1 litre",
+      "value": "lowest price per litre in this set",
+      "on_pack_badges": [
+       "organic",
+       "eu organic",
+       "fr bio 01",
+       "soil association organic"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "none declared",
+       "ingredients_start": "Spring water, Organic Soybeans 8%, _soya_",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "organic"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "a bit less sugar (now low sugar)",
+       "no additives",
+       "unprocessed / minimally processed",
+       "organic (the basket item is not)"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about 20p cheaper per pack"
+     }
+    }
+   },
+   "rank_score": 0.13826,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Whole Oat Drink -> Organic soya drink: a bit less sugar (now low sugar), no additives, unprocessed / minimally processed, organic (the basket item is not); about 20p cheaper per pack; P(accept)=0.31, lens +0.45",
+   "rank": 3
+  }
+ ],
+ "all_swaps": [
+  {
+   "basket_item": {
+    "code": "4025500277031",
+    "name": "Vanilla Chocolate Balls",
+    "brand": "müller corner",
+    "off_url": "https://world.openfoodfacts.org/product/4025500277031",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5054781763529",
+    "name": "Plain Soya - Yogurt Alternative",
+    "brand": "Asda",
+    "off_url": "https://world.openfoodfacts.org/product/5054781763529",
+    "role": "own_label",
+    "claims": [
+     "gut"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/505/478/176/3529/front_en.131.400.jpg"
+   },
+   "category": "yoghurt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.15,
+    "alternative": 1,
+    "delta": 0.85,
+    "why_basket": [
+     "nova=4 (OFF)",
+     "additives_n=7 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=17.0 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=0.0 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "sugars_100g",
+     "basket": 17.0,
+     "alternative": 0.0,
+     "delta": -17.0,
+     "better": true,
+     "words": "far less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5054781763529)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 7.0,
+     "alternative": 0.0,
+     "delta": -7.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5054781763529)"
+    },
+    {
+     "field": "nova",
+     "basket": 4.0,
+     "alternative": 1.0,
+     "delta": -3.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5054781763529)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 0.62,
+    "alternative_price_gbp": 1.15,
+    "delta_gbp": 0.53,
+    "delta_pct": 85.5,
+    "unit_price_100_basket": 0.5,
+    "unit_price_100_alternative": 0.23,
+    "unit": "g",
+    "unit_delta_pct": -54.0,
+    "unit_price_method": [
+     "price_gbp / catalog pack_size_g",
+     "price_gbp / catalog pack_size_g"
+    ],
+    "words": "about 53p more per pack (about double the price); better value per 100g/ml",
+    "price_sources": [
+     "https://www.trolley.co.uk/product/muller-corner-vanilla-yogurt-with-chocolate-balls/RWH321 (trolley.co.uk, fetched 2026-10-03)",
+     "assumption: ASDA own-label plain soya 500g not found on trolley; typical own-label 500g plant pot £0.95-£1.15 per trolley.co.uk/search/?q=asda+plain+soya+yogurt+alternative+500g (fetched 2026-10-03); took upper bound"
+    ],
+    "price_is_assumption": [
+     false,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "gut": 53.7
+   },
+   "jev": {
+    "p_accept": 0.33,
+    "p_price_worth": 0.55,
+    "benefit": {
+     "score": 3.6,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.01,
+      "2": 0.02,
+      "3": 0.26,
+      "4": 0.69
+     },
+     "confidence": 0.66
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.06,
+      "p_basket_item": 0.06
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.14,
+      "p_basket_item": 0.29
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.04
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.6,
+      "p_basket_item": 0.06
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.06
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.07,
+      "p_basket_item": 0.08
+     }
+    },
+    "refusal_reasons": [
+     {
+      "trigger": "trigger_3",
+      "p": 0.6,
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw"
+     }
+    ],
+    "triggers_removed_by_swap": [],
+    "verbatims": [
+     {
+      "trigger": "trigger_3",
+      "quote": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+      "url": "https://www.reddit.com/comments/1tbf6zw",
+      "method": "persona verbatim from the trigger's cited thread"
+     }
+    ],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "2d1216c3ffa60af4110c933f10a27d46d39c75783ed7335a85da517937f20905",
+     "cached": false,
+     "input_tokens": 3568,
+     "output_tokens": 292,
+     "cost_usd": 0.00014986,
+     "cost_if_uncached_usd": 0.00014986,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:4025500277031->5054781763529"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "yoghurt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Vanilla Chocolate Balls",
+      "brand": "müller corner",
+      "brand_type": "big familiar brand",
+      "price": "£0.62, the cheapest in this set",
+      "pack_copy": "Müller Corner · vanilla yogurt with chocolate balls · flip-the-corner treat pot",
+      "pack_size": "124g",
+      "on_pack_badges": [
+       "green dot"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "fat: amber (medium)",
+        "saturated fat: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "source of protein; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "a long list of additives (6+)",
+       "processing": "ultra-processed (NOVA 4)",
+       "allergens": "gluten, milk",
+       "ingredients_start": "yogurt (milk), sugar, water, wheat flour (gluten), rice flour, cocoa butter, milk powder, cocoa mass, modified starch, flavourings, glucose syrup, coconut oil, stabiliser: pectins,",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Plain Soya - Yogurt Alternative",
+      "brand": "Asda",
+      "brand_type": "supermarket own-label",
+      "price": "£1.15, about 2x the cheapest here",
+      "pack_copy": "ASDA plain soya yogurt alternative · vegan · with vitamins D & B12 · live cultures",
+      "pack_size": "500 g",
+      "on_pack_badges": [
+       "vegetarian",
+       "vegan"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "fat: green (low)",
+        "saturated fat: green (low)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "soybeans",
+       "ingredients_start": "Water, Soya Beans (9%), Tricalcium Phosphate, Bacterial Cultures [Bifidus, Lactobacillus acidophilus], Potassium lodate, Vitamin D. Vitamin B12",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "gut"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "far less sugar (now low sugar)",
+       "no additives",
+       "unprocessed / minimally processed"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about 53p more per pack (about double the price); better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.2805,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Vanilla Chocolate Balls -> Plain Soya - Yogurt Alternative: far less sugar (now low sugar), no additives, unprocessed / minimally processed; about 53p more per pack (about double the price); better value per 100g/ml; P(accept)=0.33, lens +0.85; main refusal risk: 'high protein' or gym-style front of pack on a kids' snack, read as a  (p=0.60)",
+   "rank": 1
+  },
+  {
+   "basket_item": {
+    "code": "4025500277031",
+    "name": "Vanilla Chocolate Balls",
+    "brand": "müller corner",
+    "off_url": "https://world.openfoodfacts.org/product/4025500277031",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5060337220415",
+    "name": "kefir drink original",
+    "brand": "Biotiful gut health",
+    "off_url": "https://world.openfoodfacts.org/product/5060337220415",
+    "role": "challenger",
+    "claims": [
+     "gut"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/506/033/722/0415/front_en.36.400.jpg"
+   },
+   "category": "yoghurt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.15,
+    "alternative": 0.981,
+    "delta": 0.831,
+    "why_basket": [
+     "nova=4 (OFF)",
+     "additives_n=7 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=17.0 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sweeteners=0 (OFF additives)",
+     "sugars_100g=2.8 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "fiber_100g",
+     "basket": 1.64945454545455,
+     "alternative": 0.0,
+     "delta": -1.65,
+     "better": false,
+     "words": "a bit less fibre",
+     "source": "OFF fiber_100g (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    },
+    {
+     "field": "sugars_100g",
+     "basket": 17.0,
+     "alternative": 2.8,
+     "delta": -14.2,
+     "better": true,
+     "words": "much less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 7.0,
+     "alternative": 0.0,
+     "delta": -7.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    },
+    {
+     "field": "nova",
+     "basket": 4.0,
+     "alternative": 1.0,
+     "delta": -3.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/4025500277031 vs https://world.openfoodfacts.org/product/5060337220415)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 0.62,
+    "alternative_price_gbp": 2.0,
+    "delta_gbp": 1.38,
+    "delta_pct": 222.6,
+    "unit_price_100_basket": 0.5,
+    "unit_price_100_alternative": 0.4,
+    "unit": "g",
+    "unit_delta_pct": -20.0,
+    "unit_price_method": [
+     "price_gbp / catalog pack_size_g",
+     "price_gbp / catalog pack_size_g"
+    ],
+    "words": "about £1.38 more per pack (several times the price); better value per 100g/ml",
+    "price_sources": [
+     "https://www.trolley.co.uk/product/muller-corner-vanilla-yogurt-with-chocolate-balls/RWH321 (trolley.co.uk, fetched 2026-10-03)",
+     "https://www.trolley.co.uk/product/biotiful-kefir-original/JFY133 (trolley.co.uk, fetched 2026-10-03)"
+    ],
+    "price_is_assumption": [
+     false,
+     false
+    ]
+   },
+   "claim_premium_context": {
+    "gut": 53.7
+   },
+   "jev": {
+    "p_accept": 0.28,
+    "p_price_worth": 0.3,
+    "benefit": {
+     "score": 3.53,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.01,
+      "2": 0.02,
+      "3": 0.34,
+      "4": 0.61
+     },
+     "confidence": 0.61
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.06
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.27
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.04
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.55,
+      "p_basket_item": 0.07
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.05
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.4,
+      "p_basket_item": 0.08
+     }
+    },
+    "refusal_reasons": [
+     {
+      "trigger": "trigger_3",
+      "p": 0.55,
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw"
+     }
+    ],
+    "triggers_removed_by_swap": [],
+    "verbatims": [
+     {
+      "trigger": "trigger_3",
+      "quote": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+      "url": "https://www.reddit.com/comments/1tbf6zw",
+      "method": "persona verbatim from the trigger's cited thread"
+     }
+    ],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "11070c48d1b529d8d494ac67781b5fcf2408b6507898888cd2443fc6cc768840",
+     "cached": false,
+     "input_tokens": 3587,
+     "output_tokens": 292,
+     "cost_usd": 0.00015065,
+     "cost_if_uncached_usd": 0.00015065,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:4025500277031->5060337220415"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "yoghurt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Vanilla Chocolate Balls",
+      "brand": "müller corner",
+      "brand_type": "big familiar brand",
+      "price": "£0.62, the cheapest in this set",
+      "pack_copy": "Müller Corner · vanilla yogurt with chocolate balls · flip-the-corner treat pot",
+      "pack_size": "124g",
+      "on_pack_badges": [
+       "green dot"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "fat: amber (medium)",
+        "saturated fat: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "source of protein; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "a long list of additives (6+)",
+       "processing": "ultra-processed (NOVA 4)",
+       "allergens": "gluten, milk",
+       "ingredients_start": "yogurt (milk), sugar, water, wheat flour (gluten), rice flour, cocoa butter, milk powder, cocoa mass, modified starch, flavourings, glucose syrup, coconut oil, stabiliser: pectins,",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "kefir drink original",
+      "brand": "Biotiful gut health",
+      "brand_type": "small challenger brand (newer, less familiar)",
+      "price": "£2.00, about 3x the cheapest here",
+      "pack_copy": "Biotiful kefir drink original · live kefir cultures · Great Taste award · just fermented milk",
+      "pack_size": "500 ml",
+      "on_pack_badges": [
+       "vegetarian",
+       "great taste awards"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "fat: green (low)",
+        "saturated fat: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "milk",
+       "ingredients_start": "Pasteurised Cow’s Milk fermented with Live Kefir Cultures*. Bifidobacterium, Lactobacillus acidophilus, Lactobacillus plantarum, Lactobacillus casei, Lactobacillus rhamnosus",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "gut"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "much less sugar (now low sugar)",
+       "no additives",
+       "unprocessed / minimally processed"
+      ],
+      "worse_on": [
+       "a bit less fibre"
+      ],
+      "price_change": "about £1.38 more per pack (several times the price); better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.23268,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Vanilla Chocolate Balls -> kefir drink original: much less sugar (now low sugar), no additives, unprocessed / minimally processed; about £1.38 more per pack (several times the price); better value per 100g/ml; P(accept)=0.28, lens +0.83; main refusal risk: 'high protein' or gym-style front of pack on a kids' snack, read as a  (p=0.55)",
+   "rank": 2
+  },
+  {
+   "basket_item": {
+    "code": "7394376620713",
+    "name": "Whole Oat Drink",
+    "brand": "Oatly",
+    "off_url": "https://world.openfoodfacts.org/product/7394376620713",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5060362072263",
+    "name": "Organic soya drink",
+    "brand": "Plenish",
+    "off_url": "https://world.openfoodfacts.org/product/5060362072263",
+    "role": "challenger",
+    "claims": [
+     "organic"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/506/036/207/2263/front_en.3.400.jpg"
+   },
+   "category": "plant_milk_dairy_alt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.554,
+    "alternative": 1.0,
+    "delta": 0.446,
+    "why_basket": [
+     "nova=3 (OFF)",
+     "additives_n=1 (OFF)",
+     "sugars_100g=3.4 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sugars_100g=0.0 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "sugars_100g",
+     "basket": 3.4,
+     "alternative": 0.0,
+     "delta": -3.4,
+     "better": true,
+     "words": "a bit less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5060362072263)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 1.0,
+     "alternative": 0.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5060362072263)"
+    },
+    {
+     "field": "nova",
+     "basket": 3.0,
+     "alternative": 1.0,
+     "delta": -2.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5060362072263)"
+    },
+    {
+     "field": "organic",
+     "basket": false,
+     "alternative": true,
+     "delta": null,
+     "better": true,
+     "words": "organic (the basket item is not)",
+     "source": "OFF labels en:organic / catalog organic"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 2.2,
+    "alternative_price_gbp": 2.0,
+    "delta_gbp": -0.2,
+    "delta_pct": -9.1,
+    "unit_price_100_basket": 0.22,
+    "unit_price_100_alternative": null,
+    "unit": null,
+    "unit_delta_pct": null,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '1l'",
+     "no parsable quantity"
+    ],
+    "words": "about 20p cheaper per pack",
+    "price_sources": [
+     "assumption: typical UK RRP for Oatly 1L chilled; corroborated by reddit verbatim: \"Lidl's super cheap £1.09 oat milk is better than the £2.20 Oatly stuff\" (https://www.reddit.com/comments/1bq1qcm)",
+     "assumption: Plenish organic soya 1L typical UK RRP ~£2.00"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "organic": 8.2
+   },
+   "jev": {
+    "p_accept": 0.31,
+    "p_price_worth": 0.8,
+    "benefit": {
+     "score": 3.3,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.01,
+      "2": 0.03,
+      "3": 0.56,
+      "4": 0.39
+     },
+     "confidence": 0.61
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.04
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.34
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.31,
+      "p_basket_item": 0.04
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.04
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.23
+     }
+    },
+    "refusal_reasons": [],
+    "triggers_removed_by_swap": [],
+    "verbatims": [],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "02671c0b370818663bb8b7a98a825ec602ce24c88bf782e1806d41eb57d863a4",
+     "cached": false,
+     "input_tokens": 3559,
+     "output_tokens": 292,
+     "cost_usd": 0.00014948,
+     "cost_if_uncached_usd": 0.00014948,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:7394376620713->5060362072263"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "plant milk dairy alt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Whole Oat Drink",
+      "brand": "Oatly",
+      "brand_type": "big familiar brand",
+      "price": "£2.20, a little dearer than the cheapest here",
+      "pack_copy": "whole oat drink · vegan · with calcium, iodine & vitamins D2, riboflavin, B12",
+      "pack_size": "1l",
+      "value": "a bit more per litre than the best value here",
+      "on_pack_badges": [
+       "vegetarian",
+       "vegan",
+       "fsc",
+       "fsc mix"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "not a protein food; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "one or two additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "gluten",
+       "ingredients_start": "Water, OATS 10%, rapeseed oil, acidity regulator (dipotassium phosphate), minerals (calcium carbonate, potassium iodide), salt, vitamins (D2, riboflavin, B12).",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Organic soya drink",
+      "brand": "Plenish",
+      "brand_type": "small challenger brand (newer, less familiar)",
+      "price": "£2.00, the cheapest in this set",
+      "pack_copy": "organic soya drink · just spring water & organic soybeans (8%) · soil association organic",
+      "pack_size": "1 litre",
+      "value": "lowest price per litre in this set",
+      "on_pack_badges": [
+       "organic",
+       "eu organic",
+       "fr bio 01",
+       "soil association organic"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "none declared",
+       "ingredients_start": "Spring water, Organic Soybeans 8%, _soya_",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "organic"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "a bit less sugar (now low sugar)",
+       "no additives",
+       "unprocessed / minimally processed",
+       "organic (the basket item is not)"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about 20p cheaper per pack"
+     }
+    }
+   },
+   "rank_score": 0.13826,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Whole Oat Drink -> Organic soya drink: a bit less sugar (now low sugar), no additives, unprocessed / minimally processed, organic (the basket item is not); about 20p cheaper per pack; P(accept)=0.31, lens +0.45",
+   "rank": 3
+  },
+  {
+   "basket_item": {
+    "code": "5033665206864",
+    "name": "Charlie Bingham Lasagne",
+    "brand": "Charlie Bigham's",
+    "off_url": "https://world.openfoodfacts.org/product/5033665206864",
+    "claims": []
+   },
+   "alternative": {
+    "code": "01498257",
+    "name": "Spicy tomato, lentil and red pepper soup",
+    "brand": "Sainsbury's",
+    "off_url": "https://world.openfoodfacts.org/product/01498257",
+    "role": "own_label",
+    "claims": [
+     "protein"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/000/000/149/8257/front_en.28.400.jpg"
+   },
+   "category": "ready_meals_soup",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.31,
+    "alternative": 0.62,
+    "delta": 0.31,
+    "why_basket": [
+     "nova 3 (OFF)",
+     "additives_n=4 (OFF)",
+     "ingredient count≈38 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "why_alternative": [
+     "nova 3 (OFF)",
+     "additives_n=0 (OFF)",
+     "ingredient count≈13 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "proteins_100g",
+     "basket": 8.46376811594203,
+     "alternative": 3.7,
+     "delta": -4.76,
+     "better": false,
+     "words": "less protein",
+     "source": "OFF proteins_100g (https://world.openfoodfacts.org/product/5033665206864 vs https://world.openfoodfacts.org/product/01498257)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 4.0,
+     "alternative": 0.0,
+     "delta": -4.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/5033665206864 vs https://world.openfoodfacts.org/product/01498257)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 8.0,
+    "alternative_price_gbp": 2.0,
+    "delta_gbp": -6.0,
+    "delta_pct": -75.0,
+    "unit_price_100_basket": 1.1594,
+    "unit_price_100_alternative": 0.3333,
+    "unit": "g",
+    "unit_delta_pct": -71.2,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '690 g'",
+     "price_gbp / OFF quantity '600g'"
+    ],
+    "words": "about £6.00 cheaper per pack; better value per 100g/ml",
+    "price_sources": [
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched",
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "protein": 25.0
+   },
+   "jev": {
+    "p_accept": 0.28,
+    "p_price_worth": 0.76,
+    "benefit": {
+     "score": 3.08,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.06,
+      "3": 0.78,
+      "4": 0.16
+     },
+     "confidence": 0.8
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.04
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.06,
+      "p_basket_item": 0.55
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.28,
+      "p_basket_item": 0.23
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.06
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.78
+     }
+    },
+    "refusal_reasons": [],
+    "triggers_removed_by_swap": [
+     {
+      "trigger": "trigger_1",
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "p_basket_item": 0.55,
+      "p_alternative": 0.06
+     },
+     {
+      "trigger": "trigger_5",
+      "text": "unit price well above own-label for a non-hero item",
+      "p_basket_item": 0.78,
+      "p_alternative": 0.03
+     }
+    ],
+    "verbatims": [],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "fa1c6d2697846440a5469851d08f66e6c791a5102a643d8032662ec0f70ee0e4",
+     "cached": false,
+     "input_tokens": 3562,
+     "output_tokens": 292,
+     "cost_usd": 0.0001496,
+     "cost_if_uncached_usd": 0.0001496,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:5033665206864->01498257"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "ready meals soup shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Charlie Bingham Lasagne",
+      "brand": "Charlie Bigham's",
+      "brand_type": "big familiar brand",
+      "price": "£8.00, about 4x the cheapest here",
+      "pack_copy": "charlie bigham's lasagne · serves 2 · 690g",
+      "pack_size": "690 g",
+      "value": "much more per kilo than the best value here",
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about 5-10g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "several additives (3-5)",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "celery, eggs, gluten, milk",
+       "ingredients_start": "Milk, tomatoes, egg pasta (durum wheat semolina, water, free range egg), British beef (10%), white wine, Cheddar cheese (milk), smoked bacon (6%) (pork, salt, preservatives: potass",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Spicy tomato, lentil and red pepper soup",
+      "brand": "Sainsbury's",
+      "brand_type": "supermarket own-label",
+      "price": "£2.00, the cheapest in this set",
+      "pack_copy": "sainsbury's spicy tomato, lentil & red pepper soup · vegan · source of protein · 600g",
+      "pack_size": "600g",
+      "value": "lowest price per kilo in this set",
+      "on_pack_badges": [
+       "vegetarian",
+       "source of proteins",
+       "vegan"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "none declared",
+       "ingredients_start": "Tomato 38%, Water, Red Split Lentils 10%, Onion, Red Pepper 6%, Chipotle Chilli Paste (Sugar, Red Pepper Juice, Molasses, Tomato Purée, Water, Salt, Chipotle Chilli, Smoked Paprika",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "protein"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "no additives"
+      ],
+      "worse_on": [
+       "less protein"
+      ],
+      "price_change": "about £6.00 cheaper per pack; better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.0868,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Charlie Bingham Lasagne -> Spicy tomato, lentil and red pepper soup: no additives; about £6.00 cheaper per pack; better value per 100g/ml; P(accept)=0.28, lens +0.31",
+   "rank": 4
+  },
+  {
+   "basket_item": {
+    "code": "5000157062673",
+    "name": "Cream of Tomato Soup",
+    "brand": "Heinz",
+    "off_url": "https://world.openfoodfacts.org/product/5000157062673",
+    "claims": []
+   },
+   "alternative": {
+    "code": "01498257",
+    "name": "Spicy tomato, lentil and red pepper soup",
+    "brand": "Sainsbury's",
+    "off_url": "https://world.openfoodfacts.org/product/01498257",
+    "role": "own_label",
+    "claims": [
+     "protein"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/000/000/149/8257/front_en.28.400.jpg"
+   },
+   "category": "ready_meals_soup",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.33,
+    "alternative": 0.62,
+    "delta": 0.29,
+    "why_basket": [
+     "nova 4 (OFF)",
+     "additives_n=1 (OFF)",
+     "ingredient count≈11 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "why_alternative": [
+     "nova 3 (OFF)",
+     "additives_n=0 (OFF)",
+     "ingredient count≈13 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "fiber_100g",
+     "basket": 0.6,
+     "alternative": 1.8,
+     "delta": 1.2,
+     "better": true,
+     "words": "a bit more fibre (still low fibre)",
+     "source": "OFF fiber_100g (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/01498257)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 1.0,
+     "alternative": 0.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/01498257)"
+    },
+    {
+     "field": "nova",
+     "basket": 4.0,
+     "alternative": 3.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "processed but not ultra-processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/01498257)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 1.5,
+    "alternative_price_gbp": 2.0,
+    "delta_gbp": 0.5,
+    "delta_pct": 33.3,
+    "unit_price_100_basket": 0.375,
+    "unit_price_100_alternative": 0.3333,
+    "unit": "g",
+    "unit_delta_pct": -11.1,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '400g'",
+     "price_gbp / OFF quantity '600g'"
+    ],
+    "words": "about 50p more per pack (noticeably dearer); better value per 100g/ml",
+    "price_sources": [
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched",
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "protein": 25.0
+   },
+   "jev": {
+    "p_accept": 0.29,
+    "p_price_worth": 0.42,
+    "benefit": {
+     "score": 2.62,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.03,
+      "2": 0.28,
+      "3": 0.63,
+      "4": 0.04
+     },
+     "confidence": 0.62
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.05
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.06,
+      "p_basket_item": 0.3
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.45,
+      "p_basket_item": 0.03
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.05
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.07,
+      "p_basket_item": 0.18
+     }
+    },
+    "refusal_reasons": [],
+    "triggers_removed_by_swap": [],
+    "verbatims": [],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "ef892e018b70704c1d6f4a0e4cdf2b9b9bc541e063a893c8ac56766e4a7c7f5f",
+     "cached": false,
+     "input_tokens": 3586,
+     "output_tokens": 292,
+     "cost_usd": 0.00015061,
+     "cost_if_uncached_usd": 0.00015061,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:5000157062673->01498257"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "ready meals soup shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Cream of Tomato Soup",
+      "brand": "Heinz",
+      "brand_type": "big familiar brand",
+      "price": "£1.50, the cheapest in this set",
+      "pack_copy": "heinz cream of tomato soup · gluten free · 400g tin",
+      "pack_size": "400g",
+      "value": "a bit more per kilo than the best value here",
+      "on_pack_badges": [
+       "no gluten"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "not a protein food; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "one or two additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "ultra-processed (NOVA 4)",
+       "allergens": "milk",
+       "ingredients_start": "Tomatoes (89%), Water, Modified Cornflour Sugar, Rapeseed Oil, Dried Skimmed Milk, Salt, Cream (Milk), Milk Proteins, Acidity Regulator - Citric Acid, Spice Extracts, Herb Extract",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Spicy tomato, lentil and red pepper soup",
+      "brand": "Sainsbury's",
+      "brand_type": "supermarket own-label",
+      "price": "£2.00, about 1.5x the cheapest here",
+      "pack_copy": "sainsbury's spicy tomato, lentil & red pepper soup · vegan · source of protein · 600g",
+      "pack_size": "600g",
+      "value": "lowest price per kilo in this set",
+      "on_pack_badges": [
+       "vegetarian",
+       "source of proteins",
+       "vegan"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "none declared",
+       "ingredients_start": "Tomato 38%, Water, Red Split Lentils 10%, Onion, Red Pepper 6%, Chipotle Chilli Paste (Sugar, Red Pepper Juice, Molasses, Tomato Purée, Water, Salt, Chipotle Chilli, Smoked Paprika",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "protein"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "a bit more fibre (still low fibre)",
+       "no additives",
+       "processed but not ultra-processed"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about 50p more per pack (noticeably dearer); better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.0841,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Cream of Tomato Soup -> Spicy tomato, lentil and red pepper soup: a bit more fibre (still low fibre), no additives, processed but not ultra-processed; about 50p more per pack (noticeably dearer); better value per 100g/ml; P(accept)=0.29, lens +0.29",
+   "rank": 5
+  },
+  {
+   "basket_item": {
+    "code": "5033665206864",
+    "name": "Charlie Bingham Lasagne",
+    "brand": "Charlie Bigham's",
+    "off_url": "https://world.openfoodfacts.org/product/5033665206864",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5034124007626",
+    "name": "Indian Lentil & Spinach Dhal",
+    "brand": "Tideford Organics",
+    "off_url": "https://world.openfoodfacts.org/product/5034124007626",
+    "role": "challenger",
+    "claims": [
+     "organic"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/503/412/400/7626/front_en.5.400.jpg"
+   },
+   "category": "ready_meals_soup",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.31,
+    "alternative": 0.62,
+    "delta": 0.31,
+    "why_basket": [
+     "nova 3 (OFF)",
+     "additives_n=4 (OFF)",
+     "ingredient count≈38 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "why_alternative": [
+     "nova 3 (OFF)",
+     "additives_n=0 (OFF)",
+     "ingredient count≈13 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "fiber_100g",
+     "basket": 0.840579710144927,
+     "alternative": 3.0,
+     "delta": 2.16,
+     "better": true,
+     "words": "a bit more fibre (a source of fibre)",
+     "source": "OFF fiber_100g (https://world.openfoodfacts.org/product/5033665206864 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "proteins_100g",
+     "basket": 8.46376811594203,
+     "alternative": 3.6,
+     "delta": -4.86,
+     "better": false,
+     "words": "less protein",
+     "source": "OFF proteins_100g (https://world.openfoodfacts.org/product/5033665206864 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 4.0,
+     "alternative": 0.0,
+     "delta": -4.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/5033665206864 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "organic",
+     "basket": false,
+     "alternative": true,
+     "delta": null,
+     "better": true,
+     "words": "organic (the basket item is not)",
+     "source": "OFF labels en:organic / catalog organic"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 8.0,
+    "alternative_price_gbp": 3.75,
+    "delta_gbp": -4.25,
+    "delta_pct": -53.1,
+    "unit_price_100_basket": 1.1594,
+    "unit_price_100_alternative": 0.625,
+    "unit": "g",
+    "unit_delta_pct": -46.1,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '690 g'",
+     "price_gbp / OFF quantity '600g (assumption)'"
+    ],
+    "words": "about £4.25 cheaper per pack; better value per 100g/ml",
+    "price_sources": [
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched",
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "organic": 8.2
+   },
+   "jev": {
+    "p_accept": 0.26,
+    "p_price_worth": 0.76,
+    "benefit": {
+     "score": 3.14,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.01,
+      "1": 0.01,
+      "2": 0.05,
+      "3": 0.71,
+      "4": 0.22
+     },
+     "confidence": 0.74
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.04
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.06,
+      "p_basket_item": 0.62
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.24,
+      "p_basket_item": 0.25
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.05
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.69
+     }
+    },
+    "refusal_reasons": [],
+    "triggers_removed_by_swap": [
+     {
+      "trigger": "trigger_1",
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "p_basket_item": 0.62,
+      "p_alternative": 0.06
+     },
+     {
+      "trigger": "trigger_5",
+      "text": "unit price well above own-label for a non-hero item",
+      "p_basket_item": 0.69,
+      "p_alternative": 0.05
+     }
+    ],
+    "verbatims": [],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "44414923d1e8af6955a5e036fc6e6240a021cf2c9716943b8a5dc58a884f0fb2",
+     "cached": false,
+     "input_tokens": 3609,
+     "output_tokens": 292,
+     "cost_usd": 0.00015158,
+     "cost_if_uncached_usd": 0.00015158,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:5033665206864->5034124007626"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "ready meals soup shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Charlie Bingham Lasagne",
+      "brand": "Charlie Bigham's",
+      "brand_type": "big familiar brand",
+      "price": "£8.00, about 2x the cheapest here",
+      "pack_copy": "charlie bigham's lasagne · serves 2 · 690g",
+      "pack_size": "690 g",
+      "value": "noticeably more per kilo than the best value here",
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about 5-10g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "several additives (3-5)",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "celery, eggs, gluten, milk",
+       "ingredients_start": "Milk, tomatoes, egg pasta (durum wheat semolina, water, free range egg), British beef (10%), white wine, Cheddar cheese (milk), smoked bacon (6%) (pork, salt, preservatives: potass",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Indian Lentil & Spinach Dhal",
+      "brand": "Tideford Organics",
+      "brand_type": "small challenger brand (newer, less familiar)",
+      "price": "£3.75, the cheapest in this set",
+      "pack_copy": "organic · vegan · gluten free · indian lentil & spinach dhal",
+      "pack_size": "600g (assumption)",
+      "value": "lowest price per kilo in this set",
+      "on_pack_badges": [
+       "no gluten",
+       "organic",
+       "vegetarian",
+       "eu organic",
+       "vegan",
+       "gb org 05"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "source of fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "none declared",
+       "ingredients_start": "*Water, Chopped Tomatoes (18%), Red Lentils (11%), Spinach (8%), Onions (7%), Creamed Coconut, Vegetable Bouillon (*salt, rice flour, onion, parsnip, carrot, olive oil, turmeric, p",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "organic"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "a bit more fibre (a source of fibre)",
+       "no additives",
+       "organic (the basket item is not)"
+      ],
+      "worse_on": [
+       "less protein"
+      ],
+      "price_change": "about £4.25 cheaper per pack; better value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.0806,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Charlie Bingham Lasagne -> Indian Lentil & Spinach Dhal: a bit more fibre (a source of fibre), no additives, organic (the basket item is not); about £4.25 cheaper per pack; better value per 100g/ml; P(accept)=0.26, lens +0.31",
+   "rank": 6
+  },
+  {
+   "basket_item": {
+    "code": "7394376620713",
+    "name": "Whole Oat Drink",
+    "brand": "Oatly",
+    "off_url": "https://world.openfoodfacts.org/product/7394376620713",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5000246728183",
+    "name": "BOB semi-skimmed",
+    "brand": "Arla",
+    "off_url": "https://world.openfoodfacts.org/product/5000246728183",
+    "role": "incumbent",
+    "claims": [
+     "protein"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/500/024/672/8183/front_en.3.400.jpg"
+   },
+   "category": "plant_milk_dairy_alt",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.554,
+    "alternative": 0.816,
+    "delta": 0.262,
+    "why_basket": [
+     "nova=3 (OFF)",
+     "additives_n=1 (OFF)",
+     "sugars_100g=3.4 (OFF)"
+    ],
+    "why_alternative": [
+     "nova=1 (OFF)",
+     "additives_n=0 (OFF)",
+     "sugars_100g=4.6 (OFF)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "proteins_100g",
+     "basket": 1.1,
+     "alternative": 4.6,
+     "delta": 3.5,
+     "better": true,
+     "words": "more protein",
+     "source": "OFF proteins_100g (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5000246728183)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 1.0,
+     "alternative": 0.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5000246728183)"
+    },
+    {
+     "field": "nova",
+     "basket": 3.0,
+     "alternative": 1.0,
+     "delta": -2.0,
+     "better": true,
+     "words": "unprocessed / minimally processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/7394376620713 vs https://world.openfoodfacts.org/product/5000246728183)"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 2.2,
+    "alternative_price_gbp": 1.95,
+    "delta_gbp": -0.25,
+    "delta_pct": -11.4,
+    "unit_price_100_basket": 0.22,
+    "unit_price_100_alternative": null,
+    "unit": null,
+    "unit_delta_pct": null,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '1l'",
+     "no parsable quantity"
+    ],
+    "words": "about 25p cheaper per pack",
+    "price_sources": [
+     "assumption: typical UK RRP for Oatly 1L chilled; corroborated by reddit verbatim: \"Lidl's super cheap £1.09 oat milk is better than the £2.20 Oatly stuff\" (https://www.reddit.com/comments/1bq1qcm)",
+     "assumption: Arla B.O.B 2L typical UK RRP ~£1.95"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "protein": 25.0
+   },
+   "jev": {
+    "p_accept": 0.23,
+    "p_price_worth": 0.71,
+    "benefit": {
+     "score": 2.4,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.17,
+      "1": 0.05,
+      "2": 0.11,
+      "3": 0.54,
+      "4": 0.13
+     },
+     "confidence": 0.28
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.05
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.31
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.03,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.5,
+      "p_basket_item": 0.03
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.04
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.63
+     }
+    },
+    "refusal_reasons": [],
+    "triggers_removed_by_swap": [
+     {
+      "trigger": "trigger_5",
+      "text": "unit price well above own-label for a non-hero item",
+      "p_basket_item": 0.63,
+      "p_alternative": 0.05
+     }
+    ],
+    "verbatims": [],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "94bfa5ddd0754672d4e47c05bab0970158fb693def860ff3a589492bd98b6dbf",
+     "cached": false,
+     "input_tokens": 3485,
+     "output_tokens": 292,
+     "cost_usd": 0.00014637,
+     "cost_if_uncached_usd": 0.00014637,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:7394376620713->5000246728183"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "plant milk dairy alt shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Whole Oat Drink",
+      "brand": "Oatly",
+      "brand_type": "big familiar brand",
+      "price": "£2.20, a little dearer than the cheapest here",
+      "pack_copy": "whole oat drink · vegan · with calcium, iodine & vitamins D2, riboflavin, B12",
+      "pack_size": "1l",
+      "value": "much more per litre than the best value here",
+      "on_pack_badges": [
+       "vegetarian",
+       "vegan",
+       "fsc",
+       "fsc mix"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "not a protein food; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "one or two additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "gluten",
+       "ingredients_start": "Water, OATS 10%, rapeseed oil, acidity regulator (dipotassium phosphate), minerals (calcium carbonate, potassium iodide), salt, vitamins (D2, riboflavin, B12).",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "BOB semi-skimmed",
+      "brand": "Arla",
+      "brand_type": "big familiar brand",
+      "price": "£1.95, the cheapest in this set",
+      "pack_copy": "semi-skimmed milk enriched with protein · 4.6g protein/100ml",
+      "pack_size": "2 litres",
+      "value": "lowest price per litre in this set",
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: amber (medium)",
+        "salt: green (low)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "unprocessed or minimally processed (NOVA 1)",
+       "allergens": "none declared",
+       "ingredients_start": "Fresh semi-skimmed milk, enriched with protein.",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "protein"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "more protein",
+       "no additives",
+       "unprocessed / minimally processed"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about 25p cheaper per pack"
+     }
+    }
+   },
+   "rank_score": 0.06026,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Whole Oat Drink -> BOB semi-skimmed: more protein, no additives, unprocessed / minimally processed; about 25p cheaper per pack; P(accept)=0.23, lens +0.26",
+   "rank": 7
+  },
+  {
+   "basket_item": {
+    "code": "5000157062673",
+    "name": "Cream of Tomato Soup",
+    "brand": "Heinz",
+    "off_url": "https://world.openfoodfacts.org/product/5000157062673",
+    "claims": []
+   },
+   "alternative": {
+    "code": "5034124007626",
+    "name": "Indian Lentil & Spinach Dhal",
+    "brand": "Tideford Organics",
+    "off_url": "https://world.openfoodfacts.org/product/5034124007626",
+    "role": "challenger",
+    "claims": [
+     "organic"
+    ],
+    "image": "https://images.openfoodfacts.org/images/products/503/412/400/7626/front_en.5.400.jpg"
+   },
+   "category": "ready_meals_soup",
+   "lens": {
+    "archetype": "upf_avoider_parent",
+    "basket": 0.33,
+    "alternative": 0.62,
+    "delta": 0.29,
+    "why_basket": [
+     "nova 4 (OFF)",
+     "additives_n=1 (OFF)",
+     "ingredient count≈11 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "why_alternative": [
+     "nova 3 (OFF)",
+     "additives_n=0 (OFF)",
+     "ingredient count≈13 (derived: top-level commas in OFF ingredients_text)"
+    ],
+    "source": "catalog.json lens_grades[archetype] (computed from OFF fields; see `why`)"
+   },
+   "health_deltas": [
+    {
+     "field": "fiber_100g",
+     "basket": 0.6,
+     "alternative": 3.0,
+     "delta": 2.4,
+     "better": true,
+     "words": "a bit more fibre (a source of fibre)",
+     "source": "OFF fiber_100g (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "sugars_100g",
+     "basket": 4.8,
+     "alternative": 1.2,
+     "delta": -3.6,
+     "better": true,
+     "words": "a bit less sugar (now low sugar)",
+     "source": "OFF sugars_100g (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "additives_n",
+     "basket": 1.0,
+     "alternative": 0.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "no additives",
+     "source": "OFF additives_n (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "nova",
+     "basket": 4.0,
+     "alternative": 3.0,
+     "delta": -1.0,
+     "better": true,
+     "words": "processed but not ultra-processed",
+     "source": "OFF nova (https://world.openfoodfacts.org/product/5000157062673 vs https://world.openfoodfacts.org/product/5034124007626)"
+    },
+    {
+     "field": "organic",
+     "basket": false,
+     "alternative": true,
+     "delta": null,
+     "better": true,
+     "words": "organic (the basket item is not)",
+     "source": "OFF labels en:organic / catalog organic"
+    }
+   ],
+   "price": {
+    "basket_price_gbp": 1.5,
+    "alternative_price_gbp": 3.75,
+    "delta_gbp": 2.25,
+    "delta_pct": 150.0,
+    "unit_price_100_basket": 0.375,
+    "unit_price_100_alternative": 0.625,
+    "unit": "g",
+    "unit_delta_pct": 66.7,
+    "unit_price_method": [
+     "price_gbp / OFF quantity '400g'",
+     "price_gbp / OFF quantity '600g (assumption)'"
+    ],
+    "words": "about £2.25 more per pack (several times the price); much worse value per 100g/ml",
+    "price_sources": [
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched",
+     "assumption: typical UK shelf RRP Oct 2026 for this pack size, from team knowledge of supermarket pricing; not scraped (retailer pages block bots) - replace with a live retailer URL if one is fetched"
+    ],
+    "price_is_assumption": [
+     true,
+     true
+    ]
+   },
+   "claim_premium_context": {
+    "organic": 8.2
+   },
+   "jev": {
+    "p_accept": 0.19,
+    "p_price_worth": 0.18,
+    "benefit": {
+     "score": 2.61,
+     "scale": "0..4",
+     "levels": [
+      "no benefit: the alternative is no better for them, or worse",
+      "slight benefit: a small improvement they would barely notice or care about",
+      "some benefit: a real improvement on one thing they care about",
+      "clear benefit: clearly better on things they care about",
+      "big benefit: exactly the kind of product they are trying to switch to"
+     ],
+     "probabilities": {
+      "0": 0.02,
+      "1": 0.05,
+      "2": 0.28,
+      "3": 0.59,
+      "4": 0.06
+     },
+     "confidence": 0.57
+    },
+    "triggers": {
+     "trigger_0": {
+      "text": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.05
+     },
+     "trigger_1": {
+      "text": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+      "p_alternative": 0.06,
+      "p_basket_item": 0.28
+     },
+     "trigger_2": {
+      "text": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence",
+      "p_alternative": 0.04,
+      "p_basket_item": 0.03
+     },
+     "trigger_3": {
+      "text": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw",
+      "p_alternative": 0.34,
+      "p_basket_item": 0.03
+     },
+     "trigger_4": {
+      "text": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)",
+      "p_alternative": 0.05,
+      "p_basket_item": 0.05
+     },
+     "trigger_5": {
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+      "p_alternative": 0.6,
+      "p_basket_item": 0.06
+     }
+    },
+    "refusal_reasons": [
+     {
+      "trigger": "trigger_5",
+      "p": 0.6,
+      "text": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr"
+     }
+    ],
+    "triggers_removed_by_swap": [],
+    "verbatims": [
+     {
+      "trigger": "trigger_5",
+      "quote": "I don't buy hardly anything branded anymore either except a few things the children like.",
+      "url": "https://www.reddit.com/comments/1qgcwyr",
+      "method": "persona verbatim from the trigger's cited thread"
+     }
+    ],
+    "request": {
+     "engine": "jev",
+     "jev_model": "jev-1.13.0",
+     "cache_key": "86b6e97ff06c51b2c56760b2708fd4ee8b30aeae8ca391abade55d9d6387d7cd",
+     "cached": false,
+     "input_tokens": 3632,
+     "output_tokens": 292,
+     "cost_usd": 0.00015254,
+     "cost_if_uncached_usd": 0.00015254,
+     "n_questions": 15,
+     "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)",
+     "tag": "swaps:p_upf_avoider_parent:5000157062673->5034124007626"
+    },
+    "state_sent": {
+     "shopper": {
+      "who": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes.",
+      "mission": "a quick top-up shop for a few things that ran out",
+      "this_shelf": "ready meals soup shelf; something from it is already in their basket",
+      "budget": "no fixed budget today",
+      "basket_so_far": "Vanilla Chocolate Balls, Whole Oat Drink, Cream of Tomato Soup, Charlie Bingham Lasagne",
+      "personality": [
+       "high conscientiousness: sticks to the list and budget, reads labels, plans"
+      ],
+      "priorities": [
+       "visible additives (E-numbers, 'emulsifier'): wants less / lower (her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cu)",
+       "sweeteners in a kids' or 'healthy' product: lower better (any >0 is a near-hard reject for lunchbox items) (sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires)",
+       "sugar: wants less / lower ('avoid sugar for the kids' is the one stated rule she actually checks on the nutrition pan)"
+      ],
+      "put_offs": [
+       "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+       "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+       "nuts in a lunchbox item (nut-free school)",
+       "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+       "the kids refuse it once (one-strike veto, never re-trialled)",
+       "unit price well above own-label for a non-hero item"
+      ],
+      "trusts": [
+       "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+       "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it"
+      ],
+      "habits": [
+       "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+       "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns"
+      ]
+     },
+     "basket_item": {
+      "name": "Cream of Tomato Soup",
+      "brand": "Heinz",
+      "brand_type": "big familiar brand",
+      "price": "£1.50, the cheapest in this set",
+      "pack_copy": "heinz cream of tomato soup · gluten free · 400g tin",
+      "pack_size": "400g",
+      "value": "lowest price per kilo in this set",
+      "on_pack_badges": [
+       "no gluten"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "not a protein food; about under 5g protein per 100g",
+       "fibre": "low fibre",
+       "additives": "one or two additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "ultra-processed (NOVA 4)",
+       "allergens": "milk",
+       "ingredients_start": "Tomatoes (89%), Water, Modified Cornflour Sugar, Rapeseed Oil, Dried Skimmed Milk, Salt, Cream (Milk), Milk Proteins, Acidity Regulator - Citric Acid, Spice Extracts, Herb Extract",
+       "sweeteners": "no sweeteners or polyols listed"
+      }
+     },
+     "alternative": {
+      "name": "Indian Lentil & Spinach Dhal",
+      "brand": "Tideford Organics",
+      "brand_type": "small challenger brand (newer, less familiar)",
+      "price": "£3.75, about 2x the cheapest here",
+      "pack_copy": "organic · vegan · gluten free · indian lentil & spinach dhal",
+      "pack_size": "600g (assumption)",
+      "value": "noticeably more per kilo than the best value here",
+      "on_pack_badges": [
+       "no gluten",
+       "organic",
+       "vegetarian",
+       "eu organic",
+       "vegan",
+       "gb org 05"
+      ],
+      "back_of_pack": {
+       "traffic_lights": [
+        "sugar: green (low)",
+        "salt: amber (medium)"
+       ],
+       "protein": "high protein (qualifies for a 'high protein' claim); about under 5g protein per 100g",
+       "fibre": "source of fibre",
+       "additives": "no additives",
+       "palm_oil": "no palm oil listed",
+       "processing": "processed food (NOVA 3)",
+       "allergens": "none declared",
+       "ingredients_start": "*Water, Chopped Tomatoes (18%), Red Lentils (11%), Spinach (8%), Onions (7%), Creamed Coconut, Vegetable Bouillon (*salt, rice flour, onion, parsnip, carrot, olive oil, turmeric, p",
+       "sweeteners": "no sweeteners or polyols listed"
+      },
+      "marketed_as": [
+       "organic"
+      ]
+     },
+     "swap": {
+      "better_on": [
+       "a bit more fibre (a source of fibre)",
+       "a bit less sugar (now low sugar)",
+       "no additives",
+       "processed but not ultra-processed",
+       "organic (the basket item is not)"
+      ],
+      "worse_on": [
+       "nothing measurable"
+      ],
+      "price_change": "about £2.25 more per pack (several times the price); much worse value per 100g/ml"
+     }
+    }
+   },
+   "rank_score": 0.0551,
+   "rank_formula": "P(accept) [Jev Noul] x lens delta [code, catalog lens_grades]",
+   "headline": "swap Cream of Tomato Soup -> Indian Lentil & Spinach Dhal: a bit more fibre (a source of fibre), a bit less sugar (now low sugar), no additives, processed but not ultra-processed; about £2.25 more per pack (several times the price); much worse value per 100g/ml; P(accept)=0.19, lens +0.29; main refusal risk: unit price well above own-label for a non-hero item (p=0.60)",
+   "rank": 8
+  }
+ ],
+ "considered": [
+  {
+   "basket_item": "4025500277031",
+   "name": "Vanilla Chocolate Balls",
+   "category": "yoghurt",
+   "lens_score": 0.15,
+   "kept": [
+    "5054781763529",
+    "5060337220415"
+   ],
+   "dropped": [
+    {
+     "code": "4025500243579",
+     "name": "Smooth Toffee Flavour",
+     "brand": "müller light",
+     "why": "lens not improved (delta -0.043)"
+    },
+    {
+     "code": "5201054017418",
+     "name": "Total 0%",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5036589253471",
+     "name": "GREEK RECIPE Strained Natural Yogurt",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "4016241050199",
+     "name": "Skyr creamy Natural",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5000462416772",
+     "name": "Greek Style Yogurt",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5060360506128",
+     "name": "Activia Strawberry Yogurt",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "7394376617164",
+     "name": "Oatgurt greek style",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5411188121213",
+     "name": "Greek Style Plain",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "6413300018042",
+     "name": "Protein yogurt strawberry",
+     "why": "outside top-2 lens delta for this item"
+    }
+   ]
+  },
+  {
+   "basket_item": "7394376620713",
+   "name": "Whole Oat Drink",
+   "category": "plant_milk_dairy_alt",
+   "lens_score": 0.554,
+   "kept": [
+    "5060362072263",
+    "5000246728183"
+   ],
+   "dropped": [
+    {
+     "code": "5060406080223",
+     "name": "BARISTA OAT",
+     "brand": "MINOR FIGURES",
+     "why": "lens not improved (delta -0.304)"
+    },
+    {
+     "code": "5060120281975",
+     "name": "Oat Organic Drink",
+     "brand": "Rude Health",
+     "why": "lens not improved (delta +0.012)"
+    },
+    {
+     "code": "5057753940317",
+     "name": "Tesco Oat Drink",
+     "brand": "Tesco",
+     "why": "lens not improved (delta -0.282)"
+    },
+    {
+     "code": "5060674960098",
+     "name": "Mighty Pea Protein Oat",
+     "brand": "Mighty Pea",
+     "why": "lens not improved (delta -0.298)"
+    },
+    {
+     "code": "5411188083191",
+     "name": "Soya Drink Original",
+     "brand": "Alpro",
+     "why": "lens not improved (delta -0.334)"
+    },
+    {
+     "code": "4088600574530",
+     "name": "Everyday Essentials Soya Unsweetened",
+     "brand": "Aldi",
+     "why": "lens not improved (delta -0.262)"
+    },
+    {
+     "code": "5411188110835",
+     "name": "Alpro Almond Original 1L",
+     "brand": "Alpro",
+     "why": "lens not improved (delta -0.270)"
+    },
+    {
+     "code": "5000181024043",
+     "name": "Semi-Skimmed Milk",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5031021057952",
+     "name": "Tesco Semi-skimmed Milk 568Ml / 1Pint",
+     "why": "outside top-2 lens delta for this item"
+    }
+   ]
+  },
+  {
+   "basket_item": "5000157062673",
+   "name": "Cream of Tomato Soup",
+   "category": "ready_meals_soup",
+   "lens_score": 0.33,
+   "kept": [
+    "5034124007626",
+    "01498257"
+   ],
+   "dropped": [
+    {
+     "code": "5000157062680",
+     "name": "Cream of Chicken Soup",
+     "brand": "Heinz",
+     "why": "lens not improved (delta -0.180)"
+    },
+    {
+     "code": "4088600068367",
+     "name": "Cream of Tomato Soup",
+     "brand": "Aldi Bramwells",
+     "why": "lens not improved (delta -0.010)"
+    },
+    {
+     "code": "5027040036603",
+     "name": "Warming Carrot Soup",
+     "brand": "Glorious",
+     "why": "lens not improved (delta -0.030)"
+    },
+    {
+     "code": "5060262485286",
+     "name": "Rice noodles Satay flavour",
+     "brand": "Itsu",
+     "why": "lens not improved (delta -0.070)"
+    },
+    {
+     "code": "5033665206864",
+     "name": "Charlie Bingham Lasagne",
+     "brand": "Charlie Bigham's",
+     "why": "lens not improved (delta -0.020)"
+    },
+    {
+     "code": "00953023",
+     "name": "Chicken Tikka Masala",
+     "brand": "M&S Our Best Ever",
+     "why": "lens not improved (delta -0.090)"
+    },
+    {
+     "code": "5056638100006",
+     "name": "Protein Power Buddha Bowl",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5012427072206",
+     "name": "Mixed Vegetable and Lentil Soup",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5060430292760",
+     "name": "Protein Power Soup Garden Pea & Spinach",
+     "why": "outside top-2 lens delta for this item"
+    }
+   ]
+  },
+  {
+   "basket_item": "5033665206864",
+   "name": "Charlie Bingham Lasagne",
+   "category": "ready_meals_soup",
+   "lens_score": 0.31,
+   "kept": [
+    "5034124007626",
+    "01498257"
+   ],
+   "dropped": [
+    {
+     "code": "5000157062680",
+     "name": "Cream of Chicken Soup",
+     "brand": "Heinz",
+     "why": "lens not improved (delta -0.160)"
+    },
+    {
+     "code": "4088600068367",
+     "name": "Cream of Tomato Soup",
+     "brand": "Aldi Bramwells",
+     "why": "lens not improved (delta +0.010)"
+    },
+    {
+     "code": "5027040036603",
+     "name": "Warming Carrot Soup",
+     "brand": "Glorious",
+     "why": "lens not improved (delta -0.010)"
+    },
+    {
+     "code": "5060262485286",
+     "name": "Rice noodles Satay flavour",
+     "brand": "Itsu",
+     "why": "lens not improved (delta -0.050)"
+    },
+    {
+     "code": "00953023",
+     "name": "Chicken Tikka Masala",
+     "brand": "M&S Our Best Ever",
+     "why": "lens not improved (delta -0.070)"
+    },
+    {
+     "code": "5056638100006",
+     "name": "Protein Power Buddha Bowl",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5012427072206",
+     "name": "Mixed Vegetable and Lentil Soup",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5060430292760",
+     "name": "Protein Power Soup Garden Pea & Spinach",
+     "why": "outside top-2 lens delta for this item"
+    },
+    {
+     "code": "5000157062673",
+     "name": "Cream of Tomato Soup",
+     "why": "outside top-2 lens delta for this item"
+    }
+   ]
+  }
+ ],
+ "cost": {
+  "jev_requests": 8,
+  "cached": 0,
+  "input_tokens": 28588,
+  "output_tokens": 2336,
+  "usd": 0.00120069,
+  "usd_if_uncached": 0.00120069,
+  "price_source": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)"
+ }
+}

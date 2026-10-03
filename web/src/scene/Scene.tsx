@@ -10,6 +10,8 @@ import { Store } from './Store';
 import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
 import { buildBeats } from './beats';
+import { Ops } from './Ops';
+import type { OpsDay } from '../ops';
 import { bus } from './fx';
 
 export type CamMode = 'intro' | 'overview' | 'walk' | 'follow';
@@ -153,6 +155,7 @@ export interface SceneProps {
   editMode: boolean; editSel: string | null; onSlot: (slot: string) => void; changed: Set<string>;
   heat: Record<string, string> | null; thoughts: ThoughtMode;
   cam: CamMode; camNonce: number; onBackground: () => void; onIntroDone: () => void; onUserCamera: () => void;
+  ops: OpsDay | null; clockStart: number;
 }
 
 export function Scene(p: SceneProps) {
@@ -175,6 +178,7 @@ export function Scene(p: SceneProps) {
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>
           <Store cfg={p.cfg} planogram={p.planogram} products={p.products} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
           <Shelves cfg={p.cfg} planogram={p.planogram} products={p.products} gaps={beats.gaps} timeRef={p.timeRef} live={!p.editMode} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} onSlot={p.onSlot} />
+          <Ops cfg={p.cfg} ops={p.ops} timeRef={p.timeRef} clockStart={p.clockStart} planogram={p.replayPlan} products={p.products} live={!p.editMode} />
           {!p.editMode && (
             <Crowd cfg={p.cfg} agents={p.agents} timelines={p.timelines} beats={beats} timeRef={p.timeRef} personas={p.personas} products={p.products}
               selectedAgent={p.selectedAgent} onAgent={p.onAgent} onEvent={p.onEvent} thoughts={p.thoughts} speed={p.speed} />

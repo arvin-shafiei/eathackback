@@ -276,7 +276,7 @@ export default function App() {
 
       {mode === 'replay' && view && !intro && <Leaderboard run={view} arm={arm} products={products} onProduct={(code) => setPanel({ kind: 'product', code })} />}
 
-      {(run?._fixture || STORE_VARIANT) && <div className="fixture-banner" title={run?._fixture}>{STORE_VARIANT ? `fixture store layout (${STORE_VARIANT}): proves the 3d scales, not results` : 'fixture data: synthetic decisions to exercise the ui, not results'}</div>}
+      {(run?._fixture || STORE_VARIANT?.fixture) && <div className="fixture-banner" title={run?._fixture}>{STORE_VARIANT?.fixture ? `fixture store layout (${STORE_VARIANT.label ?? STORE_VARIANT.id}): proves the 3d scales, not results` : 'fixture data: synthetic decisions to exercise the ui, not results'}</div>}
 
       {intro && (
         <div className="intro" role="dialog" aria-label="intro">

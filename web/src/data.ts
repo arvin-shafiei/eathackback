@@ -19,29 +19,44 @@ export interface Loaded {
   catalog: Product[];
   personas: Persona[];
   runIndex: RunIndexEntry[];
+  stores: StoreEntry[];
 }
 
-/** `?store=fixtures6` swaps in an alternative store layout from public/data/<name>/ (used to prove the layout scales) */
-export const STORE_VARIANT = (() => { try { const v = new URLSearchParams(location.search).get('store'); return v && /^[\w-]+$/.test(v) ? v : null; } catch { return null; } })();
+export interface StoreEntry { id: string; dir: string; label?: string; fixture?: boolean }
+/** `?store=<id>` picks a store layout from public/data/stores.json (standard, xl, fixtures6, fixturesxl…).
+ *  default: the real XL store when `npm run sync` found data/store/store_xl.config.json, else the standard one */
+export const STORE_PARAM = (() => { try { const v = new URLSearchParams(location.search).get('store'); return v && /^[\w-]+$/.test(v) ? v : null; } catch { return null; } })();
+/** set once loadAll resolves: the store layout on screen (null = standard) */
+export let STORE_VARIANT: StoreEntry | null = null;
 
 export async function loadAll(): Promise<Loaded> {
-  const sv = STORE_VARIANT ? `${STORE_VARIANT}/` : '';
+  const stores = await getJSON<StoreEntry[]>('stores.json', []);
+  const pick = STORE_PARAM ? stores.find((s) => s.id === STORE_PARAM) ?? (STORE_PARAM !== 'standard' ? { id: STORE_PARAM, dir: STORE_PARAM, fixture: true } : null)
+    : stores.find((s) => s.id === 'xl' && !s.fixture) ?? null;
+  STORE_VARIANT = pick && pick.dir ? pick : null;
+  const sv = STORE_VARIANT ? `${STORE_VARIANT.dir}/` : '';
   const [config, planogram, catalogRaw, personasRaw, idxRaw, extra] = await Promise.all([
     getJSON<StoreConfig>(`${sv}store.config.json`),
     getJSON<Planogram>(`${sv}planogram.json`),
     getJSON<Product[] | { products: Product[] }>('catalog.json', []),
     getJSON<Persona[] | { personas: Persona[] }>('personas.json', []),
     getJSON<unknown[]>('runs/index.json', []),
-    sv ? getJSON<Product[]>(`${sv}catalog_extra.json`, []) : Promise.resolve([] as Product[]),
+    sv ? getJSON<Product[] | { products: Product[] }>(`${sv}catalog_extra.json`, []) : Promise.resolve([] as Product[]),
   ]);
   const base = Array.isArray(catalogRaw) ? catalogRaw : catalogRaw.products ?? [];
   const have = new Set(base.map((p) => p.code));
-  const catalog = [...base, ...extra.filter((p) => !have.has(p.code))];
+  const ex = Array.isArray(extra) ? extra : extra.products ?? [];
+  const catalog = [...base, ...ex.filter((p) => !have.has(p.code))];
   const personas = Array.isArray(personasRaw) ? personasRaw : personasRaw.personas ?? [];
   const runIndex: RunIndexEntry[] = (Array.isArray(idxRaw) ? idxRaw : []).map((r) =>
     typeof r === 'string' ? { run_id: r.replace(/\.json$/, ''), file: r.endsWith('.json') ? r : `${r}.json` } : (r as RunIndexEntry),
   );
-  return { config, planogram, catalog, personas, runIndex };
+  return { config, planogram, catalog, personas, runIndex, stores: stores.length ? stores : [{ id: 'standard', dir: '' }] };
+}
+
+/** any json under public/data (surfaces, ops, provenance); null when missing */
+export async function getData<T>(path: string): Promise<T | null> {
+  try { return await getJSON<T>(path); } catch { return null; }
 }
 
 export async function loadRun(entry: RunIndexEntry): Promise<Run> {

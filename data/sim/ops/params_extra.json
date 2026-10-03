@@ -1,0 +1,332 @@
+{
+ "_doc": "Extra store-ops parameters that sim/ops.py needs but data/ops/params.json does not cover. Same shape: value, unit, source ('assumption: <why>' when unsourced), confidence. Every one here is LOW confidence unless it points at a file in this repo. Edit a value and re-run; the day file records which value was used.",
+ "params": {
+  "open_hours": {
+   "value": [
+    8,
+    22
+   ],
+   "unit": "hour of day [open, close)",
+   "source": "assumption: typical UK large-supermarket weekday hours 08:00-22:00 (task spec)",
+   "confidence": "low"
+  },
+  "walk_speed_mps": {
+   "value": 1.3,
+   "unit": "m/s",
+   "source": "sim/layout_optimise.py PARAMS.walk_speed_mps = web/src/layout.ts G.walkSpeed (assumption: in-store walking slower than ~1.4 m/s street pace)",
+   "confidence": "low"
+  },
+  "staff_walk_speed_mps": {
+   "value": 1.3,
+   "unit": "m/s",
+   "source": "assumption: staff walk at shopper pace pushing a cage/mop bucket",
+   "confidence": "low"
+  },
+  "browse_prob": {
+   "value": 0.25,
+   "unit": "P(visit an off-mission unit)",
+   "source": "sim/coefficients.json browse_prob (itself an assumption)",
+   "confidence": "low"
+  },
+  "browse_dwell_slots": {
+   "value": 1,
+   "unit": "rows scanned on an off-mission unit",
+   "source": "assumption: a browsing shopper glances at one row (time = 1 x seconds_at_shelf) instead of all 4",
+   "confidence": "low"
+  },
+  "mission_categories_xl": {
+   "value": {
+    "weekly_shop": [
+     "bakery_bread",
+     "breakfast_cereal",
+     "hot_drinks",
+     "crisps_savoury",
+     "biscuits_chocolate",
+     "ready_meals_soup",
+     "plant_milk_dairy_alt",
+     "yoghurt",
+     "frozen_icecream"
+    ],
+    "top_up": [
+     "bakery_bread",
+     "plant_milk_dairy_alt",
+     "yoghurt",
+     "ready_meals_soup"
+    ],
+    "meal_deal": [
+     "soft_drinks",
+     "crisps_savoury",
+     "snack_bars"
+    ],
+    "treat": [
+     "biscuits_chocolate",
+     "confectionery_sweets",
+     "frozen_icecream",
+     "soft_drinks",
+     "crisps_savoury"
+    ],
+    "gym": [
+     "snack_bars",
+     "yoghurt",
+     "soft_drinks"
+    ]
+   },
+   "unit": "categories per mission",
+   "source": "sim/run.py MISSION_CATEGORIES (assumption) extended to the 4 XL categories: bread/hot drinks/frozen on the weekly shop, bread on top-up, sweets + ice cream (desserts) on the treat mission (assumption)",
+   "confidence": "low"
+  },
+  "in_range_share_of_basket": {
+   "value": {
+    "weekly_shop": 0.4,
+    "top_up": 0.5,
+    "meal_deal": 1.0,
+    "treat": 1.0,
+    "gym": 1.0
+   },
+   "unit": "share of the mission basket that comes from the 12 modelled categories",
+   "source": "assumption: the 12 modelled categories are ambient/chilled grocery only (no fresh produce, meat, household, alcohol); a weekly trolley draws well under half from them. The rest are 'off-range' items: they count at the till but not on our shelves",
+   "confidence": "low"
+  },
+  "basket_nb_dispersion_k": {
+   "value": 4,
+   "unit": "negative-binomial k",
+   "source": "assumption: right-skewed basket counts (params.json basket_size_distribution); k=4 gives CV ~0.5 at mean 40",
+   "confidence": "low"
+  },
+  "loose_produce_share_of_offrange": {
+   "value": 0.15,
+   "unit": "share of off-range items that are loose produce needing weighing",
+   "source": "assumption: loose fruit/veg lines in a trolley; no UK figure fetched",
+   "confidence": "low"
+  },
+  "age_restricted_basket_prob": {
+   "value": {
+    "weekly_shop": 0.2,
+    "top_up": 0.12,
+    "meal_deal": 0.02,
+    "treat": 0.05,
+    "gym": 0.03
+   },
+   "unit": "P(basket holds an age-restricted item: alcohol, paracetamol, energy drinks)",
+   "source": "assumption: not sourced; drives age_check_delay_s_* only",
+   "confidence": "low"
+  },
+  "service_time_cv": {
+   "value": 0.3,
+   "unit": "lognormal CV on the formula service time",
+   "source": "assumption: Klee 2006 reports means/regressions only; a 30% CV keeps the queue stochastic without changing the mean",
+   "confidence": "low"
+  },
+  "patience_min": {
+   "value": {
+    "weekly_shop": 15,
+    "top_up": 8,
+    "meal_deal": 6,
+    "treat": 6,
+    "gym": 8
+   },
+   "unit": "minutes in queue before abandoning the basket (mean of an exponential)",
+   "source": "assumption: no grocery reneging data fetched; bigger baskets have more sunk effort so wait longer",
+   "confidence": "low"
+  },
+  "card_only_payment": {
+   "value": true,
+   "unit": "-",
+   "source": "assumption: everyone pays by card (Klee debit intercept + WPI card payment); cash tender times in params.json are not used",
+   "confidence": "low"
+  },
+  "sco_accept_fallback": {
+   "value": {
+    "few": 0.85,
+    "small": 0.7,
+    "big": 0.4,
+    "very_big": 0.2
+   },
+   "unit": "P(accept self-checkout) by basket bucket",
+   "source": "assumption: used only when Jev is off (--no-jev) or the call cap is hit; the default path asks Jev",
+   "confidence": "low"
+  },
+  "basket_buckets": {
+   "value": {
+    "few": [
+     1,
+     5
+    ],
+    "small": [
+     6,
+     15
+    ],
+    "big": [
+     16,
+     40
+    ],
+    "very_big": [
+     41,
+     999
+    ]
+   },
+   "unit": "items",
+   "source": "assumption: word buckets handed to Jev (numbers as words, jaggedness #2)",
+   "confidence": "low"
+  },
+  "bump_k_per_other": {
+   "value": 0.04,
+   "unit": "P(bump) = 1-exp(-k * others in the same aisle segment) per unit visit",
+   "source": "assumption: links collisions to crowding; a 4 m walkway x 6.4 m unit holds ~6 people before contact is likely",
+   "confidence": "low"
+  },
+  "spill_detour_m": {
+   "value": 12.8,
+   "unit": "metres added when a shopper turns back from a blocked aisle",
+   "source": "assumption: back out of the walkway and come in from the other end = 2 x unit length (6.4 m)",
+   "confidence": "low"
+  },
+  "restock_case_units": {
+   "value": 12,
+   "unit": "units per case",
+   "source": "assumption: typical ambient/chilled outer case of 6-24",
+   "confidence": "low"
+  },
+  "restock_smart_pso_threshold": {
+   "value": 0.3,
+   "unit": "P(stock-out before next round)",
+   "source": "assumption: the priority policy also restocks a SKU above the 25% trigger when its stock-out risk before the next round exceeds 30%",
+   "confidence": "low"
+  },
+  "margin_proxy_by_role": {
+   "value": {
+    "own_label": 0.35,
+    "incumbent": 0.25,
+    "challenger": 0.3
+   },
+   "unit": "gross-margin share used only to rank restock tasks",
+   "source": "assumption: own label carries the retailer's highest margin; not sourced. Margin is only a tie-break weight in the priority score",
+   "confidence": "low"
+  },
+  "backroom_cover_days": {
+   "value": [
+    0.3,
+    1.5
+   ],
+   "unit": "initial backroom stock in days of forecast demand (uniform per SKU, hashed draw)",
+   "source": "assumption: Reiner et al. 2013 report dairy dwells 12.5 h in the back room (about half a day); ambient cover varies. A uniform spread makes some SKUs short on day 1, which is what the manager is for",
+   "confidence": "low"
+  },
+  "delivery_hour": {
+   "value": 6,
+   "unit": "hour",
+   "source": "Reiner, Teller & Kotzab 2013 (see params.json lead_time_days_chilled): their simulation delivers at 6 a.m.",
+   "confidence": "medium"
+  },
+  "manager_review_min": {
+   "value": 60,
+   "unit": "minutes between manager stock reviews",
+   "source": "assumption: hourly review during trading (params.json order_review_period_days = 1 is the supplier cut; the manager checks more often and orders as soon as IP <= ROP)",
+   "confidence": "low"
+  },
+  "forecast_shoppers_per_mission": {
+   "value": 200,
+   "unit": "synthetic shoppers per mission",
+   "source": "assumption: the manager's 'history' = a Monte Carlo of the same shopper model (separate seed namespace), giving E[units per shopper] by product and mission",
+   "confidence": "low"
+  },
+  "surrogate_shrinkage_m": {
+   "value": 5,
+   "unit": "pseudo-observations",
+   "source": "assumption: empirical-Bayes shrinkage of each (archetype, product) P(take|noticed) toward the archetype mean, (k + m*p_arch)/(n + m)",
+   "confidence": "low"
+  },
+  "cafe": {
+   "value": {
+    "seats": 24,
+    "counter": {
+     "x": 0.0,
+     "z": 1.0
+    },
+    "seats_centre": {
+     "x": 0.0,
+     "z": 3.0
+    },
+    "visit_prob_by_daypart": {
+     "08-12": 0.08,
+     "12-14": 0.05,
+     "14-15": 0.08,
+     "15-17": 0.07,
+     "17-19": 0.03,
+     "19-22": 0.02
+    },
+    "dwell_min_mean": 20,
+    "wait_for_seat_max_min": 3,
+    "menu": [
+     {
+      "code": "5000436734345",
+      "name": "All Butter Croissant (Tesco Finest, served singly)",
+      "price_gbp": 1.6,
+      "off_url": "https://world.openfoodfacts.org/product/5000436734345"
+     },
+     {
+      "code": "5057545890691",
+      "name": "Pain au chocolat (Tesco, served singly)",
+      "price_gbp": 1.8,
+      "off_url": "https://world.openfoodfacts.org/product/5057545890691"
+     },
+     {
+      "code": "03297537",
+      "name": "Plant Chef falafel and houmous sandwich (Tesco)",
+      "price_gbp": 3.5,
+      "off_url": "https://world.openfoodfacts.org/product/03297537"
+     },
+     {
+      "code": "7610900100514",
+      "name": "Caffe Latte Skinny (Emmi, 370 ml)",
+      "price_gbp": 2.6,
+      "off_url": "https://world.openfoodfacts.org/product/7610900100514"
+     },
+     {
+      "code": "5000436734345+latte",
+      "name": "croissant + latte",
+      "price_gbp": 3.9,
+      "off_url": null
+     }
+    ]
+   },
+   "unit": "-",
+   "source": "assumption: seat count, visit shares (more mid-morning/afternoon per the idea doc), 20 min dwell, 3 min max wait for a seat, and all menu prices are unsourced; menu items are real OFF products (codes from data/products/uk_products.parquet). Not in store_xl.config.json (that file is owned elsewhere), so the cafe sits between the entrances and the aisle block here",
+   "confidence": "low"
+  },
+  "theft": {
+   "value": {
+    "attempt_share": 0.004,
+    "mode_split": {
+     "walkout_unscanned": 0.5,
+     "sco_skip_scan": 0.5
+    },
+    "skip_scan_item_share": 0.3,
+    "eas_tagged_item_share": 0.25,
+    "eas_detection_rate": 0.7,
+    "guard_post": {
+     "x": 0.0,
+     "z": -1.0
+    },
+    "guard_speed_mps": 2.0,
+    "guard_recovery_window_s": 25,
+    "guard_handle_min": 4
+   },
+   "unit": "-",
+   "source": "assumption: BRC Crime Survey 2025/26 and ONS shoplifting figures were not fetched (web search budget spent), so the attempt share (0.4% of trips), tag share, EAS detection rate, guard speed and the 25 s window in which a guard can stop the shopper at the gate are all labelled assumptions",
+   "confidence": "low"
+  },
+  "night_fill": {
+   "value": true,
+   "unit": "-",
+   "source": "assumption: a night crew refills every shelf from the back room before opening (common UK supermarket practice, not sourced); only back-room stock can be used, so a SKU with an empty back room opens short",
+   "confidence": "low"
+  },
+  "offrange_item_price_gbp": {
+   "value": null,
+   "unit": "GBP",
+   "source": "assumption: an off-range item is valued at the mean price of the 480-SKU catalog (computed at run time); only used for the value of abandoned baskets",
+   "confidence": "low"
+  }
+ }
+}
