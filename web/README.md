@@ -49,7 +49,7 @@ The shapes follow `/CONTRACT.md`. Tolerated extras:
   4. why: the mechanism and `source_refs`, with clickable links
 - **click a shopper**: persona card with the OCEAN radar (sampled vs base), ocean effects with sources, lens weights with sources, dossier, Reddit verbatims, and their whole trip.
 - **humans vs ai**: per-product pick rate for each arm, sorted by divergence. ★ marks rows where the 95% CIs don't overlap. A shelf-edge heat strip in the 3D view shows the pick rate, or ai − human.
-- **edit planogram**: drag a set onto another slot in the grid, or click two slots on the shelves, to swap them. Changed slots turn yellow. **re-run shoppers** POSTs `{planogram, agents: 20, seed, mock, label}` to `/api/run`. In dev, vite proxies `/api` to `http://localhost:8787`. If that fails it tries `http://localhost:8787/api/run` directly (`sim/server.py`). The returned run loads straight into the replay. With no server you get a stub message and a **download json** button. "use llm" is off by default (mock heuristic, free). Turn it on to spend OpenRouter budget.
+- **edit planogram**: drag a set onto another slot in the grid, or click two slots on the shelves, to swap them. Changed slots turn yellow. **re-run shoppers** POSTs `{planogram, agents: 20, seed, mock, label}` to `/api/run`. In dev, vite proxies `/api` to `http://localhost:8787`. If that fails it tries `http://localhost:8787/api/run` directly (`sim/server.py`). The returned run loads straight into the replay. With no server you get a stub message and a **download json** button. "use llm" is off by default (rule-based heuristic, free). Turn it on to spend OpenRouter budget.
 
 Start the sim server with `python sim/server.py`. If something else is already on :8787, the UI falls back to the stub.
 
@@ -57,7 +57,7 @@ Start the sim server with `python sim/server.py`. If something else is already o
 
 - **＋ add product**: paste a Tesco link or barcode (calls `/api/import`) or type the pack in; pick the product it replaces; **send the shoppers** runs 150 shoppers plus the AI arm on the store on screen and opens analytics. Needs the sim server.
 - **📊 analytics**: per-product numbers counted in the browser from the run's events (`src/insights.ts`), plus the placement heatmap, placement test and other fixes from the server (`src/ui/PlacementSection.tsx`).
-- Both screens pause the 3D replay while open. "use llm" off means the mock heuristic.
+- Both screens pause the 3D replay while open. "use llm" off means the rule-based heuristic.
 
 ## where things live
 

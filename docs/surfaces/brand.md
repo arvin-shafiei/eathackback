@@ -15,7 +15,7 @@ LOOK  ──Jev Noul "does shopper pick up products[i] to look closer?" (sampled
 PICK_UP ──Jev decision Choice (sampled) ──▶ TAKE        else PUT_BACK
 ```
 
-- **Input.** Non-mock Jev shelf runs in `data/sim/runs/run_*.json`, plus the AI-agent arm in `agent_*.json`. The script makes no model calls; it counts what is already logged.
+- **Input.** Non-rule-based Jev shelf runs in `data/sim/runs/run_*.json`, plus the AI-agent arm in `agent_*.json`. The script makes no model calls; it counts what is already logged.
 - **Stage per event.** It uses `stage_reached`, `picked_up` and `p_pick_up` when the event has them (the new `sim/jev.py` funnel). Older logs fall back to: noticed and walk_past → looked, reject → put_back, pick → taken. The method used is recorded in `trace.stage_method`.
 - **Rates.** look = looked/shown, pick_up = picked_up/looked, keep = taken/picked_up, take = taken/shown. Each comes with a Wilson 95% CI, and each is broken down by archetype and by OCEAN segment (a trait ≥ 0.5 counts as high).
 - **Leak diagnosis.** For each stage it compares the product's conversion with the pooled category average from the same runs, and names the stage with the lowest ratio (only stages with n ≥ 3, which is an assumption):

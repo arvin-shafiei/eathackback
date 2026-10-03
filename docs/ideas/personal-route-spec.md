@@ -58,7 +58,7 @@ It lives inside the **retailer layout surface**, as a "habit cost" panel next to
 
 1. **Visit salt (fixes the replay bug).**
    - What goes wrong today: every draw is `hu(seed, aid, ...)`, so visit 2 replays visit 1 exactly.
-   - Fix: in `simulate_agent`, set `dk = aid if ctx.get("visit") is None else f"{aid}#v{ctx['visit']}"`. Use `dk` in **every** `hu()` key: labels, browse, notice, jev_decide, pickup, and the mock `rng_key`.
+   - Fix: in `simulate_agent`, set `dk = aid if ctx.get("visit") is None else f"{aid}#v{ctx['visit']}"`. Use `dk` in **every** `hu()` key: labels, browse, notice, jev_decide, pickup, and the rule-based `rng_key`.
    - Old runs stay byte-reproducible when `visit` is None.
    - Do **not** change `--seed` per visit: `spawn_agents` seeds persona order from the seed (`run.py:152`), so agent a001 would become a different persona.
    - Spawn once and reuse the agent specs for every visit.
@@ -297,7 +297,7 @@ Each invocation stays under the $5 `DEFAULT_MAX_USD` guard. Cache hits lower all
 |---|---|---|---|
 | 1 | P0 | `run.py` changes 2.1–2.4, with the `visit=None` reproducibility assertion | 25 min |
 | 2 | P0 | `routes.py`: route, moved, card with trace | 30 min |
-| 3 | P0 | `visits.py run`: memory, arms, potential outcomes. Mock dry run, then the Jev main run in the background. | 35 min |
+| 3 | P0 | `visits.py run`: memory, arms, potential outcomes. Rule-based dry run, then the Jev main run in the background. | 35 min |
 | 4 | P0 | `visits.py eval`: A/B primary and guardrails, paired bootstrap | 20 min |
 | 5 | P1 | persona ID Naive Bayes, baselines, confusion and calibration; next-basket table | 25 min |
 | 6 | P1 | doc fixes (section 1) | 10 min |

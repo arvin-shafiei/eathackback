@@ -1,6 +1,6 @@
 # Judge Q&A: the 15 hardest questions
 
-The live final allows up to 2 minutes of Q&A. Give **one sentence, then one piece of proof (a file or a screen)**. Judge profiles come from `research/06-rgc-team-linkedin.md`. **REAL** = a TypeSafe Jev run log. **MOCK** = the rule-based demo engine. Never quote MOCK numbers.
+The live final allows up to 2 minutes of Q&A. Give **one sentence, then one piece of proof (a file or a screen)**. Judge profiles come from `research/06-rgc-team-linkedin.md`. **REAL** = a TypeSafe Jev run log. **RULE-BASED** = the rule-based demo engine. Never quote RULE-BASED numbers.
 
 Main REAL file: `data/sim/runs/run_20261003_120823_s11_jev_4482.json` (300 shoppers, `jev-1.13.0`, 19,992 product passes, 0 errors). Below it is called **run 4482**.
 
@@ -45,7 +45,7 @@ The taste is in what we refused to do:
 - no number without a source;
 - no LLM deciding what gets *seen*;
 - no adversarial copy, only true Reg 1924/2006 claims computed from OFF;
-- a "mock engine, not evidence" badge on every demo run (`web/src/ui/engineBadge.tsx`).
+- a "rule-based engine, not evidence" badge on every demo run (`web/src/ui/engineBadge.tsx`).
 
 **10. "Claude and GPT have no retail context. How is this different?"**
 The context is in the data, not the model. Each shopper gets real OFF label fields turned into words (UK traffic lights, "about 2x the cheapest here", NOVA), a real shelf position, a mission, a budget, and put-offs taken from UK shopper verbatims. Jev never sees a raw number it would have to do maths on (`sim/README.md`, "engine: TypeSafe Jev").
@@ -67,11 +67,11 @@ OCEAN only adjusts what each shopper notices, and only through effects that cite
 
 **13. "Is anything here live?"**
 The REAL runs are cached Jev logs, replayed in 3D with every distribution stored. Re-running them is $0 and gives identical results. Live runs work through `sim/server.py`. Honest caveat: our TypeSafe credits ran out (HTTP 402) during the 12:36 visits run. Since then:
-- new runs are mock, or fall back to OpenRouter's `typesafe/jev-router`;
+- new runs are rule-based, or fall back to OpenRouter's `typesafe/jev-router`;
 - the app badges that fallback as "LLM, uncalibrated";
 - `run_20261003_125423_s909_jev_5c63.json` is one of these despite its filename.
 
-The superstore crowd in the video is MOCK, and it is badged.
+The superstore crowd in the video is RULE-BASED, and it is badged.
 
 **14. "What breaks first at scale?"**
 1. The Jev token rate limit (100k tok/s). 1,000 shoppers take about 13 minutes (`sim/README.md`). Cost is not the bottleneck: $0.87 for 300 shoppers, and all of today's Jev spend was $2.69 over 19,580 calls (`data/sim/cost_log.jsonl`).
