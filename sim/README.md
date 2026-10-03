@@ -109,3 +109,37 @@ Only agents whose path enters the edited unit are re-run, with the same seed and
 - Choice-stage OCEAN effects (as opposed to notice-stage ones) reach the decision engine only as behaviour phrases in the shopper state (Jev) or the persona prompt (LLM), not as numbers.
 - Jev thresholds are labelled choices, not calibrated to real shoppers: a Noul "fires" at p > 0.5; P(appeal ≤ dislikes) > 0.5 is quoted in put-back reasons. Items taken per shopper (300-agent run): 3.5 meal-deal office, 2.9 gym, 4.5 GLP-1, up to 12.4 for weekly-shop personas. Every on-mission slot gets its own decision and there is no per-trip basket cap (adding one would be a further assumption).
 - Turning a sales lift into a noticing lift assumes the whole shelf effect runs through attention (Chandon 2009).
+
+## Personal routes: re-layout insurance (`visits.py`, `routes.py`)
+
+Spec: `docs/ideas/personal-route-spec.md`. Results: `data/sim/visits/RESULTS.md`. Engine: Jev, or mock for a $0 dry run. No OpenRouter.
+
+- **`routes.py`** (code only) holds the aisle graph, the route and the card:
+  - Unit categories come from the current planogram's slots.
+  - `route()` reuses `layout_optimise.walk_metres`. That function is order-independent, so the 4-case search only fixes the stop order.
+  - `moved()` compares the shopper's remembered `cat_unit` against the plan.
+  - `card()` lists moved habit items and at most one new SKU already on the route. The SKU must pass the declared gates, be non-HFSS (conservative) and have lens score > 0. It is ranked by Σ posterior × surrogate P(pick up)·P(take). The card abstains when max posterior < τ. Every line is traced; `funded: false`; no price.
+- **`visits.py`** runs the multi-visit loop. v1–v2 use the as-built layout minus 8 withheld challengers. v3–v4 use `planogram_retailer.json` with the challengers listed. Both potential outcomes (control and card) are simulated for v3–v4. Compliance `hu(seed, agent, "comply", 3) < c × reactance_k` is applied afterwards, so the c sweep is free.
+  - Spec section 2 engine changes are a **visit-aware port** (`simulate_agent_v`), not edits to `run.py`: visit salt in every draw key, planogram unit categories, route override, carded-SKU logit, and a memory line injected as a third Jev `habits` entry.
+  - With `visit=None` the port reproduces `run_20261003_120823_s11_jev_4482` exactly: 300 agents, events identical, all from cache.
+- **Evaluation:**
+  - paired A/B with bootstrap CIs (B = 2000);
+  - Naive Bayes persona identifiability with a mission-only baseline, leave-one-out, undeclared-sensitive safety count, and the 12-way vs restricted cost;
+  - next-basket P@k/R@k against random, popularity, repeat-last, most-frequent and oracle.
+
+```bash
+python3 sim/visits.py run --engine mock --agents-per-persona 1 --seeds 21
+python3 sim/visits.py run --agents-per-persona 4 --seeds 21,22,23 --p-search-moved 0.5 --route-card-logit 0 --jev-max-usd 5
+python3 sim/visits.py eval --run <run_id> [--sensitivity <sweep ids>]
+python3 sim/visits.py report --run <run_id> [--preface notes.md]      # writes data/sim/visits/RESULTS.md
+python3 sim/visits.py card --run visits_20261003_123624_jev_s21-22_main --agent s21:a004 --visit 3   # habit_loyalist (demo card)
+python3 sim/visits.py recard --run <run_id>   # rebuild card text/evidence from stored inputs, $0; refuses if anything simulated would change
+python3 sim/routes.py --planogram data/sim/layout/planogram_retailer.json --units U2,U5,U7
+```
+
+Tested 2026-10-03:
+- **Main Jev run:** 96 shoppers (seeds 21–22), 576 agent-visits, $1.24, 0 errors. Seed 23 was lost to a TypeSafe 402 (out of credits) and is excluded.
+- **Primary result:** at c = 0.2, v3 basket completion moves +0.002 [0.000, +0.004], which is not a claimable lift. This is a single compliance draw in which 1 of 21 compliers was helped. Averaged over the draw it is +0.005 [+0.003, +0.008]: tiny, and assumption-driven either way. Visit 4 all-follow +0.007 [−0.001, +0.016] does not persist. See the verifier addendum in RESULTS.md.
+- **Baseline note:** `most_frequent` and `repeat_last` in `eval_next_basket` break ties with the persona posterior, so they are not the plain baselines the spec describes.
+- **Where the lift comes from:** the whole v3 lift comes from routing (0 judgment differences on shared slots).
+- **Not run (no credits):** the sweep, mixtures, OCEAN jitter, the detour variant, the `server.py` endpoint and the UI panel.

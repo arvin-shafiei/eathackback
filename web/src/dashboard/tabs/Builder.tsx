@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useJSON } from '../lib/data';
 import { findServer, post, saveApiBase, type Health } from '../lib/api';
 import { S, urlsIn } from '../lib/src';
-import { ci, human, num, pct, wilson } from '../lib/stats';
+import { human, num, pct, wilson } from '../lib/stats';
 import { Card, ErrorBox, Ext, FootSrc, Loading, Sticker } from '../ui/bits';
 import { Radar, TRAITS, TRAIT_NAME } from '../ui/charts';
 import type { Persona } from './Personas';

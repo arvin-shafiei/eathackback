@@ -1,7 +1,10 @@
 // The crowd: replayed shoppers as physics bodies (rapier) drawn with instanced cartoon parts.
 // Decisions, products and order come ONLY from the run log (timelines/beats). Physics adds a visual offset:
-// shoppers are dynamic capsules steered toward their replay position, so they shove, bonk and recover,
-// trolleys/baskets are jointed dynamic bodies, and picked packs are thrown into carriers as real bodies.
+// shoppers are dynamic capsules steered toward their replay position with separation (they never overlap, they
+// spread across the walkway, they wait their turn at the door), they queue in real lines at the tills, and they
+// shove, bonk and recover. Picks are physical: walk up to the facing, rubber-arm reach, the pack leaves the shelf
+// (shelfBus.takeFromShelf), gets thrown and settles in the basket / trolley as a rigid body welded into the
+// carrier's compound collider. Rejects get inspected and put back (shelfBus.restockShelf).
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
@@ -10,13 +13,16 @@ import { useAfterPhysicsStep, useBeforePhysicsStep, useRapier } from '@react-thr
 import type { Collider, RigidBody, World } from '@dimforge/rapier3d-compat';
 import type { Agent, Persona, Product, StoreConfig } from '../types';
 import { isAI } from '../types';
-import { BEAT, G, TILL, categoryHeight, sampleTimeline, storePlan, type CheckoutPlan, type Timeline } from '../layout';
+import { BEAT, G, TILL, categoryHeight, sampleTimeline, storePlan, type CheckoutPlan, type Lane, type StorePlan, type Timeline } from '../layout';
 import { archColor, carrierFor, DECISION, BRAND_A, type Carrier } from '../theme';
 import { archetypeOf } from '../stats';
 import { productMaterials } from './textures';
 import { accessoriesFor, ROBOT_PARTS, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, cupGeometry, type PartUse } from './parts';
 import type { Beat, Beats } from './beats';
 import { bus, sfx } from './fx';
+import { CarrierLoad, GROUP, carrierDims, createCarrier, insideCarrier, stackLocal, throwPack } from './Basket';
+import { restockShelf, takeFromShelf } from './shelfBus';
+import { emitCrowd } from './crowdBus';
 
 export type ThoughtMode = 'off' | 'selected' | 'all';
 
@@ -35,57 +41,95 @@ interface Props {
   speed: number;
 }
 
+interface XY { x: number; z: number }
+/** a shopper's place in a checkout line: `group` is a staffed lane id or 'self' (one shared snake for the kiosks) */
+interface QInfo { group: string; qStart: number; qStep: number }
+interface QGroup { head: XY; dir: XY; side: XY; startOff: number; len: number; perCol: number; list: Shopper[] }
+
 interface Shopper {
   si: number; agent: Agent; ai: boolean; arch: string; color: THREE.Color; carrier: Carrier; tl: Timeline; beats: Beat[];
-  body: RigidBody | null; cbody: RigidBody | null; active: boolean;
-  knock: THREE.Vector2; sq: number; sqv: number; cool: number; step: number; yawWiggle: number;
-  armR: [number, number]; armL: [number, number]; look: THREE.Vector3;
+  body: RigidBody | null; cbody: RigidBody | null; active: boolean; held: number;
+  knock: THREE.Vector2; sq: number; sqv: number; cool: number; step: number;
+  /** smoothed arm rotations (shoulder frame) + rubber-arm stretch */
+  qR: THREE.Quaternion; qL: THREE.Quaternion; strR: number; strL: number; look: THREE.Vector3;
+  handR: THREE.Matrix4; handL: THREE.Matrix4;
   parts: PartUse[];
-  pos: THREE.Vector3; yaw: number;
+  pos: THREE.Vector3; yaw: number; px: number; pz: number;
+  /** sideways offset (m) from the replay line while walking, so a crowd fills the walkway instead of one file */
+  laneOff: number;
+  q: QInfo | null; qT: XY | null; qFace: number;
   co: CheckoutPlan | null; park: THREE.Matrix4 | null; cafeT: [number, number] | null;
 }
 
 const tmpM = new THREE.Matrix4(), tmpM2 = new THREE.Matrix4(), tmpM3 = new THREE.Matrix4();
-const tmpQ = new THREE.Quaternion(), tmpV = new THREE.Vector3(), tmpS = new THREE.Vector3(), tmpE = new THREE.Euler();
+const tmpQ = new THREE.Quaternion(), tmpQ2 = new THREE.Quaternion(), tmpV = new THREE.Vector3(), tmpV2 = new THREE.Vector3(), tmpS = new THREE.Vector3(), tmpE = new THREE.Euler();
 const ZERO = new THREE.Matrix4().makeScale(0, 0, 0);
 const UP = new THREE.Vector3(0, 1, 0);
+const DOWN = new THREE.Vector3(0, -1, 0);
 const ease = (k: number) => (k <= 0 ? 0 : k >= 1 ? 1 : k * k * (3 - 2 * k));
 const clamp01 = (k: number) => Math.max(0, Math.min(1, k));
 const angDiff = (a: number, b: number) => Math.atan2(Math.sin(b - a), Math.cos(b - a));
 
-/** arm matrix: shoulder → rotation (pitch θ about x, then roll φ about z; φ>0 = outward) */
-function armMatrix(out: THREE.Matrix4, side: 1 | -1, th: number, ph: number) {
-  tmpE.set(th, 0, side * ph, 'ZXY');
-  tmpQ.setFromEuler(tmpE);
-  return out.compose(tmpV.set(side * BODY.shoulderX, BODY.shoulderY, 0.02), tmpQ, tmpS.set(1, 1, 1));
-}
-const HAND_OFF = new THREE.Matrix4().makeTranslation(0, -BODY.armLen, 0);
+/** within a pick/reject dwell (fractions of the dwell): step up to the shelf, start reaching, step back */
+const REACH = { approach: 0.14, reach0: 0.1, leave: 0.88 } as const;
+/** how far from the pack's shelf point the shopper stands while reaching (m). assumption: visual only */
+const REACH_D = { basket: 0.72, trolley: 0.8, none: 0.72 } as const;
+const SPAWN_CLEAR = 1.05; // m: a door only lets the next shopper in once the last one has stepped clear
+const SPAWN_MAX_HOLD = 6; // replay s: never hold anyone at the door longer than this
 
-function carrierDims(c: Carrier) {
-  return c === 'trolley' ? { hx: TROLLEY.hx - 0.03, hz: TROLLEY.hz - 0.03, floor: TROLLEY.floorY + 0.02, cols: 3, rows: 3 } : { hx: BASKET.hx - 0.03, hz: BASKET.hz - 0.03, floor: 0.03, cols: 2, rows: 2 };
+/** arm rotation that points the arm (rest = straight down) at `dir` in the body frame */
+function aimQ(out: THREE.Quaternion, dir: THREE.Vector3) { return out.setFromUnitVectors(DOWN, dir.normalize()); }
+/** classic pose: pitch θ about x, then roll φ about z (φ>0 = outward) */
+function poseQ(out: THREE.Quaternion, side: 1 | -1, th: number, ph: number) { return out.setFromEuler(tmpE.set(th, 0, side * ph, 'ZXY')); }
+function armMatrix(out: THREE.Matrix4, side: 1 | -1, q: THREE.Quaternion, stretch: number) {
+  return out.compose(tmpV.set(side * BODY.shoulderX, BODY.shoulderY, 0.02), q, tmpS.set(1, stretch, 1));
 }
+const SHOULDER = (side: 1 | -1) => new THREE.Vector3(side * BODY.shoulderX, BODY.shoulderY, 0.02);
+
 function carriedSize(code: string, products: Record<string, Product>) {
   const cat = products[code]?.category ?? '';
   return { w: 0.17, h: Math.max(0.1, categoryHeight(cat) * 0.5), d: 0.12 };
-}
-/** stack position for the nth pick in a carrier (used after a scrub or if a throw misses) */
-function stackLocal(c: Carrier, n: number, h: number, out: THREE.Matrix4) {
-  const d = carrierDims(c);
-  const per = d.cols * d.rows, layer = Math.floor(n / per), k = n % per;
-  const x = ((k % d.cols) / Math.max(1, d.cols - 1) - 0.5) * d.hx * 1.3;
-  const z = ((Math.floor(k / d.cols) % d.rows) / Math.max(1, d.rows - 1) - 0.5) * d.hz * 1.3;
-  tmpQ.setFromEuler(tmpE.set(0, (n * 1.7) % 0.6 - 0.3, 0));
-  return out.compose(tmpV.set(x, d.floor + h / 2 + layer * (h + 0.01), z), tmpQ, tmpS.set(1, 1, 1));
 }
 
 /** where the carrier is parked while its owner checks out: trolley behind them in the lane, basket on the counter / floor */
 function parkMatrix(co: CheckoutPlan | null, c: Carrier): THREE.Matrix4 | null {
   if (!co || c === 'none') return null;
   const L = co.lane;
-  if (c === 'trolley') return new THREE.Matrix4().compose(new THREE.Vector3(L.stand.x, 0, L.stand.z - 1.05), new THREE.Quaternion(), new THREE.Vector3(1, 1, 1));
+  if (c === 'trolley') return new THREE.Matrix4().compose(new THREE.Vector3(L.stand.x + L.queueDir.x * 1.05, 0, L.stand.z + L.queueDir.z * 1.05), new THREE.Quaternion().setFromAxisAngle(UP, Math.atan2(-L.queueDir.x, -L.queueDir.z)), new THREE.Vector3(1, 1, 1));
   if (L.kind === 'staffed' && L.beltStart) return new THREE.Matrix4().compose(new THREE.Vector3(L.beltStart.x - 0.02, 0.96, L.beltStart.z - 0.12), new THREE.Quaternion().setFromAxisAngle(UP, Math.PI / 2), new THREE.Vector3(1, 1, 1));
   return new THREE.Matrix4().compose(new THREE.Vector3(L.stand.x - 0.5, 0, L.stand.z), new THREE.Quaternion(), new THREE.Vector3(1, 1, 1));
 }
+
+/** queue window from the scheduled timeline: from joining the line until the step-up to the till */
+function queueInfo(tl: Timeline): QInfo | null {
+  const co = tl.checkout; if (!co) return null;
+  const qs = tl.segs.filter((x) => x.phase === 'queue');
+  const moves = qs.filter((x) => x.kind === 'move');
+  if (qs.length < 2 || !moves.length) return null;
+  const step = moves[moves.length - 1];
+  return { group: co.lane.kind === 'self' ? 'self' : co.lane.id, qStart: qs[0].t0, qStep: step.t0 };
+}
+
+/** checkout lines: one straight line per staffed till, one shared snake for the self-checkout bank */
+function queueGroups(sp: StorePlan): Map<string, QGroup> {
+  const out = new Map<string, QGroup>();
+  const mid = (sp.z0 + sp.z1) / 2;
+  for (const L of sp.lanes) {
+    if (L.kind !== 'staffed') continue;
+    const n = Math.hypot(L.queueDir.x, L.queueDir.z) || 1;
+    const dir = { x: L.queueDir.x / n, z: L.queueDir.z / n };
+    out.set(L.id, { head: L.stand, dir, side: { x: -dir.z, z: dir.x }, startOff: 2.15, len: 0.92, perCol: 99, list: [] });
+  }
+  const self = sp.lanes.filter((l: Lane) => l.kind === 'self');
+  if (self.length) {
+    const minX = Math.min(...self.map((l) => l.x)), zs = self.map((l) => l.stand.z);
+    const head = { x: minX - 0.95, z: (Math.min(...zs) + Math.max(...zs)) / 2 };
+    const dz = Math.sign(mid - head.z) || -1;
+    out.set('self', { head, dir: { x: 0, z: dz }, side: { x: -1, z: 0 }, startOff: 0.6, len: 0.85, perCol: 7, list: [] });
+  }
+  return out;
+}
+
 function cafeWindow(tl: Timeline): [number, number] | null {
   const segs = tl.segs.filter((x) => x.phase === 'cafe' && x.lane?.startsWith('seat'));
   return segs.length ? [segs[0].t0, segs[segs.length - 1].t1] : null;
@@ -97,7 +141,9 @@ interface Sticker { key: string; si: number; beat: Beat; x: number; z: number; n
 interface Bonk { id: number; x: number; y: number; z: number; word: string }
 /** robots are a bit smaller than people so a 240-agent ai arm doesn't bury the humans */
 const AI_SCALE = 0.8;
-const BONK_WORDS = ['bonk!', 'oof!', 'boing!', 'sorry!', 'bump!', 'whoops!'];
+const BONK_WORDS = ['bonk!', 'oof!', 'boing!', 'sorry!', 'bump!', 'whoops!', 'mind out!', 'ope!'];
+const CELL = 1.25;
+const cellKey = (x: number, z: number) => (Math.floor(x / CELL) + 2048) * 4096 + (Math.floor(z / CELL) + 2048);
 
 export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, products, selectedAgent, onAgent, onEvent, thoughts, speed }: Props) {
   const { world, rapier } = useRapier();
@@ -109,71 +155,76 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const arch = ai ? 'ai_agent' : archetypeOf(a, personas);
     const mission = a.mission ?? personas[a.persona_id]?.mission;
     const parts = ai ? ROBOT_PARTS : accessoriesFor(arch);
+    const carrier = carrierFor(arch, mission, ai);
+    const tl = timelines[a.agent_id];
     return {
-      si, agent: a, ai, arch, color: new THREE.Color(archColor(ai ? 'ai' : arch)), carrier: carrierFor(arch, mission, ai), tl: timelines[a.agent_id], beats: beats.byAgent[a.agent_id] ?? [],
-      body: null, cbody: null, active: false, knock: new THREE.Vector2(), sq: 0, sqv: 0, cool: 0, step: Math.random() * 6, yawWiggle: 0,
-      armR: [0, 0.12], armL: [0, 0.12], look: new THREE.Vector3(0, 0, 1), parts, pos: new THREE.Vector3(0, -50, 0), yaw: 0,
-      co: timelines[a.agent_id].checkout ?? null, park: parkMatrix(timelines[a.agent_id].checkout ?? null, carrierFor(arch, mission, ai)), cafeT: cafeWindow(timelines[a.agent_id]),
+      si, agent: a, ai, arch, color: new THREE.Color(archColor(ai ? 'ai' : arch)), carrier, tl, beats: beats.byAgent[a.agent_id] ?? [],
+      body: null, cbody: null, active: false, held: 0, knock: new THREE.Vector2(), sq: 0, sqv: 0, cool: 0, step: Math.random() * 6,
+      qR: poseQ(new THREE.Quaternion(), 1, 0, 0.12), qL: poseQ(new THREE.Quaternion(), -1, 0, 0.12), strR: 1, strL: 1,
+      look: new THREE.Vector3(0, 0, 1), handR: new THREE.Matrix4(), handL: new THREE.Matrix4(),
+      parts, pos: new THREE.Vector3(0, -50, 0), yaw: 0, px: 0, pz: -999,
+      // golden-ratio spread so neighbours in the run get different walking lines (± ~0.5 m)
+      laneOff: ai ? 0 : (((si * 0.6180339) % 1) - 0.5) * (carrier === 'trolley' ? 0.7 : 1.05),
+      q: queueInfo(tl), qT: null, qFace: 0,
+      co: tl.checkout ?? null, park: parkMatrix(tl.checkout ?? null, carrier), cafeT: cafeWindow(tl),
     };
   }), [agents, timelines, personas, beats]);
 
+  const groups = useMemo(() => {
+    const g = queueGroups(storePlan(cfg));
+    for (const s of shoppers) if (s.q) g.get(s.q.group)?.list.push(s);
+    for (const x of g.values()) x.list.sort((a, b) => a.q!.qStep - b.q!.qStep);
+    return g;
+  }, [cfg, shoppers]);
+
   // ---------- physics bodies ----------
   const colliderOwner = useRef(new Map<number, number>());
+  const load = useRef<CarrierLoad | null>(null);
   useEffect(() => {
     const R = rapier;
     const owner = colliderOwner.current; owner.clear();
     const made: RigidBody[] = [];
+    load.current = new CarrierLoad(world, R);
     for (const s of shoppers) {
       const bd = R.RigidBodyDesc.dynamic().setTranslation(0, -20 - s.si, 0).setGravityScale(0).setLinearDamping(0.5).setAngularDamping(4).setCanSleep(false).setEnabled(false);
       const body = world.createRigidBody(bd);
       body.setEnabledTranslations(true, false, true, false);
       body.setEnabledRotations(false, true, false, false);
       const col = world.createCollider(
-        (s.ai ? R.ColliderDesc.cuboid(0.31 * AI_SCALE, 0.46 * AI_SCALE, 0.25 * AI_SCALE) : R.ColliderDesc.capsule(0.3, BODY.r)).setDensity(220).setFriction(0.1).setRestitution(0.4),
+        (s.ai ? R.ColliderDesc.cuboid(0.31 * AI_SCALE, 0.46 * AI_SCALE, 0.25 * AI_SCALE) : R.ColliderDesc.capsule(0.3, BODY.r)).setDensity(220).setFriction(0.1).setRestitution(0.4).setCollisionGroups(GROUP.shopper),
         body,
       );
       owner.set(col.handle, s.si);
       s.body = body; made.push(body);
-      if (s.carrier !== 'none') {
-        const tr = s.carrier === 'trolley';
-        const cb = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, -20 - s.si, 1).setGravityScale(0).setLinearDamping(0.6).setAngularDamping(3).setCanSleep(false).setEnabled(false));
-        cb.setEnabledTranslations(true, false, true, false);
-        cb.setEnabledRotations(false, true, false, false);
-        const add = (hx: number, hy: number, hz: number, x: number, y: number, z: number) => {
-          const c = world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setDensity(tr ? 30 : 15).setFriction(0.6).setRestitution(0.4), cb);
-          owner.set(c.handle, s.si);
-        };
-        if (tr) {
-          const { hx, hz, floorY, wallH } = TROLLEY;
-          add(0.26, 0.13, hz - 0.02, 0, 0.21, 0); // chassis: what other shoppers bump into
-          add(hx, 0.02, hz, 0, floorY, 0); // basket floor (products land here)
-          add(0.015, wallH / 2, hz, hx, floorY + wallH / 2, 0); add(0.015, wallH / 2, hz, -hx, floorY + wallH / 2, 0);
-          add(hx, wallH / 2, 0.015, 0, floorY + wallH / 2, hz); add(hx, wallH / 2, 0.015, 0, floorY + wallH / 2, -hz);
-        } else {
-          const { hx, hz, wallH } = BASKET;
-          add(hx, 0.012, hz, 0, 0.012, 0);
-          add(0.012, wallH / 2, hz, hx, wallH / 2, 0); add(0.012, wallH / 2, hz, -hx, wallH / 2, 0);
-          add(hx, wallH / 2, 0.012, 0, wallH / 2, hz); add(hx, wallH / 2, 0.012, 0, wallH / 2, -hz);
-        }
-        const anchor = tr ? TROLLEY.anchor : BASKET.anchor;
-        const j = world.createImpulseJoint(R.JointData.fixed({ x: anchor[0], y: anchor[1], z: anchor[2] }, { w: 1, x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { w: 1, x: 0, y: 0, z: 0 }), body, cb, true);
-        j.setContactsEnabled(false);
-        s.cbody = cb; made.push(cb);
-      }
+      s.cbody = createCarrier(world, R, body, s.carrier, -20 - s.si, (c) => owner.set(c.handle, s.si));
+      if (s.cbody) made.push(s.cbody);
     }
     return () => {
+      load.current?.clear(); load.current = null;
       for (const b of made) { try { world.removeRigidBody(b); } catch { /* world already gone */ } }
       for (const s of shoppers) { s.body = null; s.cbody = null; s.active = false; }
       owner.clear();
     };
   }, [shoppers, world, rapier]);
 
-  // ---------- flights (picked packs in the air) & baked carrier contents ----------
+  // ---------- flights (picked packs in the air), baked carrier contents, packs off the shelf ----------
   const flights = useRef(new Map<number, Flight>());
   const baked = useRef(new Map<number, THREE.Matrix4>());
+  /** beats whose pack is currently off the shelf (taken via shelfBus): beat id → where it was taken from */
+  const taken = useRef(new Map<number, { beat: Beat; at: THREE.Vector3 | null }>());
   const lastT = useRef(0);
   const scrubbed = useRef(false);
-  useEffect(() => () => { for (const f of flights.current.values()) { try { world.removeRigidBody(f.body); } catch { /* gone */ } } flights.current.clear(); baked.current.clear(); }, [shoppers, world]);
+  useEffect(() => () => {
+    for (const f of flights.current.values()) { try { world.removeRigidBody(f.body); } catch { /* gone */ } }
+    flights.current.clear(); baked.current.clear();
+    for (const { beat } of taken.current.values()) if (beat.kind === 'reject') restockShelf(beat.shelfSlot, beat.code, 1);
+    taken.current.clear();
+  }, [shoppers, world]);
+  const bake = (s: Shopper, b: Beat, local: THREE.Matrix4, size: { w: number; h: number; d: number }) => {
+    baked.current.set(b.id, local);
+    if (s.cbody && s.cbody.isEnabled()) load.current?.add(s.cbody, b.id, local, size);
+  };
+  const unbake = (id: number) => { baked.current.delete(id); load.current?.remove(id); };
 
   const placeAt = (s: Shopper, x: number, z: number, yaw: number) => {
     if (!s.body) return;
@@ -188,25 +239,80 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       s.cbody.setRotation({ x: tmpQ.x, y: tmpQ.y, z: tmpQ.z, w: tmpQ.w }, false);
       s.cbody.setLinvel({ x: 0, y: 0, z: 0 }, false); s.cbody.setAngvel({ x: 0, y: 0, z: 0 }, false);
     }
+    s.px = x; s.pz = z;
     s.knock.set(0, 0);
   };
 
+  const beatOfShopper = (s: Shopper, t: number): Beat | null => {
+    for (const b of s.beats) { if (t >= b.t0 && t < b.t1) return b; if (b.t0 > t) break; }
+    return null;
+  };
+
   // ---------- steering: before every physics step ----------
+  const grid = useRef(new Map<number, number[]>());
+  const near = (x: number, z: number, r: number, skip: number, fn: (o: Shopper, dx: number, dz: number, d: number) => void) => {
+    const g = grid.current;
+    const cx = Math.floor(x / CELL), cz = Math.floor(z / CELL);
+    for (let ix = cx - 1; ix <= cx + 1; ix++) for (let iz = cz - 1; iz <= cz + 1; iz++) {
+      const list = g.get((ix + 2048) * 4096 + (iz + 2048)); if (!list) continue;
+      for (const oi of list) {
+        if (oi === skip) continue;
+        const o = shoppers[oi];
+        const dx = x - o.px, dz = z - o.pz, d = Math.hypot(dx, dz);
+        if (d < r) fn(o, dx, dz, d);
+      }
+    }
+  };
+  const assignQueues = (t: number) => {
+    for (const [, g] of groups) {
+      let off = g.startOff, idx = 0;
+      for (const s of g.list) {
+        const q = s.q!;
+        if (!s.active || t < q.qStart || t >= q.qStep) { s.qT = null; continue; }
+        const own = s.carrier === 'trolley' ? 1.15 : 0; // your trolley goes in front of you
+        // snake: perCol people per column, then fold back one column over
+        const col = Math.floor(idx / g.perCol), k = idx % g.perCol;
+        const along = g.perCol < 99 ? g.startOff + (col % 2 ? g.perCol - 1 - k : k) * g.len + own : off + own;
+        s.qT = { x: g.head.x + g.dir.x * along + g.side.x * col * 0.95, z: g.head.z + g.dir.z * along + g.side.z * col * 0.95 };
+        s.qFace = Math.atan2(-g.dir.x, -g.dir.z);
+        off += g.len + own; idx++;
+      }
+    }
+  };
+
   useBeforePhysicsStep((w: World) => {
     const t = timeRef.current, sp = speedRef.current;
     const dt = w.timestep;
     const scrub = scrubbed.current;
+    // neighbour grid from where everyone is right now
+    const g = grid.current; g.clear();
+    for (const s of shoppers) {
+      if (!s.active || !s.body) continue;
+      const p = s.body.translation(); s.px = p.x; s.pz = p.z;
+      const k = cellKey(p.x, p.z); const l = g.get(k); if (l) l.push(s.si); else g.set(k, [s.si]);
+    }
+    assignQueues(t);
     for (const s of shoppers) {
       if (!s.body) continue;
       const smp = sampleTimeline(s.tl, t);
       if (!smp.visible) {
-        if (s.active) { s.active = false; s.body.setEnabled(false); s.cbody?.setEnabled(false); s.pos.set(0, -50, 0); }
+        if (s.active) { s.active = false; s.body.setEnabled(false); s.cbody?.setEnabled(false); s.pos.set(0, -50, 0); s.px = 0; s.pz = -999; }
+        s.held = 0;
         continue;
       }
       const parked = !!(s.co && s.park && t >= s.co.tArrive);
       if (!s.active) {
+        // door spacing: wait outside until whoever came in last has stepped clear, then walk in and catch up
+        const sp0 = s.tl.segs[0]?.a;
+        const early = !!sp0 && !scrub && t - s.tl.start < SPAWN_MAX_HOLD + 2;
+        let blocked = false;
+        if (early) near(sp0!.x, sp0!.z, SPAWN_CLEAR, s.si, () => { blocked = true; });
+        if (blocked && t - s.tl.start < SPAWN_MAX_HOLD) { s.held = t; continue; }
         s.active = true; s.body.setEnabled(true); s.cbody?.setEnabled(!parked);
-        placeAt(s, smp.x, smp.z, smp.heading);
+        if (early) placeAt(s, sp0!.x + (blocked ? s.laneOff * 1.6 : 0), sp0!.z, smp.heading);
+        else placeAt(s, smp.x, smp.z, smp.heading);
+        const k = cellKey(s.px, s.pz); const l = g.get(k); if (l) l.push(s.si); else g.set(k, [s.si]);
+        if (early) emitCrowd({ type: 'enter', agentId: s.agent.agent_id, door: s.si % Math.max(1, storePlan(cfg).entrances.length), t });
         continue;
       }
       if (s.cbody) {
@@ -215,21 +321,57 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         else if (!parked && !en) { s.cbody.setEnabled(true); placeAt(s, smp.x, smp.z, smp.heading); continue; }
       }
       const p = s.body.translation();
-      const dx = smp.x - p.x, dz = smp.z - p.z, d = Math.hypot(dx, dz);
+      const seg = smp.seg;
       const walk = (s.ai ? G.aiWalkSpeed : G.walkSpeed) * sp;
-      if (scrub || d > 3 + walk * 0.8) { placeAt(s, smp.x, smp.z, smp.heading); continue; }
-      // feed-forward along the replay segment + spring back onto the path + decaying bonk knock-back
-      let fx = 0, fz = 0;
-      if (smp.seg?.kind === 'move' && smp.seg.t1 > smp.seg.t0) { const k = sp / (smp.seg.t1 - smp.seg.t0); fx = (smp.seg.b.x - smp.seg.a.x) * k; fz = (smp.seg.b.z - smp.seg.a.z) * k; }
+      let tx = smp.x, tz = smp.z, want = smp.heading, fx = 0, fz = 0;
+      let busy = seg?.kind !== 'move';
+      if (s.qT) {
+        // in a checkout line: hold your place, face the till
+        tx = s.qT.x; tz = s.qT.z; want = s.qFace; busy = true;
+      } else {
+        if (seg?.kind === 'move' && seg.t1 > seg.t0) {
+          const k = sp / (seg.t1 - seg.t0); fx = (seg.b.x - seg.a.x) * k; fz = (seg.b.z - seg.a.z) * k;
+          // walk your own line: sideways offset, tapered to zero at both ends of the segment
+          if (s.laneOff && (!seg.phase || seg.phase === 'exit')) {
+            const sx = seg.b.x - seg.a.x, sz = seg.b.z - seg.a.z, L = Math.hypot(sx, sz);
+            if (L > 0.5) {
+              const da = Math.hypot(tx - seg.a.x, tz - seg.a.z), db = Math.hypot(seg.b.x - tx, seg.b.z - tz);
+              const taper = Math.min(1, da / 1.6, db / 1.6);
+              tx += (-sz / L) * s.laneOff * taper; tz += (sx / L) * s.laneOff * taper;
+            }
+          }
+        }
+        // step up to the exact facing for a pick / reject, then step back
+        const b = !s.ai ? beatOfShopper(s, t) : null;
+        if (b && b.shelf && (b.kind === 'pick' || b.kind === 'reject')) {
+          const u = (t - b.t0) / Math.max(1e-3, b.t1 - b.t0);
+          const k = ease(u / REACH.approach) * ease((1 - u) / (1 - REACH.leave));
+          const nx = b.shelf.x - smp.x, nz = b.shelf.z - smp.z, nd = Math.hypot(nx, nz);
+          const go = Math.max(0, nd - REACH_D[s.carrier]) * k;
+          if (nd > 1e-3) { tx += (nx / nd) * go; tz += (nz / nd) * go; }
+        }
+        // trolley pushers park the trolley along the aisle at a shelf and reach sideways
+        if (seg?.kind === 'dwell' && s.carrier === 'trolley' && !parked) want = smp.heading + angDiff(smp.heading, 0) * (b && (b.kind === 'pick' || b.kind === 'reject') ? 1 : 0.6);
+      }
+      const dx = tx - p.x, dz = tz - p.z, d = Math.hypot(dx, dz);
+      if (scrub || d > 14) { placeAt(s, tx, tz, want); continue; }
+      // separation from neighbours (+ a polite sidestep when someone is in front of you)
+      const R0 = s.ai ? 0.62 : s.carrier === 'trolley' ? 1.0 : 0.82;
+      let sx = 0, sz = 0;
+      const fm = Math.hypot(fx, fz) || 1;
+      near(p.x, p.z, R0, s.si, (_o, ddx, ddz, dd) => {
+        if (dd < 1e-4) { ddx = Math.sin(s.si); ddz = Math.cos(s.si); dd = 1; }
+        const wgt = (R0 - dd) / R0;
+        sx += (ddx / dd) * wgt; sz += (ddz / dd) * wgt;
+        if (!busy && (-(ddx * fx + ddz * fz) / (dd * fm)) > 0.5) { sx += (-fz / fm) * wgt * 0.8; sz += (fx / fm) * wgt * 0.8; }
+      });
+      const sepGain = busy ? 0.9 : 2.2;
       const gain = 3.2;
-      let vx = fx + dx * gain + s.knock.x, vz = fz + dz * gain + s.knock.y;
-      const vmax = walk * 1.7 + 1.2, vm = Math.hypot(vx, vz);
+      let vx = fx + dx * gain + s.knock.x + sx * sepGain, vz = fz + dz * gain + s.knock.y + sz * sepGain;
+      const vmax = walk * 1.7 + 1.4, vm = Math.hypot(vx, vz);
       if (vm > vmax) { vx *= vmax / vm; vz *= vmax / vm; }
       s.body.setLinvel({ x: vx, y: 0, z: vz }, true);
       s.knock.multiplyScalar(Math.exp(-dt / 0.28));
-      // face: walking direction, or the shelf at a dwell (trolley pushers angle the trolley along the aisle)
-      let want = smp.heading;
-      if (smp.seg?.kind === 'dwell' && s.carrier === 'trolley' && !parked) want = smp.heading + angDiff(smp.heading, 0) * 0.6;
       const r = s.body.rotation();
       const yaw = 2 * Math.atan2(r.y, r.w);
       const err = angDiff(yaw, want);
@@ -270,6 +412,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           s.cool = o.cool = now + 1.1;
           bus.bonks++; bus.shake = Math.min(1, bus.shake + 0.35);
           sfx.bonk();
+          emitCrowd({ type: 'bonk', a: s.agent.agent_id, b: o.agent.agent_id, x: (a.x + b.x) / 2, z: (a.z + b.z) / 2 });
           (fresh ??= []).push({ id: bonkId.current++, x: (a.x + b.x) / 2, y: 1.7, z: (a.z + b.z) / 2, word: BONK_WORDS[(s.si + o.si + bonkId.current) % BONK_WORDS.length] });
         });
       }

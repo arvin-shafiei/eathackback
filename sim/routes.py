@@ -35,7 +35,7 @@ LENS_WORDS = {  # what the card says: the lens, never the label (spec section 1)
     "protein_sceptic_gimmick_reactant": "no gimmick claims, fewer sweeteners",
     "upf_avoider_parent": "family shop: short ingredient lists",
     "glp1_small_appetite": "high fibre, small portions",
-    "allergen_coeliac": "gluten free",
+    "allergen_coeliac": "no gluten declared",  # never "gluten free": that is a regulated claim (<=20 mg/kg) the OFF label must make
     "vegan_ethical": "vegan",
 }
 WALK_SPEED = LO.PARAMS["walk_speed_mps"]["value"]
@@ -153,16 +153,38 @@ def moved(memory, plan, *, store=None, prev_plan=None) -> list:
 
 # ---------------------------------------------------------------- card (spec 4.3 / 4.4)
 def _off_field(why):
+    """First lens-grade reason of the exact form `field=value (OFF ...)`; (None, None) if there is none.
+    Free-text reasons (e.g. 'pack 560g >=400g standard size (quantity (OFF))') are NOT split on '=';
+    they are carried verbatim in evidence.lens.why instead (audit fix: 35/187 garbled fields)."""
+    import re
     for w in why or []:
-        if "(OFF" in w and "=" in w:
-            f, v = w.split("=", 1)
-            v = v.split(" (")[0]
-            try:
-                v = float(v)
-            except ValueError:
-                pass
-            return f.strip(), v
+        m = re.fullmatch(r"\s*([a-z][a-z0-9_]*)=(.+?)\s+\((?:OFF\b.*|.*\(OFF\)\s*)\)\s*", w)
+        if not m:
+            continue
+        f, v = m.group(1), m.group(2).strip()
+        try:
+            v = float(v)
+        except ValueError:
+            pass
+        return f, v
     return None, None
+
+
+def _p_take_components(ctx, mix, code):
+    """Every term of the card's P(take if seen) sum, each traced to its two cached Jev answers
+    (front of pack and with back of pack) and the p_reads_labels blend weight (layout_optimise.surrogate_table)."""
+    out = []
+    for k, w in sorted(mix.items(), key=lambda kv: (-kv[1], kv[0])):
+        pid = ctx["persona_ids"].get(k)
+        s = (ctx["surrogate"].get(pid) or {}).get(code)
+        if s is None or w <= 0:
+            continue
+        tr = s.get("trace") or {}
+        out.append({"persona": k, "weight": round(w, 4), "pu": round(s["pu"], 5), "take": round(s["take"], 5),
+                    "term": round(w * s["pu"] * s["take"], 5), "p_reads_labels": tr.get("p_reads_labels"),
+                    "front_of_pack": tr.get("front_of_pack"), "with_back_of_pack": tr.get("with_back_of_pack"),
+                    "rule": "pu = p_read*back.p_pick_up + (1-p_read)*front.p_pick_up; take likewise"})
+    return out
 
 
 def diff_ref_for(report, category):
@@ -285,16 +307,20 @@ def card(agent_view, plan, posterior, new_skus, *, ctx) -> dict:
             new_line = {
                 "kind": "new", "code": code, "name": p.get("name"), "category": p.get("category"),
                 "from": None, "to": {"unit": pos1[code]["unit"], "slot": pos1[code]["slot"]},
-                "reason": f"new on your way: matches your picks ({LENS_WORDS.get(top_lens, top_lens)})"
-                          + (f"; OFF {f}={v}" if f else "") + f"; P(take)={best['rank']:.2f} (sim estimate)",
+                "reason": (f"new on your way: fits what you told us ({LENS_WORDS.get(top_lens, top_lens)})" if declared
+                           else f"new on your way: matches your picks ({LENS_WORDS.get(top_lens, top_lens)})")
+                          + (f"; OFF {f}={v}" if f else (f"; {next((w for w in why if 'OFF' in w), why[0])}" if why else ""))
+                          + f"; P(take if seen)={best['rank']:.2f} (sim estimate)",
                 "evidence": {
                     "lens": {"lens": top_lens, "lens_words": LENS_WORDS.get(top_lens), "from": lens_src,
                              "posterior_p": round(top_p, 4), "lens_score": best["lens_score"],
-                             "off_field": f, "off_value": v, "off_url": p.get("off_url")},
-                    "p_take": {"value": best["rank"], "definition": "sum_k posterior(k) * P(pick_up|looked) * P(take|picked_up)",
+                             "off_field": f, "off_value": v, "off_url": p.get("off_url"),
+                             "why": list(why), "grade_source": "data/products/catalog.json lens_grades"},
+                    "p_take": {"value": best["rank"], "definition": "sum_k w(k) * P(pick_up|looked) * P(take|picked_up) = P(take if seen); w = posterior, or 1 for a declared lens; jev_cache_key is the top lens front-of-pack answer only, every term is in components",
                                "source": "data/sim/layout/surrogate.json",
                                "jev_cache_key": (sur.get("trace") or {}).get("front_of_pack", {}).get("jev_cache"),
-                               "persona_mix": best["persona_mix"]},
+                               "persona_mix": best["persona_mix"],
+                               "components": _p_take_components(ctx, mix, code)},
                     "gates_passed": (["declared gates (sim/swaps.gate_fail)"] if agent_view.get("declared_gates") else [])
                                     + ["non-HFSS (layout_optimise.hfss, conservative)", f"lens_score({top_lens}) > 0"],
                     "route": {"walkways": rt["walkways"], "metres": rt["metres"], "detour_metres": best["detour_m"]},

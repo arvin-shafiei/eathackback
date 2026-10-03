@@ -125,7 +125,7 @@
     "treat": 6,
     "gym": 8
    },
-   "unit": "minutes in queue before abandoning the basket (mean of an exponential)",
+   "unit": "mean minutes a shopper will stand in a queue before abandoning (gamma, shape patience_gamma_shape)",
    "source": "assumption: no grocery reneging data fetched; bigger baskets have more sunk effort so wait longer",
    "confidence": "low"
   },
@@ -326,6 +326,28 @@
    "value": null,
    "unit": "GBP",
    "source": "assumption: an off-range item is valued at the mean price of the 480-SKU catalog (computed at run time); only used for the value of abandoned baskets",
+   "confidence": "low"
+  },
+  "shelf_capacity_multiplier": {
+   "value": 2,
+   "unit": "x planogram_xl capacity",
+   "range": [
+    1,
+    4
+   ],
+   "source": "assumption: planogram_xl.json capacity = facings x ONE layer of depth (store_xl.config.json stock_rules); real shelves stack most packs 2+ high. At x1 the 3,369-unit store holds ~1/5 of a Saturday's modelled demand on these 480 SKUs; run --set shelf_capacity_multiplier=1 to see that case",
+   "confidence": "low"
+  },
+  "restock_batch_fill_below": {
+   "value": 0.5,
+   "unit": "fill fraction",
+   "source": "assumption: once at a unit with the cage, a restocker also tops up any other SKU on the same unit below 50% full (working the bay, both policies)",
+   "confidence": "low"
+  },
+  "patience_gamma_shape": {
+   "value": 3,
+   "unit": "gamma shape k (CV = 1/sqrt(k) = 0.58)",
+   "source": "assumption: an exponential patience (k=1, the Erlang-A default) makes ~1 in 4 meal-deal shoppers quit after 2 min, which is not what UK tills look like; k=3 keeps impatience but thins that tail. No grocery reneging data fetched",
    "confidence": "low"
   }
  }

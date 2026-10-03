@@ -933,7 +933,8 @@ def eval_next_basket(run, train, personas, catalog, store, nb, nb12, lam_list=(0
     psku12 = {k: nb12.p_sku(k, list(catalog)) for k in cls12}
     psku9 = {k: psku12[k] for k in nb.classes}
     K = (3, 5, 10)
-    methods = ["random", "global_popularity", "repeat_last", "most_frequent", "posterior_popularity"] + \
+    methods = ["random", "global_popularity", "repeat_last", "most_frequent", "repeat_last_pure", "most_frequent_pure",
+               "posterior_popularity"] + \
               [f"ours_lambda_{l}" for l in lam_list] + ["oracle", "ours_lambda_0.5_inferred_9way", "ours_lambda_0.5_inferred_12way"]
     per_shopper = {m: {f"{s}@{k}": {} for k in K for s in ("P", "R", "P_repeat", "P_explore")} for m in methods}
     for a in run["agents"]:
@@ -959,6 +960,11 @@ def eval_next_basket(run, train, personas, catalog, store, nb, nb12, lam_list=(0
                 "global_popularity": sorted(U, key=lambda c: (-gpop.get(c, 0), c)),
                 "repeat_last": [c for c in order_pp if c in set(hist[-1])] + [c for c in order_pp if c not in set(hist[-1])],
                 "most_frequent": sorted(U, key=lambda c: (-freq[c], -pp[c], c)),
+                # *_pure: ties broken by persona-free global popularity (repeat_last / most_frequent above break
+                # ties by the persona posterior, so they are not persona-free baselines)
+                "most_frequent_pure": sorted(U, key=lambda c: (-freq[c], -gpop.get(c, 0), c)),
+                "repeat_last_pure": [c for c in sorted(U, key=lambda c: (-gpop.get(c, 0), c)) if c in set(hist[-1])]
+                                    + [c for c in sorted(U, key=lambda c: (-gpop.get(c, 0), c)) if c not in set(hist[-1])],
                 "posterior_popularity": order_pp,
                 "oracle": sorted(U, key=lambda c: (-psku12[a["archetype"]].get(c, 0.0), c)),
             }
@@ -996,7 +1002,7 @@ def eval_next_basket(run, train, personas, catalog, store, nb, nb12, lam_list=(0
             out["visit4"][m][nm] = boot_mean([x[4] for x in d.values() if 4 in x], B, 21)
     for l in lam_list:
         o = f"ours_lambda_{l}"
-        for base in ("most_frequent", "repeat_last"):
+        for base in ("most_frequent", "repeat_last", "most_frequent_pure", "repeat_last_pure"):
             for scope in ("overall", "visit4"):
                 for k in K:
                     nm = f"P@{k}"
@@ -1026,17 +1032,16 @@ def assertions(run, E, check_s11=True, s11_agents=300):
         differ += b1 != b2 or [e["noticed"] for e in visit_rec(a, 1, "control")["events"]] != [e["noticed"] for e in visit_rec(a, 2, "control")["events"]]
     out["v1_v2_differ"] = {"pass": differ > 0.5 * len(agents), "shoppers_with_different_v1_v2_draws_or_baskets": differ,
                            "n": len(agents), "mean_jaccard_v1_v2_baskets": round(sum(js) / len(js), 4) if js else None}
-    # non-compliers: realised world record IS the control record, byte for byte
+    # v3: both arms start from the same history (memory, memory line, posterior). The earlier check here compared
+    # the control record with itself (always passed); this one can fail.
     bad = 0
-    for c in (0.2, 0.5, 0.8):
-        for a in agents:
-            if not complies(a, c):
-                for v in (3, 4):
-                    if json.dumps(visit_rec(a, v, "control"), sort_keys=True) != json.dumps(
-                            [r for r in a["visits"] if r["visit"] == v and r["arm"] == "control"][0], sort_keys=True):
-                        bad += 1
-    out["control_equals_card_world_for_noncompliers"] = {"pass": bad == 0, "mismatches": bad,
-                                                         "how": "the realised card world takes the control potential outcome for non-compliers"}
+    for a in agents:
+        rc, rk = visit_rec(a, 3, "control"), visit_rec(a, 3, "card")
+        if (json.dumps(rc["memory_before"], sort_keys=True) != json.dumps(rk["memory_before"], sort_keys=True)
+                or rc["memory_line"] != rk["memory_line"]):
+            bad += 1
+    out["v3_arms_share_history"] = {"pass": bad == 0, "mismatches": bad, "n": len(agents),
+                                    "how": "visit-3 memory_before and memory_line identical in the control and card records"}
     # v3: same slot visited in both arms -> same decisions (logit 0 only)
     if run["design"]["assumptions"]["route_card_logit"]["value"] == 0:
         diff = 0
@@ -1131,8 +1136,9 @@ def write_results(run_id, extra_md=""):
     js = cost.get("jev_session", {})
     w(f"- Main run (`{run_id}.json → cost`): **${cost['usd']}** billed, {cost['jev_requests']} Jev requests "
       f"({cost['cached']} from cache), {cost['errors']} errors, wall {cost['wall_s']} s.")
-    w(f"- Tokens: {cost['input_tokens']:,} input tokens across all requests incl. cache hits; "
-      f"{cost.get('new_input_tokens', 0):,} billed input + {cost.get('new_output_tokens', 0):,} output (output is free). "
+    w(f"- Tokens: {cost['input_tokens']:,} input tokens across all requests incl. cache hits; " +
+      (f"{cost['new_input_tokens']:,} billed input + {cost['new_output_tokens']:,} output (output is free). " if cost.get('new_input_tokens') is not None else
+       f"billed tokens for the whole process (incl. the failed seed 23): {cost['whole_process_incl_failed_seed_23']['new_input_tokens']:,} input + {cost['whole_process_incl_failed_seed_23']['new_output_tokens']:,} output, ${cost['whole_process_incl_failed_seed_23']['usd']}. ") +
       f"Uncached cost would have been ${cost['usd_if_uncached']}.")
     for sid, sv in ev.get("sensitivity", {}).items():
         c = sv["cost"]
@@ -1283,6 +1289,53 @@ def cmd_eval(a):
                       "assertions": {k: v["pass"] for k, v in asr.items()}}, indent=1))
 
 
+def cmd_recard(a):
+    """Rebuild every stored card from its stored inputs (memory_before incl. posterior, the re-layout, the new
+    SKUs), with the current sim/routes.card, and write it back. No Jev calls. Refuses to write if anything that
+    fed the simulation changes (carded SKU, line kinds/codes/slots, route units, abstain flags): only card TEXT
+    and EVIDENCE may change. Used after the traceability audit fixes to routes.card (3 Oct 2026)."""
+    path = os.path.join(OUT_DIR, a.run + ".json")
+    run = json.load(open(path))
+    d = run["design"]
+    E = load_env(d["relayout_source"], ",".join(d["new_skus"]))
+    tau = d["assumptions"]["tau"]["value"]
+    card_ctx = {"store": E["store"], "catalog": E["catalog"], "hfss": E["hfss"], "surrogate": E["surrogate"],
+                "report": E["report"], "report_src": REPORT, "prev_plan": E["plan_built"],
+                "persona_ids": E["persona_ids"], "route_card_logit": d["assumptions"]["route_card_logit"]["value"],
+                "compliance": 0.2}
+    pers = {p["archetype"]: p for p in E["personas"]}
+
+    def sig(c):
+        return (c["carded_sku"], c["abstained_new_item"], c["no_candidate"], [s["unit"] for s in c["route"]["stops"]],
+                [(l["kind"], l["code"], json.dumps(l["from"]), json.dumps(l["to"])) for l in c["lines"]])
+    n = 0
+    for ag in run["agents"]:
+        per = pers[ag["archetype"]]
+        for r in ag["visits"]:
+            if not r.get("card"):
+                continue
+            mem = r["memory_before"]
+            post = mem["posterior"][-1] if mem["posterior"] else None
+            view = {"persona": per, "memory": mem, "mission_cats": ag["mission_cats"], "visit": r["visit"], "tau": tau,
+                    "detour": d["detour"], "declared_lens": ag["archetype"] if ag["archetype"] in SENSITIVE else None,
+                    "declared_gates": ag["archetype"] in SENSITIVE}
+            new = routes.card(view, E["plan_relayout"], post, E["new_skus"], ctx=card_ctx)
+            if sig(new) != sig(r["card"]):
+                raise SystemExit(f"recard: {ag['key']} v{r['visit']} would change a simulated input; refusing")
+            r["card"] = new
+            n += 1
+    run.setdefault("audit", []).append({"at": dt.datetime.now().isoformat(timespec="seconds"), "cmd": "visits.py recard",
+                                        "cards_rebuilt": n, "changed": "card reason text + evidence only (OFF field parse, "
+                                        "declared-lens wording, no 'gluten free' claim, P(take if seen) components)"})
+    with open(path, "w") as f:
+        json.dump(run, f, ensure_ascii=False, separators=(",", ":"))
+    cards = [{"key": x["key"], "archetype": x["archetype"], "visit": v["visit"], "card": v["card"],
+              "card_undeclared": v["card_undeclared"]} for x in run["agents"] for v in x["visits"] if v["card"]]
+    with open(os.path.join(OUT_DIR, a.run + ".cards.json"), "w") as f:
+        json.dump({"run_id": a.run, "cards": cards}, f, ensure_ascii=False, indent=1)
+    print(f"recard: rebuilt {n} cards in {a.run}; simulated inputs unchanged")
+
+
 def cmd_card(a):
     cards = json.load(open(os.path.join(OUT_DIR, a.run + ".cards.json")))["cards"]
     for c in cards:
@@ -1330,6 +1383,8 @@ def main():
     rp = sub.add_parser("report")
     rp.add_argument("--run", required=True)
     rp.add_argument("--preface", default="", help="markdown file inserted after the header")
+    rc = sub.add_parser("recard")
+    rc.add_argument("--run", required=True)
     c = sub.add_parser("card")
     c.add_argument("--run", required=True)
     c.add_argument("--agent", required=True)
@@ -1359,6 +1414,8 @@ def main():
         cmd_eval(a)
     elif a.cmd == "card":
         cmd_card(a)
+    elif a.cmd == "recard":
+        cmd_recard(a)
     elif a.cmd == "report":
         write_results(a.run, open(a.preface).read() if a.preface else "")
 

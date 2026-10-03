@@ -10,6 +10,8 @@ export interface Beat {
   code: string; slot: string; step: number; reason: string;
   t0: number; t1: number; tGrab: number; tLaunch: number; tPutBack: number; tBack: number;
   shelf: { x: number; y: number; z: number; h: number; category: string } | null;
+  /** the real planogram slot the pack sits in (feed:<mission> slots resolved to the shelf) */
+  shelfSlot: string;
   /** nth pick of this agent (stack position in the carrier) */
   pickIdx: number;
 }
@@ -40,6 +42,7 @@ export function buildBeats(cfg: StoreConfig, plan: Planogram, agents: Agent[], t
         tGrab: s.t0 + BEAT.grab * D, tLaunch: s.t0 + BEAT.launch * D, tPutBack: s.t0 + BEAT.putBack * D, tBack: s.t0 + BEAT.backOnShelf * D,
         shelf: pw ? { x: pw.x, y: pw.y, z: pw.z, h: pw.h, category: plan[pw.slot]?.category ?? pw.unit.category } : null,
         pickIdx: kind === 'pick' ? picks++ : -1,
+        shelfSlot: pw?.slot ?? e.slot,
       };
       list.push(b); all.push(b);
       // humans physically take the pack off the shelf; ai agents read the feed, so their pick is a hologram and leaves no gap

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type Ref } from 'react';
 
 /** Where a number came from. Rule zero: every number on screen carries one of these. */
 export type Source = {
@@ -16,7 +16,7 @@ const set = (s: TipState) => { state = s; subs.forEach((f) => f(s)); };
 let seq = 0;
 
 /** Wrap any number (or label) to make its source inspectable on hover, focus or click. */
-export function S({ src, children, className = '', as = 'span' }: { src: Source; children: ReactNode; className?: string; as?: 'span' | 'div' }) {
+export function S({ src, children, className = '', as = 'span', style }: { src: Source; children?: ReactNode; className?: string; as?: 'span' | 'div'; style?: CSSProperties }) {
   const ref = useRef<HTMLElement | null>(null);
   const id = useRef(++seq).current;
   const show = (pinned: boolean) => ref.current && set({ src, rect: ref.current.getBoundingClientRect(), pinned, id });
@@ -25,8 +25,9 @@ export function S({ src, children, className = '', as = 'span' }: { src: Source;
   const kind = src.kind || (/^assumption/i.test(src.note || '') ? 'assumption' : '');
   return (
     <Tag
-      ref={ref as React.Ref<HTMLSpanElement>}
+      ref={ref as Ref<HTMLSpanElement>}
       className={`d-src ${kind ? `d-src-${kind}` : ''} ${className}`}
+      style={style}
       tabIndex={0}
       role="button"
       aria-label={`source: ${src.file}${src.field ? ' → ' + src.field : ''}`}
