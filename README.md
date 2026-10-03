@@ -2,6 +2,58 @@
 
 **EAT_HACK · Really Good Culture · 3 Oct 2026**: Track 1 *Human Truth*, with a Track 2 *Retail Futures* output
 
+## the idea (v2, locked 3 Oct)
+
+**Deep synthetic shoppers walk a 3D store, read real products, and every number they produce traces back to a source.**
+
+1. **3D store (three.js / react-three-fiber).** Keep it simple and expandable.
+   - 4 aisles with a divider down each, giving **8 shelving units × 3 rows = 24 slots**.
+   - Each slot holds a *set* of items: one product family, the challenger next to its incumbent and the own-label version.
+   - Layout comes from a config file, so it scales to more aisles, rows and items.
+2. **Real products, real descriptions.** UK products from **Open Food Facts**: name, brand, pack copy, ingredients, additives (E-numbers), NOVA processing level, Nutri-Score, eco-score, labels (organic, vegan, Fairtrade), allergens, price per unit where available, and the image.
+   - Every attribute links back to its OFF product page by barcode.
+3. **Deep synthetic audiences using OCEAN (the Big Five).** Each shopper has Big Five trait scores *plus* a grounded persona: mission, budget, channel and habits, taken from the 13 evidence-grounded personas and 10.6k coded Reddit comments.
+   - Traits map to shopping behaviour through **published links**, for example:
+     - Openness → food neophilia and trying challengers
+     - Conscientiousness → label reading and health-driven choice
+     - Neuroticism → risk aversion, loss aversion and health anxiety
+     - Agreeableness → ethical and eco concern
+     - Extraversion → social proof and impulse
+   - Agents run through **OpenRouter** (several models, so the audience isn't one model's monoculture).
+4. **What each persona looks for, made explicit.** Every persona has a weighted **attribute lens**. The eco-minded parent looks for fewer additives, organic, eco-score A/B and recyclable packaging. The GLP-1 user looks for small portions, high fibre and low sugar. The frugal student looks for price per 100g and meal-deal eligibility. The protein-sceptic looks for the "gimmick" cue.
+   - We **pick products to span those lenses**: high and low additives, NOVA 1→4, organic vs not, challenger vs incumbent vs own-label, cheap vs premium.
+   - Each product is **graded per lens** with a visible, traceable score.
+5. **Agents shop.** Each one walks the aisles, *notices* items (driven by shelf position and salience), *reads* the description, then *chooses, rejects or walks past*, and says **why in its own words**. That reason is tagged to the lens attribute and the behavioural mechanism it came from.
+6. **Stats for brands.** Per product:
+   - notice rate, consideration, pick share and walk-past rate, by persona, OCEAN segment and mission;
+   - the top rejection reasons;
+   - the **predicted sentiment** ("how shoppers would feel about it");
+   - an AI-agent shopper comparison (human ↔ agent divergence).
+7. **Optimisation for brands.** The system tests honest changes and re-runs the store to show the lift with a confidence interval: shelf slot, facings, pack claim, description rewrite (true facts only), price, own-label adjacency.
+   - Output: *"move to eye level: +X% notice; add the true 'high fibre' claim: +Y% pick among conscientious, GLP-1 shoppers."*
+
+**Rule we build by** (RGC's own words): *"A number that cannot be traced back to its source is worse than no number at all."*
+- Every stat is a count of logged agent decisions.
+- Every decision carries its persona, OCEAN scores, the product fields it read, its stated reason, and the source each assumption came from: a Reddit verbatim, a paper, or an OFF field.
+- No black boxes.
+
+## pressure test (honest)
+
+| attack | risk | answer / mitigation |
+|---|---|---|
+| **"It's a synthetic persona panel. RGC already shipped Buyer Agent and Signal Twins (Apr 2026)."** | 🔴 high | Don't pitch "personas". Pitch **grounding + traceability + space**. RGC's twins have no shelf, no walk-past and no agent-shopper arm. Lead with the 3D walk-past and the trace for each decision, not the panel. |
+| **"LLM personas are too rational and too positive"** (NN/g: chatbots "want to please"; arXiv 2609.13148: subgroup error 10–30pp, WTP overstated ~3×). | 🔴 high | (a) A **notice gate before the LLM**: most products are never seen, decided by a literature-calibrated shelf model, not the LLM. (b) A forced **walk-past / no-buy** option and a budget. (c) Several models via OpenRouter. (d) A **calibration check** against real votes from The Shelf today (25 brands, 50 builders), reported honestly. |
+| **"OCEAN is pop-psych."** | 🟠 med | Use only trait→food-behaviour links with citations (e.g. openness ↔ food neophilia/variety seeking; conscientiousness ↔ healthier eating and label use; neuroticism ↔ emotional eating and risk aversion). Show the link and source on hover. Traits are a *modifier* on grounded personas, not the whole model. |
+| **"The 3D is eye candy."** | 🟠 med | The 3D *is* the data: shelf position drives P(notice) with cited effects (eye level ~+39% sales, facings elasticity ~0.17). The walk-pasts are visible. Ugly-but-true beats pretty-but-fake: 24 slots, boxes plus product images. |
+| **"Can you build it by 17:30?"** | 🟠 med | Scope: one store, 24 slots, ~50–70 products, ~200 agent runs, one optimisation loop. Pre-compute runs and render replays; the live demo shows replay plus one live re-run. A fast utility model handles noticing; the LLM handles read-and-decide only for noticed items. |
+| **"Where's the money?"** | 🟢 low | Challenger brands (RGC Club: 400+) want buyer-meeting evidence before listing; retailers want layout and range what-ifs. Anchors: the £999 Retail Report add-on; virtual-store tests at £20–60k taking weeks. |
+| **"Scraped Tesco data?"** | 🟢 avoided | We use **Open Food Facts** (open licence, ingredients, additives, NOVA, eco-score). Better for traceability, and no ToS issue. Retailer price data is optional enrichment. |
+| **"Is the agent-shopper arm a gimmick?"** | 🟢 low | It's the most original part: no RGC dimension covers it, and IGD/Kantar are warning about exactly this. Same products, structured feed, ACES-style randomised positions, report divergence. |
+
+**Verdict:** build it, but **lead with traceable grounding**: "why did shopper #37 walk past Nutty Crunch?", answered by shelf slot, notice probability, OCEAN trait, the attribute read, a Reddit verbatim and the source. The personas and the 3D are how we deliver that, not the pitch itself.
+
+---
+
 > *"Your product won the room today. Here's why the robot that will shop for those same people in 2027 won't pick it, and the one honest fix that changes that."*
 
 A **3D supermarket** stocked with real UK products. Two kinds of shopper walk the **same shelf**:
