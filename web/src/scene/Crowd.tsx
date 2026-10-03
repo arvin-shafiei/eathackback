@@ -169,6 +169,8 @@ function labelTex(key: string, draw: () => { lines: string[]; head?: string; col
 interface Slot { sprite: THREE.Sprite; mat: THREE.SpriteMaterial; key: string; si: number; beat: Beat | null; h: number; y: number; aspect: number }
 interface Bonk { x: number; z: number; until: number; slot: number }
 
+const HIT_M = new THREE.Matrix4();
+
 export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, products, selectedAgent, onAgent, onEvent, thoughts, speed }: Props) {
   const speedRef = useRef(speed); speedRef.current = speed;
   const thoughtsRef = useRef(thoughts); thoughtsRef.current = thoughts;
@@ -255,11 +257,13 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     for (const s of shoppers) for (const b of s.hands) pc.setHSL(hash01(products[b.code]?.brand ?? b.code), 0.62, 0.55), pack.setColorAt(packIdx.get(b.id)!, pc);
     if (!np) pack.setColorAt(0, pc.set('#fff'));
     const bag = mk(bagGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.7 }), N);
+    // invisible, generous click target per shopper (a shopper is a few pixels from the overview camera)
+    const hit = mk(new THREE.CylinderGeometry(0.85, 0.85, 2.1, 10).translate(0, 1.05, 0), new THREE.MeshBasicMaterial({ visible: false }), N);
     for (const m of [body, arm, pack]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
     const group = new THREE.Group();
-    const all = [body, bodyInk, overalls, strap, rim, eye, iris, mouth, hair, arm, foot, blob, trolley, bag, pack];
-    group.add(...all.filter((m) => m !== body));
-    return { group, all, body, bodyInk, overalls, strap, rim, eye, iris, mouth, hair, arm, foot, blob, trolley, bag, pack, packIdx, packSize };
+    const all = [body, bodyInk, overalls, strap, rim, eye, iris, mouth, hair, arm, foot, blob, trolley, bag, pack, hit];
+    group.add(...all.filter((m) => m !== body && m !== hit));
+    return { group, all, hit, body, bodyInk, overalls, strap, rim, eye, iris, mouth, hair, arm, foot, blob, trolley, bag, pack, packIdx, packSize };
   }, [shoppers, products]);
   useEffect(() => () => {
     for (const m of meshes.all) { m.geometry.dispose(); (Array.isArray(m.material) ? m.material : [m.material]).forEach((x) => x.dispose()); }
@@ -464,6 +468,9 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     // ---- carried packs ----
     for (const s of shoppers) for (const b of s.hands) drawPack(s, b, t, now, crossed);
     for (const m of M.all) m.instanceMatrix.needsUpdate = true;
+    // InstancedMesh caches its bounding sphere on the first raycast; shoppers move, so drop it and let the
+    // next click recompute it (otherwise clicks on shoppers who walked out of the first sphere are ignored)
+    M.hit.boundingSphere = null; M.body.boundingSphere = null;
 
     // selection ring + follow cam feed
     const sel = selRef.current ? byAgent.get(selRef.current) : undefined;
@@ -544,7 +551,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   // ---------- drawing helpers (called from the one useFrame) ----------
   function hideShopper(s: Shopper) {
     const M = meshes, i = s.si;
-    M.body.setMatrixAt(i, ZERO); M.bodyInk.setMatrixAt(i, ZERO); M.overalls.setMatrixAt(i, ZERO); M.strap.setMatrixAt(i, ZERO);
+    M.hit.setMatrixAt(i, ZERO); M.body.setMatrixAt(i, ZERO); M.bodyInk.setMatrixAt(i, ZERO); M.overalls.setMatrixAt(i, ZERO); M.strap.setMatrixAt(i, ZERO);
     M.mouth.setMatrixAt(i, ZERO); M.hair.setMatrixAt(i, ZERO); M.blob.setMatrixAt(i, ZERO); M.bag.setMatrixAt(i, ZERO); M.trolley.setMatrixAt(i, ZERO);
     for (let k = 0; k < 2; k++) { const j = i * 2 + k; M.arm.setMatrixAt(j, ZERO); M.eye.setMatrixAt(j, ZERO); M.rim.setMatrixAt(j, ZERO); M.iris.setMatrixAt(j, ZERO); M.foot.setMatrixAt(j, ZERO); }
     for (const b of s.hands) M.pack.setMatrixAt(M.packIdx.get(b.id)!, ZERO);
@@ -628,6 +635,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     tmpQ.setFromEuler(tmpE.set(lean, s.yaw + wiggle * 0.6 + spin, roll, 'YXZ'));
     R.compose(tmpV.set(s.px, hop, s.pz), tmpQ, tmpS.set(1 - st * 0.55, 1 + st, 1 - st * 0.55));
     M.body.setMatrixAt(i, R); M.bodyInk.setMatrixAt(i, R); M.overalls.setMatrixAt(i, R);
+    M.hit.setMatrixAt(i, HIT_M.makeTranslation(s.px, 0, s.pz));
     M.blob.setMatrixAt(i, tmpM.compose(tmpV.set(s.px, 0.012, s.pz), tmpQ2.identity(), tmpS.setScalar(1 - hop * 0.8)));
 
     // arms: push pose / free pose, blended toward the IK aim for the grabbing arm, rubber-stretch to reach
@@ -781,7 +789,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   return (
     <group>
       <primitive object={meshes.group} />
-      <primitive object={meshes.body} onClick={click(shoppers)} {...hover(shoppers)} />
+      <primitive object={meshes.body} />
+      <primitive object={meshes.hit} onClick={click(shoppers)} {...hover(shoppers)} />
       <primitive object={pools.group} onClick={clickSticker} />
       <mesh ref={selRing} rotation={[-Math.PI / 2, 0, 0]} visible={false}>
         <ringGeometry args={[0.52, 0.66, 40, 1, 0, Math.PI * 1.6]} />
