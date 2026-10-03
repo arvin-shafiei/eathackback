@@ -14,6 +14,7 @@
 // Gondola aisles: a walkway lined by two gondola faces; unit side 'L' = the face on the walkway's -x side.
 import type { StoreConfig, Planogram, Unit, Agent, SimEvent } from './types';
 import { techFloor, type TechFloor } from './techFloor';
+import { freshFloor, type FreshFloor } from './freshFloor';
 
 export const G = {
   spacing: 7.0, // gondola centre-to-centre (assumption: visual only, widened 3 Oct so crowds spread: ~6m walkway + 1m gondola)
@@ -170,12 +171,16 @@ export interface StorePlan {
   lobbyZ: number;
   /** tech corner + seasonal decor on free floor (big stores only; visual, its rects are already in obstacles) */
   tech?: TechFloor | null;
+  /** produce / bread displays, pharmacy, bakehouse annex (big stores only; visual, its rects are already in obstacles) */
+  fresh?: FreshFloor | null;
 }
 
 /** add the tech / decor floor to a finished plan and register its solid pieces with the router */
 function withTech(p: StorePlan) {
   p.tech = techFloor(p);
   if (p.tech) p.obstacles.push(...p.tech.rects);
+  p.fresh = freshFloor(p);
+  if (p.fresh) p.obstacles.push(...p.fresh.rects);
   return p;
 }
 

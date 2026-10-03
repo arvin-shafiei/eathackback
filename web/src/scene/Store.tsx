@@ -671,8 +671,10 @@ export function Store(props: StoreProps) {
   // the stockroom door is a gap in whichever side wall it sits on
   const sd = P.stockroom.door;
   const doorOn = Math.abs(sd.x - B.xMax) < 0.5 ? 'R' : Math.abs(sd.x - B.xMin) < 0.5 ? 'L' : null;
-  const right = spans(B.zMin, B.zMax, doorOn === 'R' ? [sd.z] : [], 1.1);
-  const left = spans(B.zMin, B.zMax, doorOn === 'L' ? [sd.z] : [], 1.1);
+  // the bakehouse annex (freshFloor.ts) has a doorway through the bakery wall
+  const bh = P.fresh?.bakehouse, bhOn = bh && bh.doorZ !== null ? (bh.s > 0 ? 'R' : 'L') : null;
+  const right = spans(B.zMin, B.zMax, [...(doorOn === 'R' ? [sd.z] : []), ...(bhOn === 'R' ? [bh!.doorZ!] : [])], 1.1);
+  const left = spans(B.zMin, B.zMax, [...(doorOn === 'L' ? [sd.z] : []), ...(bhOn === 'L' ? [bh!.doorZ!] : [])], 1.1);
   const wallBoxes: [number, number, number, number][] = [ // cx, cz, w, d
     [B.cx, B.zMin, B.w + 0.24, 0.24],
     ...left.map(([a, b]) => [B.xMin, (a + b) / 2, 0.24, b - a] as [number, number, number, number]),

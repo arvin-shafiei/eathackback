@@ -10,6 +10,7 @@ import { Store } from './Store';
 import { TrafficHeat } from './TrafficHeat';
 import { World } from './world/World';
 import { TechCorner } from './TechCorner';
+import { FreshFloor } from './FreshFloor';
 import { CelebVisit } from './world/CelebVisit';
 import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
@@ -241,6 +242,7 @@ const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
       <PerfHook />
       <World cfg={p.cfg} />
       <TechCorner cfg={p.cfg} />
+      <FreshFloor cfg={p.cfg} />
       <CelebVisit cfg={p.cfg} />
       <Clock timeRef={p.timeRef} playing={p.playing} speed={p.speed} duration={p.duration} />
       <Suspense fallback={null}>
