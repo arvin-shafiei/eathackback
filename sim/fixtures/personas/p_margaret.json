@@ -1,0 +1,124 @@
+{
+ "id": "p_margaret",
+ "name": "Margaret",
+ "archetype": "habit_loyalist_shrinkflation_angry",
+ "mission": "weekly_shop",
+ "budget_gbp": 30,
+ "budget_source": "assumption: per-store-visit budget for the sim, from the dossier's spend description",
+ "channel": "instore",
+ "ocean": {
+  "O": 0.2,
+  "C": 0.8,
+  "E": 0.45,
+  "A": 0.4,
+  "N": 0.65
+ },
+ "ocean_source": "assumption: fixture OCEAN set by hand from the dossier, pending data/personas/lens",
+ "ocean_effects": [],
+ "lens": [
+  {
+   "attribute": "price_gbp",
+   "off_field": "price_gbp",
+   "direction": "lower_better",
+   "weight": 0.55,
+   "why": "price_sensitivity_0_1",
+   "source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Visibly lighter or emptier pack at the same or higher price (slack fill, false-bottom tray, air-filled bag, 'flat' egg)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "'NEW recipe' / 'improved' banner on a product she already likes, which she reads as a downgrade",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Front-of-pack 'protein', 'high protein' or other health claim on something that is naturally that food (eggs, chicken, cheese), or a price uplift for a trivial claim",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Unknown brand with nothing to vouch for it: no recognisable maker, no retailer endorsement, no one she knows who has tried it",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A single bad taste or texture experience with a new or own-label product, after which it's gone for good",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Price that only appears with Clubcard, or unit prices in mismatched units that she can't compare",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Product moved in a store reset so she can't find it; she leaves it rather than hunt",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Any suggestion that an app, assistant or AI has picked or substituted her item, which she assumes is a paid placement",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Long or chemical-sounding ingredient list, palm oil or 'waxy' chocolate",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Cutesy, loud or influencer-style packaging that reads 'gimmick' rather than 'proper food'",
+   "source": "data/personas/staged_personas_v1.json"
+  }
+ ],
+ "trust_signals": [
+  "Physical heft and a full pack she can feel and see in the hand",
+  "Long heritage, an unchanged recipe and an unchanged size; brands praised for not shrinking (Tunnock's, Ferrero, Kinder)",
+  "Short, recognisable ingredient list, with the main ingredient first (e.g. Heinz: 'Tomatoes (148g per 100g ketchup)')",
+  "Retailer quality halo she already trusts (M&S, Waitrose, Sainsbury's own-label) more than an unknown challenger",
+  "Recommendation from family, especially her daughter ('after my mum recommended it'), or a friend who has eaten it",
+  "Clear per-100g price on the shelf edge, printed big enough to read",
+  "Being able to taste it first: in-store sampling, or a small, cheap trial size",
+  "Plain, honest packaging with the weight stated prominently on the front",
+  "British-made or 'supports a British company' (cited as a bonus in switching to M&S chocolate)",
+  "Seen it on the shelf repeatedly over weeks (familiarity through physical presence, not ads)"
+ ],
+ "habits": [
+  "Betrayal aversion: punishes SNEAKY downsizing (same pack, less inside, same or higher price) much harder than an honest price rise. The anger is about being treated as stupid, not about the money.",
+  "Permanent exit from a betrayed incumbent: once she has seen a shrink, she stops buying for good and doesn't come back. This opens an 'attack window' on the incumbent's shelf.",
+  "Trades UP after a betrayal, not down. She would rather pay more for something clearly good than a middling price for something that makes her feel cheated. The beneficiary is a known premium or retailer brand (M&S, Lindt, Tony's), not an unknown challenger.",
+  "Hero-product brand anchoring with nostalgia: she pays a premium only where the product is eaten on its own (ketchup, beans, mayo, tea) and buys own-label where it is just an ingredient."
+ ],
+ "dossier": "Margaret is 63, semi-retired (part-time at a GP surgery reception) and lives with her husband in a market-town semi. Her main shop is in person once a week, on Thursday morning, at the big Tesco Extra. She drives there, uses a trolley, carries a written paper list and has a fixed route: fruit and veg, then bakery, chilled, tins, and household last. She tops up two or three times a week on foot at the local Tesco Express (milk, bread, a paper, the odd treat). She has never done an online grocery order and has never let an app or ChatGPT choose food for her. She has a Clubcard because 'you can't get the prices without it', and she resents that.\n\nBudget: about \u00a385-95 a week for two, up from \u00a360 a few years ago. She notices this and talks about it. Inflation has made her more price-alert without making her cheap.\n\nHer basket is a mix of hero brands she won't give up and own-label for anything that disappears into a recipe. She stays loyal to Heinz beans and ketchup, Hellmann's, Yorkshire Tea, Lurpak (grudgingly, at its current price) and Weetabix. Tinned tomatoes, oats, pasta, flour, cleaning products and frozen veg are all Tesco own-label.\n\nShe has publicly ditched brands she feels conned her: Cadbury (waxy, smaller, 'flat' Easter eggs), Pringles after the tube shrank, Quality Street and the Fox's tin with its false-bottom tray. When one of these drops out she trades UP to something she can trust, such as M&S chocolate or a Lindt bar, rather than down. She reads shelf-edge labels in her reading glasses and gets angry when the unit price is shown 'per each' on one product and 'per 100g' on its neighbour.\n\nShe distrusts anything new, loud or 'healthified'. To her, protein yoghurts, 'protein' egg pots and 'NEW recipe' banners mean a price rise or a worse product. She buys new things almost only by impulse in the store, when she can pick the item up, look at the pack, feel its weight and read the ingredients. A recommendation from her daughter also works.\n\nOne bad experience and that's it. She will not give a new brand a second chance.\n\nShe's hostile to AI shopping ('they'll just push whoever pays them') and has no plans to use the Tesco assistant. Her children may set it up for her eventually, and she might use it for repeat staples while still choosing fresh food herself.\n\nChannel mix: about 85% big Tesco in person, 12% Tesco Express, about 3% M&S Foodhall treats. 0% online.\n\nSimulation role: she is the human baseline that agents can't reproduce. Her choices de",
+ "verbatims": [
+  {
+   "quote": "The thing I hate more about shrinkflation is being LIED to about it. A reseller should be upfront and transparent to the customer, not try to hide the change via deceptive practices.",
+   "url": "https://www.reddit.com/comments/1oi5mf0"
+  },
+  {
+   "quote": "THe worst for me was pringles. When they swapped into the smaller tubes for the same price, some places still had old stock so you could visibly see the difference. Aint bought any since",
+   "url": "https://www.reddit.com/comments/1qtc78s"
+  },
+  {
+   "quote": " (r/AskUK, https://www.reddit.com/comments/1tsbmt5) | ",
+   "url": "https://www.reddit.com/comments/1tsbmt5"
+  },
+  {
+   "quote": "For us older people, Heinz was the only brand available for stuff like ketchup and baked beans when we were kids. So they'll get recognition and nostalgia purchases.",
+   "url": "https://www.reddit.com/comments/1b4i3rn"
+  },
+  {
+   "quote": "I tend to only buy Walkers crisps out of habit because I once had a bad experience with Tesco's own brand.",
+   "url": "https://www.reddit.com/comments/vqe2sz"
+  }
+ ],
+ "sim_parameters": {
+  "p_notice_eye_level": 0.75,
+  "p_notice_bottom_or_side": 0.1,
+  "habit_lockin_0_1": 0.9,
+  "price_sensitivity_0_1": 0.55,
+  "trust_new_brand_0_1": 0.1,
+  "gimmick_reactance_0_1": 0.8,
+  "reads_structured_data_0_1": 0.02,
+  "seconds_at_shelf": 6,
+  "meal_deal_pull_0_1": 0.05
+ },
+ "sim_parameters_source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)",
+ "fixture": true
+}

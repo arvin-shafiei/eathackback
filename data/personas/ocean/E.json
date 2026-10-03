@@ -1,0 +1,134 @@
+{
+  "trait": "E",
+  "trait_name": "Extraversion",
+  "coef_units": "All coef values are additive LOGIT shifts per +1 SD of Extraversion, using z_E = (E01 - 0.56) / 0.20 where E01 is the persona's 0-1 E score (see population_norms). They are applied inside the notice model's alpha_trait term (p_notice = sigma(... + coef * z_E)) or the choice/pick logit, as the sim_mapping says. A coef of 0 means the evidence supports NO E effect and the sim must not invent one.",
+  "conversion_rule": "r -> Cohen's d = 2r/sqrt(1-r^2) -> log-odds = d * pi/sqrt(3) (Chinn 2000, Stat Med 19:3127, doi:10.1002/1097-0258(20001130)19:22<3127::AID-SIM784>3.0.CO;2-M). Then multiplied by an attenuation factor (default 0.3) because the studies correlate E with self-reported TENDENCIES or habitual diet over months, not a single shelf decision. Attenuation 0.3 is an assumption: trait-to-single-act correlations are typically ~1/3 of trait-to-aggregated-behaviour correlations (Epstein 1979 aggregation principle, J Pers Soc Psychol 37:1097, doi:10.1037/0022-3514.37.7.1097).",
+  "effects": [
+    {
+      "behaviour": "Impulse / unplanned buying tendency (picking an item not on the habit list or shopping list)",
+      "direction": "positive",
+      "effect_size": "r = .20 (phenotypic correlation E x impulsive buying tendency), N = 339 twin pairs (678 adults), Croatia; for comparison Impulsivity r = .32, Neuroticism r = .23; personality + age + sex explain 25% of variance",
+      "sim_mapping": "choice logit for products NOT in the agent's habits list (unplanned pick): + coef * z_E. Derivation: r=.20 -> d=0.41 -> logit 0.74 -> x0.3 attenuation = 0.22.",
+      "coef": 0.22,
+      "source": "Bratko, D., Butkovic, A., & Bosnjak, M. (2013). Twin study of impulsive buying and its overlap with personality. Journal of Individual Differences, 34(1), 8-14. https://doi.org/10.1027/1614-0001/a000091 (r values quoted from abstract via OpenAlex)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Impulse buying: both cognitive facet (lack of planning/deliberation) and affective facet (pleasure, excitement) of impulse buying tendency",
+      "direction": "positive",
+      "effect_size": "Both facets significantly related to Extraversion (2 studies, scale validation; exact r not retrieved, abstract states 'both related to extraversion'). Supports the Bratko r=.20 rather than adding to it.",
+      "sim_mapping": "No extra coefficient (would double count the Bratko effect). Used to justify ALSO lowering deliberation: label-dwell / attributes_cited count for high-E agents shortened slightly (see label-reading effect below).",
+      "coef": 0.0,
+      "source": "Verplanken, B., & Herabadi, A. (2001). Individual differences in impulse buying tendency: feeling and no thinking. European Journal of Personality, 15(S1), S71-S83. https://doi.org/10.1002/per.423",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "External eating (eating in response to food cues: sight/smell/display) -> more sweet & savoury snacks, soft drinks and meat",
+      "direction": "positive",
+      "effect_size": "Path model, random Swiss general-population sample N = 951: Extraversion had a significant DIRECT effect on external eating and a significant INDIRECT effect on sweet/savoury, meat and soft-drink consumption via external eating. Standardised path betas not retrieved (paywalled); indirect effects in such models are typically small (assumption: indirect beta ~ .05, i.e. a ~.2 x b ~.25).",
+      "sim_mapping": "(a) notice alpha_trait for products with strong visual food cues (promo end, eye-level HFSS, OFF nutriscore_grade d/e in categories snacks/confectionery/soft drinks): + coef * z_E. Derivation: beta .05 ~ r .05 -> d .10 -> logit .18; NO attenuation applied because external eating is itself a cue-response at point of sale, but halved for uncertainty in the unretrieved beta -> 0.09, rounded 0.10. (b) Choice logit for OFF categories en:sweet-snacks, en:salty-snacks, en:sodas, en:meats: +0.08 per SD (same derivation, slightly lower because choice is downstream of notice).",
+      "coef": 0.1,
+      "source": "Keller, C., & Siegrist, M. (2015). Does personality influence eating styles and food choices? Direct and indirect effects. Appetite, 84, 128-138. https://doi.org/10.1016/j.appet.2014.10.003 (PMID 25308432; abstract: 'Extraversion promoted sweet and savory, meat and soft drink consumption via promoting external eating')",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Health-aware dietary pattern (more cereal, dairy, fish, vegetables, fruit) - counterweight showing E is NOT simply 'junk food'",
+      "direction": "positive",
+      "effect_size": "Estonian Biobank N = 1,691, NEO-PI-3 self + informant ratings, controlling for age, sex, education: higher health-aware diet associated with higher Extraversion (along with O, C and low N); effect sizes r = .11 to .17 (self-report) and r = .08 to .11 (informant). E-specific r not separated in abstract; use midpoint r = .12 (assumption).",
+      "sim_mapping": "choice logit for OFF categories en:fruits, en:vegetables, en:fishes, en:dairies, en:cereals: + coef * z_E. Derivation: r=.12 -> d=.24 -> logit .44 -> x0.3 = 0.13, rounded 0.12. Net interpretation with Keller & Siegrist: high-E shoppers buy MORE food overall (more social eating occasions), across both healthy and HFSS categories; use also as a +0.05 basket-size bump (assumption).",
+      "coef": 0.12,
+      "source": "Mõttus, R., Realo, A., Allik, J., Deary, I. J., Esko, T., & Metspalu, A. (2012). Personality traits and eating habits in a large sample of Estonians. Health Psychology, 31(6), 806-814. https://doi.org/10.1037/a0027041 (PMID 22268715)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Responsiveness to extraversion-congruent messaging (social / energetic / 'party', 'share', 'with friends' pack copy and imagery)",
+      "direction": "positive when message matches E level (high-E: social framing; low-E: quiet/me-time framing)",
+      "effect_size": "Field experiment, 3,129,993 Facebook users reached, 10,346 clicks, 390 purchases (beauty retailer): personality-congruent ads -> purchase OR = 1.54 [1.25, 1.90], p < .001 vs incongruent; conversion 0.014% (extravert ad -> extraverts) vs 0.008% (extravert ad -> introverts). Click-through congruence effect not significant in that study.",
+      "sim_mapping": "choice logit + coef * congruence, where congruence = sign-matched (z_E * pack_social_frame) clipped to [-1,1] and pack_social_frame in {-1 quiet/solo, 0 neutral, +1 social/sharing} is tagged from pack copy (assumption: tagged by LLM/regex from OFF product_name/generic_name, e.g. 'sharing bag', 'party'). Full field effect ln(1.54)=0.43 is for TARGETED digital ads; a non-targeted shelf pack is weaker, so x0.5 -> 0.22, rounded 0.2.",
+      "coef": 0.2,
+      "source": "Matz, S. C., Kosinski, M., Nave, G., & Stillwell, D. J. (2017). Psychological targeting as an effective approach to digital mass persuasion. PNAS, 114(48), 12714-12719. https://doi.org/10.1073/pnas.1710966114 (Table 1 numbers read from PMC5715760)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Ad/message evaluation increases when appeal is framed for the recipient's dominant trait (extraversion-framed ad: social attention, excitement)",
+      "direction": "positive (congruence)",
+      "effect_size": "N = 324 survey respondents, 5 ads for one product each targeting one Big Five domain; ads rated more positively the more they cohered with the respondent's traits (exact beta not retrieved).",
+      "sim_mapping": "No separate coefficient; corroborates the Matz congruence term (same mechanism, lab vs field). Use as second source on that mapping in UI tooltips.",
+      "coef": 0.0,
+      "source": "Hirsh, J. B., Kang, S. K., & Bodenhausen, G. V. (2012). Personalized persuasion: tailoring persuasive appeals to recipients' personality traits. Psychological Science, 23(6), 578-581. https://doi.org/10.1177/0956797611436349 (PMID 22547658)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Social media / TikTok-Instagram exposure -> 'seen it online' familiarity with viral or novelty SKUs",
+      "direction": "positive",
+      "effect_size": "Random-effects meta-analysis of SNS use and Big Five: 'Extraversion and openness were the strongest predictors of SNS activities' (exact pooled r not retrieved; such r values are typically small, assumption r ~ .10).",
+      "sim_mapping": "notice alpha_trait for products flagged trending/novelty (e.g. lens archetype novelty_seeker_tiktok, or OFF 'new' / limited edition in product_name): + coef * z_E. Derivation: r=.10 -> d=.20 -> logit .36 -> x0.3 = 0.11, rounded 0.10. Reddit grounding of the mechanism: 'my system lately has been scrolling instagram for recipes i want to try and then buying stuff for that and whatever snacks i decide i want' (https://www.reddit.com/comments/qtbshl); 'I saw two Italian blokes on TikTok say it tastes like Sweet Chili sauce and they're not wrong!' (https://www.reddit.com/comments/1ow5fne).",
+      "coef": 0.1,
+      "source": "Liu, D., & Campbell, W. K. (2017). The Big Five personality traits, Big Two metatraits and social media: A meta-analysis. Journal of Research in Personality, 70, 229-240. https://doi.org/10.1016/j.jrp.2017.08.004 (preprint https://doi.org/10.31234/osf.io/9bbns)",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Brand-as-reward: favourite (chocolate) brands activate ventral striatum more strongly in more extraverted people",
+      "direction": "positive",
+      "effect_size": "fMRI, small sample (exact N/r not retrieved; typical fMRI correlational N ~ 20 -> wide CI). Ventral striatum activation to favourite brands correlated with E (and N).",
+      "sim_mapping": "notice alpha_trait for brands already in the agent's habits/favourites list: + coef * z_E. Kept very small because of tiny-N fMRI evidence (assumption: 0.05 logit, roughly a quarter of the impulse effect).",
+      "coef": 0.05,
+      "source": "Schaefer, M., Knuth, M., & Rumpel, F. (2011). Striatal response to favorite brands as a function of neuroticism and extraversion. Brain Research, 1425, 83-89. https://doi.org/10.1016/j.brainres.2011.09.055 (PMID 22035566)",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Motor impulsiveness (acting on the spur of the moment) - the facet of impulsivity that tracks E",
+      "direction": "positive",
+      "effect_size": "Three studies (N = 113, 132, 68 pathological buyers): selective positive correlation between Barratt motor impulsiveness and Extraversion, replicated across NEO-FFI and BFI-10; weakened in pathological buyers (whose buying runs through Neuroticism/attentional impulsiveness instead).",
+      "sim_mapping": "No extra coefficient (mechanism support for the Bratko impulse term). Implementation note: E-driven impulse picks should carry mechanism='positive_affect_impulse' in run logs, distinct from N-driven 'emotional/stress' picks.",
+      "coef": 0.0,
+      "source": "Lange, F., Wagner, A., Müller, A., & Eggert, F. (2017). Subscales of the Barratt Impulsiveness Scale differentially relate to the Big Five factors of personality. Scandinavian Journal of Psychology, 58(3), 254-259. https://doi.org/10.1111/sjop.12359 (PMID 28419457)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Label reading / deliberation (dwell on nutrition panel, number of attributes cited)",
+      "direction": "slightly negative",
+      "effect_size": "No direct published E x nutrition-label-use effect found in this search (PubMed 'personality nutrition label use' returned no Big Five study). Indirect: Verplanken & Herabadi 2001 link E to the cognitive 'lack of deliberation' facet of impulse buying.",
+      "sim_mapping": "notice/attention to nutrition fields (OFF nutriments, nutriscore_grade) for high-E agents: coef * z_E with coef -0.05 (assumption: deliberately tiny; Conscientiousness, not E, should carry label attention per CONTRACT example).",
+      "coef": -0.05,
+      "source": "assumption: no direct study found; directional support from Verplanken & Herabadi (2001) https://doi.org/10.1002/per.423",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Eco / sustainable / plant-based choice (eco lens weight)",
+      "direction": "null (slightly negative for meat reduction via external eating)",
+      "effect_size": "Keller & Siegrist 2015 (N=951): low meat consumption predicted by Openness and Agreeableness, NOT Extraversion; E indirectly INCREASED meat consumption via external eating. Palnau et al. 2022 (N=1,135): strong-hindrance meat eaters characterised by low C, A, O and dark traits - E not a defining feature.",
+      "sim_mapping": "eco_low_chemical / vegan_ethical lens weights: NO E adjustment (coef 0). Meat effect already handled by the external-eating choice term (+0.08 for en:meats).",
+      "coef": 0.0,
+      "source": "Keller & Siegrist (2015) https://doi.org/10.1016/j.appet.2014.10.003 ; Palnau, J. F., Ziegler, M., & Lämmle, L. (2022). You are what you eat and so is our planet: identifying dietary groups based on personality and environmentalism. IJERPH, 19(15), 9354. https://doi.org/10.3390/ijerph19159354",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Food neophobia (reluctance to try unfamiliar foods) -> willingness to pick unfamiliar brands/products",
+      "direction": "negative association with neophobia (i.e. E slightly raises novelty acceptance)",
+      "effect_size": "Study of Food Neophobia Scale vs Big Five exists (Nezlek & Forestell 2019); abstract NOT retrieved in this session, so magnitude unverified. Openness is the established main correlate; E effect is assumed smaller than O's.",
+      "sim_mapping": "choice logit for products unfamiliar to the agent (not in habits, novel category): + coef * z_E, coef 0.05 (assumption: placeholder at a quarter of the impulse effect until the paper's table is read; Openness agent should carry the main novelty weight).",
+      "coef": 0.05,
+      "source": "Nezlek, J. B., & Forestell, C. A. (2019). Food neophobia and the Five Factor Model of personality. Food Quality and Preference, 73, 210-214. https://doi.org/10.1016/j.foodqual.2018.11.007 (magnitude not verified - assumption)",
+      "confidence": "low"
+    }
+  ],
+  "summary_for_sim": {
+    "notice_alpha_trait_E": "sum of applicable notice coefs x z_E: +0.10 food-cue/HFSS salience, +0.10 trending/social SKU, +0.05 favourite brand, -0.05 nutrition-label attention",
+    "choice_logit_E": "+0.22 unplanned pick, +0.08 HFSS/soft drink/meat categories, +0.12 fruit/veg/fish/dairy/cereal categories, +0.20 x congruence(pack social framing), +0.05 unfamiliar product",
+    "lens_weights_E": "no change to eco/vegan lens weights (coef 0); E is mainly a NOTICE/IMPULSE modifier, not an evaluative-lens modifier",
+    "mechanism_tags": ["positive_affect_impulse", "external_cue_response", "social_frame_congruence", "seen_on_social"],
+    "magnitude_check": "At +2 SD (E01 ~0.96) the largest single shift is 0.44 logit (about +10 percentage points at a 50% base). Deliberately smaller than shelf-position effects in research/04 so personality never dominates layout."
+  },
+  "population_norms": "Scale: BFI-2 (Soto & John 2017, J Pers Soc Psychol 113:117-143, https://doi.org/10.1037/pspp0000096) or BFI-44 items on 1-5. Approximate adult Western norms for Extraversion: mean ~3.25, SD ~0.80 on 1-5 (assumption: typical of published BFI/BFI-2 adult internet samples, e.g. Srivastava et al. 2003 J Pers Soc Psychol 84:1041 report E means ~3.2-3.3; exact UK table not retrieved). UK source for regional variation: Rentfrow, Jokela & Lamb (2015) Regional personality differences in Great Britain, PLoS ONE 10(3):e0122245, https://doi.org/10.1371/journal.pone.0122245 (BBC Lab UK, N ~386k) - regional differences are small (fractions of an SD), so a single national distribution is acceptable. Sampling recipe: draw raw ~ Normal(3.25, 0.80), clip to [1,5], E01 = (raw-1)/4 -> mean ~0.56, SD ~0.20; z_E = (E01-0.56)/0.20. Demographic shifts: women slightly higher E at domain level (Weisberg, DeYoung & Hirsh 2011, Frontiers in Psychology 2:178, https://doi.org/10.3389/fpsyg.2011.00178; add +0.1 SD, assumption on magnitude); E tends to decline modestly with age in adulthood (assumption: -0.05 SD per decade after 30, from general lifespan literature, e.g. Soto et al. 2011 JPSP 100:330). Inter-trait correlations to respect when sampling jointly (assumption, typical BFI values): E-N ~ -0.25, E-O ~ +0.20, E-C ~ +0.15, E-A ~ +0.10. Archetype priors (assumption): novelty_seeker_tiktok and meal_deal_office personas should be sampled with E mean +0.5 SD; habit_loyalist and allergen_coeliac neutral.",
+  "caveats": [
+    "All effects are small (|r| <= .20); E explains at most a few % of variance in any food behaviour. Coefficients are intentionally modest and attenuated (x0.3) from trait-tendency correlations to single shelf decisions - the 0.3 factor is itself an assumption (Epstein 1979 aggregation logic).",
+    "Several effect sizes were taken from abstracts only (Keller & Siegrist path betas, Verplanken facet r, Liu & Campbell pooled r, Schaefer fMRI r, Nezlek & Forestell neophobia r were NOT retrieved). These are marked low/medium confidence and the coefficient derivation says where an assumed r was used.",
+    "Keller & Siegrist (Swiss) and Mõttus et al. (Estonian) point in partly opposite directions (E -> more HFSS vs E -> more health-aware diet). Reconciled here as 'high E = more food bought overall, in both directions'; this reconciliation is an interpretation, not a tested finding.",
+    "Matz et al. 2017 is digital targeted advertising for beauty products, not grocery shelves; its OR 1.54 is halved for a shelf/pack context (assumption). The 2018 PNAS comments dispute the size of the targeting effect - treat as an upper bound.",
+    "No UK-specific grocery study of E was found; all samples are Swiss, Estonian, Croatian, US/Facebook or German. UK generalisation is an assumption.",
+    "Rose & Segrist (2014, J Behav Addict 3:128, https://doi.org/10.1556/JBA.3.2014.011) show positive urgency predicts compulsive buying even controlling for E - so E's impulse effect is partly a proxy for positive-affect rashness; do not stack a separate 'mood' impulse term on top of E without checking for double counting.",
+    "WebSearch quota was exhausted in this session; evidence was gathered via PubMed E-utilities, OpenAlex and PMC full text. Amos, Holmes & Keneson (2014) and Iyer et al. (2019, JAMS, https://doi.org/10.1007/s11747-019-00670-w) impulse-buying meta-analyses were identified but their E-specific pooled effects were not retrieved.",
+    "Reddit verbatims cited illustrate the social-media-to-basket mechanism only; they are not evidence of an E correlation (poster personality unknown)."
+  ]
+}

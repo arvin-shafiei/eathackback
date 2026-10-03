@@ -1,0 +1,7320 @@
+{
+  "kind": "human_shares",
+  "source": {
+    "csv": "/Users/arvin/orca/eathackback/calibration/fixtures/DEMO_responses.csv",
+    "collected_at": "The Shelf, EAT_HACK 3 Oct 2026 (25 challenger brands)",
+    "form": "calibration/form_spec.md"
+  },
+  "n_voters": 50,
+  "methods": {
+    "top1_share": "votes for brand as #1 / voters; 95% CI Wilson (1927)",
+    "top3_rate_given_tasted": "times in top-3 / times tasted; Wilson CI",
+    "bt_share": "Bradley-Terry (1952) strength via MM (Hunter 2004) on rank-broken pairs (top1>top2>top3>other tasted), normalised to sum 1; prior 0.5 virtual games vs reference (assumption: shrinkage for n~50); CI = voter bootstrap B=100",
+    "segments": "screener ticks mapped to CONTRACT.md archetypes (SEGMENT_LABELS); only segments with n>=8 reported (assumption)",
+    "ocean": "Gosling, Rentfrow & Swann (2003) J. Res. Pers. 37:504-528; items 1-10 on 1-7; E=1,6R A=2R,7 C=3,8R ES=4R,9 O=5,10R; N=8-ES; rescaled to 0-1 as (x-1)/6 to match CONTRACT.md ocean 0-1",
+    "why_tags": {
+      "taste": "sensory: it tasted best (research/03 truth 6: sensory detectability / signature taste)",
+      "trust": "trust: brand/ingredients feel trustworthy (research/03 truth 5: borrowed trust)",
+      "health_label": "health: better ingredients/nutrition (research/03 truth 7; C->label reading, research/04)",
+      "price_anchor": "value: worth the price vs what's next to it (research/03 truth 4: reference-price anchoring)",
+      "habit": "habit: like what I already buy (research/03 truth 2/6: habit, sacred SKUs)",
+      "novelty": "novelty: new/different, want to try it (README: Openness -> food neophilia)",
+      "mission_fit": "fit: fits how I'd use it - lunch/gym/kids (README: mission)",
+      "social_proof": "social: heard of it / others rate it (research/03 truth 5)",
+      "salience": "pack: the pack caught my eye (research/04 notice model)",
+      "gimmick_reactance": "gimmick: claims feel like a gimmick (research/03 truth 8: reactance)",
+      "loss_aversion": "risk: too risky to waste money on (research/03 truth 1/7: loss aversion)",
+      "price_too_high": "price: too expensive for what it is (research/03 truth 7: 'too expensive' as cover)"
+    }
+  },
+  "positivity_check": {
+    "buy_top1": {
+      "maybe": 16,
+      "yes": 23,
+      "no": 11
+    },
+    "share_no_or_maybe": 0.54,
+    "share_no_ci95": [
+      0.1275,
+      0.3524
+    ],
+    "walkpast_named": 50,
+    "why": "humans can say 'no' even to their favourite; LLM personas rarely do (research/05-personas.md sec 6 item 6; arXiv 2609.13148 variance compression)"
+  },
+  "ocean_summary": {
+    "O": {
+      "mean": 0.4557,
+      "sd": 0.1845,
+      "n": 32
+    },
+    "C": {
+      "mean": 0.4401,
+      "sd": 0.1988,
+      "n": 32
+    },
+    "E": {
+      "mean": 0.5026,
+      "sd": 0.209,
+      "n": 32
+    },
+    "A": {
+      "mean": 0.5234,
+      "sd": 0.1748,
+      "n": 32
+    },
+    "N": {
+      "mean": 0.4844,
+      "sd": 0.1725,
+      "n": 32
+    }
+  },
+  "brands": {
+    "Brand A": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 2,
+      "tasted": 16,
+      "top3_rate_given_tasted": 0.125,
+      "top3_rate_ci95": [
+        0.035,
+        0.3602
+      ],
+      "bt_share": 0.0071,
+      "bt_ci95": [
+        0.0001,
+        0.0207
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand B": {
+      "top1_votes": 8,
+      "top1_share": 0.16,
+      "top1_ci95": [
+        0.0834,
+        0.2851
+      ],
+      "top3_votes": 15,
+      "tasted": 19,
+      "top3_rate_given_tasted": 0.7895,
+      "top3_rate_ci95": [
+        0.5667,
+        0.9149
+      ],
+      "bt_share": 0.1154,
+      "bt_ci95": [
+        0.0397,
+        0.21
+      ],
+      "buy_top1": {
+        "yes": 5,
+        "no": 1,
+        "maybe": 2
+      },
+      "why_top1": {
+        "health_label": 6,
+        "taste": 4,
+        "price_anchor": 3,
+        "other": 2,
+        "mission_fit": 1,
+        "trust": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand C": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 0,
+      "tasted": 18,
+      "top3_rate_given_tasted": 0.0,
+      "top3_rate_ci95": [
+        0.0,
+        0.1759
+      ],
+      "bt_share": 0.0002,
+      "bt_ci95": [
+        0.0001,
+        0.0003
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 5,
+      "walkpast_rate_given_tasted": 0.2778,
+      "why_walkpast": {
+        "loss_aversion": 2,
+        "taste": 1,
+        "price_too_high": 1,
+        "gimmick_reactance": 1
+      }
+    },
+    "Brand D": {
+      "top1_votes": 5,
+      "top1_share": 0.1,
+      "top1_ci95": [
+        0.0435,
+        0.2136
+      ],
+      "top3_votes": 17,
+      "tasted": 22,
+      "top3_rate_given_tasted": 0.7727,
+      "top3_rate_ci95": [
+        0.5656,
+        0.8988
+      ],
+      "bt_share": 0.1146,
+      "bt_ci95": [
+        0.0395,
+        0.1924
+      ],
+      "buy_top1": {
+        "maybe": 1,
+        "no": 3,
+        "yes": 1
+      },
+      "why_top1": {
+        "other": 4,
+        "health_label": 3,
+        "price_anchor": 3,
+        "mission_fit": 1,
+        "taste": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand E": {
+      "top1_votes": 2,
+      "top1_share": 0.04,
+      "top1_ci95": [
+        0.011,
+        0.1346
+      ],
+      "top3_votes": 5,
+      "tasted": 19,
+      "top3_rate_given_tasted": 0.2632,
+      "top3_rate_ci95": [
+        0.1181,
+        0.4879
+      ],
+      "bt_share": 0.0156,
+      "bt_ci95": [
+        0.0003,
+        0.0352
+      ],
+      "buy_top1": {
+        "yes": 1,
+        "maybe": 1
+      },
+      "why_top1": {
+        "other": 2,
+        "health_label": 1,
+        "trust": 1,
+        "taste": 1
+      },
+      "walkpast_votes": 1,
+      "walkpast_rate_given_tasted": 0.0526,
+      "why_walkpast": {
+        "loss_aversion": 1
+      }
+    },
+    "Brand F": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 1,
+      "tasted": 20,
+      "top3_rate_given_tasted": 0.05,
+      "top3_rate_ci95": [
+        0.0089,
+        0.2361
+      ],
+      "bt_share": 0.0028,
+      "bt_ci95": [
+        0.0001,
+        0.0081
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand G": {
+      "top1_votes": 12,
+      "top1_share": 0.24,
+      "top1_ci95": [
+        0.143,
+        0.3741
+      ],
+      "top3_votes": 17,
+      "tasted": 18,
+      "top3_rate_given_tasted": 0.9444,
+      "top3_rate_ci95": [
+        0.7424,
+        0.9901
+      ],
+      "bt_share": 0.4208,
+      "bt_ci95": [
+        0.244,
+        0.6828
+      ],
+      "buy_top1": {
+        "yes": 7,
+        "maybe": 3,
+        "no": 2
+      },
+      "why_top1": {
+        "taste": 5,
+        "price_anchor": 5,
+        "health_label": 4,
+        "mission_fit": 4,
+        "other": 4,
+        "trust": 4
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand H": {
+      "top1_votes": 1,
+      "top1_share": 0.02,
+      "top1_ci95": [
+        0.0035,
+        0.105
+      ],
+      "top3_votes": 6,
+      "tasted": 24,
+      "top3_rate_given_tasted": 0.25,
+      "top3_rate_ci95": [
+        0.12,
+        0.449
+      ],
+      "bt_share": 0.0115,
+      "bt_ci95": [
+        0.0029,
+        0.0212
+      ],
+      "buy_top1": {
+        "maybe": 1
+      },
+      "why_top1": {
+        "other": 2,
+        "mission_fit": 1
+      },
+      "walkpast_votes": 1,
+      "walkpast_rate_given_tasted": 0.0417,
+      "why_walkpast": {
+        "taste": 1
+      }
+    },
+    "Brand I": {
+      "top1_votes": 2,
+      "top1_share": 0.04,
+      "top1_ci95": [
+        0.011,
+        0.1346
+      ],
+      "top3_votes": 7,
+      "tasted": 22,
+      "top3_rate_given_tasted": 0.3182,
+      "top3_rate_ci95": [
+        0.1636,
+        0.5268
+      ],
+      "bt_share": 0.0178,
+      "bt_ci95": [
+        0.0043,
+        0.0337
+      ],
+      "buy_top1": {
+        "yes": 1,
+        "no": 1
+      },
+      "why_top1": {
+        "other": 2,
+        "mission_fit": 1,
+        "health_label": 1,
+        "taste": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand J": {
+      "top1_votes": 4,
+      "top1_share": 0.08,
+      "top1_ci95": [
+        0.0315,
+        0.1884
+      ],
+      "top3_votes": 12,
+      "tasted": 22,
+      "top3_rate_given_tasted": 0.5455,
+      "top3_rate_ci95": [
+        0.3466,
+        0.7308
+      ],
+      "bt_share": 0.0448,
+      "bt_ci95": [
+        0.0148,
+        0.095
+      ],
+      "buy_top1": {
+        "yes": 2,
+        "maybe": 2
+      },
+      "why_top1": {
+        "trust": 3,
+        "health_label": 2,
+        "other": 2,
+        "mission_fit": 1,
+        "taste": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand K": {
+      "top1_votes": 9,
+      "top1_share": 0.18,
+      "top1_ci95": [
+        0.0977,
+        0.308
+      ],
+      "top3_votes": 16,
+      "tasted": 22,
+      "top3_rate_given_tasted": 0.7273,
+      "top3_rate_ci95": [
+        0.5185,
+        0.8685
+      ],
+      "bt_share": 0.1145,
+      "bt_ci95": [
+        0.0402,
+        0.2145
+      ],
+      "buy_top1": {
+        "yes": 3,
+        "maybe": 3,
+        "no": 3
+      },
+      "why_top1": {
+        "other": 6,
+        "price_anchor": 5,
+        "taste": 4,
+        "health_label": 4,
+        "trust": 2
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand L": {
+      "top1_votes": 1,
+      "top1_share": 0.02,
+      "top1_ci95": [
+        0.0035,
+        0.105
+      ],
+      "top3_votes": 6,
+      "tasted": 21,
+      "top3_rate_given_tasted": 0.2857,
+      "top3_rate_ci95": [
+        0.1381,
+        0.4996
+      ],
+      "bt_share": 0.0124,
+      "bt_ci95": [
+        0.004,
+        0.0236
+      ],
+      "buy_top1": {
+        "maybe": 1
+      },
+      "why_top1": {
+        "health_label": 1,
+        "mission_fit": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand M": {
+      "top1_votes": 2,
+      "top1_share": 0.04,
+      "top1_ci95": [
+        0.011,
+        0.1346
+      ],
+      "top3_votes": 11,
+      "tasted": 23,
+      "top3_rate_given_tasted": 0.4783,
+      "top3_rate_ci95": [
+        0.2924,
+        0.6704
+      ],
+      "bt_share": 0.0293,
+      "bt_ci95": [
+        0.0092,
+        0.052
+      ],
+      "buy_top1": {
+        "yes": 1,
+        "maybe": 1
+      },
+      "why_top1": {
+        "other": 2,
+        "taste": 1,
+        "trust": 1,
+        "health_label": 1
+      },
+      "walkpast_votes": 1,
+      "walkpast_rate_given_tasted": 0.0435,
+      "why_walkpast": {
+        "gimmick_reactance": 1
+      }
+    },
+    "Brand N": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 1,
+      "tasted": 22,
+      "top3_rate_given_tasted": 0.0455,
+      "top3_rate_ci95": [
+        0.0081,
+        0.218
+      ],
+      "bt_share": 0.0031,
+      "bt_ci95": [
+        0.0001,
+        0.0077
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 2,
+      "walkpast_rate_given_tasted": 0.0909,
+      "why_walkpast": {
+        "gimmick_reactance": 1,
+        "price_too_high": 1
+      }
+    },
+    "Brand O": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 4,
+      "tasted": 23,
+      "top3_rate_given_tasted": 0.1739,
+      "top3_rate_ci95": [
+        0.0698,
+        0.3714
+      ],
+      "bt_share": 0.0131,
+      "bt_ci95": [
+        0.0025,
+        0.0306
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 2,
+      "walkpast_rate_given_tasted": 0.087,
+      "why_walkpast": {
+        "gimmick_reactance": 1,
+        "taste": 1
+      }
+    },
+    "Brand P": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 3,
+      "tasted": 22,
+      "top3_rate_given_tasted": 0.1364,
+      "top3_rate_ci95": [
+        0.0475,
+        0.3333
+      ],
+      "bt_share": 0.0047,
+      "bt_ci95": [
+        0.0001,
+        0.0114
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand Q": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 0,
+      "tasted": 23,
+      "top3_rate_given_tasted": 0.0,
+      "top3_rate_ci95": [
+        0.0,
+        0.1431
+      ],
+      "bt_share": 0.0001,
+      "bt_ci95": [
+        0.0001,
+        0.0002
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 9,
+      "walkpast_rate_given_tasted": 0.3913,
+      "why_walkpast": {
+        "gimmick_reactance": 4,
+        "loss_aversion": 3,
+        "price_too_high": 1,
+        "taste": 1
+      }
+    },
+    "Brand R": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 0,
+      "tasted": 20,
+      "top3_rate_given_tasted": 0.0,
+      "top3_rate_ci95": [
+        0.0,
+        0.1611
+      ],
+      "bt_share": 0.0002,
+      "bt_ci95": [
+        0.0001,
+        0.0003
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 8,
+      "walkpast_rate_given_tasted": 0.4,
+      "why_walkpast": {
+        "loss_aversion": 4,
+        "taste": 2,
+        "gimmick_reactance": 2
+      }
+    },
+    "Brand S": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 0,
+      "tasted": 24,
+      "top3_rate_given_tasted": 0.0,
+      "top3_rate_ci95": [
+        0.0,
+        0.138
+      ],
+      "bt_share": 0.0002,
+      "bt_ci95": [
+        0.0001,
+        0.0003
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 14,
+      "walkpast_rate_given_tasted": 0.5833,
+      "why_walkpast": {
+        "taste": 5,
+        "loss_aversion": 4,
+        "price_too_high": 3,
+        "gimmick_reactance": 2
+      }
+    },
+    "Brand T": {
+      "top1_votes": 1,
+      "top1_share": 0.02,
+      "top1_ci95": [
+        0.0035,
+        0.105
+      ],
+      "top3_votes": 9,
+      "tasted": 23,
+      "top3_rate_given_tasted": 0.3913,
+      "top3_rate_ci95": [
+        0.2216,
+        0.5921
+      ],
+      "bt_share": 0.0254,
+      "bt_ci95": [
+        0.0074,
+        0.0511
+      ],
+      "buy_top1": {
+        "no": 1
+      },
+      "why_top1": {
+        "price_anchor": 1,
+        "health_label": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand U": {
+      "top1_votes": 1,
+      "top1_share": 0.02,
+      "top1_ci95": [
+        0.0035,
+        0.105
+      ],
+      "top3_votes": 4,
+      "tasted": 16,
+      "top3_rate_given_tasted": 0.25,
+      "top3_rate_ci95": [
+        0.1018,
+        0.495
+      ],
+      "bt_share": 0.0095,
+      "bt_ci95": [
+        0.0009,
+        0.0213
+      ],
+      "buy_top1": {
+        "yes": 1
+      },
+      "why_top1": {
+        "taste": 1,
+        "trust": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand V": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 2,
+      "tasted": 17,
+      "top3_rate_given_tasted": 0.1176,
+      "top3_rate_ci95": [
+        0.0329,
+        0.3434
+      ],
+      "bt_share": 0.0066,
+      "bt_ci95": [
+        0.0002,
+        0.0148
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 1,
+      "walkpast_rate_given_tasted": 0.0588,
+      "why_walkpast": {
+        "taste": 1
+      }
+    },
+    "Brand W": {
+      "top1_votes": 1,
+      "top1_share": 0.02,
+      "top1_ci95": [
+        0.0035,
+        0.105
+      ],
+      "top3_votes": 8,
+      "tasted": 25,
+      "top3_rate_given_tasted": 0.32,
+      "top3_rate_ci95": [
+        0.1721,
+        0.5159
+      ],
+      "bt_share": 0.0151,
+      "bt_ci95": [
+        0.0059,
+        0.0262
+      ],
+      "buy_top1": {
+        "maybe": 1
+      },
+      "why_top1": {
+        "taste": 1,
+        "health_label": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    },
+    "Brand X": {
+      "top1_votes": 0,
+      "top1_share": 0.0,
+      "top1_ci95": [
+        0.0,
+        0.0713
+      ],
+      "top3_votes": 1,
+      "tasted": 20,
+      "top3_rate_given_tasted": 0.05,
+      "top3_rate_ci95": [
+        0.0089,
+        0.2361
+      ],
+      "bt_share": 0.0031,
+      "bt_ci95": [
+        0.0001,
+        0.0102
+      ],
+      "buy_top1": {},
+      "why_top1": {},
+      "walkpast_votes": 6,
+      "walkpast_rate_given_tasted": 0.3,
+      "why_walkpast": {
+        "loss_aversion": 3,
+        "taste": 2,
+        "price_too_high": 1
+      }
+    },
+    "Brand Y": {
+      "top1_votes": 1,
+      "top1_share": 0.02,
+      "top1_ci95": [
+        0.0035,
+        0.105
+      ],
+      "top3_votes": 3,
+      "tasted": 19,
+      "top3_rate_given_tasted": 0.1579,
+      "top3_rate_ci95": [
+        0.0552,
+        0.3757
+      ],
+      "bt_share": 0.012,
+      "bt_ci95": [
+        0.0004,
+        0.0297
+      ],
+      "buy_top1": {
+        "yes": 1
+      },
+      "why_top1": {
+        "trust": 1,
+        "price_anchor": 1
+      },
+      "walkpast_votes": 0,
+      "walkpast_rate_given_tasted": 0.0,
+      "why_walkpast": {}
+    }
+  },
+  "by_segment": {
+    "meal_deal_office": {
+      "n": 13,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0016,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 1,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.0945,
+            0.9055
+          ],
+          "bt_share": 0.0615,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0011,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.4,
+          "why_walkpast": {
+            "gimmick_reactance": 1,
+            "loss_aversion": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 2,
+          "top1_share": 0.1538,
+          "top1_ci95": [
+            0.0433,
+            0.4223
+          ],
+          "top3_votes": 5,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.8333,
+          "top3_rate_ci95": [
+            0.4365,
+            0.9699
+          ],
+          "bt_share": 0.1269,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1,
+            "yes": 1
+          },
+          "why_top1": {
+            "health_label": 2,
+            "other": 2,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0012,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0151,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 2,
+          "top1_share": 0.1538,
+          "top1_ci95": [
+            0.0433,
+            0.4223
+          ],
+          "top3_votes": 2,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.2077,
+            0.9385
+          ],
+          "bt_share": 0.1513,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1,
+            "maybe": 1
+          },
+          "why_top1": {
+            "taste": 2,
+            "other": 2,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 3,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.1876,
+            0.8124
+          ],
+          "bt_share": 0.035,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand I": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 4,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.3,
+            0.9032
+          ],
+          "bt_share": 0.0363,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "mission_fit": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 3,
+          "top1_share": 0.2308,
+          "top1_ci95": [
+            0.0818,
+            0.5026
+          ],
+          "top3_votes": 4,
+          "tasted": 4,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5101,
+            1.0
+          ],
+          "bt_share": 0.3219,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2,
+            "maybe": 1
+          },
+          "why_top1": {
+            "trust": 3,
+            "other": 2,
+            "health_label": 1,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 3,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.75,
+          "top3_rate_ci95": [
+            0.3006,
+            0.9544
+          ],
+          "bt_share": 0.078,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 3,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.1876,
+            0.8124
+          ],
+          "bt_share": 0.0243,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 4,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.2152,
+            0.7848
+          ],
+          "bt_share": 0.0232,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.125,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.001,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0108,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1429,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0017,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1429,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0014,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.2991
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 4,
+          "walkpast_rate_given_tasted": 0.4444,
+          "why_walkpast": {
+            "taste": 3,
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.0945,
+            0.9055
+          ],
+          "bt_share": 0.0204,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 2,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.2857,
+          "top3_rate_ci95": [
+            0.0822,
+            0.6411
+          ],
+          "bt_share": 0.0178,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.001,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 4,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.3,
+            0.9032
+          ],
+          "bt_share": 0.0416,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.001,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0248,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "trust": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "eco_low_chemical": {
+      "n": 13,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 3,
+          "top1_share": 0.2308,
+          "top1_ci95": [
+            0.0818,
+            0.5026
+          ],
+          "top3_votes": 3,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.75,
+          "top3_rate_ci95": [
+            0.3006,
+            0.9544
+          ],
+          "bt_share": 0.0979,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2,
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 2,
+            "taste": 2,
+            "trust": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 5,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.8333,
+          "top3_rate_ci95": [
+            0.4365,
+            0.9699
+          ],
+          "bt_share": 0.0761,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 2,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.2857,
+          "top3_rate_ci95": [
+            0.0822,
+            0.6411
+          ],
+          "bt_share": 0.0103,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 3,
+          "top1_share": 0.2308,
+          "top1_ci95": [
+            0.0818,
+            0.5026
+          ],
+          "top3_votes": 4,
+          "tasted": 4,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5101,
+            1.0
+          ],
+          "bt_share": 0.4795,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1,
+            "yes": 2
+          },
+          "why_top1": {
+            "mission_fit": 2,
+            "trust": 2,
+            "health_label": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0145,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand I": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0203,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.016,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 3,
+          "top1_share": 0.2308,
+          "top1_ci95": [
+            0.0818,
+            0.5026
+          ],
+          "top3_votes": 4,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.3,
+            0.9032
+          ],
+          "bt_share": 0.0654,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 2,
+            "yes": 1
+          },
+          "why_top1": {
+            "taste": 3,
+            "health_label": 2,
+            "other": 2
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0041,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 3,
+          "tasted": 3,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.4385,
+            1.0
+          ],
+          "bt_share": 0.1393,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "trust": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0049,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.2,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0025,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.6,
+          "why_walkpast": {
+            "price_too_high": 1,
+            "gimmick_reactance": 1,
+            "loss_aversion": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0003,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.4286,
+          "why_walkpast": {
+            "loss_aversion": 2,
+            "taste": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "price_too_high": 2,
+            "loss_aversion": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 3,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.1206,
+            0.6458
+          ],
+          "bt_share": 0.012,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0043,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0075,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 2,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0968,
+            0.7
+          ],
+          "bt_share": 0.0232,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.4,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "price_too_high": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0147,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "upf_avoider_parent": {
+      "n": 18,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 2,
+          "top1_share": 0.1111,
+          "top1_ci95": [
+            0.031,
+            0.328
+          ],
+          "top3_votes": 7,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.875,
+          "top3_rate_ci95": [
+            0.5291,
+            0.9776
+          ],
+          "bt_share": 0.0846,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1,
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 2,
+            "trust": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "price_too_high": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 2,
+          "top1_share": 0.1111,
+          "top1_ci95": [
+            0.031,
+            0.328
+          ],
+          "top3_votes": 5,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.7143,
+          "top3_rate_ci95": [
+            0.3589,
+            0.9178
+          ],
+          "bt_share": 0.1076,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 2
+          },
+          "why_top1": {
+            "price_anchor": 2,
+            "other": 2,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 1,
+          "top1_share": 0.0556,
+          "top1_ci95": [
+            0.0099,
+            0.2576
+          ],
+          "top3_votes": 2,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0715,
+            0.5907
+          ],
+          "bt_share": 0.0087,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 3,
+          "top1_share": 0.1667,
+          "top1_ci95": [
+            0.0584,
+            0.3922
+          ],
+          "top3_votes": 7,
+          "tasted": 7,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.6457,
+            1.0
+          ],
+          "bt_share": 0.2812,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 3
+          },
+          "why_top1": {
+            "taste": 2,
+            "price_anchor": 2,
+            "health_label": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 2,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.2222,
+          "top3_rate_ci95": [
+            0.0632,
+            0.5474
+          ],
+          "bt_share": 0.0045,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1111,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand I": {
+          "top1_votes": 1,
+          "top1_share": 0.0556,
+          "top1_ci95": [
+            0.0099,
+            0.2576
+          ],
+          "top3_votes": 3,
+          "tasted": 10,
+          "top3_rate_given_tasted": 0.3,
+          "top3_rate_ci95": [
+            0.1078,
+            0.6032
+          ],
+          "bt_share": 0.0182,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 4,
+          "tasted": 10,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1682,
+            0.6873
+          ],
+          "bt_share": 0.0149,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 6,
+          "top1_share": 0.3333,
+          "top1_ci95": [
+            0.1628,
+            0.5625
+          ],
+          "top3_votes": 7,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.875,
+          "top3_rate_ci95": [
+            0.5291,
+            0.9776
+          ],
+          "bt_share": 0.3958,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2,
+            "maybe": 3,
+            "no": 1
+          },
+          "why_top1": {
+            "other": 4,
+            "price_anchor": 4,
+            "trust": 2,
+            "health_label": 2,
+            "taste": 2
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0051,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 1,
+          "top1_share": 0.0556,
+          "top1_ci95": [
+            0.0099,
+            0.2576
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0068,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 10,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.2775
+          ],
+          "bt_share": 0.0003,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 2,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.2222,
+          "top3_rate_ci95": [
+            0.0632,
+            0.5474
+          ],
+          "bt_share": 0.0106,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 3,
+          "tasted": 11,
+          "top3_rate_given_tasted": 0.2727,
+          "top3_rate_ci95": [
+            0.0975,
+            0.5656
+          ],
+          "bt_share": 0.0062,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 10,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.2775
+          ],
+          "bt_share": 0.0002,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 6,
+          "walkpast_rate_given_tasted": 0.6,
+          "why_walkpast": {
+            "gimmick_reactance": 2,
+            "loss_aversion": 2,
+            "price_too_high": 1,
+            "taste": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3244
+          ],
+          "bt_share": 0.0003,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.375,
+          "why_walkpast": {
+            "gimmick_reactance": 2,
+            "loss_aversion": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.6,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "taste": 1,
+            "price_too_high": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 2,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0715,
+            0.5907
+          ],
+          "bt_share": 0.0096,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 1,
+          "top1_share": 0.0556,
+          "top1_ci95": [
+            0.0099,
+            0.2576
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.007,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 2,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0715,
+            0.5907
+          ],
+          "bt_share": 0.0093,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.125,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand W": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 3,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.375,
+          "top3_rate_ci95": [
+            0.1368,
+            0.6943
+          ],
+          "bt_share": 0.0125,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.1759
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 1,
+          "top1_share": 0.0556,
+          "top1_ci95": [
+            0.0099,
+            0.2576
+          ],
+          "top3_votes": 2,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.2222,
+          "top3_rate_ci95": [
+            0.0632,
+            0.5474
+          ],
+          "bt_share": 0.014,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "trust": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "frugal_unit_price": {
+      "n": 14,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 3,
+          "top1_share": 0.2143,
+          "top1_ci95": [
+            0.0757,
+            0.4759
+          ],
+          "top3_votes": 3,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.1876,
+            0.8124
+          ],
+          "bt_share": 0.0714,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 3
+          },
+          "why_top1": {
+            "health_label": 2,
+            "price_anchor": 2,
+            "mission_fit": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "price_too_high": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 2,
+          "top1_share": 0.1429,
+          "top1_ci95": [
+            0.0401,
+            0.3994
+          ],
+          "top3_votes": 5,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.7143,
+          "top3_rate_ci95": [
+            0.3589,
+            0.9178
+          ],
+          "bt_share": 0.0779,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1,
+            "no": 1
+          },
+          "why_top1": {
+            "price_anchor": 2,
+            "other": 2,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.0106,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.2,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0011,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 5,
+          "top1_share": 0.3571,
+          "top1_ci95": [
+            0.1634,
+            0.6124
+          ],
+          "top3_votes": 7,
+          "tasted": 7,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.6457,
+            1.0
+          ],
+          "bt_share": 0.4465,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 3,
+            "no": 1,
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 4,
+            "mission_fit": 3,
+            "price_anchor": 2,
+            "trust": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 2,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0968,
+            0.7
+          ],
+          "bt_share": 0.0195,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand I": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 2,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0715,
+            0.5907
+          ],
+          "bt_share": 0.0123,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 3,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.75,
+          "top3_rate_ci95": [
+            0.3006,
+            0.9544
+          ],
+          "bt_share": 0.1023,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 2,
+          "top1_share": 0.1429,
+          "top1_ci95": [
+            0.0401,
+            0.3994
+          ],
+          "top3_votes": 4,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.3,
+            0.9032
+          ],
+          "bt_share": 0.1084,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 2
+          },
+          "why_top1": {
+            "other": 2,
+            "trust": 2,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 2,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0968,
+            0.7
+          ],
+          "bt_share": 0.0214,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 3,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.1206,
+            0.6458
+          ],
+          "bt_share": 0.0263,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0009,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 2,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.2222,
+          "top3_rate_ci95": [
+            0.0632,
+            0.5474
+          ],
+          "bt_share": 0.0184,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.0127,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3244
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.375,
+          "why_walkpast": {
+            "gimmick_reactance": 2,
+            "loss_aversion": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.4286,
+          "why_walkpast": {
+            "loss_aversion": 2,
+            "taste": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3244
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 5,
+          "walkpast_rate_given_tasted": 0.625,
+          "why_walkpast": {
+            "taste": 3,
+            "gimmick_reactance": 1,
+            "loss_aversion": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0224,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0195,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0011,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 3,
+          "tasted": 9,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.1206,
+            0.6458
+          ],
+          "bt_share": 0.014,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0091,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Y": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "protein_gym": {
+      "n": 10,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0144,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 5,
+          "tasted": 5,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5655,
+            1.0
+          ],
+          "bt_share": 0.0604,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.4,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "taste": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 1,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.2065,
+            1.0
+          ],
+          "bt_share": 0.1225,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 2,
+          "top1_share": 0.2,
+          "top1_ci95": [
+            0.0567,
+            0.5098
+          ],
+          "top3_votes": 2,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.15,
+            0.85
+          ],
+          "bt_share": 0.039,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1,
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "health_label": 1,
+            "trust": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 2,
+          "top1_share": 0.2,
+          "top1_ci95": [
+            0.0567,
+            0.5098
+          ],
+          "top3_votes": 2,
+          "tasted": 2,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.3424,
+            1.0
+          ],
+          "bt_share": 0.5175,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2
+          },
+          "why_top1": {
+            "price_anchor": 2,
+            "taste": 1,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0031,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand I": {
+          "top1_votes": 1,
+          "top1_share": 0.1,
+          "top1_ci95": [
+            0.0179,
+            0.4042
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0302,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 1,
+          "top1_share": 0.1,
+          "top1_ci95": [
+            0.0179,
+            0.4042
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0102,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 3,
+          "top1_share": 0.3,
+          "top1_ci95": [
+            0.1078,
+            0.6032
+          ],
+          "top3_votes": 4,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.8,
+          "top3_rate_ci95": [
+            0.3755,
+            0.9638
+          ],
+          "bt_share": 0.1121,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2,
+            "maybe": 1
+          },
+          "why_top1": {
+            "price_anchor": 3,
+            "other": 2,
+            "health_label": 2
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 2,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.2077,
+            0.9385
+          ],
+          "bt_share": 0.0194,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 1,
+          "top1_share": 0.1,
+          "top1_ci95": [
+            0.0179,
+            0.4042
+          ],
+          "top3_votes": 2,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.15,
+            0.85
+          ],
+          "bt_share": 0.0082,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "trust": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0127,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.0945,
+            0.9055
+          ],
+          "bt_share": 0.0285,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0028,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.6,
+          "why_walkpast": {
+            "gimmick_reactance": 2,
+            "taste": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0009,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.001,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "price_too_high": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 2,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0715,
+            0.5907
+          ],
+          "bt_share": 0.0036,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.003,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0013,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0016,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.75,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "price_too_high": 1,
+            "taste": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2775
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.0057,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "novelty_seeker_tiktok": {
+      "n": 12,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 2,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.15,
+            0.85
+          ],
+          "bt_share": 0.0387,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 3,
+          "top1_share": 0.25,
+          "top1_ci95": [
+            0.0889,
+            0.5323
+          ],
+          "top3_votes": 6,
+          "tasted": 6,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.6097,
+            1.0
+          ],
+          "bt_share": 0.1739,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1,
+            "maybe": 1,
+            "yes": 1
+          },
+          "why_top1": {
+            "health_label": 2,
+            "taste": 2,
+            "other": 2,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.2,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0324,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 1,
+          "top1_share": 0.0833,
+          "top1_ci95": [
+            0.0149,
+            0.3539
+          ],
+          "top3_votes": 2,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.15,
+            0.85
+          ],
+          "bt_share": 0.0429,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0009,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 3,
+          "top1_share": 0.25,
+          "top1_ci95": [
+            0.0889,
+            0.5323
+          ],
+          "top3_votes": 4,
+          "tasted": 4,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5101,
+            1.0
+          ],
+          "bt_share": 0.4721,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 2,
+            "maybe": 1
+          },
+          "why_top1": {
+            "trust": 2,
+            "health_label": 2,
+            "price_anchor": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0009,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand I": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0051,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 3,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.1876,
+            0.8124
+          ],
+          "bt_share": 0.0418,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 3,
+          "top1_share": 0.25,
+          "top1_ci95": [
+            0.0889,
+            0.5323
+          ],
+          "top3_votes": 6,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.8571,
+          "top3_rate_ci95": [
+            0.4869,
+            0.9743
+          ],
+          "bt_share": 0.1045,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 2,
+            "yes": 1
+          },
+          "why_top1": {
+            "taste": 2,
+            "other": 2,
+            "price_anchor": 2,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 1,
+          "top1_share": 0.0833,
+          "top1_ci95": [
+            0.0149,
+            0.3539
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0056,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 4,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.3,
+            0.9032
+          ],
+          "bt_share": 0.0174,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.001,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.2,
+          "why_walkpast": {
+            "price_too_high": 1
+          }
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0017,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0011,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.001,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "loss_aversion": 2,
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "price_too_high": 2,
+            "loss_aversion": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 1,
+          "top1_share": 0.0833,
+          "top1_ci95": [
+            0.0149,
+            0.3539
+          ],
+          "top3_votes": 4,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.5714,
+          "top3_rate_ci95": [
+            0.2505,
+            0.8418
+          ],
+          "bt_share": 0.0406,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "price_anchor": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0018,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.0114,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0013,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "taste": 2
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2425
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0016,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    }
+  },
+  "by_mission": {
+    "top_up": {
+      "n": 13,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0012,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 5,
+          "tasted": 5,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5655,
+            1.0
+          ],
+          "bt_share": 0.1106,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.6667,
+          "why_walkpast": {
+            "loss_aversion": 2
+          }
+        },
+        "Brand D": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 3,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.1876,
+            0.8124
+          ],
+          "bt_share": 0.0317,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.0074,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0016,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 4,
+          "top1_share": 0.3077,
+          "top1_ci95": [
+            0.1268,
+            0.5763
+          ],
+          "top3_votes": 5,
+          "tasted": 5,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5655,
+            1.0
+          ],
+          "bt_share": 0.6017,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 3,
+            "maybe": 1
+          },
+          "why_top1": {
+            "taste": 2,
+            "health_label": 2,
+            "mission_fit": 2,
+            "price_anchor": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0028,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1429,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand I": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0182,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 3,
+          "top1_share": 0.2308,
+          "top1_ci95": [
+            0.0818,
+            0.5026
+          ],
+          "top3_votes": 5,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.7143,
+          "top3_rate_ci95": [
+            0.3589,
+            0.9178
+          ],
+          "bt_share": 0.0886,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1,
+            "no": 1,
+            "yes": 1
+          },
+          "why_top1": {
+            "price_anchor": 3,
+            "health_label": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0113,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 4,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.3,
+            0.9032
+          ],
+          "bt_share": 0.016,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 2,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0968,
+            0.7
+          ],
+          "bt_share": 0.0164,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "gimmick_reactance": 1,
+            "taste": 1
+          }
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.2,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.4,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0004,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "price_too_high": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 6,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.75,
+          "top3_rate_ci95": [
+            0.4093,
+            0.9285
+          ],
+          "bt_share": 0.0477,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "price_anchor": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0011,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0242,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2281
+          ],
+          "top3_votes": 0,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3244
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.375,
+          "why_walkpast": {
+            "taste": 2,
+            "loss_aversion": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 1,
+          "top1_share": 0.0769,
+          "top1_ci95": [
+            0.0137,
+            0.3331
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0098,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "trust": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "meal_deal": {
+      "n": 11,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0216,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 1,
+          "top1_share": 0.0909,
+          "top1_ci95": [
+            0.0162,
+            0.3774
+          ],
+          "top3_votes": 2,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.15,
+            0.85
+          ],
+          "bt_share": 0.0433,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand D": {
+          "top1_votes": 1,
+          "top1_share": 0.0909,
+          "top1_ci95": [
+            0.0162,
+            0.3774
+          ],
+          "top3_votes": 5,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.8333,
+          "top3_rate_ci95": [
+            0.4365,
+            0.9699
+          ],
+          "bt_share": 0.1561,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 1,
+          "top1_share": 0.0909,
+          "top1_ci95": [
+            0.0162,
+            0.3774
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0369,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "health_label": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0026,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 3,
+          "top1_share": 0.2727,
+          "top1_ci95": [
+            0.0975,
+            0.5656
+          ],
+          "top3_votes": 5,
+          "tasted": 5,
+          "top3_rate_given_tasted": 1.0,
+          "top3_rate_ci95": [
+            0.5655,
+            1.0
+          ],
+          "bt_share": 0.3136,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2,
+            "no": 1
+          },
+          "why_top1": {
+            "price_anchor": 2,
+            "taste": 2,
+            "mission_fit": 1,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 1,
+          "top1_share": 0.0909,
+          "top1_ci95": [
+            0.0162,
+            0.3774
+          ],
+          "top3_votes": 2,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.4,
+          "top3_rate_ci95": [
+            0.1176,
+            0.7693
+          ],
+          "bt_share": 0.0189,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "mission_fit": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand I": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.125,
+          "top3_rate_ci95": [
+            0.0224,
+            0.4709
+          ],
+          "bt_share": 0.0076,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.0945,
+            0.9055
+          ],
+          "bt_share": 0.0248,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 3,
+          "top1_share": 0.2727,
+          "top1_ci95": [
+            0.0975,
+            0.5656
+          ],
+          "top3_votes": 4,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.8,
+          "top3_rate_ci95": [
+            0.3755,
+            0.9638
+          ],
+          "bt_share": 0.2173,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1,
+            "maybe": 1,
+            "no": 1
+          },
+          "why_top1": {
+            "other": 6,
+            "price_anchor": 1,
+            "trust": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0171,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 1,
+          "top1_share": 0.0909,
+          "top1_ci95": [
+            0.0162,
+            0.3774
+          ],
+          "top3_votes": 3,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.6,
+          "top3_rate_ci95": [
+            0.2307,
+            0.8824
+          ],
+          "bt_share": 0.0604,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0015,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0156,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0106,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 3,
+          "walkpast_rate_given_tasted": 0.5,
+          "why_walkpast": {
+            "gimmick_reactance": 1,
+            "taste": 1,
+            "loss_aversion": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0009,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0011,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 5,
+          "walkpast_rate_given_tasted": 0.8333,
+          "why_walkpast": {
+            "taste": 2,
+            "loss_aversion": 2,
+            "price_too_high": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.2,
+          "top3_rate_ci95": [
+            0.0362,
+            0.6245
+          ],
+          "bt_share": 0.0149,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 2,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.6576
+          ],
+          "bt_share": 0.0027,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0134,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand W": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 2,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0968,
+            0.7
+          ],
+          "bt_share": 0.013,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0014,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.25,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2588
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0032,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    },
+    "gym": {
+      "n": 14,
+      "brands": {
+        "Brand A": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.014,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand B": {
+          "top1_votes": 5,
+          "top1_share": 0.3571,
+          "top1_ci95": [
+            0.1634,
+            0.6124
+          ],
+          "top3_votes": 6,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.8571,
+          "top3_rate_ci95": [
+            0.4869,
+            0.9743
+          ],
+          "bt_share": 0.2101,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 4,
+            "maybe": 1
+          },
+          "why_top1": {
+            "health_label": 3,
+            "price_anchor": 3,
+            "taste": 2,
+            "other": 2,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand C": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4345
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.4,
+          "why_walkpast": {
+            "price_too_high": 1,
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand D": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 4,
+          "tasted": 5,
+          "top3_rate_given_tasted": 0.8,
+          "top3_rate_ci95": [
+            0.3755,
+            0.9638
+          ],
+          "bt_share": 0.1372,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "health_label": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand E": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0578,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "other": 2,
+            "taste": 1
+          },
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "loss_aversion": 1
+          }
+        },
+        "Brand F": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3244
+          ],
+          "bt_share": 0.0005,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand G": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 2,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.6667,
+          "top3_rate_ci95": [
+            0.2077,
+            0.9385
+          ],
+          "bt_share": 0.1898,
+          "bt_ci95": null,
+          "buy_top1": {
+            "no": 1
+          },
+          "why_top1": {
+            "trust": 1,
+            "price_anchor": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand H": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 2,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0968,
+            0.7
+          ],
+          "bt_share": 0.02,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand I": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.3333,
+          "top3_rate_ci95": [
+            0.0615,
+            0.7923
+          ],
+          "bt_share": 0.0065,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand J": {
+          "top1_votes": 4,
+          "top1_share": 0.2857,
+          "top1_ci95": [
+            0.1172,
+            0.5465
+          ],
+          "top3_votes": 7,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.875,
+          "top3_rate_ci95": [
+            0.5291,
+            0.9776
+          ],
+          "bt_share": 0.1867,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 2,
+            "maybe": 2
+          },
+          "why_top1": {
+            "trust": 3,
+            "health_label": 2,
+            "other": 2,
+            "mission_fit": 1,
+            "taste": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand K": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 4,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.5714,
+          "top3_rate_ci95": [
+            0.2505,
+            0.8418
+          ],
+          "bt_share": 0.0599,
+          "bt_ci95": null,
+          "buy_top1": {
+            "maybe": 1
+          },
+          "why_top1": {
+            "price_anchor": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand L": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.125,
+          "top3_rate_ci95": [
+            0.0224,
+            0.4709
+          ],
+          "bt_share": 0.0042,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand M": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 3,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.5,
+          "top3_rate_ci95": [
+            0.1876,
+            0.8124
+          ],
+          "bt_share": 0.0413,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand N": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.125,
+          "top3_rate_ci95": [
+            0.0224,
+            0.4709
+          ],
+          "bt_share": 0.0082,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand O": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.4899
+          ],
+          "bt_share": 0.0008,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand P": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.1429,
+          "top3_rate_ci95": [
+            0.0257,
+            0.5131
+          ],
+          "bt_share": 0.0051,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand Q": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.2857,
+          "why_walkpast": {
+            "price_too_high": 1,
+            "gimmick_reactance": 1
+          }
+        },
+        "Brand R": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 2,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "loss_aversion": 2
+          }
+        },
+        "Brand S": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 7,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3543
+          ],
+          "bt_share": 0.0007,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 4,
+          "walkpast_rate_given_tasted": 0.5714,
+          "why_walkpast": {
+            "loss_aversion": 1,
+            "taste": 1,
+            "gimmick_reactance": 1,
+            "price_too_high": 1
+          }
+        },
+        "Brand T": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.1667,
+          "top3_rate_ci95": [
+            0.0301,
+            0.5635
+          ],
+          "bt_share": 0.0121,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand U": {
+          "top1_votes": 1,
+          "top1_share": 0.0714,
+          "top1_ci95": [
+            0.0127,
+            0.3147
+          ],
+          "top3_votes": 3,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.375,
+          "top3_rate_ci95": [
+            0.1368,
+            0.6943
+          ],
+          "bt_share": 0.0164,
+          "bt_ci95": null,
+          "buy_top1": {
+            "yes": 1
+          },
+          "why_top1": {
+            "taste": 1,
+            "trust": 1
+          },
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand V": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 6,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.3903
+          ],
+          "bt_share": 0.0006,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.1667,
+          "why_walkpast": {
+            "taste": 1
+          }
+        },
+        "Brand W": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 3,
+          "tasted": 8,
+          "top3_rate_given_tasted": 0.375,
+          "top3_rate_ci95": [
+            0.1368,
+            0.6943
+          ],
+          "bt_share": 0.0127,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        },
+        "Brand X": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 0,
+          "tasted": 3,
+          "top3_rate_given_tasted": 0.0,
+          "top3_rate_ci95": [
+            0.0,
+            0.5615
+          ],
+          "bt_share": 0.0009,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 1,
+          "walkpast_rate_given_tasted": 0.3333,
+          "why_walkpast": {
+            "price_too_high": 1
+          }
+        },
+        "Brand Y": {
+          "top1_votes": 0,
+          "top1_share": 0.0,
+          "top1_ci95": [
+            0.0,
+            0.2153
+          ],
+          "top3_votes": 1,
+          "tasted": 4,
+          "top3_rate_given_tasted": 0.25,
+          "top3_rate_ci95": [
+            0.0456,
+            0.6994
+          ],
+          "bt_share": 0.0124,
+          "bt_ci95": null,
+          "buy_top1": {},
+          "why_top1": {},
+          "walkpast_votes": 0,
+          "walkpast_rate_given_tasted": 0.0,
+          "why_walkpast": {}
+        }
+      }
+    }
+  },
+  "voters": [
+    {
+      "voter": "demo0",
+      "tops": [
+        "Brand W",
+        "Brand M",
+        "Brand L"
+      ],
+      "segments": [
+        "meal_deal_office",
+        "eco_low_chemical"
+      ],
+      "mission": "top_up",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo1",
+      "tops": [
+        "Brand G",
+        "Brand D",
+        "Brand O"
+      ],
+      "segments": [
+        "upf_avoider_parent"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.3333,
+        "C": 0.6667,
+        "E": 0.4167,
+        "A": 0.75,
+        "N": 0.5
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo2",
+      "tops": [
+        "Brand D",
+        "Brand T",
+        "Brand M"
+      ],
+      "segments": [
+        "meal_deal_office",
+        "frugal_unit_price"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.75,
+        "C": 0.25,
+        "E": 0.4167,
+        "A": 0.5,
+        "N": 0.4167
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo3",
+      "tops": [
+        "Brand B",
+        "Brand X",
+        "Brand L"
+      ],
+      "segments": [
+        "frugal_unit_price"
+      ],
+      "mission": "treat",
+      "ocean": {
+        "O": 0.5833,
+        "C": 0.1667,
+        "E": 0.5,
+        "A": 0.5833,
+        "N": 0.25
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo4",
+      "tops": [
+        "Brand G",
+        "Brand K",
+        "Brand H"
+      ],
+      "segments": [
+        "meal_deal_office"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.5,
+        "C": 0.25,
+        "E": 0.3333,
+        "A": 0.4167,
+        "N": 0.5833
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo5",
+      "tops": [
+        "Brand B",
+        "Brand H",
+        "Brand P"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "eco_low_chemical"
+      ],
+      "mission": "gym",
+      "ocean": {
+        "O": 0.8333,
+        "C": 0.3333,
+        "E": 0.9167,
+        "A": 0.1667,
+        "N": 0.3333
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo6",
+      "tops": [
+        "Brand K",
+        "Brand D",
+        "Brand B"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "protein_gym"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.0833,
+        "C": 0.3333,
+        "E": 0.5,
+        "A": 0.5,
+        "N": 0.5
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo7",
+      "tops": [
+        "Brand M",
+        "Brand J",
+        "Brand G"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "frugal_unit_price"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.6667,
+        "E": 0.6667,
+        "A": 0.3333,
+        "N": 0.8333
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo8",
+      "tops": [
+        "Brand B",
+        "Brand D",
+        "Brand M"
+      ],
+      "segments": [
+        "frugal_unit_price"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo9",
+      "tops": [
+        "Brand H",
+        "Brand D",
+        "Brand W"
+      ],
+      "segments": [
+        "frugal_unit_price",
+        "meal_deal_office"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.5833,
+        "E": 0.0833,
+        "A": 0.3333,
+        "N": 0.1667
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo10",
+      "tops": [
+        "Brand D",
+        "Brand W",
+        "Brand P"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "frugal_unit_price"
+      ],
+      "mission": "treat",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.3333,
+        "E": 0.6667,
+        "A": 0.5833,
+        "N": 0.75
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo11",
+      "tops": [
+        "Brand G",
+        "Brand O",
+        "Brand D"
+      ],
+      "segments": [
+        "frugal_unit_price"
+      ],
+      "mission": "treat",
+      "ocean": {
+        "O": 0.25,
+        "C": 0.4167,
+        "E": 0.75,
+        "A": 0.25,
+        "N": 0.25
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo12",
+      "tops": [
+        "Brand K",
+        "Brand I",
+        "Brand W"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "frugal_unit_price"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.5833,
+        "C": 0.5,
+        "E": 0.5,
+        "A": 0.3333,
+        "N": 0.5
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo13",
+      "tops": [
+        "Brand K",
+        "Brand D",
+        "Brand H"
+      ],
+      "segments": [
+        "eco_low_chemical"
+      ],
+      "mission": "weekly_shop",
+      "ocean": {
+        "O": 0.5,
+        "C": 0.3333,
+        "E": 0.6667,
+        "A": 0.5,
+        "N": 0.6667
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo14",
+      "tops": [
+        "Brand D",
+        "Brand W",
+        "Brand I"
+      ],
+      "segments": [
+        "meal_deal_office"
+      ],
+      "mission": "gym",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.3333,
+        "E": 0.6667,
+        "A": 0.4167,
+        "N": 0.4167
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo15",
+      "tops": [
+        "Brand G",
+        "Brand T",
+        "Brand D"
+      ],
+      "segments": [
+        "eco_low_chemical"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.1667,
+        "E": 0.1667,
+        "A": 0.25,
+        "N": 0.5
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo16",
+      "tops": [
+        "Brand G",
+        "Brand K",
+        "Brand B"
+      ],
+      "segments": [
+        "protein_gym",
+        "upf_avoider_parent"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.6667,
+        "E": 0.75,
+        "A": 0.6667,
+        "N": 0.3333
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo17",
+      "tops": [
+        "Brand G",
+        "Brand O",
+        "Brand L"
+      ],
+      "segments": [
+        "protein_gym",
+        "frugal_unit_price"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.6667,
+        "C": 0.25,
+        "E": 0.9167,
+        "A": 0.3333,
+        "N": 0.5833
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo18",
+      "tops": [
+        "Brand T",
+        "Brand B",
+        "Brand J"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.1667,
+        "E": 0.5,
+        "A": 0.5833,
+        "N": 0.5833
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo19",
+      "tops": [
+        "Brand M",
+        "Brand J",
+        "Brand U"
+      ],
+      "segments": [
+        "eco_low_chemical",
+        "protein_gym"
+      ],
+      "mission": "treat",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo20",
+      "tops": [
+        "Brand I",
+        "Brand F",
+        "Brand W"
+      ],
+      "segments": [
+        "meal_deal_office"
+      ],
+      "mission": "weekly_shop",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo21",
+      "tops": [
+        "Brand J",
+        "Brand D",
+        "Brand K"
+      ],
+      "segments": [
+        "meal_deal_office"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo22",
+      "tops": [
+        "Brand K",
+        "Brand G",
+        "Brand J"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "frugal_unit_price"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo23",
+      "tops": [
+        "Brand J",
+        "Brand L",
+        "Brand U"
+      ],
+      "segments": [
+        "meal_deal_office"
+      ],
+      "mission": "gym",
+      "ocean": {
+        "O": 0.5,
+        "C": 0.5,
+        "E": 0.3333,
+        "A": 0.5833,
+        "N": 0.5
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo24",
+      "tops": [
+        "Brand G",
+        "Brand Y",
+        "Brand T"
+      ],
+      "segments": [
+        "eco_low_chemical",
+        "upf_avoider_parent"
+      ],
+      "mission": "treat",
+      "ocean": {
+        "O": 0.1667,
+        "C": 0.3333,
+        "E": 0.5,
+        "A": 0.6667,
+        "N": 0.3333
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo25",
+      "tops": [
+        "Brand Y",
+        "Brand O",
+        "Brand J"
+      ],
+      "segments": [
+        "meal_deal_office",
+        "upf_avoider_parent"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.3333,
+        "E": 0.5833,
+        "A": 0.8333,
+        "N": 0.75
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo26",
+      "tops": [
+        "Brand B",
+        "Brand U",
+        "Brand H"
+      ],
+      "segments": [
+        "frugal_unit_price",
+        "meal_deal_office"
+      ],
+      "mission": "gym",
+      "ocean": {
+        "O": 0.3333,
+        "C": 0.25,
+        "E": 0.3333,
+        "A": 0.4167,
+        "N": 0.75
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo27",
+      "tops": [
+        "Brand K",
+        "Brand B",
+        "Brand H"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "protein_gym"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.8333,
+        "C": 0.6667,
+        "E": 0.4167,
+        "A": 0.5833,
+        "N": 0.5833
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo28",
+      "tops": [
+        "Brand B",
+        "Brand T",
+        "Brand K"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "top_up",
+      "ocean": null,
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo29",
+      "tops": [
+        "Brand I",
+        "Brand B",
+        "Brand L"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "protein_gym"
+      ],
+      "mission": "weekly_shop",
+      "ocean": {
+        "O": 0.3333,
+        "C": 0.4167,
+        "E": 0.4167,
+        "A": 0.5,
+        "N": 0.3333
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo30",
+      "tops": [
+        "Brand K",
+        "Brand D",
+        "Brand A"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok",
+        "eco_low_chemical"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.25,
+        "C": 0.6667,
+        "E": 0.5833,
+        "A": 0.6667,
+        "N": 0.3333
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo31",
+      "tops": [
+        "Brand L",
+        "Brand I",
+        "Brand M"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok",
+        "meal_deal_office"
+      ],
+      "mission": "top_up",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo32",
+      "tops": [
+        "Brand K",
+        "Brand I",
+        "Brand D"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "eco_low_chemical"
+      ],
+      "mission": "weekly_shop",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo33",
+      "tops": [
+        "Brand G",
+        "Brand J",
+        "Brand K"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok",
+        "frugal_unit_price"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo34",
+      "tops": [
+        "Brand E",
+        "Brand T",
+        "Brand P"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "protein_gym"
+      ],
+      "mission": "meal_deal",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo35",
+      "tops": [
+        "Brand J",
+        "Brand D",
+        "Brand M"
+      ],
+      "segments": [
+        "meal_deal_office"
+      ],
+      "mission": "gym",
+      "ocean": {
+        "O": 0.5,
+        "C": 0.4167,
+        "E": 0.5,
+        "A": 0.75,
+        "N": 0.4167
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo36",
+      "tops": [
+        "Brand G",
+        "Brand E",
+        "Brand T"
+      ],
+      "segments": [
+        "eco_low_chemical",
+        "frugal_unit_price"
+      ],
+      "mission": "top_up",
+      "ocean": {
+        "O": 0.5,
+        "C": 0.75,
+        "E": 0.0833,
+        "A": 0.75,
+        "N": 0.5
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo37",
+      "tops": [
+        "Brand K",
+        "Brand G",
+        "Brand B"
+      ],
+      "segments": [
+        "upf_avoider_parent",
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "top_up",
+      "ocean": null,
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo38",
+      "tops": [
+        "Brand B",
+        "Brand T",
+        "Brand M"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo39",
+      "tops": [
+        "Brand J",
+        "Brand N",
+        "Brand Y"
+      ],
+      "segments": [
+        "protein_gym",
+        "eco_low_chemical"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo40",
+      "tops": [
+        "Brand G",
+        "Brand D",
+        "Brand M"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.8333,
+        "E": 0.6667,
+        "A": 0.75,
+        "N": 0.6667
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo41",
+      "tops": [
+        "Brand B",
+        "Brand E",
+        "Brand V"
+      ],
+      "segments": [
+        "eco_low_chemical",
+        "upf_avoider_parent"
+      ],
+      "mission": "meal_deal",
+      "ocean": {
+        "O": 0.1667,
+        "C": 0.4167,
+        "E": 0.4167,
+        "A": 0.5,
+        "N": 0.1667
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo42",
+      "tops": [
+        "Brand G",
+        "Brand J",
+        "Brand E"
+      ],
+      "segments": [
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "weekly_shop",
+      "ocean": {
+        "O": 0.4167,
+        "C": 0.25,
+        "E": 0.25,
+        "A": 0.5,
+        "N": 0.5833
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo43",
+      "tops": [
+        "Brand B",
+        "Brand W",
+        "Brand K"
+      ],
+      "segments": [
+        "eco_low_chemical",
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "gym",
+      "ocean": {
+        "O": 0.75,
+        "C": 0.3333,
+        "E": 0.75,
+        "A": 0.8333,
+        "N": 0.3333
+      },
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo44",
+      "tops": [
+        "Brand G",
+        "Brand K",
+        "Brand I"
+      ],
+      "segments": [
+        "meal_deal_office",
+        "frugal_unit_price"
+      ],
+      "mission": "weekly_shop",
+      "ocean": {
+        "O": 0.6667,
+        "C": 0.75,
+        "E": 0.5,
+        "A": 0.5,
+        "N": 0.5833
+      },
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo45",
+      "tops": [
+        "Brand U",
+        "Brand J",
+        "Brand W"
+      ],
+      "segments": [
+        "upf_avoider_parent"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo46",
+      "tops": [
+        "Brand E",
+        "Brand A",
+        "Brand B"
+      ],
+      "segments": [
+        "protein_gym",
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "gym",
+      "ocean": null,
+      "buy_top1": "maybe"
+    },
+    {
+      "voter": "demo47",
+      "tops": [
+        "Brand K",
+        "Brand M",
+        "Brand T"
+      ],
+      "segments": [
+        "protein_gym",
+        "novelty_seeker_tiktok"
+      ],
+      "mission": "top_up",
+      "ocean": null,
+      "buy_top1": "yes"
+    },
+    {
+      "voter": "demo48",
+      "tops": [
+        "Brand D",
+        "Brand G",
+        "Brand V"
+      ],
+      "segments": [
+        "upf_avoider_parent"
+      ],
+      "mission": "treat",
+      "ocean": {
+        "O": 0.3333,
+        "C": 0.75,
+        "E": 0.3333,
+        "A": 0.4167,
+        "N": 0.5
+      },
+      "buy_top1": "no"
+    },
+    {
+      "voter": "demo49",
+      "tops": [
+        "Brand D",
+        "Brand G",
+        "Brand M"
+      ],
+      "segments": [
+        "eco_low_chemical"
+      ],
+      "mission": "meal_deal",
+      "ocean": null,
+      "buy_top1": "no"
+    }
+  ]
+}

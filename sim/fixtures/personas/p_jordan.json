@@ -1,0 +1,113 @@
+{
+ "id": "p_jordan",
+ "name": "Jordan",
+ "archetype": "ai_delegator",
+ "mission": "meal_deal",
+ "budget_gbp": 4,
+ "budget_source": "assumption: per-store-visit budget for the sim, from the dossier's spend description",
+ "channel": "instore",
+ "ocean": {
+  "O": 0.6,
+  "C": 0.3,
+  "E": 0.6,
+  "A": 0.55,
+  "N": 0.5
+ },
+ "ocean_source": "assumption: fixture OCEAN set by hand from the dossier, pending data/personas/lens",
+ "ocean_effects": [],
+ "lens": [
+  {
+   "attribute": "price_gbp",
+   "off_field": "price_gbp",
+   "direction": "lower_better",
+   "weight": 0.45,
+   "why": "price_sensitivity_0_1",
+   "source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Protein claim with a trivial uplift and a price premium (the 'Babybel Protein' pattern: \"You're consuming an additional 6 calories for 0.2 grams of protein. Not worth it.\" r/AskUK 1wqczct). A 'protein' version with less protein than the standard (\"I saw a protein chicken sandwich in Asda a few days ago which had less protein than the regular chicken sandwich\", r/AskBrits 1tbf6zw)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Chalky or plasticky texture, or sweetener aftertaste, on first try: one strike and the brand is gone for good",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Item not in the Tesco Express meal deal or not stocked at Express: it doesn't exist for the lunch mission",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A standalone price over about \u00a32 for a snack or drink bought outside the deal",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A visible 'Sponsored' tag or ad-like phrasing in the AI answer: it reads as 'yet another add'",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Not named in the agent's answer at all. A challenger with thin structured data (few reviews, missing protein-per-100g or price-per-unit) is never even seen, which is rejection by omission",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Bad online substitution (corpus: \"12 cans of 2% value lager instead of 4 bottles of Speckled Hen... instant reject\", r/london iz6kv)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Anything that slows a short lunch break (queues, hunting the shelf after a reset)",
+   "source": "data/personas/staged_personas_v1.json"
+  }
+ ],
+ "trust_signals": [
+  "Named first, or badged 'top pick' or 'best for', by ChatGPT or the Tesco assistant (ACES endorsement lift from 10% to 24-43%)",
+  "A big grams-of-protein number on the front of pack, ideally with a good protein-per-kcal ratio",
+  "In the Tesco meal deal at the Clubcard price: inclusion in the slot works as an endorsement",
+  "Seen in a TikTok or creator 'what I eat' or protein-haul video",
+  "Peer exception endorsement on Reddit or social ('the only exception is barebell bars')",
+  "High review count and rating on retailer pages, which also feed the agent",
+  "Already in Clubcard purchase history, so the assistant re-orders it by default (Tesco assistant built on Clubcard history, The Grocer)"
+ ],
+ "habits": [
+  "Delegation and cognitive offloading. Jordan gives an AI agent loose constraints (budget, health, diet) and lets it pick the specific products and brands. Brand choice moves from Jordan to the agent.",
+  "Satisficing acceptance of the agent's output. Jordan does one light sanity-check and edit pass, then checks out. Alternatives are never compared, so whatever the agent names first wins (default effect).",
+  "Inherited agent biases. Because Jordan buys the agent's pick, Jordan's online basket picks up the agent's endorsement lift, sponsored penalty, incumbent advantage and concentration on modal products. Jordan trusts a 'top pick' badge.",
+  "Habit beats stated value in the meal-deal slot. Jordan picks by craving and routine under time pressure, not by what saves the most money."
+ ],
+ "dossier": "LIFE: Jordan is 24, rents a flat-share room in London and works in an office 3 days a week (hybrid). No car. Shops in small top-ups during the week, with an online delivery at the weekend. Jordan has a fridge shelf and limited cupboard space, so nothing gets bulk-bought. Jordan is not a cook: meals are assembled, not made from scratch.\n\nCHANNEL MIX (two distinct modes; this split is the whole point of the persona in the sim):\n(1) Weekday lunch, IN STORE, Tesco Express near the office. A 3-slot meal deal picked under time pressure on a short break. The meal deal is \u00a33.50-\u00a33.85 with Clubcard (corpus: \"\u00a33.80 in Tesco but \u00a33.50 with a clubcard\"; \"Without a club card in Tesco it's \u00a34.25\"). Choice is habitual and slot-constrained. Here Jordan behaves like a human shopper: sees the pack, reacts to big front-of-pack protein numbers and to TikTok recognition.\n(2) Weekly groceries, DELEGATED. Jordan types a constraint prompt into ChatGPT (budget, 'high protein', 'healthy', 'cheap', 'meals I saw on TikTok'). ChatGPT returns a list or basket, and Jordan buys what it names, usually from Tesco.com, with light edits. Here Jordan's brand choice is effectively the agent's choice: Jordan has never tasted most challengers and does not compare beyond the first named option.\n\nMISSIONS: see the missions field. Lunchtime food-for-now meal deal; post-gym or 'hit my protein' top-up; the ChatGPT-planned weekly shop; trying a trend food seen on TikTok; a hangover or treat lunch.\n\nBUDGET (partly ASSUMED, flagged): meal deal about \u00a33.50-\u00a33.85 \u00d7 3 office days, roughly \u00a311-12 a week (corpus anchors). The weekly delegated shop is an assumption of about \u00a335-50 for one person, given to ChatGPT as a hard ceiling. Jordan is price-aware per protein gram, not per pack.\n\nHABITS: Picks the same meal-deal combo most days. Research shows the UK top Tesco combo is Chicken Club + Egg Protein Pot + Coca-Cola, and the Egg Protein Pot overtook McCoy's as the top meal-deal snack (Harry Wallop Substack, cited in 02-issue-discovery). Keeps 'free' expensive drinks for later. Asks ChatGPT to 'optimise' rather than browsing. Accepts the AI's first answer after one sanity check. Follows fitness and 'what I eat in a day' creators. Sceptical in conversation about 'protein everything', but buys protein-labelled items in the meal deal because the slot makes them 'free'.\n\nWHY JORDAN MATTERS TO SAME SHELF, TWO SHOPPERS: A challenger that wins Jordan in the Express chiller (pack, protein number, TikTok recognition) ",
+ "verbatims": [
+  {
+   "quote": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "I did the same. I had to swap out a couple of items at the end before checking out but other than that, it did a great job and saved me about 20 minutes which I used to doom scroll social media.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "choice homogeneity, often concentrating demand on a few modal products while ignoring others entirely",
+   "url": "https://arxiv.org/abs/2508.02630"
+  },
+  {
+   "quote": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+   "url": "https://www.reddit.com/comments/1bc79kh"
+  },
+  {
+   "quote": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+   "url": "https://www.reddit.com/comments/1k4ayi9"
+  }
+ ],
+ "sim_parameters": {
+  "p_notice_eye_level": 0.8,
+  "p_notice_bottom_or_side": 0.07,
+  "habit_lockin_0_1": 0.8,
+  "price_sensitivity_0_1": 0.45,
+  "trust_new_brand_0_1": 0.2,
+  "gimmick_reactance_0_1": 0.25,
+  "reads_structured_data_0_1": 0.08,
+  "seconds_at_shelf": 4,
+  "meal_deal_pull_0_1": 0.88
+ },
+ "sim_parameters_source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)",
+ "fixture": true
+}

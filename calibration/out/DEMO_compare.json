@@ -1,0 +1,689 @@
+{
+  "kind": "compare",
+  "inputs": {
+    "human": "/Users/arvin/orca/eathackback/calibration/out/DEMO_human_shares.json",
+    "run": "/Users/arvin/orca/eathackback/calibration/fixtures/DEMO_sim_run.json",
+    "brand_map": "/Users/arvin/orca/eathackback/calibration/fixtures/DEMO_brand_map.json",
+    "human_metric": "bt_share",
+    "n_voters": 50,
+    "n_sim_agents": 120,
+    "brands_compared": [
+      "Brand A",
+      "Brand B",
+      "Brand C",
+      "Brand D",
+      "Brand E",
+      "Brand F",
+      "Brand G",
+      "Brand H",
+      "Brand I",
+      "Brand J",
+      "Brand K",
+      "Brand L",
+      "Brand M",
+      "Brand N",
+      "Brand O",
+      "Brand P",
+      "Brand Q",
+      "Brand R",
+      "Brand S",
+      "Brand T",
+      "Brand U",
+      "Brand V",
+      "Brand W",
+      "Brand X",
+      "Brand Y"
+    ]
+  },
+  "topline": {
+    "n_brands": 25,
+    "spearman_rho": 0.6886,
+    "spearman_perm_p": 0.0005,
+    "kendall_tau_b": 0.517,
+    "mae_pp": 4.4233,
+    "top5_overlap": 3,
+    "sd_ratio_sim_over_human": 0.1309
+  },
+  "per_segment": {
+    "eco_low_chemical": {
+      "n_humans": 13,
+      "n_sim_agents": 25,
+      "n_brands": 25,
+      "spearman_rho": 0.3847,
+      "spearman_perm_p": 0.067,
+      "kendall_tau_b": 0.3041,
+      "mae_pp": 4.4904,
+      "top5_overlap": 3,
+      "sd_ratio_sim_over_human": 0.1742
+    },
+    "frugal_unit_price": {
+      "n_humans": 14,
+      "n_sim_agents": 21,
+      "n_brands": 25,
+      "spearman_rho": 0.2842,
+      "spearman_perm_p": 0.1654,
+      "kendall_tau_b": 0.189,
+      "mae_pp": 4.5951,
+      "top5_overlap": 1,
+      "sd_ratio_sim_over_human": 0.2165
+    },
+    "meal_deal_office": {
+      "n_humans": 13,
+      "n_sim_agents": 21,
+      "n_brands": 25,
+      "spearman_rho": 0.4641,
+      "spearman_perm_p": 0.02,
+      "kendall_tau_b": 0.3226,
+      "mae_pp": 3.8487,
+      "top5_overlap": 1,
+      "sd_ratio_sim_over_human": 0.3232
+    },
+    "novelty_seeker_tiktok": {
+      "n_humans": 12,
+      "n_sim_agents": 17,
+      "n_brands": 25,
+      "spearman_rho": 0.2735,
+      "spearman_perm_p": 0.1879,
+      "kendall_tau_b": 0.201,
+      "mae_pp": 5.1479,
+      "top5_overlap": 2,
+      "sd_ratio_sim_over_human": 0.2857
+    },
+    "protein_gym": {
+      "n_humans": 10,
+      "n_sim_agents": 20,
+      "n_brands": 25,
+      "spearman_rho": 0.1066,
+      "spearman_perm_p": 0.5997,
+      "kendall_tau_b": 0.0751,
+      "mae_pp": 5.2777,
+      "top5_overlap": 1,
+      "sd_ratio_sim_over_human": 0.1689
+    },
+    "upf_avoider_parent": {
+      "n_humans": 18,
+      "n_sim_agents": 16,
+      "n_brands": 25,
+      "spearman_rho": 0.3454,
+      "spearman_perm_p": 0.087,
+      "kendall_tau_b": 0.2479,
+      "mae_pp": 5.1667,
+      "top5_overlap": 3,
+      "sd_ratio_sim_over_human": 0.2618
+    }
+  },
+  "positivity_bias": {
+    "sim_p_pick_given_considered": 0.6564,
+    "sim_mean_sentiment": 0.4027,
+    "human_share_no_or_maybe_on_own_#1": 0.54,
+    "human_buy_top1": {
+      "maybe": 16,
+      "yes": 23,
+      "no": 11
+    },
+    "read": "If the sim picks most of what it considers while humans hedge even on their favourite, the sim is positivity-biased (arXiv 2609.13148; NN/g 'chatbots want to please' via README)."
+  },
+  "why_tags": {
+    "human_on_#1": {
+      "health_label": 25,
+      "taste": 20,
+      "price_anchor": 18,
+      "other": 26,
+      "mission_fit": 10,
+      "trust": 14
+    },
+    "sim_on_picks": {
+      "trust": 115,
+      "novelty": 106,
+      "habit": 109,
+      "price_anchor": 119
+    },
+    "total_variation_distance": 0.7168,
+    "vocabulary": {
+      "taste": "sensory: it tasted best (research/03 truth 6: sensory detectability / signature taste)",
+      "trust": "trust: brand/ingredients feel trustworthy (research/03 truth 5: borrowed trust)",
+      "health_label": "health: better ingredients/nutrition (research/03 truth 7; C->label reading, research/04)",
+      "price_anchor": "value: worth the price vs what's next to it (research/03 truth 4: reference-price anchoring)",
+      "habit": "habit: like what I already buy (research/03 truth 2/6: habit, sacred SKUs)",
+      "novelty": "novelty: new/different, want to try it (README: Openness -> food neophilia)",
+      "mission_fit": "fit: fits how I'd use it - lunch/gym/kids (README: mission)",
+      "social_proof": "social: heard of it / others rate it (research/03 truth 5)",
+      "salience": "pack: the pack caught my eye (research/04 notice model)",
+      "gimmick_reactance": "gimmick: claims feel like a gimmick (research/03 truth 8: reactance)",
+      "loss_aversion": "risk: too risky to waste money on (research/03 truth 1/7: loss aversion)",
+      "price_too_high": "price: too expensive for what it is (research/03 truth 7: 'too expensive' as cover)"
+    }
+  },
+  "ocean": {
+    "O": {
+      "human_tipi": {
+        "mean": 0.4557,
+        "sd": 0.1845,
+        "n": 32
+      },
+      "sim": {
+        "mean": 0.4908,
+        "sd": 0.1129,
+        "n": 120
+      },
+      "mean_gap": 0.0351
+    },
+    "C": {
+      "human_tipi": {
+        "mean": 0.4401,
+        "sd": 0.1988,
+        "n": 32
+      },
+      "sim": {
+        "mean": 0.5116,
+        "sd": 0.1188,
+        "n": 120
+      },
+      "mean_gap": 0.0715
+    },
+    "E": {
+      "human_tipi": {
+        "mean": 0.5026,
+        "sd": 0.209,
+        "n": 32
+      },
+      "sim": {
+        "mean": 0.4988,
+        "sd": 0.1175,
+        "n": 120
+      },
+      "mean_gap": -0.0038
+    },
+    "A": {
+      "human_tipi": {
+        "mean": 0.5234,
+        "sd": 0.1748,
+        "n": 32
+      },
+      "sim": {
+        "mean": 0.5032,
+        "sd": 0.1153,
+        "n": 120
+      },
+      "mean_gap": -0.0202
+    },
+    "N": {
+      "human_tipi": {
+        "mean": 0.4844,
+        "sd": 0.1725,
+        "n": 32
+      },
+      "sim": {
+        "mean": 0.5073,
+        "sd": 0.1174,
+        "n": 120
+      },
+      "mean_gap": 0.0229
+    },
+    "note": "TIPI is a 10-item screen (test-retest ~.72 per Gosling 2003); compare means, do not score individuals. Volunteer hackathon builders are not UK shoppers."
+  },
+  "aipw": {
+    "method": "PPI/AIPW with constant labelling propensity (Angelopoulos et al. 2023 Science 382:669; arXiv 2609.13148 for LLM consumer panels). Y = voter's #1; f = sim segment share.",
+    "per_brand": {
+      "Brand A": {
+        "sim_naive": 0.0354,
+        "human_top1": 0.0,
+        "aipw": 0.0036,
+        "aipw_ci95": [
+          -0.0012,
+          0.0084
+        ]
+      },
+      "Brand B": {
+        "sim_naive": 0.0559,
+        "human_top1": 0.16,
+        "aipw": 0.1541,
+        "aipw_ci95": [
+          0.0512,
+          0.2571
+        ]
+      },
+      "Brand C": {
+        "sim_naive": 0.0386,
+        "human_top1": 0.0,
+        "aipw": -0.0008,
+        "aipw_ci95": [
+          -0.0058,
+          0.0043
+        ]
+      },
+      "Brand D": {
+        "sim_naive": 0.0594,
+        "human_top1": 0.1,
+        "aipw": 0.0991,
+        "aipw_ci95": [
+          0.0138,
+          0.1843
+        ]
+      },
+      "Brand E": {
+        "sim_naive": 0.0301,
+        "human_top1": 0.04,
+        "aipw": 0.0414,
+        "aipw_ci95": [
+          -0.0135,
+          0.0964
+        ]
+      },
+      "Brand F": {
+        "sim_naive": 0.039,
+        "human_top1": 0.0,
+        "aipw": -0.0028,
+        "aipw_ci95": [
+          -0.0102,
+          0.0046
+        ]
+      },
+      "Brand G": {
+        "sim_naive": 0.0694,
+        "human_top1": 0.24,
+        "aipw": 0.2402,
+        "aipw_ci95": [
+          0.1212,
+          0.3592
+        ]
+      },
+      "Brand H": {
+        "sim_naive": 0.0428,
+        "human_top1": 0.02,
+        "aipw": 0.0197,
+        "aipw_ci95": [
+          -0.0194,
+          0.0588
+        ]
+      },
+      "Brand I": {
+        "sim_naive": 0.0504,
+        "human_top1": 0.04,
+        "aipw": 0.0423,
+        "aipw_ci95": [
+          -0.0128,
+          0.0975
+        ]
+      },
+      "Brand J": {
+        "sim_naive": 0.0404,
+        "human_top1": 0.08,
+        "aipw": 0.0767,
+        "aipw_ci95": [
+          0.0009,
+          0.1524
+        ]
+      },
+      "Brand K": {
+        "sim_naive": 0.0445,
+        "human_top1": 0.18,
+        "aipw": 0.1777,
+        "aipw_ci95": [
+          0.0702,
+          0.2853
+        ]
+      },
+      "Brand L": {
+        "sim_naive": 0.0361,
+        "human_top1": 0.02,
+        "aipw": 0.0202,
+        "aipw_ci95": [
+          -0.0196,
+          0.0599
+        ]
+      },
+      "Brand M": {
+        "sim_naive": 0.0496,
+        "human_top1": 0.04,
+        "aipw": 0.0402,
+        "aipw_ci95": [
+          -0.015,
+          0.0955
+        ]
+      },
+      "Brand N": {
+        "sim_naive": 0.0498,
+        "human_top1": 0.0,
+        "aipw": -0.0019,
+        "aipw_ci95": [
+          -0.0082,
+          0.0045
+        ]
+      },
+      "Brand O": {
+        "sim_naive": 0.0349,
+        "human_top1": 0.0,
+        "aipw": 0.0015,
+        "aipw_ci95": [
+          -0.0032,
+          0.0062
+        ]
+      },
+      "Brand P": {
+        "sim_naive": 0.0215,
+        "human_top1": 0.0,
+        "aipw": 0.0029,
+        "aipw_ci95": [
+          -0.002,
+          0.0079
+        ]
+      },
+      "Brand Q": {
+        "sim_naive": 0.0258,
+        "human_top1": 0.0,
+        "aipw": 0.0013,
+        "aipw_ci95": [
+          -0.0028,
+          0.0054
+        ]
+      },
+      "Brand R": {
+        "sim_naive": 0.0218,
+        "human_top1": 0.0,
+        "aipw": 0.0018,
+        "aipw_ci95": [
+          -0.0025,
+          0.0061
+        ]
+      },
+      "Brand S": {
+        "sim_naive": 0.0266,
+        "human_top1": 0.0,
+        "aipw": -0.0016,
+        "aipw_ci95": [
+          -0.0062,
+          0.003
+        ]
+      },
+      "Brand T": {
+        "sim_naive": 0.0573,
+        "human_top1": 0.02,
+        "aipw": 0.0197,
+        "aipw_ci95": [
+          -0.0197,
+          0.0592
+        ]
+      },
+      "Brand U": {
+        "sim_naive": 0.0342,
+        "human_top1": 0.02,
+        "aipw": 0.0214,
+        "aipw_ci95": [
+          -0.0187,
+          0.0615
+        ]
+      },
+      "Brand V": {
+        "sim_naive": 0.0243,
+        "human_top1": 0.0,
+        "aipw": 0.0011,
+        "aipw_ci95": [
+          -0.0033,
+          0.0054
+        ]
+      },
+      "Brand W": {
+        "sim_naive": 0.0405,
+        "human_top1": 0.02,
+        "aipw": 0.0202,
+        "aipw_ci95": [
+          -0.0191,
+          0.0595
+        ]
+      },
+      "Brand X": {
+        "sim_naive": 0.0345,
+        "human_top1": 0.0,
+        "aipw": -0.0004,
+        "aipw_ci95": [
+          -0.0049,
+          0.0041
+        ]
+      },
+      "Brand Y": {
+        "sim_naive": 0.0367,
+        "human_top1": 0.02,
+        "aipw": 0.0222,
+        "aipw_ci95": [
+          -0.0175,
+          0.0618
+        ]
+      }
+    },
+    "holdout_80_20": {
+      "k_splits": 50,
+      "mae_pp_naive": 5.4514,
+      "mae_pp_corrected": 3.7985,
+      "error_reduction": 0.3032,
+      "caveat": "20% of ~50 voters = ~10 people; per-brand top-1 shares on 10 people are mostly 0/1 noise, so this number is wide. Topline only (research/05 sec 6)."
+    }
+  },
+  "per_brand": {
+    "Brand A": {
+      "sim_share": 0.0355,
+      "human_share": 0.0071,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0207
+      ],
+      "gap_pp": 2.8438
+    },
+    "Brand B": {
+      "sim_share": 0.0533,
+      "human_share": 0.1154,
+      "human_ci95_bt_share": [
+        0.0397,
+        0.21
+      ],
+      "gap_pp": -6.2104
+    },
+    "Brand C": {
+      "sim_share": 0.0372,
+      "human_share": 0.0002,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0003
+      ],
+      "gap_pp": 3.6991
+    },
+    "Brand D": {
+      "sim_share": 0.0522,
+      "human_share": 0.1146,
+      "human_ci95_bt_share": [
+        0.0395,
+        0.1924
+      ],
+      "gap_pp": -6.2392
+    },
+    "Brand E": {
+      "sim_share": 0.0301,
+      "human_share": 0.0156,
+      "human_ci95_bt_share": [
+        0.0003,
+        0.0352
+      ],
+      "gap_pp": 1.4529
+    },
+    "Brand F": {
+      "sim_share": 0.0422,
+      "human_share": 0.0028,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0081
+      ],
+      "gap_pp": 3.9443
+    },
+    "Brand G": {
+      "sim_share": 0.0703,
+      "human_share": 0.4208,
+      "human_ci95_bt_share": [
+        0.244,
+        0.6828
+      ],
+      "gap_pp": -35.0522
+    },
+    "Brand H": {
+      "sim_share": 0.0443,
+      "human_share": 0.0115,
+      "human_ci95_bt_share": [
+        0.0029,
+        0.0212
+      ],
+      "gap_pp": 3.2754
+    },
+    "Brand I": {
+      "sim_share": 0.052,
+      "human_share": 0.0178,
+      "human_ci95_bt_share": [
+        0.0043,
+        0.0337
+      ],
+      "gap_pp": 3.4205
+    },
+    "Brand J": {
+      "sim_share": 0.0379,
+      "human_share": 0.0448,
+      "human_ci95_bt_share": [
+        0.0148,
+        0.095
+      ],
+      "gap_pp": -0.6897
+    },
+    "Brand K": {
+      "sim_share": 0.0435,
+      "human_share": 0.1145,
+      "human_ci95_bt_share": [
+        0.0402,
+        0.2145
+      ],
+      "gap_pp": -7.0995
+    },
+    "Brand L": {
+      "sim_share": 0.0355,
+      "human_share": 0.0124,
+      "human_ci95_bt_share": [
+        0.004,
+        0.0236
+      ],
+      "gap_pp": 2.3137
+    },
+    "Brand M": {
+      "sim_share": 0.0476,
+      "human_share": 0.0293,
+      "human_ci95_bt_share": [
+        0.0092,
+        0.052
+      ],
+      "gap_pp": 1.8333
+    },
+    "Brand N": {
+      "sim_share": 0.0474,
+      "human_share": 0.0031,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0077
+      ],
+      "gap_pp": 4.4284
+    },
+    "Brand O": {
+      "sim_share": 0.0355,
+      "human_share": 0.0131,
+      "human_ci95_bt_share": [
+        0.0025,
+        0.0306
+      ],
+      "gap_pp": 2.2437
+    },
+    "Brand P": {
+      "sim_share": 0.0261,
+      "human_share": 0.0047,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0114
+      ],
+      "gap_pp": 2.1361
+    },
+    "Brand Q": {
+      "sim_share": 0.0267,
+      "human_share": 0.0001,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0002
+      ],
+      "gap_pp": 2.6554
+    },
+    "Brand R": {
+      "sim_share": 0.0226,
+      "human_share": 0.0002,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0003
+      ],
+      "gap_pp": 2.2353
+    },
+    "Brand S": {
+      "sim_share": 0.0251,
+      "human_share": 0.0002,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0003
+      ],
+      "gap_pp": 2.4886
+    },
+    "Brand T": {
+      "sim_share": 0.0567,
+      "human_share": 0.0254,
+      "human_ci95_bt_share": [
+        0.0074,
+        0.0511
+      ],
+      "gap_pp": 3.1307
+    },
+    "Brand U": {
+      "sim_share": 0.0362,
+      "human_share": 0.0095,
+      "human_ci95_bt_share": [
+        0.0009,
+        0.0213
+      ],
+      "gap_pp": 2.6672
+    },
+    "Brand V": {
+      "sim_share": 0.0267,
+      "human_share": 0.0066,
+      "human_ci95_bt_share": [
+        0.0002,
+        0.0148
+      ],
+      "gap_pp": 2.0053
+    },
+    "Brand W": {
+      "sim_share": 0.0426,
+      "human_share": 0.0151,
+      "human_ci95_bt_share": [
+        0.0059,
+        0.0262
+      ],
+      "gap_pp": 2.7544
+    },
+    "Brand X": {
+      "sim_share": 0.0372,
+      "human_share": 0.0031,
+      "human_ci95_bt_share": [
+        0.0001,
+        0.0102
+      ],
+      "gap_pp": 3.4091
+    },
+    "Brand Y": {
+      "sim_share": 0.0355,
+      "human_share": 0.012,
+      "human_ci95_bt_share": [
+        0.0004,
+        0.0297
+      ],
+      "gap_pp": 2.3537
+    }
+  }
+}

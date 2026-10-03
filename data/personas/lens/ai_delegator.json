@@ -1,0 +1,292 @@
+{
+ "id": "p_ai_delegator",
+ "name": "Jordan",
+ "archetype": "ai_delegator",
+ "mission": "weekly_shop",
+ "secondary_missions": [
+  "meal_deal",
+  "top_up"
+ ],
+ "missions_source": "data/personas/staged_personas_v1.json[1] (Jordan) dossier.missions: ChatGPT-planned weekly shop (delegated) + Tesco Express meal deal on 3 office days (own habit)",
+ "budget_gbp": 40,
+ "budget_source": "data/personas/staged_personas_v1.json[1] (Jordan) dossier.profile: 'weekly delegated shop is an assumption of about £35-50 for one person, given to ChatGPT as a hard ceiling' (midpoint £40, assumption-flagged). Meal deal £3.50-£3.85 Clubcard, corpus meal_deal.md",
+ "channel": "agent",
+ "channel_source": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections: two-stage delegated channel. Stage 1 ChatGPT outputs a list (mostly generic categories + 1-2 named big brands); Stage 2 Jordan types each line into Tesco app search, where ranking, sponsored tiles and Favourites pick the SKU. There is no native ChatGPT-to-Tesco checkout in the UK (verdict); US Agent Mode is the forward case (https://www.reddit.com/comments/1m9u7e6)",
+ "population_weight": {
+  "value": 0.04,
+  "source": "IGD: about 3% of people use AI for grocery today; Adyen: 44% open to it (research/02-issue-discovery.md). data/personas/staged_personas_v1.json[1] (Jordan) verdict: tag as an edge persona, population weight about 3-5%"
+ },
+ "ocean": {
+  "O": 0.62,
+  "C": 0.35,
+  "E": 0.55,
+  "A": 0.6,
+  "N": 0.45
+ },
+ "ocean_effects": [
+  {
+   "trait": "O",
+   "value": 0.62,
+   "justification": "Early adopter of agent tools and TikTok food trends, but cares little about food novelty in itself: novelty arrives through the prompt ('mirror trendy meals'), not through the shelf.",
+   "effect": "O → +willingness to try what the agent names, including unfamiliar items; no extra in-person noticing of unfamiliar packs, because Jordan does not browse",
+   "coef": 0.15,
+   "source": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (food-neophobia avoidance negatively related to Openness). Behaviour: 'to mirror trendy meals I've been seeing on social media' https://www.reddit.com/comments/1vobhlt. coef = assumption"
+  },
+  {
+   "trait": "C",
+   "value": 0.35,
+   "justification": "Low-effort shopper by design. Outsources list-making and comparison, does one light check ('swap out a couple of items'), never reads ingredients or nutrition panels.",
+   "effect": "low C → own reading of nutrition/ingredient fields close to zero. All structured-data reading is done by the agent (reads_structured_data applies to the agent, not to Jordan)",
+   "coef": -0.3,
+   "source": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (N=951): conscientiousness acts through restrained eating, i.e. deliberate food control. Behaviour: 'I had to swap out a couple of items at the end before checking out' https://www.reddit.com/comments/1m9u7e6. coef = assumption"
+  },
+  {
+   "trait": "E",
+   "value": 0.55,
+   "justification": "Socially fed food choices (creators, colleagues' meal-deal combos). Moderate.",
+   "effect": "E → +weight on social proof (creator trends, review counts surfaced by the agent)",
+   "coef": 0.1,
+   "source": "Keller & Siegrist 2015 doi:10.1016/j.appet.2014.10.003: extraversion promotes external (cue-driven) eating. data/personas/staged_personas_v1.json[1] (Jordan) behavioural_drivers 'social-proof and creator-driven demand' (weight 0.6). coef = assumption"
+  },
+  {
+   "trait": "A",
+   "value": 0.6,
+   "justification": "Trusting toward the AI's answer: accepts the first basket after one sanity check, rarely argues with it.",
+   "effect": "A → +acceptance of the agent's first-named item (default effect), -tendency to second-guess",
+   "coef": 0.2,
+   "source": "Stein, Messingschlager, Gnambs, Hutmacher & Appel 2024, Scientific Reports, doi:10.1038/s41598-024-53335-2: 'agreeableness and younger age predict a more positive view towards artificially intelligent technology'. coef = assumption"
+  },
+  {
+   "trait": "N",
+   "value": 0.45,
+   "justification": "Mild decision fatigue and time stress, partly what delegation relieves. Not anxious about food safety or labels.",
+   "effect": "N → small push toward delegation to avoid choice effort; little effect on label scrutiny",
+   "coef": 0.05,
+   "source": "assumption: no direct study found linking N to AI-shopping delegation; Keller & Siegrist 2015 doi:10.1016/j.appet.2014.10.003 links N to emotional/external eating (craving-led meal-deal picks)"
+  }
+ ],
+ "lens_note": "This lens is what the DELEGATE (ChatGPT / app assistant) effectively scores on Jordan's behalf from structured data. Jordan reads none of these fields. Products that are missing a field cannot score on it.",
+ "lens": [
+  {
+   "attribute": "data_completeness",
+   "off_field": "derived: share of non-null [price_gbp, product_quantity, nutriscore, nutriments (sugars_100g, proteins_100g, fiber_100g, salt_100g), ingredients_text, labels] in OFF + catalog",
+   "direction": "higher_better",
+   "weight": 0.22,
+   "why": "The agent filters out items whose price, nutrition or pack size it cannot read, because it cannot prove they meet the budget or 'healthy' constraint. A thin record means the item is invisible, not rejected.",
+   "source": "Kantar 2026: 'If an agent can't parse you, it can't choose you.' https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026 ; IGD: 'machine visibility, not shelf visibility, shapes choice' https://www.igd.com/about-us/press-centre/articles/igd-warns-industry-prepare-now-before-agentic-ai-transforms-shopping/72390 ; data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 2. Weight = assumption (largest because it gates the other fields)"
+  },
+  {
+   "attribute": "claim_match_to_prompt",
+   "off_field": "catalog pack_copy (+ OFF labels) matched to prompt terms, e.g. 'high protein', 'no added sugar', 'prebiotic', 'high fibre'",
+   "direction": "match_better",
+   "weight": 0.19,
+   "why": "Jordan's prompts are loose constraints ('prioritise health', 'high protein', 'cheap'). The agent treats front-of-pack claim text as evidence and matches it semantically, with no gimmick detector.",
+   "source": "'I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.' https://www.reddit.com/comments/1m9u7e6 ; data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections: add a 'parametric semantic prior' for claims matching the prompt. Weight = assumption"
+  },
+  {
+   "attribute": "price_gbp",
+   "off_field": "catalog price_gbp (and derived price per 100g)",
+   "direction": "lower_better (hard cap filter, then mild preference)",
+   "weight": 0.16,
+   "why": "Budget is given to the agent as a ceiling and used as a filter, not a trade-off. Jordan sometimes asks for price comparisons.",
+   "source": "'keep it under $150' https://www.reddit.com/comments/1m9u7e6 ; 'I started plugging my groceries list into chat gpt and asking for price comparisons between each local grocery store' https://www.reddit.com/comments/1ui9o6z ; data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier BUDGET 'read as a filter, not a trade-off'"
+  },
+  {
+   "attribute": "role",
+   "off_field": "catalog role (incumbent | own_label | challenger)",
+   "direction": "incumbent > own_label > challenger",
+   "weight": 0.14,
+   "why": "ChatGPT tends to name 1-2 big brands from training-data familiarity, and at equal specs recommends the incumbent. Own-label comes in as the 'budget swap'. Challengers are almost never named.",
+   "source": "Incumbent Advantage https://arxiv.org/html/2606.17443v1: 'at identical specs, incumbents are recommended 100% of the time'; data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections Stage 1 'mostly generic categories plus 1-2 named big brands (high incumbent bias, near-zero chance of naming' challengers)"
+  },
+  {
+   "attribute": "nutriscore",
+   "off_field": "nutriscore (a-e)",
+   "direction": "a_best",
+   "weight": 0.1,
+   "why": "The single most legible 'healthy' field for an agent decoding 'healthy-ish'. Jordan never looks at it himself.",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier: 'parses healthy-ish literally into machine-checkable claims and nutrition fields'. Weight = assumption: Nutri-Score is not printed on UK packs, so it reaches the agent only via feeds/OFF, which caps its weight"
+  },
+  {
+   "attribute": "proteins_100g",
+   "off_field": "proteins_100g",
+   "direction": "higher_better",
+   "weight": 0.08,
+   "why": "'High protein' is Jordan's most common prompt constraint (macros, gym-curious).",
+   "source": "'My wife gave it the specific macros she's trying to hit, it gave her meal options' https://www.reddit.com/comments/1hyqe97 ; 'Told them to track my calories, budget...' https://www.reddit.com/comments/1vobhlt ; data/personas/staged_personas_v1.json[1] (Jordan) missions 'cheap high-protein meals'"
+  },
+  {
+   "attribute": "sugars_100g",
+   "off_field": "sugars_100g",
+   "direction": "lower_better",
+   "weight": 0.07,
+   "why": "'Healthy-ish' drink and snack prompts get read by the agent as '0g sugar / no added sugar'.",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier mission decode: 'zero/low sugar' as the drink-slot health signal. Weight = assumption"
+  },
+  {
+   "attribute": "nova",
+   "off_field": "nova (1-4)",
+   "direction": "lower_better",
+   "weight": 0.04,
+   "why": "Weak: in chat mode the LLM sometimes adds a UPF caveat ('protein bars can be highly processed'), but NOVA is rarely in retailer feeds and Jordan never asks for it.",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.unrealistic_claims: 'in chat (not checkout) mode it often adds health caveats (\"protein bars can be highly processed\")'. Weight = assumption (low)"
+  }
+ ],
+ "lens_weights_sum": 1.0,
+ "rejection_triggers": [
+  {
+   "trigger": "Not named by the agent at all: thin structured data (missing price, nutrition or pack size) means rejection by omission, the dominant way challengers lose this shopper",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 2; Kantar 2026 https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026"
+  },
+  {
+   "trigger": "Over the budget ceiling given in the prompt (hard filter, no stretch to £4.20 on a £4 cap)",
+   "source": "https://www.reddit.com/comments/1m9u7e6 ('keep it under $150'); data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier BUDGET"
+  },
+  {
+   "trigger": "Visible 'Sponsored' tag on the search tile in the retailer app (Stage 2) and on agent surfaces that pass it through: odds x~0.8",
+   "source": "'Tesco have sold off the top of their search results to sponsored listings so it's junk food even when you search for healthy items. Fucking grim.' https://www.reddit.com/comments/1ln69mo ; ACES 10%->8% https://arxiv.org/abs/2508.02630"
+  },
+  {
+   "trigger": "Item the agent names but Jordan cannot find in Tesco app search (US-centric or hallucinated product): line silently resolved to whatever search returns first",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.unrealistic_claims ('can hallucinate products or out-of-date prices'); 'The prices are way off.' https://www.reddit.com/comments/1hyqe97"
+  },
+  {
+   "trigger": "Obviously absurd basket (e.g. '70 hotdogs', 'ice cream for breakfast and dinner') triggers the one sanity-check edit",
+   "source": "https://www.reddit.com/comments/1hyqe97 ; 'Told me to eat ice cream for breakfast and dinner.' https://www.reddit.com/comments/1j9pozm"
+  },
+  {
+   "trigger": "Bad texture or sweetener aftertaste on first try: one strike and Jordan re-prompts 'not that one'",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan) dossier.rejection_triggers"
+  }
+ ],
+ "trust_signals": [
+  {
+   "signal": "Named first by ChatGPT, or badged 'top pick' / 'best for' (endorsement lifts selection from ~10% to 24-43%)",
+   "source": "ACES, 'What Is Your AI Agent Buying?' https://arxiv.org/abs/2508.02630"
+  },
+  {
+   "signal": "High rating plus high review count in the feed the agent reads (a +0.075-star edge flips 50% of choices)",
+   "source": "Incumbent Advantage https://arxiv.org/html/2606.17443v1"
+  },
+  {
+   "signal": "Already in Tesco Favourites / 'Buy it again', so it ranks first when Jordan types the generic line into app search",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections ('Credit week-2+ repeats to Favourites lock-in, not ChatGPT')"
+  },
+  {
+   "signal": "A true, specific, verifiable claim the agent can quote back ('only brand that submits to yearly purity tests')",
+   "source": "'I once took a picture of the olive oil aisle at Sam's and asked ChatGPT to select the best oil for me. It picked the only brand that willingly submits to yearly purity tests.' https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "signal": "Seen in a TikTok/creator 'what I eat' video and then named in the prompt",
+   "source": "https://www.reddit.com/comments/1vobhlt ; data/personas/staged_personas_v1.json[1] (Jordan) trust_signals"
+  }
+ ],
+ "habits": [
+  {
+   "habit": "Weekly: one loose prompt (budget + 'healthy' + 'high protein'), accepts the list, edits 1-3 lines, checks out. About 5-10 minutes of human effort",
+   "source": "'I had to swap out a couple of items at the end before checking out but other than that, it did a great job and saved me about 20 minutes which I used to doom scroll social media.' https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "habit": "Resolves generic list lines ('protein yoghurt', 'oat milk') by typing them into the retailer app and taking the first sensible tile",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections Stage 2; 'You do need to check it though' https://www.reddit.com/comments/1hyqe97"
+  },
+  {
+   "habit": "Repeats drift into Favourites/'Buy it again' after week 1: re-asking ChatGPT every week fades",
+   "source": "'I just reorder much of the same stuff every week' https://www.reddit.com/comments/1m9u7e6 ; data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections"
+  },
+  {
+   "habit": "Lunch is not delegated: same Tesco Express meal-deal combo most office days, grabbed in about 4 s",
+   "source": "'I never look at the value of the items. I'm driven by what I fancy and how hungry I am.' https://www.reddit.com/comments/1bc79kh ; data/personas/staged_personas_v1.json[1] (Jordan) verdict.sim_parameters seconds_at_shelf=4"
+  }
+ ],
+ "says_vs_does": "Says 'I just tell it to prioritise health'. In practice the brand is chosen by whatever the agent names and whatever Tesco search ranks first, and nobody, human or agent, tastes or checks NOVA. Says protein-everything is a gimmick, but types 'high protein' into every prompt. Source: data/personas/staged_personas_v1.json[1] (Jordan) dossier.says_vs_does + verdict",
+ "dossier": "I'm Jordan, 24, flat-share in Walthamstow, office three days a week. I don't really do a 'big shop'. Sunday night I open ChatGPT and type something like 'cheap high-protein meals for one this week, under £40, nothing that takes more than 20 minutes'. It gives me five meals and a list. I skim it, delete the stuff I'll never cook (it always wants me to buy fresh herbs), and then go into the Tesco app and type each line in. Whatever comes up first that looks right goes in the basket. If ChatGPT said 'Greek yoghurt' I'm not reading labels on twelve Greek yoghurts. I take the Tesco one or the one with the Clubcard price. If it named a brand, like Müller or Fage, I'll search that. The whole thing takes ten minutes, and that's the point.\n\nHonestly by week two I mostly just hit 'Buy it again' and ask ChatGPT only when I'm bored or skint. I've never once looked at the ingredients on a protein bar. If it says 20g protein and ChatGPT said it's a good one, fine. I ignore anything that says 'Sponsored'. It feels like an ad, because it is.\n\nLunch is different: Tesco Express by work, meal deal, Clubcard price. Chicken club, egg protein pot, Coke Zero, pretty much every day. I'm in and out in a few minutes and don't look at the top or bottom shelves.\n\nNew brands basically don't exist for me unless one ends up in ChatGPT's answer or in a TikTok I saved. I'd try one if it got named. I'm not going to find it myself.",
+ "dossier_word_count_note": "about 290 words; composite persona (no single verbatim author is a confirmed 24yo Londoner) per data/personas/staged_personas_v1.json[1] (Jordan) dossier EVIDENCE CAVEAT",
+ "verbatims": [
+  {
+   "quote": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "I did the same. I had to swap out a couple of items at the end before checking out but other than that, it did a great job and saved me about 20 minutes which I used to doom scroll social media.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "I didn't tell it what I wanted specifically but just told it that I wanted some dinner and lunch and snacks for the weekend and it worked out the rest.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "Told them to track my calories, budget, and to mirror trendy meals I've been seeing on social media. It got everything in the cart, and confirmed with me before ordering.",
+   "url": "https://www.reddit.com/comments/1vobhlt"
+  },
+  {
+   "quote": "I genuinely use it to meal plan and then make a shopping list. It knows my families preferences and I've told it the order of aisle at my supermarket so it puts everything in headings. You do need to check it though",
+   "url": "https://www.reddit.com/comments/1hyqe97"
+  },
+  {
+   "quote": "I started plugging my groceries list into chat gpt and asking for price comparisons between each local grocery store.",
+   "url": "https://www.reddit.com/comments/1ui9o6z"
+  },
+  {
+   "quote": "Advertisers and Marketers salivating at the idea of getting ChatGPT to purchase certain brands over others. What a shitshow.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "Tesco have sold off the top of their search results to 'sponsored' listings so it's junk food even when you search for healthy items. Fucking grim.",
+   "url": "https://www.reddit.com/comments/1ln69mo"
+  }
+ ],
+ "counter_evidence": [
+  {
+   "point": "Many people see delegation as pointless next to re-order lists, so most 'delegators' collapse back into Favourites lock-in",
+   "source": "'you can literally save your most previously re-ordered items from Instacart or something and just hit reorder ... shopping done in 30 seconds' https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "point": "Most corpus evidence is US (Instacart/Walmart/HEB Agent Mode); the UK flow is list then manual app search",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.unrealistic_claims"
+  },
+  {
+   "point": "Agent outputs are often generic or wrong on price, so SKU choice is really made by the retailer search ranking",
+   "source": "'it just returned generic grocery list' https://www.reddit.com/comments/1j9pozm ; 'The prices are way off.' https://www.reddit.com/comments/1hyqe97"
+  }
+ ],
+ "sim_params": {
+  "p_notice_eye_level": 0.9,
+  "p_notice_bottom_or_side": 0.35,
+  "habit_lockin_0_1": 0.6,
+  "price_sensitivity_0_1": 0.5,
+  "trust_new_brand_0_1": 0.2,
+  "gimmick_reactance_0_1": 0.15,
+  "reads_structured_data_0_1": 0.85,
+  "seconds_at_shelf": 2,
+  "meal_deal_pull_0_1": 0.2
+ },
+ "sim_params_scope": "Delegated (agent/online) channel, where 'eye level' = top-ranked tile or first-named item and 'bottom/side' = lower-ranked results. For the in-store lunch mission use sim_params_instore (Jordan's skeptic-calibrated values unchanged).",
+ "sim_params_sources": {
+  "p_notice_eye_level": "assumption: blend of the agent arm (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters p_notice_eye_level=0.97: the agent reads every feed row) and Jordan's Stage-2 app search, where the top tile is almost always seen. Rounded down to 0.9 for lines Jordan deletes without resolving",
+  "p_notice_bottom_or_side": "assumption: the agent sees low-ranked items (Agent-GPT 0.9; agents' position effect is 4-10x weaker than humans', Agents vs humans, 5,000 sessions https://arxiv.org/abs/2608.22697) but Jordan resolves SKUs by taking the first sensible tile, so low-ranked items are seen only when the agent names them. 0.35 sits between Jordan in-store 0.07 and the agent 0.9",
+  "habit_lockin_0_1": "assumption: between a cold agent (Agent-GPT 0.08) and Jordan in-store (0.8). Week-2+ repeats are credited to Favourites/'Buy it again' (data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections; 'I just reorder much of the same stuff every week' https://www.reddit.com/comments/1m9u7e6)",
+  "price_sensitivity_0_1": "assumption: budget acts as a hard cap filter (Agent-GPT 0.35, Jordan 0.45) plus explicit price-comparison prompts (https://www.reddit.com/comments/1ui9o6z); nudged to 0.5",
+  "trust_new_brand_0_1": "Jordan verdict value 0.2 (data/personas/staged_personas_v1.json[1] (Jordan) verdict.sim_parameters) and Agent-GPT 0.4 (data/personas/staged_personas_v1.json[10] (Agent-GPT)), pulled down by incumbent advantage at parity (Incumbent Advantage https://arxiv.org/html/2606.17443v1); a challenger reaches Jordan only if named",
+  "gimmick_reactance_0_1": "Agent-GPT verdict 0.15 (treats claims as evidence, occasional UPF caveat). Jordan himself 0.25 but never reads the claim, so the agent's value dominates (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters)",
+  "reads_structured_data_0_1": "The agent reads fields (Agent-GPT 0.95) but Stage 1 ChatGPT often outputs generic lines without live feed data ('it just returned generic grocery list' https://www.reddit.com/comments/1j9pozm). Jordan himself 0.08. Effective blend 0.85 = assumption",
+  "seconds_at_shelf": "Human seconds per list line in the app: assumption from 'saved me about 20 minutes' and '5 minutes on my phone ... reorder much of the same stuff' (https://www.reddit.com/comments/1m9u7e6) over ~15-25 lines, about 2 s per line",
+  "meal_deal_pull_0_1": "Agent surfaces the meal deal in about 10-20% of chat-mode runs (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections); 0.2 for the delegated channel. In-store lunch uses 0.88 (sim_params_instore)"
+ },
+ "sim_params_instore": {
+  "p_notice_eye_level": 0.8,
+  "p_notice_bottom_or_side": 0.07,
+  "habit_lockin_0_1": 0.8,
+  "price_sensitivity_0_1": 0.45,
+  "trust_new_brand_0_1": 0.2,
+  "gimmick_reactance_0_1": 0.25,
+  "reads_structured_data_0_1": 0.08,
+  "seconds_at_shelf": 4,
+  "meal_deal_pull_0_1": 0.88,
+  "source": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.sim_parameters (skeptic-calibrated, realism 6/10), unchanged"
+ },
+ "notes_for_sim": [
+  "Model the delegated arm in two stages: Stage 1 ChatGPT (call sim/agent_shopper.py with Jordan's prompt) outputs a list; Stage 2 resolves each generic line by app search rank + Favourites. Challenger pick_rate is about 0 unless named in Stage 1 or ranked first in Stage 2 (hypothesis, not output).",
+  "Honest fixes that should move this persona: complete the OFF/feed fields (data_completeness), state a true and specific claim the agent can quote, earn reviews. Paid 'Sponsored' tiles should help less than for a browsing shopper (odds x~0.8, ACES)."
+ ]
+}

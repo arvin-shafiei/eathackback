@@ -1,0 +1,122 @@
+{
+  "trait": "A",
+  "trait_name": "Agreeableness (Big Five)",
+  "scaling_convention": {
+    "ocean_field": "persona.ocean.A in [0,1] per CONTRACT.md; A01 = (BFI_mean - 1) / 4",
+    "z_for_coefficients": "zA = (A01 - 0.685) / 0.155  (UK BFI-44 mean 3.74, SD 0.62 -> 0.685 and 0.155 on the 0-1 scale; source: Rentfrow, Jokela & Lamb 2015, PLoS ONE, Table 2, N=386,375, https://doi.org/10.1371/journal.pone.0122245)",
+    "how_coef_is_used": "Every coef below is a change per +1 SD of Agreeableness (zA). For a logit term: logit += coef * zA. For a lens weight: weight *= (1 + coef * zA), clipped to [0.5, 1.5].",
+    "r_to_coef_rule": "assumption: we convert a correlation r to a logit slope with beta ~= 1.81*r (logistic-normal approximation, pi/sqrt(3)), then halve it because self-report trait-behaviour correlations overstate in-store behaviour (social desirability, attitude-behaviour gap). So coef ~= 0.9*r for logit terms and coef ~= r for lens-weight multipliers. When no effect size has been verified, coef <= 0.10 and it is labelled as an assumption."
+  },
+  "effects": [
+    {
+      "behaviour": "Pro-environmental ATTITUDES (how much the shopper cares about eco claims such as Eco-Score, packaging and 'sustainable' wording)",
+      "direction": "positive",
+      "effect_size": "meta-analytic r = .15 (38 sources, N = 44,993); Openness .22, Conscientiousness .12 for comparison",
+      "sim_mapping": "lens weight multiplier on eco attributes (OFF ecoscore_grade, packaging fields, 'eco_low_chemical' and 'vegan_ethical' lens rows): weight *= (1 + 0.15*zA)",
+      "coef": 0.15,
+      "source": "Soutter, Bates & Mõttus (2020) 'Big Five and HEXACO personality traits, proenvironmental attitudes, and behaviors: a meta-analysis', Perspectives on Psychological Science 15(4), https://doi.org/10.1177/1745691620903019 (PMID 32384257; abstract verified via Europe PMC)",
+      "confidence": "high"
+    },
+    {
+      "behaviour": "Pro-environmental BEHAVIOUR (actually picking the greener option once it has been noticed)",
+      "direction": "positive",
+      "effect_size": "meta-analytic r = .10 (N = 44,993), smaller than the attitude link, which shows an attitude-behaviour gap",
+      "sim_mapping": "choice-logit term when the product has an ecoscore of a/b or credible eco claims: logit_pick += 0.09*zA (r .10 -> 1.81*.10/2)",
+      "coef": 0.09,
+      "source": "Soutter, Bates & Mõttus (2020), Perspectives on Psychological Science, https://doi.org/10.1177/1745691620903019",
+      "confidence": "high"
+    },
+    {
+      "behaviour": "Ethical or fairness concern (Fairtrade, farmer welfare, 'support local')",
+      "direction": "positive",
+      "effect_size": "No direct Big Five A -> Fairtrade effect size was verified. Proxy: in the same meta-analysis, HEXACO Honesty-Humility (which partly overlaps Big Five A) gives r = .20 with attitudes and .25 with behaviours, and Big Five A gives .15 and .10. Reddit verbatim (score 12): 'I want to support the local business. I try to buy from places that are locally owned.'",
+      "sim_mapping": "lens weight multiplier on fairness/ethical claims (Fairtrade, Rainforest Alliance or 'British farmers' labels in OFF labels_tags): weight *= (1 + 0.12*zA)",
+      "coef": 0.12,
+      "source": "Soutter et al. 2020 (above) for the Big Five A and HEXACO H estimates; assumption: Fairtrade concern is a prosocial-fairness subtype of the pro-environmental/ethical construct, so we use a coef between A-attitude .15 and A-behaviour .10. Verbatim: https://www.reddit.com/comments/1pmtqxt",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Lower meat consumption and more acceptance of meat-free or plant-based options",
+      "direction": "positive (high A -> less meat)",
+      "effect_size": "Keller & Siegrist (N = 951 Swiss random sample, path model): 'High agreeableness was associated with low meat consumption.' Pfeiler & Egloff (two German representative samples, N = 8,879): A 'uniquely negatively related to meat consumption' after socio-demographic controls. Exact coefficients were not extracted (abstract only); the authors describe the effects as small.",
+      "sim_mapping": "choice-logit term for meat-free or vegan products (OFF labels_tags contains en:vegan or en:vegetarian): logit_pick += 0.08*zA; equal penalty for red-meat products",
+      "coef": 0.08,
+      "source": "Keller & Siegrist (2015) Appetite 84:128-138, https://doi.org/10.1016/j.appet.2014.10.003 (PMID 25308432); Pfeiler & Egloff (2018) Appetite, https://doi.org/10.1016/j.appet.2017.11.098 (PMID 29154886). Coefficient assumption: 'small' -> r ~ .05-.10 -> 0.08",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Trust in brands, on-pack claims and reviews (propensity to trust)",
+      "direction": "positive",
+      "effect_size": "Trust is one of the six NEO-PI-R facets of Agreeableness, so the link is partly definitional. Mooradian, Renzl & Matzler (2006) link agreeableness to propensity to trust, and through it to interpersonal trust. Freitag & Bauer (2016) find personality, A among it, predicts trust in friends and strangers. Effect sizes were not verified here (paywalled). Counter-evidence from our corpus (score 8): 'I don't trust reviews on Amazon. Too many ways to cheat the system to get good reviews.'",
+      "sim_mapping": "multiplier on trust_signals weight (reviews, 'award-winning', certification logos): weight *= (1 + 0.10*zA). Also used as a small negative term on reject-for-'marketing claim' probability (see the reactance row)",
+      "coef": 0.1,
+      "source": "Mooradian, Renzl & Matzler (2006) Management Learning 37(4):523-540, https://doi.org/10.1177/1350507606073424; Freitag & Bauer (2016) The Social Science Journal 53(4), https://doi.org/10.1016/j.soscij.2015.12.002; Reddit https://www.reddit.com/comments/1wsl7h9. Coefficient assumption: trust in commercial claims is further from the measured construct than interpersonal trust, so we cap it at 0.10",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Reactance or cynicism toward gimmick claims (for example 'high protein' on everyday foods)",
+      "direction": "negative (high A -> less gimmick reactance)",
+      "effect_size": "No verified effect size. This is the mirror of the trust-propensity link above: low-A (antagonistic) people are more suspicious of others' intentions (NEO-PI-R facet definition).",
+      "sim_mapping": "logit_reject_gimmick += -0.06*zA (applies to the protein_sceptic_gimmick_reactant lens; low A raises the rejection probability)",
+      "coef": -0.06,
+      "source": "assumption: derived from the Trust facet definition of Agreeableness (Costa & McCrae NEO-PI-R facet structure) and the Mooradian et al. 2006 link. It is kept smaller than the trust row because no consumer-claim study was verified",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Brand loyalty (affective and action loyalty; sticking with a known product)",
+      "direction": "positive",
+      "effect_size": "Lin (2010), N = 387 Taipei toy/video-game buyers, regression: 'agreeableness and openness personality trait have a significantly positive influence on affective loyalty ... [and] on action loyalty'. A also predicted perceiving brands as sincere and competent. Standardised betas were not extracted. The sample is not grocery and not UK.",
+      "sim_mapping": "habit/loyalty term: when the shopper's habitual product (persona.habits) is in the slot, logit_pick += 0.06*zA; switching penalty is scaled by the same amount",
+      "coef": 0.06,
+      "source": "Lin, L.-Y. (2010) Journal of Product & Brand Management 19(1):4-17, https://doi.org/10.1108/10610421011018347 (abstract verified via Crossref). Coefficient assumption: the domain (toys) and population (Taiwan) do not match grocery, so we use a small coef",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Responsiveness to communal or prosocial message framing ('for your family', 'kind to farmers', 'share with friends')",
+      "direction": "positive",
+      "effect_size": "Hirsh, Kang & Bodenhausen (2012), N = 324: five adverts for one product, each written for one Big Five trait; 'advertisements were evaluated more positively the more they cohered with participants' dispositional motives'. The A-targeted advert used communal and warmth framing. The trait-specific r was not extracted (small to moderate in the paper).",
+      "sim_mapping": "claim-appeal term: if the product's claim text matches a communal/prosocial keyword list, the persuasion bonus is += 0.10*zA on the consider logit",
+      "coef": 0.1,
+      "source": "Hirsh, Kang & Bodenhausen (2012) Psychological Science 23(6):578-581, https://doi.org/10.1177/0956797611436349 (PMID 22547658, abstract verified via Europe PMC)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Impulse buying (unplanned pick when walking past)",
+      "direction": "null",
+      "effect_size": "Bratko, Butkovic & Bosnjak (2013), 339 twin pairs: significant phenotypic correlations only for Impulsivity r = .32, Neuroticism r = .23 and Extraversion r = .20; Agreeableness is not among them. Verplanken & Herabadi (2001): impulse-buying tendency relates to Extraversion and low Conscientiousness, not A.",
+      "sim_mapping": "No A term on the impulse/unplanned-pick logit (coef 0). The impulse effect belongs to E, N and C",
+      "coef": 0.0,
+      "source": "Bratko et al. (2013) Journal of Individual Differences 34(1), https://doi.org/10.1027/1614-0001/a000091; Verplanken & Herabadi (2001) European Journal of Personality 15:S71-S83, https://doi.org/10.1002/per.423 (abstracts verified via Crossref)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Health-aware diet and attention to nutrition fields (label reading)",
+      "direction": "null",
+      "effect_size": "Mõttus et al. (2012), N = 1,691 Estonians, NEO-PI-3 self- and informant-ratings: the health-aware diet factor was linked to lower N and higher E, O and C (r = .11-.17 self, .08-.11 informant). A was not among the reported correlates. Keller & Siegrist (2015): A had no reported effect on eating styles (restrained, emotional or external).",
+      "sim_mapping": "No A term on attention to nutrition fields (OFF nutriments, nutriscore) or on the notice model (coef 0). Label-reading attention belongs to C",
+      "coef": 0.0,
+      "source": "Mõttus, Realo, Allik, Deary, Esko & Metspalu (2012) Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (PMID 22268715); Keller & Siegrist (2015) https://doi.org/10.1016/j.appet.2014.10.003",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Visual noticing of products on shelf (p_notice)",
+      "direction": "null",
+      "effect_size": "No published evidence was found that links A to visual attention or salience capture in retail.",
+      "sim_mapping": "alpha_trait for A in sim/notice.py = 0. A acts only after noticing, on the consider and pick stages",
+      "coef": 0.0,
+      "source": "assumption: absence of evidence. We would rather set this to 0 than invent a number (judges' rule: an untraceable number is worse than none)",
+      "confidence": "medium"
+    }
+  ],
+  "population_norms": "UK (BFI-44, 1-5 scale): Agreeableness M = 3.74, SD = 0.62, N = 386,375 British residents (64% female), from Rentfrow, Jokela & Lamb (2015) 'Regional personality differences in Great Britain', PLoS ONE 10(3):e0122245, Table 2, https://doi.org/10.1371/journal.pone.0122245 (PMC4372610). Sampling recipe for synthetic shoppers: draw A_raw ~ Normal(3.74, 0.62), truncate to [1,5], A01 = (A_raw - 1)/4 (mean ~0.685, SD ~0.155), zA = (A01 - 0.685)/0.155. Adjustments (assumption, direction from the Big Five literature, including Fisher et al. 2026 noting women typically score higher in A; magnitudes not verified here): women +0.1 SD and men -0.1 SD relative to the pooled mean, and A rises gently with age (+0.05 SD per decade above 30). To keep persona coherence, draw OCEAN jointly rather than independently. assumption: use small inter-trait correlations typical of BFI data, A-C ~ .25, A-N ~ -.25, A-O ~ .10, A-E ~ .15. For BFI-2 (Soto & John 2017, US) norms differ slightly; use the UK BFI-44 numbers above for UK shoppers.",
+  "caveats": [
+    "Every verified effect of A on food or consumption is SMALL (|r| <= .15). A is a weak lever in the sim, and its total influence should never exceed that of Openness (eco r = .22) or Conscientiousness (label reading, restraint).",
+    "Effect sizes for Soutter 2020, Bratko 2013, Mõttus 2012 and Rentfrow 2015 are quoted from verified abstracts or tables. For Keller & Siegrist 2015, Pfeiler & Egloff 2018, Lin 2010, Hirsh 2012, Mooradian 2006 and Freitag & Bauer 2016 only the DIRECTION is verified from the abstract, and their coefficients are labelled as assumptions. Hirsh 2010 (J Environ Psychol, doi 10.1016/j.jenvp.2010.01.004) and Milfont & Sibley 2012 (doi 10.1016/j.jenvp.2011.12.006) also report positive A-environment links but were paywalled, so no effect sizes are taken from them. They are probably among Soutter's 38 sources (not checked).",
+    "Converting r to a logit (beta ~ 1.81r, then halved) is an approximation. Self-report attitude correlations overstate shelf behaviour (attitude-behaviour gap: Soutter's A-attitude .15 vs A-behaviour .10).",
+    "Fairtrade and ethical concern has no verified direct Big Five A effect size. It is proxied from the pro-environmental meta-analysis and HEXACO Honesty-Humility, so confidence is low.",
+    "Trust works in both directions in our Reddit corpus: high-A shoppers may trust reviews and claims more, but the dominant Reddit voice is distrust ('I don't trust reviews on Amazon'). Keep the trust coef small and let persona-level trust_signals override it.",
+    "The brand loyalty evidence (Lin 2010) comes from Taiwanese toy and video-game buyers, not UK grocery shoppers. Treat it as directional only.",
+    "No evidence links A to impulse buying, nutrition-label attention or visual noticing, so these coefs are set to 0 on purpose rather than left undefined.",
+    "The norms are from a self-selected online UK sample (BBC Lab UK, 64% female), so they are not perfectly representative of UK shoppers."
+  ]
+}

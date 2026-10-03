@@ -1,0 +1,4683 @@
+{
+ "run_id": "agent_20261003_112748_s1_mock_0954",
+ "created": "2026-10-03T11:27:48",
+ "arm": "ai_agent",
+ "planogram": "feed (randomised order)",
+ "models": [
+  "mock"
+ ],
+ "seed": 1,
+ "missions": [
+  {
+   "id": "work_drink_snack",
+   "categories": [
+    "soft_drinks",
+    "snack_bars"
+   ],
+   "text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "source": "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+  },
+  {
+   "id": "kids_lunchbox",
+   "categories": [
+    "snack_bars",
+    "yoghurt",
+    "crisps_savoury"
+   ],
+   "text": "Something healthy for my kids' lunchboxes this week, not ultra-processed, nothing with sweeteners.",
+   "source": "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+  },
+  {
+   "id": "cheap_breakfast",
+   "categories": [
+    "breakfast_cereal",
+    "plant_milk_dairy_alt",
+    "yoghurt"
+   ],
+   "text": "Cheapest decent breakfast for the week, I'm on a student budget.",
+   "source": "Dev frugal mission, data/personas/staged_personas_v1.json"
+  },
+  {
+   "id": "high_protein_snack",
+   "categories": [
+    "snack_bars",
+    "yoghurt"
+   ],
+   "text": "A high protein snack, at least 20g protein, low sugar.",
+   "source": "protein_gym lens persona, data/personas/lens/protein_gym.json"
+  }
+ ],
+ "inputs": {
+  "catalog": [
+   "sim/fixtures/catalog.json"
+  ]
+ },
+ "agents": [
+  {
+   "agent_id": "ai_gemini-2.5-flash_work_drink_snack_0",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "work_drink_snack",
+   "mission_text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "path": [
+    "feed:work_drink_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0001",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0002",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0003",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 6,
+   "feed_len": 6
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_work_drink_snack_1",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "work_drink_snack",
+   "mission_text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "path": [
+    "feed:work_drink_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0002",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0001",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0003",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 6
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_work_drink_snack_2",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "work_drink_snack",
+   "mission_text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "path": [
+    "feed:work_drink_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0001",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0002",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0003",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 4,
+   "feed_len": 6
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_work_drink_snack_3",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "work_drink_snack",
+   "mission_text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "path": [
+    "feed:work_drink_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0002",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0001",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0003",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 6
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_work_drink_snack_4",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "work_drink_snack",
+   "mission_text": "Get me a healthy-ish fizzy drink or a snack for work, under £4.",
+   "path": [
+    "feed:work_drink_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0001",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0002",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:work_drink_snack",
+     "product": "FX0003",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 6
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Agent-GPT seed mission, data/personas/staged_personas_v1.json (dossier.missions[0])"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 6
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_kids_lunchbox_0",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "kids_lunchbox",
+   "mission_text": "Something healthy for my kids' lunchboxes this week, not ultra-processed, nothing with sweeteners.",
+   "path": [
+    "feed:kids_lunchbox"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0007",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0009",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 7,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 7,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 7,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0008",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 8,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 8,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 8
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_kids_lunchbox_1",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "kids_lunchbox",
+   "mission_text": "Something healthy for my kids' lunchboxes this week, not ultra-processed, nothing with sweeteners.",
+   "path": [
+    "feed:kids_lunchbox"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0009",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0008",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 7,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 7,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 7,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0007",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 8,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 8,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 8
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_kids_lunchbox_2",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "kids_lunchbox",
+   "mission_text": "Something healthy for my kids' lunchboxes this week, not ultra-processed, nothing with sweeteners.",
+   "path": [
+    "feed:kids_lunchbox"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0009",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0008",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 7,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 7,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 7,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0007",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 8,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 8,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 6,
+   "feed_len": 8
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_kids_lunchbox_3",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "kids_lunchbox",
+   "mission_text": "Something healthy for my kids' lunchboxes this week, not ultra-processed, nothing with sweeteners.",
+   "path": [
+    "feed:kids_lunchbox"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0008",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0007",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0009",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 7,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 7,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 7,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 8,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 8,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 8
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_kids_lunchbox_4",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "kids_lunchbox",
+   "mission_text": "Something healthy for my kids' lunchboxes this week, not ultra-processed, nothing with sweeteners.",
+   "path": [
+    "feed:kids_lunchbox"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0008",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0009",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0007",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 5,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 6,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 6,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 6,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 7,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 7,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 7,
+     "slot": "feed:kids_lunchbox",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 8,
+      "feed_len": 8
+     },
+     "noticed": true,
+     "position": 8,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Priya 'healthy lunchbox x 10' mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 8
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_cheap_breakfast_0",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "cheap_breakfast",
+   "mission_text": "Cheapest decent breakfast for the week, I'm on a student budget.",
+   "path": [
+    "feed:cheap_breakfast"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0010",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0015",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0011",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 4,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_cheap_breakfast_1",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "cheap_breakfast",
+   "mission_text": "Cheapest decent breakfast for the week, I'm on a student budget.",
+   "path": [
+    "feed:cheap_breakfast"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0011",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0010",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0015",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_cheap_breakfast_2",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "cheap_breakfast",
+   "mission_text": "Cheapest decent breakfast for the week, I'm on a student budget.",
+   "path": [
+    "feed:cheap_breakfast"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0010",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0015",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0011",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 5,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_cheap_breakfast_3",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "cheap_breakfast",
+   "mission_text": "Cheapest decent breakfast for the week, I'm on a student budget.",
+   "path": [
+    "feed:cheap_breakfast"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0011",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0010",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0015",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 3,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_cheap_breakfast_4",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "cheap_breakfast",
+   "mission_text": "Cheapest decent breakfast for the week, I'm on a student budget.",
+   "path": [
+    "feed:cheap_breakfast"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0011",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0010",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:cheap_breakfast",
+     "product": "FX0015",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "Dev frugal mission, data/personas/staged_personas_v1.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_high_protein_snack_0",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "high_protein_snack",
+   "mission_text": "A high protein snack, at least 20g protein, low sugar.",
+   "path": [
+    "feed:high_protein_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 4,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_high_protein_snack_1",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "high_protein_snack",
+   "mission_text": "A high protein snack, at least 20g protein, low sugar.",
+   "path": [
+    "feed:high_protein_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 3,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_high_protein_snack_2",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "high_protein_snack",
+   "mission_text": "A high protein snack, at least 20g protein, low sugar.",
+   "path": [
+    "feed:high_protein_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_high_protein_snack_3",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "high_protein_snack",
+   "mission_text": "A high protein snack, at least 20g protein, low sugar.",
+   "path": [
+    "feed:high_protein_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 5,
+   "feed_len": 5
+  },
+  {
+   "agent_id": "ai_gemini-2.5-flash_high_protein_snack_4",
+   "persona_id": "ai_agent",
+   "archetype": "ai_agent",
+   "model": "mock",
+   "ocean": {},
+   "mission": "high_protein_snack",
+   "mission_text": "A high protein snack, at least 20g protein, low sugar.",
+   "path": [
+    "feed:high_protein_snack"
+   ],
+   "events": [
+    {
+     "step": 0,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0006",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 1,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 1,
+     "decision": "pick",
+     "reason": "[mock] meets the cap",
+     "attributes_cited": [
+      "price_gbp"
+     ],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "constraint_fit",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 1,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0013",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 2,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 2,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 2,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0012",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 3,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 3,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 3,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0005",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 4,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 4,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    },
+    {
+     "step": 4,
+     "slot": "feed:high_protein_snack",
+     "product": "FX0004",
+     "p_notice": 1.0,
+     "notice_factors": {
+      "position": 5,
+      "feed_len": 5
+     },
+     "noticed": true,
+     "position": 5,
+     "decision": "walk_past",
+     "reason": "",
+     "attributes_cited": [],
+     "feeling": "",
+     "sentiment": null,
+     "mechanism": "",
+     "source_refs": [
+      "mock heuristic (sim/agent_shopper.py), not an LLM",
+      "protein_gym lens persona, data/personas/lens/protein_gym.json"
+     ]
+    }
+   ],
+   "calls": {
+    "llm": 0,
+    "cached": 0,
+    "cost": 0.0,
+    "errors": []
+   },
+   "picked_position": 1,
+   "feed_len": 5
+  }
+ ],
+ "stats": {
+  "per_product": {
+   "FX0001": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 1,
+    "picked": 1,
+    "rejected": 0,
+    "walk_past": 4,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "pick_rate": 0.2,
+    "ci95": [
+     0.0362,
+     0.6245
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.2,
+    "ci95_given_noticed": [
+     0.0362,
+     0.6245
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Gutsy Pop raspberry prebiotic soda 330ml",
+    "role": "challenger",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 1,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    }
+   },
+   "FX0002": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 1,
+    "picked": 1,
+    "rejected": 0,
+    "walk_past": 4,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "pick_rate": 0.2,
+    "ci95": [
+     0.0362,
+     0.6245
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.2,
+    "ci95_given_noticed": [
+     0.0362,
+     0.6245
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Cola Zero 330ml",
+    "role": "incumbent",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 1,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    }
+   },
+   "FX0004": {
+    "shown": 15,
+    "noticed": 15,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 15,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "C_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "E_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "A_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "N_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2039
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.2039
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Protein bar chocolate brownie 60g",
+    "role": "incumbent",
+    "by_model": {
+     "mock": {
+      "shown": 15,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     }
+    }
+   },
+   "FX0006": {
+    "shown": 15,
+    "noticed": 15,
+    "considered": 6,
+    "picked": 6,
+    "rejected": 0,
+    "walk_past": 9,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 6,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 6,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     },
+     "C_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 6,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     },
+     "E_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 6,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     },
+     "A_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 6,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     },
+     "N_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 6,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     }
+    },
+    "pick_rate": 0.4,
+    "ci95": [
+     0.1982,
+     0.6425
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.4,
+    "ci95_given_noticed": [
+     0.1982,
+     0.6425
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Protein bar caramel 40g",
+    "role": "own_label",
+    "by_model": {
+     "mock": {
+      "shown": 15,
+      "picked": 6,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1982,
+       0.6425
+      ]
+     }
+    }
+   },
+   "FX0005": {
+    "shown": 15,
+    "noticed": 15,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 15,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "C_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "E_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "A_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     },
+     "N_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2039
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.2039
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Nutty Crunch oat & nut bar 35g",
+    "role": "challenger",
+    "by_model": {
+     "mock": {
+      "shown": 15,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.2039
+      ]
+     }
+    }
+   },
+   "FX0003": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 2,
+    "picked": 2,
+    "rejected": 0,
+    "walk_past": 3,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     }
+    },
+    "pick_rate": 0.4,
+    "ci95": [
+     0.1176,
+     0.7693
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.4,
+    "ci95_given_noticed": [
+     0.1176,
+     0.7693
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Light cola 330ml",
+    "role": "own_label",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 2,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     }
+    }
+   },
+   "FX0007": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 1,
+    "picked": 1,
+    "rejected": 0,
+    "walk_past": 4,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "pick_rate": 0.2,
+    "ci95": [
+     0.0362,
+     0.6245
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.2,
+    "ci95_given_noticed": [
+     0.0362,
+     0.6245
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Sea salt crisps 150g",
+    "role": "incumbent",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 1,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    }
+   },
+   "FX0012": {
+    "shown": 15,
+    "noticed": 15,
+    "considered": 3,
+    "picked": 3,
+    "rejected": 0,
+    "walk_past": 12,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "C_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "E_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "A_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "N_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     }
+    },
+    "pick_rate": 0.2,
+    "ci95": [
+     0.0705,
+     0.4519
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.2,
+    "ci95_given_noticed": [
+     0.0705,
+     0.4519
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Natural greek style yoghurt 500g",
+    "role": "own_label",
+    "by_model": {
+     "mock": {
+      "shown": 15,
+      "picked": 3,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     }
+    }
+   },
+   "FX0013": {
+    "shown": 15,
+    "noticed": 15,
+    "considered": 3,
+    "picked": 3,
+    "rejected": 0,
+    "walk_past": 12,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "C_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "E_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "A_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     },
+     "N_high": {
+      "shown": 15,
+      "noticed": 15,
+      "picked": 3,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     }
+    },
+    "pick_rate": 0.2,
+    "ci95": [
+     0.0705,
+     0.4519
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.2,
+    "ci95_given_noticed": [
+     0.0705,
+     0.4519
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Kids yoghurt tubes strawberry 8x37g",
+    "role": "incumbent",
+    "by_model": {
+     "mock": {
+      "shown": 15,
+      "picked": 3,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0705,
+       0.4519
+      ]
+     }
+    }
+   },
+   "FX0009": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 2,
+    "picked": 2,
+    "rejected": 0,
+    "walk_past": 3,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 2,
+      "rejected": 0,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     }
+    },
+    "pick_rate": 0.4,
+    "ci95": [
+     0.1176,
+     0.7693
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.4,
+    "ci95_given_noticed": [
+     0.1176,
+     0.7693
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Ready salted crisps 6x25g",
+    "role": "own_label",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 2,
+      "pick_rate": 0.4,
+      "ci95": [
+       0.1176,
+       0.7693
+      ]
+     }
+    }
+   },
+   "FX0008": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 1,
+    "picked": 1,
+    "rejected": 0,
+    "walk_past": 4,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 1,
+      "rejected": 0,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    },
+    "pick_rate": 0.2,
+    "ci95": [
+     0.0362,
+     0.6245
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.2,
+    "ci95_given_noticed": [
+     0.0362,
+     0.6245
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Lentil puffs sour cream 90g",
+    "role": "challenger",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 1,
+      "pick_rate": 0.2,
+      "ci95": [
+       0.0362,
+       0.6245
+      ]
+     }
+    }
+   },
+   "FX0010": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 5,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4345
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.4345
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Wholegrain wheat biscuits 24pk",
+    "role": "incumbent",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   },
+   "FX0015": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 5,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4345
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.4345
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Oat drink barista 1L",
+    "role": "challenger",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   },
+   "FX0011": {
+    "shown": 5,
+    "noticed": 5,
+    "considered": 0,
+    "picked": 0,
+    "rejected": 0,
+    "walk_past": 5,
+    "by_archetype": {
+     "ai_agent": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "by_ocean_segment": {
+     "O_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "C_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "E_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "A_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     },
+     "N_high": {
+      "shown": 5,
+      "noticed": 5,
+      "picked": 0,
+      "rejected": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    },
+    "pick_rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4345
+    ],
+    "notice_rate": 1.0,
+    "pick_rate_given_noticed": 0.0,
+    "ci95_given_noticed": [
+     0.0,
+     0.4345
+    ],
+    "top_reject_reasons": [],
+    "mean_sentiment": null,
+    "name": "Protein granola 400g",
+    "role": "challenger",
+    "by_model": {
+     "mock": {
+      "shown": 5,
+      "picked": 0,
+      "pick_rate": 0.0,
+      "ci95": [
+       0.0,
+       0.4345
+      ]
+     }
+    }
+   }
+  },
+  "method": {
+   "pick_rate": "picked / shown (shown = agent passed the slot)",
+   "ci95": "Wilson score interval, z=1.96",
+   "by_ocean_segment": "trait >= 0.5 is high, else low (agent's jittered OCEAN)"
+  }
+ },
+ "position_bias": {
+  "mock": {
+   "runs": 20,
+   "picks": 20,
+   "pick_at_1": 11,
+   "positions": [
+    6,
+    1,
+    4,
+    1,
+    1,
+    1,
+    1,
+    6,
+    1,
+    1,
+    4,
+    1,
+    5,
+    3,
+    1,
+    4,
+    3,
+    1,
+    5,
+    1
+   ],
+   "share_at_1": 0.55,
+   "ci95": [
+    0.3421,
+    0.7418
+   ],
+   "expected_share_at_1": 0.173
+  }
+ },
+ "cost": {
+  "usd": 0.0,
+  "llm_calls": 0,
+  "cached": 0,
+  "errors": 0
+ }
+}

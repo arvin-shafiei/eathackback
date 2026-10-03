@@ -1,0 +1,196 @@
+{
+  "id": "p_vegan_ethical",
+  "name": "Nadia",
+  "archetype": "vegan_ethical",
+  "mission": "weekly_shop",
+  "budget_gbp": 45,
+  "budget_source": "assumption: single-adult weekly shop cooking mostly from scratch (lentils, beans, tofu); below Freya's GBP75 two-adult shop (data/personas/lens/eco_low_chemical.json). Whole-food vegan eating is described as cheap and processed substitutes as the expensive part (https://www.reddit.com/comments/1pf70di)",
+  "channel": "instore",
+  "channel_source": "assumption: she shops in store because online substitutions break vegan rules ('Sainsbury's likes to substitute our chosen vegan products with Quorn shit, which all has eggs in it', https://www.reddit.com/comments/iz6kv). She uses Ocado only for delisted challenger brands (https://www.reddit.com/comments/1o3q3ez)",
+  "age": 31,
+  "household": "lives alone in a shared-ownership flat in Manchester; vegan since 2018; works as a secondary-school science teacher",
+  "household_source": "assumption: illustrative demographic; not used by the sim",
+
+  "ocean": { "O": 0.78, "C": 0.62, "E": 0.48, "A": 0.66, "N": 0.58 },
+  "ocean_effects": [
+    {
+      "trait": "O",
+      "value": 0.78,
+      "effect": "High Openness. Openness is the one trait that consistently separates vegans and vegetarians from meat-eaters, so she notices unfamiliar challenger packs (+notice for role=challenger) and is willing to trial them",
+      "coef": 0.15,
+      "coef_source": "assumption: small additive logit boost matching eco_low_chemical's O coefficient; direction from the papers",
+      "source": "Kovac & Halama 2021, 'How vegans, vegetarians and carnists differ in personality traits and attitudes towards animals', Current Issues in Personality Psychology 10(2):147-152, https://doi.org/10.5114/cipp.2021.107172 (vegans higher in open-mindedness, the only trait difference); Forestell & Nezlek 2018, Ecology of Food and Nutrition 57(3):246-259, https://doi.org/10.1080/03670244.2018.1455675 (vegetarians 'more open to new experiences')"
+    },
+    {
+      "trait": "O",
+      "value": 0.78,
+      "effect": "Low food neophobia, so she has a lower barrier to trying a new SKU once it passes the vegan gate",
+      "coef": 0.10,
+      "coef_source": "assumption: direction only",
+      "source": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+      "trait": "C",
+      "value": 0.62,
+      "effect": "Moderately conscientious: reliably flips packs in high-risk categories (crisps, biscuits, chocolate, cereal) to read the allergen bold text for milk and egg. Feeds reads_structured_data and seconds_at_shelf, not utility",
+      "coef": 0.25,
+      "coef_source": "assumption: set at a mid value because the papers find no C difference by diet, so the label reading here is driven by the vegan rule rather than by trait C",
+      "source": "Forestell & Nezlek 2018, https://doi.org/10.1080/03670244.2018.1455675 ('Neither conscientiousness nor agreeableness varied as a function of dietary habits'); behaviour from verbatim 'most non-Heinz ketchup has milk in, as do lots of crisps' https://www.reddit.com/comments/iz6kv"
+    },
+    {
+      "trait": "A",
+      "value": 0.66,
+      "effect": "Slightly above-average Agreeableness. Her concern for animals comes through Openness and her attitudes towards animals rather than through A, so A gets a small weight on brand-ethics/challenger support only",
+      "coef": 0.05,
+      "coef_source": "assumption: kept small because the diet-group papers report no A difference",
+      "source": "Kovac & Halama 2021, https://doi.org/10.5114/cipp.2021.107172 (only open-mindedness predicted attitudes towards animals); Forestell & Nezlek 2018 (no A difference)"
+    },
+    {
+      "trait": "N",
+      "value": 0.58,
+      "effect": "Somewhat elevated Neuroticism: anxiety about delisting ('the vegan product climate seems to be getting so unstable') and about hidden animal ingredients, which strengthens rejection triggers and loss-averse stockpiling of favourites",
+      "coef": 0.10,
+      "coef_source": "assumption: direction from the paper, magnitude small",
+      "source": "Forestell & Nezlek 2018, https://doi.org/10.1080/03670244.2018.1455675 (vegetarians 'more neurotic and depressed than omnivores'); verbatim https://www.reddit.com/comments/1o3q3ez"
+    },
+    {
+      "trait": "E",
+      "value": 0.48,
+      "effect": "Mid Extraversion; no diet-group difference, so no coefficient",
+      "coef": 0.0,
+      "coef_source": "assumption: no reliable effect in the cited literature",
+      "source": "Kovac & Halama 2021 (no E difference reported); Forestell & Nezlek 2018"
+    }
+  ],
+
+  "lens": [
+    {
+      "attribute": "vegan_status",
+      "off_field": "labels (en:vegan); fallback ingredients_analysis_tags (en:vegan / en:maybe-vegan / en:non-vegan) from the OFF pool parquet",
+      "direction": "required_gate",
+      "transform": "en:vegan in labels -> 1.0; no label but ingredients analysis says vegan ('accidentally vegan') -> 0.7; maybe-vegan -> 0.3; non-vegan -> hard reject (see rejection_triggers)",
+      "weight": 0.26,
+      "why": "This is the gate for every decision. A clear vegan label saves her a pack-flip. She also hunts 'accidentally vegan' own-label lines, so an unlabelled product that passes the ingredient check still scores",
+      "source": "verbatims 'Tesco's dark chocolate digestives (accidentally vegan)' https://www.reddit.com/comments/1vjypr7 ; 'store-bought which is accidentally vegan' https://www.reddit.com/comments/1q1ffjm"
+    },
+    {
+      "attribute": "animal_ingredients",
+      "off_field": "allergens (en:milk, en:eggs) + ingredients_text (whey, honey, gelatine, carmine/e120, shellac/e904, lanolin-D3)",
+      "direction": "absent_better",
+      "transform": "score = 0 if allergens contains en:milk or en:eggs, or ingredients_text matches the animal-derivative list; 'may contain milk' traces are tolerated (score 0.9)",
+      "weight": 0.20,
+      "why": "She reads the bold allergen text first because milk hides in savoury items such as crisps and ketchup. A recipe change that adds milk ends her loyalty to the product",
+      "source": "verbatims 'most non-Heinz ketchup has milk in, as do lots of crisps' https://www.reddit.com/comments/iz6kv ; 'bought so much bournville chocolate all the time until they put milk in it' https://www.reddit.com/comments/1tsbmt5 ; trace tolerance: 'may contain' is a cross-contamination warning, not an ingredient (assumption, consistent with the Vegan Society trademark criteria, https://www.vegansociety.com/your-business/vegan-trademark-standards)"
+    },
+    {
+      "attribute": "palm_oil_n",
+      "off_field": "palm_oil_n",
+      "direction": "lower_better",
+      "transform": "score = 1 if palm_oil_n == 0 else 0.2",
+      "weight": 0.16,
+      "why": "Palm oil is technically vegan, so it does not trigger an automatic reject. It is an animal-welfare issue for her (orang-utan habitat), so it carries a heavy penalty",
+      "source": "verbatim 'Just give it a stir and save the orang-utangs. By the way please boycott palm oil in everything.' https://www.reddit.com/comments/1511znd ; 'better value than the palm oil special that is Cadburys' https://www.reddit.com/comments/1qtc78s"
+    },
+    {
+      "attribute": "brand_ethics_challenger",
+      "off_field": "role (challenger | incumbent | own_label) + brand",
+      "direction": "challenger_better",
+      "transform": "challenger = 1.0; own_label = 0.6 (accidentally vegan, cheap); incumbent = 0.4, and 0.1 if the brand has a known 'went non-vegan' or animal-testing history (assumption list curated per catalog)",
+      "weight": 0.12,
+      "why": "She deliberately buys from small vegan brands to keep them listed, and she punishes incumbents that removed vegan lines or charge a 'vegan tax'",
+      "source": "verbatims 'if there's a brand or product that you love ... remember to add to your basket otherwise they really might not be there' and 'I'll be going out to stock up and buy some pots from M&S today!' https://www.reddit.com/comments/1o3q3ez ; 'Screw Cadburys' https://www.reddit.com/comments/1tsbmt5 ; 'what brands are cruelty free or not' https://www.reddit.com/comments/r2udam"
+    },
+    {
+      "attribute": "price_per_100g",
+      "off_field": "price_gbp (normalised per 100g using pack size)",
+      "direction": "lower_better",
+      "transform": "score = clip(1 - (price_per_100g / category_median - 1), 0, 1)",
+      "weight": 0.10,
+      "why": "The 'vegan tax' on processed substitutes annoys her. A dedicated vegan SKU priced at twice the dairy version reads as exploitation, not as a premium",
+      "source": "verbatims 'started selling vegan bars for twice the price' https://www.reddit.com/comments/1tsbmt5 ; 'I could bypass the vegan tax with dark chocolate' https://www.reddit.com/comments/1oi5mf0 ; 'processed vegan foods, those are definitely expensive' https://www.reddit.com/comments/1pf70di"
+    },
+    {
+      "attribute": "ingredients_n",
+      "off_field": "ingredients_n",
+      "direction": "lower_better",
+      "transform": "score = max(0, 1 - ingredients_n/20)",
+      "weight": 0.08,
+      "why": "She values a 'short clean ingredient list' on vegan substitutes because many of them are 'pumped full of artificial rubbish'",
+      "source": "verbatims 'the one vegan yoghurt that isn't pumped full of artificial rubbish' and 'so rare to find vegan cheese with a short clean ingredient list' https://www.reddit.com/comments/1o3q3ez"
+    },
+    {
+      "attribute": "proteins_100g",
+      "off_field": "proteins_100g",
+      "direction": "higher_better_but_no_claim_bonus",
+      "transform": "score = min(1, proteins_100g/12) on main-meal categories (ready_meals_soup, plant_milk_dairy_alt); weight 0 for snacks. A 'high protein' pack_copy claim gives no bonus",
+      "weight": 0.08,
+      "why": "She wants real plant protein (tofu, tempeh, seitan) in meals and resents 'vegetables-only' vegan options. She also resents protein marketing aimed at gym-goers",
+      "source": "verbatims 'I'm sick of vegan options having no decent protein source ... I want tofu, tempeh and seitan' and 'Protein is definitely the new marketing buzzword' https://www.reddit.com/comments/1u6l4ix ; 'Vegans know what the good sources of protein are and do not need high protein cereal' https://www.reddit.com/comments/191icpc"
+    }
+  ],
+  "lens_weights_sum": 1.0,
+  "lens_weights_source": "assumption: weights rank how often and how strongly each cue appears in vegan-flagged Reddit comments in data/reddit/comments.csv (112 comments match vegan / palm oil / cruelty / plant-based). The vegan gate and animal ingredients come first because a failure there is categorical; palm oil and brand ethics are the next most-voiced ethical cues; price, ingredient count and protein are secondary",
+
+  "rejection_triggers": [
+    { "trigger": "allergens contains en:milk or en:eggs, or ingredients_text contains whey, gelatine, honey, carmine (e120) or shellac (e904): hard reject, regardless of other scores", "source": "https://www.reddit.com/comments/iz6kv ('most non-Heinz ketchup has milk in, as do lots of crisps'); https://www.reddit.com/comments/1tsbmt5" },
+    { "trigger": "palm_oil_n > 0 on chocolate, biscuits or spreads: put back unless no alternative exists in the bay", "source": "https://www.reddit.com/comments/1511znd ; https://www.reddit.com/comments/1qtc78s" },
+    { "trigger": "vegan SKU from an incumbent priced at 1.8x or more per 100g above its own dairy version ('vegan tax')", "source": "https://www.reddit.com/comments/1tsbmt5 ('vegan bars for twice the price'); 1.8x threshold is an assumption" },
+    { "trigger": "'high protein' or 'plant-powered' front-of-pack claim on a snack with long ingredients_n: gimmick reactance", "source": "https://www.reddit.com/comments/1q6qho0 ('They did the same with things that were actually already vegan'); https://www.reddit.com/comments/1oqtnv1 ('\"vegan\" it's just buzzword')" },
+    { "trigger": "vegetarian-only (en:vegetarian without en:vegan) treated as 'not for me' without a pack-flip, because of eggs and milk", "source": "https://www.reddit.com/comments/191icpc ('Veggie has a lot lower standards than' vegan); https://www.reddit.com/comments/iz6kv ('Quorn ... all has eggs in it')" }
+  ],
+  "trust_signals": [
+    { "signal": "Vegan Society sunflower trademark or a clear 'Vegan' front-of-pack (labels en:vegan / en:vegan-society)", "source": "Vegan Society trademark standards https://www.vegansociety.com/your-business/vegan-trademark-standards ; reliance on labels inferred from substitution worries https://www.reddit.com/comments/iz6kv" },
+    { "signal": "small, UK, family-run challenger that the vegan community talks about (role=challenger)", "source": "https://www.reddit.com/comments/1o3q3ez ('I had no idea it was a small and family-run business ... I'll be going out to stock up')" },
+    { "signal": "palm-oil-free with sunflower oil or cocoa butter as the named fat", "source": "https://www.reddit.com/comments/1qtc78s ('they don't use palm oil (the products I've checked use sunflower oil)')" },
+    { "signal": "cruelty-free / not tested on animals (household crossover; she carries the habit into food brands)", "source": "https://www.reddit.com/comments/r2udam ('what brands are cruelty free or not')" }
+  ],
+  "habits": [
+    { "habit": "goes straight to the free-from / plant-based chiller and own-label 'accidentally vegan' lines, and does not browse the main dairy yoghurt bay", "source": "https://www.reddit.com/comments/1uosc29 ('they move those sections around every ... week ... find out where the flora plant is'); https://www.reddit.com/comments/1vjypr7" },
+    { "habit": "stockpiles favourites she fears will be delisted and buys 'even every other week' to signal demand", "source": "https://www.reddit.com/comments/1o3q3ez" },
+    { "habit": "repeat staples (soya milk, tofu, oat spread) go in the basket unread; a pack-flip happens only on new SKUs and high-risk categories", "source": "habit lock-in human mean 0.83, research/05-personas.md section 4c; 'Sainsbury's Soya milk is cheap and tastes the best' https://www.reddit.com/comments/1bq1qcm" },
+    { "habit": "skips the meal deal because the vegan options are cut to 'the falafel and hummus wrap', and brings lunch from home", "source": "https://www.reddit.com/comments/1u6l4ix ('removed every single vegan meal deal option except for the ... falafel and hummus wrap')" }
+  ],
+  "verbatims": [
+    { "quote": "It's the more subtle substitutions that worry me -- e.g. most non-Heinz ketchup has milk in, as do lots of crisps and random things like that.", "url": "https://www.reddit.com/comments/iz6kv" },
+    { "quote": "I went vegan in 2019 and bought so much bournville chocolate all the time until they put milk in it and then they suddenly started selling vegan bars for twice the price... Screw Cadburys", "url": "https://www.reddit.com/comments/1tsbmt5" },
+    { "quote": "This happens when they leave out palm oil. Just give it a stir and save the orang-utangs. By the way please boycott palm oil in everything.", "url": "https://www.reddit.com/comments/1511znd" },
+    { "quote": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt that isn't pumped full of artificial rubbish.", "url": "https://www.reddit.com/comments/1o3q3ez" },
+    { "quote": "Tbh I'm sick of vegan options having no decent protein source. I don't want a mushroom and vegan cheese toastje, or cauliflower 'wings' - I want tofu, tempeh and seitan etc.", "url": "https://www.reddit.com/comments/1u6l4ix" },
+    { "quote": "Supermarkets decided to cash in and charge people more for the same product but just labelling it protein. They did the same with things that were actually already vegan.", "url": "https://www.reddit.com/comments/1q6qho0" },
+    { "quote": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, it's palm oil free, and it supports a British company.", "url": "https://www.reddit.com/comments/1qtc78s" }
+  ],
+  "dossier": "I'm Nadia, 31, a science teacher in Manchester, and I've been vegan since 2018 for the animals, not for my health. My weekly shop is about £45 at the big Tesco on a Saturday morning, and most of it is boring on purpose: soya milk, tofu, tins of chickpeas, rice, frozen veg. Those go in the trolley without a glance. I don't look at most of the shelves at all. I walk past the dairy yoghurt wall and the chicken-everything fridge and head for the plant-based chiller, which they seem to move every few weeks.\n\nWhere I slow down is the risky aisles: crisps, biscuits, chocolate, cereal. Milk turns up in the oddest places, so I flip the pack and scan the bold allergens. That takes about ten seconds, and if I see milk or egg the pack goes straight back. A vegan logo on the front saves me the flip, and I'll happily buy own-label stuff that's accidentally vegan. Palm oil isn't technically non-vegan, but orang-utans are animals too, so I avoid it unless there's literally nothing else.\n\nI'll try a new brand if it's at eye level and it's clearly vegan, especially a small UK one. I've watched Nush and half the vegan cheese range vanish from Sainsbury's, so I buy the brands I love even when I don't strictly need them, just to keep them listed. What I won't do is pay a 'vegan tax'. When a big brand charges twice as much for the dairy-free version of a bar they used to make vegan, I'm done with them. 'High protein' stickers make me roll my eyes because I know where my protein comes from. I want actual tofu in my ready meal, not roast peppers. I gave up on meal deals once the only vegan option left was the falafel wrap.",
+  "dossier_word_count_approx": 315,
+
+  "sim_params": {
+    "p_notice_eye_level": 0.68,
+    "p_notice_bottom_or_side": 0.11,
+    "habit_lockin_0_1": 0.78,
+    "price_sensitivity_0_1": 0.55,
+    "trust_new_brand_0_1": 0.40,
+    "gimmick_reactance_0_1": 0.70,
+    "reads_structured_data_0_1": 0.50,
+    "seconds_at_shelf": 9,
+    "meal_deal_pull_0_1": 0.15
+  },
+  "sim_params_sources": {
+    "p_notice_eye_level": "Just below the human mean of 0.70 (research/05-personas.md section 4c). assumption: she goes straight to the plant-based chiller and skips the dairy and meat bays (https://www.reddit.com/comments/1uosc29), so overall noticing in mixed categories is slightly lower",
+    "p_notice_bottom_or_side": "Slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: she actively searches for small vegan brands that get delisted or tucked away (https://www.reddit.com/comments/1o3q3ez); high O gives a small lift (Kovac & Halama 2021)",
+    "habit_lockin_0_1": "Just below the human mean of 0.83 (research/05-personas.md section 4c). Staples run on autopilot (https://www.reddit.com/comments/1bq1qcm), but a recipe change (milk added) or a delisting forces a switch (https://www.reddit.com/comments/1tsbmt5 ; https://www.reddit.com/comments/1o3q3ez)",
+    "price_sensitivity_0_1": "Near the human mean of 0.57 (research/05-personas.md section 4c). She cooks cheap whole foods (https://www.reddit.com/comments/1pf70di) but reacts strongly to the 'vegan tax' on processed swaps (https://www.reddit.com/comments/1tsbmt5 ; https://www.reddit.com/comments/1oi5mf0). She accepts paying a little more to support challengers (https://www.reddit.com/comments/1o3q3ez)",
+    "trust_new_brand_0_1": "Twice the human mean of 0.20 (research/05-personas.md section 4c). High Openness / low neophobia (Kovac & Halama 2021 https://doi.org/10.5114/cipp.2021.107172 ; Nezlek & Forestell 2019) plus active support for small vegan brands (https://www.reddit.com/comments/1o3q3ez). assumption: conditional on passing the vegan gate",
+    "gimmick_reactance_0_1": "Above the human mean of 0.53 (research/05-personas.md section 4c). Strong reaction to 'high protein' relabelling of already-vegan food and to 'vegan' as a buzzword (https://www.reddit.com/comments/1q6qho0 ; https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1u6l4ix)",
+    "reads_structured_data_0_1": "Nearly three times the human mean of 0.18 and above Sam's 0.45 (research/05-personas.md section 4c). The vegan rule forces allergen and ingredient reading on any unfamiliar SKU in risky categories (https://www.reddit.com/comments/iz6kv). assumption: she reads the allergens and ingredients, not NOVA, eco-score or the nutrition table",
+    "seconds_at_shelf": "Above the human mean of 6.6 s (research/05-personas.md section 4c). assumption: 9 s covers one pack-flip and an allergen scan on a non-staple; staples take about 2 s",
+    "meal_deal_pull_0_1": "Far below the human mean of 0.67 (research/05-personas.md section 4c). Vegan meal-deal mains have shrunk to the falafel wrap (https://www.reddit.com/comments/1u6l4ix: 'over 20 meal deal mains that were chicken, they had 3 vegan ones'); assumption: she brings lunch on most days"
+  },
+  "say_do_gap_note": "Ethics is a hard gate only for animal ingredients. On palm oil and brand ethics she compromises when tired, short of time or facing a weak bay ('unless there's literally nothing else'). The sim should treat palm_oil_n as a penalty, not a veto, outside chocolate and spreads. Someone in the same thread notes veganism cannot rely on 'a consumerism driven approach' (https://www.reddit.com/comments/1o3q3ez), which reminds us that buying to support brands is effortful and inconsistent",
+  "built_from": [
+    "CONTRACT.md Personas shape",
+    "data/reddit/comments.csv (grep: vegan|palm oil|cruelty|animal product|plant-based, 112 short comments)",
+    "research/corpus/delisted.md, protein_gimmick.md, impulse_instore_vs_online.md, shrinkflation_switch.md",
+    "research/05-personas.md section 4c (skeptic-calibrated human means)",
+    "data/personas/lens/eco_low_chemical.json (structure reference)",
+    "PubMed abstracts PMID 29595331 and 38013920 (fetched via NCBI E-utilities)"
+  ]
+}

@@ -1,0 +1,114 @@
+{
+ "id": "p_priya",
+ "name": "Priya",
+ "archetype": "upf_avoider_parent",
+ "mission": "weekly_shop",
+ "budget_gbp": 25,
+ "budget_source": "assumption: per-store-visit budget for the sim, from the dossier's spend description",
+ "channel": "instore",
+ "ocean": {
+  "O": 0.45,
+  "C": 0.6,
+  "E": 0.5,
+  "A": 0.6,
+  "N": 0.6
+ },
+ "ocean_source": "assumption: fixture OCEAN set by hand from the dossier, pending data/personas/lens",
+ "ocean_effects": [],
+ "lens": [
+  {
+   "attribute": "price_gbp",
+   "off_field": "price_gbp",
+   "direction": "lower_better",
+   "weight": 0.65,
+   "why": "price_sensitivity_0_1",
+   "source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Visible UPF cues on the back of pack: E-numbers, 'emulsifier', 'flavouring', 'protein isolate', long or unfamiliar ingredient lists, whatever the actual NOVA status",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Sweeteners in a kids' or 'healthy' product (sucralose, acesulfame K), which reads to her as a hidden-junk betrayal",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Kids refuse it once (one-strike veto, never re-trialled)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "'High protein' / 'low sugar' claims that look like gimmicks or don't hold up on the nutrition panel",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Price per unit well above own-label for something used as an ingredient rather than a hero item",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Out of stock or delisted. If a Favourite vanishes she accepts the substitute and rarely goes looking for the original",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A noticeably wrong or worse substitution (sent back at the door)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Sneaky shrinkflation on a staple (same pack, less inside)",
+   "source": "data/personas/staged_personas_v1.json"
+  }
+ ],
+ "trust_signals": [
+  "Short, recognisable ingredient list ('4 ingredients', 'no preservatives') on pack and in the online product data",
+  "Endorsement by other parents (Mumsnet threads, school-gate, 'the kids love them')",
+  "The kids' own taste test and repeat requests",
+  "A product already in her Favourites / 'Buy it again' (an incumbent by habit)",
+  "Retailer curation she reads as editorial rather than paid (Ocado Roots-style badges, 'Ocado Pick'); likely to discount anything visibly tagged 'Sponsored'",
+  "A trusted retailer's own-label (M&S, Waitrose/Ocado own brand) for ingredients",
+  "Clear nutrition that matches the claim (sugar per 100g, fibre), with front of pack consistent with back of pack",
+  "Ratings and review count on the product page, as a tiebreak when she does search"
+ ],
+ "habits": [
+  "Habit and default via saved lists. The Favourites / re-order list is the real choice architecture, and new items rarely enter unless something pushes them in",
+  "Say-do gap on UPF. She claims to avoid UPF but judges processing by visible cues (E-numbers, 'emulsifier', ingredient count), so clean-looking NOVA 4 products pass and processed-looking NOVA 1-3 products get rejected",
+  "Time poverty with kids makes convenience win. Online delivery and quick meals beat her stated health intent on weeknights",
+  "Online channel suppresses impulse and discovery. Challengers that rely on being seen in store or tasted rarely enter her online basket"
+ ],
+ "dossier": "Priya is 38 and lives in outer London or the commuter belt. She and her partner both work, and she does most of the household food admin. She does a weekly Ocado delivery on a monthly delivery pass (about \u00a34-8 a month; corpus: \"We've had a weekly delivery from Ocado for about 5 years now. Pay \u00a33.99 per month\"), then tops up mid-week at a local Sainsbury's Local or M&S. Weekly spend is about \u00a3120-160 for four people. Under her stated values sits a constant worry about cost: \"our food bill is ridiculous as it is\".\n\nHOW SHE ACTUALLY SHOPS: She builds about 80% of the order in under 10 minutes from Favourites, 'Buy it again' and the previous order. She rarely browses aisles online, so new products reach her through (a) the search bar when she has a specific need (\"lunchbox snack\", \"wholemeal bread\"), (b) a substitution, (c) a promo or 'Ocado Roots' style badge on a search page, (d) Mumsnet or school-gate word of mouth, or (e) more and more, the in-app or ChatGPT assistant she has started using to \"rebuild this week's shop\" or \"suggest healthier lunchbox swaps\". She accepts substitutions by default and keeps most of them.\n\nWHAT SHE SAYS: \"We avoid UPF and added sugar.\" She reads front-of-pack claims (no added sugar, high fibre, 'made with real fruit', '4 ingredients') and sometimes flips to the ingredients list, where she counts E-numbers and words like 'emulsifier'. That is a cue-based heuristic and does not reflect NOVA status (PMC11311829: 54% of UK adults say they avoid UPF, only 13% correctly identify all five test UPFs).\n\nWHAT SHE DOES: The basket still contains plenty of convenience UPF (UK baskets are about 51% UPF by energy; ready meals +6% and microwave rice +8% YoY). She pays a premium only for \"hero\" items the kids eat on their own (lunchbox bars, yoghurt tubes, bread) and buys own-label for ingredients. The kids hold a one-strike veto: if they refuse a new snack, it never comes back.\n\nMISSIONS (RGC style): weekly family top-up (repeat basket); 'healthy lunchbox x 10' (5 days x 2 kids); quick weeknight dinner under 30 min; after-school snack that \"isn't junk\"; occasional Friday-night treat; gut-health or breakfast upgrade for herself.\n\nCHANNEL MIX: about 75% Ocado online (Favourites and re-order), about 20% local top-up in store (where impulse and discovery still happen), about 5% assistant-led (Ocado/Tesco-style app assistant or ChatGPT \"make me a healthy week of lunchboxes\"), and that share is growing.\n\nSIMULATION NOTE: For the \"Same Shelf, Two Sh",
+ "verbatims": [
+  {
+   "quote": "Yep...the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes.",
+   "url": "https://www.reddit.com/comments/18jsjo5"
+  },
+  {
+   "quote": "brands of their bread have no preservatives. Not totally UPF free but better than having emulsifiers and E numbers",
+   "url": "https://www.mumsnet.com/talk/am_i_being_unreasonable/5386544"
+  },
+  {
+   "quote": "with two young kids the faff of getting them both into the car and round the shops makes the \u00a32 delivery fee worthwhile.",
+   "url": "https://www.reddit.com/comments/18jsjo5"
+  },
+  {
+   "quote": "I find I spend less because there's no impulse buys & I keep to my budget.",
+   "url": "https://www.reddit.com/comments/18jsjo5"
+  },
+  {
+   "quote": "If I try supermarket branded and don't like it I'll never buy it again.",
+   "url": "https://forums.moneysavingexpert.com/discussion/6653837"
+  }
+ ],
+ "sim_parameters": {
+  "p_notice_eye_level": 0.7,
+  "p_notice_bottom_or_side": 0.12,
+  "habit_lockin_0_1": 0.85,
+  "price_sensitivity_0_1": 0.65,
+  "trust_new_brand_0_1": 0.3,
+  "gimmick_reactance_0_1": 0.45,
+  "reads_structured_data_0_1": 0.2,
+  "seconds_at_shelf": 5,
+  "meal_deal_pull_0_1": 0.8
+ },
+ "sim_parameters_source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)",
+ "fixture": true
+}

@@ -1,0 +1,116 @@
+{
+  "trait": "N",
+  "trait_name": "Neuroticism (BFI-2: Negative Emotionality)",
+  "coef_convention": "assumption: every coef applies to n_c = 2*(N - 0.5), where N is the persona's 0-1 score (contract field ocean.N). n_c runs from -1 to +1 and is roughly +/-2 SD at the ends. Coefs are additive on the logit of the named probability (or a multiplicative delta on the named weight, 1 + coef*n_c). Sizing rule (assumption: keeps the trait effect below row/facings effects from research/04): a published |r| of about .10 / .20 / .30+ maps to |coef| of about 0.10 / 0.20 / 0.30, then halved when confidence is low. A heuristic, not a derivation; documented so it can be audited.",
+  "effects": [
+    {
+      "behaviour": "Emotional eating -> higher pick probability for energy-dense sweet/savoury comfort products (OFF categories en:sweet-snacks, en:biscuits, en:chocolates, en:salty-snacks, en:ice-creams)",
+      "direction": "positive",
+      "effect_size": "Elfhag & Morey 2008 (obesity patients, n=442, NEO-PI-R x DEBQ): emotional eating 'strongly positively associated to Neuroticism', mainly the impulsiveness and depression facets. Bivariate r is about .3-.4 (approximate, not re-verified). Keller & Siegrist 2015 (random Swiss general-population sample, N=951, path model): N significantly raised emotional and external eating, which raised sweet and savoury food consumption. Indirect effect only: no direct N -> food path.",
+      "sim_mapping": "choice: logit(p_pick | noticed) += 0.20*n_c for products in sweet/savoury snack categories (OFF categories_tags). Indirect and general-population effect, so it is set below the clinical-sample r.",
+      "coef": 0.2,
+      "source": "Elfhag K, Morey LC (2008) Eating Behaviors 9:285-293, https://doi.org/10.1016/j.eatbeh.2007.10.003 (PMID 18549987); Keller C, Siegrist M (2015) Appetite 84:128-138, https://doi.org/10.1016/j.appet.2014.10.003 (PMID 25308432)",
+      "confidence": "high (direction, replicated) / medium (exact size)"
+    },
+    {
+      "behaviour": "Lower weight on a 'health-aware' diet lens (fruit, veg, fish, wholegrain), i.e. a less healthy basket overall",
+      "direction": "negative",
+      "effect_size": "Mõttus et al. 2012 (Estonian Biobank, N=1,691, NEO-PI-3 self and informant ratings, controlling for age, sex and education): higher health-aware diet scores went with lower N, a modest effect (|r| about .1). Golestanbagh et al. 2021 (n=224 female students): N vs healthy dietary-habits score r = -0.33, p<.001. N also correlated with preference for salty, sour and fatty foods.",
+      "sim_mapping": "lens weight: weight(nutriscore_grade / health lens attributes) *= (1 - 0.10*n_c). The large Estonian estimate is used, not the small-sample r=-.33.",
+      "coef": -0.1,
+      "source": "Mõttus R et al. (2012) Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (PMID 22268715); Golestanbagh N et al. (2021) Int J Prev Med, https://doi.org/10.4103/ijpvm.ijpvm_19_19 (PMID 34584665)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Risk aversion -> lower probability of picking an unfamiliar or new product (novelty penalty)",
+      "direction": "negative",
+      "effect_size": "Nicholson et al. 2005 (N about 2,000 managers/professionals, Risk Taking Index): N correlated negatively with overall risk propensity, r about -.1 to -.2 (approximate, not re-verified). Lauriola & Levin 2001: higher N predicted more risk-averse choices for gains in a lottery task. Small effect.",
+      "sim_mapping": "choice: logit(p_pick) += -0.15*n_c * is_new_or_unfamiliar (unfamiliar = brand not in the persona's habits list, or a new-product flag). Openness carries the main neophilia effect (see O.json), so N is kept small.",
+      "coef": -0.15,
+      "source": "Nicholson N, Soane E, Fenton-O'Creevy M, Willman P (2005) J Risk Research 8(2):157-176, https://doi.org/10.1080/1366987032000123856; Lauriola M, Levin IP (2001) Personality and Individual Differences 31:215-226, https://doi.org/10.1016/s0191-8869(00)00130-6",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Food neophobia / narrow food repertoire (trying novel foods)",
+      "direction": "positive (weak)",
+      "effect_size": "Knaapila et al. 2011 (Finnish twins, N=1,175): food neophobia correlated with low Openness (r = -0.23). The abstract reports no N association, so N's direct link is weak or unreported. Spence 2022 (review): 'anxious individuals appear to enjoy a much narrower range of foods' (trait anxiety, a facet of N).",
+      "sim_mapping": "Stacks with the risk-aversion effect above. Adds only +0.05*n_c to the novelty penalty for unfamiliar cuisines or flavours (OFF categories outside the persona's habits). Most neophobia belongs to O.",
+      "coef": -0.05,
+      "source": "Knaapila A et al. (2011) Behavior Genetics 41:512-521, https://doi.org/10.1007/s10519-010-9403-8 (PMID 20953688); Spence C (2022) Current Research in Food Science 5:19-41, https://doi.org/10.1016/j.crfs.2021.12.001 (PMID 34917953)",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Loss aversion (weighting a price rise or pack downsize as a loss)",
+      "direction": "null / not supported",
+      "effect_size": "Boyce, Wood & Ferguson 2016 (German SOEP panel, income gains vs losses): individual differences in loss aversion were moderated by Conscientiousness, not Neuroticism. Lauriola & Levin 2001: N relates to risk attitude in the gain domain, not cleanly to the loss-aversion parameter.",
+      "sim_mapping": "No N term on the loss-aversion lambda. The loss/gain asymmetry in the shrinkflation module should be population-level (Kahneman-Tversky lambda about 2) plus a C modulation (see C.json), not N. Listed so nobody adds an untraceable N -> loss-aversion weight.",
+      "coef": 0.0,
+      "source": "Boyce CJ, Wood AM, Ferguson E (2016) Personality and Social Psychology Bulletin 42(4):471-484, https://doi.org/10.1177/0146167216634060; Lauriola & Levin (2001) https://doi.org/10.1016/s0191-8869(00)00130-6",
+      "confidence": "medium (that N is NOT the driver)"
+    },
+    {
+      "behaviour": "Post-purchase negative affect -> stronger reaction to perceived betrayal (shrinkflation, recipe change), lower satisfaction, more complaining or negative word of mouth",
+      "direction": "positive",
+      "effect_size": "Mooradian & Olver 1997 (consumer survey, car owners): N predicted more negative post-purchase emotion, which lowered satisfaction and raised complaining and negative WOM. A mediated effect; standardised paths are about .2-.3 (approximate, not re-verified). Reddit context (not a trait measure): 'FWIW I hate shrinkflation. There should be an option to buy the OG size' https://www.reddit.com/comments/1p3q2ce",
+      "sim_mapping": "When a product carries a shrinkflation/recipe-change flag and the persona has it in habits: sentiment -= 0.20*n_c (sentiment is on the -1..1 scale), and logit(p_reject | noticed_change) += 0.20*n_c. Does not change p_notice: noticing the change is a C/attention effect.",
+      "coef": 0.2,
+      "source": "Mooradian TA, Olver JM (1997) 'I can't get no satisfaction': the impact of personality and emotion on postpurchase processes. Psychology & Marketing 14(4):379-393, https://doi.org/10.1002/(SICI)1520-6793(199707)14:4<379::AID-MAR5>3.0.CO;2-6",
+      "confidence": "medium (direction) / low (size)"
+    },
+    {
+      "behaviour": "Health anxiety -> more attention to 'warning' attributes (additives, allergens, 'ultra-processed', E-numbers, sugar/salt traffic lights)",
+      "direction": "positive",
+      "effect_size": "Ferguson 2000 (two studies, N=205 and 161): emotional stability (low N) was associated with most hypochondriacal-concern criteria, and these associations held after controlling for anxiety, depression and somatosensory amplification. N vs health anxiety is typically r about .3-.5 (assumption: range from the wider literature, not re-verified). How strongly health anxiety drives label scrutiny in-store has not been measured directly.",
+      "sim_mapping": "notice: alpha_trait for 'warning' attributes (additives_n, allergens, nova_group=4, high-sugar/salt traffic lights) += 0.10*n_c, meaning more likely to notice and cite them. Lens: weight on additives_n/nova_group *= (1 + 0.10*n_c). Kept small because the N -> label-reading link is inferred, not directly measured.",
+      "coef": 0.1,
+      "source": "Ferguson E (2000) Hypochondriacal concerns and the five factor model of personality. Journal of Personality 68(4):705-724, https://doi.org/10.1111/1467-6494.00113 (PMID 10934687)",
+      "confidence": "low-medium"
+    },
+    {
+      "behaviour": "Impulse buying (unplanned pick of a noticed product, e.g. an end-cap or promo)",
+      "direction": "positive (small, inconsistent)",
+      "effect_size": "Lahath et al. 2021 (Malaysia, n=274, PLS-SEM): N was positively related to impulse buying and food waste, and impulse buying mediated N -> food waste. Thompson & Prendergast 2015 (PAID 76:216-221): Big Five effects on impulse buying ran largely through trait affect, with Extraversion and low Conscientiousness the more consistent personality predictors. A small N effect (r about .1-.2; approximate).",
+      "sim_mapping": "choice: logit(p_pick | noticed, not on list) += 0.10*n_c, only for promo/end-cap slots.",
+      "coef": 0.1,
+      "source": "Lahath A et al. (2021) Sustainable Production and Consumption 28:519-531, https://doi.org/10.1016/j.spc.2021.06.008 (PMID 34722847); Thompson ER, Prendergast GP (2015) Personality and Individual Differences 76:216-221, https://doi.org/10.1016/j.paid.2014.12.025",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Search-cost abandonment: if the wanted item is hard to find, walk past rather than hunt",
+      "direction": "positive",
+      "effect_size": "No trait-level effect size found. Illustrative verbatim only: 'i have major anxiety if I even make it to a supermarket ... if I have to hunt ill leave without it' (https://www.reddit.com/comments/1uosc29, score 8).",
+      "sim_mapping": "If the target product's p_notice < 0.3 (poor row or few facings): logit(p_walk_past) += 0.10*n_c. Flagged as an assumption; drop it if a stricter traceability bar is applied.",
+      "coef": 0.1,
+      "source": "assumption: anxiety -> avoidance of effortful search; Reddit verbatim https://www.reddit.com/comments/1uosc29 (data/reddit/comments.csv)",
+      "confidence": "low (assumption)"
+    },
+    {
+      "behaviour": "Sustainable / eco lens weighting (organic, eco-score, low packaging)",
+      "direction": "null",
+      "effect_size": "Soutter, Bates & Mõttus 2020 meta-analysis (Big Five and HEXACO, k>30 samples): Neuroticism's association with pro-environmental behaviour was about zero (|r| < .05). Openness, Agreeableness, Conscientiousness and Honesty-Humility carry the effect. Hirsh 2010: at most a small positive N link to environmental concern (attitude, not behaviour).",
+      "sim_mapping": "No N term on ecoscore/organic lens weights. Use O and A instead.",
+      "coef": 0.0,
+      "source": "Soutter ARB, Bates TC, Mõttus R (2020) Perspectives on Psychological Science 15(4):913-941, https://doi.org/10.1177/1745691620903019; Hirsh JB (2010) J Environmental Psychology 30(2):245-248, https://doi.org/10.1016/j.jenvp.2010.01.004",
+      "confidence": "medium-high (null)"
+    },
+    {
+      "behaviour": "Reactance to 'healthy-swap' nudges or prescriptive front-of-pack claims (gimmick reactance)",
+      "direction": "positive (weak)",
+      "effect_size": "No food-specific estimate found in this session. Trait-reactance studies (e.g. Seemann et al. 2004, Individual Differences Research 2(2):88-97; not re-verified) tie Hong reactance mainly to low Agreeableness, with mixed or small N links.",
+      "sim_mapping": "logit(p_reject | product has a prescriptive health/protein claim) += 0.05*n_c. Very small; the main reactance driver should be A (low) in A.json. Treat as a placeholder.",
+      "coef": 0.05,
+      "source": "assumption: weak N-reactance link; Seemann EA, Buboltz WC, Jenkins SM, Soper B, Woller K (2004) Individual Differences Research 2(2):88-97 (not re-verified in-session)",
+      "confidence": "low"
+    }
+  ],
+  "population_norms": "Scale: BFI-2 Negative Emotionality (Soto & John 2017, JPSP 113(1):117-143, https://doi.org/10.1037/pspp0000096), a 1-5 item mean. US internet/student normative samples average about 3.0 with SD about 0.8-0.9 (approximate, not re-verified). UK: Rentfrow et al. 2015 (BBC Lab UK, N about 386k, BFI-44; JPSP 108(2):363-382, https://doi.org/10.1037/pspp0000016) found N highest in Wales and the North-East and lowest in Scotland and the South-East. The regional differences are small (a few tenths of an SD at most). Sex: women score higher by about d = 0.4 (Weisberg, DeYoung & Hirsh 2011, Front Psychol, https://doi.org/10.3389/fpsyg.2011.00178; Schmitt et al. 2008 JPSP). Age: N declines across adulthood, roughly -0.1 SD per decade from the 20s to the 60s (Soto, John, Gosling & Potter 2011, JPSP 100(2):330-348; approximate). SAMPLING RECIPE (assumption, implementing the above): raw ~ Normal(mean = 3.00 + 0.17*(female ? 1 : -1) - 0.008*(age - 40), sd = 0.85), clip to [1,5], then N = (raw - 1)/4, giving mean about 0.50 and SD about 0.21 on the 0-1 contract scale. Correlate with other traits using the BFI-2 domain correlations (N vs C about -0.3, N vs E about -0.3, N vs A about -0.2; approximate) via a Cholesky draw so N is not independent of C/E/A. Segment labels for stats.by_ocean_segment: N_low < 0.35 <= N_mid < 0.65 <= N_high.",
+  "caveats": [
+    "WebSearch quota was exhausted. Sources were confirmed through Europe PMC abstracts (Keller & Siegrist 2015, Elfhag & Morey 2008, Mõttus 2012, Knaapila 2011, Ferguson 2000, Golestanbagh 2021, Lahath 2021, Spence 2022) and Crossref DOIs (Nicholson 2005, Lauriola & Levin 2001, Thompson & Prendergast 2015, Soutter 2020, Hirsh 2010). Numeric effect sizes marked 'approximate, not re-verified' come from recall of the full texts and should be checked before being quoted on a slide.",
+    "Neuroticism effects on food choice are mostly indirect: Keller & Siegrist found no direct N -> food-choice paths, only paths through emotional and external eating. The sim treats them as direct shortcuts, so coefs are kept below the bivariate rs.",
+    "Big Five traits typically explain about 1-5% of variance in specific consumer behaviours. Situation (price, shelf position, hunger, the shopping list) dominates, so N coefs should never outweigh row, facings or price terms.",
+    "Two plausible-sounding links are explicitly NOT supported and are set to coef 0: N -> loss aversion (Boyce et al. 2016 found C, not N) and N -> sustainable consumption (Soutter et al. 2020 meta: about zero). Do not reintroduce them.",
+    "Health-anxiety -> label-scrutiny, search-abandonment and reactance mappings are inferred chains or assumptions with no direct grocery measurement. They are labelled low confidence and kept at coef <= 0.10.",
+    "Elfhag & Morey is a clinical obesity sample and Golestanbagh is a small sample of young women. Sizes were shrunk toward the large general-population estimates (Mõttus N=1,691; Keller N=951).",
+    "Reddit verbatims illustrate mechanisms. They are not trait measurements: we do not know the posters' N scores."
+  ]
+}

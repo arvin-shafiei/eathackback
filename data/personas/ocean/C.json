@@ -1,0 +1,129 @@
+{
+  "trait": "C",
+  "trait_name": "Conscientiousness",
+  "scale_convention": {
+    "ocean_value": "0-1 as in CONTRACT.md personas[].ocean.C, computed as C01 = (BFI_raw - 1) / 4 from a 1-5 BFI/BFI-2 domain mean (same convention as O.json)",
+    "C_z": "(C01 - 0.6625) / 0.175, i.e. standardised against UK norms (Rentfrow et al. 2015: C M=3.65, SD=0.70 on 1-5). Every coef below is per +1 SD of C_z.",
+    "where_coefs_apply": "logit-space additive terms. Notice: p_notice = sigma(... + coef*C_z*flag) in sim/notice.py. Choice: pick utility U += coef*C_z*flag. Lens: weight *= (1 + coef*C_z), clipped to [0, 2x base]. NOTE: sim/notice.py currently computes coef*(C01-0.5)*2 rather than C_z. At the UK mean (C01=0.66) that gives +0.32*coef, not 0. At +1 SD it gives +0.68*coef. Close enough in sign and scale, but the coordinator may want to switch notice.py to z-scores.",
+    "applies_to_routing": "sim/notice.py _classify_applies() puts any effect whose applies_to/effect text has 'label', 'nutrition', 'ingredient' or 'read' into the 'label' bucket and leaves it out of p_notice. Only effect C1 (applies_to 'off_mission ... impulse') is meant to enter p_notice. Every other effect's applies_to therefore says 'label/read stage or choice step' on purpose, so the loader does not add it to the notice logit.",
+    "conversion_rule": "r -> Cohen d = 2r/sqrt(1-r^2) -> log-odds = d*pi/sqrt(3) (Chinn 2000, Stat Med 19:3127, doi:10.1002/1097-0258(20001130)19:22<3127::AID-SIM784>3.0.CO;2-M). Then shrunk by 0.3-0.5 because (a) the studies are self-report surveys, not observed shelf behaviour, and (b) common-method variance inflates trait-behaviour r. The shrink factor is an assumption, stated per effect."
+  },
+  "population_norms": "UK: Rentfrow, Jokela & Lamb (2015) 'Regional personality differences in Great Britain', PLoS ONE 10(3):e0122245, doi:10.1371/journal.pone.0122245 (BBC Lab UK, N=386,375, 44-item BFI, 1-5 scale), Table 2: Conscientiousness M=3.65, SD=0.70, alpha=.83, ICC2=.86, Moran's I=.43 (the other traits: E 3.24/0.82, A 3.74/0.62, N 2.97/0.81, O 3.67/0.64). Sample: C_raw ~ Normal(3.65, 0.70) truncated to [1,5]; C01 = (C_raw-1)/4 gives mean 0.6625, SD 0.175. Correlated sampling: multivariate normal using the individual-level intercorrelations in Rentfrow 2015 Table 3 (or the BFI-2 intercorrelations in Soto & John 2017, J Pers Soc Psychol 113(1):117-143, doi:10.1037/pspp0000096). The sample is 64% female, mean age 36 and self-selected online (assumption: C is probably slightly inflated against the full UK population). Archetype priors (C_z shift before sampling noise SD 0.6, all assumptions tied to the effects below): frugal_unit_price +0.5 (planning and deliberation, effects C1 and C8, plus Reddit 'I do always compare the price per 100g' https://www.reddit.com/comments/1ow5fne); allergen_coeliac +0.5 (assumption: must read every label, so selection rather than trait drives it, kept modest); upf_avoider_parent +0.4 (health-aware diet, C3); protein_gym +0.4 (Bogg & Roberts 2004: C is positively related to activity); eco_low_chemical +0.2 (Soutter 2020, r=.11 with pro-environmental behaviour, C6); habit_loyalist_shrinkflation_angry +0.2 (traditionalism facet: Wilson et al. 2016, citing Bogg & Roberts 2004, name industriousness and traditionalism as the facets most tied to eating); vegan_ethical 0 (that archetype is driven by O and A, not C); meal_deal_office -0.2 (assumption: convenience and time pressure); novelty_seeker_tiktok -0.6 (impulse buying, C1: Portuguese r=-.18 C vs impulsive buying, and the cognitive 'no planning' facet in Verplanken & Herabadi 2001); ai_delegator 0 (no evidence either way).",
+  "effects": [
+    {
+      "trait": "C",
+      "id": "C1_impulse_notice",
+      "behaviour": "Impulse buying: noticing and being pulled toward products that are NOT on the shopping mission (unplanned items, end-caps, promos)",
+      "direction": "higher C -> fewer impulse purchases -> lower notice probability for off-mission products",
+      "effect_size": "r = -0.18 (p<.01) C vs impulsive buying; multiple regression beta = -0.15 (95% CI -0.28 to -0.07). The same study found C vs compulsive buying beta = -0.13. Portuguese adults, N=485 (Frontiers in Psychiatry 2023). Replicated in direction: Verplanken & Herabadi 2001 (the cognitive 'lack of planning' facet of impulse buying tendency is inversely related to C, N in 2 studies; coefficient not in abstract). Chinese students N=578 (Sci Rep 2025): C negatively related to impulse buying, mediated by self-control. Iyer et al. 2019 JAMS meta-analysis (231 samples, >75,000 consumers): self-control mediates resistance to impulse buying.",
+      "sim_mapping": "sim/notice.py: coef * C_z added to the p_notice logit only when the product is off-mission (on_mission=False). r=-.18 -> d=-.366 -> logOR -.66 per SD; x0.4 shrink (assumption: survey impulse-buying tendency, not observed noticing) -> -0.27, rounded to -0.25.",
+      "coef": -0.25,
+      "effect": "Conscientiousness lowers impulse noticing of off-mission products",
+      "applies_to": "off_mission units (impulse, unplanned)",
+      "source": "Personality puzzle: a comprehensive analysis of its impact on three buying behaviors. Frontiers in Psychiatry 2023;14:1179257. doi:10.3389/fpsyt.2023.1179257, PMC10475610 (r=-.18; beta=-.15, CI -.28 to -.07). Verplanken B, Herabadi A (2001). Individual differences in impulse buying tendency: feeling and no thinking. European Journal of Personality 15:S71-S83. doi:10.1002/per.423. Sci Rep 2025 doi:10.1038/s41598-025-94564-3 (PMC12069661). Iyer GR, Blut M, Xiao SH, Grewal D (2019). Impulse buying: a meta-analytic review. JAMS 48:384-404. doi:10.1007/s11747-019-00670-w. Reddit verbatim: 'Make a list. Eat something before going so you don't do impulse buys.' https://www.reddit.com/comments/1rxetu2",
+      "confidence": "medium"
+    },
+    {
+      "trait": "C",
+      "id": "C2_impulse_pick",
+      "behaviour": "Converting a noticed but unplanned product into a pick (adding to basket off-list)",
+      "direction": "higher C -> lower pick utility for off-mission products once noticed",
+      "effect_size": "Same base as C1: r=-.18 impulsive buying; beta=-.13 compulsive buying (N=485, PMC10475610)",
+      "sim_mapping": "choice step only (not p_notice): U_pick += coef * C_z * (1 if product not on persona mission/list). logOR -.66 per SD x0.3 shrink (assumption: some of the impulse effect is already spent in C1 noticing, so C1 and C2 share the effect rather than double-count it) -> -0.20.",
+      "coef": -0.2,
+      "effect": "choice step: Conscientiousness lowers pick utility for unplanned (off-list) items",
+      "applies_to": "choice step only, after label/read stage; not p_notice",
+      "source": "doi:10.3389/fpsyt.2023.1179257 (PMC10475610); Verplanken & Herabadi 2001 doi:10.1002/per.423",
+      "confidence": "medium"
+    },
+    {
+      "trait": "C",
+      "id": "C3_health_aware_lens",
+      "behaviour": "Healthy, 'health aware' diet pattern (more cereals, dairy, fish, vegetables, fruit)",
+      "direction": "higher C -> more weight on health attributes (Nutri-Score, sugar, saturated fat, fibre)",
+      "effect_size": "C vs health-aware diet factor, r = .11-.17 in self-ratings and r = .08-.11 in informant ratings (both reported jointly for N, E, O, C), controlling for gender, age and education. N=1,691 Estonians aged 18-89. We use the informant-rated r of about .10 to avoid same-source inflation.",
+      "sim_mapping": "lens weights: multiply the health-lens attribute weights (OFF nutriscore_grade, sugars_100g, saturated-fat_100g, fiber_100g, salt_100g) by (1 + coef*C_z). r=.10 -> d=.20 -> logOR .365 per SD; x0.4 shrink (assumption) -> 0.15. So a +1 SD agent weights health fields 15% more and a -1 SD agent 15% less.",
+      "coef": 0.15,
+      "effect": "lens: Conscientiousness up-weights nutrition attributes (nutriscore, sugar, sat fat, fibre)",
+      "applies_to": "lens weight multiplier on nutrition fields; label/read stage, not p_notice",
+      "source": "Mottus R, Realo A, Allik J, Deary IJ, Esko T, Metspalu A (2012). Personality traits and eating habits in a large sample of Estonians. Health Psychology 31(6):806-814. doi:10.1037/a0027041, PMID 22268715. Umbrella: Bogg T, Roberts BW (2004). Conscientiousness and health-related behaviors: a meta-analysis of the leading behavioral contributors to mortality. Psychol Bull 130(6):887-919, doi:10.1037/0033-2909.130.6.887 (194 studies; C is negatively related to all risky health behaviours, diet included, and positively to all beneficial ones; the per-behaviour r was not retrieved here). Review: Lunn TE, Nowson CA, Worsley A, Torres SJ (2014). Does personality affect dietary intake? Nutrition 30(4):403-409, doi:10.1016/j.nut.2013.08.012",
+      "confidence": "medium"
+    },
+    {
+      "trait": "C",
+      "id": "C4_fruit_veg_pick",
+      "behaviour": "Fruit and vegetable consumption",
+      "direction": "higher C -> higher pick utility for fruit, veg and salad SKUs",
+      "effect_size": "r = .11 (95% CI .07-.16) C vs self-reported fruit and veg intake, N=2,136 UK adults, fully mediated by intention (r=.21 C vs intention) (Wilson et al. 2016). Conner et al. 2017: +1 SD vs -1 SD C = +0.22 fruit and +0.38 veg servings a day (sample 2, N=792; standardised b=.13 fruit, .18 veg, p<.01; not significant in sample 1, N=281). Tiainen et al. 2013: +32.9 g/day fruit per SD C in women (N=1,681, Bonferroni p<.01). Keller & Siegrist 2015: C promotes fruit consumption indirectly via restrained eating (N=951).",
+      "sim_mapping": "choice step: U_pick += coef * C_z when OFF categories_tags contains en:fruits, en:vegetables, en:salads or en:fresh-foods. r=.11 -> d=.22 -> logOR .40 per SD; x0.5 shrink (assumption: diary self-report, UK sample so less shrink) -> 0.20.",
+      "coef": 0.2,
+      "effect": "choice step: Conscientiousness raises pick utility for fruit/veg SKUs",
+      "applies_to": "choice step only (category en:fruits/en:vegetables); label/read stage, not p_notice",
+      "source": "Wilson AE, O'Connor DB, Lawton R, Hill PL, Roberts BW (2016). Conscientiousness and fruit and vegetable consumption: exploring behavioural intention as a mediator. Psychology, Health & Medicine 21(4):469-475. doi:10.1080/13548506.2015.1093644, PMC4819881 (Table 1). Conner TS et al. (2017). The role of personality traits in young adult fruit and vegetable consumption. Front Psychol 8:119. doi:10.3389/fpsyg.2017.00119, PMC5293836. Tiainen AM et al. (2013). Personality and dietary intake - findings in the Helsinki birth cohort study. PLoS ONE 8(7):e68284. doi:10.1371/journal.pone.0068284. Keller C, Siegrist M (2015). Does personality influence eating styles and food choices? Direct and indirect effects. Appetite 84:128-138. doi:10.1016/j.appet.2014.10.003",
+      "confidence": "medium-high"
+    },
+    {
+      "trait": "C",
+      "id": "C5_treats_ssb_pick",
+      "behaviour": "Consumption of sweet and savoury snacks and sugar-sweetened soft drinks",
+      "direction": "higher C -> lower pick utility for sweet/savoury snacks and SSBs",
+      "effect_size": "Keller & Siegrist 2015 (N=951 Swiss random sample, path model): C cut sweet and savoury food and soft-drink consumption indirectly, by promoting restrained eating and reducing external and emotional eating. Path coefficients are not in the abstract. Conner et al. 2017: C was linked to less candy in women, b=-0.13 servings/day per SD (p=.004), but not in men. Keller et al. 2016 (N=2,781, 4-year longitudinal): higher dispositional self-control (a C facet) meant a smaller rise in overeating and a larger improvement in healthy diet.",
+      "sim_mapping": "choice step: U_pick += coef * C_z when OFF categories_tags has en:sweet-snacks, en:salty-snacks, en:confectioneries or en:sweetened-beverages (or sugars_100g >= 22.5, the UK FOP 'high' threshold). Magnitude assumption: no r is reported, so we set it below C4 because the effect is indirect and appears in one sex only -> -0.15.",
+      "coef": -0.15,
+      "effect": "choice step: Conscientiousness lowers pick utility for treats and sugary drinks (via restraint)",
+      "applies_to": "choice step only (treat/SSB categories); label/read stage, not p_notice",
+      "source": "Keller C, Siegrist M (2015). Appetite 84:128-138. doi:10.1016/j.appet.2014.10.003, PMID 25308432. Conner et al. 2017 doi:10.3389/fpsyg.2017.00119 (PMC5293836). Keller C, Hartmann C, Siegrist M (2016). The association between dispositional self-control and longitudinal changes in eating behaviors, diet quality, and BMI. Psychology & Health 31(11). doi:10.1080/08870446.2016.1204451",
+      "confidence": "medium-low (direction solid, magnitude assumed)"
+    },
+    {
+      "trait": "C",
+      "id": "C6_eco_lens",
+      "behaviour": "Pro-environmental behaviour (meta-analytic)",
+      "direction": "higher C -> more weight on eco attributes (Eco-Score, packaging, organic labels)",
+      "effect_size": "Meta-analysis of 38 sources, N=44,993: C vs pro-environmental behaviours r = .11 and attitudes r = .12, smaller than O (.21) and honesty-humility (.25)",
+      "sim_mapping": "lens weights: multiply eco-lens attribute weights (OFF ecoscore_grade, packaging tags, labels_tags en:organic) by (1 + coef*C_z). r=.11 -> logOR .40 per SD; x0.3 shrink (assumption: general PEB covers recycling and energy, not food purchase specifically) -> 0.12, rounded to 0.10.",
+      "coef": 0.1,
+      "effect": "lens: Conscientiousness slightly up-weights eco attributes (ecoscore, packaging)",
+      "applies_to": "lens weight multiplier on eco fields; label/read stage, not p_notice",
+      "source": "Soutter ARB, Bates TC, Mottus R (2020). Big Five and HEXACO personality traits, proenvironmental attitudes, and behaviors: a meta-analysis. Perspectives on Psychological Science 15(4):913-941. doi:10.1177/1745691620903019",
+      "confidence": "high for r, low-medium for the food-shelf transfer"
+    },
+    {
+      "trait": "C",
+      "id": "C7_read_nutrition_label",
+      "behaviour": "Turning the pack over to read nutrition information once a product is picked up or considered",
+      "direction": "higher C -> higher probability of reading the nutrition panel or ingredients",
+      "effect_size": "NO direct C-to-label-use effect size was found in this search (Europe PMC and OpenAlex, 2026-10-03). Bridge: UK in-store observation found 27% of shoppers looked at nutrition information (N=2,019 interviews, 921 questionnaires), and usage was 'mainly related to interest in healthy eating' (Grunert et al. 2010). C relates to health-aware eating at r=.08-.17 (C3). So C acts on label use through health interest, an inferred path.",
+      "sim_mapping": "label/read stage: p_read_label = sigma(logit(0.27) + coef*C_z) = sigma(-0.99 + 0.25*C_z). That gives 22% at -1 SD, 27% at the mean and 32% at +1 SD. The baseline is sourced. The 0.25 is an assumption (about logOR .365 from r=.10, shrunk by 0.7 because the path is inferred), ROUNDED UP to keep the README claim 'C -> label reading' visible. Treat it as a demo assumption, not a finding.",
+      "coef": 0.25,
+      "effect": "label/read stage: Conscientiousness raises chance of reading the nutrition label (inferred via health interest)",
+      "applies_to": "label/read stage only, not p_notice",
+      "source": "Baseline: Grunert KG, Wills JM, Fernandez-Celemin L (2010). Nutrition knowledge, and use and understanding of nutrition information on food labels among consumers in the UK. Appetite 55(2):177-189. doi:10.1016/j.appet.2010.05.045. Trait link: Mottus et al. 2012 doi:10.1037/a0027041. Magnitude: assumption: no published C-to-label-use r found; inferred path, shrink stated.",
+      "confidence": "low"
+    },
+    {
+      "trait": "C",
+      "id": "C8_unit_price_lens",
+      "behaviour": "Deliberate price and unit-price comparison (price per 100g/kg) instead of grabbing the on-offer or familiar pack",
+      "direction": "higher C -> more weight on unit price and more scepticism of 'fake offers'",
+      "effect_size": "NO direct C-to-unit-price-comparison effect size was found. Indirect: the cognitive facet of impulse buying tendency, 'lack of planning and deliberation', is inversely related to C (Verplanken & Herabadi 2001). C vs impulsive buying r=-.18 (PMC10475610). The Reddit corpus shows the behaviour is real: 'I do always compare the price per 100g' and 'the one on offer is more expensive per gram than the standard one'.",
+      "sim_mapping": "lens weights: multiply the unit-price weight (price / OFF product_quantity) by (1 + coef*C_z). Assumption: 0.10, half of the C1 shrunk magnitude, because the link runs only through 'deliberation'.",
+      "coef": 0.1,
+      "effect": "lens: Conscientiousness slightly up-weights unit price (deliberation), read stage",
+      "applies_to": "lens weight multiplier on unit price; label/read stage, not p_notice",
+      "source": "Verplanken & Herabadi 2001 doi:10.1002/per.423; doi:10.3389/fpsyt.2023.1179257. Reddit verbatims: https://www.reddit.com/comments/1ow5fne ('I do always compare the price per 100g'), https://www.reddit.com/comments/eraymp ('When you look at the price per 100g and the one on \"offer\" is more expensive per gram than the standard one'). Magnitude: assumption.",
+      "confidence": "low"
+    }
+  ],
+  "caveats": [
+    "All effects are small (|r| .08-.18). C explains roughly 1-3% of variance in any food behaviour. That is why every coef is shrunk and why C should modify a grounded persona, not define it. The README pressure test ('OCEAN is pop-psych') is answered by this, not dodged.",
+    "Two README claims are weakly sourced: C -> label reading (C7) and C -> unit-price comparison (C8). No published C-to-label-use or C-to-unit-price effect size was found in this pass (web search quota was exhausted; Europe PMC and OpenAlex were used instead). Both coefs are labelled assumptions with low confidence. The UI should show them in a different colour or with an 'inferred' badge.",
+    "Keller & Siegrist 2015 (Appetite 84:128-138) is cited for direction only. Its path coefficients sit behind the paywall, and the abstract reports C's effect on food choice as INDIRECT (via restrained, external and emotional eating), not direct. The 'Ice cream and personality' title in the brief appears to be a mis-cite. The paper is 'Does personality influence eating styles and food choices? Direct and indirect effects'.",
+    "Bogg & Roberts 2004 (194 studies) is the umbrella source for C -> healthier behaviour. Its per-behaviour diet r was not retrieved, so no coef rests on it alone.",
+    "The impulse-buying r=-.18 comes from one Portuguese COVID-era sample (N=485). The direction is replicated (Verplanken & Herabadi 2001; Sci Rep 2025 N=578), but magnitudes vary by culture and context (Iyer et al. 2019 meta-analysis found that impulse determinants depend on context).",
+    "Sex moderation: Tiainen 2013 (fruit) and Conner 2017 (candy) found C effects in women only. If agents carry a sex attribute, apply C4 and C5 at full strength for women and about half for men (assumption).",
+    "sim/notice.py's loader adds every effect to p_notice unless _classify_applies() returns 'label'. That is why non-notice effects carry 'label/read stage' in applies_to. A cleaner fix is for notice.py to honour an explicit stage field. Also, notice.py uses coef*(C01-0.5)*2 rather than C_z, which gives a small positive offset at the UK mean.",
+    "Conversion r -> log-odds (Chinn 2000) assumes a logistic latent variable; shrink factors 0.3-0.5 are judgement calls, stated per effect so a judge can change them.",
+    "Do not double-count: C1 (notice) and C2 (pick) split one impulse effect. C3 (lens) and C4/C5 (category utility) overlap on healthiness, so if both are on, consider halving C4/C5."
+  ]
+}

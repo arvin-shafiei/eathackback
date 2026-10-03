@@ -1,0 +1,260 @@
+{
+ "id": "p_novelty_seeker_tiktok",
+ "name": "Maya",
+ "archetype": "novelty_seeker_tiktok",
+ "mission": "treat",
+ "secondary_missions": [
+  "meal_deal",
+  "top_up"
+ ],
+ "missions_source": "Composite. Trend-trial mission taken from staged_personas_v1.json[1] (Jordan) missions: 'Trend trial: try a food or drink seen on TikTok or Instagram'. Hunt-in-store behaviour from The Grocer on Little Moons: shoppers searched 'Looking for Little Moons in Big Tesco' https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article",
+ "budget_gbp": 8,
+ "budget_source": "assumption: discretionary 'treat/try' spend per top-up trip for a 20-something renter, about £6-10. No measured sample. The price anchor is the Lidl Dubai-style bar at £3.99 (https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322) against Lindt at £10, where the hype 'died a death' on price (https://www.reddit.com/comments/1tbf6zw)",
+ "channel": "instore",
+ "channel_source": "Novelty is found in store or on TikTok Shop, not through online favourites. Online ordering is described as killing discovery: 'About every three to six months I go in person to see if there's any new things I may not be aware of, try them out' https://www.reddit.com/comments/1m43ahw. In-store layouts drive unplanned exposure: https://www.reddit.com/comments/1uosc29",
+ "population_weight_note": "assumption: about 8-12% of UK grocery shoppers. Behaviour is bounded by NIQ 2026 (cited in research/02-issue-discovery.md): only 1 in 4 UK launches reach 1% household penetration, so heavy trialists are a minority",
+ "ocean": {
+  "O": 0.82,
+  "C": 0.35,
+  "E": 0.7,
+  "A": 0.55,
+  "N": 0.5
+ },
+ "ocean_effects": [
+  {
+   "trait": "O",
+   "value": 0.82,
+   "justification": "Seeks out unfamiliar flavours and formats. Food neophobia is low and the 'approach' tendency is high.",
+   "effect": "high O → +p_notice for unfamiliar/challenger brands and +trial probability once noticed",
+   "coef": 0.35,
+   "source": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (n=716): the food-neophobia 'approach' factor is positively related to Openness. Hirschman 1980, J. Consumer Research 7(3):283-295, doi:10.1086/208816: novelty seeking drives consumer innovativeness. Verbatim: 'I want to say I won't let curiousity get the best of me again, but who am I kidding!' https://www.reddit.com/comments/1wqczct. coef = assumption: scaled so trust_new_brand reaches about 0.6"
+  },
+  {
+   "trait": "C",
+   "value": 0.35,
+   "justification": "Buys on impulse and almost never reads the back of pack. The front, the colour and 'I saw this' do the work.",
+   "effect": "low C → lower reads_structured_data and fewer nutrition-panel fixations. Impulse trial is not filtered by deliberation",
+   "coef": -0.25,
+   "source": "Verplanken & Herabadi 2001, European Journal of Personality 15(S1):S71-S83, doi:10.1002/per.423: impulse-buying tendency correlates negatively with Conscientiousness. coef = assumption"
+  },
+  {
+   "trait": "E",
+   "value": 0.7,
+   "justification": "Social, posts and shares finds. Trying the thing is partly about having something to talk about.",
+   "effect": "high E → social proof (seen on TikTok, friends have it) acts as the main trust signal and replaces label reading",
+   "coef": 0.3,
+   "source": "Verplanken & Herabadi 2001 (doi:10.1002/per.423): impulse-buying tendency correlates positively with Extraversion. Little Moons #LittleMoons hashtag → +700% Tesco sales https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. coef = assumption"
+  },
+  {
+   "trait": "A",
+   "value": 0.55,
+   "justification": "About average. Not cynical about marketing, and gives a hyped product the benefit of the doubt once.",
+   "effect": "lower gimmick reactance than the sceptic personas, so new-flavour and protein claims are not punished on sight",
+   "coef": -0.1,
+   "source": "assumption: no direct Big Five study found for gimmick reactance. Contrast with the gimmick-reactant verbatim 'it is the latest gimmick it seems driven by the TikTwat influencers' https://www.reddit.com/comments/1oqtnv1, the opposite pole to this persona"
+  },
+  {
+   "trait": "N",
+   "value": 0.5,
+   "justification": "Average. Some FOMO about missing a drop, plus regret after a bad trial, but neither dominates.",
+   "effect": "after a bad trial, N amplifies the 'never again' memory, which drives a fast exit after one purchase",
+   "coef": 0.15,
+   "source": "Coresight 2023 via Kadence: '35% of Gen Z consumers regretted at least one purchase they made via TikTok or Instagram... because the product didn't live up to the hype' https://kadence.com/en-us/knowledge/tiktok-made-me-buy-it-but-did-i-keep-it/. Verbatim: 'I fell for the Starbucks protein cold foam. Wowza giant waste of money and calories. Never again!' https://www.reddit.com/comments/1sit7ev. N mapping = assumption"
+  }
+ ],
+ "lens": [
+  {
+   "attribute": "challenger_role",
+   "off_field": "catalog.role (challenger|incumbent|own_label)",
+   "direction": "challenger > own_label > incumbent",
+   "weight": 0.24,
+   "why": "Unfamiliarity is the reward: an incumbent she already knows offers nothing new. Own-label 'dupes' of a viral item still count as the trend, as with Lidl's Dubai bar.",
+   "source": "Van Trijp & Steenkamp 1992, European Review of Agricultural Economics 19(2):181-195 (variety-seeking tendency in food). Lidl own-label Dubai bar sold 72 a minute on TikTok Shop https://www.thegrocer.co.uk/news/lidl-sells-72-bars-of-dubai-style-chocolate-a-minute-on-tiktok-shop/702452.article"
+  },
+  {
+   "attribute": "novelty_claim_in_pack_copy",
+   "off_field": "catalog.pack_copy (regex: new|limited edition|flavour|dubai|pistachio|mochi|'as seen')",
+   "direction": "higher_better",
+   "weight": 0.22,
+   "why": "'New' or limited-edition flavour copy is the thing she notices first. It is also what she remembers fondly when it disappears.",
+   "source": "'Also Magnum did a limited edition Champagne flavour, which was amazing.' https://www.reddit.com/comments/1e8k6o1 ; 'I was curious as it was sooo orange' https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "attribute": "price_gbp",
+   "off_field": "catalog.price_gbp (absolute shelf price, not per 100g)",
+   "direction": "lower_better (soft ceiling ≈ £4 for a trial)",
+   "weight": 0.18,
+   "why": "She trials on headline price, not unit price. Under about £4 is an easy 'why not', and £10 kills the hype.",
+   "source": "'Very few people wanted to spend the ridiculous amount they charged on chocolate so it died a death within 6 months.' https://www.reddit.com/comments/1tbf6zw ; Lidl Dubai bar £3.99 vs Lindt £10 (research/02-issue-discovery.md). Ceiling = assumption"
+  },
+  {
+   "attribute": "trend_ingredient",
+   "off_field": "ingredients_text (contains pistachio|matcha|gochujang|ube|kimchi|mochi|tahini)",
+   "direction": "higher_better",
+   "weight": 0.12,
+   "why": "Trend formats travel by ingredient name on TikTok, for example 'Dubai pistachio'. Matching one is a recognition hit.",
+   "source": "'The dubai pistachio stuff on absolutely everything' https://www.reddit.com/comments/1wqczct ; ingredient list per Open Food Facts field ingredients_text. Ingredient list = assumption, drawn from the 2025 trends named in research/02-issue-discovery.md"
+  },
+  {
+   "attribute": "proteins_100g",
+   "off_field": "proteins_100g",
+   "direction": "higher_better",
+   "weight": 0.1,
+   "why": "Protein-everything is a live TikTok trend, so a big protein number reads as 'the new thing'. It works as a trend cue, not as nutrition maths.",
+   "source": "'all these protein things seems to be trending with the younger generation via tiktok ect..' https://www.reddit.com/comments/191icpc"
+  },
+  {
+   "attribute": "additives_n",
+   "off_field": "additives_n",
+   "direction": "lower_better (weak, only for odd-sounding ingredients)",
+   "weight": 0.08,
+   "why": "She rarely reads labels, but a weird ingredient spotted on a quick flip can stop the trial.",
+   "source": "'I looked on the ingredients and there was vegetable oil… in a drink; put it back and didn't try it for years.' https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "attribute": "sweeteners",
+   "off_field": "sweeteners (count, OFF)",
+   "direction": "lower_better",
+   "weight": 0.06,
+   "why": "A weak penalty. Failed trials of protein or functional drinks are remembered by taste and side effects, so it lowers repeat more than first trial.",
+   "source": "'I had protein water... I had crazy diarrhoea after that... I just won't have protein water again' https://www.reddit.com/comments/1wqczct. Mapping to sweeteners = assumption"
+  }
+ ],
+ "lens_weights_sum": 1.0,
+ "rejection_triggers": [
+  {
+   "trigger": "Incumbent she already knows, with no new flavour or format (nothing to try)",
+   "source": "Variety-seeking construct, Van Trijp & Steenkamp 1992 ERAE 19(2):181-195. Weight = assumption"
+  },
+  {
+   "trigger": "Trial price above about £4-5 for a single unit/bar",
+   "source": "https://www.reddit.com/comments/1tbf6zw ('ridiculous amount they charged... died a death within 6 months')"
+  },
+  {
+   "trigger": "A creator she follows said it tastes bad (negative TikTok review overrides the hype)",
+   "source": "'I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing like orange chicken and both flavours were vile' https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "trigger": "Repeat purchase after a disappointing first trial (one-and-done)",
+   "source": "Prime: 'only 12% of buyers repurchased' (research/02-issue-discovery.md, The Grocer https://www.thegrocer.co.uk/analysis-and-features/whats-gone-wrong-for-prime-and-what-next-for-the-viral-soft-drinks-sensation/690067.article); 'Never again!' https://www.reddit.com/comments/1sit7ev"
+  },
+  {
+   "trigger": "Odd ingredient seen on a quick flip (e.g. oil in a drink)",
+   "source": "https://www.reddit.com/comments/1wqczct"
+  }
+ ],
+ "trust_signals": [
+  {
+   "signal": "Recognition from TikTok: she has seen the pack in a creator's video (memory-based, so it works in store without reviews)",
+   "source": "#LittleMoons → +700% Tesco https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. Skeptic correction in data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict: review counts are not visible in store, so recognition must come from memory"
+  },
+  {
+   "signal": "'New' / 'limited edition' flag and an unusual colour or flavour on the front of pack",
+   "source": "https://www.reddit.com/comments/1e8k6o1 ; https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "signal": "Scarcity: sold out elsewhere, or a per-customer limit",
+   "source": "Waitrose two-per-customer limit on the Lindt Dubai bar https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322"
+  },
+  {
+   "signal": "Inside a meal deal, which makes the trial feel free",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict missions: protein items bought 'because inside the deal it feels free'"
+  }
+ ],
+ "habits": [
+  {
+   "habit": "Walks the whole top-up loop and scans eye-level and end-caps for anything she hasn't seen, instead of going straight to her items",
+   "source": "'you're more likely to impulse buy stuff you wouldn't see because you don't normally go down that aisle' https://www.reddit.com/comments/1uosc29"
+  },
+  {
+   "habit": "Buys one unit to try and almost never a multipack on first purchase",
+   "source": "assumption: one-unit trial is consistent with low repeat (NIQ 2026: only 17% of UK launches combine trial with repeat, research/02-issue-discovery.md)"
+  },
+  {
+   "habit": "Rotates quickly. A find stays in the basket for a few weeks, then the next trend displaces it",
+   "source": "'it died a death within 6 months' https://www.reddit.com/comments/1tbf6zw ; Prime 12% repurchase (The Grocer)"
+  },
+  {
+   "habit": "Keeps a small set of hero staples (the usual meal-deal main) even while trialling snacks and drinks",
+   "source": "data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict correction: 'Keep the default snack... D should win the slot on about 15-25% of visits, driven by... a recent TikTok exposure, not by a free-floating urge for novelty'"
+  }
+ ],
+ "says_vs_does": {
+  "says": "I'll try anything once.",
+  "does": "She tries what she already recognises from her feed and costs under about £4. Most new SKUs she walks past are never noticed, and most trials are not repeated.",
+  "source": "Coresight 2023 35% regret (Kadence link above); NIQ 2026 1 in 4 launches reach 1% penetration (research/02-issue-discovery.md)"
+ },
+ "dossier": "I'm Maya, 23, in a shared flat in Manchester, working retail-adjacent marketing. My food money is tight but my 'treat' money isn't: I'll happily spend £6-8 on a Saturday top-up at the big Tesco or Lidl, and most of that is stuff I've never had before. My feed is half food creators, so by the time I'm in the aisle I already have a mental list: the pistachio thing, the new Doritos flavour, whatever mochi is in this week. Honestly I don't 'browse' the shelf, I hunt it. I walk past maybe a hundred products and couldn't tell you one of them. What stops me is a pack I recognise from a video, or a big 'NEW' or 'limited edition' sticker at eye level. Bottom shelf? I don't bend down unless someone online told me it's down there. I give a product about five to ten seconds. I check the price on the front, and if it's under four quid it's a 'why not'. I don't read the back unless something looks weird. I once picked up a bright orange drink, saw oil in the ingredients and put it straight back. I'll buy one, never the multipack. Then I post it or send it to the group chat. Most of the time it's fine, sometimes it's amazing, and quite often it's 'never again'. Protein water was a mistake. If a creator I trust says something is vile, I skip it even if it's everywhere. I'm not loyal. Whatever I loved last month gets pushed out by the next thing. The only fixed bit is my meal-deal main at lunch, and even then the snack slot is where I experiment, because it's basically free.",
+ "dossier_word_count_note": "~290 words. Composite: no single verbatim author; first-person voice built from the verbatims below and the Jordan staged dossier.",
+ "verbatims": [
+  {
+   "quote": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water again",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "I remember when that came out, and to be honest I was curious as it was sooo orange and I didn't understand what they were marketing it as. I looked on the ingredients and there was vegetable oil… in a drink; put it back and didn't try it for years.",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "I thought this too but I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing like orange chicken and both flavours were vile",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "Not gonna lie, I fell for the Starbucks protein cold foam. Wowza giant waste of money and calories. Never again!",
+   "url": "https://www.reddit.com/comments/1sit7ev"
+  },
+  {
+   "quote": "About every three to six months I go in person to see if there's any new things I may not be aware of, try them out and decide if they should get added in to the regular rotation.",
+   "url": "https://www.reddit.com/comments/1m43ahw"
+  },
+  {
+   "quote": "Also Magnum did a limited edition Champagne flavour, which was amazing.",
+   "url": "https://www.reddit.com/comments/1e8k6o1"
+  },
+  {
+   "quote": "You see how long that Dubai chocolate trend lasted? Very few people wanted to spend the ridiculous amount they charged on chocolate so it died a death within 6 months.",
+   "url": "https://www.reddit.com/comments/1tbf6zw"
+  },
+  {
+   "quote": "all these protein things seems to be trending with the younger generation via tiktok ect..",
+   "url": "https://www.reddit.com/comments/191icpc"
+  }
+ ],
+ "counter_evidence": [
+  {
+   "point": "Virality measures trial, not repeat: Prime fell 48%, and only 12% of buyers repurchased",
+   "source": "research/02-issue-discovery.md; https://www.thegrocer.co.uk/analysis-and-features/whats-gone-wrong-for-prime-and-what-next-for-the-viral-soft-drinks-sensation/690067.article"
+  },
+  {
+   "point": "Viral value often goes to own label or incumbents rather than the originating challenger (Dubai chocolate: Lidl and Lindt captured it, Fix did not)",
+   "source": "https://www.thegrocer.co.uk/analysis-and-features/cocoa-prices-pistachio-and-penguins-top-chocolate-stories-of-2025/713388.article"
+  },
+  {
+   "point": "The corpus is thin on positive novelty-seeking voices. Most TikTok mentions in comments.csv are sceptical, so this persona leans on industry sources plus a few curiosity verbatims",
+   "source": "grep of data/reddit/comments.csv for tiktok|viral|hype|limited edition: 37 short hits, mostly negative"
+  }
+ ],
+ "sim_params": {
+  "p_notice_eye_level": 0.82,
+  "p_notice_bottom_or_side": 0.12,
+  "habit_lockin_0_1": 0.3,
+  "price_sensitivity_0_1": 0.5,
+  "trust_new_brand_0_1": 0.6,
+  "gimmick_reactance_0_1": 0.15,
+  "reads_structured_data_0_1": 0.1,
+  "seconds_at_shelf": 7,
+  "meal_deal_pull_0_1": 0.55
+ },
+ "sim_params_sources": {
+  "p_notice_eye_level": "Starts from data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict.sim_parameters p_notice_eye_level=0.8 (skeptic-calibrated). +0.02 for high O, scanning for unfamiliar packs (Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007). The size of the bump = assumption",
+  "p_notice_bottom_or_side": "Jordan staged value 0.07. Raised to 0.12 because she walks the whole loop and checks end-caps (https://www.reddit.com/comments/1uosc29), but kept low: she does not bend down unless primed by a video. Kept below Chandon 2009 top-vs-bottom deltas via research/04-3d-sim-evidence-and-tech.md. Value = assumption",
+  "habit_lockin_0_1": "Low. Rotation drops each find within weeks to months ('died a death within 6 months' https://www.reddit.com/comments/1tbf6zw; Prime 12% repurchase). Not zero, because the meal-deal main stays habitual per the Jordan verdict. 0.3 = assumption",
+  "price_sensitivity_0_1": "Mid. Headline-price ceiling around £4 for a trial; she is insensitive to unit price. Jordan staged 0.45 (+0.05 for the explicit hype-dies-on-price verbatim https://www.reddit.com/comments/1tbf6zw). Value = assumption",
+  "trust_new_brand_0_1": "High relative to the panel (Jordan 0.2, Dev 0.15). High O (Nezlek & Forestell 2019) and variety seeking (Van Trijp & Steenkamp 1992). Capped at 0.6 because the skeptic correction says trial needs a TikTok exposure or promo trigger, not a free-floating urge (data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict.corrections)",
+  "gimmick_reactance_0_1": "Low. 'I fell for the Starbucks protein cold foam' https://www.reddit.com/comments/1sit7ev ; she is the pole opposite the 'TikTwat influencers' reactant (https://www.reddit.com/comments/1oqtnv1). Jordan 0.25 → 0.15. Value = assumption",
+  "reads_structured_data_0_1": "Very low: front-of-pack only, with an occasional flip when something looks odd (https://www.reddit.com/comments/1wqczct). Low C → less deliberation (Verplanken & Herabadi 2001 doi:10.1002/per.423). Jordan 0.08 → 0.10. Value = assumption",
+  "seconds_at_shelf": "Jordan staged 4 s (habitual). Novel-item evaluation takes longer, so 7 s is a blend of about 4 s for walk-past and habitual picks and about 10 s for a new-pack pick-up. Mix = assumption",
+  "meal_deal_pull_0_1": "Moderate. The snack slot is used as a free trial (data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict mission 'inside the deal it feels free'), but the trend items she hunts (Dubai-style bars, mochi, limited-edition flavours) are mostly outside the deal. Jordan 0.88 → 0.55. Value = assumption"
+ },
+ "notes_for_sim": "Noticing should be driven by recognition (a per-product 'tiktok_exposure' flag if the catalog has one; otherwise approximate it with challenger role plus pack_copy novelty) rather than random novelty. P(repeat | trial) should be low, about 0.12-0.2, anchored on Prime's 12% repurchase and NIQ's 17% trial+repeat. Reject reasons should be written in plain language ('never again', 'too dear for a try', 'saw it was rank on TikTok')."
+}

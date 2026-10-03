@@ -1,0 +1,212 @@
+{
+  "id": "p_eco_low_chemical",
+  "name": "Freya",
+  "archetype": "eco_low_chemical",
+  "mission": "weekly_shop",
+  "budget_gbp": 75,
+  "budget_source": "assumption: 2-adult household weekly shop; sits inside the GBP120-160/wk for a family of four in the staged Priya dossier (data/personas/staged_personas_v1.json, persona 'Priya'), scaled down for two adults with a small premium allowance for organic swaps",
+  "channel": "instore",
+  "channel_source": "assumption: label-turning and palm-oil checks are in-store behaviours (verbatims below are about picking up and checking packs); online share kept for repeat staples",
+  "age": 34,
+  "household": "lives with partner in a rented flat in Bristol, no kids, one cat; works as a hybrid-working NHS admin coordinator",
+  "household_source": "assumption: illustrative demographic; not used by the sim",
+
+  "ocean": { "O": 0.74, "C": 0.66, "E": 0.45, "A": 0.68, "N": 0.56 },
+  "ocean_effects": [
+    {
+      "trait": "O",
+      "value": 0.74,
+      "effect": "high Openness: strongest Big Five predictor of environmental concern and pro-environmental behaviour, so she is more likely to notice unfamiliar challenger or organic brands (+notice for role=challenger)",
+      "coef": 0.15,
+      "coef_source": "assumption: small additive logit boost; direction from the papers, magnitude set so challenger notice rises about 3 points at eye level",
+      "source": "Markowitz, Goldberg, Ashton & Lee 2012, 'Profiling the pro-environmental individual: a personality perspective', Journal of Personality 80(1):81-111, https://doi.org/10.1111/j.1467-6494.2011.00721.x ; Hirsh 2010, 'Personality and environmental concern', J. Environmental Psychology 30(2):245-248, https://doi.org/10.1016/j.jenvp.2010.01.004"
+    },
+    {
+      "trait": "O",
+      "value": 0.74,
+      "effect": "low food neophobia, so she is willing to trial a new SKU once it is noticed (lower trial barrier than the habit loyalists)",
+      "coef": 0.10,
+      "coef_source": "assumption: direction only from the paper",
+      "source": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007 (neophobia negatively related to Openness)"
+    },
+    {
+      "trait": "C",
+      "value": 0.66,
+      "effect": "turns the pack over and reads the ingredients and E-numbers, giving +attention to additives_n, ingredients_n and palm_oil_n once the product is picked up",
+      "coef": 0.25,
+      "coef_source": "assumption: maps C onto reads_structured_data and seconds_at_shelf (see sim_params), not double-counted in utility",
+      "source": "Mõttus et al. 2012, 'Personality traits and eating habits in a large sample of Estonians', Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (C and O linked to healthier, more deliberate eating)"
+    },
+    {
+      "trait": "A",
+      "value": 0.68,
+      "effect": "higher Agreeableness tracks concern for others, animals and the environment, which raises the weight on palm oil (orang-utans) and packaging waste",
+      "coef": 0.10,
+      "coef_source": "assumption: small; folded into palm_oil_n and recycling lens weights",
+      "source": "Hirsh 2010, J. Environmental Psychology 30(2):245-248, https://doi.org/10.1016/j.jenvp.2010.01.004 (Agreeableness and Openness both predict environmental concern)"
+    },
+    {
+      "trait": "N",
+      "value": 0.56,
+      "effect": "moderate Neuroticism: worries about 'chemicals' in food (chemophobia) and treats E-numbers as risk cues rather than checking NOVA, which strengthens additive rejection triggers",
+      "coef": 0.15,
+      "coef_source": "assumption: chemophobia literature does not report an N coefficient; direction is a plausible link via health-risk anxiety and is flagged as weak",
+      "source": "Saleh, Bearth & Siegrist 2019, 'Chemophobia today: consumers' knowledge and perceptions of chemicals', Risk Analysis 39(12):2668-2682, https://doi.org/10.1111/risa.13375 ; verbatim 'I know we are swimming in chemicals/microplastics (not a hippy, promise)' https://www.reddit.com/comments/r2udam"
+    },
+    {
+      "trait": "E",
+      "value": 0.45,
+      "effect": "mid Extraversion; no strong food-choice link, so no coefficient (avoids an invented number)",
+      "coef": 0.0,
+      "coef_source": "assumption: no reliable effect in the cited literature",
+      "source": "Mõttus et al. 2012, Health Psychology 31(6):806-814 (E effects on eating small and inconsistent)"
+    }
+  ],
+
+  "lens": [
+    {
+      "attribute": "additives_n",
+      "off_field": "additives_n",
+      "direction": "lower_better",
+      "transform": "score = max(0, 1 - additives_n/6); additives list also checked for named emulsifiers/sweeteners",
+      "weight": 0.24,
+      "why": "Her main heuristic: she counts E-numbers and 'emulsifier' on the back. That is the strongest and most often-voiced cue in the corpus for 'chemicals'",
+      "source": "verbatim 'once I realized all the additives going into generic sour cream and cottage cheese, I quickly became a Daisy convert' https://www.reddit.com/comments/1jns9wh ; 'some of the food to go ... have loads of additives in them' (score 110) https://www.reddit.com/comments/1p3q2ce ; cue-based UPF heuristics, PMC11311829 https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/"
+    },
+    {
+      "attribute": "palm_oil",
+      "off_field": "palm_oil_n (ingredients_from_palm_oil_n + ingredients_that_may_be_from_palm_oil_n)",
+      "direction": "lower_better",
+      "transform": "score = 1 if palm_oil_n == 0 else 0",
+      "weight": 0.16,
+      "why": "Palm oil is her single named ingredient boycott and is binary. It is also the eco cue most often voiced in UK threads (21 of 142 eco/chemical comments in comments.csv)",
+      "source": "verbatim 'please boycott palm oil in everything' https://www.reddit.com/comments/1511znd ; 'it's palm oil free, and it supports a British company. Wins all round.' https://www.reddit.com/comments/1qtc78s ; count from grep of data/reddit/comments.csv (keyword 'palm oil' = 21 hits)"
+    },
+    {
+      "attribute": "ecoscore",
+      "off_field": "ecoscore_grade (a-e; now 'Green-Score' on OFF)",
+      "direction": "higher_better",
+      "transform": "a=1.0, b=0.8, c=0.55, d=0.3, e=0.1, unknown/not-applicable=0.5",
+      "weight": 0.14,
+      "why": "Captures her environmental values. Weight kept modest because eco labels shift real selection only weakly, and UK packs rarely print the score, so she mostly can't see it in store",
+      "source": "Potter et al. 2021, 'The effects of environmental sustainability labels on selection, purchase, and consumption of food and drink products: a systematic review', Environment and Behavior 53(8):891-925, https://doi.org/10.1177/0013916521995473 (small and inconsistent effects); OFF field definition https://world.openfoodfacts.org/eco-score-the-environmental-impact-of-food-products"
+    },
+    {
+      "attribute": "organic_label",
+      "off_field": "labels_tags contains en:organic or en:eu-organic or en:soil-association-organic",
+      "direction": "present_better",
+      "transform": "score = 1 if any organic tag else 0",
+      "weight": 0.12,
+      "why": "Organic is her front-of-pack shortcut for 'no pesticides or chemicals'. She pays the premium only on items she eats daily (oats, milk) because the price premium caps it",
+      "source": "verbatim 'If you eat oats daily, it's worth spending out for organic to avoid excess glyphosates.' https://www.reddit.com/comments/1oi5mf0 ; 'obviously no worries of chemicals passing into the milk' https://www.reddit.com/comments/r2udam ; mean WTP premium for sustainable/organic food about 29.5%, Li & Kallas 2021 meta-analysis, Appetite 163:105239, https://doi.org/10.1016/j.appet.2021.105239"
+    },
+    {
+      "attribute": "ingredients_n",
+      "off_field": "ingredients_n",
+      "direction": "lower_better",
+      "transform": "score = max(0, 1 - (ingredients_n - 3)/17), clipped to [0,1]",
+      "weight": 0.10,
+      "why": "A short, recognisable ingredient list reads as 'real food' and as fewer chemicals",
+      "source": "verbatim 'Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.' https://www.reddit.com/comments/1buwayp ; 'the ingredients list was so good and simple… no unnecessary stuff' https://www.reddit.com/comments/1e8k6o1"
+    },
+    {
+      "attribute": "recyclable_packaging",
+      "off_field": "packaging_recycling_tags / packagings[].recycling (catalog field 'recycling')",
+      "direction": "recyclable_better",
+      "transform": "score = share of packaging parts tagged en:recycle; unknown = 0.5; extra -0.2 for excess plastic/multi-wrap",
+      "weight": 0.08,
+      "why": "She is angry about excess plastic per gram, especially when shrinkflation adds packaging. It is a secondary cue because recycling info sits on the back in small print",
+      "source": "verbatim 'it dramatically increases packaging (often plastic) quantity for every g of product' (score 42) https://www.reddit.com/comments/eraymp ; 'how much plastic actually gets recycled' https://www.reddit.com/comments/eraymp"
+    },
+    {
+      "attribute": "nova",
+      "off_field": "nova_group (1-4)",
+      "direction": "lower_better",
+      "transform": "1=1.0, 2=0.8, 3=0.6, 4=0.2",
+      "weight": 0.06,
+      "why": "She never sees NOVA directly, but it is the ground truth her additive and ingredient heuristics try to approximate. The low weight records the say-do gap: only 13% of UK adults identify UPFs correctly",
+      "source": "PMC11311829 (54% of 2,386 UK adults say they avoid UPF, 13% identify all five) https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/"
+    },
+    {
+      "attribute": "price_per_100g",
+      "off_field": "price_gbp / product_quantity * 100 (catalog price_gbp + OFF product_quantity)",
+      "direction": "lower_better",
+      "transform": "score = 1 - percentile rank of price per 100g within the slot's category",
+      "weight": 0.10,
+      "why": "Her values hit a budget ceiling. 'Organic' or 'clean' premiums get paid on daily hero items and skipped elsewhere",
+      "source": "verbatim 'If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale.' https://www.reddit.com/comments/1pf70di ; 'I can't afford to buy the organic/non upf versions of these staples ... our food bill is ridiculous as it is' https://www.mumsnet.com/talk/food_and_recipes/4922485-how-do-you-cut-out-ultra-processed-food-from-your-diet"
+    }
+  ],
+  "lens_weights_sum": 1.0,
+  "lens_weights_source": "assumption: rank order from verbatim frequency in the 142 eco/chemical comments grepped from data/reddit/comments.csv (organic 59, palm oil 21, additive/emulsifier/preservative 17, recycling/plastic 11), adjusted down for eco-score and NOVA because they are invisible on UK packs (Potter et al. 2021; PMC11311829)",
+
+  "rejection_triggers": [
+    { "trigger": "palm oil in the ingredients (palm_oil_n > 0): put back, no compensating score", "source": "https://www.reddit.com/comments/1511znd ('please boycott palm oil in everything'); https://www.reddit.com/comments/1qtc78s ('palm oil special that is Cadburys')" },
+    { "trigger": "a long list of E-numbers, or sweeteners (sucralose, acesulfame K) behind a health claim, e.g. 'high protein' bars", "source": "verbatim 'Check the ingredients as you're bound to find a bunch of additives and sweeteners' (score 65) https://www.reddit.com/comments/191icpc ; 'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw" },
+    { "trigger": "'green' copy that turns out to be greenwashing (e.g. 'made from recycled bottles' as a selling point, or vague 'natural' with a long ingredients list)", "source": "verbatim 'Made from recycled water bottles... THAT IS NOT A SELLING POINT' (score 216) https://www.reddit.com/comments/1kb3qj5" },
+    { "trigger": "excess or multi-wrapped plastic, especially after a pack shrank", "source": "https://www.reddit.com/comments/eraymp" },
+    { "trigger": "the organic premium is too large on a non-hero item (price per 100g above about 1.3x the category median)", "source": "1.3x is assumption: close to the 29.5% mean WTP premium in Li & Kallas 2021, Appetite 163:105239; verbatim https://www.reddit.com/comments/1pf70di" }
+  ],
+
+  "trust_signals": [
+    { "signal": "Soil Association / EU organic leaf logo (labels en:organic)", "source": "https://www.reddit.com/comments/r2udam ; https://www.reddit.com/comments/1oi5mf0" },
+    { "signal": "'palm oil free' / 'no palm oil' on pack, or palm-free checked in the ingredients (e.g. M&S chocolate, Sun-Pat)", "source": "https://www.reddit.com/comments/1qgcwyr ('Their basic chocolate doesn't have palm oil in'); https://www.reddit.com/comments/1511znd ('Sun pat doesn't use palm oil')" },
+    { "signal": "short ingredient list of fewer than about 6 recognisable items with no E-numbers", "source": "https://www.reddit.com/comments/1buwayp ; https://www.reddit.com/comments/1e8k6o1" },
+    { "signal": "kerbside-recyclable / paper or card packaging statement", "source": "assumption: inverse of the packaging rejection trigger, https://www.reddit.com/comments/eraymp" },
+    { "signal": "a better-ingredient challenger she can switch to from an incumbent she has fallen out with (Tony's over Cadbury)", "source": "https://www.reddit.com/comments/1qtc78s ('shifted entirely to Tony's ... better value than the palm oil special that is Cadburys')" }
+  ],
+
+  "habits": [
+    { "habit": "turns the pack over only for categories she has flagged (chocolate, biscuits, nut butter, yoghurt, protein snacks); repeat staples go in the basket unread", "source": "habit lock-in from staged Priya dossier, data/personas/staged_personas_v1.json; research/05-personas.md section 4c" },
+    { "habit": "pays the organic premium only on daily staples (oats, milk, coffee), and buys organic coffee when there's a Nectar price", "source": "https://www.reddit.com/comments/1oi5mf0 ; https://www.reddit.com/comments/1qgcwyr ('Organic coffee, although they sometimes reduce the price with Nectar card')" },
+    { "habit": "after a palm-oil or shrinkflation disappointment she switches brand permanently rather than 'eat less of it'", "source": "https://www.reddit.com/comments/1qtc78s ('I just stop buying it... Just buy better gear')" },
+    { "habit": "uses frozen veg as the 'no preservatives, less waste' option", "source": "https://www.reddit.com/comments/1ln69mo ('you dont need the help of artificial preservatives. Not to mention the reduced food waste')" },
+    { "habit": "most aisles get a walk-past at normal speed, and she only stops at about 1 in 5 bays", "source": "assumption: consistent with the 3-6 s shelf-dwell literature in research/05-personas.md (pressure test, line ~279) and human mean seconds_at_shelf 6.6 (research/05-personas.md section 4c)" }
+  ],
+
+  "verbatims": [
+    { "quote": "once I realized all the additives going into generic sour cream and cottage cheese, I quickly became a Daisy convert.", "url": "https://www.reddit.com/comments/1jns9wh" },
+    { "quote": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, it's palm oil free, and it supports a British company. Wins all round.", "url": "https://www.reddit.com/comments/1qtc78s" },
+    { "quote": "This happens when they leave out palm oil. Just give it a stir and save the orang-utangs. By the way please boycott palm oil in everything.", "url": "https://www.reddit.com/comments/1511znd" },
+    { "quote": "If you eat oats daily, it's worth spending out for organic to avoid excess glyphosates.", "url": "https://www.reddit.com/comments/1oi5mf0" },
+    { "quote": "What annoys me further is that it dramatically increases packaging (often plastic) quantity for every g of product.", "url": "https://www.reddit.com/comments/eraymp" },
+    { "quote": "I know we are swimming in chemicals/microplastics (not a hippy, promise) so switching the milk was just a tiny thing to salve my conscience - that im doing *something* rather than nothing.", "url": "https://www.reddit.com/comments/r2udam" },
+    { "quote": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.", "url": "https://www.reddit.com/comments/191icpc" },
+    { "quote": "If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale.", "url": "https://www.reddit.com/comments/1pf70di" }
+  ],
+
+  "dossier": "I'm Freya, 34, in Bristol with my partner and a cat. I do one proper shop on Saturday mornings at the big Sainsbury's, about £70-80 for the two of us, and top up at the Co-op on the walk home. I'd love to say I read every label. I don't. Most of the trolley is on autopilot: same pasta, same tinned tomatoes, same frozen peas (frozen is honestly less waste and no preservatives). I'm in and out in about 40 minutes, and most aisles I just walk down without stopping.\n\nWhere I do stop is the stuff I've been burnt on. Chocolate, biscuits, peanut butter, yoghurt. I flip it over and look for two things: palm oil and a wall of E-numbers. If it's got palm oil, it goes back. I don't negotiate on that one. I switched to Tony's and the M&S bars because Cadbury turned into a palm-oil special. If the ingredients list is basically five words I recognise, I trust it more than anything on the front.\n\nOrganic is a budget thing. I pay for organic oats and milk because I have them every day and I don't love the idea of glyphosate in my porridge. Organic crisps at double the price, though? No. I'd rather buy the normal ones on offer.\n\nI care about packaging more than I probably should. Individually wrapped things inside another plastic bag make me furious, especially when the pack has shrunk. If it says the box is recyclable at kerbside, that's a small tick. If it says 'made from recycled bottles' like that's a health benefit, I roll my eyes.\n\nI'll try a new brand if it's at eye level and looks like actual food: short list, no palm oil, a proper organic logo. But I only give it about five seconds. If it's on the bottom shelf I genuinely won't see it. And 'high protein' anything I assume is sweeteners in a costume.",
+  "dossier_word_count_approx": 330,
+
+  "sim_params": {
+    "p_notice_eye_level": 0.70,
+    "p_notice_bottom_or_side": 0.12,
+    "habit_lockin_0_1": 0.75,
+    "price_sensitivity_0_1": 0.55,
+    "trust_new_brand_0_1": 0.35,
+    "gimmick_reactance_0_1": 0.65,
+    "reads_structured_data_0_1": 0.35,
+    "seconds_at_shelf": 8,
+    "meal_deal_pull_0_1": 0.35
+  },
+  "sim_params_sources": {
+    "p_notice_eye_level": "Same as the skeptic-calibrated human mean of 0.70 (research/05-personas.md section 4c); eye level vs floor +39% sales, Wikipedia Planogram field-study summary cited in research/04-3d-sim-evidence-and-tech.md",
+    "p_notice_bottom_or_side": "Copied from Priya at 0.12, slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: high Openness gives a small lift for unfamiliar packs (Markowitz et al. 2012)",
+    "habit_lockin_0_1": "Below the human mean of 0.83 (research/05-personas.md section 4c). assumption: she re-evaluates flagged categories and switches permanently after palm-oil or shrinkflation events (https://www.reddit.com/comments/1qtc78s), but staples stay on autopilot",
+    "price_sensitivity_0_1": "Close to the human mean of 0.57 (research/05-personas.md section 4c). Organic premium accepted only on daily staples (https://www.reddit.com/comments/1pf70di ; Li & Kallas 2021, mean WTP premium about 29.5%)",
+    "trust_new_brand_0_1": "Above the human mean of 0.20 (research/05-personas.md section 4c). assumption: low neophobia from high O (Nezlek & Forestell 2019) and a record of switching to challengers (Tony's, https://www.reddit.com/comments/1qtc78s)",
+    "gimmick_reactance_0_1": "Above the human mean of 0.53, below Margaret's 0.80 (research/05-personas.md section 4c). Reacts to 'high protein' and greenwash copy (https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1kb3qj5)",
+    "reads_structured_data_0_1": "About twice the human mean of 0.18 and below Sam's 0.45 (research/05-personas.md section 4c). assumption: reads ingredients and E-numbers on flagged categories (C=0.66, Mõttus et al. 2012) but not eco-score, NOVA or the nutrition table",
+    "seconds_at_shelf": "Above the human mean of 6.6 s and within the 3-6 s literature range plus a pack-flip (research/05-personas.md pressure test). assumption: 8 s counts one pack-turn on flagged bays",
+    "meal_deal_pull_0_1": "Well below the office-worker default of 0.70-0.75 (research/05-personas.md section 4c). assumption: hybrid worker, weekly-shop mission, and the meal-deal sandwiches are 'loads of additives' to her (https://www.reddit.com/comments/1p3q2ce)"
+  },
+
+  "say_do_gap_note": "Her stated values (eco-score, organic, recycling) carry less real choice weight than palm oil and visible E-numbers, because only on-pack cues are visible at the shelf. Eco-label effects on actual selection are small (Potter et al. 2021) and UPF self-identification is poor (PMC11311829). The sim should expect her eco-score sensitivity to show up mainly in the AI-agent arm, where the field is machine-readable.",
+  "built_from": [
+    "data/reddit/comments.csv (142 comments matching organic|palm oil|additive|E-number|recycl|plastic packaging|chemicals|emulsifier|preservative|pesticide|sustainab|carbon)",
+    "research/corpus/shrinkflation_switch.md, say_do_healthy.md, trust_unknown_brand.md, protein_gimmick.md",
+    "data/personas/staged_personas_v1.json (Priya: closest staged dossier, E-number counting heuristic)",
+    "research/05-personas.md section 4c (skeptic-calibrated parameter table)",
+    "research/04-3d-sim-evidence-and-tech.md (notice model anchors)"
+  ]
+}

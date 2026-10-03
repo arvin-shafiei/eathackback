@@ -1,0 +1,79 @@
+{
+ "product": "FX0005",
+ "name": "Nutty Crunch oat & nut bar 35g",
+ "seeds": [
+  1,
+  2
+ ],
+ "agents": 40,
+ "models": [
+  "mock"
+ ],
+ "baseline_runs": [
+  "run_20261003_112748_s1_mock_ec43",
+  "run_20261003_112748_s2_mock_b0de"
+ ],
+ "true_claims_available": [
+  {
+   "claim": "high fibre",
+   "why": "fiber_100g=6.5 >= 6 (OFF)",
+   "source": "Regulation (EC) No 1924/2006 Annex, retained in UK law: https://www.legislation.gov.uk/eur/2006/1924/annex"
+  },
+  {
+   "claim": "low salt",
+   "why": "salt_100g=0.3 <= 0.3 (sodium 0.12g) (OFF)",
+   "source": "Regulation (EC) No 1924/2006 Annex, retained in UK law: https://www.legislation.gov.uk/eur/2006/1924/annex"
+  }
+ ],
+ "method": "Common random numbers: same seed, agents, OCEAN and notice draws in both arms; only agents whose path enters the edited unit are re-simulated. Δ CI: Newcomb hybrid Wilson (independent-arm, conservative).",
+ "results": [
+  {
+   "edit": "eye",
+   "what_changed": "moved the U3-r3 set to eye level (U3-r2); the eye-level set moved to U3-r3",
+   "pick_base": 0.0,
+   "pick_new": 0.0345,
+   "delta_pick": 0.0345,
+   "delta_ci95": [
+    -0.0859,
+    0.1718
+   ],
+   "n_base": 29,
+   "n_new": 29,
+   "affected_agent_runs": 29,
+   "cost_usd": 0.0,
+   "significant": false
+  },
+  {
+   "edit": "facings",
+   "what_changed": "+1 facing for FX0005 (now 2); no neighbour had a spare facing, so shelf space grew",
+   "pick_base": 0.0,
+   "pick_new": 0.0,
+   "delta_pick": 0.0,
+   "delta_ci95": [
+    -0.117,
+    0.117
+   ],
+   "n_base": 29,
+   "n_new": 29,
+   "affected_agent_runs": 29,
+   "cost_usd": 0.0,
+   "significant": false
+  },
+  {
+   "edit": "claim",
+   "what_changed": "surfaced true claim 'high fibre' in pack_copy (fiber_100g=6.5 >= 6 (OFF); Regulation (EC) No 1924/2006 Annex, retained in UK law: https://www.legislation.gov.uk/eur/2006/1924/annex)",
+   "pick_base": 0.0,
+   "pick_new": 0.0,
+   "delta_pick": 0.0,
+   "delta_ci95": [
+    -0.117,
+    0.117
+   ],
+   "n_base": 29,
+   "n_new": 29,
+   "affected_agent_runs": 29,
+   "cost_usd": 0.0,
+   "significant": false
+  }
+ ]
+}

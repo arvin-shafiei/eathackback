@@ -1,0 +1,191 @@
+{
+  "id": "p_allergen_coeliac",
+  "name": "Hannah",
+  "archetype": "allergen_coeliac",
+  "mission": "weekly_shop",
+  "budget_gbp": 70,
+  "budget_source": "assumption: one-adult-plus-partner weekly shop inflated for gluten-free (GF) staples, which cost at least 4x their non-GF equivalents (Burden et al. 2015, Postgrad Med J 91(1081):622-626, PMID 26310267, https://doi.org/10.1136/postgradmedj-2015-133395); kept in line with Freya's GBP75 two-adult shop (data/personas/lens/eco_low_chemical.json)",
+  "channel": "instore",
+  "channel_source": "assumption: mixed channel in reality. She does a big online shop because 'it's nearly impossible to get all that I want from one shop in one go' (https://www.reddit.com/comments/18jsjo5), but the sim runs her as an in-store walker on a top-up/weekly trip, where she checks labels by hand and hunts for the moved free-from bay (https://www.reddit.com/comments/1uosc29)",
+  "age": 38,
+  "household": "lives with her partner in Leeds; biopsy-confirmed coeliac for 9 years; her partner eats gluten, so the kitchen is split; works as a school business manager",
+  "household_source": "assumption: illustrative demographic, not used by the sim. '>5 years on the diet' is chosen because Zarkadas et al. 2013 find difficulties ease after 5 years but labelling stays 'very problematic' (PMID 23157646)",
+
+  "ocean": { "O": 0.38, "C": 0.80, "E": 0.45, "A": 0.55, "N": 0.62 },
+  "ocean_effects": [
+    {
+      "trait": "O",
+      "value": 0.38,
+      "effect": "low-to-mid Openness: food neophobia is negatively related to O, and for her a new product is also a medical risk, so unfamiliar challenger packs get a lower notice/trial prior unless they carry a GF certification",
+      "coef": -0.15,
+      "coef_source": "assumption: small negative logit term on role=challenger without a GF label; the direction comes from the paper and the magnitude is set by hand",
+      "source": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007 ; Barnett et al. 2011 (allergic shoppers stick with products they have previous experience of), BMC Public Health 11:734, https://doi.org/10.1186/1471-2458-11-734"
+    },
+    {
+      "trait": "C",
+      "value": 0.80,
+      "effect": "high Conscientiousness: she reads every new pack's ingredients for the bolded cereal and the 'may contain' line, so reads_structured_data and seconds_at_shelf are well above the human mean",
+      "coef": 0.35,
+      "coef_source": "assumption: carried through sim_params.reads_structured_data_0_1 (0.75) and seconds_at_shelf (14), not double-counted in utility",
+      "source": "Mõttus et al. 2012, Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (C linked with more deliberate eating); Coeliac UK, 'How to read food labels': 'The cereal must be emphasised in the ingredients list, for example in bold lettering' https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/"
+    },
+    {
+      "trait": "E",
+      "value": 0.45,
+      "effect": "mid Extraversion: no special social or impulse pull. She avoids eating out (the hard part of the diet), so food-to-go and meal-deal pull stay low",
+      "coef": 0.0,
+      "coef_source": "assumption: neutral, no effect in the sim",
+      "source": "Zarkadas et al. 2013, J Hum Nutr Diet 26(1):10-23, PMID 23157646, https://doi.org/10.1111/j.1365-277X.2012.01288.x ('eating away from home remained very problematic')"
+    },
+    {
+      "trait": "A",
+      "value": 0.55,
+      "effect": "mid Agreeableness: loyal to brands that 'look after' coeliacs, and takes a delisting personally as a breach of that relationship; amplifies negative sentiment when a sacred SKU is missing",
+      "coef": 0.10,
+      "coef_source": "assumption: sentiment amplifier only (out-of-stock or delisted sacred SKU gives sentiment -0.8 rather than -0.5)",
+      "source": "verbatim 'Why do my items have to be removed to make way for more vegan items. Have both.' https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "trait": "N",
+      "value": 0.62,
+      "effect": "above-mean Neuroticism (anxiety and vigilance about contamination): she rejects on any doubt, including an unclear 'may contain', a damaged pack or a missing GF label, so the cost of a false negative is high",
+      "coef": 0.25,
+      "coef_source": "assumption: raises the reject probability on ambiguous allergen info (trace or unlabelled oats) from 0.6 to 0.85",
+      "source": "Smith & Gerdes 2012, 'Meta-analysis on anxiety and depression in adult celiac disease', Acta Psychiatr Scand 125(3):189-193, PMID 22128768, https://doi.org/10.1111/j.1600-0447.2011.01795.x (depression reliably higher, effect size 0.97; anxiety NOT reliably different, so N is set only modestly above the mean); Zarkadas et al. 2013 ('frustration and isolation' the most common negative emotions)"
+    }
+  ],
+
+  "lens": [
+    {
+      "attribute": "gluten_free_label",
+      "off_field": "labels",
+      "direction": "presence_required",
+      "transform": "score = 1 if labels contains any of en:no-gluten | en:certified-gluten-free | en:crossed-grain-trademark | en:gluten-free* ; crossed-grain adds +0.1 (capped at 1); else 0. HARD GATE for processed cereal categories (biscuits, cereal, snack bars, ready meals); soft for naturally GF categories (soft drinks, plain yoghurt)",
+      "weight": 0.30,
+      "why": "The front-of-pack 'gluten free' claim is legally restricted to <=20 mg/kg gluten, so it is the one cue she can trust in a 2-second scan. Without it she has to read the full ingredients",
+      "source": "Commission Implementing Regulation (EU) No 828/2014 (retained in UK law): 'gluten-free' only if <=20 mg/kg, https://eur-lex.europa.eu/eli/reg_impl/2014/828/oj ; OFF tag counts in our UK pull: en:no-gluten 686, en:crossed-grain-trademark 8 (data/products/uk_products.csv.tmp); verbatim 'a few of the allergens (gluten free, soy free, dairy free, etc)' are what people look at on the front https://www.reddit.com/comments/1sit7ev"
+    },
+    {
+      "attribute": "contains_gluten_allergen",
+      "off_field": "allergens",
+      "direction": "absence_required",
+      "transform": "score = 0 and REJECT if allergens contains en:gluten (or ingredients_text contains wheat|barley|rye|spelt|malt); else 1",
+      "weight": 0.22,
+      "why": "This is a medical gate, not a preference: any declared gluten is an instant put-back",
+      "source": "Coeliac UK 'How to read food labels' (cereals containing gluten must be named and emphasised): https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/ ; OFF allergens field (en:gluten appears 1,279 times in our UK pull)"
+    },
+    {
+      "attribute": "may_contain_traces",
+      "off_field": "ingredients_text (+ pack_copy); OFF traces_tags not in our pull",
+      "direction": "absence_better",
+      "transform": "score = 0 if regex /may contain (wheat|gluten|cereals)|made on a line handling wheat|factory.*(wheat|gluten)/i matches; else 1. With N=0.62, a match gives a reject with p=0.85 unless the gluten_free_label is present",
+      "weight": 0.12,
+      "why": "Precautionary labels mean 'the manufacturer has decided there is an unavoidable risk of cross contamination'. Allergic shoppers vary (some ignore them) but cautious ones avoid them all",
+      "source": "Coeliac UK: 'May contain wheat. Made on a line handling wheat.' ... 'an unavoidable risk of cross contamination with gluten' https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/ ; Barnett et al. 2011 BMC Public Health 11:734, PMID 21943285 ('many ignored it whilst some ... avoided products with all such labelling'); verbatim 'Distrust, mostly due to cross contamination and with the handling of allergens' https://www.reddit.com/comments/1q1ffjm"
+    },
+    {
+      "attribute": "known_safe_sku",
+      "off_field": "role + code (persona habit list)",
+      "direction": "higher_better",
+      "transform": "score = 1 if code is in her sacred-SKU list (seeded with incumbent GF lines in the planogram); 0.6 if role=incumbent with a GF label; 0.4 if own_label with a GF label; 0.3 if challenger with a GF label",
+      "weight": 0.12,
+      "why": "A product she has already eaten safely is worth more than any claim. Switching brand adds a checking task and a risk of getting ill, so she buys branded where it matters",
+      "source": "verbatim 'Certain intolerances and allergies mean some things have to be branded unfortunately ... i don't want us to be sick more' https://www.reddit.com/comments/1ow5fne ; 'If I am used to a product by a brand, I know ... the allergens in it' https://www.reddit.com/comments/1essgh0 ; Barnett et al. 2011 (decisions based on 'perceived trustworthiness of the producer and on the previous experience')"
+    },
+    {
+      "attribute": "price_per_100g",
+      "off_field": "price_gbp / quantity",
+      "direction": "lower_better",
+      "transform": "score = clamp(1 - (price_per_100g / category_GF_median - 1), 0, 1): judged against other GF options, NOT against gluten-containing equivalents",
+      "weight": 0.10,
+      "why": "She has accepted the GF premium, so price only ranks between safe options. She does resent GF prices creeping up while vegan products go on offer",
+      "source": "Burden et al. 2015 (GF foods >=4x the cost of non-GF; budget supermarkets stocked none) PMID 26310267; verbatim 'GF items become more and more expensive whilst vegan stiff becomes on offer' https://www.reddit.com/comments/191icpc ; 'all gluten free stuff is premium. A cheap gluten free pizza is GBP3 and tastes like cardboard' https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "attribute": "oats_or_barley_malt",
+      "off_field": "ingredients_text",
+      "direction": "absence_better",
+      "transform": "score = 0 if ingredients_text matches /barley malt|malt extract|malt vinegar/ ; 0.5 if /oat/ without 'gluten-free oats' ; else 1",
+      "weight": 0.08,
+      "why": "These are the hidden-gluten traps in cereals, bars and crisps (malt flavouring, standard oats). They are the reason she reads the back even of 'safe-looking' packs",
+      "source": "Coeliac UK: oats among cereals that must be named; 'Some people can't tolerate oats as they contain a protein similar to gluten, called avenin.' https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/the-gluten-free-diet/what-is-the-gluten-free-diet/"
+    },
+    {
+      "attribute": "gf_claim_findability",
+      "off_field": "pack_copy",
+      "direction": "higher_better",
+      "transform": "score = 1 if pack_copy contains 'gluten free' or a crossed-grain mention; 0.5 if the product is naturally GF but the claim is not surfaced; 0 otherwise",
+      "weight": 0.06,
+      "why": "A naturally gluten-free product that doesn't say so gets walked past: she won't spend 15 seconds proving a pack is safe when the next one tells her. This is an honest optimiser lever (surface the true claim)",
+      "source": "assumption: inferred from the label-is-the-shortcut behaviour in Zarkadas et al. 2013 ('food labelling ... remained very problematic') and the verbatim 'Pray to god that you're not vegan/gluten intolerant, because they move those sections around every ... week' https://www.reddit.com/comments/1uosc29"
+    }
+  ],
+  "lens_weights_sum": 1.0,
+  "lens_weights_source": "assumption: weights hand-set to rank the medical gates (label + declared allergen = 0.52) above everything else, in line with 'Two-thirds never intentionally consumed gluten' (Zarkadas et al. 2013). The gates also act as hard filters before utility, so the weights only rank options that pass",
+
+  "rejection_triggers": [
+    { "trigger": "allergens contains en:gluten, or wheat/barley/rye/spelt/malt in ingredients_text: instant put-back, no compensating score", "source": "Coeliac UK labelling guidance https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/" },
+    { "trigger": "'may contain wheat/gluten' or 'made on a line handling wheat' without a gluten-free claim", "source": "Coeliac UK (same page); Barnett et al. 2011, PMID 21943285" },
+    { "trigger": "processed cereal product (biscuit, bar, cereal, ready meal) with no GF label: assumed unsafe without checking further", "source": "assumption: time-saving rule; EU 828/2014 makes the label the only legally backed shortcut" },
+    { "trigger": "visible hygiene or cross-contamination cues (repacked, damaged, loose or unlabelled product)", "source": "verbatim 'Tells me they're pretty lax on hygiene and potential allergies' (score 5900) https://www.reddit.com/comments/1q1ffjm" },
+    { "trigger": "'gluten free' used as a marketing badge on an obviously naturally GF product at a premium (fad framing): mild eye-roll, not a hard reject", "source": "verbatim 'Fat free, then sugar free, then gluten free, now extra protein. You need some kind of basic justification for why your product is randomly significantly more expensive.' https://www.reddit.com/comments/1oqtnv1" },
+    { "trigger": "sacred SKU missing or delisted: walks away from the bay frustrated rather than trialling an unknown substitute", "source": "verbatim 'What I need is either out of stock constantly or they just don't sell' https://www.reddit.com/comments/18jsjo5 ; 'the diminishing choice ... is getting REALLY scary' https://www.reddit.com/comments/1o3q3ez" }
+  ],
+  "trust_signals": [
+    { "signal": "Crossed Grain symbol (labels en:crossed-grain-trademark): Coeliac UK-licensed, audited", "source": "Coeliac UK food safety scheme https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/food-safety-scheme/ ; OFF tag present in UK pull (8 products)" },
+    { "signal": "a legal 'gluten free' claim (labels en:no-gluten / en:certified-gluten-free)", "source": "Regulation (EU) 828/2014, <=20 mg/kg https://eur-lex.europa.eu/eli/reg_impl/2014/828/oj" },
+    { "signal": "brand she has eaten safely before (incumbent free-from specialist)", "source": "https://www.reddit.com/comments/1ow5fne ; Barnett et al. 2011 (previous experience drives interpretation)" },
+    { "signal": "product placed in the dedicated free-from bay (curation implies screening)", "source": "assumption: inferred from https://www.reddit.com/comments/1uosc29 (she navigates by the free-from section)" }
+  ],
+  "habits": [
+    { "habit": "goes straight to the free-from bay first, then only scans mainstream bays for naturally GF items she already knows (crisps, yoghurt, drinks)", "source": "https://www.reddit.com/comments/1uosc29" },
+    { "habit": "reads the full back of pack for any product she hasn't bought in the last ~3 months (recipes change), skips reading on proven SKUs", "source": "verbatim 'manufacturer changes the recipe' https://www.reddit.com/comments/1jns9wh ; assumption: 3-month re-check window" },
+    { "habit": "bulk-buys or stockpiles a sacred SKU when she sees it in stock, because availability is unreliable", "source": "https://www.reddit.com/comments/18jsjo5 ; assumption: stockpiling is inferred, not stated" },
+    { "habit": "uses online orders to cover what local stores don't range; in store she fills gaps", "source": "https://www.reddit.com/comments/18jsjo5 ; https://www.reddit.com/comments/1o3q3ez ('very pricey, niche, online shops')" },
+    { "habit": "skips the meal deal almost always; at most picks a crisp/drink component she knows is safe", "source": "assumption: few meal-deal mains are GF; Zarkadas et al. 2013 ('eating away from home remained very problematic')" }
+  ],
+  "verbatims": [
+    { "quote": "What I hate is that during January the Gluten Free section becomes smaller and smaller and replaced by vegan items. I'm coeliac and can't eat gluten. Why do my items have to be removed to make way for more vegan items. Have both. ... Also GF items become more and more expensive whilst vegan stiff becomes on offer.", "url": "https://www.reddit.com/comments/191icpc" },
+    { "quote": "I do, but that's purely because I have coeliac disease and it's nearly impossible to get all that I want from one shop in one go. What I need is either out of stock constantly or they just don't sell and I don't have the time to go to multiple shops a week.", "url": "https://www.reddit.com/comments/18jsjo5" },
+    { "quote": "Pray to god that you're not vegan/gluten intolerant, because they move those sections around every fucking week and I have to go through a maze just to find out where the flora plant is every time", "url": "https://www.reddit.com/comments/1uosc29" },
+    { "quote": "Certain intolerances and allergies mean some things have to be branded unfortunately, id much rather buy the nonbranded cheaper stuff but i don't want us to be sick more", "url": "https://www.reddit.com/comments/1ow5fne" },
+    { "quote": "As someone who cooks, with multiple allergies; the diminishing choice from so many of the larger supermarkets is getting REALLY scary, and I've had to resort to very pricey, niche,online shops, for so many products that I previously, was able to grab from the shellves/fridges, of the large local stores.", "url": "https://www.reddit.com/comments/1o3q3ez" },
+    { "quote": "If I am used to a product by a brand, I know the taste, texture, sometimes even the allergens in it ... If I ask my husband to buy the thing, and he comes home with another brand, it truly does add a 'task' while cooking ... or I don't poison my best friend with gluten the next time she comes over", "url": "https://www.reddit.com/comments/1essgh0" },
+    { "quote": "Yeah but all gluten free stuff is premium. A 'cheap' gluten free pizza is £3 and tastes like cardboard while being half the size of any meat or vegan pizza", "url": "https://www.reddit.com/comments/191icpc" }
+  ],
+
+  "dossier": "I'm Hannah, 38, and I've been coeliac for nine years. I don't really 'shop' the supermarket. I go hunting for the free-from bay, which they move every few months, and I stand there checking whether my things are still there. My things are the GF bread my partner doesn't moan about, one brand of oat bar made with gluten-free oats, and two cereals. Once I know something is safe I stop reading it and just grab it. If it's missing I don't experiment. I either go without or add it to the online order, which exists mostly because no single shop has everything I need. When a line gets delisted to make room for whatever the January trend is, it feels like being told I don't count.\n\nOutside the free-from bay I barely look at most of the shelf. Biscuits, bars and ready meals with no 'gluten free' on the front are invisible to me, because I'm not spending 15 seconds proving a pack is safe when the next one tells me straight away. The Crossed Grain logo is the thing my eye catches. 'May contain wheat' means put it back. Barley malt extract in a cereal is the classic trap. On something new I do turn it over and read the bold words. That's maybe two or three packs a trip and about ten seconds each.\n\nOur shop is about £70 a week and I know I pay roughly four times more for bread and pasta. I don't compare GF prices with normal ones any more, because that way lies madness. I only compare GF with GF. I do notice when GF creeps up while the vegan stuff is on offer. Meal deals are mostly off limits, so at most I'll grab some crisps I already trust. A shiny new challenger brand has to earn it twice: it needs a proper GF claim, and then I need to eat it once without being ill. After that I'm loyal for years, until someone delists it.",
+  "dossier_word_count_approx": 330,
+
+  "sim_params": {
+    "p_notice_eye_level": 0.55,
+    "p_notice_bottom_or_side": 0.10,
+    "habit_lockin_0_1": 0.92,
+    "price_sensitivity_0_1": 0.40,
+    "trust_new_brand_0_1": 0.12,
+    "gimmick_reactance_0_1": 0.45,
+    "reads_structured_data_0_1": 0.75,
+    "seconds_at_shelf": 14,
+    "meal_deal_pull_0_1": 0.12
+  },
+  "sim_params_sources": {
+    "p_notice_eye_level": "Below the skeptic-calibrated human mean of 0.70 (research/05-personas.md section 4c). assumption: outside the free-from bay she filters mainstream packs out by a GF-claim scan, so eye level helps less. Multiply by 1.6 (capped at 0.95) for products with a GF label or Crossed Grain (assumption)",
+    "p_notice_bottom_or_side": "Close to the human mean of 0.094 (research/05-personas.md section 4c); eye-level vs floor gap from research/04-3d-sim-evidence-and-tech.md (+39% sales). assumption: a GF label on a bottom shelf still lifts notice to ~0.25 because she actively searches for GF",
+    "habit_lockin_0_1": "Above the human mean of 0.83 and Margaret's 0.90 (research/05-personas.md section 4c). Sacred-SKU loyalty: 'some things have to be branded ... i don't want us to be sick' https://www.reddit.com/comments/1ow5fne ; Barnett et al. 2011 (previous experience drives choice)",
+    "price_sensitivity_0_1": "Below the human mean of 0.57 (research/05-personas.md section 4c). The GF premium is forced (>=4x, Burden et al. 2015, PMID 26310267), so price only ranks among safe options. Not lower, because of resentment at rising GF prices https://www.reddit.com/comments/191icpc",
+    "trust_new_brand_0_1": "Below the human mean of 0.20 (research/05-personas.md section 4c), above Margaret's 0.10. A new brand is a medical risk (Barnett et al. 2011; low O from Nezlek & Forestell 2019). assumption: rises to ~0.40 if the label contains en:crossed-grain-trademark",
+    "gimmick_reactance_0_1": "Slightly below the human mean of 0.53 (research/05-personas.md section 4c). She values the GF claim itself, but rolls her eyes at fad-premium copy: 'Fat free, then sugar free, then gluten free, now extra protein' https://www.reddit.com/comments/1oqtnv1 ; 'protein in question is just more gluten' https://www.reddit.com/comments/1tbf6zw",
+    "reads_structured_data_0_1": "About 4x the human mean of 0.18, above Sam's 0.45, below the agents' 0.95 (research/05-personas.md section 4c). Reading for bolded cereals and 'may contain' is how the diet works (Coeliac UK label guidance; Zarkadas et al. 2013, PMID 23157646). C=0.80",
+    "seconds_at_shelf": "About twice the human mean of 6.6 s and close to Sam's 12 s (research/05-personas.md section 4c). assumption: 14 s = a short scan plus one back-of-pack read of a new SKU",
+    "meal_deal_pull_0_1": "Far below the office default of 0.70-0.75 (research/05-personas.md section 4c), above Margaret's 0.05. assumption: few meal-deal mains are GF, and eating away from home is the hardest part of the diet (Zarkadas et al. 2013)"
+  },
+  "say_do_gap_note": "She says she 'reads everything'. In practice, proven SKUs go in the basket unread (habit lock-in 0.92) and only new or changed packs get a full read. The sim should apply reads_structured_data only to products not on her sacred-SKU list.",
+  "built_from": [
+    "data/reddit/comments.csv (grep coeliac|celiac|gluten|allerg|may contain; 52 hits, 7 used verbatim)",
+    "research/corpus/protein_gimmick.md, research/corpus/impulse_instore_vs_online.md, research/corpus/delisted.md (via comments.csv threads 191icpc, 18jsjo5, 1o3q3ez)",
+    "research/05-personas.md section 4c (skeptic-calibrated human means)",
+    "data/products/uk_products.csv.tmp (OFF label tag counts for en:no-gluten, en:crossed-grain-trademark, en:gluten)",
+    "PubMed abstracts verified via eutils: PMIDs 26310267, 22128768, 21943285, 23157646",
+    "Coeliac UK pages fetched: how-to-read-food-labels, what-is-the-gluten-free-diet"
+  ]
+}

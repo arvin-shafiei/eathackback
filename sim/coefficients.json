@@ -1,0 +1,81 @@
+{
+  "_doc": "Notice-model calibration. Each entry has a value, a source, and a derivation where the value is computed from a published target. sim/notice.py turns the targets into logit offsets at load time, so changing a target here changes the model. Nothing else is hard-coded.",
+  "p_ref_eye_centre_1facing": {
+    "value": 0.55,
+    "source": "assumption: baseline chance a shopper notices one product at eye level, centre, 1 facing, on a unit relevant to their mission. Sits between the skeptic-calibrated persona eye-level priors (0.55-0.80, data/personas/staged_personas_v1.json verdict.sim_parameters.p_notice_eye_level). When a persona carries its own p_notice_eye_level it replaces this value (see persona_eye_override)."
+  },
+  "eye_vs_bottom_sales_ratio": {
+    "value": 1.39,
+    "source": "Eye level vs worst shelf height = +39% sales. research/04-3d-sim-evidence-and-tech.md section 1, citing the field study in https://en.wikipedia.org/wiki/Planogram",
+    "derivation": "Assumes the full sales gap runs through noticing (Chandon et al. 2009, J. Marketing 73(6), https://journals.sagepub.com/doi/10.1509/jmkg.73.6.1: the shelf effects act through attention). p_bottom = p_ref / 1.39, so alpha_row.bottom = logit(p_bottom) - logit(p_ref)."
+  },
+  "top_vs_bottom_notice_ratio": {
+    "value": 1.17,
+    "source": "Top shelf is 17% more likely to be noticed than bottom (20% more likely chosen). research/04-3d-sim-evidence-and-tech.md section 1; matches Chandon et al. 2009 https://journals.sagepub.com/doi/10.1509/jmkg.73.6.1",
+    "derivation": "p_top = p_bottom * 1.17, so alpha_row.top = logit(p_top) - logit(p_ref)."
+  },
+  "facings_elasticity": {
+    "value": 0.17,
+    "source": "Mean shelf-space elasticity 0.17 across 1,268 estimates (Eisend 2014, J. Retailing meta-analysis), summarised at https://en.wikipedia.org/wiki/Planogram; research/04-3d-sim-evidence-and-tech.md section 1",
+    "derivation": "In p = sigmoid(... + alpha_f * ln(facings)), dln(p)/dln(facings) = alpha_f * (1 - p). Setting this to 0.17 at p_ref gives alpha_f = 0.17 / (1 - p_ref). Diminishing returns come from the log and the sigmoid ceiling, as in Drèze, Hoch & Purk 1994 (J. Retailing)."
+  },
+  "facings_cap": {
+    "value": 6,
+    "source": "assumption: Drèze, Hoch & Purk 1994 found facings changes of about ±50% had little effect above a minimum threshold (research/04 section 1), so ln(facings) is capped at 6 facings to stop the optimiser buying lift with absurd space."
+  },
+  "centre_vs_edge_ratio": {
+    "value": 1.15,
+    "source": "Best vs worst horizontal position gives about +15% (research/04-3d-sim-evidence-and-tech.md section 3 calibration target). Direction from Atalay, Bodur & Rasolofoarison 2012, JCR 39(4), https://academic.oup.com/jcr/article/39/4/848/1798003 (central gaze cascade)",
+    "derivation": "alpha_c = logit(p_ref) - logit(p_ref / 1.15). centrality runs 0 (edge of the slot set) to 1 (centre). The term is alpha_c * (centrality - 1), so the centre is the reference."
+  },
+  "mission_relevance_logit": {
+    "value": 0.0,
+    "off_mission_value": -0.8,
+    "source": "assumption: a unit outside the shopper's mission is browsed, not searched. Goal-directed (top-down) attention raises noticing (Chandon et al. 2009 separate top-down from bottom-up effects), but no paper here gives the size. -0.8 logit roughly halves the odds while browsing. Flagged as unsourced magnitude."
+  },
+  "seconds_at_shelf_logit_per_ln": {
+    "value": 0.25,
+    "ref_seconds": 6,
+    "source": "assumption: more seconds at the shelf means more fixations, so more products get noticed. Per-persona seconds_at_shelf come from the skeptic-calibrated params (data/personas/staged_personas_v1.json verdict.sim_parameters.seconds_at_shelf). The 0.25 per ln(seconds/6) slope is unsourced."
+  },
+  "persona_eye_override": {
+    "value": true,
+    "source": "When a persona carries sim_parameters.p_notice_eye_level (skeptic-calibrated, data/personas/staged_personas_v1.json), alpha0 = logit(that value). The literature row, facings and centre offsets are then applied on top, so the persona sets the level and the literature sets the shape."
+  },
+  "ocean_defaults": {
+    "_doc": "Used only when data/personas/ocean/*.json does not exist. Each term is coef * (trait - 0.5) * 2, so it runs -coef..+coef. Directions are sourced; magnitudes are assumptions and labelled as such.",
+    "O_unfamiliar_brand": {
+      "trait": "O", "applies_to": "role in [challenger]", "coef": 0.3,
+      "effect": "Openness raises noticing of unfamiliar (challenger) brands",
+      "source": "direction: Openness facet O4 'Actions' = preference for novelty and variety (Costa & McCrae NEO-PI-R); assumption: 0.3 logit magnitude unsourced"
+    },
+    "E_impulse_browse": {
+      "trait": "E", "applies_to": "off_mission units", "coef": 0.25,
+      "effect": "Extraversion raises noticing while browsing (impulse tendency)",
+      "source": "direction: Verplanken & Herabadi 2001, European Journal of Personality 15(S1), impulse buying tendency correlates with Extraversion and low Conscientiousness; assumption: 0.25 logit magnitude unsourced"
+    },
+    "C_goal_focus": {
+      "trait": "C", "applies_to": "off_mission units", "coef": -0.2,
+      "effect": "Conscientiousness lowers off-list noticing (sticks to the list)",
+      "source": "direction: Verplanken & Herabadi 2001 (low C goes with impulse buying); assumption: -0.2 logit magnitude unsourced"
+    },
+    "C_label_reading": {
+      "trait": "C", "applies_to": "prompt: show ingredients/nutrition", "coef": 0.5,
+      "effect": "Conscientiousness raises the chance the shopper reads the back of pack",
+      "source": "assumption: careful, deliberate shoppers read labels more; combined 50/50 with persona reads_structured_data_0_1 (skeptic-calibrated). Magnitude unsourced"
+    },
+    "N_new_brand_risk": {
+      "trait": "N", "applies_to": "role in [challenger]", "coef": -0.15,
+      "effect": "Neuroticism lowers noticing of unknown brands (risk aversion)",
+      "source": "assumption: anxiety-prone shoppers stick to known options; direction consistent with Margaret's 'fear of wasting £1.60 on a one-strike trial' (research/05-personas.md). Magnitude unsourced"
+    }
+  },
+  "ocean_jitter_sd": {
+    "value": 0.08,
+    "source": "assumption: each spawned agent gets its persona's OCEAN plus N(0, 0.08) noise, clipped to 0-1, so agents of one archetype are not clones. The size is a choice, not a measurement."
+  },
+  "browse_prob": {
+    "value": 0.25,
+    "source": "assumption: chance a shopper walks an off-mission unit. Unplanned buying is common, but no aisle-level visit rate is sourced here (research/04 section 3: 'give each item walked past a small impulse probability')."
+  }
+}

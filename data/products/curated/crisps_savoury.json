@@ -1,0 +1,1849 @@
+{
+ "category": "crisps_savoury",
+ "row_themes": {
+  "1": "hand-cooked & classic potato crisps (incumbent vs premium challengers vs own-label)",
+  "2": "stacked, baked, popped & veggie-cake 'lighter' snacks",
+  "3": "legume / free-from challengers vs discounter own-label"
+ },
+ "rows": {
+  "1": [
+   "51000005",
+   "5060042641000",
+   "5017764003142",
+   "00355858"
+  ],
+  "2": [
+   "5053990127740",
+   "5060292308500",
+   "5000328015897",
+   "5013665115373"
+  ],
+  "3": [
+   "5060878780386",
+   "5060283762199",
+   "4056489296454",
+   "5060367450356"
+  ]
+ },
+ "rules": "data/products/curated/crisps_savoury_rules.md",
+ "products": [
+  {
+   "code": "51000005",
+   "name": "Walkers Cheese & Onion crisps",
+   "brand": "Walkers",
+   "category": "crisps_savoury",
+   "role": "incumbent",
+   "row": 1,
+   "price_gbp": 1.0,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; single-bag price; Walkers singles commonly £1 at convenience/meal-deal ranges",
+   "pack_g": 25,
+   "unit_price_per_100g": 4.0,
+   "pack_copy": "walkers cheese & onion crisps · no front-of-pack claims recorded in OFF",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "a-plus",
+   "additives_n": 6,
+   "additives": [
+    "en:e160b",
+    "en:e160bi",
+    "en:e160c",
+    "en:e296",
+    "en:e306",
+    "en:e330",
+    "en:e392"
+   ],
+   "labels": [],
+   "allergens": [
+    "en:milk"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 8,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Potatoes, Vegetable Oils (Sunflower, Rapeseed in varying proportions), Cheese & Onion Seasoning [Dried Onion, Sait, Dried Milk Whey, Lactose(from Milk, Sugar, Flavouring (contains Milk, Cheese Powder (from Milk), Dried Yeast, Acids (Citic Acid, Malic Acid), Whey Protein (from Mik), Dried Garlic Colours (Annatto Bixin, Paprika Extract), Antioxidants (Rosemary Extract, Ascorbic Acid Tocopherol Rich Extract, Citric Acid).",
+   "quantity": "25 g",
+   "energy_kcal_100g": 512.0,
+   "fat_100g": 29.6,
+   "saturated_fat_100g": 2.4,
+   "sugars_100g": 2.8,
+   "fiber_100g": 4.0,
+   "proteins_100g": 6.8,
+   "salt_100g": 0.0029,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:mixed-plastic-packet"
+   ],
+   "scans": 62.0,
+   "completeness": 0.8875,
+   "image": "https://images.openfoodfacts.org/images/products/000/005/100/0005/front_en.57.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/51000005",
+   "data_notes": [
+    "OFF salt_100g=0.0029 looks like a data-entry error (typical ~1.3g); kept verbatim, not used in any grade"
+   ],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.56,
+     "why": [
+      "additives_n=6 (OFF)",
+      "ecoscore=a-plus (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.26,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=6 (OFF)",
+      "top-level ingredients=8 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.702,
+     "why": [
+      "pack=25g (OFF quantity)",
+      "proteins_100g=6.8 (OFF)",
+      "fiber_100g=4 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.0,
+     "why": [
+      "£4.00/100g = price_gbp 1.0 / 25g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.218,
+     "why": [
+      "proteins_100g=6.8 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.32,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=6 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.6,
+     "why": [
+      "role=incumbent (curation)",
+      "unit price £4.00/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 1.0,
+     "why": [
+      "single-serve pack<=45g: 25g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.2,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.4,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=False (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.63,
+     "why": [
+      "completeness=0.8875 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=6 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.2,
+     "why": [
+      "role=incumbent (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060042641000",
+   "name": "Lightly sea salted crisps",
+   "brand": "Tyrell’s",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 1,
+   "price_gbp": 2.75,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; premium hand-cooked 150g sharing bag band £2.50-£3.00",
+   "pack_g": 150,
+   "unit_price_per_100g": 1.83,
+   "pack_copy": "lightly sea salted crisps · gluten free · no artificial flavours · vegan · no artificial colours · no msg · made in england · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "c",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:no-gluten",
+    "en:no-artificial-flavors",
+    "en:vegan",
+    "en:assured-food-standards",
+    "en:green-dot",
+    "en:no-artificial-colors",
+    "en:no-flavour-enhancer",
+    "en:no-msg",
+    "fr:triman",
+    "en:made-in-england",
+    "en:terracycle"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 3,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Kartoffeln, Sonnenblumenöl, Meersalz.",
+   "quantity": "150g",
+   "energy_kcal_100g": 520.0,
+   "fat_100g": 27.0,
+   "saturated_fat_100g": 2.4,
+   "sugars_100g": 0.64,
+   "fiber_100g": 5.5,
+   "proteins_100g": 6.2,
+   "salt_100g": 0.83,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:mixedplasticfilm-packet",
+    "en:mixed-plastic-film-packet"
+   ],
+   "scans": 508.0,
+   "completeness": 1.0,
+   "image": "https://images.openfoodfacts.org/images/products/506/004/264/1000/front_en.179.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060042641000",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.8,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=3 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.368,
+     "why": [
+      "pack=150g (OFF quantity)",
+      "proteins_100g=6.2 (OFF)",
+      "fiber_100g=5.5 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.486,
+     "why": [
+      "£1.83/100g = price_gbp 2.75 / 150g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.198,
+     "why": [
+      "proteins_100g=6.2 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.314,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £1.83/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "single-serve pack<=45g: 150g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 1.0,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.825,
+     "why": [
+      "completeness=1 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.5,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=False (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5017764003142",
+   "name": "Lightly Salted Potato chips",
+   "brand": "Kettle",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 1,
+   "price_gbp": 1.0,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; premium single-serve bag, ~£1",
+   "pack_g": 25,
+   "unit_price_per_100g": 4.0,
+   "pack_copy": "lightly salted potato chips · gluten free · vegan · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "c",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:vegan"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 3,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Potatoes, Vegetable Oils (Rapeseed Oil, Sunflower Oil)*, Sea Salt.",
+   "quantity": "25g",
+   "energy_kcal_100g": 494.0,
+   "fat_100g": 25.4,
+   "saturated_fat_100g": 2.0,
+   "sugars_100g": 0.4,
+   "fiber_100g": 5.0,
+   "proteins_100g": 7.7,
+   "salt_100g": 0.7,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [],
+   "scans": 42.0,
+   "completeness": 0.7875,
+   "image": "https://images.openfoodfacts.org/images/products/501/776/400/3142/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5017764003142",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.8,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=3 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.766,
+     "why": [
+      "pack=25g (OFF quantity)",
+      "proteins_100g=7.7 (OFF)",
+      "fiber_100g=5 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.0,
+     "why": [
+      "£4.00/100g = price_gbp 1.0 / 25g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.246,
+     "why": [
+      "proteins_100g=7.7 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.12,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £4.00/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 1.0,
+     "why": [
+      "single-serve pack<=45g: 25g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.74,
+     "why": [
+      "completeness=0.7875 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.5,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=False (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "00355858",
+   "name": "Lightly sea salted",
+   "brand": "Sainsbury's",
+   "category": "crisps_savoury",
+   "role": "own_label",
+   "row": 1,
+   "price_gbp": 1.5,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Sainsbury's hand-cooked own-label 150g sharing bag band £1.25-£1.75",
+   "pack_g": 150,
+   "unit_price_per_100g": 1.0,
+   "pack_copy": "lightly sea salted · vegan · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "d",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:vegan",
+    "en:with-sunflower-oil"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 3,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Potato, Sunflower Oil, Sea Salt.",
+   "quantity": "150g",
+   "energy_kcal_100g": 505.0,
+   "fat_100g": 27.5,
+   "saturated_fat_100g": 2.8,
+   "sugars_100g": 0.5,
+   "fiber_100g": 2.0,
+   "proteins_100g": 6.2,
+   "salt_100g": 0.94,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:mixed-plastic-film-packet"
+   ],
+   "scans": 27.0,
+   "completeness": 1.0,
+   "image": "https://images.openfoodfacts.org/images/products/000/000/035/5858/front_en.20.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/00355858",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.8,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=3 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.193,
+     "why": [
+      "pack=150g (OFF quantity)",
+      "proteins_100g=6.2 (OFF)",
+      "fiber_100g=2 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.833,
+     "why": [
+      "£1.00/100g = price_gbp 1.5 / 150g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.198,
+     "why": [
+      "proteins_100g=6.2 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.693,
+     "why": [
+      "role=own_label (curation)",
+      "unit price £1.00/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.0,
+     "why": [
+      "single-serve pack<=45g: 150g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=False (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.4,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=False (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.738,
+     "why": [
+      "completeness=1 (OFF)",
+      "nutriscore=d (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.15,
+     "why": [
+      "role=own_label (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=False (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5053990127740",
+   "name": "Pringles Sour Cream",
+   "brand": "Pringles",
+   "category": "crisps_savoury",
+   "role": "incumbent",
+   "row": 2,
+   "price_gbp": 2.75,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Pringles 165g tube shelf price, often promo ~£1.85-£2 with loyalty card",
+   "pack_g": 165,
+   "unit_price_per_100g": 1.67,
+   "pack_copy": "pringles sour cream · no front-of-pack claims recorded in OFF",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 7,
+   "additives": [
+    "en:e160b",
+    "en:e296",
+    "en:e330",
+    "en:e471",
+    "en:e621",
+    "en:e627",
+    "en:e631"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:green-dot"
+   ],
+   "allergens": [
+    "en:gluten",
+    "en:milk"
+   ],
+   "analysis": [
+    "en:may-contain-palm-oil",
+    "en:non-vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 23,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Kartoffelpüreepulver, Sonnenblumenöl, WEIZENMEHL, Maismehl, Reismehl, Sauerrahm-Zwiebel-Würzmischung (WEIZENSTÄRKE, Geschmacksverstärker {Mononatriumglutamat, Dinatriumguanylat, Dinatriuminosinat}, Zwiebelpulver, Dextrose, Sonnenblumenöl, Speisesalz, modifizierte Maisstärke, Aromen {MILCH}, Maltodextrin, Zucker, Süßmolkenpulver {MILCH}, Sauerrahmpulver {MILCH}, Glukosesirup-Pulver, Säuerungsmittel {Citronensäure, Äpfelsäure}, MILCHEIWEISS), Maltodextrin, Emulgator (E471), Salz, Farbstoff (Annatto Norbixin). Kann Spuren von SOJA enthalten.",
+   "quantity": "165 g",
+   "energy_kcal_100g": 519.0,
+   "fat_100g": 30.0,
+   "saturated_fat_100g": 2.9,
+   "sugars_100g": 2.0,
+   "fiber_100g": 4.0,
+   "proteins_100g": 6.3,
+   "salt_100g": 1.1,
+   "sweeteners": 0,
+   "palm_oil_n": 1,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:tube",
+    "en:card-tube",
+    "en:container",
+    "en:pp-lid"
+   ],
+   "scans": 208.0,
+   "completeness": 0.9875,
+   "image": "https://images.openfoodfacts.org/images/products/505/399/012/7740/front_en.87.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5053990127740",
+   "data_notes": [
+    "OFF ingredients_text is the German-language panel of the same EAN; analysis flags en:may-contain-palm-oil"
+   ],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.24,
+     "why": [
+      "additives_n=7 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=False (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.09,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=7 (OFF)",
+      "top-level ingredients=23 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.294,
+     "why": [
+      "pack=165g (OFF quantity)",
+      "proteins_100g=6.3 (OFF)",
+      "fiber_100g=4 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.556,
+     "why": [
+      "£1.67/100g = price_gbp 2.75 / 165g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.202,
+     "why": [
+      "proteins_100g=6.3 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.29,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=7 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.822,
+     "why": [
+      "role=incumbent (curation)",
+      "unit price £1.67/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "single-serve pack<=45g: 165g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.0,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_free=False (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.0,
+     "why": [
+      "gluten in allergens=True (OFF allergens)",
+      "no-gluten label=False (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=True (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.558,
+     "why": [
+      "completeness=0.9875 (OFF)",
+      "nutriscore=d (OFF)",
+      "additives_n=7 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.2,
+     "why": [
+      "role=incumbent (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060292308500",
+   "name": "Sea Salt & Vinegar Potato Chips",
+   "brand": "Popchips",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 2,
+   "price_gbp": 1.75,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Popchips 85g sharing bag band £1.50-£2.00",
+   "pack_g": 85,
+   "unit_price_per_100g": 2.06,
+   "pack_copy": "sea salt & vinegar potato chips · gluten free · vegan",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 2,
+   "additives": [
+    "en:e330",
+    "en:e392"
+   ],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:vegan"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 5,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "59% dried potatoes, sunflower oil, seasoning (potato maltodextrin, vinegar powder, sea sal - salt, sugar, acid: citric acid, natural flavourings, yeast extract, antioxidant: extracts of rosemary), rice flour, potato starch. storage: store in a cool, dry place. suitable for vegans",
+   "quantity": "85 g",
+   "energy_kcal_100g": 432.0,
+   "fat_100g": 13.0,
+   "saturated_fat_100g": 1.5,
+   "sugars_100g": 3.0,
+   "fiber_100g": 4.3,
+   "proteins_100g": 5.6,
+   "salt_100g": 1.0825,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:mixed-plastic-packet"
+   ],
+   "scans": 30.0,
+   "completeness": 0.8875,
+   "image": "https://images.openfoodfacts.org/images/products/506/029/230/8500/front_en.25.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060292308500",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.63,
+     "why": [
+      "additives_n=2 (OFF)",
+      "ecoscore=b (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.44,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "top-level ingredients=5 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.419,
+     "why": [
+      "pack=85g (OFF quantity)",
+      "proteins_100g=5.6 (OFF)",
+      "fiber_100g=4.3 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.392,
+     "why": [
+      "£2.06/100g = price_gbp 1.75 / 85g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.179,
+     "why": [
+      "proteins_100g=5.6 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.44,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=2 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.277,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £2.06/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "single-serve pack<=45g: 85g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.73,
+     "why": [
+      "completeness=0.8875 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=2 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.7,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5000328015897",
+   "name": "oven baked cheese & onion flavour potato snack",
+   "brand": "Walkers",
+   "category": "crisps_savoury",
+   "role": "incumbent",
+   "row": 2,
+   "price_gbp": 2.25,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; OFF record is a 22g bag that is sold in 6x22g multipacks; price is for the 6-pack (132g)",
+   "pack_g": 132,
+   "unit_price_per_100g": 1.7,
+   "pack_copy": "oven baked cheese & onion flavour potato snack · no front-of-pack claims recorded in OFF",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "a",
+   "additives_n": 5,
+   "additives": [
+    "en:e160b",
+    "en:e160bi",
+    "en:e160c",
+    "en:e296",
+    "en:e322",
+    "en:e330"
+   ],
+   "labels": [],
+   "allergens": [
+    "en:milk"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 20,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Potato Flakes, Starch, Rapeseed Oil, Cheese & Onion Seasoning, Sugar, Emulsifier (Lecithins), Sunflower Oil, Colour (Annatto Norbixin) Cheese & Onion Seasoning: Whey Permeate (from Milk), Salt, Sugar, Flavouring (contains Milk), Rice Flour, Onion Powder, Acidity Regulators (Citric Acid, Malic Acid), Whey Protein (from Milk), Garlic Powder, Dried Cheese (0.1%) (from Milk), Whey Powder (from Milk), Colour (Paprika Extract, Annatto Bixin), Skimmed Milk Powder. Allergy Advice Contains: See highlighted ingredients May Contain: Wheat, Gluten, Barley, Soya, Celery, Mustard SUITABLE FOR VEGETARIANS ALVERS Logo are registered",
+   "quantity": "22g",
+   "energy_kcal_100g": 436.363636363636,
+   "fat_100g": 12.7272727272727,
+   "saturated_fat_100g": 1.36363636363636,
+   "sugars_100g": 7.27272727272727,
+   "fiber_100g": 6.36363636363636,
+   "proteins_100g": 5.90909090909091,
+   "salt_100g": 0.909090909090909,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:1-mixed-plastic-film-packet",
+    "en:mixed-plastic-film-packet"
+   ],
+   "scans": 36.0,
+   "completeness": 0.9,
+   "image": "https://images.openfoodfacts.org/images/products/500/032/801/5897/front_en.65.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5000328015897",
+   "data_notes": [
+    "OFF unit is a 22g bag; priced and graded as the 6x22g multipack it is sold in"
+   ],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.57,
+     "why": [
+      "additives_n=5 (OFF)",
+      "ecoscore=a (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.15,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=5 (OFF)",
+      "top-level ingredients=20 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.389,
+     "why": [
+      "pack=132g (OFF quantity)",
+      "proteins_100g=5.90909 (OFF)",
+      "fiber_100g=6.36364 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.54,
+     "why": [
+      "£1.70/100g = price_gbp 2.25 / 132g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.189,
+     "why": [
+      "proteins_100g=5.90909 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.35,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=5 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.816,
+     "why": [
+      "role=incumbent (curation)",
+      "unit price £1.70/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "single-serve pack<=45g: 132g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.2,
+     "why": [
+      "vegan=False (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=False (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=True (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.66,
+     "why": [
+      "completeness=0.9 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=5 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.2,
+     "why": [
+      "role=incumbent (curation)",
+      "non-potato base=False (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5013665115373",
+   "name": "Lentil & Pea Veggie Cakes Beetroot & Balsamic",
+   "brand": "Kallo",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 2,
+   "price_gbp": 1.85,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Kallo veggie cakes 122g band £1.75-£2.00",
+   "pack_g": 122,
+   "unit_price_per_100g": 1.52,
+   "pack_copy": "lentil & pea veggie cakes beetroot & balsamic · gluten free · vegan · b corp · high fibre · high protein · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 4,
+   "nutriscore": "a",
+   "ecoscore": "b",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:source-of-fibre",
+    "en:source-of-proteins",
+    "en:vegan",
+    "en:certified-b-corporation",
+    "en:high-fibres",
+    "en:high-proteins",
+    "en:rich-in-vegetable-protein"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 4,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Lentil Flour 76%, Rapeseed Oil, Beetroot, Balsamic Seasoning 7.2% (Sugar, Salt, Onion, Natural Flavour, Beetroot Red 8%, Garlic, Black Pepper, Balsamic Vinegar 0.7%), Green Peas 5.7%",
+   "quantity": "122 g",
+   "energy_kcal_100g": 425.531914893617,
+   "fat_100g": 12.0,
+   "saturated_fat_100g": 1.1,
+   "sugars_100g": 3.6,
+   "fiber_100g": 6.0,
+   "proteins_100g": 25.0,
+   "salt_100g": 0.1035,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [],
+   "scans": 141.0,
+   "completeness": 0.8,
+   "image": "https://images.openfoodfacts.org/images/products/501/366/511/5373/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5013665115373",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.71,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=b (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.5,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=4 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.6,
+     "why": [
+      "pack=122g (OFF quantity)",
+      "proteins_100g=25 (OFF)",
+      "fiber_100g=6 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.618,
+     "why": [
+      "£1.52/100g = price_gbp 1.85 / 122g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 1.0,
+     "why": [
+      "proteins_100g=25 (OFF)",
+      "high-proteins label=True (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.3,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=5 ['en:source-of-fibre', 'en:source-of-proteins', 'en:high-fibres', 'en:high-proteins', 'en:rich-in-vegetable-protein'] (OFF labels)",
+      "health word in name=True (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.367,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £1.52/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.0,
+     "why": [
+      "single-serve pack<=45g: 122g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=False (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 1.0,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.92,
+     "why": [
+      "completeness=0.8 (OFF)",
+      "nutriscore=a (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=True (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060878780386",
+   "name": "Lentil chips",
+   "brand": "Eat real",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 3,
+   "price_gbp": 1.6,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Eat Real 95g-113g sharing bag band £1.50-£2.00",
+   "pack_g": 95,
+   "unit_price_per_100g": 1.68,
+   "pack_copy": "lentil chips · gluten free · kosher · vegan · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:kosher",
+    "en:vegan",
+    "en:kashrut-division-of-the-london-beth-din"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 6,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Lentil Flour (43%), Potato Starch, Rapeseed Oil, Maize Flour, Salt, Packaged in a protective atmosphere.",
+   "quantity": "95 g",
+   "energy_kcal_100g": 456.0,
+   "fat_100g": 18.0,
+   "saturated_fat_100g": 1.5,
+   "sugars_100g": 0.7,
+   "fiber_100g": 4.4,
+   "proteins_100g": 13.0,
+   "salt_100g": 2.1625,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [],
+   "scans": 95.0,
+   "completeness": 0.6875,
+   "image": "https://images.openfoodfacts.org/images/products/506/087/878/0386/front_en.40.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060878780386",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.62,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.73,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=6 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.535,
+     "why": [
+      "pack=95g (OFF quantity)",
+      "proteins_100g=13 (OFF)",
+      "fiber_100g=4.4 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.548,
+     "why": [
+      "£1.68/100g = price_gbp 1.6 / 95g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.416,
+     "why": [
+      "proteins_100g=13 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.683,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=True (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.339,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £1.68/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "single-serve pack<=45g: 95g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.613,
+     "why": [
+      "completeness=0.6875 (OFF)",
+      "nutriscore=d (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=True (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060283762199",
+   "name": "Sea Salt Lentil Chips",
+   "brand": "Proper Chips",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 3,
+   "price_gbp": 1.6,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Proper 85g sharing bag band £1.50-£2.00",
+   "pack_g": 85,
+   "unit_price_per_100g": 1.88,
+   "pack_copy": "sea salt lentil chips · gluten free · vegan · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:vegan"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 5,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Lentil flour (30%), potato starch, vegetable oils (sunflower, rapeseed), corn flour, salt.",
+   "quantity": "85 gram",
+   "energy_kcal_100g": 480.0,
+   "fat_100g": 21.0,
+   "saturated_fat_100g": 1.6,
+   "sugars_100g": 0.6,
+   "fiber_100g": 2.5,
+   "proteins_100g": 10.0,
+   "salt_100g": 0.405,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [],
+   "scans": 111.0,
+   "completeness": 0.7,
+   "image": "https://images.openfoodfacts.org/images/products/506/028/376/2199/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060283762199",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.71,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=b (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=5 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.395,
+     "why": [
+      "pack=85g (OFF quantity)",
+      "proteins_100g=10 (OFF)",
+      "fiber_100g=2.5 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.466,
+     "why": [
+      "£1.88/100g = price_gbp 1.6 / 85g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.32,
+     "why": [
+      "proteins_100g=10 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.683,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=True (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.306,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £1.88/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "single-serve pack<=45g: 85g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=True (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.705,
+     "why": [
+      "completeness=0.7 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.8,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=True (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=False (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "4056489296454",
+   "name": "Lentil bites sea salt",
+   "brand": "Lidl",
+   "category": "crisps_savoury",
+   "role": "own_label",
+   "row": 3,
+   "price_gbp": 0.99,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; Lidl discounter own-label 110g, sub-£1 band",
+   "pack_g": 110,
+   "unit_price_per_100g": 0.9,
+   "pack_copy": "lentil bites sea salt · suitable for vegans · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 5,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "40% Lentil Flour, Potato Starch, Corn Flour, Rapeseed Oil, Salt.",
+   "quantity": "110 g",
+   "energy_kcal_100g": 459.0,
+   "fat_100g": 18.0,
+   "saturated_fat_100g": 1.7,
+   "sugars_100g": 0.6,
+   "fiber_100g": 4.5,
+   "proteins_100g": 13.0,
+   "salt_100g": 2.4,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [],
+   "scans": 45.0,
+   "completeness": 0.6875,
+   "image": "https://images.openfoodfacts.org/images/products/405/648/929/6454/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/4056489296454",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.62,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF)",
+      "organic=False (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=5 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.42,
+     "why": [
+      "pack=110g (OFF quantity)",
+      "proteins_100g=13 (OFF)",
+      "fiber_100g=4.5 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.875,
+     "why": [
+      "£0.90/100g = price_gbp 0.99 / 110g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.416,
+     "why": [
+      "proteins_100g=13 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.683,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=0 [] (OFF labels)",
+      "health word in name=True (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.71,
+     "why": [
+      "role=own_label (curation)",
+      "unit price £0.90/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.0,
+     "why": [
+      "single-serve pack<=45g: 110g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=False (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=False (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.4,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=False (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.613,
+     "why": [
+      "completeness=0.6875 (OFF)",
+      "nutriscore=d (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=own_label (curation)",
+      "non-potato base=True (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=False (OFF name)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060367450356",
+   "name": "Blue Maize Tortilla Chips",
+   "brand": "Mister Free'd",
+   "category": "crisps_savoury",
+   "role": "challenger",
+   "row": 3,
+   "price_gbp": 2.49,
+   "price_source": "assumption: typical UK RRP Oct 2026 for this pack size, not a scraped price; organic free-from tortilla chips 135g, health-store band £2.25-£2.75",
+   "pack_g": 135,
+   "unit_price_per_100g": 1.84,
+   "pack_copy": "blue maize tortilla chips · gluten free · organic · no gmos · vegan · high fibre · no additives listed",
+   "pack_copy_source": "derived from OFF name + labels + additives_n + analysis; no invented claims",
+   "nova": 3,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:no-gluten",
+    "en:organic",
+    "en:vegetarian",
+    "en:no-gmos",
+    "en:source-of-fibre",
+    "en:vegan",
+    "en:high-fibres"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 2,
+   "ingredients_n_source": "count of top-level comma items in OFF ingredients_text (OFF ingredients_n is null)",
+   "ingredients_text": "Blue corn tortilla chip: Blue corn (77%), sunflower oil and salt. Produced in a factory which handles milk",
+   "quantity": "135g",
+   "energy_kcal_100g": 481.0,
+   "fat_100g": 21.0,
+   "saturated_fat_100g": 2.0,
+   "sugars_100g": 0.6,
+   "fiber_100g": 5.7,
+   "proteins_100g": 7.1,
+   "salt_100g": 1.0825,
+   "sweeteners": 0,
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis tag (palm_oil_n column is null for all crisps)",
+   "recycling": [],
+   "packaging": [
+    "en:bag"
+   ],
+   "scans": 17.0,
+   "completeness": 0.8875,
+   "image": "https://images.openfoodfacts.org/images/products/506/036/745/0356/front_en.45.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060367450356",
+   "data_notes": [],
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.91,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=b (OFF)",
+      "organic=True (OFF labels)",
+      "palm_oil_free=True (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.75,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "top-level ingredients=2 (counted from OFF ingredients_text)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.391,
+     "why": [
+      "pack=135g (OFF quantity)",
+      "proteins_100g=7.1 (OFF)",
+      "fiber_100g=5.7 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.481,
+     "why": [
+      "£1.84/100g = price_gbp 2.49 / 135g (price is an assumption, see price_source)"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.227,
+     "why": [
+      "proteins_100g=7.1 (OFF)",
+      "high-proteins label=False (OFF labels)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.617,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "health-claim labels=2 ['en:source-of-fibre', 'en:high-fibres'] (OFF labels)",
+      "health word in name=False (OFF name)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.313,
+     "why": [
+      "role=challenger (curation)",
+      "unit price £1.84/100g (assumption price)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.0,
+     "why": [
+      "single-serve pack<=45g: 135g (OFF quantity)",
+      "brand commonly in UK meal-deal snack ranges=False (assumption)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 1.0,
+     "why": [
+      "vegan=True (OFF analysis/labels)",
+      "palm_oil_free=True (OFF analysis)",
+      "organic/B-Corp/TerraCycle label=True (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "gluten in allergens=False (OFF allergens)",
+      "no-gluten label=True (OFF labels)",
+      "wheat/gluten in ingredients or may-contain=False (OFF ingredients_text)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.78,
+     "why": [
+      "completeness=0.8875 (OFF)",
+      "nutriscore=c (OFF)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger (curation)",
+      "non-potato base=True (OFF ingredients_text/name)",
+      "flavoured (not plain salted)=True (OFF name)"
+     ]
+    }
+   }
+  }
+ ]
+}

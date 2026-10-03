@@ -1,0 +1,140 @@
+{
+  "trait": "O",
+  "trait_name": "Openness to experience",
+  "scale_convention": {
+    "ocean_value": "0-1 as in CONTRACT.md personas[].ocean.O, computed as O01 = (BFI_raw - 1) / 4 from a 1-5 BFI/BFI-2 domain mean",
+    "O_z": "(O01 - 0.667) / 0.160, i.e. standardised against UK norms (Rentfrow et al. 2015, see population_norms). Every coef below is per +1 SD of O_z.",
+    "where_coefs_apply": "logit-space additive terms: p_notice = sigma(... + alpha_trait*O_z*flag) in sim/notice.py; pick utility U += coef*O_z*flag in the choice step; lens weights multiplied by (1 + coef*O_z) and clipped to [0, 2x base]",
+    "conversion_rule": "r -> Cohen d = 2r/sqrt(1-r^2) -> log-odds = d*pi/sqrt(3) (Chinn 2000, Stat Med 19:3127, doi:10.1002/1097-0258(20001130)19:22<3127::AID-SIM784>3.0.CO;2-M). Then shrunk by 0.3-0.5 because (a) the studies are self-report surveys, not shelf behaviour, and (b) common-method variance inflates trait-behaviour r. Shrink factor is an assumption, stated per effect."
+  },
+  "population_norms": "UK: Rentfrow, Jokela & Lamb (2015) 'Regional personality differences in Great Britain', PLoS ONE 10(3):e0122245, doi:10.1371/journal.pone.0122245 (BBC Lab UK, N=386,375, 44-item BFI, 1-5 scale), Table 2: Openness M=3.67, SD=0.64, alpha=.79. For comparison the other traits in that table are E 3.24/0.82, A 3.74/0.62, C 3.65/0.70, N 2.97/0.81. Openness has the highest regional clustering (ICC2=.93, Moran's I=.56), so if agents are tied to a UK region, shift the regional mean rather than using one national mean. Sample: O_raw ~ Normal(3.67, 0.64) truncated to [1,5]; O01 = (O_raw-1)/4 gives mean 0.667, SD 0.160. Correlated sampling: use the individual-level trait intercorrelations in Rentfrow 2015 Table 3 (or BFI-2 intercorrelations from Soto & John 2017, J Pers Soc Psychol 113(1):117-143, doi:10.1037/pspp0000096) with a multivariate normal. That sample is 64% female, mean age 36, and self-selected online, so O is probably slightly inflated relative to the UK population (assumption). Archetype priors (O_z shift before sampling noise SD 0.6, all assumptions grounded in the effects below): novelty_seeker_tiktok +1.0 (neophilia; Knaapila 2011 r=-.23 neophobia with O), vegan_ethical +0.7 (Pfeiler & Egloff 2018 openness predicts vegetarianism), eco_low_chemical +0.5 (Soutter 2020 r=.21), ai_delegator +0.5 (Angrisani 2026 openness predicts LLM use), habit_loyalist_shrinkflation_angry -0.8 (low O = traditional diet, Mottus 2012 r=-.14, plus neophobia), frugal_unit_price 0, meal_deal_office 0, protein_gym 0, others 0.",
+  "effects": [
+    {
+      "behaviour": "Food neophobia (reluctance to try unfamiliar foods), which drives noticing of unfamiliar/new/challenger-brand products on shelf",
+      "direction": "higher O -> lower food neophobia -> more attention to unfamiliar SKUs",
+      "effect_size": "r = -0.23 between Food Neophobia Scale and NEO Openness, corrected for item overlap; genetic correlation rg = -0.39 in women; N = 1,175 Finnish young-adult twins",
+      "sim_mapping": "sim/notice.py: alpha_trait_novel * O_z added to the p_notice logit only when the product is 'unfamiliar' to the agent (brand not in persona habits[], or OFF created_t within the last 18 months, or a challenger brand flagged in the store layout). r=-.23 -> d=.47 -> logOR .86/SD; x0.3 shrink because noticing is upstream of and weaker than willingness to eat (assumption) -> 0.25",
+      "coef": 0.25,
+      "source": "Knaapila A, Silventoinen K, Broms U, Rose RJ, Perola M, Kaprio J, Tuorila HM (2011). Food neophobia in young adults: genetic architecture and relation to personality... a twin study. Behavior Genetics 41(4). doi:10.1007/s10519-010-9403-8",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Willingness to pick/try a novel product once noticed (approach vs avoidance of new foods)",
+      "direction": "higher O -> higher pick utility for novel/unfamiliar products",
+      "effect_size": "Openness predicts both factors of the FNS in N = 716 undergraduates: positively related to the 'approach' factor and negatively to the 'avoidance' factor (betas not in abstract). Paired with Knaapila 2011 r = -.23",
+      "sim_mapping": "choice step: U_pick += coef * O_z * is_novel. The base is the same r=-.23 (logOR .86/SD) with a x0.5 shrink (assumption: survey to behaviour), giving 0.43, rounded down to 0.4. Also feeds mechanism='novelty' in run-log events",
+      "coef": 0.4,
+      "source": "Nezlek JB, Forestell CA (2019). Food neophobia and the Five Factor Model of personality. Food Quality and Preference (2019). doi:10.1016/j.foodqual.2018.11.007; and Knaapila et al. 2011 (above)",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Willingness to try, buy and pay for meat alternatives (plant-based meat, pulses, TVP, insects, cultured meat)",
+      "direction": "higher O -> higher willingness for all five meat-alternative categories",
+      "effect_size": "HEXACO Openness was associated with higher willingness to try, buy and pay for ALL meat-alternative types, N = 451 omnivores (coefficients not in abstract; assumption: treat as r of about .20, in line with the other O-food effects here)",
+      "sim_mapping": "choice step: U_pick += 0.30 * O_z when OFF categories_tags contains en:meat-alternatives / en:plant-based-foods / en:meat-analogues, or labels_tags contains en:vegan or en:vegetarian. r=.2 -> logOR .74; x0.4 shrink (assumption) -> 0.30. Optional WTP: max acceptable price premium * (1 + 0.05*O_z) (assumption, 'pay' finding is directional only)",
+      "coef": 0.3,
+      "source": "Bates Z, Mesler RM, Chernishenko J, MacInnis C (2023). Open to Experiencing... Meat Alternatives? The HEXACO Personality Model and Willingness to Try, Buy and Pay Among Omnivores. Food Quality and Preference (2023). Abstract via Europe PMC search",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Following a vegetarian diet (persona-level identity, used for archetype assignment)",
+      "direction": "higher O -> higher probability of being vegetarian, net of sociodemographics",
+      "effect_size": "In stepwise logistic regression, Openness had a unique positive effect on being vegetarian in both waves of a German representative panel (SOEP; N = 4,496 and 5,125; prevalence 2.74% strict, 5.97% lax). The OR is not in the abstract",
+      "sim_mapping": "population sampler: P(archetype = vegan_ethical) logit += 0.3 * O_z (assumption: modest because the OR is not reported). Also sets the vegan_ethical O_z prior to +0.7",
+      "coef": 0.3,
+      "source": "Pfeiler TM, Egloff B (2018). Examining the 'Veggie' personality: Results from a representative German sample. Appetite 120:246-255. doi:10.1016/j.appet.2017.09.005",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Fruit, vegetable and salad choice, and lower meat and soft-drink consumption (direct path, not via eating styles)",
+      "direction": "higher O -> more fruit/veg/salad, less meat and soft drinks",
+      "effect_size": "Path models, random Swiss general-population sample N = 951: Openness had a direct positive effect on fruit, vegetable and salad intake and a direct negative effect on meat and soft-drink intake (standardised paths are small; exact values not in abstract)",
+      "sim_mapping": "choice step: U_pick += 0.20 * O_z for OFF categories_tags en:fruits / en:vegetables / en:salads; U_pick -= 0.15 * O_z for en:meats / en:sodas / en:sweetened-beverages. Magnitudes come from the Conner 2017 betas (next effect) because Keller & Siegrist give direction only",
+      "coef": 0.2,
+      "source": "Keller C, Siegrist M (2015). Does personality influence eating styles and food choices? Direct and indirect effects. Appetite 84:128-138. doi:10.1016/j.appet.2014.10.003",
+      "confidence": "medium"
+    },
+    {
+      "behaviour": "Fruit and vegetable consumption, used to size the produce effect",
+      "direction": "higher O -> more fruit and vegetables (O was the strongest, most consistent trait predictor)",
+      "effect_size": "Two NZ young-adult samples (N = 281 and 792): fruit beta = .13 and .11, vegetables beta = .19 and .19. +/-1 SD O is about +0.26 servings/day fruit and +0.36-0.38 servings/day vegetables",
+      "sim_mapping": "Calibrates the produce coef above: beta about .15 treated as r -> logOR .55; x0.4 shrink -> 0.22, rounded to 0.20 for fruit/veg/salad SKUs",
+      "coef": 0.2,
+      "source": "Conner TS, Thompson LM, Knight RL, Flett JAM, Richardson AC, Brookie KL (2017). The role of personality traits in young adult fruit and vegetable consumption. Frontiers in Psychology 8:119. doi:10.3389/fpsyg.2017.00119",
+      "confidence": "high"
+    },
+    {
+      "behaviour": "'Traditional' diet pattern (potatoes, meat and meat products, bread) vs a 'health-aware' pattern (cereal, dairy, fish, veg, fruit)",
+      "direction": "higher O -> less traditional, more health-aware",
+      "effect_size": "N = 1,691 Estonians, NEO-PI-3, controlling for age, sex and education: traditional diet r = -0.14 (self-rated) and -0.13 (informant-rated); health-aware diet r = .11-.17 across N-, E+, O+, C+ (self-rated), .08-.11 (informant-rated)",
+      "sim_mapping": "habit/loyalty: habit_bonus (repeat-purchase utility for the agent's usual SKU) multiplied by (1 - 0.15*O_z). r=-.14 -> logOR about .51; x0.3 shrink (assumption) -> 0.15. Low-O agents stick to the familiar staple, high-O agents drift. Also choice step: U -= 0.15*O_z for en:processed-meats, en:breads (white/standard)",
+      "coef": -0.15,
+      "source": "Mottus R, Realo A, Allik J, Deary IJ, Esko T, Metspalu A (2012). Personality traits and eating habits in a large sample of Estonians. Health Psychology 31(6). doi:10.1037/a0027041",
+      "confidence": "high"
+    },
+    {
+      "behaviour": "Pro-environmental attitudes and behaviour, which drives weighting of eco/sustainability attributes",
+      "direction": "higher O -> more pro-environmental",
+      "effect_size": "Meta-analysis, 38 sources, N = 44,993: Openness r = .22 with pro-environmental attitudes and r = .21 with behaviours. O and honesty-humility are the strongest Big Five/HEXACO correlates (A .10, C .11, E .10 for behaviours). Publication bias small",
+      "sim_mapping": "lens weights: weight(ecoscore_grade / environmental_score / packaging) *= (1 + 0.20*O_z), clipped to [0, 2x base]. Also p_notice for eco claims (OFF labels_tags en:organic, en:fair-trade, en:rainforest-alliance) += 0.10*O_z. The multiplier is sized directly by r = .21 (assumption: r used as a relative-weight elasticity). Notice term = r x0.5",
+      "coef": 0.2,
+      "source": "Soutter ARB, Bates TC, Mottus R (2020). Big Five and HEXACO personality traits, proenvironmental attitudes, and behaviors: a meta-analysis. Perspectives on Psychological Science 15(4). doi:10.1177/1745691620903019 (PMC7333518)",
+      "confidence": "high"
+    },
+    {
+      "behaviour": "Segmentation into dietary groups: the 'strong-hindrance meat eater' profile",
+      "direction": "lower O -> more likely a strong-hindrance meat eater (resistant to meat reduction)",
+      "effect_size": "Latent profile analysis, N = 1,135: strong-hindrance meat eaters had low Openness (with low C and A and high dark traits). Paper reports between-group differences only (abstract gives eta-squared ranges .08-.80 across all variables)",
+      "sim_mapping": "rejection_triggers: low-O agents (O_z < -1) get a gimmick/reactance trigger for 'plant-based swap' messaging (mechanism='gimmick_reactance') with P = 0.15 (assumption: no per-trait effect size)",
+      "coef": -0.15,
+      "source": "Palnau JF, Ziegler M, Lammle L (2022). You Are What You Eat and So Is Our Planet: Identifying Dietary Groups Based on Personality and Environmentalism. Int J Environ Res Public Health 19(15):9354. doi:10.3390/ijerph19159354",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Openness to foreign/'ethnic' cuisine products",
+      "direction": "higher O (more liberal ideology) -> lower neophobia toward foreign foods",
+      "effect_size": "4 studies, N = 627: socio-political ideology strongly predicts food neophobia, mediated by attitudes toward foreigners rather than threat sensitivity. O-to-ideology link not quantified here, so this is an indirect path",
+      "sim_mapping": "choice step: U_pick += 0.15*O_z for world-cuisine SKUs (OFF categories_tags en:world-cuisine / en:asian-foods / en:mexican-foods, etc.). Assumption: half of the novel-product coef because the path is indirect",
+      "coef": 0.15,
+      "source": "Guidetti M, Carraro L, Cavazza N (2022). Dining with liberals and conservatives: The social underpinnings of food neophobia. PLoS ONE 17(1):e0262676. doi:10.1371/journal.pone.0262676",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Adoption of LLM/AI tools (relevant to the ai_delegator archetype that asks ChatGPT what to buy)",
+      "direction": "higher O -> more likely to use LLMs",
+      "effect_size": "Nationally representative US probability panel, N = 12,224, two waves: above-median openness was associated with higher LLM usage, and the gap widened over time (effect size not in abstract)",
+      "sim_mapping": "population sampler: P(archetype = ai_delegator) logit += 0.2*O_z (assumption: modest because the effect size is unreported and the sample is US, not UK)",
+      "coef": 0.2,
+      "source": "Angrisani M, Casanova M, Fast NJ, Narang J, Schroeder J (2026). Gaps in large language model awareness, usage, and perceptions in the United States. PNAS Nexus. doi:10.1093/pnasnexus/pgag007",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Impulse buying (unplanned pick at shelf)",
+      "direction": "null: Openness is not a reliable predictor. Impulse-buying tendency tracks high Extraversion and low Conscientiousness",
+      "effect_size": "Verplanken & Herabadi 2001 (Dutch samples): impulse-buying tendency related to E (+) and C (-), no consistent O relation. No food-specific meta-analysis of O on impulse buying found in this pass",
+      "sim_mapping": "No O term on the impulse/unplanned-pick parameter (coef 0). Put the impulse effects on E and C instead. Stated explicitly so the null is traceable rather than silently omitted",
+      "coef": 0.0,
+      "source": "Verplanken B, Herabadi A (2001). Individual differences in impulse buying tendency: feeling and no thinking. European Journal of Personality 15(S1):S71-S83. doi:10.1002/per.423 (recalled from literature, not re-fetched in this session; verify before citing on a slide)",
+      "confidence": "low"
+    },
+    {
+      "behaviour": "Nutrition label reading / attention to back-of-pack fields",
+      "direction": "no direct O evidence found; label use belongs to Conscientiousness",
+      "effect_size": "None located: a Europe PMC query (openness AND big five AND nutrition/food label) returned no relevant studies",
+      "sim_mapping": "coef 0 on label-attention parameters. Owned by C.json",
+      "coef": 0.0,
+      "source": "assumption: absence of evidence (Europe PMC search, 2026-10-03). Keller & Siegrist 2015 put the restraint/label-like pathway on Conscientiousness, not Openness",
+      "confidence": "low"
+    }
+  ],
+  "caveats": [
+    "Every source is correlational and cross-sectional. None measures real shelf choice, so all coefs are shrunk (x0.3-0.5) from the r->logOR conversion. The shrink factors are assumptions, labelled per effect.",
+    "Effect sizes are small (|r| .11-.23). O should nudge choices, not decide them. Summed across all applicable flags, O should shift a single pick probability by at most about +/-10 percentage points at +/-1 SD.",
+    "Several papers (Bates 2023, Pfeiler & Egloff 2018, Keller & Siegrist 2015, Angrisani 2026) report direction and significance in the abstract only. Their coefs are assumption-sized and marked medium/low confidence.",
+    "Samples are Finnish, Estonian, Swiss, German, NZ, US and Italian, not UK. Only the norms (Rentfrow 2015, BBC Lab UK) are UK, and that sample is self-selected and 64% female.",
+    "The Verplanken & Herabadi 2001 null was recalled, not re-fetched (web search quota exhausted). Verify before it goes on a slide.",
+    "Openness and neophobia overlap conceptually (Knaapila corrected for item overlap; uncorrected r would be larger). Do not also add a separate 'neophilia' trait, because that would double-count.",
+    "O correlates with education, youth and urban residence. If the sampler already conditions archetypes on demographics, halve the archetype-assignment coefs to avoid double-counting.",
+    "Not verified this session: precise OFF taxonomy tags (en:meat-alternatives, en:world-cuisine, etc.). Check them against data/off before wiring."
+  ]
+}

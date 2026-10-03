@@ -1,0 +1,124 @@
+{
+ "id": "p_sam",
+ "name": "Sam",
+ "archetype": "glp1_small_appetite",
+ "mission": "top_up",
+ "budget_gbp": 12,
+ "budget_source": "assumption: per-store-visit budget for the sim, from the dossier's spend description",
+ "channel": "instore",
+ "ocean": {
+  "O": 0.5,
+  "C": 0.7,
+  "E": 0.4,
+  "A": 0.5,
+  "N": 0.55
+ },
+ "ocean_source": "assumption: fixture OCEAN set by hand from the dossier, pending data/personas/lens",
+ "ocean_effects": [],
+ "lens": [
+  {
+   "attribute": "price_gbp",
+   "off_field": "price_gbp",
+   "direction": "lower_better",
+   "weight": 0.3,
+   "why": "price_sensitivity_0_1",
+   "source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Sweeteners anywhere in the ingredients (sucralose, acesulfame-K, aspartame), especially in yoghurts, shakes and bars: 'They all have sweeteners in them though, don't they?' (Mumsnet GLP-1 board)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Quark texture sold as 'protein yoghurt' (Mumsnet: 'actually quark rather than yoghurt and I am not keen on the texture')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Sweet or confectionery-flavoured protein formats such as cookie dough, salted caramel or chocolate: 'Tried a protein Mars bar, like chewing on Gandhi's flip flop' (r/AskBrits)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A 'protein' claim with a trivial uplift over the regular SKU next to it (the Babybel Protein vs Light comparison), or kcal more than 10x protein grams ('if its above 10 i put it back')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Added protein powder or isolates that cause gas or bloating ('big sloppy farting mess', 'protein powder gives the food a funny taste')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Large or share-size packs, or pack sizes that hide the per-portion figure ('x amount of protein and kcals per 100g and the pack is like 147g')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A price premium for the label alone ('you're paying for branding', 'novelty tax')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "'Source of protein' or other vague front-of-pack claims ('100% of the time it translates to has basically no protein')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Visibly ultra-processed bars and shakes ('Most of these protein powders are full of UPF crap')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "One bad trial: chalky, vile or too sweet, and the brand is dropped for good",
+   "source": "data/personas/staged_personas_v1.json"
+  }
+ ],
+ "trust_signals": [
+  "Protein and fibre shown PER PORTION on the front, with a small, honest portion (e.g. under 150 kcal, 10g+ protein, 3g+ fibre)",
+  "'No sweeteners' or 'no added sugar' stated, and confirmed by a short, recognisable ingredient list",
+  "Naturally protein-rich whole foods and formats: plain Greek yoghurt or skyr, eggs, cooked chicken pieces, tinned fish, lentils, beans, edamame, kefir",
+  "Savoury flavour profiles in place of dessert or confectionery flavours",
+  "Single-serve or snack-size packs that are 'the right size'",
+  "Protein-to-calorie ratio of 1g per 10 kcal or better (the label-maths check), and price per 100g that is fair against the regular product",
+  "Fibre that comes from the food itself (oats, seeds, pulses), not 'added fibre' fizzy drinks ('the fiber they put in soda isn't the same as eating fibrous foods')",
+  "Gut-friendly cues such as live cultures or kefir, with no powder bulking",
+  "Advice framed by NHS or GLP-1 clinic guidance, not gym-bro marketing",
+  "Recommendations from other jab users (Mumsnet weight-loss-injections board), e.g. Lidl plain Greek at NOVA 1 and 4% sugar"
+ ],
+ "habits": [
+  "Clinical protein mandate. GLP-1 users are told to prioritise protein to protect muscle, so protein is the entry filter for every choice",
+  "Appetite collapse and the shift in category spend. Cravings and enjoyment of old favourites fade, and chocolate and crisps leave the basket",
+  "Nutrient density per bite. On a fraction of former intake, the protein-to-calorie ratio decides the choice, not the claim",
+  "Sweetener and quark-texture rejection. 'Protein' products in the dairy and snack aisles fail on taste and mouthfeel"
+ ],
+ "dossier": "WHO: Sam is a UK adult in their 40s, about five months into a privately prescribed Mounjaro course. Sam belongs to the 6.3% of GB households now using GLP-1 drugs (Worldpanel by Numerator: 2.3% in 2024, 4.1% in 2025, 6.3% in 2026, about 1.9m adults). Sam's appetite has collapsed. Chocolate and crisps, which used to be in every shop, have mostly stopped appealing (Worldpanel: 75% of GLP-1 users cut chocolate, 72% cut crisps, '54% report fewer cravings; 11% no longer enjoy usual favorites'). The household spends less on groceries overall (Worldpanel: \u00a3418 less per user household, \u00a3780m gone in total). Sam's clinic and every forum say the same thing: 'PROTEIN PROTEIN PROTEIN, or you'll lose muscle and your hair will fall out.' So Sam went looking for protein products and found a wall of sweetened, quark-based, chocolate-flavoured 'protein' SKUs. Sam now actively rejects them.\n\nCONSTRAINTS: Sam eats perhaps half of what they used to, so every bite has to work. In the corpus logic, 'if a person is only eating 1200 calories a day, fully one-third of every bite ... must be protein.' Sam's gut is unsettled by the drug, so added protein powders and sweeteners that cause gas or bloating are out. Fibre has become the quiet second goal, because Sam now eats too little to hit it from food. Portion size matters more than it used to: share bags and big tubs mean waste or overeating, while a small single-serve is 'the right size'. The household budget is not the binding constraint. Sam will pay for something that fits, but resents paying a 'novelty tax' for a protein label on a product that is barely different.\n\nCHANNEL MIX: (1) A weekly Tesco.com or Ocado shop, rebuilt from 'favourites' and buy-it-again lists. Sam has pruned it hard since starting the jab, and the corpus notes GLP-1 users report 'a decrease in the desire to shop online'. (2) Small in-store top-ups at Tesco Express, M&S Food or Lidl. This is where Sam reads backs of packs and compares the 'protein' version against the regular one next to it. (3) A lunchtime meal deal, often only half-eaten. The snack slot has moved from crisps to the Egg Protein Pot. (4) More and more, Sam asks an AI assistant (ChatGPT, or the Tesco app assistant) for 'high-protein snack, no sweeteners, small portion, gut-friendly'. What comes back are generic quark-based or bar-type options, because agents read the front-of-pack 'high protein' claim and the structured macros. They do not read texture, sweetener aftertaste or how the prod",
+ "verbatims": [
+  {
+   "quote": "When you're on weight loss drugs like mounjaro everything you read is about eating enough protein or you will lose muscle mass and your hair will fall out.",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "We tried that protein yougurt.... Omg so vile....",
+   "url": "https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite"
+  },
+  {
+   "quote": "Babybel Protein. They're 48 calories, with 5.2 grams of protein. Whereas Babybel Light is 5 grams of protein and 42 calories.",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "Seriously would prefer the pivot to fiber... trying to do it on a calorie deficit is also a proper struggle.",
+   "url": "https://www.reddit.com/comments/1oqtnv1"
+  },
+  {
+   "quote": "The portion size is small, but for me it's the right size. It's almost helpful so that I can enjoy the treat and keep it somewhat sensible at the same time.",
+   "url": "https://www.reddit.com/comments/1oqtnv1"
+  }
+ ],
+ "sim_parameters": {
+  "p_notice_eye_level": 0.55,
+  "p_notice_bottom_or_side": 0.1,
+  "habit_lockin_0_1": 0.8,
+  "price_sensitivity_0_1": 0.3,
+  "trust_new_brand_0_1": 0.25,
+  "gimmick_reactance_0_1": 0.7,
+  "reads_structured_data_0_1": 0.45,
+  "seconds_at_shelf": 12,
+  "meal_deal_pull_0_1": 0.75
+ },
+ "sim_parameters_source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)",
+ "fixture": true
+}

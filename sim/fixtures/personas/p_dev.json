@@ -1,0 +1,119 @@
+{
+ "id": "p_dev",
+ "name": "Dev",
+ "archetype": "frugal_unit_price",
+ "mission": "weekly_shop",
+ "budget_gbp": 15,
+ "budget_source": "assumption: per-store-visit budget for the sim, from the dossier's spend description",
+ "channel": "instore",
+ "ocean": {
+  "O": 0.4,
+  "C": 0.65,
+  "E": 0.55,
+  "A": 0.4,
+  "N": 0.45
+ },
+ "ocean_source": "assumption: fixture OCEAN set by hand from the dossier, pending data/personas/lens",
+ "ocean_effects": [],
+ "lens": [
+  {
+   "attribute": "price_gbp",
+   "off_field": "price_gbp",
+   "direction": "lower_better",
+   "weight": 0.88,
+   "why": "price_sensitivity_0_1",
+   "source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Branded or challenger unit price above roughly 2-3x the own-label equivalent on the same shelf ('three times the price ... It's just tomatoes and sugar')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "Sneaky shrinkflation: the same pack holding less, or a curved or hollow pack; leads to a long boycott of that brand",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A 'false offer' whose price per 100g is worse than the standard pack, or labels showing price per piece in place of per kg",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A 'protein' or 'high protein' claim used to charge a premium on the open shelf (a '\u00a33 chocolate bar with whey')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "An unknown brand at full price outside any deal mechanic (no meal-deal slot, no Clubcard price, no yellow sticker)",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "One bad trial (texture or taste): category locked to the previous choice",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A meal-deal item with low standalone value (water, cheap sandwich), seen as wasting the slot",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A premium or 'artisanal' pack look that signals marketing spend rather than product ('brands spend the money on advertising, while off brand spend the money on the product')",
+   "source": "data/personas/staged_personas_v1.json"
+  },
+  {
+   "trigger": "A visible sponsored or promoted placement (inferred from the ACES sponsored penalty for agents; the human evidence is indirect and not separately evidenced in the corpus for Dev)",
+   "source": "data/personas/staged_personas_v1.json"
+  }
+ ],
+ "trust_signals": [
+  "Lowest price per 100g on the shelf-edge label",
+  "Own-label middle tier (not the bottom 'value' tier), especially the Aldi or Lidl dupe of a known brand ('Aldi hoops are great because they are exactly Hula hoops')",
+  "'Made in the same factory' word-of-mouth or reddit lore",
+  "Clubcard or Nectar member price, or a yellow 'reduced' sticker",
+  "Meal-deal eligibility, plus a high standalone price that makes the slot feel 'won'",
+  "Protein per pound or calories per pound visible on the pack (the uni 'best price per calorie' heuristic)",
+  "Blind-test wins where own-label beats the brand ('Channel 4 did it. Branston won, Tesco everyday value came second and Heinz was third')",
+  "A peer or housemate recommendation on a specific dupe (the 'six packs of lidls own brand mccoys' kind of reply)",
+  "Lower sugar or salt than the branded equivalent on the nutrition panel (a bonus, not a driver)"
+ ],
+ "habits": [
+  "Cheapest-first ladder: start at own-label and trade up only when it fails (price anchoring and satisficing)",
+  "Fairness backlash at the branded price gap: a premium of 3x or more to own-label reads as gouging (fairness norms and reactance)",
+  "Meal-deal transaction utility: pick the highest standalone-priced item in each slot and never 'waste' a slot on water (mental accounting)",
+  "Optimising price per calorie or per gram of protein within a fixed-price bundle (a student-budget heuristic)"
+ ],
+ "dossier": "Dev is 21, a final-year undergraduate in a UK university city. He shares a house and lives on a maintenance loan plus about 12 hours a week of part-time work. His weekly food budget is about \u00a325-35. The big shop is at Aldi or Lidl, with a Tesco Express top-up near campus using the Clubcard app on his phone. On campus days (3-4 a week) lunch is a Tesco or Sainsbury's meal deal at the Clubcard or Nectar price (about \u00a33.50-\u00a33.85). He treats the meal deal as a game he plays to win.\n\nCHANNEL MIX: about 70% in-store at a discounter, about 25% convenience-format top-up and meal deals, and under 5% online, mostly using the Tesco app to check Clubcard prices. He has asked ChatGPT for 'cheapest high-protein lunch ideas' but has never let an agent fill a basket. If he did, the mission would be 'cheapest decent X'.\n\nDEFAULT RULE: start at the cheapest own-label item and move up only after a bad experience. He usually buys the middle tier, not the bottom tier ('I never go for the bottom tier own brand though', AskUK). He believes most own-label is made 'in the same factory', and he uses that belief to justify switching.\n\nBRAND EXCEPTIONS: he keeps 2-4 'hero' brands where he believes the taste difference is real (for example Branston beans, Coke for mixers, Yorkshire Tea). He keeps them because of one past bad own-label trial, not because of advertising.\n\nMEAL-DEAL BEHAVIOUR: he takes the highest standalone-priced drink he will drink (smoothie, Monster, large Red Bull) and never chooses water. He picks the snack that gives the most grams or the most protein for the slot. He accepts 'protein' items inside the deal because they are effectively free. He mocks them on the open shelf ('\u00a33 for a chocolate bar with whey').\n\nPRICE LITERACY: he reads price per 100g and gets angry at 'false offers' and sneaky shrinkflation. He punishes big incumbents (Heinz, Kellogg's, Cadbury, Pringles, Kettle) with long boycotts.\n\nWHERE A CHALLENGER FITS: for a challenger brand from The Shelf, Dev is close to unreachable at full price on the ambient shelf. He tries something new only through (a) a meal-deal slot, (b) a yellow-sticker reduction, (c) a Clubcard price or (d) a discounter middle aisle.\n\nSIMULATION ROLE: Dev is the case where human and agent CONVERGE, and both converge against the challenger. A retailer agent with an own-label default (the Tesco assistant on Clubcard history) and a 'cheapest decent' prompt would pick much as Dev does. Divergence is low, but the challenger's share is",
+ "verbatims": [
+  {
+   "quote": "I've always started with the cheapest and worked my way up by price until I've found the one I like",
+   "url": "https://www.reddit.com/comments/13u6xww"
+  },
+  {
+   "quote": "Tesco (normal, not value) Ketchup 890g: \u00a31.35  Heinz Ketchup 900g: \u00a34.50  How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!",
+   "url": "https://www.reddit.com/comments/1b4i3rn"
+  },
+  {
+   "quote": "As a student I used to pack Rich Tea biscuits for extra cash. They just change the wrapper for different customers. The biscuit was just the same",
+   "url": "https://www.reddit.com/comments/1bq1qcm"
+  },
+  {
+   "quote": "False offers really get my fucking goat. When you look at the price per 100g and the one on 'offer' is more expensive per gram than the standard one.",
+   "url": "https://www.reddit.com/comments/eraymp"
+  },
+  {
+   "quote": "For me it's Kettle Chips after they covertly reduced their bags from 150g to 130g and the price increased at the same time",
+   "url": "https://www.reddit.com/comments/1tsbmt5"
+  }
+ ],
+ "sim_parameters": {
+  "p_notice_eye_level": 0.7,
+  "p_notice_bottom_or_side": 0.08,
+  "habit_lockin_0_1": 0.8,
+  "price_sensitivity_0_1": 0.88,
+  "trust_new_brand_0_1": 0.15,
+  "gimmick_reactance_0_1": 0.45,
+  "reads_structured_data_0_1": 0.15,
+  "seconds_at_shelf": 6,
+  "meal_deal_pull_0_1": 0.85
+ },
+ "sim_parameters_source": "data/personas/staged_personas_v1.json verdict.sim_parameters (skeptic-calibrated)",
+ "fixture": true
+}

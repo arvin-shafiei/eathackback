@@ -1,0 +1,298 @@
+{
+ "id": "p_frugal_unit_price",
+ "name": "Dev",
+ "archetype": "frugal_unit_price",
+ "mission": "weekly_shop",
+ "secondary_missions": [
+  "meal_deal",
+  "top_up"
+ ],
+ "missions_source": "data/personas/staged_personas_v1.json[4] (Dev) dossier.missions: Aldi/Lidl big shop + 3-4 campus meal deals a week + Tesco Express top-up",
+ "budget_gbp": 30,
+ "budget_source": "staged_personas_v1.json[4] dossier.profile: 'weekly food budget is about £25-35' (midpoint). assumption: student-budget figure, not a measured sample. Meal-deal budget £3.50-£3.85 (Clubcard/Nectar price) per lunch, same source.",
+ "channel": "instore",
+ "channel_source": "staged_personas_v1.json[4]: ~70% discounter in store, ~25% convenience/meal deal, <5% online (assumption-level estimate in the staged dossier)",
+ "ocean": {
+  "O": 0.35,
+  "C": 0.62,
+  "E": 0.45,
+  "A": 0.4,
+  "N": 0.55
+ },
+ "ocean_effects": [
+  {
+   "trait": "O",
+   "value": 0.35,
+   "justification": "Tries new things only when a deal takes the risk away (meal-deal slot, Clubcard price, clearance). Default is the known own-label dupe.",
+   "effect": "low O → lower p_notice and lower trial for unfamiliar challenger brands; novelty is not a reward on its own",
+   "coef": -0.25,
+   "source": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (n=716): food-neophobia 'approach' factor positively related to Openness, and the 'avoidance' factor negatively related to Openness and Extraversion. coef magnitude = assumption: scaled to the staged trust_new_brand_0_1=0.15"
+  },
+  {
+   "trait": "C",
+   "value": 0.62,
+   "justification": "Disciplined about the budget and checks the shelf-edge unit price, but the reading is narrow: price per 100g and the headline price, not the full nutrition panel.",
+   "effect": "C → +attention to the shelf-edge price/100g field and to offer-vs-standard comparisons. Does NOT extend to the ingredients/nutrition fields (reads_structured_data stays 0.15)",
+   "coef": 0.3,
+   "source": "Lastovicka et al. 1999, 'Lifestyle of the Tight and Frugal', J. Consumer Research 26(1), doi:10.1086/209552: frugality is defined as restraint in acquiring and resourceful use of goods to reach longer-term goals (a self-control construct close to C). Behaviour verbatim: 'When you look at the price per 100g and the one on \"offer\" is more expensive per gram than the standard one.' https://www.reddit.com/comments/eraymp. coef = assumption"
+  },
+  {
+   "trait": "E",
+   "value": 0.45,
+   "justification": "About average. Picks up specific dupes from housemates and Reddit word of mouth, not from social display.",
+   "effect": "peer recommendation acts as a trust signal for own-label dupes (small effect)",
+   "coef": 0.1,
+   "source": "Reply in a shrinkflation thread: 'Get the six packs of lidls own brand mccoys. Really nice!' https://www.reddit.com/comments/1tsbmt5. E value = assumption: no archetype-specific evidence, so set near the mean"
+  },
+  {
+   "trait": "A",
+   "value": 0.4,
+   "justification": "Below average. Branded price gaps feel like gouging and he reacts with boycotts rather than benefit of the doubt.",
+   "effect": "low A → stronger fairness backlash when a brand costs about 2-3x own-label per 100g (adds to rejection probability)",
+   "coef": 0.2,
+   "source": "'How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!' https://www.reddit.com/comments/1b4i3rn. Mapping low A → reactance = assumption: no direct Big Five study found for brand-boycott behaviour"
+  },
+  {
+   "trait": "N",
+   "value": 0.55,
+   "justification": "Slightly above average. Strong 'pain of paying' and anger at false offers and shrinkflation, but it mostly turns into grumbling rather than switching.",
+   "effect": "N → amplifies the negative sentiment on false offers and shrinkflation. Switching is capped by the YouGov resignation effect",
+   "coef": 0.15,
+   "source": "Rick, Cryder & Loewenstein 2008, 'Tightwads and Spendthrifts', J. Consumer Research 34(6), doi:10.1086/523285 (an anticipatory pain-of-paying construct). YouGov 2025: among concerned shoppers, brand switching fell from 50% to 36%, https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits. N→pain mapping and coef = assumption"
+  }
+ ],
+ "lens": [
+  {
+   "attribute": "price_per_100g",
+   "off_field": "derived: price_gbp / product_quantity(g or ml) × 100 (OFF product_quantity + catalog price_gbp)",
+   "direction": "lower_better",
+   "weight": 0.36,
+   "why": "This is his main decision rule. He compares the shelf-edge unit price, not the headline price, and treats an 'offer' that is worse per gram as a betrayal.",
+   "source": "'False offers really get my fucking goat. When you look at the price per 100g and the one on \"offer\" is more expensive per gram than the standard one.' https://www.reddit.com/comments/eraymp ; 'Always assess the value of a product by looking at the price per kilo gram' https://www.reddit.com/comments/1scat6b"
+  },
+  {
+   "attribute": "role",
+   "off_field": "catalog role (own_label | incumbent | challenger)",
+   "direction": "own_label > incumbent > challenger",
+   "weight": 0.2,
+   "why": "Default ladder: start with own-label (middle tier, not bottom 'value' tier), trade up only after a bad trial. Believes 'same factory'.",
+   "source": "'I've always started with the cheapest and worked my way up by price until I've found the one I like' https://www.reddit.com/comments/13u6xww ; 'I never go for the bottom tier own brand though' https://www.reddit.com/comments/1ow5fne ; 'They just change the wrapper for different customers' https://www.reddit.com/comments/1bq1qcm"
+  },
+  {
+   "attribute": "price_gbp",
+   "off_field": "catalog price_gbp (headline shelf price)",
+   "direction": "lower_better",
+   "weight": 0.12,
+   "why": "A fixed weekly budget of about £30 makes the headline price a hard filter before he ever reads the unit price. Most shoppers remember the rough price, not the pack weight.",
+   "source": "'I know the rough price, but not the weight.' https://www.reddit.com/comments/82m9zj ; budget from staged_personas_v1.json[4] (£25-35/wk)"
+  },
+  {
+   "attribute": "premium_claim_gimmick",
+   "off_field": "pack_copy (regex: protein|high protein|new recipe|artisan|superfood) × price_per_100g premium vs category own-label",
+   "direction": "penalty_when_claim_carries_price_premium",
+   "weight": 0.12,
+   "why": "A claim used to charge more reads as a price grab. He only accepts 'protein' when the meal deal makes it effectively free.",
+   "source": "'Aldi briefly sold \"protein\" chicken sausages right next to their usual chicken sausages... about 1g more protein per 100g and cost about £1 more. Absolutely pointless.' https://www.reddit.com/comments/1wqczct ; slot acceptance: 'if I buy a protein shake and protein yogurt in meal deal then it gets better' https://www.reddit.com/comments/1k4ayi9"
+  },
+  {
+   "attribute": "proteins_100g_per_gbp",
+   "off_field": "proteins_100g ÷ price_per_100g (OFF nutriments.proteins_100g + catalog price)",
+   "direction": "higher_better",
+   "weight": 0.1,
+   "why": "A value-per-pound heuristic (protein or calories per £) used mainly for meal-deal snack slots and post-gym top-ups.",
+   "source": "'a friend of mine at uni worked out that the best price per calorie of the Tesco mealdeals was...' https://www.reddit.com/comments/1d3amm2 ; https://www.reddit.com/comments/1k4ayi9"
+  },
+  {
+   "attribute": "first_ingredient_water",
+   "off_field": "ingredients_text (first token) / ingredients_n",
+   "direction": "penalty_if_water_first_in_sauces",
+   "weight": 0.06,
+   "why": "A minor check that a cheap unit price isn't diluted value ('wetflation'). Applies to sauces and condiments only, and is rarely used in the 8 store categories.",
+   "source": "'if you're buying mayonnaise and the first ingredients in the list is water then you aren't buying mayonnaise' https://www.reddit.com/comments/1scat6b ; Morrisons vs Heinz ketchup ingredients comparison https://www.reddit.com/comments/1511znd"
+  },
+  {
+   "attribute": "nutriscore",
+   "off_field": "nutriscore_grade",
+   "direction": "better_is_a (bonus, not driver)",
+   "weight": 0.04,
+   "why": "Lower sugar or salt than the branded equivalent is a nice-to-have tiebreaker. It never outweighs price.",
+   "source": "assumption: staged_personas_v1.json[4] trust_signals lists 'Lower sugar or salt than the branded equivalent... a bonus, not a driver'. No direct verbatim, so the weight is kept minimal"
+  }
+ ],
+ "lens_weights_sum": 1.0,
+ "rejection_triggers": [
+  {
+   "trigger": "Brand or challenger price_per_100g ≥ ~2-3x the own-label equivalent on the same shelf",
+   "source": "https://www.reddit.com/comments/1b4i3rn ('more than three times the price?! It's just tomatoes and sugar!')"
+  },
+  {
+   "trigger": "'Offer' price whose per-100g price is worse than the standard pack",
+   "source": "https://www.reddit.com/comments/eraymp"
+  },
+  {
+   "trigger": "Protein/'new recipe' claim carrying a price premium on the open shelf (outside a meal deal)",
+   "source": "https://www.reddit.com/comments/1wqczct ; https://www.reddit.com/comments/1tsbmt5 ('I am not paying £3 for a chocolate bar with a little bit of whey added')"
+  },
+  {
+   "trigger": "Unknown brand at full price with no deal mechanic (no meal-deal tag, member price, or clearance)",
+   "source": "staged_personas_v1.json[4] rejection_triggers + verdict correction ('A is rejected by the tag filter alone')"
+  },
+  {
+   "trigger": "Known shrinkflation by an incumbent → long boycott, but only for emotionally salient brands (switching is capped by resignation)",
+   "source": "'Kettle Chips after they covertly reduced their bags from 150g to 130g' + reply 'Get the six packs of lidls own brand mccoys' https://www.reddit.com/comments/1tsbmt5 ; YouGov 2025 50%→36% switching https://yougov.com/en-gb/articles/52576-shrinkflation-concern-rises-in-2025-but-fewer-britons-are-changing-shopping-habits"
+  },
+  {
+   "trigger": "Premium/'artisan' pack look read as advertising spend rather than product",
+   "source": "'brands spend the money on advertising, while off brand spend the money on the product' https://www.reddit.com/comments/1ow5fne"
+  },
+  {
+   "trigger": "Meal-deal item with low standalone value (e.g. water) seen as wasting the slot",
+   "source": "https://www.reddit.com/comments/1bc79kh (990 upvotes)"
+  }
+ ],
+ "trust_signals": [
+  {
+   "signal": "Lowest price per 100g on the shelf-edge label",
+   "source": "https://www.reddit.com/comments/eraymp ('it literally says the price per gram on the same label on the edge of the shelf')"
+  },
+  {
+   "signal": "Own-label 'dupe' of a known brand (middle tier)",
+   "source": "'Aldi hoops are great because they are exactly Hula hoops' https://www.reddit.com/comments/r38ifw ; https://www.reddit.com/comments/1ow5fne"
+  },
+  {
+   "signal": "Blind-test result where own-label beats the brand",
+   "source": "'channel 4 did it. Branston won, Tesco everyday value came second and Heinz was third' https://www.reddit.com/comments/r2udam"
+  },
+  {
+   "signal": "Meal-deal eligibility, plus a high standalone price that makes the slot feel 'won'",
+   "source": "https://www.reddit.com/comments/1bc79kh"
+  },
+  {
+   "signal": "Member price (Clubcard/Nectar) or clearance/reduced sticker",
+   "source": "staged_personas_v1.json[4] trust_signals; verdict: ambient challengers reach the reduced shelf only as range-out clearance ('Reduced to clear section still had them for months', corpus/protein_gimmick.md)"
+  },
+  {
+   "signal": "'Same factory' lore / housemate recommendation of a specific dupe",
+   "source": "https://www.reddit.com/comments/1bq1qcm ; https://www.reddit.com/comments/1tsbmt5"
+  }
+ ],
+ "habits": [
+  {
+   "habit": "Habitual meal-deal combo grabbed in about 3-5 s without re-evaluation. Full slot maths only on a first visit or when the usual item is out of stock",
+   "source": "'a coworker who gets almost the exact same one every single day' https://www.reddit.com/comments/1qazvyk ; staged verdict correction (collapse Stage 3 to 3-5 s)"
+  },
+  {
+   "habit": "Keeps 2-4 'hero' brands locked in by one past bad own-label trial",
+   "source": "'Own brand for everything except: Branston Beans... Mutti Tomatoes... Yorkshire Tea' https://www.reddit.com/comments/13u6xww"
+  },
+  {
+   "habit": "Prefers the low-choice discounter shelf: one or two options, in and out",
+   "source": "'There's usually only one, maybe two, options for each product... zero decision fatigue' https://www.reddit.com/comments/1ow5fne"
+  },
+  {
+   "habit": "Puts 'protein' items in the meal deal because they are effectively free, then mocks them on the open shelf",
+   "source": "https://www.reddit.com/comments/1k4ayi9 ; https://www.reddit.com/comments/1tsbmt5"
+  },
+  {
+   "habit": "Value loyalty, not retailer loyalty: will defect from a discounter if own-label quality visibly drops",
+   "source": "'The quality of Lidl own brand is now so bad I've been back at Tesco for the last 12 weeks' https://www.reddit.com/comments/1511znd"
+  }
+ ],
+ "says_vs_does": "Says he never pays for brands, yet keeps a few hero brands. Says he maximises meal-deal value, yet drifts into a habitual combo. Says protein is a scam, yet puts protein yoghurt in the deal. Says shrinkflation makes him switch, yet mostly grumbles (YouGov 50%→36%). Source: staged_personas_v1.json[4] says_vs_does.",
+ "dossier": "I'm Dev, 21, final year, sharing a house, living on a maintenance loan and about twelve hours a week at a bar. Food is £25 to £35 a week, and I know which end of that I'm at by Thursday. The big shop is Aldi: one or two options per thing, in and out in twenty minutes. I don't browse. Most of what's on a shelf I genuinely never see. I'm looking for the yellow shelf-edge label and the little number underneath, the price per 100g. That's the only bit of a label I properly read. I don't do ingredients lists unless something's suspiciously cheap and watery.\n\nMy rule is simple: start with the own-label, go up only if it's grim. Not the bottom 'value' tier, the normal one. Half of it comes out of the same factory anyway. I've got maybe three exceptions where I got burned once (beans, tea, Coke for mixers) and I'm not risking those again.\n\nOn campus days it's a meal deal at Tesco Express on my Clubcard. I'll be honest, it's the same sandwich, protein yoghurt and Monster most days, grabbed in five seconds. I'd never waste the drink slot on water. The yoghurt's 'protein' is free in the deal. On the open shelf, paying £1 extra for 1g more protein is a joke.\n\nWhat winds me up: 'offers' that are worse per gram than the normal pack, and brands at three times the own-label price for the same stuff. Kettle shrank their bags, so I went to Lidl's crinkle cut. A new brand I've never heard of at full price, in a nice pastel can? I won't even clock it. Put it in the meal deal or the reduced bin and I might try it once.",
+ "dossier_word_count_note": "293 words; facts traced to staged_personas_v1.json[4] and the verbatims below",
+ "verbatims": [
+  {
+   "quote": "False offers really get my fucking goat. When you look at the price per 100g and the one on “offer” is more expensive per gram than the standard one.",
+   "url": "https://www.reddit.com/comments/eraymp",
+   "subreddit": "UKPersonalFinance",
+   "score": 14
+  },
+  {
+   "quote": "Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!",
+   "url": "https://www.reddit.com/comments/1b4i3rn",
+   "subreddit": "ukpolitics",
+   "score": 120
+  },
+  {
+   "quote": "I've always started with the cheapest and worked my way up by price until I've found the one I like",
+   "url": "https://www.reddit.com/comments/13u6xww",
+   "subreddit": "AskUK",
+   "score": 3
+  },
+  {
+   "quote": "If I fancy a water on a meal deal day I’ll get a smoothie or some other overpriced abomination that’s in the deal but retailing separately at £2.50 and get the 80p water outside of the meal deal purchase. I try to maximise my value where possible.",
+   "url": "https://www.reddit.com/comments/1bc79kh",
+   "subreddit": "CasualUK",
+   "score": 990
+  },
+  {
+   "quote": "Aldi briefly sold “protein” chicken sausages right next to their usual chicken sausages. I think they had about 1g more protein per 100g and cost about £1 more. Absolutely pointless.",
+   "url": "https://www.reddit.com/comments/1wqczct",
+   "subreddit": "AskUK",
+   "score": 34
+  },
+  {
+   "quote": "As a student I used to pack Rich Tea biscuits for extra cash. They just change the wrapper for different customers. The biscuit was just the same",
+   "url": "https://www.reddit.com/comments/1bq1qcm",
+   "subreddit": "AskUK",
+   "score": 4
+  },
+  {
+   "quote": "Always assess the value of a product by looking at the price per kilo gram",
+   "url": "https://www.reddit.com/comments/1scat6b",
+   "subreddit": "AskBrits",
+   "score": 1
+  },
+  {
+   "quote": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+   "url": "https://www.reddit.com/comments/1k4ayi9",
+   "subreddit": "UKFrugal",
+   "score": 1
+  }
+ ],
+ "counter_evidence": [
+  {
+   "note": "A large minority do not maximise meal-deal value, so the slot-price rule should be probabilistic, not deterministic",
+   "quote": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+   "url": "https://www.reddit.com/comments/1bc79kh",
+   "score": 104
+  },
+  {
+   "note": "Student-specific evidence is thin (two comments). Frugal drivers come from general UK budget-shopper threads",
+   "source": "staged_personas_v1.json[4] dossier EVIDENCE CAVEAT"
+  }
+ ],
+ "sim_params": {
+  "p_notice_eye_level": 0.7,
+  "p_notice_bottom_or_side": 0.08,
+  "habit_lockin_0_1": 0.8,
+  "price_sensitivity_0_1": 0.88,
+  "trust_new_brand_0_1": 0.15,
+  "gimmick_reactance_0_1": 0.45,
+  "reads_structured_data_0_1": 0.15,
+  "seconds_at_shelf": 6,
+  "meal_deal_pull_0_1": 0.85
+ },
+ "sim_params_sources": {
+  "p_notice_eye_level": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Shape anchored on eye-level vs floor +39% sales (Wikipedia Planogram field study) and Chandon et al. 2009 J. Marketing 73(6) eye tracking, via research/04-3d-sim-evidence-and-tech.md",
+  "p_notice_bottom_or_side": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Low because he scans for the purple/meal-deal tag and the yellow label, not the ankle shelf. Skeptic: 'does not bend down to read a bottom-shelf cola he is not buying'. Exception: own-label value lines often sit low, but the habitual pick is mid-tier (assumption)",
+  "habit_lockin_0_1": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). 'a coworker who gets almost the exact same one every single day' https://www.reddit.com/comments/1qazvyk ; hero-brand exceptions https://www.reddit.com/comments/13u6xww",
+  "price_sensitivity_0_1": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). https://www.reddit.com/comments/eraymp ; https://www.reddit.com/comments/1b4i3rn ; budget £25-35/wk",
+  "trust_new_brand_0_1": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Unknown brand at full price outside a deal is rejected by the tag filter alone (verdict correction). Low O per Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007",
+  "gimmick_reactance_0_1": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Moderate, not high: strong scorn on the open shelf (https://www.reddit.com/comments/1wqczct) but acceptance inside the meal deal (https://www.reddit.com/comments/1k4ayi9), so it averages to ~0.45",
+  "reads_structured_data_0_1": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Reads only the price/100g and headline price. Ingredients only for 'watery' sauces (https://www.reddit.com/comments/1scat6b)",
+  "seconds_at_shelf": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). Verdict: habitual repeat picks take 3-5 s, and first-visit or out-of-stock evaluations take longer; 6 s is the blended mean (assumption on the mix)",
+  "meal_deal_pull_0_1": "data/personas/staged_personas_v1.json[4] (Dev) verdict.sim_parameters, skeptic-calibrated (realism 6.5/10). https://www.reddit.com/comments/1bc79kh (990 upvotes, slot maximising); damped by 'what I fancy' (104 upvotes, same thread). Skeptic: making a challenger meal-deal eligible converts ~20-35% of first-week noticed visits, not all"
+ },
+ "notes_for_sim": [
+  {
+   "note": "In-store exposure of small challengers is low before any choice logic runs (e.g. a 40-store listing → exposure probability ~0.1-0.2 for a random Express)",
+   "source": "staged_personas_v1.json[4] verdict.corrections"
+  },
+  {
+   "note": "Human-vs-agent: low divergence. A 'cheapest decent' / own-label-default agent picks like Dev, and challenger share is near zero in both arms except via the meal-deal slot",
+   "source": "staged_personas_v1.json[4] dossier SIMULATION ROLE"
+  }
+ ]
+}

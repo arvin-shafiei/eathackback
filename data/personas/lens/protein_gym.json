@@ -1,0 +1,257 @@
+{
+  "id": "p_protein_gym",
+  "name": "Kieran",
+  "archetype": "protein_gym",
+  "mission": "gym",
+  "mission_source": "assumption: the contract's 'gym' mission. He also does meal_deal on office days and a weekly_shop at Lidl, see habits",
+  "budget_gbp": 45,
+  "budget_source": "assumption: about GBP 35 weekly Lidl/Aldi shop for one person plus about GBP 10 of meal-deal/top-up protein. Anchored to verbatim 'nearly 20 pounds for 6 days' of meal-prep protein (https://www.reddit.com/comments/1k4ayi9) and Jordan/Dev budgets in data/personas/staged_personas_v1.json",
+  "channel": "instore",
+  "channel_source": "assumption: protein pots, shakes and meal deals are bought in the chiller of Lidl and Tesco Express; he checks the macros on the pack. The online channel is used only for bulk whey ('a 5kg bag of protein from My Protein', https://www.reddit.com/comments/191icpc)",
+  "age": 27,
+  "household": "shares a flat in Leeds with one housemate; junior quantity surveyor, 3 office days a week; lifts 4x a week at a budget gym",
+  "household_source": "assumption: illustrative composite; not used by the sim",
+  "ocean": {
+    "O": 0.45,
+    "C": 0.72,
+    "E": 0.6,
+    "A": 0.45,
+    "N": 0.35
+  },
+  "ocean_effects": [
+    {
+      "trait": "C",
+      "value": 0.72,
+      "effect": "high Conscientiousness: tracks macros daily and reads the nutrition table (protein and kcal per pot), so +attention to proteins_100g and energy-kcal_100g once a pack is noticed; drives reads_structured_data",
+      "coef": 0.25,
+      "coef_source": "assumption: maps C onto reads_structured_data (0.55) and seconds_at_shelf, not double counted in utility",
+      "source": "Rhodes & Smith 2006, 'Personality correlates of physical activity: a review and meta-analysis', Br J Sports Med 40(12):958-965, https://doi.org/10.1136/bjsm.2006.028860 (C and E positively related to physical activity); Mõttus et al. 2012, Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (C linked to more deliberate eating); verbatim 'Im trying to lose weight and so am tracking my macros' https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "trait": "E",
+      "value": 0.6,
+      "effect": "above-mid Extraversion: E is the most consistent Big Five correlate of exercise participation, and he follows gym/'what I eat in a day' creators, so a small notice lift for products he has seen on social media",
+      "coef": 0.05,
+      "coef_source": "assumption: small; direction only",
+      "source": "Wilson & Dishman 2015, 'Personality and physical activity: a systematic review and meta-analysis', Personality and Individual Differences 72:230-242, https://doi.org/10.1016/j.paid.2014.08.023 (E and C positive, N negative); Rhodes & Smith 2006"
+    },
+    {
+      "trait": "O",
+      "value": 0.45,
+      "effect": "mid Openness: tries a new protein product if the macros are good, but eats the same rotation of meals and does not explore for its own sake; trial barrier is lowered only by numbers, not by novelty",
+      "coef": 0.0,
+      "coef_source": "assumption: mid value gives no neophobia adjustment",
+      "source": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007 (neophobia negatively related to O); verbatim 'worth shopping around for what suits your protein-calorie-price point' https://www.reddit.com/comments/191icpc (trial is driven by the numbers)"
+    },
+    {
+      "trait": "N",
+      "value": 0.35,
+      "effect": "low Neuroticism: does not worry about E-numbers or sweeteners ('Whey is heavily processed' and he does not mind), so additives carry low weight in his lens and sweetener aversion is weak",
+      "coef": -0.1,
+      "coef_source": "assumption: lowers weight on additive/sweetener triggers vs the eco/UPF personas; magnitude illustrative",
+      "source": "Wilson & Dishman 2015 (N negatively related to physical activity, so a regular lifter skews lower N); verbatim 'processing the protein makes literally no difference. Whey is heavily processed.' https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "trait": "A",
+      "value": 0.45,
+      "effect": "mid-low Agreeableness: blunt about 'marketing bollocks' and will publicly mock a fake protein claim; feeds gimmick reactance against claims that the numbers do not back",
+      "coef": 0.05,
+      "coef_source": "assumption: weak link; folded into gimmick_reactance 0.45",
+      "source": "assumption: no direct paper for A and claim scepticism; behaviour grounded in verbatim 'Most serious gym goers know what a good protein to calorie ratio is so they won't be fooled.' https://www.reddit.com/comments/191icpc"
+    }
+  ],
+  "lens": [
+    {
+      "attribute": "protein_energy_share",
+      "off_field": "proteins_100g, energy-kcal_100g",
+      "direction": "higher_better",
+      "transform": "share = 4*proteins_100g/energy-kcal_100g; score = clip((share-0.12)/(0.40-0.12),0,1). 0.12 and 0.20 are the legal 'source of'/'high' protein thresholds and 0.30 is his personal bar",
+      "weight": 0.28,
+      "why": "His single most important number: grams of protein per calorie. A product with 'protein' on the front but less than 30% of energy from protein is a chocolate bar to him",
+      "source": "verbatim 'You want the protein to make up around 30% of the calories at least.' https://www.reddit.com/comments/1oqtnv1 ; 'Most serious gym goers know what a good protein to calorie ratio is' https://www.reddit.com/comments/191icpc ; Regulation (EC) No 1924/2006 Annex (retained in UK law): 'HIGH PROTEIN' only if at least 20% of energy comes from protein; 'SOURCE OF PROTEIN' at least 12%. https://www.legislation.gov.uk/eur/2006/1924/annex"
+    },
+    {
+      "attribute": "protein_per_gbp",
+      "off_field": "proteins_100g, quantity (net weight), price_gbp",
+      "direction": "higher_better",
+      "transform": "g_protein_per_gbp = proteins_100g*pack_g/100/price_gbp; score = clip(g_per_gbp/40,0,1). 40 g/GBP is anchored on 'a third of it [40g] ... for like a quid' (Lidl high-protein yoghurt)",
+      "weight": 0.22,
+      "why": "He is on a junior salary and prices protein per pound: Lidl high-protein yoghurt and eggs beat branded bars and shakes",
+      "source": "verbatim 'Lidl's High Protein Yoghurt is 252 calories a 450g pot for 40g protein... being able to get a third of it in one 250cal yoghurt for like a quid is incredible.' https://www.reddit.com/comments/1wqczct ; 'I am not paying £3 for a chocolate bar with a little bit of whey added.' https://www.reddit.com/comments/1tsbmt5"
+    },
+    {
+      "attribute": "proteins_100g",
+      "off_field": "proteins_100g",
+      "direction": "higher_better",
+      "transform": "score = clip(proteins_100g/25,0,1); per-pack grams shown on the front also read as this",
+      "weight": 0.12,
+      "why": "Absolute protein density: the big front-of-pack '25g' number is what makes him stop at the shelf in the first place",
+      "source": "verbatim 'There are several fantastic high protein options such as yoghurts with 25g per pot' https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "attribute": "claim_honesty",
+      "off_field": "pack_copy, proteins_100g, energy-kcal_100g",
+      "direction": "penalise_if_false",
+      "transform": "if pack_copy mentions 'protein' AND protein_energy_share < 0.20 (the legal 'high protein' bar) THEN score = 0 ELSE 1",
+      "weight": 0.1,
+      "why": "He does not object to protein products. He objects to products where the protein word is not backed by the numbers (the Babybel and Asda sandwich cases)",
+      "source": "verbatim 'Babybel Protein... You're consuming an additional 6 calories for 0.2 grams of protein. Not worth it.' https://www.reddit.com/comments/1wqczct ; 'I saw a protein chicken sandwich in Asda a few days ago which had less protein than the regular chicken sandwich.' https://www.reddit.com/comments/1tbf6zw ; Regulation (EC) No 1924/2006 Annex (retained in UK law): 'HIGH PROTEIN' only if at least 20% of energy comes from protein; 'SOURCE OF PROTEIN' at least 12%. https://www.legislation.gov.uk/eur/2006/1924/annex"
+    },
+    {
+      "attribute": "sugars_100g",
+      "off_field": "sugars_100g",
+      "direction": "lower_better",
+      "transform": "score = 1 - clip(sugars_100g/22.5,0,1); 22.5 g/100g is the UK FOP 'high' sugar threshold",
+      "weight": 0.1,
+      "why": "Sugar uses up his calorie budget. 'Packed with protein' items that are mostly sugar are the trap he warns his housemate about",
+      "source": "verbatim 'Yes it may have 20g of protien but it also has 500 calories and 20g of sugar ffs.' https://www.reddit.com/comments/1oqtnv1 ; UK DHSC 2016 Front-of-pack nutrition labelling guidance (sugars high >22.5g/100g), https://www.gov.uk/government/publications/front-of-pack-nutrition-labelling-guidance"
+    },
+    {
+      "attribute": "role",
+      "off_field": "role (catalog: challenger|incumbent|own_label)",
+      "direction": "own_label_better",
+      "transform": "own_label=1.0, challenger=0.5, incumbent=0.4",
+      "weight": 0.08,
+      "why": "Has learned that own-label high-protein yoghurt, pancakes and shakes (Lidl, Aldi) match branded macros at a lower price; branded protein bars are the 'premium' tier he resents",
+      "source": "verbatim 'I love the Lidl range of protein shakes...' https://www.reddit.com/comments/191icpc ; 'a pack of pre-made pancakes from Lidl with 40g of protein in, for about £1.50' https://www.reddit.com/comments/1tbf6zw ; values 1.0/0.5/0.4 are an assumption: own-label preference partly overlaps protein_per_gbp so the gap is kept small"
+    },
+    {
+      "attribute": "fiber_100g",
+      "off_field": "fiber_100g",
+      "direction": "higher_better",
+      "transform": "score = clip(fiber_100g/6,0,1); 6 g/100g is the EU 'high fibre' claim threshold",
+      "weight": 0.06,
+      "why": "Secondary. The gym crowd is being told 'all that protein and no fiber is good for no one'; he gives fibre a small tiebreak, mostly on cereal and bars",
+      "source": "verbatim 'Seriously would prefer the pivot to fiber... trying to do it on a calorie deficit is also a proper struggle.' https://www.reddit.com/comments/1oqtnv1 ; 'All that protein and no fiber is good for no one!' https://www.reddit.com/comments/1tbf6zw ; Regulation (EC) 1924/2006 Annex ('HIGH FIBRE' at least 6g/100g)"
+    },
+    {
+      "attribute": "sweeteners",
+      "off_field": "sweeteners (count of sweetener additives, e.g. en:e955 sucralose)",
+      "direction": "lower_better",
+      "transform": "score = 1 if sweeteners==0 else 0.6",
+      "weight": 0.04,
+      "why": "Weak. He knows protein products carry sweeteners and mostly accepts that as the price of the macros. It only matters as a tiebreak between near-identical pots",
+      "source": "verbatim 'Check the ingredients as you're bound to find a bunch of additives and sweeteners.' https://www.reddit.com/comments/191icpc ; low weight is an assumption: low N (0.35) and 'Whey is heavily processed' acceptance https://www.reddit.com/comments/1tbf6zw"
+    }
+  ],
+  "rejection_triggers": [
+    {
+      "trigger": "'protein' on the front, but less than 20% of energy from protein (fails the legal 'high protein' bar), e.g. a protein cereal bar with 5 g protein and 200 kcal",
+      "source": "verbatim 'cereal bars that advertise high protein but have something like 5g of protein and 200kcal' https://www.reddit.com/comments/191icpc ; Regulation (EC) No 1924/2006 Annex (retained in UK law): 'HIGH PROTEIN' only if at least 20% of energy comes from protein; 'SOURCE OF PROTEIN' at least 12%. https://www.legislation.gov.uk/eur/2006/1924/annex"
+    },
+    {
+      "trigger": "Protein version costs about GBP 1 more for about 1 g more protein per 100g than the standard version on the same shelf",
+      "source": "verbatim 'Aldi briefly sold \"protein\" chicken sausages right next to their usual chicken sausages... about 1g more protein per 100g and cost about £1 more. Absolutely pointless.' https://www.reddit.com/comments/1wqczct"
+    },
+    {
+      "trigger": "Branded protein bar at about GBP 2.50-3 outside a meal deal (chocolate bar with whey)",
+      "source": "verbatim 'Any protein bar, Grenade, Fulfill, PhD, Farewell. I am not paying £3 for a chocolate bar with a little bit of whey added.' https://www.reddit.com/comments/1tsbmt5"
+    },
+    {
+      "trigger": "Bad texture or taste from a previous trial (chalky or chewy bars): one bad experience removes the SKU from his rotation",
+      "source": "verbatim 'Tried a protein Mars bar, like chewing on Gandhi's flip flop' and 'Same with grenade bars... The only exception to this is barebell bars' https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "trigger": "Macros only per 100g on an odd pack size, so he cannot read per-pot protein at a glance",
+      "source": "verbatim 'x amount of protein and kcals per 100g and the pack is like 147g or whatever. Just irritating' https://www.reddit.com/comments/1oqtnv1"
+    },
+    {
+      "trigger": "High sugar alongside the protein number (sugars_100g above 22.5)",
+      "source": "verbatim '20g of protien but it also has 500 calories and 20g of sugar ffs' https://www.reddit.com/comments/1oqtnv1"
+    }
+  ],
+  "trust_signals": [
+    {
+      "signal": "Big, specific per-pot protein number with kcal next to it on the front (e.g. '25g protein, 150 kcal')",
+      "source": "verbatim 'yoghurts with 25g per pot' https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "signal": "Nutrition table that confirms the claim: protein above about 30% of energy",
+      "source": "verbatim 'You want the protein to make up around 30% of the calories at least.' https://www.reddit.com/comments/1oqtnv1"
+    },
+    {
+      "signal": "Dairy-based protein he already knows (quark, skyr, Greek-style high-protein yoghurt) over 'protein-added' snacks",
+      "source": "verbatim 'We started off with basically 1 protein yogurt which was actually a cheese called quark by arla' https://www.reddit.com/comments/191icpc ; 'you want to have the protein be great sources of protein like meat & dairy rather than 5g of protein from a crap cereal bar' https://www.reddit.com/comments/1oqtnv1"
+    },
+    {
+      "signal": "Peer or gym-community endorsement of a specific brand (Barebells)",
+      "source": "verbatim 'The only exception to this is barebell bars' https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "signal": "Meal-deal eligibility for a protein shake or pot (the premium slot makes it 'free')",
+      "source": "verbatim 'if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.' https://www.reddit.com/comments/1k4ayi9"
+    }
+  ],
+  "habits": [
+    {
+      "habit": "Meal deal on office days: maximises protein per slot (protein shake as the drink, protein pot or egg pot as the snack)",
+      "source": "verbatim 'I used to maximise the protein.' https://www.reddit.com/comments/1bc79kh ; 'all day breakfast sandwich, protein yoghurt, usually a protein shake' https://www.reddit.com/comments/1d3amm2"
+    },
+    {
+      "habit": "Weekly Lidl/Aldi shop for own-label high-protein yoghurt, eggs, chicken; whey powder bought online in bulk when he can afford it",
+      "source": "verbatim 'The shakes work out more expensive in the long run than say, a 5kg bag of protein from My Protein but I don't have £100 to lay out at once.' https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "habit": "Hits a daily protein target (about 1.6-2.2 g/kg) inside a calorie budget, which is why protein per kcal beats protein per pack",
+      "source": "verbatim 'To gain muscle... you need 1.6g to 2.2g of protein per KG of bodyweight. Has anyone ever tried to do that whilst also keeping their calories at maintenance? It's really fucking difficult.' https://www.reddit.com/comments/1oqtnv1 ; Morton et al. 2018, Br J Sports Med 52(6):376-384, https://doi.org/10.1136/bjsports-2017-097608 (gains plateau at about 1.6 g/kg/day)"
+    },
+    {
+      "habit": "Rotation of 3-4 proven products; new items enter only after a macro check and a taste trial",
+      "source": "assumption: consistent with the human-mean habit lock-in of 0.83 (research/05-personas.md 4c), slightly lowered because he does check new protein lines; verbatim 'worth shopping around for what suits your protein-calorie-price point' https://www.reddit.com/comments/191icpc"
+    }
+  ],
+  "verbatims": [
+    {
+      "quote": "Most serious gym goers know what a good protein to calorie ratio is so they won't be fooled.",
+      "url": "https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "quote": "Lidl's High Protein Yoghurt is 252 calories a 450g pot for 40g protein. It's not even comparable. If you're trying to lose weight and get 120g+ of protein a day, being able to get a third of it in one 250cal yoghurt for like a quid is incredible.",
+      "url": "https://www.reddit.com/comments/1wqczct"
+    },
+    {
+      "quote": "Babybel Protein. They're 48 calories, with 5.2 grams of protein. Whereas Babybel Light is 5 grams of protein and 42 calories. You're consuming an additional 6 calories for 0.2 grams of protein. Not worth it.",
+      "url": "https://www.reddit.com/comments/1wqczct"
+    },
+    {
+      "quote": "You want the protein to make up around 30% of the calories at least.",
+      "url": "https://www.reddit.com/comments/1oqtnv1"
+    },
+    {
+      "quote": "Any protein bar, Grenade, Fulfill, PhD, Farewell. I am not paying £3 for a chocolate bar with a little bit of whey added.",
+      "url": "https://www.reddit.com/comments/1tsbmt5"
+    },
+    {
+      "quote": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+      "url": "https://www.reddit.com/comments/1k4ayi9"
+    },
+    {
+      "quote": "Coupled with a protein shake (worth shopping around for what suits your protein-calorie-price point) and you're looking at ~95g protein for roughly 700kcal.",
+      "url": "https://www.reddit.com/comments/191icpc"
+    }
+  ],
+  "dossier": "I'm Kieran, 27, quantity surveyor in Leeds, lifting four times a week at a budget gym. I'm 82 kilos and aim for about 150 g of protein a day while staying around maintenance, so every item I buy is a sum: grams of protein against calories against pence. Saturday is Lidl. That's about £35 for chicken thighs, eggs, oats and four of the big high-protein yoghurts, because 40 g of protein for about a quid is unbeatable. Whey comes from MyProtein when there's a sale, and only when I've got the hundred quid spare at once.\n\nOn office days I get a Tesco Express meal deal at about 12:40 and I'm out in under three minutes. Sandwich with the most chicken in it, the protein shake as my drink because it's two quid on its own, and a protein pot or egg pot as the snack. I'm not browsing. I go to the chiller and fridge doors, look for the biggest protein number at eye height, flip it once, and check that the kcal is low enough. That takes maybe seven seconds. Crisps, biscuits, cereal and fizzy drinks don't register; I walk past entire aisles without seeing a single pack.\n\nI'm not anti 'protein' products, I'm anti fake ones. If the front says protein and it's 5 g in a 200 kcal bar, I put it back and probably slag it off to my housemate. Babybel Protein is a joke. A protein chicken sandwich with less protein than the normal one is worse. Bars at £2.80 are a no unless they're in the deal, and even then most taste like chewing a flip-flop. Barebells is the one exception.\n\nI'll try a new brand if the numbers on the pack are better than what I already buy and the price per gram isn't silly. If it tastes chalky once, it's gone. Mostly I buy the same four things every week.",
+  "sim_params": {
+    "p_notice_eye_level": 0.75,
+    "p_notice_bottom_or_side": 0.1,
+    "habit_lockin_0_1": 0.75,
+    "price_sensitivity_0_1": 0.65,
+    "trust_new_brand_0_1": 0.3,
+    "gimmick_reactance_0_1": 0.45,
+    "reads_structured_data_0_1": 0.5,
+    "seconds_at_shelf": 7,
+    "meal_deal_pull_0_1": 0.85
+  },
+  "sim_params_sources": {
+    "p_notice_eye_level": "Slightly above the human mean of 0.70 (research/05-personas.md section 4c). assumption: he is on a goal-directed search for big protein numbers in the chiller, so eye-level salient packs are found more often, but only in protein-relevant categories (the dossier says other aisles go unnoticed)",
+    "p_notice_bottom_or_side": "Near the human mean of 0.094 (research/05-personas.md section 4c). assumption: no reason to scan the bottom shelf; mission focus does not extend his visual field",
+    "habit_lockin_0_1": "Below the human mean of 0.83 (research/05-personas.md section 4c). assumption: fixed 3-4 product rotation, but he actively re-checks new protein lines against his numbers ('worth shopping around for what suits your protein-calorie-price point', https://www.reddit.com/comments/191icpc)",
+    "price_sensitivity_0_1": "Above the human mean of 0.57, below Dev's 0.88 (research/05-personas.md section 4c). Prices per gram of protein, not per pack: 'a third of it in one 250cal yoghurt for like a quid' (https://www.reddit.com/comments/1wqczct); 'not paying £3 for a chocolate bar with a little bit of whey' (https://www.reddit.com/comments/1tsbmt5)",
+    "trust_new_brand_0_1": "Above the human mean of 0.20 (research/05-personas.md section 4c). assumption: trusts the nutrition table more than the brand, so a challenger with better macros gets a trial; capped by the taste-failure risk ('like chewing on Gandhi's flip flop', https://www.reddit.com/comments/1tbf6zw)",
+    "gimmick_reactance_0_1": "Below the human mean of 0.53 (research/05-personas.md section 4c). He is the target of protein claims, not a blanket rejecter; reactance fires only when the claim fails the numbers (Babybel, https://www.reddit.com/comments/1wqczct). That is handled by the claim_honesty lens attribute rather than by blanket reactance",
+    "reads_structured_data_0_1": "About 2.8x the human mean of 0.18, above Sam's 0.45 (research/05-personas.md section 4c). Reads protein and kcal on nearly every candidate (tracks macros, https://www.reddit.com/comments/1tbf6zw) but ignores eco-score, NOVA and ingredients, so not higher; C=0.72 (Rhodes & Smith 2006)",
+    "seconds_at_shelf": "Near the human mean of 6.6 s (research/05-personas.md section 4c). assumption: 7 s is one pack-flip to check the protein and kcal rows on a short meal-deal break",
+    "meal_deal_pull_0_1": "Above the human mean of 0.67, near Jordan 0.88 and Dev 0.85 (research/05-personas.md section 4c). Protein shake and pot are 'free' in the deal: 'if I buy a protein shake and protein yogurt in meal deal then it gets better' (https://www.reddit.com/comments/1k4ayi9); 'I used to maximise the protein.' (https://www.reddit.com/comments/1bc79kh)"
+  },
+  "evidence_caveat": "Composite persona. Verbatims come from UK Reddit threads (AskUK, AskBrits, CasualUK and others in data/reddit/comments.csv) by different authors. No single quoted person is Kieran. OCEAN values are archetype-plausible estimates, not measured."
+}

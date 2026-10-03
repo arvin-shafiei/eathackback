@@ -1,0 +1,253 @@
+{
+  "id": "p_upf_avoider_parent",
+  "name": "Hannah",
+  "archetype": "upf_avoider_parent",
+  "mission": "top_up",
+  "budget_gbp": 25,
+  "channel": "instore",
+  "channel_mix": {
+    "online_favourites_weekly": 0.75,
+    "instore_top_up": 0.2,
+    "assistant_led": 0.05,
+    "source": "data/personas/staged_personas_v1.json[0] Priya dossier CHANNEL MIX (assumption carried from staged persona, not measured); in-store top-up is modelled because it is the only channel where discovery happens"
+  },
+  "budget_source": "assumption: mid-week top-up of about £20-30 for a family of four whose weekly online shop is about £120-160 (staged Priya dossier)",
+  "ocean": {
+    "O": 0.45,
+    "C": 0.68,
+    "E": 0.5,
+    "A": 0.62,
+    "N": 0.6
+  },
+  "ocean_effects": [
+    {
+      "trait": "C",
+      "effect": "high C: she reads labels and does restrained eating for the kids, so she pays more attention to sugars_100g, sweeteners and additives_n once she has noticed a product",
+      "coef": 0.25,
+      "source": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (C was linked to less sweet/savoury snack intake via restrained eating). The coef is an assumption sized to the 0.2 reads_structured_data ceiling"
+    },
+    {
+      "trait": "C",
+      "effect": "C is only moderately high (0.68, not 0.85) because she is time-poor and the Favourites list does her 'conscientiousness' for her, so the label read happens once, when an item is first added",
+      "coef": -0.1,
+      "source": "verbatim: 'the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes' https://www.reddit.com/comments/18jsjo5"
+    },
+    {
+      "trait": "O",
+      "effect": "mid-low O: she is cautious with unfamiliar brands for the kids, so the Openness boost to noticing new brands is small and trust_new_brand stays low",
+      "coef": -0.1,
+      "source": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (O was linked to more varied and healthier choices); Pliner & Hobden 1992, Appetite 19:105-120, doi:10.1016/0195-6663(92)90014-W (food neophobia construct). The O value itself is an assumption: she is open for herself but conservative for the kids"
+    },
+    {
+      "trait": "N",
+      "effect": "elevated N: worry about 'chemicals' and kids' health drives cue-based avoidance (E-numbers, sweeteners) and loss aversion about wasting money on a trial the kids refuse",
+      "coef": 0.15,
+      "source": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (N was linked to emotional/uncontrolled eating styles); https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs). The N level is an assumption based on the anxious tone of the Mumsnet UPF threads cited in the staged dossier"
+    },
+    {
+      "trait": "A",
+      "effect": "higher A: she trusts other parents' word of mouth and retailer own-label, and defers to the kids' veto",
+      "coef": 0.1,
+      "source": "assumption: the staged dossier's trust signals (Mumsnet, school gate, 'the kids love them' https://www.reddit.com/comments/1o3q3ez). No direct paper links A to food choice strongly (Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 found weak A effects)"
+    },
+    {
+      "trait": "E",
+      "effect": "neutral E: no effect on shelf behaviour in this model",
+      "coef": 0.0,
+      "source": "assumption: Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 reported no strong extraversion effect on food choice"
+    }
+  ],
+  "lens": [
+    {
+      "attribute": "visible additives (E-numbers, 'emulsifier')",
+      "off_field": "additives_n",
+      "direction": "lower_better",
+      "weight": 0.2,
+      "why": "her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cue heuristic, not NOVA",
+      "source": "verbatim: 'a lot of branded stuff tends to have filler ingredients to give a better texture (e.g emulsifiers)... I'll go for the cheaper option' https://www.reddit.com/comments/1ow5fne; Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)"
+    },
+    {
+      "attribute": "sweeteners in a kids' or 'healthy' product",
+      "off_field": "sweeteners",
+      "direction": "lower_better (any >0 is a near-hard reject for lunchbox items)",
+      "weight": 0.18,
+      "why": "sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires",
+      "source": "verbatim: 'High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.' https://www.reddit.com/comments/191icpc; 'Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.' https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "attribute": "sugar",
+      "off_field": "sugars_100g",
+      "direction": "lower_better",
+      "weight": 0.16,
+      "why": "'avoid sugar for the kids' is the one stated rule she actually checks on the nutrition panel",
+      "source": "verbatim: 'Yes it may have 20g of protien but it also has 500 calories and 20g of sugar ffs.' https://www.reddit.com/comments/1oqtnv1; staged Priya dossier behavioural driver 'Say-do gap on UPF' (weight 0.85)"
+    },
+    {
+      "attribute": "short ingredient list",
+      "off_field": "ingredients_n",
+      "direction": "lower_better",
+      "weight": 0.14,
+      "why": "'4 ingredients' reads as clean; a long list reads as UPF",
+      "source": "verbatim: 'Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.' https://www.reddit.com/comments/1buwayp; 'the ingredients list was so good and simple… no unnecessary stuff' https://www.reddit.com/comments/1e8k6o1; Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)"
+    },
+    {
+      "attribute": "nuts (nut-free school lunchbox rule)",
+      "off_field": "allergens (en:nuts, en:peanuts)",
+      "direction": "absent_required for lunchbox items",
+      "weight": 0.1,
+      "why": "most UK primary schools run nut-free lunchbox policies, so a nut product is out for the lunchbox whatever its UPF status",
+      "source": "skeptic verdict in data/personas/staged_personas_v1.json[0].verdict.unrealistic_claims ('Nut-free schools'); assumption: no national statistic was pulled for the share of schools with a nut-free policy"
+    },
+    {
+      "attribute": "unit price vs own-label",
+      "off_field": "price_gbp / price per 100g (catalog price_gbp + quantity)",
+      "direction": "lower_better",
+      "weight": 0.09,
+      "why": "she pays a premium only for 'hero' items the kids eat on their own; for everything else own-label wins on price",
+      "source": "Mumsnet: 'I can't afford to buy the organic/non upf versions of these staples for my family, our food bill is ridiculous as it is' https://www.mumsnet.com/talk/food_and_recipes/4922485 (cited in research/02-issue-discovery.md); verbatim: 'I don't buy hardly anything branded anymore either except a few things the children like.' https://www.reddit.com/comments/1qgcwyr"
+    },
+    {
+      "attribute": "front-of-pack reassurance claims ('no added sugar', 'made with real fruit', 'no preservatives')",
+      "off_field": "pack_copy (+ labels e.g. en:no-added-sugar, en:no-preservatives)",
+      "direction": "presence_better",
+      "weight": 0.08,
+      "why": "front-of-pack claims are what she sees in her ~5 seconds at the shelf; she trusts the 'clean' claims and distrusts 'high protein'",
+      "source": "Mumsnet: 'brands of their bread have no preservatives. Not totally UPF free but better than having emulsifiers and E numbers' https://www.mumsnet.com/talk/am_i_being_unreasonable/5386544 (cited in staged Priya dossier)"
+    },
+    {
+      "attribute": "actual processing level",
+      "off_field": "nova",
+      "direction": "lower_better",
+      "weight": 0.05,
+      "why": "deliberately small: she says she avoids UPF, but she cannot see NOVA. A clean-looking NOVA 4 passes and a NOVA 3 with one 'scary' word fails. This low weight encodes the say-do gap",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs); UPF is 50.7% of UK household purchased energy https://pmc.ncbi.nlm.nih.gov/articles/PMC8921104/"
+    }
+  ],
+  "rejection_triggers": [
+    {
+      "trigger": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+      "source": "https://www.reddit.com/comments/191icpc ; https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "trigger": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+      "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)"
+    },
+    {
+      "trigger": "nuts in a lunchbox item (nut-free school)",
+      "source": "staged_personas_v1.json[0].verdict (skeptic correction); assumption on prevalence"
+    },
+    {
+      "trigger": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+      "source": "'it's all e numbers and crap but it's got protein in it so must be good right' https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "trigger": "the kids refuse it once (one-strike veto, never re-trialled)",
+      "source": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)"
+    },
+    {
+      "trigger": "unit price well above own-label for a non-hero item",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr"
+    }
+  ],
+  "trust_signals": [
+    {
+      "signal": "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+      "source": "https://www.reddit.com/comments/1buwayp ; Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)"
+    },
+    {
+      "signal": "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it",
+      "source": "https://www.reddit.com/comments/18jsjo5"
+    },
+    {
+      "signal": "other parents vouch for it / 'the kids love them'",
+      "source": "'we've just started buying your products exclusively (from Ocado though) and the kids love them' https://www.reddit.com/comments/1o3q3ez"
+    },
+    {
+      "signal": "trusted retailer own-label for ingredients",
+      "source": "https://www.reddit.com/comments/1ow5fne (own-brand when ingredients match)"
+    },
+    {
+      "signal": "sugar per 100g on the panel matches the 'low sugar' front-of-pack claim",
+      "source": "https://www.reddit.com/comments/1oqtnv1"
+    }
+  ],
+  "habits": [
+    {
+      "habit": "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+      "source": "https://www.reddit.com/comments/18jsjo5"
+    },
+    {
+      "habit": "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns",
+      "source": "https://www.reddit.com/comments/18jsjo5 ('with two young kids the faff of getting them both into the car and round the shops'); staged sim_parameters seconds_at_shelf=5"
+    },
+    {
+      "habit": "accepts most substitutions and sends back only obviously worse ones",
+      "source": "Tesco: about 80% accept substitutions, 9 in 10 keep them https://www.thegrocer.co.uk/news/anger-as-tesco-overrides-online-accounts-to-accept-substitutions/561152.article (cited in staged dossier)"
+    },
+    {
+      "habit": "pays a premium only for 'hero' lunchbox items; own-label for ingredients",
+      "source": "https://www.mumsnet.com/talk/food_and_recipes/4922485"
+    },
+    {
+      "habit": "flips to the back of pack for kids' snacks only some of the time (P≈0.25-0.35); almost never for her own drink",
+      "source": "staged_personas_v1.json[0].verdict.corrections (skeptic calibration)"
+    }
+  ],
+  "verbatims": [
+    {
+      "quote": "Yep...the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes.",
+      "url": "https://www.reddit.com/comments/18jsjo5"
+    },
+    {
+      "quote": "with two young kids the faff of getting them both into the car and round the shops makes the £2 delivery fee worthwhile.",
+      "url": "https://www.reddit.com/comments/18jsjo5"
+    },
+    {
+      "quote": "Rather than brands I'm trying to cut down on how much ultra-processed food I eat so it really depends which version is less processed. ... a lot of branded stuff tends to have filler ingredients to give a better texture (e.g emulsifiers)",
+      "url": "https://www.reddit.com/comments/1ow5fne"
+    },
+    {
+      "quote": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+      "url": "https://www.reddit.com/comments/191icpc"
+    },
+    {
+      "quote": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+      "url": "https://www.reddit.com/comments/1tbf6zw"
+    },
+    {
+      "quote": "I don't buy hardly anything branded anymore either except a few things the children like.",
+      "url": "https://www.reddit.com/comments/1qgcwyr"
+    },
+    {
+      "quote": "Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.",
+      "url": "https://www.reddit.com/comments/1buwayp"
+    },
+    {
+      "quote": "Used to get Freddo multipacks for kids lunch boxes. Now only 4 per pack instead of 5, plus price also up.",
+      "url": "https://www.reddit.com/comments/1scat6b"
+    }
+  ],
+  "dossier": "I'm Hannah, 38, two kids aged 7 and 9, and I work four days a week. If you ask me, we avoid ultra-processed food and added sugar. What actually happens is that on Sunday night I open the app, hit 'previous order', add the bits that ran out and check out in about ten minutes. The lunchbox bars, yoghurt tubes and bread are all on my Favourites. I checked them once, ages ago, and I haven't looked at the backs since.\n\nOn Wednesday I do a top-up on the way home, often with one of the kids moaning at my elbow. I've got about £25 and maybe fifteen minutes. I walk the same route: milk, fruit, something for lunchboxes, something for tea. I don't really see most of the shelf. I see the things I already buy, at eye height, and the odd bright pack. If something new catches my eye for a kids' snack, I'll sometimes flip it over. If I see sweeteners, I put it straight back, because I'm not giving my seven-year-old sucralose. Same with a list of E-numbers or 'emulsifier'. Short list, 'no added sugar', 'made with real fruit': that feels clean, so I'll consider it. I couldn't tell you what NOVA is. Honestly, half our basket is probably processed anyway: fish fingers, microwave rice, a ready meal on Thursdays.\n\nAnything with nuts is out for lunchboxes, because school is nut-free. 'High protein' on a kids' bar makes me suspicious. I'll pay a bit more for something the kids eat on its own, but not £1.60 a bar for ten bars a week. For ingredients it's own-label. If the kids refuse something once, that's it, it never comes back. If my usual thing shrinks, I grumble and keep buying it, because finding a new one costs another Sunday night.",
+  "sim_params": {
+    "p_notice_eye_level": 0.7,
+    "p_notice_bottom_or_side": 0.12,
+    "habit_lockin_0_1": 0.85,
+    "price_sensitivity_0_1": 0.65,
+    "trust_new_brand_0_1": 0.3,
+    "gimmick_reactance_0_1": 0.45,
+    "reads_structured_data_0_1": 0.2,
+    "seconds_at_shelf": 5,
+    "meal_deal_pull_0_1": 0.3
+  },
+  "sim_params_sources": {
+    "p_notice_eye_level": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; consistent with eye level vs floor +39% sales (research/04-3d-sim-evidence-and-tech.md, Wikipedia Planogram) and Chandon et al. 2009 J. Marketing 73(6) doi:10.1509/jmkg.73.6.1",
+    "p_notice_bottom_or_side": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; skeptic: side shelf, 1 facing, kraft pack ≈0.09-0.2 (research/05-personas.md)",
+    "habit_lockin_0_1": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated (behavioural driver 'Habit and default via saved lists' weight 0.9); verbatim https://www.reddit.com/comments/18jsjo5",
+    "price_sensitivity_0_1": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; Mumsnet 'our food bill is ridiculous' https://www.mumsnet.com/talk/food_and_recipes/4922485 ; https://www.reddit.com/comments/1qgcwyr",
+    "trust_new_brand_0_1": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; one-strike MSE https://forums.moneysavingexpert.com/discussion/6653837",
+    "gimmick_reactance_0_1": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; https://www.reddit.com/comments/191icpc , https://www.reddit.com/comments/1tbf6zw",
+    "reads_structured_data_0_1": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; skeptic correction P(opens ingredients) ≈0.25-0.35 for a kids' hero item and ≈0.05 for a drink, so 0.2 as an average across categories",
+    "seconds_at_shelf": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated; literature 3-6 s per shelf decision (research/05-personas.md critique: 'the literature says 3–6 seconds')",
+    "meal_deal_pull_0_1": "assumption: lowered from the staged 0.8 (which modelled Priya's office lunch) to 0.3 because this persona's mission is a family top-up, not a lunchtime meal deal; set back to 0.8 for meal_deal missions"
+  }
+}

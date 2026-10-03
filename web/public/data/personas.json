@@ -1,0 +1,918 @@
+[
+ {
+  "id": "p_eco_parent",
+  "name": "priya",
+  "archetype": "eco_low_chemical",
+  "mission": "weekly_shop",
+  "budget_gbp": 120,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.62,
+   "C": 0.74,
+   "E": 0.45,
+   "A": 0.6,
+   "N": 0.58
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.22,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.25,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "additives_n",
+    "off_field": "additives_n",
+    "direction": "lower_better",
+    "weight": 0.35,
+    "why": "eco_low_chemical weighs additives_n",
+    "source": "https://www.reddit.com/comments/1pf70di"
+   },
+   {
+    "attribute": "ecoscore",
+    "off_field": "ecoscore",
+    "direction": "higher_better",
+    "weight": 0.3,
+    "why": "eco_low_chemical weighs ecoscore",
+    "source": "https://www.reddit.com/comments/1pf70di"
+   },
+   {
+    "attribute": "labels",
+    "off_field": "labels",
+    "direction": "organic_vegan_bonus",
+    "weight": 0.2,
+    "why": "eco_low_chemical weighs labels",
+    "source": "https://www.reddit.com/comments/1pf70di"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.15,
+    "why": "eco_low_chemical weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1pf70di"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "additives_n fails lens",
+    "source": "https://www.reddit.com/comments/1pf70di"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "loss_aversion"
+  ],
+  "dossier": "fixture persona (eco_low_chemical). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale. Source Was broke most of my life, still managed to stay healthy. Now I'm not broke.",
+    "url": "https://www.reddit.com/comments/1pf70di",
+    "subreddit": "TooAfraidToAsk",
+    "score": 17
+   },
+   {
+    "quote": "As someone who has lost 60 pounds since November, largely through calorie deficit dieting, I have to agree. As long as you aren’t limiting yourself to pricey organic brands, you can get good food for a very reasonable price.",
+    "url": "https://www.reddit.com/comments/1vdsme2",
+    "subreddit": "TrueUnpopularOpinion",
+    "score": 13
+   }
+  ],
+  "_mechanism": "loss_aversion"
+ },
+ {
+  "id": "p_upf_parent",
+  "name": "hannah",
+  "archetype": "upf_avoider_parent",
+  "mission": "weekly_shop",
+  "budget_gbp": 120,
+  "channel": "online",
+  "ocean": {
+   "O": 0.55,
+   "C": 0.78,
+   "E": 0.4,
+   "A": 0.65,
+   "N": 0.62
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.23,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.22,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "nova",
+    "off_field": "nova",
+    "direction": "lower_better",
+    "weight": 0.4,
+    "why": "upf_avoider_parent weighs nova",
+    "source": "https://www.reddit.com/comments/1ln69mo"
+   },
+   {
+    "attribute": "ingredients_n",
+    "off_field": "ingredients_n",
+    "direction": "lower_better",
+    "weight": 0.3,
+    "why": "upf_avoider_parent weighs ingredients_n",
+    "source": "https://www.reddit.com/comments/1ln69mo"
+   },
+   {
+    "attribute": "sugars_100g",
+    "off_field": "sugars_100g",
+    "direction": "lower_better",
+    "weight": 0.3,
+    "why": "upf_avoider_parent weighs sugars_100g",
+    "source": "https://www.reddit.com/comments/1ln69mo"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "nova fails lens",
+    "source": "https://www.reddit.com/comments/1ln69mo"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "loss_aversion"
+  ],
+  "dossier": "fixture persona (upf_avoider_parent). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "Lots of ready meals aren't ultra processed. In fact, looking through some options on tesco I'd say most aren't.",
+    "url": "https://www.reddit.com/comments/1ln69mo",
+    "subreddit": "unitedkingdom",
+    "score": 3
+   },
+   {
+    "quote": "But the initial cost is where you spend the money. If you’re getting paid weekly, you often can’t afford the upfront cost of $50 for 6-8 meals, but can afford $8 for 1 meal tonight.",
+    "url": "https://www.reddit.com/comments/1pf70di",
+    "subreddit": "TooAfraidToAsk",
+    "score": 1
+   }
+  ],
+  "_mechanism": "loss_aversion"
+ },
+ {
+  "id": "p_glp1",
+  "name": "sam",
+  "archetype": "glp1_small_appetite",
+  "mission": "top_up",
+  "budget_gbp": 15,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.5,
+   "C": 0.7,
+   "E": 0.35,
+   "A": 0.55,
+   "N": 0.6
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.21,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.2,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "proteins_100g",
+    "off_field": "proteins_100g",
+    "direction": "higher_better",
+    "weight": 0.45,
+    "why": "glp1_small_appetite weighs proteins_100g",
+    "source": "https://www.reddit.com/comments/1wqczct"
+   },
+   {
+    "attribute": "sugars_100g",
+    "off_field": "sugars_100g",
+    "direction": "lower_better",
+    "weight": 0.3,
+    "why": "glp1_small_appetite weighs sugars_100g",
+    "source": "https://www.reddit.com/comments/1wqczct"
+   },
+   {
+    "attribute": "sweeteners",
+    "off_field": "sweeteners",
+    "direction": "lower_better",
+    "weight": 0.25,
+    "why": "glp1_small_appetite weighs sweeteners",
+    "source": "https://www.reddit.com/comments/1wqczct"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "proteins_100g fails lens",
+    "source": "https://www.reddit.com/comments/1wqczct"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "trust"
+  ],
+  "dossier": "fixture persona (glp1_small_appetite). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "I think it’s as much for users of weight loss drugs as it is gym bros. When you’re on weight loss drugs like mounjaro everything you read is about eating enough protein or you will lose muscle mass and your hair will fall out.",
+    "url": "https://www.reddit.com/comments/1wqczct",
+    "subreddit": "AskUK",
+    "score": 29
+   },
+   {
+    "quote": "In fairness I probably didn’t notice it much until I went onto mounjaro. All the GLP1 subs constantly reinforce the need for protein. Never thought I’d be a person who drank protein shakes!",
+    "url": "https://www.reddit.com/comments/1wqczct",
+    "subreddit": "AskUK",
+    "score": 5
+   }
+  ],
+  "_mechanism": "trust"
+ },
+ {
+  "id": "p_frugal",
+  "name": "dev",
+  "archetype": "frugal_unit_price",
+  "mission": "top_up",
+  "budget_gbp": 15,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.45,
+   "C": 0.6,
+   "E": 0.55,
+   "A": 0.5,
+   "N": 0.5
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.18,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.18,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.6,
+    "why": "frugal_unit_price weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1s6g52a"
+   },
+   {
+    "attribute": "role",
+    "off_field": "role",
+    "direction": "own_label_bonus",
+    "weight": 0.4,
+    "why": "frugal_unit_price weighs role",
+    "source": "https://www.reddit.com/comments/1s6g52a"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "price_gbp fails lens",
+    "source": "https://www.reddit.com/comments/1s6g52a"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "price_anchor"
+  ],
+  "dossier": "fixture persona (frugal_unit_price). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "No the brand is paying for marketing and a better spot on the shelf. You notice that the more expensive brands are stocked at eye level with the cheaper stuff nearer the top or bottom. Store brand is not paying for marketing.",
+    "url": "https://www.reddit.com/comments/1s6g52a",
+    "subreddit": "explainlikeimfive",
+    "score": 473
+   },
+   {
+    "quote": "Aldi cereal and crisps are nowhere near as nice as branded versions",
+    "url": "https://www.reddit.com/comments/1bq1qcm",
+    "subreddit": "AskUK",
+    "score": 101
+   }
+  ],
+  "_mechanism": "price_anchor"
+ },
+ {
+  "id": "p_gym",
+  "name": "kai",
+  "archetype": "protein_gym",
+  "mission": "gym",
+  "budget_gbp": 15,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.5,
+   "C": 0.72,
+   "E": 0.68,
+   "A": 0.45,
+   "N": 0.35
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.22,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.2,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "proteins_100g",
+    "off_field": "proteins_100g",
+    "direction": "higher_better",
+    "weight": 0.7,
+    "why": "protein_gym weighs proteins_100g",
+    "source": "https://www.reddit.com/comments/191icpc"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.3,
+    "why": "protein_gym weighs price_gbp",
+    "source": "https://www.reddit.com/comments/191icpc"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "proteins_100g fails lens",
+    "source": "https://www.reddit.com/comments/191icpc"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "goal_fit"
+  ],
+  "dossier": "fixture persona (protein_gym). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "It's January so more people are going to the gym Shops are trying to capture these people by having \"High Protein\" ranges. The same way you'll also be seeing alot more Vegan / Plant based foods because it's also veganuary",
+    "url": "https://www.reddit.com/comments/191icpc",
+    "subreddit": "britishproblems",
+    "score": 542
+   },
+   {
+    "quote": "Babybel Protein. They’re 48 calories, with 5.2 grams of protein. Whereas Babybel Light is 5 grams of protein and 42 calories. You’re consuming an additional 6 calories for 0.2 grams of protein. Not worth it.",
+    "url": "https://www.reddit.com/comments/1wqczct",
+    "subreddit": "AskUK",
+    "score": 231
+   }
+  ],
+  "_mechanism": "goal_fit"
+ },
+ {
+  "id": "p_sceptic",
+  "name": "jo",
+  "archetype": "protein_sceptic_gimmick_reactant",
+  "mission": "top_up",
+  "budget_gbp": 15,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.58,
+   "C": 0.55,
+   "E": 0.5,
+   "A": 0.35,
+   "N": 0.45
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.17,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.23,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "name",
+    "off_field": "name",
+    "direction": "protein_claim_penalty",
+    "weight": 0.6,
+    "why": "protein_sceptic_gimmick_reactant weighs name",
+    "source": "https://www.reddit.com/comments/1oqtnv1"
+   },
+   {
+    "attribute": "sweeteners",
+    "off_field": "sweeteners",
+    "direction": "lower_better",
+    "weight": 0.4,
+    "why": "protein_sceptic_gimmick_reactant weighs sweeteners",
+    "source": "https://www.reddit.com/comments/1oqtnv1"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "name fails lens",
+    "source": "https://www.reddit.com/comments/1oqtnv1"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "gimmick_reactance"
+  ],
+  "dossier": "fixture persona (protein_sceptic_gimmick_reactant). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "Absolutely, and most of us don't need it at all, it's a bit gimmicky and I can't wait for it to be over. Even Aldi I noticed have like a chicken curry with extra protein... WHY?! IT'S CHICKEN.",
+    "url": "https://www.reddit.com/comments/1oqtnv1",
+    "subreddit": "AskUK",
+    "score": 160
+   },
+   {
+    "quote": "It's just marketing, thing is that it doesn't help people that don't know how to read the labels correctly (they also make it so hard to read them). Yes it may have 20g of protien but it also has 500 calories and 20g of sugar ffs.",
+    "url": "https://www.reddit.com/comments/1oqtnv1",
+    "subreddit": "AskUK",
+    "score": 30
+   }
+  ],
+  "_mechanism": "gimmick_reactance"
+ },
+ {
+  "id": "p_loyalist",
+  "name": "margaret",
+  "archetype": "habit_loyalist_shrinkflation_angry",
+  "mission": "weekly_shop",
+  "budget_gbp": 120,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.25,
+   "C": 0.7,
+   "E": 0.4,
+   "A": 0.6,
+   "N": 0.55
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.21,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.1,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "role",
+    "off_field": "role",
+    "direction": "familiar_bonus",
+    "weight": 0.7,
+    "why": "habit_loyalist_shrinkflation_angry weighs role",
+    "source": "https://www.reddit.com/comments/1qgcwyr"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.3,
+    "why": "habit_loyalist_shrinkflation_angry weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1qgcwyr"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "role fails lens",
+    "source": "https://www.reddit.com/comments/1qgcwyr"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "habit"
+  ],
+  "dossier": "fixture persona (habit_loyalist_shrinkflation_angry). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "My local chippy still does a nice fish and chips for £6.80 but their portion sizes are much smaller now. They're still more than filling enough, but I did notice it. Generic white fish too, not cod or haddock.",
+    "url": "https://www.reddit.com/comments/1qgcwyr",
+    "subreddit": "AskUK",
+    "score": 126
+   },
+   {
+    "quote": "Creme Eggs suffered both shrinkflaton (five to a box instead of six), and enshittification thanks to the Kraft buyout. Cadbury’s chocolate has become so waxy and nasty that I never bother with it anymore.",
+    "url": "https://www.reddit.com/comments/1tsbmt5",
+    "subreddit": "AskUK",
+    "score": 91
+   }
+  ],
+  "_mechanism": "habit"
+ },
+ {
+  "id": "p_meal_deal",
+  "name": "jordan",
+  "archetype": "meal_deal_office",
+  "mission": "meal_deal",
+  "budget_gbp": 4,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.6,
+   "C": 0.4,
+   "E": 0.65,
+   "A": 0.55,
+   "N": 0.45
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.12,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.24,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "meal_deal_eligible",
+    "off_field": "meal_deal_eligible",
+    "direction": "yes_better",
+    "weight": 0.6,
+    "why": "meal_deal_office weighs meal_deal_eligible",
+    "source": "https://www.reddit.com/comments/1bc79kh"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.4,
+    "why": "meal_deal_office weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1bc79kh"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "meal_deal_eligible fails lens",
+    "source": "https://www.reddit.com/comments/1bc79kh"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "price_anchor"
+  ],
+  "dossier": "fixture persona (meal_deal_office). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "If you scan the smoothie and the other 2 items in your meal deal then press the subtotal button it will group them together as the deal, you can then scan the water on the same transaction",
+    "url": "https://www.reddit.com/comments/1bc79kh",
+    "subreddit": "CasualUK",
+    "score": 186
+   },
+   {
+    "quote": "Oh wow. Is this really such a specific British thing? I’m quite surprised. It makes me somehow value my £3.75 Sainsbury’s meal deal lunches even more knowing that others don’t have this option.",
+    "url": "https://www.reddit.com/comments/1h1g0jq",
+    "subreddit": "wikipedia",
+    "score": 160
+   }
+  ],
+  "_mechanism": "price_anchor"
+ },
+ {
+  "id": "p_vegan",
+  "name": "ana",
+  "archetype": "vegan_ethical",
+  "mission": "weekly_shop",
+  "budget_gbp": 120,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.75,
+   "C": 0.65,
+   "E": 0.5,
+   "A": 0.7,
+   "N": 0.45
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.2,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.3,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "labels",
+    "off_field": "labels",
+    "direction": "vegan_required",
+    "weight": 0.7,
+    "why": "vegan_ethical weighs labels",
+    "source": "https://www.reddit.com/comments/191icpc"
+   },
+   {
+    "attribute": "ecoscore",
+    "off_field": "ecoscore",
+    "direction": "higher_better",
+    "weight": 0.3,
+    "why": "vegan_ethical weighs ecoscore",
+    "source": "https://www.reddit.com/comments/191icpc"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "labels fails lens",
+    "source": "https://www.reddit.com/comments/191icpc"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "identity"
+  ],
+  "dossier": "fixture persona (vegan_ethical). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "Wetherspoons, whose founder is not known for his progressive views, has a Veganuary special menu. Profit is profit.",
+    "url": "https://www.reddit.com/comments/191icpc",
+    "subreddit": "britishproblems",
+    "score": 122
+   },
+   {
+    "quote": "A few years back, Heinz made *BLACK* Vegan mayonnaise for Halloween. It had the colour and texture of black acrylic paint and tasted slightly of charcoal. Reduced to clear section still had them for months. That's where I got it to try.",
+    "url": "https://www.reddit.com/comments/1wqczct",
+    "subreddit": "AskUK",
+    "score": 67
+   }
+  ],
+  "_mechanism": "identity"
+ },
+ {
+  "id": "p_coeliac",
+  "name": "ruth",
+  "archetype": "allergen_coeliac",
+  "mission": "weekly_shop",
+  "budget_gbp": 120,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.4,
+   "C": 0.85,
+   "E": 0.4,
+   "A": 0.55,
+   "N": 0.65
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.26,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.16,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "allergens",
+    "off_field": "allergens",
+    "direction": "gluten_veto",
+    "weight": 0.9,
+    "why": "allergen_coeliac weighs allergens",
+    "source": "https://www.reddit.com/comments/1jns9wh"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.1,
+    "why": "allergen_coeliac weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1jns9wh"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "allergens fails lens",
+    "source": "https://www.reddit.com/comments/1jns9wh"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "safety_veto"
+  ],
+  "dossier": "fixture persona (allergen_coeliac). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "I'm going to assume the hard way refers to something digestive/medical like celiac. My condolences. It's bad enough to eat store-brand Cheerios without the medical concerns.",
+    "url": "https://www.reddit.com/comments/1jns9wh",
+    "subreddit": "AskReddit",
+    "score": 11
+   },
+   {
+    "quote": "He's not anti vegan they have quite a great range of gluten free food too.",
+    "url": "https://www.reddit.com/comments/191icpc",
+    "subreddit": "britishproblems",
+    "score": 6
+   }
+  ],
+  "_mechanism": "safety_veto"
+ },
+ {
+  "id": "p_ai_delegator",
+  "name": "tess",
+  "archetype": "ai_delegator",
+  "mission": "weekly_shop",
+  "budget_gbp": 120,
+  "channel": "agent",
+  "ocean": {
+   "O": 0.7,
+   "C": 0.35,
+   "E": 0.55,
+   "A": 0.6,
+   "N": 0.4
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.11,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.28,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "nutriscore",
+    "off_field": "nutriscore",
+    "direction": "higher_better",
+    "weight": 0.5,
+    "why": "ai_delegator weighs nutriscore",
+    "source": "https://www.reddit.com/comments/1hyqe97"
+   },
+   {
+    "attribute": "rating_proxy",
+    "off_field": "rating_proxy",
+    "direction": "incumbent_bonus",
+    "weight": 0.3,
+    "why": "ai_delegator weighs rating_proxy",
+    "source": "https://www.reddit.com/comments/1hyqe97"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.2,
+    "why": "ai_delegator weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1hyqe97"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "nutriscore fails lens",
+    "source": "https://www.reddit.com/comments/1hyqe97"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "delegation"
+  ],
+  "dossier": "fixture persona (ai_delegator). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "My wife gave it the specific macros she's trying to hit, it gave her meal options for breakfast lunch and dinner and then made a shopping list using ingredients more than once in meals. The answer was 70 hotdogs",
+    "url": "https://www.reddit.com/comments/1hyqe97",
+    "subreddit": "ChatGPT",
+    "score": 151
+   },
+   {
+    "quote": "More likely they have some low-paid worker churning these out. Said worker has discovered ChatGPT as a wonderful way to save effort and doesn't care enough about his or her job to even edit the output.",
+    "url": "https://www.reddit.com/comments/11q147q",
+    "subreddit": "ChatGPT",
+    "score": 18
+   }
+  ],
+  "_mechanism": "delegation"
+ },
+ {
+  "id": "p_tiktok",
+  "name": "mia",
+  "archetype": "novelty_seeker_tiktok",
+  "mission": "treat",
+  "budget_gbp": 15,
+  "channel": "instore",
+  "ocean": {
+   "O": 0.85,
+   "C": 0.35,
+   "E": 0.75,
+   "A": 0.5,
+   "N": 0.4
+  },
+  "ocean_effects": [
+   {
+    "trait": "C",
+    "effect": "reads labels → +attention to nutrition fields",
+    "coef": 0.11,
+    "source": "assumption: fixture coefficient; direction from research/05-personas.md (label-readers are high-C)"
+   },
+   {
+    "trait": "O",
+    "effect": "notices unfamiliar brands → +p_notice for challengers",
+    "coef": 0.34,
+    "source": "assumption: fixture coefficient; Openness ↔ novelty seeking"
+   }
+  ],
+  "lens": [
+   {
+    "attribute": "role",
+    "off_field": "role",
+    "direction": "challenger_bonus",
+    "weight": 0.7,
+    "why": "novelty_seeker_tiktok weighs role",
+    "source": "https://www.reddit.com/comments/1ow5fne"
+   },
+   {
+    "attribute": "price_gbp",
+    "off_field": "price_gbp",
+    "direction": "lower_better",
+    "weight": 0.3,
+    "why": "novelty_seeker_tiktok weighs price_gbp",
+    "source": "https://www.reddit.com/comments/1ow5fne"
+   }
+  ],
+  "rejection_triggers": [
+   {
+    "trigger": "role fails lens",
+    "source": "https://www.reddit.com/comments/1ow5fne"
+   }
+  ],
+  "trust_signals": [],
+  "habits": [
+   "novelty"
+  ],
+  "dossier": "fixture persona (novelty_seeker_tiktok). the real dossier comes from data/personas/personas.json, grounded in the verbatims below.",
+  "verbatims": [
+   {
+    "quote": "Own brand short cut spaghetti too. Heinz is just so sweet. I saw two Italian blokes on TikTok say it tastes like Sweet Chili sauce and they're not wrong!",
+    "url": "https://www.reddit.com/comments/1ow5fne",
+    "subreddit": "AskUK",
+    "score": 3
+   },
+   {
+    "quote": "this is a weird tip but i used to always buy wayy to much makeup n body care n whatever, so i watch a lot of tiktokers who post shopping vids so i can feel like im shopping with them n get the urge out, it oddly helps a lot",
+    "url": "https://www.reddit.com/comments/17amn59",
+    "subreddit": "Anticonsumption",
+    "score": 2
+   }
+  ],
+  "_mechanism": "novelty"
+ }
+]
