@@ -1,0 +1,363 @@
+
+## [AskUK] Have you see a more limited selection of own brand goods in supermarkets?  (score 31) https://www.reddit.com/comments/178noq5
+POST: I was in a pretty big Tesco today for the first time in a while and noticed that a random selection of things that I've bought as own brand before are no longer an option and all that's left is branded goods. Some examples I can remember include   - Only branded Gaviscon mint stomach acid tablets - Only branded red wine and white wine vinegar - Largest milk is four pints not six (not quite the same but makes branded milk never came they big so now it makes them comparable) - limited range of own brand 6 pack crisps but loads of branded options  Have you experienced the same with other products or am I making it up?   My thoughts are that it's a sneaky form of inflation where suoermarkets can simplify their shelves while not claiming that they've realised prices because they're not raising 
+- (55) There is definitely a more restricted availability of the 'value' range, which makes the supermarkets less profit.  So basically, you are 100% correct.
+- (41) There was a whole thing a while back about how the official measures of inflation were underestimating the true inflation in food bills because of exactly this. They weren't accounting for the reduction in availability of value ranges, because inflation measures price changes in the same product. So if you have to switch from value to more expensive because the value product has become unavailable then that doesn't measure as inflation, even though it makes your bill more expensive.
+- (19) Tecso and the other mainstream supermarkets make their money by being *paid* to stock branded goods - they can charge more for the location on the shelf, as well as the range of goods from the supplier that go in.   The value ranges may well get more people into the store, but if push comes to shove, they'll stock the branded stuff as a preference.   There's also that the major suppliers have more sway with the food producers than Tesco by themselves have, and again, those food processing contra
+- (17) Yep. Tesco Value products were 'loss leaders'. They lost the company money because they were excessively cheap, but they got customers into the shop, where they're likely to buy more while they're there.  Then, Tesco Value became socially low-value and nobody wanted to admit they bought it. Tesco got rid of the Tesco Value brand and rebranded it all under new names, eg Miss Molly (ambient), Creamfields (dairy), Springforce (household) etc.  It's all clever marketing and psychology to manipulate 
+- (11) Morrisons Honey Loops are like rocking horse poop at the moment.  The kids are not happy.
+- (9) 100% agree AND remember those discussions.
+- (8) A lot of own brand stuff goes out of stock quick if it is good.  Branded stuff makes Tesco more money so they always push branded more and only really try to provide own brand for “essential” items.  When I worked for Tesco we were told to try and get the branded stuff stocked first.
+- (7) Interesting, I hadn't considered that another angle is brands influencing food producers away from own brand production. So it could be that supermarkets are unable to guarantee they can stock their own products due to limited supply so they've focussed on core own brand products instead.
+- (7) That’s if you look purely on item by item profitability at the till.  Branded items often pay for shelf space and to be stocked, so when you factor this in they make better profit overall
+- (5) Last time I was in morrisons I noticed they had hardly any of their own brand cereals.
+- (5) Absolutely. Seen a lot of cheaper ranges being pulled and the mid tier ones being used in its place.
+- (4) I think it wasn't including shrinkflation too so another effect. I'd be really interested to see how supermarkets introduced smaller size goods at bigger and smaller shops, and whether they deliberately only made smaller (higher cost per gram of whatever it is) size goods available in areas where competition is less
+- (3) Never underestimate the power of snobbery in retail!   One of my teachers at school once saw his next door neighbours coming out of a Netto, and the second they got to their car, they pulled out a load of Marks and Spencer bags and transferred everything over before binning the Netto bags!
+- (3) Yeah no ‘own brand’ calpol in Tesco 🫤
+- (3) Yes I was thinking the same the other day.  Not just tesco but alloy them
+- (3) The Tesco I go to has had a £2 million refit, and stopped stocking a lot of of brand products. It’s so difficult to find anything in the shop as everything has moved round, loads of tills closed, self serve trolley area added (closed on Saturday morning just gone leaving 3 manned tills open). No idea what’s been going on recently but even staple items have been discontinued. I used to buy the large bags of penne pasta, I think 5kg, they sold them off as reduced and haven’t been seen since. Same 
+- (2) Oddly I’ve found the opposite with the Co-Op, for some reason they have been cutting down on the branded products and in some cases are putting out more of their own range.  >No longer stock Amoy Soy Sauce - but do stock their own brand (and Kikoman)  >No longer stock Princes Chicken Curry - do stock their own   >No longer stock Uncle Bens Boil in the Bag plain rice - did replace it with their own range of Boil in the Bag now only do loose rice in their own brand 🤷‍♂️  >No longer stock Napoli It
+- (2) 100%. Stuff I bought off brand is now not available. But for me, it’s still cheaper to shop at Tesco than Aldi.
+- (2) I get the impression when there was raw ingredient shortages it was the big boys that bought up the diminished stock, with the subsequent price increases wiping out the much smaller margins of the cheaper stuff.  Mayonnaise was a clear example of this. For a while there was shelves of Hellmans at every supermarket and nothing else....
+- (1) People here are wrong, the margin on own brand is much, much bigger than branded. Tesco would actually prefer you to buy OB as it's more profitable for them so if lines are disappearing it's probably due to something else.
+- (1) I've noticed that with my online Tesco shop, didn't know it was happening in store too. A couple of items I've had to get branded recently are mayonnaise and cornflakes. Very annoying!
+- (1) Definitely seem this, I guess they make less money so are happy for us to buy the more expensive stuff instead?
+- (0) I shop in Sainsburys and noticed that it is opposite, much more budget options of supermarket own brand, BUT in large shops, in small local shops everything will be branded and very overpriced.
+- (-2) There’s a hugely limited range on anything you can name, I’d love to compare now to the 70s as back then you had way more choice.
+
+## [veganuk] Being delisted from a major UK supermarket 😢  (score 259) https://www.reddit.com/comments/1o3q3ez
+POST: I work for a dairy-free / vegan yoghurt and we got the news that we’re being delisted from one of our largest retailers this week. I know there’s so much discourse and concern about supermarkets reducing their offerings and there being no choice anymore, but as a brand it’s getting harder and harder to get anywhere and we’re a small family owned brand, so this is going to be such a blow to us and we know so many customers will be disappointed.  I guess what I’m saying is if there’s a brand or product that you love and can afford to buy even every other week, remember to add to your basket otherwise they really might not be there for much longer, it’s so hard atm for brands! Xx
+- (89) did a little snooping and shh nush shhh Sainsbury's 
+- (84) What brand and where can we still buy it? Come on, big yourselves up, let us spend our money with you!
+- (48) That’s so lovely to read - my boss and founder will really appreciate this comment after a really tough week x
+- (47) Nush! It’s almond based and made here in the UK, it’s so delicious and still available for a limited time (LOL!) in Sainsbury’s but still in Waitrose, M&S, Ocado and independent health food stores, losing Sainsbury’s is obviously a blow as I know the latter stores aren’t accessible to everyone, we’ve been trying to get Tesco interested too 😔
+- (43) What yogurt and where do you still sell it?    Cossie livs got us all a chokehold right now. 
+- (43) That’s annoying, nush is the tastiest of the vegan yoghurts in my opinion. So smooth and creamy.   I love their blueberry flavour. I pick up the mini individual pots from M&S when I pass as they don’t do the big ones, only in raspberry.  I am surprised they’re getting cut if that’s the case.
+- (32) My clever dairy-free detectives! you’re correct , it’s Nush strawberry, such sad news as they seem to be making room for more dairy yoghurts. Cost of living is impacting basket and shopper behaviour but before too long there will be no options available, our chive cheese was delisted this year but is selling so well in Waitrose which is amazing.   You can still find it in Sainsbury’s for now, but also M&S, Waitrose, Ocado and lots of lovely independent health food stores. Thank you so much for a
+- (27) Nush original cream cheese spread is literally my favourite thing EVER but I can only ever find the flavoured spread? Why is it always the flavoured one in shops :(
+- (26) Oh your stuff is GORGEOUS! I’ll be sure to add it onto my shopping list from now on.
+- (21) Sorry to hear about Sainsbury’s, for what it’s worth we’ve just started buying your products exclusively (from Ocado though) and the kids love them, thank you
+- (16) I don’t understand why there is need for even more diary yoghurt? How many different cherry (other flavours available) yoghurts are needed? At least with different vegan ones they actually taste different and have different bases (coconut, soya, nut, etc)
+- (9) Definitely do pass on best wishes and support - I had no idea it was a small and family-run business.   Nush is great and we need more quakity and variety on our shelves. Definitely speak out about this as I imagine folks will want to show support - sometimes it is human to get complacent and expect your favourites to always be around. But the vegan product climate seems to be getting so unstable, it’s a worry for us all.  I’ll be going out to stock up and buy some pots from M&S today! 💪
+- (9) Was thinking exactly this - nush has disappeared from the local Waitrose (the only reason I went In there !) and it’s been harder to find /having to go further away to get.
+- (9) No need to call OP a coward, all over the comments the brand is being mentioned (it’s Nush)
+- (7) I’d buy it from Tesco! I really hope they decide to stock it
+- (7) Nooo. It’s hard enough to find and I need an option that’s soya free for my son, there’s the odd coconut based one but they’ve either got bits or the texture is odd and he won’t eat it. Nush has been so helpful, especially the tubes.
+- (7) I love Nush cream cheese, will be sad if I can't get it anymore!
+- (6) The plain one is always there when I go on Ocado website
+- (6) That’s so lovely to read - my boss and founder will really appreciate this comment after a really tough week x yes u love that s
+- (5) Nush cheese spread is amazing, have eaten it for years every day. I wish I could still get the plain one in Waitrose though!
+- (5) Ugh, I was looking for their camembert the other day. Guess this is wy I couldn't find it. Though my local Sainsbury's has pretty much obliterated their entire vegan cheese section.
+- (5) I know Unicorn in Chorlton (Manchester) stock it so probably other wholefood shops will too.
+- (5) I’m really gutted to hear this. I used to buy Nush from my local Waitrose and they stopped stocking it a few months ago. I spoke to staff to see if they would bring it back but nothing yet.   I now either order it online or go to a branch a bit further out who still stock it, because it’s the one vegan yoghurt that isn’t pumped full of artificial rubbish.   I’m worried Waitrose will stop stocking it altogether and I cannot even imagine how that makes you guys feel. They’ve cut down on a lot of v
+- (5) That is true! Our pot supplier let us down for months! We were out of stock because we couldn’t pack it!! So glad you love it, it’s so rare to find vegan cheese with a short clean ingredient list!
+- (4) Not too sure why you don't want to mention the yogurt. I'm sure a lot of us here would buy it to help the cause!
+- (4) Might not be deliberate, but the intrigue stopped me from simply scrolling on by.
+- (4) I work at an independent food hall. Just seen you sell via clf wholesalers so will be trying to get them in the shop
+- (4) Hi!! I am obsessed with your products. I live in Northern Ireland and prior to Brexit coming into effect I was always able to find the chive cream cheese in Sainsbury’s until it disappeared :( do you know where else in Northern Ireland stocks your products? I’d love to buy some and support Nush. We have to let retailers know there is still demand!!
+- (4) I think veganism is at its best when we get people invested in the food production industry and cooking of meals. Teach people far more about growing food and invest time in establishing a rooted culture in cooking meals. It’s difficult at the moment to see how it’s possible given the cost of living and the time pressure people face but in the UK for most people what they eat is far removed from any kind of understanding of food or even culture or tradition.  I don’t think the average person on 
+- (3) Tell me about this then: we love your cream cheese. As opposed to others it's actually healthy. It's the only healthy one out there in fact. The rest is made with high saturated fat coconut.   It disappeared from Waitrose shelves earlier this year for a few months. Claiming supply issues. It did come back.  What on earth really happened?
+- (3) Wow! The lost revenue!! You guys should do a direct to consumer trial. Somehow. Like the milkman but wish Nush;)  Like if you did a subscription, I'd sign up. Especially at a reasonable bulk discount. We are a hungry family of four..
+- (3) That's so disappointing to hear, hopefully other retailers don't do the same, we've lost too many brands already!
+- (3) 41 days ago OP proclaimed “Nush!!!” as being the answer to a question “which vegan cream?” So reckon you’re on the right track 👍
+- (2) It’s my absolute favourite too! 😭😭 Wholefoods normally stocks the unflavoured one as well, but it does sell out quicker than the flavoured one
+- (2) That's Nurishh, not Nush. Nush sells cream cheese and yoghurt! Their cream cheese is the best on the market - I bought it even before I became vegan.   I was never able to find Nush products at my local Sainsbury's stores, but I'm still really sad to hear they've been pulled from the lineup! I buy Nush from independent stores or on the rare times I do an Ocado shop. I'd love to see Nush at Tesco. 
+- (2) Oh! Well that's a good piece of news I suppose. I don't think it's just Nush they're pulling. My local Sainsbury's only had two different vegan cheeses when I last went. They've massively cut back. I'll keep an eye out for Nush elsewhere 🤞
+- (2) Sad to say my local M&S has stopped stocking it now - they’ve replaced it with their own brand strawberry and plain yoghurts (no more nush blueberry 😢). I assume they’ve done that in other stores too. So disappointing.   Thankfully it looks like it is still available in Sainsbury’s at the moment. And definitely in Ocado and Waitrose. It’s a while to my nearest large Sainsbury’s and Waitrose, so Ocado may be the way to go now so much vegan stuff is disappearing off shelves.
+- (2) I've been purchasing it from Unicorn since it first went on the shelves many, many years ago. I hope you always have it there!  I add it to my basket every time I do an Ocado shop as well. I'd buy it weekly if you were stocked at Tesco - I shop there much more often. 
+- (2) Oh this is a shame. I love Nush yoghurts but sadly they don’t stock them in Tesco which is by far my nearest supermarket. I will try to stock up when I’m near another stockist next time.
+- (2) So sad to hear this! I’m dairy free and soya free while breastfeeding my baby with allergies, and I love nush!! So much dairy free yoghurt has soya so we’ll be sad to lose this one on our Sainsbury’s order 😭
+- (2) That's because your cream cheese is the fucking best. And healthy!!! Not like the main brand alternatives. They are junk.
+- (2) Which approach would be an alternative?
+- (2) I have some of your cream cheese in my fridge right now. Wishing you all the best!
+- (2) Previously employee of Sainsbury’s…are you being delisted for Xmas? This tends to happen a lot as the store I’d only allowed to hold a certain number of products (14,000 at my old store) so when it came to Xmas / Easter etc, a lot of food was DD (discontinued) only to come back again in January. I’m sure that doesn’t help you at all but might offer some light at the end of the tunnel.
+- (1) Wtf? Nush is the best one out there. If I do a Waitrose online shop I always get some as it's so hard to find elsewhere.
+- (1) What’s this Unicorn people are talking about? I want to visit!
+- (1) I didn’t even know nush did yogurts 😞 
+- (1) It hadn't been when I commented, and I also wasn't serious.
+- (1) Late to the party here, but so many other supermarkets/brands have just given up on that front too. Can't seem to find a chive/herb cream cheese except for Violife which is shit. Asda don't even sell their own brand stuff in the one near me.
+- (1) saw it a couple of days ago in waitrose, will definitely give it a try now! what a shame about the strawberry yogurt that’s my fave!! x
+- (1) I LOVE nush. I wish the plain cream cheese was available in every supermarket it’s so hard to find and it’s SO much better than ALL of the others
+- (1) Nush?? Never tried it. I need a good yogurt
+- (1) I love nush. I buy the yoghurts on offer. The cream cheese is the best!
+- (1) The Nush cream cheese is soo good. I love the chive one and constantly wait for my local Ocado to restock it lol  I didn’t know Nush did yogurts until I was filling out a survey for something else and it was mentioned as a competitor. I tried the strawberry one and liked it, but I definitely think the cream cheese is the better product. I also think Alpro have a hold on dairy free yogurts because they’ve been around for such a long time. Only so much flavoured yogurt you can eat lol  Are sweet c
+- (1) This is exactly why veganism needs to stop putting its hope in a consumerism driven approach. Products/restaurants will come and go and aren’t going to change things systemically.
+- (1) I also love Nush can’t find it anywhere now bought it all the time and the cheese 😭
+- (1) Sainsbury's are getting rid of a lot of vegan brands.    I can't eat OP's brand due to nut and legume allergies; but Sainsbury's have also got rid of products by the BIG, well-known popular milk-alternative brand as well!  As someone who cooks, with multiple allergies; the diminishing choice from so many of the larger supermarkets is getting REALLY scary, and I've had to resort to very pricey, niche,online shops, for so many products that I previously, was able to grab from the shellves/fridges,
+- (1) I think they are almond based aren't they? I'm allergic so never bought them unfortunately
+- (1) Sainsburys are getting rid of lots of vegan options unfortunately, shame as they've long been my favorite because they've always had a good range of vegan food but it seems they've abandoned the vegan market
+- (1) After reading this post and the comments, I did a minimum order from Waitrose (which of course included chocolate cupcakes...) just so I could try the cream cheese because to my shame, I'd never heard of it.  OMG IT'S AMAZING 😍
+
+## [AskUK] Is there a supermarket item that has been discontinued that you miss?  (score 23) https://www.reddit.com/comments/1e8k6o1
+POST: A year or so back due to the cost of living crisis my son and I switched our weekly supermarket shop from Tesco to Lidl. I am pretty basic so get the same/similar items every week.  One thing I have noticed is that Lidl have really good items that they get you hooked on then suddenly discontinue. Two in particular for us were Belgian butter waffle biscuits and a big yorkshire pudding that had stuffing, a sausage, gravy, chicken and potatoes, which was actually amazing in flavour, substance and value. Oh what I would do for them to bring those items back!   So I ask you, what items have a supermarket you shop at discontinued that you truly miss and would love to have again one more time? 
+- (43) Back in the early days of Lidl being over here in the UK they used to sell so many more German groceries and one of my favourite items was [fleischsalat](https://germandeli.co.uk/popp-fleischsalat.html). Sadly it is long discontinued.
+- (37) Cadbury's tinned steamed puddings - the treacle and jam kinds were both great, but the chocolate one was heavenly. Super stodgy, a million calories each, but I've never had a steamed pudding anywhere near as good.
+- (21) I loved weird Lidl, it's a bit dull going in every week and knowing 90% of their stuff is there all the time.
+- (14) Three things:   Aldi's Prawn En CrouteSara Lee's Chocolate DanishBachelor's Mushroom & Wine Pasta N Sauce  I would give so much to have any of them again.
+- (13) Lidl sparkling grape juice a Shloer knock-off at half the price. Weekly purchase and then disappeared after 18 months never to be seen again.
+- (11) In 2014 Morrisons used to sell lemon filled doughnuts and very flavoured Relentless. They got my through my first year uni exams and I am gutted either seem to exist any more.
+- (9) As a fellow lemon curd in dough fan, Aldi have lemon filled iced buns that are both cheap and lush. If you’re feeling flush, M&S have these little lemon muffins that I’m still rehabilitating from and will probably never recover from financially.   Every time I go somewhere new and they have a bakery, I have to know if they have a lemon doughnut.
+- (8) Haagen Dazs Creme Brulee ice cream. It was discontinued about 10 years ago but I still miss it. 
+- (8) Aldi used to sell Church's Ginger Beer, which was basically a knock off version of Crabbies.  They stopped doing it maybe 5 years ago and it's annoyed the hell out of me.
+- (7) They still make little single portion microwaveable ones. No. I want the gigacalorie tin.   I have seen own brand ones sporadically in Aldi but they’re very rare. Bought six at once the last time I saw them. I don’t know why they got discontinued I loved them 
+- (6) Sainsburys Thai flavoured edemame dip.   Ben and Jerry's Cherry Garcia.   Aldi Indian inspired veggie chicken style strips seem to have disappeared.
+- (6) Aldi did some orange ice lollies that were made using coconut water a few years back...they were impossible to get as they werealways sold out so they must've been popular. They were the most refreshing ice lolly I've ever had in my life, and then overnight: gone!
+- (5) This is heartbreaking to read. 😭  I had it in Germany for the first time last year and have been looking to see if it is anywhere in this country. Gutted to hear I'm too late
+- (5) Every time Aldi tease us with a fresh Thai veg curry micro meal it goes. They had these red curry pots for a bit, then the green curry that had the added bonus of nice Tupperware, now nothing.   I know I make a far superior curry, but sometimes it’s just nice to not have to cook and wash up.
+- (4) The 5 bean baked beans, Tesco and Sains had their own versions which were excellent... Can't find them anywhere now 😠
+- (4) Lidl did Jackfruit 'sausage' rolls for a while I miss them
+- (4) Kwiksave... it was easy to get to regularly and had some great bargains.
+- (4) Snyders of Hannover Pretzel Pieces. They don't sell them in the UK anymore and they were the king of snacks food.
+- (3) German here. Try to make it yourself. Get some garlic sausage and gherkins, add favourite mayo (I like to sub some of it for yoghurt or sour cream to make it a bit lighter) and mix. Season with salt and pepper for taste. Sometimes I also like to add a bit of mustard.
+- (3) Morrisons went through a phase of trying different flavour doughnuts. I went on a quest to find ones with salted caramel filling and they came through for me on that. They seem to have stopped now sadly, all I've seen in my local for a while is jam or custard.
+- (3) Didn't they also do the double filled doughnuts?   There was more jam than bloody doughnut and made a right mess!
+- (3) I've not seen them for about 15 years but back then they were available year round. It could be they do a festive version but don't think they've appeared in my Aldi.
+- (3) It's back! Bought some from Iceland the other day, excitedly poured a glass for me and my kid while singing the absolute banger of a song that goes with it. Unfortunately it's nowhere near as good as it used to be.
+- (3) That'll be sugar tax, drinks are rubbish now.
+- (3) Realised the other day, courtesy of another Reddit thread, that the flavour profile is almost identical to that of Pipeline Punch Monster.   Do with that info what you will, although I'm not recommending handing Monster to 9 year olds!
+- (3) If you want them again, just get hospitalised. I’ve had both syrup and chocolate sponges whilst admitted.
+- (3) Lilt - Mango and Mandarin Flavour
+- (3) Cloth-like paper towels or kitchen rolls. I cursed Sainsbury's when they stopped selling them but further research showed they were no longer manufactured. But you can get 57 varieties of the thin, rough paper sort with different patterns or none.
+- (3) All the Gardein products but especially their fish fillets.
+- (3) Lidl did a frozen kebab meat that was lovely    Was in a Morrisons years ago they had a kebab in pitta in the fresh aisle and it was incredible, best microwave kebab I've ever had   Tesco used to have a frozen sweet and sour noodles that were lovely, it was in a pot that looked like when Americans on TV eat Chinese
+- (3) Used to get it in Asda but they stopped selling it. It's not listed on the Carte d'Or website anymore so think they stopped producing it
+- (3) Walkers cheese and chive crisps
+- (3) I remember their ‘no frills’ range well. My mother swore by them for many things.
+- (3) Lidl once brought out the most opulent chocolate cocoa powder in a tin with a tiny whisk. It was the most delicious hot chocolate drink I’ve ever had, maybe seven, eight years ago. Never saw it again after that Christmas. Wish I knew that was going to happen and I would have bought a few more.
+- (3) 1% fat milk. Imagine skimmed milk that tastes like semi-skimmed. It more or less disappeared from the shelves overnight during lockdown and now everywhere will outright deny it was ever a thing. There was a Co-op on my way home from work that sold it for a while but they stopped as well. Only place I can find that sells is not is one of those doorstep delivery places, which won't deliver to me because I live in a flat.
+- (3) Feasts ice creams suck now  Mint feasts were discontinued
+- (3) Not so much discontinued, but reformulated  - the original Chicago Town mini pizzas. They had a layered base which would fluff up, but stay in layers, and honestly I could eat the base on its own.  Those disappeared about the time CT stopped using the little fold-out trays, and I'm not sure if these facts are related.   There was also a particular chocolate bar - I think possibly Dairy Milk - which had a strawberry creme filling, which used to be *everywhere* at Wimbledon time. Haven't seen them
+- (3) Vesta chow mein, came in a black box with it all separately packaged inside. I loved it. Haven’t seen it in like 2 years. I miss it dearly.
+- (3) Just bring back cucumber sprite. What a summer that was. 
+- (3) You know the cardboard tubs of ice cream, like Ben and Jerrys etc?  About 20 years ago Asda used to do an own-brand tub of luxury chocolate ice cream, *that had a layer of solid chocolate on top, that you had to break through*. In manufacturing they filled the tub with ice cream and then poured a layer of melted chocolate on top, which set solid. Then they put the lid on. To get to the ice cream you would smash through that layer, and then enjoy the chocolate shards with the ice cream.  It was g
+- (2) Very refreshing. I've seen an equivalent on the Aldi website but they never have it in stock. Possibly the same supplier and no longer making sufficient margin on what they were being offered to produce it.
+- (2) I keep craving apple ones and they never have them anymore. They were perfection.
+- (2) Them veggie microwave burgers that Tesco did for a while in the 90s.  They changed to need grilling, which is pointless because they were crap - their only benefit was being microwavable - and then they disappeared.
+- (2) The chocolate danish, it thought was just a dream of mine - it was amazing!
+- (2) Sainsburys onion rings from the 90s
+- (2) They've recently stopped doing coconut ice lollies too, I'm gutted! They were a third of the price of m & s.....
+- (2) The Congo I think you’ll find lol
+- (2) Instant Whip - specifically butterscotch flavour.
+- (2) So many things.    Lidl used to stock small coffee flavoured chocolate bars. And schogetten which are German chocolate bars in a variety of flavours. They stopped doing both in the UK, but their German/Austrian ones still have them.    In the nineties, mands used to do an amazing cheese and onion bread as well as a Mediterranean bread. It was prepacked and probably full of processed things but it was good.    Lidl also used to do a rosemary and olive bread which was stunning.    I reckon the Bel
+- (2) Old English ones in the dark packet were my favorites.
+- (2) Lidl used to do a big tin of ravioli in a meat sauce. It was really good and then gone.   Asda did some Thai style meatballs, lemon grass and something. Really nice, then they went.
+- (2) >Lidl did a frozen kebab meat that was lovely  Aldi do a frozen king kebab. Needs to be done in the oven/air fryer but it's absolutely tip top.
+- (2) Carte D'Or Rum & Raisin ice cream
+- (2) Have you tried BOB? They do two kinds now; skimmed milk that tastes like semi-skimmed, and semi-skimmed that tastes like whole. It's the only milk I buy and usually available pretty widely.
+- (2) I also miss the low sugar or sugar free chocolate that was in the shops for a while. Cadbury's did one for a while, but there was a small brand called Chocologic that also did them. Perfect for chocolate cravings if you're on a diet. Chocologic seems to have gone out of business while Cadbury's killed off the low sugar line a year or two back.
+- (2) There used to be these noodles you could get at the CO-OP. They came in a Chinese takeout container like you see in US TV shows. You'd open the sauce and noodle packs, mix them up in the box, and put them in the microwave for a minute, then you could eat them straight out the box
+- (2) Omg they really do, we got some the other day and food has never disappointed me more.
+- (2) Wafer thin chocolate inside and I swear the ice cream itself isn't as sweet.  So upset the mint one was discontinued too.
+- (2) > Snyders of Hannover Pretzel Pieces  Aldi do knockoffs of these in both jalapeno and honey mustard...  https://groceries.aldi.co.uk/en-GB/p-snackrite-jalapeno-flavour-pretzel-pieces-125g/4088600486895
+- (2) Tesco have stopped selling Ben & Jerry's Baked Alaska and Phish Food. The one near me anyway.
+
+## [CasualUK] What happened to supermarket fresh/deli counters?  (score 396) https://www.reddit.com/comments/1v79v53
+POST: We used to have deli counters in all of the main supermarkets, when did this stop?  Is it just Morrisons who still have them, or does it vary between different parts of the country for Sainsbury’s, Tesco, Waitrose etc. 
+- (2064) Honestly? The supermarkets did it to win you away from your local fishmonger/butcher/grocer, offering the same experience but more convenient   Now all those local fishmongers/butchers/grocers closed down, and the supermarket only wants to give you stuff in packets processed at a much cheaper central site. So they close their counters down.   We all lost. We did it to ourselves
+- (384) I lived in France for a bit and people deliberately supported the local ones to avoid this. There are still plenty of them open alongside the massive supermarket chains which don't all have their own counters because they know people prefer their neighbourhood shops. 
+- (354) France has a very different food culture to us, same reason they still have lots of fresh bakeries and such around and ours are all replaced with Gregg's. They place a lot more emphasis on the quality of ingredients where as we favour the price and convenience
+- (294) For my local Tesco, it was COVID that seemed to kill it. They closed the Deli counter when lockdown started and never reopened it.
+- (135) Plus “freshly baked in store” actually is a spin on just frozen stuff.
+- (108) Same with ours, we also lost the counter where you have a pizza made up.with whatever toppings you wanted. Now the counter is unmanned and sells Yo Sushi california rolls for about £10 each. 
+- (80) Covid was trigger for supermarkets to change this and also the hours at a lot of places.i worked at one at Asda and most things same as on shelf
+- (71) As said above, supermarkets did it to gain customers. Once they had them, why spend more money.   However, I'll also caution that local butchers can often be their own worst enemy. We had one in the London suburb I lived in. I went to get a chicken one day. "We only do chickens on Thursday". So of course I went to Tesco. 
+- (63) Waitrose has them, but you just walk up to the counter these days - no need to take a number.
+- (59) There's a lot of products and services supermarkets offer that make little money or even a loss. They do it to pull you away from other stores and do everything in their supermarket.  The deli counters probably did make fuckall money, but the reason they put up with the losses so long was to undercut the local butchers and whatnot.   Its a common strategy that giants use to crush smaller businesses.
+- (58) My local tesco got rid of them 3/4 years ago.  Shame as I love the rotisserie when they did reductions.  Cost cutting and lack of use sadly.
+- (56) Those same people who all switched there and buy stuff from Amazon are also the same people who complain because there's no shops in town
+- (52) I feel quite well qualified to answer this one as up until two weeks ago, I was a deli and cheese counter worker at Waitrose and we have just closed our counter permanently.   So many customers have complained that we are closing/now closed but they just didn't spend enough money to keep them open. Ours had barely been breaking even outside of Christmas (cheeseboards are big sellers)for about two years now but had been kept as a loss leader.  The main problem is this:  A Duchy Organic ham costs 
+- (50) Booths has really decent fish/meat/deli counters plus an extraordinary cheese counter!
+- (49) I mean, there is a lot of confusion in this post. Have you spent much time in France? Yes there is great food but they have exactly the sane kind of “quick bakery” options as in the UK (see here: https://tasteoffrancemag.com/trending/how-to-find-a-true-french-bakery/ - many boulangers buy in frozen). They are also massive convenience shoppers, hence why Carrefour/Monoprix et al are so popular. There’s no denying the eating culture in France is fantastic but sometimes it’s held as the vanguard by
+- (49) They shut down in lockdown and then supermarkets realised they are expensive to run. Sainsburys have since shut down the meat, fish, hot chicken, pizza, deli and bakery counters. 
+- (48) It's much harder to start a new business than to continue an existing one that already has a customer base
+- (38) They cost money to run because they are staffed. Therefore, first thing to go in a cost cutting exercise.
+- (37) They still do. The Real Bread Campaign challenges supermarkets a lot on false claims re baking and bread.
+- (33) Yup, supply and demand. It's a shame for the people here who still want quality produce and maybe even a chat with the owner.   My mother's a great cook and used to be able to get good cuts of meat and fresh fish, but can't now. Not locally anyway. 
+- (33) They always knew counters were expensive to run. There was still a small segment of customers who liked using them which made it difficult to close them. Then COVID forced everyone's shopping habits to change and the supermarkets seized the opportunity to finally get rid of them.
+- (31) My local (and presumably other) Sainsbury’s used COVID as an excuse to close the cafe and all the counters (bar hot food 🤨).
+- (30) See also wine.  Once the major supermarkets had achieved around an 85% dominance in the UK wine market and killed off the high street wine merchants like Oddbins or Threshers, they dropped all pretence of providing the good stuff. Now when you walk into the average UK supermarket all you'll find is cheap, industrial plonk.
+- (29) They used to just ship in big racks of fresh uncooked baguettes then put them in store ovens.
+- (29) Not to mention all the junk marketing that butchers do on social media. All I see, from multiple different places, are their main guy grabbing a supermarket joint, insulting it, saying its awful, and that its terrible quality and then turning around and just pointing at their meat and going "that looks so much better" and ending the video there. I would rather be educated instead of just told that supermarket stuff is terrible. Not to mention that they are always so confused as to why anyone buy
+- (25) This isn't the reason, the first part is obviously somewhat true but they closed because they just made fuck all money
+- (25) Worth noting that my local town has several great traditional butchers and a decent baker, plus a deli.   As you say, supply and demand. Wealthy area with plenty of disposable income, so people still use the local independents. 
+- (24) It was the same at the Tesco I worked at too. Unironically, I actually worked on counters.  The first to go in our store were meat and fish, deli counter followed not long after, and a few months later, the hot food counter.  I spent much of COVID time on the shop floor, tidying shelves, getting rid of cardboard packaging, etc, but ended up leaving mid-2021 due to unrelated health problems.  When I go in there for shopping since, what was a busy part of the store, has been replaced with open top
+- (23) Yes. Support your local market and independent shops where you can.  My local market has more choice of most fruit and veg, and not all in plastic boxes. No good for bean sprouts that need a fridge to keep them, but way better for things like local asparagus or most veg, not to mention exchanging local gossip with the stallholders. I bought 3kg of slightly over ripe raspberries for £3 recently from them for jam.
+- (22) Extremely difficult to compete with a supermarket, given the economies of scale they have and the fact they could happily sell a product at a loss to put you out of business should they choose to.  And too many customers won't understand why you're selling stuff more expensively, and won't take kindly to an explanation. It's a horror.
+- (20) You’re arguing the same point friend
+- (20) About the only supermarket that will sell you *thick* thick cut ham.
+- (19) > Wealthy area with plenty of disposable income, so people still use the local independents  It's also time. Supermarkets are fast, convenient and long hours.  The local butcher is probably only open while most people are at work. So unless you have a lot of stay-at-home spouses or the retired, the money isn't the only deciding factor.
+- (19) The stat that always gets me is that France is McDonald’s 2nd biggest market after the US.  The French fucking LOVE McDo
+- (18) Consider the condition of the average British high street. At one point you have an ecosystem of lots of specialist supplies like a fishmonger, butcher etc. now they’ve all been replaced by a big supermarket. You no longer get the footfall to your high street, and people doing a shop aren’t going to go out their way to come to your butchers if they can pick up the Sunday roast at Tesco along with all the other stuff. Hard to start up and be successful 
+- (17) Same reason why in the US Costco still do their dollar hotdog and have never changed the price.  Loss leader. You sell something at a loss to get people in the store, you make the profit elsewhere.
+- (16) You still have to bake the frozen dough, making the dough off-site and shipping it around the country doesn't change the fact it becomes bread rather than dough in the shop.  Greggs are the same.
+- (16) Covid also killed off supermarkets being 24hr for the most part. Very annoying. 
+- (16) The cost of the perishables is really the issue I think and you bring it home to people that it really is a use it or lose it and it's not occasionally, you have to use these things regularly or the wastage is just obscene.  Fish and meat are even more expensive because they have shorter time frames before the items need disposing.  
+- (14) My local butchers are great but we only realiably shop from them once a year really because they are open 9 till 4 so most people who work during the week can't go there and can be very expensive, and very difficult to have any reliability on what they have in. I know it's not always their fault and I respect small businesses, but in the real world there is simply no way they can compete 
+- (13) Because there is a positive feedback loop when high street stores close.  If the local butcher gets put out of business by Tesco, it makes going to the high street for the grocers or bakers less practical. More people just go to tesco for their shop and forget the high street. Then the bakers shuts, amplifying the problem and pushing more people to the supermarket. Rinse and repeat until the entire high street is replaced by vape shops.  After a few decades of this decay, the high street is a ve
+- (12) They didn’t open them to make money. They opened them to destroy the competition.
+- (12) All the nearby butchers to me open 9-3 on weekdays and 9-12 on Saturday and they're all heaving on Saturdays, and when I've had a day off, entirely empty all week.
+- (12) I've noticed the baguettes now are chewy rather than a crusty crispy outer and soft inside 
+- (12) The sushi is probably a concession and they pay for the the space  
+- (12) Morrison’s still have them. ASDA typically still do pizza and rotisserie. Tesco and Sainsbury’s killed most of them after the first Covid lockdowns, although I’ve seen some Tesco’s that still have counters. Waitrose still do them too. 
+- (11) Not anymore there isn't.   10-15 years ago maybe but look at Tesco now, literally nothing is in house. Even some of the health and beauty is externally managed because the shrink was too much for Tesco to swallow
+- (11) Yeah they've graduated from the early phases where they were competing with local butchers and grocers - there's very few left.  They're now on the "giants fighting over pennies" phase. The only real competition left is other supermarkets.
+- (11) Fortunately protected by law in France. Could have done with some of that over here compared to the enshittifaction of bread, meat, other products by supermarkets.  The Décret Pain in France is a legal framework protecting traditional French bread and a "boulangerie". far as I know, frozen and artitficial ingredients are banned.       Shoppers have voted with their feet and shown preference over supermarket rubbish. This could have been done here, but no, we get to have the same at an astronomic
+- (11) I used to do that until the old cost of living crisis. It hurts. I spent £16 on two cappuccinos, a black Americano and a croissant in an independent coffee shop today. In Greggs the same would have been £7.85. 
+- (11) Simple answer is going to be cost cutting, cheaper to send in prepackaged stuff.   My local Morrisons still has their’s and it’s usually busy
+- (11) Best bit of my holiday to the Lake District is Booths' deli. And meat. Actually quite a lot of it 
+- (10) I've been on plenty of extremely grim, dying high streets which have been fully pedestrianised for decades.
+- (10) My friends family did exactly this with a fishmongers getting the fish right from the nearby harbour. Didn’t last a month before they turned it into a fast food place. 
+- (10) asda still has pizza and rotisserie and many places now have sushi (though this is outsourced to other companies) 
+- (9) >Purposely selling goods or services at a loss to put competitors out of business is illegal.  Only since 2000, by which point the goal had been achieved (source: legislation, and used to work on the deli counter in a supermarket). 
+- (8) People stopped using them? Businesses rarely stop something that is earning them money.
+- (8) What’s stopping people opening traditional shops up again if there’s apparently so much demand?
+- (8) There actually isn’t the demand in most places.   Where there is a demand, like in my local wealthy market town, they all still exist and are thriving. 
+- (8) You say price but go to any local boulangerie in France and you can get a pain au chocolat the size of your face for less than 2€. To get near the quality in the UK you’re looking at well over £4 (in the more fancy bakeries in Manchester, at least)
+
+## [AskUK] What products have supermarkets stopped doing an 'own brand' version of?  (score 2) https://www.reddit.com/comments/tgaw95
+POST: For some reason, all supermarkets at some point stopped making cheaper, own brand pop tarts. Not sure why. Are there any other products like that which supermarkets stopped doing?
+- (5) One reason is that they came up with a clever plan - focus groups (following slumping sales) said they didn't want to appear 'cheap' walking around with own brand, so they simply invented fake brands!
+- (2) Blueberry Wheat cereal. Both Asda and Sainsburys bowed to 'big cereal' and now only stock the Kelloggs version, where you pay more and get less.
+- (2) I've not seen Tesco continental lager for a long time. Used to be much better than fosters etc.  &#x200B;  Also stubbies.
+- (2) Shame, supermarket stubbies used to be cheap and decent European style lager a lot of the time. Lidl and Aldi still do them, bottles and cans.
+- (1)  **A reminder to posters and commenters of some of [our subreddit rules](https://www.reddit.com/r/AskUK/about/rules/)**  - Don't be a dickhead to each other, or about others, or other subreddits - Assume questions are asked in good faith, and engage in a positive manner - Avoid political threads and related discussions - No medical advice or mental health (specific to a person) content          Please keep /r/AskUK a great subreddit by reporting posts and comments which break our rules.  *I am a
+- (1) I'll have to get down Aldi! Hope you're enjoying a beer for cake day!
+- (1) Cola? There was a time (late 90s) when they all had decent alternatives to coke and pepsi spurned on by Virgin Cola. That died off quietly.
+- (1) Morrisons stopped doing their own brand Monster Munch and I'm still gutted about that decision.
+- (1) Cheese spread. Or at least the Tesco and Asda near me have. Actually used to much prefer both their versions to Dairylea but not seen it in forever.
+- (1) Lidl had a very cheap pasta bag, less than 50p. It's not there anymore and is rebranded at a higher price.
+
+## [AskUK] What UK supermarket own product would you be devastated if it was discontinued?  (score 3) https://www.reddit.com/comments/zbq597
+POST: Mine is Sainsbury's Stuffed Crust Pepperoni Power. I always promise myself I'll leave a couple of slices for the next day, but just never do.
+- (7) Aldi titan bars. Can nail a full pack of them
+- (6) Asda Baked Beans. They are the closest I've found to Branston Beans which are the superior bean and are cheaper too.
+- (4) Aldi hobnobs. They really are better than McVities (and much cheaper).
+- (4) Aldi plain chocolate digestives
+- (2) Tbf Dreemys and Racers are also top notch (and don’t last long in this house)
+- (2) Aldi-Sainsburys-Waitrose- budget cat litter (basically all the same).  Big win for me when Tesco recently adopted it too, changing from the Lidl-Asda-Morrison kind I do not like.
+- (2) some Tesco Free From stuff is surprisingly good, they do this fake tiramisu thing that I could eat all day
+- (2) Lidl in store bakery brownies. Tesco chicken Caesar wrap.
+- (1)  **A reminder to posters and commenters of some of [our subreddit rules](https://www.reddit.com/r/AskUK/about/rules/)**  - Don't be a dickhead to each other, or about others, or other subreddits - Assume questions are asked in good faith, and engage in a positive manner - Avoid political threads and related discussions - No medical advice or mental health (specific to a person) content          Please keep /r/AskUK a great subreddit by reporting posts and comments which break our rules.  *I am a
+- (1) I agree with Sainsbury’s and Tesco’s cheap litter. It’s bad enough that the price has jumped to nearly £2 per bag and I really, really don’t want to spend a lot of money for my cat to poop and pee.
+- (1) Waitrose do a Chilean white wine that is surprisingly very good for under £5 a bottle.
+- (1) Lidl did these super low carb bread rolls that actually tasted nice. Discontinued them a few years back in GB, still in NI. Never forgiven them.
+- (1) Aldi's Choceur white chocolate. It's literally smooth and creamy, as described on the package.
+- (1) All my favourite products get discontinued because that’s the downside of being plant based :( my fave pizza of all time from goodfellas got discontinued and my fave vegan pulled pork burger from Iceland.  I think if the vegan chicken rustlers burger or cathedral city dairy free cheddar block got discontinued that would be the tipping point for me. They’re exclusively sold in big tescos.
+- (1) Lidl granola. It's the best granola out there and also one of the cheapest, brands are charging stupid money for granola these days.
+- (1) Sainsburys Tomato Ketchup.   By far the best ketchup available
+- (1) Nice try, Mr Sainsburys / Tesco / Aldi / Lidl / Iceland staff member!
+- (1) I was actually devastated whrn Sainsbury's stopped doing the old recipe high juice lemon with real sugar.  I' had that as my squash for 30 years.  No warning.  Now have to buy some wanky stuff from France on Amazon.
+- (1) Co-op irresistible wood-fired chicken arrabiata pizza is sick.
+- (1) Whichever one I tend to like apparently.
+- (-1) Waitrose Quinoa and Quail Egg Frittata. Aldi's is shit.
+
+## [AskEurope] What's an old supermarket chain that's been closed down in your country?  (score 13) https://www.reddit.com/comments/189bm6e
+POST: In Poland the most well known is Tesco. Others have fallen out of the mainstream but are still *kinda* around, like Edeka
+- (9) Plus, it was a rather small supermarket chain that by now got absorbed into Netto (an Edeka brand) or sold to Rewe and are branded as Penny now.  For the US Redditors: Wal Mart tried it's luck in Germany in the 90s, but they failed miserably and exited after burning millions. Among the reasons were that they didn't have a price advantage as given how competitive the market is there just wasn't room to be cheaper and still have a profit, and some parts of the corporate culture were unacceptable f
+- (8) As someone who has been to such a Wal\*Mart (Northern Germany): Nobody, like NO BODY, was happy with the idea of customer service: greeting, smiling, talking. It creeped everyone out (customers and employees).
+- (5) Standa which was one of the earliest chains in Italy, however it closed down definetly in 2010. Others which closed down this year were Tuodì and Alco
+- (5) I guess there's also Reichelt which got bought by Edeka.
+- (5) Safeway, Food Giant, you could count Kwik Save in some ways
+- (4) Technically Safeway was bought by Morrisons and rebranded rather than closing. Epic bit of business by Morrisons who, at the time, we're not very well known outside Yorkshire.
+- (4) >Edeka in Poland? Where?  Technically there is Edeka Poland company but I've never heard about them opening any shop anywhere. Perhaps OP went to Schwedt where they have Edeka with Polish-speaking cashiers on premises? ;)  Piotr i Paweł was established in 1990. It was positioned as more premium grocery chain. They got heavily in debt, closed operations in 2018 and sold remaining properties for 1 Euro to Spar Group.
+- (4) Irma, a luxury chain that was founded in 1886, shut down operations this year. The brand is very iconic in Denmark, so this was met with bewilderment and protests.
+- (3) Edeka in Poland? Where?  One of the first chains to enter the PL market after 1990 was Billa and they are also gone now, pulled back in mid 2000s.  There was also Alma but I'm not sure if it qualifies as 'old' as it was around for about ten years.
+- (3) The same.  I think it Aldi Nord.   They have never earned money in Denmark, so they decided to withdraw from here in the start of the year.
+- (3) EPA was merged with Tempo that was later renamed to Åhlens. Åhlens have became smaller but still exists.   So that is kind of the same thing as all the different names as konsum-coop have had in Sweden.
+- (2) Safeway in the UK. Also C&A pulled out of the country. Recently the home supplies store Wilkinson closed all its stores.
+- (2) And before that there was Presto who were mostly rebranded as Safeway (though some were also sold to Spar). And before *that* Lipton  (the tea company) used to also be a supermarket chain before that was rebranded as Presto.
+- (2) How did it take me this long to work out Wilko was short for Wilkinson 🤦.  There's also Somerfield which mostly got replaced by Co-op. Co-op never used to exist in London.
+- (2) Huh, we still have Carrefour  I must admit I have never stepped into one, and it is entirely possible that they are not real and the whole thing is just a big advertising scheme
+- (2) There used to be Plus supermarkets in Portugal, but I think most of them got bought by our domestic chain Pingo Doce.
+- (2) Lol we’ve never had these NI I don’t think, I’ve literally never heard of them 🤣 we literally don’t have half the shops that are in the rest of UK like Aldi, Morrisons, John Lewis, Costco etc.
+- (2) Fwiw I've never heard of Food Giant or Kwik Save either and I grew up in North London
+- (2) 7th Continent. Used to be one of the largest ones, even went public, but it was deeply screwed by the 2008 crisis and never recovered. Went from loan restructuring to loan restructuring for nine more years and was finally sold in 2017.
+- (2) In the UK there was Gateway, which got taken over by Somerfield many many years ago. The village where I grew up had two Gateway shops known locally as "top Gatway" and "bottom Gateway". Years after these had been taken over/bought/sold/etc, the shops there were still known by these names.  In Finland, we lost Stockmann Herkku to the big S-Market chain a few years ago and I think that has even gone now. Mind you, Stockmann's management are doing an excellent job of getting rid of Finland's premi
+- (1) Hypernova(although it was hypermarket). They used to have great prices and I was shopping there all the time during my University days.
+- (1) We had Carrefour which was quite ok, now it's Tesco and I don't go there anymore...
+- (1) That’s odd. Some polish tescos were bought by Carrefour few years back.
+- (1) In my childhood in the 80s, my parents often did their groceries at Kijkgrijp or VIVO.   Later, when I was in college, there was a supermarket on campus called IFA (International Food Association). In spite of its international name it seemed pretty local, although a friend of mine reported to have seen one other IFA store in the South of Spain.   All three seem to have ceased to exist, but I still remember the names.
+- (1) I never heard this name before, had to google them - they seemed to have been mostly active in Berlin and Brandenburg
+- (1) Allkauf was taken over by Real,- in 1999 and Real is now bancrupt once again.   Allkauf was only a small chain, but I worked there after school and they fired me 1 month before I intended to quit and join the army.
+- (1) Aldi. They closed their last supermarket last month. They've been here since the 80's.
+- (1) The same Aldi as here in Germany? Or does Denmark has its own version?
+- (1) As far as I know, Aldi Nord had the southern European countries and Aldi Süd the nothern ones. So it should be Aldi Süd
+- (1) I used to go there every year for my Stollen and Calavdos. I guess my annual visit wasn't enough to keep them in profit.
+- (1) I think Kwik Save was more across Wales and Northern England - they got bought out by Somerfield, which itself got bought by Co-op.
+- (1) Safeway bought out Wellworths, then was split between Asda and Centra.
+- (1) Most of them got bought out in mergers, Safeway was bought by Morrisons and Somerfield bought Kwik Save.
+- (1) Cora was bought by Carrefour in Romania.  And Profi was bought by Mega image.  This are just for 2023.
+- (1) Do you want a list?  - Coop (soon) - Jan Linders (soon)  - Boni (soon)  - Deen - Emté - Golff - C1000 - Super de Boer - Edah  And that's just relatively big ones that disappeared in the last 15 years or so.
+- (1) Several. Zielpunkt went bankrupt in 2016. Konsum went bankrupt in 1995, and the shops were bought by Meinl who went under in 1999, also killing the Pampam brand of supermarkets.
+- (1) We used to have Netto stores, but Netto left the country a few years ago. But the more interesting example might be EPA (*Enhetsprisaktiebolaget*). EPA was known for low prices and questionable quality. Today it survives in the term *EPA-traktor*, which is a kind of down-geared car that you only have to be 15(16?) to drive on roads.
+- (1) Tempos are gone too, except for their food stores (which are also mostly gone) now owned by Axfood. I don't agree that It's the same as the (strictly internal) branding used by KF, but we can add Domus to the list, I guess.
+- (1) Feira Nova is one I remember as a kid. There was a very distinctive one not far from where I grew up, and you still get people calling that area "where the Feira Nova used to be".  In my region there was also a chain called Alisuper. They were often quite small, like corner shops, and more common in the more touristy areas. I think technically they still exist, but a lot of them were bought by Intermarché.   A less common corner shop supermarket I also used to see around was Loja Fresca. There w
+- (1) In 2000 GB was bought by Carrefour and since then every GB has been slowly turned into a Carrefour.
+- (1) Tons in the UK. Safeway, Kwik Save, Gateway, Presto, Liptons, Laws, Somerfield
+- (1) None of them closed down but they were absorbed into other chains.  Ireland:  Superquinn - a high end supermarket chain was taken over by SuperValu, a fairly high end chain / symbol group.   'Quinnsworth' & 'Crazy Prices' which was owned by the Weston Family, became Tesco Ireland in the 1997, when they were acquired.   They were a mid-market store, but were famous for a cheap own brand called 'Yellow Pack' which became an insult for generic and low quality. It's still used even though most peopl
+- (1) Scotland - Wm Low (bought by Tesco), Presto (bought by Safeway), Fine Fare (bought by ASDA)
+- (1) I'd forgotten about Fine Fare. The only one I can recall was in Tolworth (SW London). It's now M&S.
+- (1) ASDA took over most of their locations here.
+
+## [britishproblems] Remembering when the supermarket used to have everything, all the time  (score 300) https://www.reddit.com/comments/1hxrebw
+- (175) Do you mean Butterscotch Angel Delight??
+- (106) It's a vicious cycle.  Supermarkets are now only interested in maximising profits, so stock more of what sells the most, and stock less of / stop stocking items that sell the least.  Manufacturers are only interested in maximising profit, so focus on making the items that sell the most or have the highest profit margin.  It's the stage of capitalism that we're at; old fashioned ideas such as customer service, supply and demand, etc, are biting the dust as companies seek constant growth and ever 
+- (80) Anyone else's supermarket just always having zero fruit or just completely empty shelves of random things or is mine just the pits?
+- (77) I lived in the USA for a decade before coming back here. Much prefer the UK even with its issues tbh.
+- (47) I wonder if this is regional, because outside of times when something disrupts the supply chain (COVID, extreme weather, strikes etc) I never have an issue finding anything.
+- (41) It's not about the level of choice, it's about the increasing number of gaps and empty sections that I see in the supermarket.
+- (40) It stepped up a notch after 31st January 2020 too.
+- (36) There is more choice than ever before. I don't know how you can walk into Tesco and be like 'not enough choice, what a disgrace!'. And besides, what you're describing *is* supply and demand.
+- (33) Same thing here, you either do early morning with old people or you can forget about fruit.   My local tesco ran out of apples last week. At 2pm. On Wednesday. Apples.
+- (28) Nothing has gone that wrong for most everyday folk and the supermarkets still have everything. I imagine OP is not being serious
+- (27) Did u gain any radioactive powers from the diet?
+- (25) Low bar comparing us with the USA.   Compare us with most places in Europe and we'd come up short.   The only reason anyone bothers to come to the UK instead of the rest of Europe is that we speak English, which most people know.
+- (23) *Simpsons Nelson point & laugh* I have Butterscotch Angel Delight >:)
+- (20) People on Reddit often exaggerate
+- (19) Also they had to pay the people who stack the shelves more for working unsociable hours.  Now they have them in during the day so they pay them less, and expect them to cover other things on top.  So the shelves are being filled as people are trying to shop, but if you do it at the wrong time there are gaps and nobody to replenish items.
+- (17) People are being dramatic. The UK isn't a bad place to live. Yes, there are issues, but it isn't the dystopian hellscape Reddit would have you believe.
+- (17) I was in Philadelphia once and went to Walmart.  I wanted to buy some chorizo, which is always available here in England. When I asked a staff member where it was, he told me ‘that’s southern food ma’am’, and walked off. 
+- (17) First off, you've obviously never seen Walsall Tesco. It feels like the whole thing is in a state of managed decline.  It's not supply and demand if there is a demand but no supply. Companies are making their range of products less diverse and focusing on the most profitable. That doesn't mean that there is no demand for the things they've stopped making, or that they weren't profitable, just that they weren't deemed profitable enough.
+- (17) I guess it is. I’m in NI and what isn’t Irish product is a roulette.
+- (14) It's posts like this that make me wonder what on earth has gone wrong since I stopped living in the UK in 2014...   (~edit~ I know what's gone wrong, but to what extent...? And do I ever want to live there again? But then I see an English landscape and think 'yes!' , then I open Instagram or whatever (guilty vice) and think 'Fook no!')
+- (14) I always laugh when I see those fictional baskets that they use to measure inflation and think 'how are half these things essential?' but citing ice as something to be bothered about as being expensive is wild work.
+- (13) Ironically a trip to the supermarket specifically for chocolate angel delight (asd child will not entertain other flavours) and all there was, was butterscotch and strawberry -_-
+- (13) > only interested in maximising profits, so stock more of what sells the most  By your own logic then they’d actually look to stock more of what delivers the best profit:sales volume ratio not just sales volume.
+- (12) Not sure. We shop mostly in Lidl (short drive) and Waitrose or a little Sainsbury's (both short walks). All three regularly have empty shelves.   Not to mention other supply issues, notably medications.
+- (12) The supermarkets are full of luxury food, wasnt like that 50 yrs ago
+- (12) Such a bollocks. I’ve never seen half empty shelves in mainland supermarkets.   My local Tesco is doing one line for display and you can forget about restocking until the next day. What isn’t locally produced isn’t available until next morning when new lorry comes.   Employee told me they’re having most of the stuff in the back for online orders.
+- (12) I see you've never actually travelled to the rest of Europe.
+- (12) Oh, is THAT why I cannot find night shelf stocking openings anywhere? I’m autistic, and I was hoping to go back to working unsociable hours so that there would be fewer people distracting me. 😢
+- (11) Our Morrisons was out of bananas yesterday. I was quite surprised, they usually have loads. Last week the Sainsbury's was almost out of apples, only had overpriced plum sized ones.
+- (11) It’s nothing to do with supermarkets trying to maximise profit.   It’s supply issues. Companies can’t get the stock, we now like alot of “challenger” brands. We like more on trend stuff which typically comes from smaller brands.   Shipping containers have gone from like 5k to 20k plus. Smaller companies have to buy when they have the cash - that could be all the money they have to get one container into the country.
+- (10) Ice 😂😂😂😂  Liechtenstein 🤣🤣🤣🤣🤣🤣🤣
+- (9) Have you tried Spain? Italy? Lol
+- (8) Never see this in my area. Even so, 1 item being out of stock isn't exactly a crisis.
+- (8) No, it's just a bit shitter than it used to be
+- (8) Whenever I go to the supermarket there are always a few gaps on the shelves in places you wouldn't expect. Parts of the fruit and veg section will just be empty, or the eggs will almost all be gone, or some other random area. It's not across the whole store but it's noticeably worse than it was ten years ago.
+- (7) It’s also why if you dare to go in a supermarket after 6pm, half the aisles are blocked with cages and the other half are full of home delivery shopping trolleys mostly double parked.
+- (6) Yes, it's not a crisis, just a sign of decline
+- (6) Idk. My tesco extra runs out of things like onions and chicken breast fairly often
+- (6) Unfortunately, I would say so. Many companies have been looking to reduce their labour costs, so have cut back on jobs that carry extra costs, such as unsociable hours rates.
+- (6) My nearest supermarket, Saintsburys, barely has any fruit now a days , the shelves are so often empty they started putting nuts and other things there instead. The tesco near my work is much better though
+- (5) Die hard Lidl fan here. But ours never seemed to recover after Covid. Shame as they do some great stuff.
+- (5) Totally serious. Sometimes I go in and there are no onions, or no cabbages, or no garlic. It's usually just one or two things, but I can remember when there weren't empty gaps on the shelves.
+- (5) Slightly better but still more expensive. In Italy you can get Italian food and that's it.   And when you take into account the wage differential, they spend far more on food than we do.
+- (5) Same cause to the issue though innit . No staff to stick shelves cuz a business degree thinks a 3:1 empty to staffed tills is good business.
+- (5) Supermarket always has everything I need.
+- (4) The meat section is more of a buy what is available situation than buy what you come in for. Want ribs? Maybe. Want pork mince? Maybe.
+- (4) European supermarkets are pretty poor and very expensive 
+- (4) What's it like now? What changed? I haven't been there in 10 years
+- (4) Edinburgh, and I've noticed it in asda, sainsburys, and Tesco, which are the three I would usually shop in. All big stores, not the smaller express ones.
+- (4) Easily, I buy the filtered but not uht milk because I need the extra shelf life. My large Tesco frequently simply doesn’t have stock of skimmed at all since Tesco stopped doing their own brand and arla availability is wobbly.  Last time to get longer shelf life skimmed I had to go with lacto free.  It’s gone from 2 choices every time in the 2010s to “one, maybe” now for a perfectly normal product. I don’t call that “more choice than ever”.  I’m sure they have more choice of fake cannabis drinks 
+- (4) Tbh, and this is a generalisation, your best-selling product is often your cheapest to make.  If you're buying more of the raw materials, you can usually negotiate for cheaper rates / bulk discounts, and your overheads can be spread across more units.  Of course, this may not be the case in every industry.
+- (3) >I can remember when there weren't empty gaps on the shelves.  As someone who worked in two different supermarkets 10-15 years ago, I think you're misremembering a tad.  At any given moment, there would be certain products that were out of stock, for a variety of reasons.  I agree that supermarkets are worse now, but not for the reasons that you're saying
+- (3) I've noticed it in sainsburys, asda, and Tesco.  I used to stack shelves many years ago and never noticed the level of missing products there is now. I'd be asked questions by customers if there was stuff missing.
+- (3) Oh yes, I can’t get bell peppers or cucumber after 11AM in my local tesco.
+- (3) I’ll sell it to you for £20. Final offer - no refunds!
+- (3) It's also smaller companies are already at capacity and making maximum amount of product. Need to higher ups to sign off on investment to maximise production.
+- (3) I work in this industry, whilst I agree that a lot of the supermarket is full of Premier Foods,Hain Celstial, Kraft Heinz, Princes Food Group etc. where you see the stock issues is in the smaller companies.   If something isn’t selling, it will be taken off the shelf. That’s not supermarkets being greedy that’s common sense. It’s lead by huge amounts of data.   It makes little to no sense for a supermarket not to have a full shelf of products because shoppers will go to their competitors to buy 
+- (3) I work in a supermarket and it's bot been great since Xmas, our deliveries aren't quite right. A lot of f&v has been missing. Delivery is correct I.e. what we're charged for arrives in store but it's not as much as it should be. There's clearly a supply issue somewhere since it's not just my store/chain. Another issue is just lack of warehouse workers no one applies for the positions and they're constantly getting filled by temp.agemcy staff.
+- (2) Want ribs? Get mince. Want mince? Only ribs. Feels like my local tesco
+- (2) I either do morning run with 70yo retirees or I don’t have bell peppers, waxy potatoes or rice. But I can take a bath in milk and use butter as moisturizer and eat lamb every night, because that’s produced locally so they have shiteloads of that

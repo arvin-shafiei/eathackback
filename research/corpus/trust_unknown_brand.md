@@ -1,0 +1,432 @@
+
+## [AskUK] Do you think there is a difference between branded and own brand food?  (score 0) https://www.reddit.com/comments/vqe2sz
+POST: Personally I can’t eat the own brand weetabix and they just taste like sawdust in a clump.
+- (16) Yes I do think there is a difference, but depending on what type of product it is, it can be just a very minor difference in some cases and it’s often just a different taste than we are used to. There are a few situations where I really don’t like the own brands, but most of the time i go for them when I can.
+- (9) The supermarket brands are often made by the same companies that make the branded stuff. But that doesn’t mean that it’s the same recipes.  Somethings are better, some worse. Mostly just personal preference.
+- (9) Of course there is - that's not opinion, it's fact.  Most brands guard recipes, use higher quality ingredients and have higher Q&A.  Sometimes a new brand will go on to make a product that consumers prefer in blind taste tests, but it's not common.  There's a trope that "they're made in the same factory". And that can be true, but the quality standards are different. Often, what fails an A-line product will find its way into a B-line range. They'll all meet minimum food standard levels by law, b
+- (7) Deliberate "value" stuff in major UK supermarkets is pretty naff. Sainsbury's own brand - my shop of choice - is very good in my opinion.   Aldi Lidl are offer branded goods from Europe that we discover to our astonishment taste ok - despite being " "foreign "
+- (7) A lot of own brand products come out of the same factories as branded products.  Yes there can and will be variations in recipe, also some of the really big brands won't do contract manufacturing but the 2nd placed one will.  Weetabix for example also make Asda's Wheat Bisks and Tesco's Wheat Biscuits but the recipe is slightly different. https://metro.co.uk/2017/04/28/it-turns-out-weetabix-makes-a-cheaper-own-brand-version-for-asda-and-tesco-6602671/  If you want to find out some of what's goin
+- (5) The first that always springs to mind is Hellman's mayonnaise. Own brand and even upmarket, 'artisan' type stuff just tastes off. So I don't stray from the original, ever.  I've also noticed it with supermarket brand herbs/spices. Particularly smoked paprika, the own brand variety has a very fake smoky taste that reminds me of cheap BBQ sauce. If you use the likes of Pimenton El Angel you'll notice and never be able to go back to the cheaper option.
+- (3) I really doubt that's true - some may be, sure, but I don't think you can group most own brand products into that.  And even if they are made by them in the same factory it doesn't mean the recipe and ingredients are the same
+- (3) The recipes are different as well as the ingredients used. Cheaper ones will use cheaper ingredients and different recipes.
+- (3) Totally, if you're Walkers you can get away without doing it and you might even be making Lays branded stuff for other countries. If you're KP snacks then you might as well make supermarket own brand stuff and make 1p profit per pack rather than the 0p you'd get if someone was making them.
+- (3) Yes. It goes both ways though. Branded stuff can have fewer ingredients but sometimes, it's the cheaper stuff with less gunk in it. For example, wholemeal pitta: Branded stuff contains dextrose, soya flour and sugar which the shop's own brand does not.
+- (3) Yes.  They taste different, hell they even *look* different. There are different ingredients and nutritional information written on the packaging.  This idea that it is all just the same stuff in different packaging is just utter bollocks.  Also can't help but notice that the evidence people give to support the idea it is all the same is usually along of the lines of "My mate knew a guy who worked in a factory and he said it came out the same machine.", hardly convincing.
+- (2) When it comes to Shreddies, I only like the branded version as the supermarket versions are always far too sweet. I tend to only buy Walkers crisps out of habit because I once had a bad experience with Tesco's own brand. With just about everything else (apart from Cadbury's products) I'm mostly happy to buy the supermarket own brand.
+- (2) Salt and fat cost money. They are usually lower in fat, salt and sugar to keep the cost down.
+- (2) That is more what you are used to than anything else. Hellman's is very plain and mild. Cheap mayo can have more of a tang to it, but the really good stuff can be extra creamy and flavourful with a nice hit of mustard. When it comes to spices, I never rate stuff like Schwarz, the brands that come in the tiny pots. For Indian spices go to the actual Indian aisle and use theirs. As you say for smoked paprika get a Spanish brand (although that strikes me more as a small operation than a "brand" as 
+- (2) Came here to say this. My dad summed it up once, how many Weetabix factories are there?  There's definitely a difference in brands, but factories and manufacturing is expensive so it makes sense if you've forked out for that to produce as much as you can from it.
+- (2) Depends on the food. Cheerios are definitely different but Coco Pops not so much. Coca Cola is different and Mutti tomatoes are God tier. It will vary between products and some differences will be smaller than others, the difference is there though.
+- (2) Yes. And despite what many say on here, there’s differences between Lidl branded/Aldi branded versions of products too in my opinion that are noticeable.  The common ‘it’s made in the same factory’ gets brought out but they still have different recipes and such which makes products taste different, or some ingredients used are of a higher quality.  I’ve found Tesco’s own brand to drop off in quality of late, but Sainsburys own brand is usually decent for the most part across everything from meat
+- (1)  **A reminder to posters and commenters of some of [our subreddit rules](https://www.reddit.com/r/AskUK/about/rules/)**  - Don't be a dickhead to each other, or about others, or other subreddits - Assume questions are asked in good faith, and engage in a positive manner - Avoid political threads and related discussions - No medical advice or mental health (specific to a person) content          Please keep /r/AskUK a great subreddit by reporting posts and comments which break our rules.  *I am a
+- (1) No they are similar but different recipes with cheaper ingredients. Usually high fat and salt content.
+- (1) Ooh not the ones I buy. Maybe they bulk it out with stuff that raise the salt and fat content. Surprised to find some own brand soups had a lot of cream.
+- (1) I just highly doubt this with many of the brands people cling to. Are Dolmio really highly driven to use better ingredients and Q&A than Tesco own brand? If anything their drive is to make money and see how the process can be refined or corners cut. Own brand can't rely on brand loyalty. Depends really on the product .
+- (1) Every supplier wants to refine their process and save money. Why would Tesco be less concerned about profit than Mars?
+- (1) Very possibly. So are we meant to believe Mars, just because they are a brand and well known, are going to be so honourable as to make a consistently better product? Purely out of the goodness of their hearts? We see it time and time again on shows where they put it to test, people can't tell. They care about making money. I often see with Lidl's own stuff that it can be better than brands, I wonder if it is because it can't compete on branding, so has it beat on price and taste.
+- (1) Lidl's is a good example - the quality is often very good. Not so more widely, though.  Yet they are particularly guilty of passing off in terms of stealing brands. It's quite cringy how blatantly they copy other manufacturer's packaging designs.  At the end of the day, we each of us have a wonderful level of choice based on our experience, personal taste, and wallet.
+- (1) Try the polish mayonnaise, lovely
+- (1) Does it contain free range eggs?
+- (1) Do you know what a rhetorical question is?
+- (1) Yeah, but I don't see how yours was an example of that. Please enlighten me
+- (1) Because I can google the ingredients.
+- (1) I buy spices from the Indian section just for the cost/quality/quantity alone and fortunately there's an Indian joint called Sweet Mart near me.  Pimenton El Angel is fairly well known and popular with chefs, I highly recommend and you can find it online.   You're probably right about the mayo but I don't feel like playing Russian roulette until I find the right one.
+- (1) That sums it up really, people want the safety of brands as they are scared of anything else. It is why McDonalds ham up the idea of their no-nonsense coffee compared to independents which may serve it in a funny way. I know about the Pimenton El Angel stuff, it comes in the nicely designed red pots.
+- (1) The Walkers brand is owned by Frito-Lay / PepsiCo, has been since the 1980s.
+- (1) Lidls version of coco pops are way nicer and less processed with actual coco powder
+- (1) For fruit and veg, there is no, or very little difference to me. That's about the only thing it applies to though.
+- (1) Known brands and store brands usually come from the same factory but using different recipes. The exception is with Aldi and Lidl own brands which typically come in from abroad.  I used to work for 3 different companies that processed food for supermarkets and it wasn't hard to notice which ones used the better ingredients and in what quantity and which ones caused quality control to walk out in disgust.
+- (0) The packaging is certainly different!
+- (0) Lol no, they're not pushing some highly curated quality product.  Bare minimum QC is put on both lines, with slightly modified recipe to slightly modify taste. Then they are sold at different price points to trick you into thinking that one is higher quality to push you to pay more.  There's no objective taste improvement in name-brand. You're just suckered into paying more.  Does it never strike you as odd that a business like Asda/Walmart is worth hundreds of billions of dollars, yet has incre
+- (0) That makes no sense at all. If they wanted to push people to branded products, why would they go to the bother of producing and packaging own-brand at all?
+- (0) I know Marks and Spencers in the UK's digestive biscuits used to be McVities Digestives, but from a different part of the oven...
+- (0) Kellogg’s do the same with some Tesco own-brand cereal too.
+- (0) I do notice that for example the chocolate bars you can hardly tell the difference from a branded one but a packet of ready salted crisps just taste like the left overs from the factory.
+- (0) It's a known fact that a lot of items in aldi/lidl are manufactured by the big brands. And there's evidence for it too. Aldi once put our a recall for their own brand yoghurts that said "our manufacturer, Muller, has issued a recall"  People have found actual Hula Hoops in lidl potato rings  And Aldi's cheapo fruity ciders are manufactured by Rekorderlig
+- (0) Some and some... Some are better, some are worse. Some taste nearly identical so go with the cheaper.   Often, they're even make in the same factories with slightly different recipes.   All you can do is try both options and see which one's better.
+- (0) Depends on the product. I don't taste the difference between cans of beans and Tuna (if you're using mayo), but I notice a significant difference when it comes to stuff like sauces and chocolates
+- (-1) Yes. Just like everyone buying food from aldi cause its the same but cheaper.. except the trans fats its all rammed with along with the other junk.
+- (-2) Most brand name products are the wonky seconds of or made by name brands.
+
+## [pokhara] Would you trust a food brand that openly admits when things go wrong?  (score 6) https://www.reddit.com/comments/1lidcyl
+POST: Here’s the truth: Kahile kahi your burger arrives a bit colder than we want it to.   Kahile the sauce is sweeter than you expected.   Ani, sometimes things just don’t come out exactly right.  Hami perfect xainau ra pretend pani gardainau ki hami xau vanera.    Because behind every order, there’s a team of people who care deeply, learn from mistakes, and keep pushing to get better.  Instead of hiding the bumps, we want to be honest with you.   To show you the real, the messy, and the progress we’re making every day.  Because this isn’t just about food. It’s about building trust.   And that trust means everything to us.  
+- (4) Just admitting you are not perfect doesn't do much imo. Maybe a system that allows for discounts on food items if multiple orders for an individual had some minor compromises that adds up over time will be looked positively by customers. But I don't know how profitable your business will be after that or how you'd even enforce such system or if it is even enforceable.
+- (3) definitely. your food is very good but a bit pricey. but i never had problem with the price because everything is very tasty and you've owned to it, that i can assure.
+- (1) That’s a fair point, just admitting flaws isn’t enough without meaningful action. You’re right with the challenge is balancing that with profitability and creating a system that’s transparent and manageable. Definitely worth exploring further. Hami soon will come up with an idea to exercise this suggestion. Thank you so much.
+- (1) no lol. i dont want to hear the same thing again and again. the money is involved. we want how we want it to be. if not then what will make me order from you? if the foods not good what will make me look at your website the second time?
+- (1) Absolutely, and you’re right. Money is involved, and expectations should be met. Since we run on a strict SOP model, our margin for error is extremely thin. But at the end of the day, we’re still human, and sometimes things do fall short despite our systems.  When that happens, we don’t just apologize - we make it right, whether through compensation or a follow-up. All we ask in return is: if we’ve owned up to it and tried to fix it, would you be open to giving us a second shot?
+- (1) It's all about cultivating a ***strategic business culture*** at u/hangrygen. It's about building a resilient, people-first organization from the ground up for u/hangrygen. While profit seeking is short term but important, you have to look further than that. When every team member feels empowered and aligned with the u/hangrygen's mission, it sparks genuine engagement, innovation, and accountability—creating an environment where excellence becomes the norm, not the exception. That’s how you tran
+- (1) hnagryzen ko brand name halka gatilo lagena ra pricing ustai mahango
+- (1) The names relates our target audience and our vision. Deciding brand name took us forever as we want to connect with our audience and we have got some amazing feedback behind our name.  Our menu might look expensive to some customers however we have carefully curated combos that is affordable.
+- (1) affordable means around 300 not 800
+
+## [CasualUK] If your chapattis arrived wrapped like this, would you implicitly trust or implicitly distrust the takeaway?  (score 2708) https://www.reddit.com/comments/1q1ffjm
+POST: I’m conflicted between ‘proper authentic to be so confident you just wrap them in whatever’ vs ‘they are wrapped in a flipping malteser bag’
+- (5900) Tells me they're pretty lax on hygiene and potential allergies
+- (3550) Just hijacking top comment to say others have pointed out that you can buy rolls of misprinted packaging for cheap (unused!) and that’s what this seems to be - there’s no seams from it being other packaging and if you look, the word ‘Maltesers’ is upside down when compared with the rest of the writing. If I shit myself inside out tomorrow I’ll let you all know x
+- (1178) There was a bakery near my old house that did amazing (and cheap) naan and roti and for a while they were wrapping them all in Muller yogurt packaging. They had huge rolls of it! So yeah, assuming that's what they've done here too I wouldn't mind at all.. tbh it's a sensible re-use of what would otherwise be waste!
+- (867) They buy big rolls of misprinted wrapping paper - I’ve seen it. Doritos wrapping tend to be my takeaways ‘brand’.
+- (516) My first thought was that's absolutely awful and disgusting. Then after reading comments and looking again it doesn't look like a cut open packet and probably has been bought as food grade misprinted packaging (looks like the writing is the wring way up). Still a bit weird though and you would think they would know that many people might think it's old dirty used wrappers which is clearly going to put them off their food.
+- (500) I'll eat almost anything, and I'm not particularly squeamish, but that it is disgusting.  If they're willing to do that, then they're also willing to take all sorts of shortcuts with your food.
+- (330) I mean at that point I'd probably be forwarding the images to food standards agency. You aren't asking a serious question are you?
+- (206) I reckon mars order the food safe stuff for the Maltesers
+- (201) I haven't been big on having my food wrapping in garbage since the demise of newspaper in chippies.
+- (135) Fantasy World Dizzy is deffo up there as one of the most memorable games I played as a kiddie winkle.
+- (118) Possibly bought discounted food grade packaging, maybe has printing errors on it or something
+- (86) I'd go with 'send it back' or at least never use that place again. I don't know whether that's a large bag of maltesers or a bag that contained smaller packs, but either way it's not new and not hygienic.
+- (70) Newspaper chips were good though.
+- (58) Nah, I’ve heard the boxes are made of asbestos, it’s find until you rip the opening out but once it’s disturbed you might as well just snort artex.
+- (57) The wrapping can be bought for cheap in big rolls when it's misprinted, not ideal, but, will be clean.
+- (47) Sharing novel experiences with others is like 90% of the joy of being on Earth.
+- (46) So it's going to taste like the most amazing thing ever.
+- (41) Creeping Americanisms must be halted in 2026.
+- (39) Thinking about it, I don’t think I’ve ever seen a packet of malteasers that big so that makes sense.
+- (34) I didn't say it hadn't been cut, I said it doesn't look like a cut open packet 🙄 obviously even if on a cheap roll it needs to be cut off. It's going to look melted when hot food is put on it because it's an absolutely stupid thing to wrap hot food in. Sweaty and horrible too I'd imagine!
+- (33) I would be reporting that back to environmental health, if that is what you do see, just imagine what you don’t see back at the restaurant
+- (32) (I’m not pointing at it, I was holding the bag back!)
+- (31) Why is it disgusting? It's a unused misprint wrapper, not from a used pack of maltaesers.
+- (29) Probably not safe for steaming hot food
+- (26) Exactly. This is the bit they're happy to show you. Imagine what else is going on there
+- (25) The question isn’t “after doing a deep analysis and month long research into why they did it, would you trust it?”  The question was, if you got that delivered, what would your initial reaction be. And the correct automatic response that is objectively the right answer, is to feel disgust and distrust.
+- (25) In the 90s if you went to an Indian wedding they would have rolls if this type of paper and use it as table cloth.  So as an Indian I'd have no problem eating here. It's just paper, no different to wrapping it in stone kitchen towels in terms of hygiene.
+- (24) pointing is the key part of a compoface photo in your local paper, looks like you got it down, just need the miserable face-like-a-smacked-arse look and you're quids in
+- (24) That might be what’s happened as the naan was in the same wrapping and it doesn’t have lines in it like if it were repurposed
+- (23) So many of us south Asians buy discounted rolls of misprinted plastic and use it for all sorts of things. We use it to line tables at weddings (white side up) and these guys are using it to wrap their chapattis in. It’s clean and food grade usable because it was originally printed to be the inside of your maltesers packets.   Can’t honestly believe you guys thought it was unhygienic reuse. Have you seen the size of the chappatis? How big a Malteser packet would you need to wrap those chappatis i
+- (22) I remember chips in the 80s. They were wrapped in  plain paper first, then the outer wrapping was newspaper. The chips were never next to the print where I lived.
+- (22) There’s no seams on it so I think your first answer was right
+- (21) OP is saying others have since pointed that out to them.
+- (21) I think i just got put off ordering take out ever again
+- (18) It's not a used maltesers bag.  They've used a big roll of plastic sheet which is maltesers branded and cut that to wrap the chapatis.  I'd trust them
+- (16) A cone of chips in a newspaper is the best way to eat chips though
+- (14) You're right the text is upside down
+- (14) we both have a definition of cheap, they are not the same
+- (13) Loved the entire series on spectrum. Never once completed any of them.
+- (12) Not hygienic though if the wrap is literally melting because the food is hot, as shown.
+- (12) Maybe it's the way you phrased it? Writing has no tone but tone can be implied and it was a pretty badly worded question. A maltesers wrapper isn't designed for hot food, they are thin and shrivel up easily when hot. Sterile food grade plastic doesn't mean it has to be heat resistant.
+- (11) It’s a new place so not many reviews. Mum had it last week and was fine (and recommended it) so I ate it. Bloody tasty to be fair, will report back on the state of my bum tomorrow 🫡
+- (10) You know the answer, why bother asking? 
+- (9) Yes, the newspaper was just for insulation, it had no contact with the chips.
+- (9) You know what else is fairly cheap? tinfoil!
+- (9) Nope. Because they're cheap on the packaging, what else are they cheap on?  Used to work for a food safety testing company and a lot of that was about looking for the packaging being a problem (leachables). Different materials for different foodstuffs. And Maltesers are a cold confection, I don't want it to store or wrap my cold food.
+- (8) Newsprint was replaced with styrofoam. The chips often melted into the foam.   Lead Vs Petrochemicals.    Tbh I like the taste of lead more
+- (8) Other people have already said how this is from a fresh roll of misprinted packaging. I'd like to add that when I was young, we used to go to the mosque during Ramadhan and when it was time to eat, they would bring these large rolls of (paper or plastic) packaging out to lay on the floor out in long rows. The (paper/plastic) plates and drinks would sit on the packaging and you would sit on the floor. Some really good (free) food would follow. I have never seen a restaurant use this packaging and
+- (7) Was watching the darts earlier, commentator from the north east finished one of his sentences with "go figure".  Never heard a British person say it before. I was depressed and ashamed.
+- (7) Id have to dip my finger in the curry and rip a piece off the chapatti.  If it tastes good id just it. Ive unknowingly eaten at a few 1 star hygiene rated places in my time and im still here, im not too precious about it but thats just me.   It is a bit weird though i must admit. What are the reviews like?
+- (7) I wouldn't want chemicals from hot plastic leaking into my food.
+- (6) Yeah, but you'd get the little cardboard cone (with a 'newspaper effect on the outer bit' that protect the food from the wrapping and also measured the chips. These days they use a box though.
+- (6) Probs not designed for (prolonged) contact with warm foodstuffs.
+- (6) I want to edit the post because I’ve learned a lot and you’re completely right, I’m not south Asian but I’m in a south Asian area and now I know that what you and others have said is completely right! Thank you for correcting people. I can’t edit the post because it has a picture but I did put a comment on the highest rated comment to explain what it actually is, hopefully others will learn too.
+- (6) I live in Bradford and i've seen a few places do this. one of them on leeds road has a big roll of the stuff on the counter and has a tear off.
+- (6) My only issue is, it’s not intended to hold heated products as seen from the melted holes. That’s an instant no from me.
+- (6) I've not seen anyone mention the plastic shrinkage and inevitable plastic melted to the food.   I would be reporting that.
+- (5) Oh yeah cause you know everything you muffin
+- (5) Nah I’d be asking for my money back and talking to food hygiene. 
+- (5) > proper authentic to be so confident you just wrap them in whatever   The authentic way to wrap a chapatti is in a cloth like [this](https://saifmcr.co.uk/Chapatti-Cloth-Pona-Sitara-Brand). I wouldn't touch this with a barge pole.
+
+## [AskUK] What are your favourite off-brand food items?  (score 12) https://www.reddit.com/comments/1wbyp1n
+POST: With the cost of the general food shop constantly increasing I’m curious if you have any off-brand food item favourites that you’d recommend?  A few of mine are M&S baked beans and Lidl’s cheese curls (the same if not better than quavers imo)!
+- (35) Everything at M&S is better than the branded versions. And usually cheaper too. 
+- (26) M&S Jaffa Cakes. They are what the real thing used to be before enshittification.
+- (18) M&S bourbon biscuits - the extra thick ones
+- (11) All M&S biscuits beat every other biscuit hands down. 
+- (11) Lidl tuna. Their ‘Nixe’ brand is ridiculously good
+- (10) M&S ketchup (which is under £1) is the best I’ve tasted so far, and their Smokehouse Tomato Sauce is also gorgeous - but that’s a bit more expensive. 
+- (8) Aldi's Yummy Verse sweets. They're a better version of Tangfastics!
+- (8) I prefer off brand ketchup as I age. They tend to be tastier imo. 
+- (8) Wheat bisks from aldi The also cheese curls And the aldis cheese puffs taste even better than wotsits
+- (7) Professor Peppy - better than Dr pepper imo!
+- (7) I think it's Lidl that has the closest remaining approach to Lilt. Annoyingly I can't now remember what it's called.
+- (6) I think all store own brand items are “off brand”. 
+- (6) Lidl jaffa cakes, keep them in the fridge. They’re denser but still just as light/soft. Straight from the fridge the chocolate cracks its 👌🏼👌🏼👌🏼
+- (6) M&S everything! Especially their desserts
+- (5) Lidl Percy pigs are better than the originals
+- (5) Lidl cookie dough icecream is half the price and just as good as anything.   
+- (5) Lidl Henry hippos taste exactly like Percy pigs and I think they’re half the price 
+- (4) Asda used to sell a lovely own brand Vanilla Coke that was on par with Coca Cola’s. 
+- (4) The ketchup is 95p and their superb baked beans are only 40p.   It’s kinda posh but not outrageous.   And the items that seem outrageously expensive are usually worth the price because of the premium ingredients. 
+- (4) I believe it's Freeway Diet Tropical Crush. There's apparently an Aldi equivalent called Vive Tropical Blast.  They stopped making Lilt, that's why you can't find it now. It first changed to Fanta Pineapple & Grapefruit, then was discontinued altogether. 
+- (4) Aldi Fiesta ice creams (knock off Feasts) and their chicken flavour noodle packs are identical to Supernoodles but 39p a pack 
+- (4) Supernoodles are awful.  Get proper asian noodles, blows pot noodles and super noodles out the water. They're also super cheap. That said, I still can't give up a good curry pot noodle.
+- (4) Aldi village bakery bread is better than most pre sliced factory made stuff, it's also sold in Lidl under a different name  Aldi's protein wraps are surprisingly good too
+- (3) I don't think I've had the lidl version - but we have a lidl opening soon so maybe I can, the aldi ones you can get 40 in a box and they taste like the real thing tbh
+- (3) Lidl lemon cans. Taste better than lemon Fanta.
+- (3) Aldi's dark chocolate digestives are better than McVities.   Lidl's version of the Arla protein pots are fantastic   Every Weetabix offbrand I've tried is better than the original.  Aldi's liquorice all sorts are better than Bassets. Bassets' liquorice is better but Aldi's coating is better and doesn't include the minging coconut ones.  
+- (3) Aldi's own brand crisps (snackrite) are pretty good. Just the right amount of greasy.  They also do a look a like of the 'Proper' brand of lentil chips (they are better known for popcorn) which are much nicer than the original; they have a very buttery flavour. 
+- (2) Tesco digestives because they’re dairy free!
+- (2) So you only buy fresh stuff and have no labelled food? 
+- (2) My partner swears by the Lidl version of wheat bisks/box.
+- (2) Honestly I can't agree. The cookie dough pieces are crumblier rather than chewy. Same for the "Fantastic Fish" flavour, where the supposed marshmallow fluff stuff is just this translucent grey goop.
+- (2) You know you can just buy them with your money
+- (2) Ooh I’ll try these I love M&S Percy pigs!
+- (2) Only problem is they seem to be out of stock temporarily. The rest of the own brand lidl cans switched to pack sizes of 8, but as the lemon ones are a new flavour, they hadn't made the switch. I imagine the changeover has led to stock shortages.
+- (2) Aldi and Lidl fake ritz crackers. Much better.
+- (2) Aldi's big block of milk chocolate (by Dairyfine) is in my opinion the best tasting chocolate in supermarkets 
+- (1) **Please help keep AskUK welcoming!**  - When replying to submission/post please **make genuine efforts to answer the question given**. Please no jokes, judgements,  etc. If a post is marked 'Serious Answers Only' **you will likely receive a ban for violating this rule**. More info: https://www.reddit.com/r/AskUK/wiki/serious-answers-only/  - **Don't be a dick** to each other. If getting heated, just block and move on.  - This is a strictly **no-politics** subreddit!          Please help us by r
+- (1) No. I mean I don't do branded foods like Heinz and will buy cheaper brands. Because I'm poor. Hth. 
+- (1) They beat Mcvities jaffa cakes hands down don't they?!
+- (1) Lots I agree with in this post but man the aldi's cheese puffs have a horrible aftertaste, worse than cheetohs.
+- (1) Oh if you remember let me know! I’ve not been able to find lilt in ages 😢
+- (1) I've been looking for the former everywhere. All the offies in the area have about 20 different flavours of fanta, but not the grapefruit one. Figures :(
+- (1) Are we eating the same ice cream? The bits were chhhhooowwwwiiiiieeeeee.   Can't comment on fantastic fish
+- (1) If you don’t mind spice, Shin Ramyun is god tier.   Also have a lot of love for Mama noodles - especially their Creamy Tom Yum.  For something even fancier try the La Mian laksa
+- (1) Oh yes +1 for Shin Ramyun. I haven't had the others.
+- (1) Oh man their little trifle pots are god-tier
+- (1) M&S chocolate puddings. I’d kill a person for one of them. Delicious 
+- (1) I’m gonna try these I love a lemon Fanta 🤣
+- (1) “Off brand” never heard that phrase used in a UK setting.  Everyday we become more and more Americanised.  Answer: M&S chocolate digestives. I just call them own brand though.
+- (1) What would you say instead? Own make?
+- (1) “Off brand” never heard that phrase used in a UK setting.  Everyday we become more and more Americanised.  Answer: M&S chocolate digestives. **I just call them own brand though.**
+- (1) I already saw it but thank you for taking the time to copy and paste your initial comment. Very kind ☺️.
+- (1) What would you say instead? Own make?
+- (1) Sorry I forgot what I said initially. Thanks for the reminder 🥰🥰
+- (1) Aldi Jaffa cakes and digestives are genuinely better than the branded ones 
+- (1) Idk if this is a direct off brand version but tesco do these salted caramel I e cream cornetto cone type things.... Delish!. Also Aldi munchy bars are better than brunch, same with super market "wheat buiscuits"
+- (1) Neos over oreos always 😋 (lidl i think)
+- (1) M&S Prawn Shells - soooo much better than Skips!
+- (1) Almost all Aldi's own brand food items are better quality and price than premium brands!
+- (1) Aldi Alcafe, pretty much any own brand cereal, knock off ice lollies etc.   The only thing we won’t budge on is Yorkshire tea bags, and we’ve recently gone back to Heinz ketchup at my husbands request but that one pains me! 
+
+## [unpopularopinion] Buying Store Brand Food Products is Unethical  (score 0) https://www.reddit.com/comments/m2znm3
+POST: This is not a debate about the quality/value of store brand products vs. national brands. Rather, I think store brand products that are directly imitating national brand products are an unfair copy and are stealing from the national brand’s R&D, advertising, and intellectual property. In particular, my concern is for products that are an obvious copy, i.e. a Cinnamon Toast Crunch copy called “Crunchy Cinnamon Squares”, complete with a box design and mascot reminiscent of the original.   I know there is not a lot of sympathy for multi-billion dollar national brands, but imagine it this way:  >Ron runs a small grocery store in town. Alice comes in one day and says, “Ron, my company has developed a new snack food called ‘Snappy Cracker’. It’s a round, crispy cracker with a zesty seasoning. We
+- (10) > I think store brand products that are directly imitating national brand products are an unfair copy and are stealing from the national brand’s R&D, advertising, and intellectual property.  I mean, you'd be wrong.  Most of the time, the actual food product is produced in the same place by the same company.  It's just sold and packaged differently.
+- (4) Well more times than not it’s the big company selling their product for others to rebrand and sell so I’d say they’re cool with it.
+- (2) Perfect example, thanks so much. Very interesting, I hadn’t seen something like that before.
+- (2) Because of competition. Say I have Snappy Cracker, and it’s my favorite snack as the consumer. No other brand is able to make the same thing. Snappy cracker could drive the price up to, say, $30. It’d be ridiculously expensive, but I still have to pay it because I love Snappy Crackers.   Now there’s Snappy Cracker and Snap Cracker Snack. If Snappy Cracker is still at $30 whereas Snap Cracker Snack is only $10, I’d buy Snap Cracker Snap. Therefore, Snappy Cracker wouldn’t increase their price to 
+- (2) I’m curious to know more about food patents, because it seems like a lot of these store brands would be infringing on said product patent.   I understand the point about competition, but I’d say there is a difference between competition and copying. For example, many car companies make *similar* looking/functioning vehicles and it creates competition, but there would be a lawsuit if Ford made a sports car called the “Korvette” that was identical to the Chevy Corvette.
+- (2) That’s a fascinating list of patent examples for cereal! Thanks for passing it on. That does help me understand this
+- (2) In order to make your analogy fit with what is actually happening, we have to change the relationship between Ron and Alice.    - Ron is not running a small grocery store; he is running a chain of grocery distributors and some outlet stores.   - Ron doesn't just buy Alice's prepackaged crackers; he also buys the unpackaged crackers in bulk from Alice, and then packages them at one of his distribution centers.    - Ron and Alice have a contract which stipulates that Alice provides a set amount of
+- (2) Right, but who is designing and producing this product? If the store brand and national brand are buying from the same creator/licensor, that’s one thing. But If the store brand goes to the factory that makes General Mill’s recipe for Cinnamon Toast Crunch and hired them to produce that same recipe in a different box, that seems sketchy.
+- (2) Interesting! Cool to hear from someone with firsthand experience. But does that mean that, for example, Nature Valley granola bar wasn’t invented by Nature Valley, but rather by ABC food factory and Nature Valley bought and packaged the product?
+- (1) Are you saying that the national brand is selling their own unbranded product from their own factory to the store brand, who then repackages it?
+- (1) I read this same article and it’s just what I said above. The first heading is “General Mills makes Aldi cereal”, and the first sentence of that paragraph is “rumor has it that General Mills makes Aldi cereal...”
+- (1) My mistake- after the first several examples said “we can’t verify that X company also produces Y...” I lost faith in the article. But I see now that later on they cite Sara Lee and ConAgra as producers of their own product and also store brand product.   However, the first link in the article (re: “private label manufacturers”) says many store brands are produced by separate factories specializing in store brand products.
+- (1) I don’t know if I can link a source but I use to work at BJ’s wholesale and we had colored plastic cups, like party cups but you could see through them, we had Berkeley and Jensen cups (BJ’s brand) right next to the same see-through cups made by Solo. The BJ’s brand cups were literally the same cup and even said Solo on the bottom. The only difference was the bag they came in and the price, BJ’s brand being cheaper. I’m gonna go ahead and say both Solo and BJ’s knew what was going on.
+- (1) It really depends on the product. People may buy a specific product just for the brand recognition.  Like I'd rather buy a 2 liter Coke for $2 instead of a generic store brand Cola for $1. I'd rather get oreos than the store brand one. I'd buy Captain Crunch cereal instead of a generic store brand version of it. I'd even buy Heinz ketchup for a dollar more instead of a generic store brand version.
+- (1) This totally makes sense and the national brand definitely deserves that sort of loyalty. But there are enough people buying store brands to warrant it being a big portion of store business, so it still must have an impact on the major companies.
+- (1) It's only one anecdote, but Costco brand Canadian Whisky is manufactured at the same place they make Crown Royal. I can get the same stuff for half the price, why wouldn't I?
+- (1) Because, to be a little hyperbolic, this feels like buying bootleg DVDs from the guy on the street. I guess the question is, did the plant develop the recipe and they sell it to both Costco and Crown, or did Crown send their recipe to the plant, and on the side the plant also makes a copycat version that they sell to Costco for cheaper?
+- (1) I could agree with you about bootleg DVDs, because that requires actual theft of a product, in that case a digital one. To the best of my knowledge Crown Royal has/had a deal with Costco where they sell their products in bulk under the Kirkland Select name. Costco makes money because they can sell decent booze at a discount and Crown Royal makes a profit due to the economy of scale. I'm pretty sure most of the KS store brand alcohol is just rebranded products from name brand distillers.
+- (1) This is the general answer that I've heard several times, but I've had a difficult time finding a source to back-up this sort of arrangement.
+- (1) After working in a factory that packages cheeses for different companies and finding out that the same cheese just goes in different packages, I would be willing to bet that these store brands are in fact partnering with some of these companies to buy their surplus goods to be sold on their shelves. In return they get the product at a lower price and use a similar packaging and branding to sell it. Better to have somewhere to go with the extra and make money off of it than just getting rid of it
+- (1) Most of these food patents have now expired for cereal at least. Here's a list of a few:  [https://iptica.com/patent-food-recipe/breakfast-cereal-food-patent/](https://iptica.com/patent-food-recipe/breakfast-cereal-food-patent/)  The example you gave might not be the best one, since lots of car technologies are patented before release. This means that if the patent is intact, ford would indeed be sued. The same thing applies for food patents. If they haven't expired yet, it is illegal.   However
+- (1) Free market, Ron wants to make his own crackers that’s absolutely his right to do so.
+- (1) He is absolutely free to make his own unique crackers, but the free market does not give him the right to copy someone else’s brand/product.
+- (1) If this is true, that makes more sense. I had never heard before that the national brand was selling the unbranded material to the store chain, and if so that obviously changes the balance of the relationship. Rather, I had only heard “sometimes they’re manufactured in the same plant”, which is a little different.
+- (1) Wikipedia's article on white label products has a pretty clear description of it, as well as several examples from different types of products. I mostly have experience of this happening within the biotech industry.
+- (1) Thanks for that reference, “white label” is a terminology I wasn’t familiar with. It definitely explains some of these manufacturing structures, just wish there were some more direct food related examples.
+- (1) A lot of the time, branded and generic products are literally the same thing in different packaging (I've been working in food production for the last 5 years with 3 different companies)
+- (1) The manufacturer is the one who develops the product and the brand/seller designs the packaging and buys the finished product (definitely in the food industry).  My current employer has a hole team that basically hand make samples for the seller to approve/reject of. Basically the seller will say "make new product X taste like current product A"
+- (1) Yeah... that's definitely not the most unethical thing that happens with supermarkets.
+- (1) As others have pointed out, a lot of the generic brands are produce by the national brand but just repackaged. People just buy the marketing.  But unethical?  That’s why they have a patent and trademark system.    When you get prescribed a medication are you stating that you want the name brand even though the generic is exactly the same?
+- (1) Medicine is an important comparison: the reason that doesn’t bother me is because you often hear publicized announcements of “X pharmaceutical product is now available in generic” based on laws about holding a patent etc. However I was having a hard time finding similar information about food patents and their lifespan etc.
+- (1) I wouldn't waste your time looking at laws about food patents and lifespans.  If there's a generic version of a consumer staple then it's done legally (Not infringing on patent law) and is entirely ethical.  Otherwise, you'd have lawsuits all over the place filed by General Mills, Kellogg's etc.
+- (0) This is compelling if true, but I'm having a hard time verifying it. Just a lot of articles about "some products may be made in the same factories" or "X product tastes EXACTLY like Y national brand product."  On the other hand, there are imitation products that, despite looking identical and being marketed as identical to the national brand, do not taste the same and therefore can't be said to just be the same product from the same factory in a different box.
+- (0) [Proved with 30 seconds of Google.](https://hip2save.com/tips/store-brands-made-by-name-brands/)
+- (0) There are links in that article that explain things in detail.   You clearly didn't read it all.
+- (0) Meaning, for example, General Mills says “Hey [grocery store], we will sell you unbranded bags of Cinnamon Toast Crunch for $0.50 each, you can box them and name them whatever you want and sell that at whatever price you want”? This is new to me If its true. Do you have a source?
+
+## [LifeProTips] LPT: Don't fall for the marketing ploy that has you thinking no name/unbranded foods are somehow inferior, often times they are made in the same factory as the branded ones.  (score 1020) https://www.reddit.com/comments/1buwayp
+- (253) I want a comprehensive list of brand names that make private label foods.   I am aware of a few, but these are definitely influenced by location.
+- (181) This doesn't apply universally, unfortunately. There's some store brands that I absolutely will not buy again because they're *awful*. Looking at you, "Western Family"...
+- (110) I've been hearing this tip forever and I buy store branded stuff 9 times out of 10 because I used to be broke and I'm still cheap.  But when I actually had money and I started to buy name brand products a little more- there really is a quality difference in a lot of them. They may very well be made in the same factory, but they're not made the same.  YMMV. But no store brand sandwich cookie I've eaten holds a candle to Oreos.
+- (91) This can make sense in choosing Benadryl vs. the store brands same product with the same active ingredients not always true about food
+- (70) I would imagine this fluctuates constantly. For any product with multiple name brand competitors, they all can make a generic version for a grocery store. Who is making what at any given time depends on what the factory charges + shipping costs. And that all changes anytime new competitors come online.
+- (42) Made in same factory doesn't say anything, a factory can switch between suppliers, production lines, or simply bin quality of goods.
+- (42) It turns out that shitty-store-brand-generic-cola doesn’t magically taste like Coke even if is made in the same facility as Coca-Cola. Better advice is to buy the store brand and see if you can tell a difference or not - sometimes it’s fine; other times it’s bland and underwhelming.
+- (40) i worked in a cooking spray factory. there were about 6 different brands that were made and bottled there. Pam, Kroger grocers, Meijer grocers, and a few others that were forgettable. None of the major names owned any of the generic names, and they all had slight variations on their recipes. Companies typically dont make their own product, they have it contracted out to manufacturers.
+- (39) Yup, this is a hard and fast rule for medication, but not necessarily foodstuffs. I’m never buying generic brand peanut butter over Jif again
+- (38) My partner used to work in a lab for food production. The same batch would go to "Big Brand" as "Supermarket Brand". The difference was quality tolerances. Big brand might only accept parts of the batch that had tested between 0.03% and 0.05% salt, for example. Supermarket brand might then accept between 0.01% and 0.09% salt, which means it gets any final products from that batch which would be rejected by the big brand. Supermarket brand might then accept any safe-for-consumption remainders tha
+- (28) Technically speaking it's not even 100% true for medication.  In some cases you NEED the name brand. Some of the other non active ingredients have caused issues in generics vs name brand.    But generally speaking generics work just fine.    > I’m never buying generic brand peanut butter over Jif again     I find this rule to be true about anything you can taste.   Generic flour? Go for it.   Generic ketchup/peanut butter?  Get out.
+- (23) And don’t forget quality control. It’s easy to take a defect batch and package it as the store brand.
+- (19) Not to mention any store brand TP. Literally awful
+- (19) Fun fact, Oreos is the knock off brand. Hydrox came first.  Not as sweet filling, crunchier cookie, and doesn't get as soggy in milk.
+- (18) I had never seen this until I moved to BC, but damn Western Family is so bad it makes No Name look good.
+- (16) For real.  OP needs to try some Heinz brand ketchup and some Great Value (Walmart) brand and tell me there's no difference.  Same goes with Kraft Mac and Cheese.
+- (16) I work for a large group that has about 15 big factories making different food.   Brand has : - Better quality ingredients - Biological ingredients  - More controlled cause the risk for the company is higher  - The recipes are often different with more meat for exemple - Sometimes different processes   All of this come at a price about 30% to 100% more. Is that worth it ? It depends like I know for pizzas the extra ingredients, quality and different processes are worth it  For some premade meals
+- (15) It really depends on what you’re buying some of the cheap stuff is weirdly better than the name brand stuff.   For me, I’ve found that the bagged cereal is far better to the ones in the box. Cheaper, you get more, and the taste is the same (or better, shoutout to coco dynobites)
+- (13) obligatory "real LPT is in the comments"  Store brand is fine, but once you go for (or can afford extra for) the more quality stuff, the difference is like night and day. It isn't relevant if it's made in the same factory.  But there's no shame in buying store products, most of them aren't so bad anyway.
+- (13) I remember seeing a factory worker post about how name brands just have a higher degree of refining for ideal shape/density/colour etc.  Dunno how true it is but this makes sense. A lot of small things make a big difference.
+- (12) Milk. Look at the budget milk then the regular milk: they have the same number from the same plant.
+- (12) I’ve done plenty of contract work for Coca-Cola. They make lots of no brand colas for other companies but they sure as shit don’t make it with the Coca-Cola recipe. I don’t know why people think that ‘made in the same factory’ means the same product.
+- (11) yeah it is, but the manufacturer will also be on the label as well. and one company will even contract multiple manufacturers to cover their area of sales. Pam cooking spray definitely doesnt contract to only ConAgra
+- (11) Made in the same place does not  necessarily mean made to the same standard.
+- (10) Generic meds are only required to have a bioavailability of 80% compared to brand name. Currently for some reason it seems like generic adderall is absolute garbage.
+- (9) And, believe it or not, Walmart has a line that is very good. But we use Costco.
+- (9) Store brand is fine as long as you avoid the value ranges. Go for the slightly more expensive store branded and you're usually fine, and it's still cheaper than Charmin or Andrex
+- (9) It's a pity, too because otherwise I really like Save-On Foods, but you absolutely cannot cheap out and buy the discount brand there. I bought their frozen hamburger patties once. It's the only time in my life I've ever cooked a 2-dimensional object.
+- (9) The UK Moneysavingexpert.com has the downshift challenge. Keep shifting downwards from the product you would normally buy, and if you can't taste the difference with the cheaper option, stick to it.   So if you like Corn Flakes, try the cheaper supermarket brand. If you can't tell or are not bothered with the difference, stick to the supermarket brand. Then try the supermarket basics brand, and see if you can notice the difference there. Obligatory YMMV.
+- (9) Great Value potato chips are legitimately better than Lay’s because they’re produced by Utz
+- (8) Am I right to assume that the product coder is the way to identify the manufacturer?
+- (7) It's worth nothing that even the inactive ingredients and manufacturing process of the drug can still affect the quality of the medication. Do a comparison on yourself before you decide on one or the other
+- (7) I found that the more complex a food is the less I want to get the cheapest brand. For example the generic SpaghettiOs are terrible
+- (6) a classic example is using the best selections / cuts for the name brand and the leftovers for the generics.
+- (6) Lots of generic brand meds have a ton of differences in the inactive ingredients that are not equal to name brand, and packaging that is frequently subpar or more difficult to open. So it’s not that hard as fast as a rule!
+- (6) inactive ingredients controls how fast/slow the medication is released, which is actually, kind of important in medicine.  Generics also may have greater or lesser amounts of active medication per dose.
+- (6) This is it. The big name brands use the highest quality, for example, green beans, when canning their green beans. Then they’ll use the lower quality beans (short, not as pretty, second crop, etc) for the cheaper brands they manufacture for, like the store brands. Now, some stores will cut a deal with these manufacturers to get the quality stuff for cheap, and the manufacturer is like, hell yeah we can upscale our manufacturing to make even more stuff! Then when the original deal ends, the compa
+- (6) Don’t think that just because two products are made in the same factory, they are the same quality.
+- (5) I recently made this mistake, I should have stuck with the usual TP brand I get instead of trying to save $1.
+- (5) There’s an element of placebo though with branded drugs, it’s been shown they work better because we expect them too. Even if we know about it! Still doesn’t make me pay out for the more expensive version but it’s cool that even if it is the same active ingredients, it works better!
+- (5) Just because they are made in same factory doesn’t mean same ingredients or quality
+- (4) I know this is a big thing for Costco, Kirkland signature tends to all be stuff made in other brands' factories then resold as Costco's own brand
+- (3) I work for the biggest industry of chicken, premade meal and eggs of the country and one of the biggest in Europe. What do you know about it ?   There is labels that guarantee sizes of scoops, how many chickens, équipements, conditions it is raised, eggs harvested etc.   For a few cents an egg it makes a lot of difference. I’m not judging if you don’t care and buy the cheapest but the difference is actually huhe
+- (3) *war flashbacks * *Western Family* 😱
+- (3) How does that relate to my comment?
+- (3) It's funny, SOME food items are virtually the same... others you can tell a clear difference between brand and generic.  A quick comparison of labels can help one decide
+- (3) You literally just explained why oreo won out with your third sentence
+- (3) It depends.  Store brand ingredients (canned corn, flour, pasta,  etc) are easily hidden.  Stand alone like cookies,  Coke, Doritos, aren't.
+- (3) With food this is not always the case. You have to be willing to experiment and then track your results. There are some specific store branded items I will never touch again and there are some that are as good as if not better than the name branded equivalent. Obviously this is anecdotal, but that’s kind of the point. This is not as tangible as brand name medicine versus the generic equivalent.
+- (3) I dated someone who's dad worked in a cheese factory.  They produced the cheese, aged it, and then shredded it.  The cheese came in immense blocks - 500 pounds if I remember right - when it was put into the shredding machine half of it went down one line to be bagged for a well known name brand.  The other half went down another line and was packaged for a discount brand.  Literally the exact same cheese.
+- (3) There are canning companies that have what they call “up stock”. Take black beans. They take an order, produce and can 100,000 cans and fill the 80,000 can order to *major brand*. They leave the other 20,000 cans unlabeled and when they get an order form another company, it could be a store brand that sells for $.89 or a big national brand that sells for $2.79, they will label the same cans and ship them out.   Organic vs conventional don’t get crossed over unless it’s organic selling as convent
+- (3) Most store-brand products are made by the same manufacturers that supply the name-brand products.   This is called price segmentation, it allows the brand name manufacturer to sell to both brand-sensitive and price-sensitive consumers.  This is not so much of a marketing ploy, but a pricing strategy.  Perfect price segmentation is methods of pricing your product so you can extract the maximum amount of money each consumer is willing to pay for the same product.  Car dealership price haggling is 
+- (3) I always give generics a try. Sometimes they become my go-to, and other times I learn my lesson.
+- (2) [Introducing LPT REQUEST FRIDAYS](https://www.reddit.com/r/LifeProTips/comments/16w0n2s/introducing_request_post_fridays/)  We determine "Friday" as beginning at 12am Eastern Time (EST: UTC/GMT -5, EDT: UTC/GMT -4)   *I am a bot, and this action was performed automatically. Please [contact the moderators of this subreddit](/message/compose/?to=/r/LifeProTips) if you have any questions or concerns.*
+- (2) Eggs are actually the prime example of why you shouldn’t buy the cheapest
+- (2) This is essentially like processor binning in CPU's and other high end electronics - Often the different product levels can come from literally the same sheet of silicon.  They have different levels of rigor for testing each chip - but they don't test all the chips to the same standard. They'll get X percent for the top line, then they'll switch to a lower testing standard for the next bin down, until they've meet that quota, then reduce again.  Some Lines of Celeron chips where literally just P
+- (2) This rule should not be applied to cereals such coco pops, shreddies, cornflakes and biscuits such as digestives,  oreos, penguins etc The budget versions are hugely different in texture, colour , taste and quality. May be made in the same factory but definitley not out of the same batch/recipe
+- (2) Maybe more like twilight and evening.
+- (2) Hmm. It's been a long assed time since I've had Hydrox. Now I'm curious.
+- (2) I've never seen an instance where this is true.    And I say that as someone who buys mostly no name or other "lesser" brands. I'll occasionally get bigger brands on sale. They're quite different. I wouldn't objectively say better but definitely different. 
+
+## [AskReddit] What products would you NEVER buy the generic or store brand, and always choose the name brand instead?  (score 18) https://www.reddit.com/comments/1jns9wh
+- (300) Cheerios.  Of all the products on Earth that you'd think someone could make a decent generic knock-off off, toasted oat rings has to be up there. Yet, no one can actually do it. All forms of generic Cheerios taste like cardboard, at best.
+- (255) Philadelphia cream cheese, blue Dawn, and Cheez-Its.
+- (111) Puffs with lotion.  Life changer.
+- (106) Mayo. Best foods/Hellmann's only.
+- (91) That's an unusual cocktail, but as you wish.
+- (81) I have learned not to mess around with generic trash bags.
+- (75) You should try Dukes. Hellmann's used to be my favorite, but Dukes is amazing!
+- (72) Cat food.  I can't even buy a different version of the same brand.  My cat would just plain starve to death if I got generic.
+- (62) Which is EXTRA wild, because all the sugar cereal knockoffs are top tier and unbeatably priced.
+- (42) Yep, I second Philadelphia cream cheese. I’ve tried other brands but they can’t get the mix right.
+- (36) Charmin leaves behind clitty litter. I prefer Scott's for that reason, AND some of the Charmin products irritate me down yonder.
+- (36) Mom can we have sugar?  We have sugar at home.  Sugar at home: corn syrup
+- (33) I'd probably be too distracted by the blinding to notice.
+- (31) Hamburger Helper. The generic version is disgusting
+- (31) Charmin ultra soft only.  I even have a bidet, so only use a little bit, but no other TP enters my house.
+- (29) Clitty litter, I'm fucking dead 🤣🤣
+- (29) Wait until you hear about Band-Aids...
+- (29) Puffs with Vics Vape-O-Rub. Menthol lotion in a tissue seriously ruined me for any other tissue
+- (28) Mac and cheese the generic stuff is gross
+- (28) I used to say the same thing until their quality dropped significantly recently. I tried Amazon’s house brand and they are about as good as Q-Tips brand used to be.
+- (27) They have dropped in quality recently.
+- (27) Unfortunately they have added a new significantly more pungent scent to blue dawn, in all iterations and have stayed they are not changing back. It's ruined it for me, I can't stand to use it anymore. 
+- (26) Really? Puffs plus lotion for me. As a horrible allergy sufferer, they're the only ones that don't start to really hurt after a while.
+- (26) Dawn dish soap, I don't know how but no other generic or other brand is as versatile and effective.
+- (25) Tape I bought Up and Up tape from target and it’s terrible. I will stick to scotch
+- (24) Dukes is the only one we get as well. It’s great 👍
+- (23) Tried to feed generic canned cat food once. 3 cats would rather starve and the 4th had explosive diarrhea across my entire bedroom and needed to be bathed.
+- (23) Only way I clean my oily ducks.
+- (22) I have noticed that as of late. I have to rinse a bit more to get the smell out. I wish they had an unscented/dye free version with the same cleaning power.
+- (19) People look at me crazy but Scott’s for me. It’s the only tp that doesn’t clog my septic tank. And charmin feels too soft
+- (19) Sugar is kinda hard to mess up.
+- (19) Yes, Heinz is the only ketchup that exists as far as I'm concerned because it's sacrilegious in Pittsburgh to use anything else.
+- (19) Eh. Its pretty good, but I prefer Frenchs. They kind of took over the market back when Heinz pulled out of Canada and many of us never went back.   Though if you ever get a chance to do homemade ketchup, it can be amazing!
+- (18) Cultured dairy products like sour cream. Store brand has a bunch of ingredients. Daisy has one. I also buy name brand for condiments. The generic ones just don’t tend to be as good. Most things, though, tend to be pretty similar. Some things I even prefer from store brand, like milk. It’s not great value FTR. Great value milk is gross. This brand is local to my store so I won’t be saying its name. I even use store brand pasta sauces. It needs a little more work at home, but it’s just so much les
+- (16) I got hooked on Dukes purely by chance.   We needed mayo, but the store was completely out of Best Food, my go to for mayo. All they had was Kraft lite mayo (gross), hint of lime mayo and Dukes.   So I decided to give Dukes a whirl. My whole family noticed the difference since I use a lot more than a smear in my potato salad. I have not bought another brand since.
+- (16) Q-tip *is* the brand name. Off brand/generic ones are usually just called “cotton swabs”
+- (16) This is a very strange tasting stew. But the oreo does add a certain richness.
+- (15) Philadelphia Cream Cheese is a must. Check the ingredients, any more than Philly's 5 and it is trash.
+- (14) Razor blades.   Gillette or nothing!
+- (14) Bad idea to randomly switch up a 🐈 diet anyways. Stick to what they're used to.
+- (13) Sometimes the manufacturer changes the recipe/had supply issues and your cats preferred food is temporarily out of stock. My cat ate nothing but gently boiled fish for 4 days to avoid upsetting his stomach (he’s allergic to poultry) because MACS beef went randomly out of stock. We eventually sourced it from a local pet shop and then it seemed to be back in stock online again.
+- (12) And tons of them have totally different ingredients like wheat flour in them! Learned that one the hard way.
+- (12) Aldi honey nut are better, so is their life cereal. I will die on this hill
+- (11) And HH is hardly back-breaking expensive.
+- (11) Batteries, cheap ones die faster and leak like they have a personal vendetta.
+- (11) I'm going to assume the hard way refers to something digestive/medical like celiac.  My condolences. It's bad enough to eat store-brand Cheerios without the medical concerns.
+- (11) I’d tell you that I probably wouldn’t enjoy consuming spoonfuls of mayonnaise, regardless of the brand.
+- (11) Toilet paper. Charmin red for life here.
+- (11) Agreed! Also why I only buy Daisy sour cream and cottage cheese!
+- (11) Diet Coke......Diet Pepsi is vile....
+- (10) I bought the lotion ones one time - but didn't think before using one to clean my glasses. Never again.
+- (10) Frosted Flakes. Gotta be KELLOGGS.
+- (10) I only by daisy because the song slaps
+- (10) Hidden Valley Ranch and Marie's Blue Cheese Dressing. I swear I've tried every generic ranch and blue cheese dressing in the grocery store and it's just not worth it to save a few bucks.
+- (10) Tilamook or blue bell icecream, every other brand is inferior, generic isn’t even a consideratiom
+- (9) Rice-a-Roni.   Ketchup.   Lipton dried soup packets.   OREOS.
+- (9) Shampoo or conditioner, my hair doesn't like the cheap jumk
+- (8) I have a sewer system but a plumber told me years ago “Scott only” because it won’t lead to a seer clog.
+- (8) Vicks DayQuil. I know it’s anecdotal but I used to always buy the store brand, until back when I had to travel for work and could only get the name brand on the road. It really did work better and last longer, at least for me.
+- (8) Okay, so I purposely didn't put down that I like Hunts ketchup. Cuz I know that the majority of people on here seem to really like Heinz. But for most of my life I've always thought Heinz was just too sweet. And I always go for Hunts.  I also am really attached to Hunt's Ketchup because as a child my family had a very large vegetable garden. And we always had an overabundance of tomatoes. And one year my parents had the grand idea of using some of those extra tomatoes and made a very very very l
+
+## [AskUK] Although you aren't a brand snob in general, which item and brand do you insist on having?  (score 1204) https://www.reddit.com/comments/r2udam
+POST: For me it's Heinz baked beans. All the other brands taste awful to me.
+- (1655) Branston beans shit all over Heinz
+- (826) Coca-cola. Own brand is garbage.
+- (482) Green giant sweetcorn is undefeated
+- (319) Weetabix, never any other brand
+- (298) Preach it! Heinz are awful by comparison!
+- (290) Never ever cheap tinned tomatoes. It’s got to be Napolina or another decent Italian brand.   Hellmans Mayo.   Rose’s lime cordial.   Marmite.
+- (229) It's satisfying when you convert others to the glory of Branston Beans. So far my best friend and girlfriend have been converted... I have much work to do.
+- (201) Any booze. I won’t buy supermarket own brand stuff. That’s not me being snobbish I love a whisky and Jameson’s is a great go to and it’s blended
+- (165) 100% this. All own brand shit tastes like fucking panda pops to me
+- (148) Ayyyyy don't be coming for panda pops.  They're garbage, sure, but they're MY CHILDHOOD garbage.
+- (145) No other mustard really punches you in the sinuses like Coleman's
+- (143) Uncalled for TwattyMcSlagtits definitely a Heinz fan boy up in here.
+- (123) Heinz tomato and barbecue sauce.
+- (118) >and Aldi’s Ballycastle for when  it's replacing the milk in my Christmas morning Crunchy Nut Cornflakes.
+- (111) Converse All Star. I think that’s the only brand I’ll stick to.
+- (98) Yeah channel 4 did it. Branston won, Tesco everyday value came second and Heinz was third
+- (95) At uni a friend bought own brand vodka and had an allergic reaction. Put me off too.   The only exception is tesco Baileys knock-off ‘Irish Meadow’. That stuff is niiiiice (or at least was 10 years ago when I used to drink more than a glass or two a year)
+- (94) Adidas over any other sports gear.  Barr's Irn-Bru.  Oral B toothpaste.  Heinz ketchup, Sweet Baby Ray's BBQ sauce.  Samsung mobile phones.  Lurpak butter.
+- (89) That's the least controversial statement ever.
+- (88) Agree on the ketchup but there’s better brands for bbq sauce
+- (87) You know a school disco was fire when they bust out the raspberry blue Panda Pops.
+- (86) This is what confuses me when English food is considered boring by some.  Has that Frenchie Pierre never tried a mashed up lump of pig fat/arseholes surrounded by crumbly pastry covered in a thick bright yellow sauce that makes him cry? No?  He can piss off back to his snails, then
+- (83) Happy to try a cruelty free one if you recommend 😊
+- (82) It's not mustard if it doesn't make your nose bleed
+- (80) I'm sorry but Pepsi over Coke any day for me...
+- (80) Try Mutti.  You will never have Napolino again.
+- (75) I think fresh corn is nicer, but I agree, it's the consistency, I've had own brand tinned corn that is as good, but you buy the same tin down the line and it's awful.
+- (72) Allllllll day. Pretty sure there was a survey that confirmed this.
+- (69) Big no to this. There’s so many better or just as good cruelty free washing up liquids out there.  Edit: I can’t believe so many people aren’t aware of animal testing and what brands are cruelty free or not. You all really need to look into what you’re supporting when you buy these products.
+- (65) We have Bailey’s for when it’s being drunk on its own, and Aldi’s Ballycastle for when it’s going in hot chocolate.
+- (65) Pretty embarrassing for a brand if they can't even beat a supermarket's own brand for 2nd place, nevermind first.
+- (65) The ecover washing up liquid is really good I’ve made a perm switch and they sell it in most supermarkets now, cuts through grease and doesn’t harm aquatic life.
+- (64) I've always been Hellmanns Mayo but recently bought Heinz because it was on offer and to be fair, it holds its own!
+- (63) Agree with this... But why, oh god why, don't they make their damn tins stack?!?
+- (62) Nothing I buy is branded. But god will I spend cash on a proper waxed Barbour jacket. They last forever and are a real investment - not the ones they’ve banged into mainstream. The real, original ones that weigh a ton.
+- (57) Virgin used to make a coke and that was pretty good
+- (56) I use Bio-D. Does the job and doesn’t kill fish, plus I can refill the bottle at the shop.
+- (53) My dad buys the aldi version, complains he doesn't like them but then refuses to buy weetabix because of the price. He's spiting himself but he won't change for the sake of a quid or 2 lmao
+- (42) H&M Blank Staples t-shirt’s. Absolutely incredible quality and nothing else comes close at that price point.
+- (41) Morrison’s own brand beans is the way to go
+- (41) I'm going to try Branston this week
+- (41) You've got to be a bit careful with Ecover though. They were bought by a bigger company recently who just use the label to project eco friendliness
+- (40) Has any other company dared challenge?
+- (40) I am the only person I know who has fruity sauce. We never had brown sauce at home it was always fruity. In fact I don’t think I have ever had brown sauce. Am I still English?
+- (38) Converse in the summer  DMs in the winter  Timberlands in the mud
+- (37) Pepsi max is far superior to coke
+- (36) Ketchup, aye.. Although I discovered Asda's own sauce is just as good (which is heresy, but it's true).  There is no better BBQ sauce on the market than Sweet Baby Ray's. It's unrivalled.
+- (36) Mr Dijon tried, but got the recipe wrong and put fuckloads of seeds in it
+- (36) You may be thinking of whole grain?
+- (35) I’m on my first bottle of fairy liquid since aldi own brand was sold out, 1 month on and never turning back
+- (34) I once bought a bottle of vodka from a takeaway, it was simply called soviet vodka (drawn on the bottle in marker pen) and they accepted the first offer I made for the bottle (£5) hangover lasted about three days. No regrets.
+- (33) Ah right. You’re that guy. Sort of wants to be divisive but can’t quite substantiate it and so then picks up on little grammatical and/or logical nuances. Gotcha.
+- (32) Beans is a good one, Maybe controversial, but Coca Cola over Pepsi, or any supermarket brand.
+- (29) Wish I could tbh can't wear them because of how narrow they are.
+- (29) £13. Real heavyweight, 240gsm cotton, slightly oversized with dropped shoulders so sits quite boxy which I love - they’re incredible for the price!
+- (28) Heinz ketchup, Hellmans mayo, Sarsons vinegar, Green giant corn, colemans mustard, robinsons orange squash.
+- (28) Oh yeah I remember that. It was def one of the best. I think they didn’t try to copy they made it distinctive which is what worked. I hadn’t even considered they’d stopped making that.
+- (28) *Bangs fist on table* lur-pak! LUR-PAK! *LUR-PAK!!*
+- (27) Mutti is by far superior. Their pizza sauce is good too
+- (27) Id say yeah,cant describe how but it just tastes nicer than others.
+
+## [CasualUK] What are some of your favourite 'shamelessly blatant brand rip-offs' in supermarkets etc?  (score 0) https://www.reddit.com/comments/13i1ssb
+- (10) These weetabix rip-offs are actually decent and a quarter of the price. It's a no-brainer.
+- (4) Nearly all own brand products are made by the big brands either wonky seconds of the same product (Aldi Hula Hoops) or a cheaper recipe in the same factory that is why they never get sued for breech of copyright/being too similar.
+- (3) Most of them are made by Weetabix anyway.
+- (3) Absolutely spot on this, m&s ketchup is the best, it’s like ketchup use to be, unfortunately someone from the greater Manchester area loves it more than me so it’s always out of stock, you are not from Manchester are you, I’d you are, I have just met my arch nemesis
+- (2) M&S ketchup is literally the best tomato sauce I've ever tasted. I can't go back to Heinz now. It's also only 90p a bottle.
+- (2) Haha no I'm from the south, I tried it in a bacon roll in one of their in-store cafe's and just couldn't believe how good it tasted. So I was really happy to see it stocked in their foodhall!
+- (2) I drive a HGV over the M62 to Manchester and take them all back east-bound.
+- (1) I'll see your Sainsbury's Wheat Biscuits and raise you - [Lidl Bixies](https://hips.hearstapps.com/goodhousekeeping-uk/main/embedded/36495/lidl-bixies-0-.jpg?resize=980:*)
+- (1) Not sure about Lidl bakery been that good but… it’s better than many.   I’ve given up with Morrison’s. Don’t ask how much I’m paying for a good loaf at a local bakery that has a Scandinavian name.
+- (1) Very true, the only ones not made by Weetabix have a different radius at the ends to avoid design rights infringment.
+- (1) rice krispies,     from players like Lidi, Aldi and Morrisons
+- (1) Aldi's version of Fevertree tonic water. How they haven't been sued for it yet I don't know.
+- (1) Most are not brand rip-offs there made and packaged in the same factory as the the overpriced brads, you will be amazed by people saying they can tell the diference between cheap and original lol
+- (1) Aldi have Nibbly-Nobblies that are suspiciously like Nik-Naks. Pretty good actually.
+- (1) Supermarkets have been selling Weetabix style biscuits for decades. We used to have Safeway’s version when I was a kid in the 70’s. They were great.
+- (0) Some are even better than the labeled brands now, conglomerates are so busy trying to make even more profit it seems they don't even care what the end products quality is actually like, just rely on the name of the brand and send it, Aldis premium washing up liquid is miles better than Fairy now, Anything in Lidls bakery is better than any pastry I can buy anywhere else, the meat selection and quality in either of these "budget" supermarkets is vastly superior to any of the major chains, the lis
+- (-1) All the crownfield stuff is shamelessly cloning major brands. The Hobnobs one is unbelievably similar. Decent food though,  usually not a million miles away

@@ -1,0 +1,404 @@
+
+## [ukpolitics] Almost of half of shoppers switch to supermarket-own brands  (score 118) https://www.reddit.com/comments/1b4i3rn
+- (268) That's because a lot of the brand names pricing takes the piss and they deserve to go bankrupt.  Kellogs springs to mind.
+- (161) Heinz is the other one for me. They've clearly been gouging for a few years now.
+- (120) Heinz are the absolute worst for it IMO.  Tesco (normal, not value) Ketchup 890g: £1.35  Heinz Ketchup 900g: £4.50  How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!
+- (63) A lot of the supermarket own brand stuff is perfectly fine. In a lot of cases, it is also better for you when you look at salt or sugar content (partly because a lot of the brands then release a "low salt" version of their main product).   We've been buying Sainsbury's own brand for years on most things except Branstone beans - nothing comes close to those.
+- (54) Aaaand then they get price hiked as well
+- (41) Part of the reason for that is just the pricing economics inflicted upon the supermarket as their business model changes. Previously most people would go for Heinz Ketchup and Kellogg's Corn Flakes. The shop was basically set up to sell those. There was also a small side market for people who wanted cheaper, worse (optically at least), versions of those products. Those people were very price sensitive, so to get their custom you would price your own brand such that it made gross profit, but didn
+- (35) M&S ketchup is priced better and so much better than Heinz.
+- (34) I'd be interested if anyone can confirm if it's still the case, but you might well find that the contents of the brand name products and the supermarket products are identical.  Many, many years ago I worked in a sausage factory (no giggling at the back, please). It's so long ago I can't remember the exact brands, my brain is saying M&S... but I remember that the same sausages went into budget and more 'high end' brand packaging.
+- (30) M&S in general has some very cheap stuff, a lot of the produce isn't much more than the likes of lidl/aldi and much better quality.   They also have chicken for like £1.50.
+- (26) When I worked for a Quiche factory, the Tesco and Sainsbury's product was exactly the same but M&S specifically got much better ingredients. M&S have very strict standards.
+- (24) Also the brand names aren't better products anymore
+- (23) After a year of my wife doing click and collect at Aldi followed by a top up shop at Sainsbury’s as it was apparently cheaper, I sat down and compared. I replicated the Aldi shop in Sainsbury’s and by picking the own brand or cheaper options i managed it at almost exactly the same price. A lot of staples are price matched these days and if you buy the actual budget range (Stamford street or whatever it is at sainsburys) it’s the same.
+- (22) Ha! Supermarkets have a lot to answer for, and obviously it's easy for us all to moan about a company that made £1.6bn in profits last year, but their gross profit margins, before they pay for advertising and head office etc etc is about 8%. So we buy our £150 big shop or whatever, they make £12 (before those other costs). It just doesn't seem that egregious to me, when there are so many other dickheads to get cross about.  Kind regards, Ken Murphy
+- (21) Brands have realised they are not going to compete on price at all, so they are reducing volumes and leveraging price on the brand loyalists.  Long term value destructive perhaps, or maybe we are entering the decline of universally recognised branded foods and they are aiming to maximise cash on their decline.  The interesting cases will be the brands that insisted they would never play the own brand game (Kellogg's) Vs those that decided to leverage capacity by producing own brands for supermar
+- (19) My favourite exchange at the moment :  - Heinz canned [Spag Bol](https://www.sainsburys.co.uk/gol-ui/product/heinz-spaghetti-bolognese-400g) - Sainsbury's [Spag Bol](https://www.sainsburys.co.uk/gol-ui/product/sainsburys-spaghetti-bolognese-410g)  The Sainsbury one is superior in most respects.  - Looks nicer     - It's red with discernible tomato bits rather than the brown of the Heinz - Tastes nicer     - Doesn't have the overpowering note of slightly burned garlic the Heinz does - The pasta i
+- (16) Thing is, people seem very brand sensitive with ketchup, so Heinz can do what they like
+- (15) Pharmaceutical products (e.g. Nurofen vs own brand ibuprofen) are made in the same factory. I spent a lot of time as a teenager working in a pharmacy trying to convince people to buy the 17p box instead of the £3.50 box as it was exactly the same thing. Very few people listened!
+- (15) It's no suprise when a tin of beans costs £2 or... 15p, ketchup is four fucking pounds Vs one. A bag of bloody box cereal is getting near a fiver! Or the absolutely fucking identical own brand costs 75 fucking pence.
+- (14) The Polish "Pudliszki" brand ketchup you can get in your local Eastern European shop blows Heinz out of the water in terms of both price and taste, you should give it a shot - especially the 'pikantny' flavour.
+- (14) Purely anecdotal. I used to work beside someone who, while at school, had work experience in a factory of a well known brand which sells oats . He said they literally would be filling boxes of the premium brand. Stop the line and switch over to the Tesco value bags and put the exact same thing in there.
+- (13) >How on earth can they justify it being more than three times the price?!  Because people pay it. If the number of sales multiplied by the larger margin is greater than the number of sales multiplied by the smaller margin, their logic is sound - even if you and I don't like the new, higher price.
+- (11) Many years ago worked on a raspberry farm and bigger and juicier raspberries went into the M&S packaging.
+- (11) Like supermarket own brand isn't expensive as fuck as well.
+- (11) I did this went from Tesco to Waitrose though and it’s pretty much the same price but the quality of the food is better and the veg lasts longer so less is wasted so less trips. I feel like a lot of prices have good up and quality had dropped off.
+- (10) I was in Tesco and compared to the own brand ketchup it was 4.5 times as expensive. I bought the own brand.
+- (10) As I recall, tests show that because of the placebo effect the expensive one works better. And it even happens when the patient knows about this facet of the placebo effect.
+- (9) For us older people, Heinz was the only brand available for stuff like ketchup and baked beans when we were kids. So they'll get recognition and nostalgia purchases. Personally I'll never buy their products again after their recent price gouging.
+- (9) Great point, most foodstuffs have been shitflated beyond recognition.
+- (8) My mum's like that, "neurofen works right away".  I've explained it's exactly the same and that a tablet can't work as fast as she claims but she still pays the premium price.  She even buys the different neurofen for different pains even though I've explained that they were forced to admit they are all exactly the same.  Personally I'm perfectly happy with the 40p packets of own brand.
+- (7) Sorry I forgot to clarify this is my own subjection opinion. I didn’t want to upset your pedantic social quirks.
+- (7) It's like your employer offering to tripple your wage if you go part time.  Less effort & a greater reward.
+- (7) Cereal is way too expensive. I tried a couple of supermarket own brands, but decided to just switch to buying porridge oats instead. They last longer, they're better for you, and you can add whatever you want to them.
+- (7) Branston beans are 38% tomato and Tesco own brand are 20% tomato puree. I don't know if that's actually just a different way of describing the same thing but if so Tesco have missed a trick.
+- (7) This, went from asda and saisnbury's to ocado (own brand only) and they're either cheaper, the sae price and the quality is so much better - the fruit and veg lasts noticeably longer and the most important bit, no bloody substitutes
+- (6) Weirdly enough sainsburys ketchup is actually better.
+- (6) My family has always shopped there. Their whole meal seeded bread is amazing, and their salad and pork pies are favourites of my grandmother. Their ready meals used to be my go-to back when I was working late shifts too.   I also had to ban myself from the self-serve bakery section on account of demolishing cheese twists at the speed of light.
+- (6) Do yourself a favour - go to your local Eastern European shop and buy some "Pudliszki" brand ketchup, particularly the 'pikantny' type. It's cheaper **and** much tastier.
+- (6) That's because it absolutely is. Same with every other branded drug, including the likes of Nurofen, etc.  https://blog.moneysavingexpert.com/2018/07/martin-lewis--a-drugs-bust-up---stop-letting-big-pharmaceuticals/
+- (5) Doesn't explain why the Polish producer does sell spicy ketchup in Tesco.   Wouldn't be surprised if they all were owned by the same company too.
+- (5) Nytol is wild. 10 quid for the one a night ones. But, if you get the Tesco branded ones, it's £4.70. And if you pop a pill out of the Tesco one, it's the exact same pill as in the Nytol box, right down to the N on the pill.
+- (5) Tesco own brand taste foul to me, but it's the actual bean not the sauce, can only presume it's a cheaper bean or something.
+- (5) And will we fuck switch back, and the money grabbing pricks that caused this all got big fat bonuses.  What a wonderful system.
+- (4) I've found the Tesco's CEO sock puppet account 😉
+- (4) I kinda/sorta get it with oats as it’s a fairly simple/standard product, the main differences are whether it’s finely milled or not.
+- (4) Sainsbury’s mayo is the superior one and I will not have my mind changed on that.
+- (4) Not surprising.  The supermarket-own brand range is typically on par and at times superior compared to name brands. And at a cheaper price point. Where it isn’t to your liking, you always can continue buying a name brand for that specific product.   Done this for years. Either out of sheer preference or because it was fiscally sound. Long before rampant inflation and the cost of living crisis, which undoubtedly is squeezing household budgets.
+- (3) I just prefer bbq sauce, reggie reggie sauce or srirachia these days.
+- (3) 100% to both  You can get Polish ketchup and Polish mayo from Asda and we _always_ get that
+- (3) 100% with you on oats, so cheap but so good for you in comparison. I bought spelt flakes from Amazon, nice to mix in with the oats for varied nutrition
+- (3) Interesting, very interesting! I have often wondered when comparing the ingredients and calory count of a brand / supermarket version, how they get them to be identical. I bet that putting the same in different packets is quite prevalent. Otherwise, wouldn't the brands be suing for infringement?
+- (3) Still boosts I believe - there’s study’s done where they tell people theyre taking a placebo and it still boosts positive outcomes
+- (3) As someone who works in a supermarket, buy own brand. The majority of Lidl own brand is made in the exact same factories with slightly adjusted recipes/ingredients. All their biscuits are made by mcvities or at least they used to be. When I started there almost 8 years ago now they touted that they paid for the higher quality ingredients than wjat was in the actual brands. I suspect this may have changed after covid/brexit and all the inflation. So all in all even buying own brand often lines th
+- (2) The Co-Op is doing the same, so I'm not exactly convinced by that argument. Hence why I downvoted you as I think your comment is top simplistic to add value.  While I have no sympathy towards large corporations, I don't see how price increases can be explained I'm such a simplistic way when companies like Co-Op, who have such factors removed, are acting similarly.
+- (2) I'm eating keto and would use the sugar free Heinz ketchup until shrinkflation and greedflation annoyed me too much to ever buy their products again. I go for chilli sauce and mustard now.
+- (2) Waitrose is one of the most expensive supermarkets what
+- (2) Yeah, I've totally given up on Heinz. Also Branston beans are infinitely better than Heinz
+- (2) I don't know why Heinz doesn't do spicy ketchup.  I know they must do somewhere, as they are huge. It's just not common.
+- (2) Well I don't see it.   https://www.tesco.com/groceries/en-GB/search?query=Heinz%20ketchup  https://www.sainsburys.co.uk/gol-ui/SearchResults/heinz%20tomato%20ketchup
+- (2) Buyers at supermarkets buy what they think will sell the most confidently. A condiments buyer has a limited amount of shelf space and needs to hit targets for sales to keep their revenue/shelf high.
+- (2) Are you being deliberately obtuse?  > buy some "Pudliszki" brand ketchup, particularly the 'pikantny' type  Pikantny means chilly spicy, aka hot, not any random spice.
+
+## [AskUK] Do you buy own brand or branded and if branded, why?  (score 0) https://www.reddit.com/comments/13u6xww
+POST: For example in Tesco buying Bramley Apple Pies the Tesco own brand are cheaper and taste (in my opinion) just as good. So, if you buy branded why? Apart from some obvious things like Nutella, everything else like Cereal seems just as good but way cheaper.
+- (5) You've answered your own question. Finances aside, everyone buys own branded, except for the ones where they think branded tastes better.
+- (3) Own brand for most things except Branston pickle, lea and perrins, bovril and coca cola.
+- (3) I've always started with the cheapest and worked my way up by price until I've found the one I like  Only branded products I tend to buy are tea bags, cereals, diet coca cola, laundry liquid/tablets and toilet rolls
+- (2) I don’t have a hard and fast rule really. I tend to just get what’s looks nicest combined with what’s on offer/seems reasonably priced. I’d say I buy a mix of both, but there’s no one brand I have loyalty too.
+- (1) **Update: - [Starting from 2023](https://www.reddit.com/r/AskUK/comments/100l56v/happy_new_year_askuk_minor_sub_update/), we have updated our [subreddit rules](https://www.reddit.com/r/AskUK/about/rules/)**. Specifically;  - Don't be a dick to each other  - Top-level responses must contain genuine efforts to answer the question  - This is a strictly no-politics subreddit          Please keep /r/AskUK a great subreddit by reporting posts and comments which break our rules.  *I am a bot, and this 
+- (1) I have it from Lidl as well and it tastes almost as good. Just an example though own brand Crisps aren't as good as well but I think it depends on what ones you go for. Lidl's monster munch pickled onion for example is nowhere near as good as the branded ones unfortunately.
+- (1) Are you talking instant coffee? I buy supermarket own brand beans for my bean to cup machine and I really can’t tell the difference between those and branded ones. I’m not really coffee snob though.
+- (1) I buy own brand in pretty much everything except crisps
+- (1) Aldi own brand prawn cocktail crisps are better than Kettle chips or Tyrrell's.  Mind you, their basic tea is shocking.
+- (1) I'm not bothered about brands in most cases. But some things I go branded. Mr Kiplings Bakewell tarts and apple pies for instance. Tesco's versions just aren't as good. Squash is another, the supermarket own brand just isn't as nice as Robinson's. Struggling to think of anything else where I don't go own brand though.
+- (1) I do buy branded things, but one thing where I love own brands is Apple Sauce.   Colman’s is the premium brand and it’s just so sweet and horrible.   It got substituted on my delivery the other week and I sent them back. I prefer any own brand from any supermarket but just not the big branded stuff
+- (1) Thank you. Just prompted me to make a nice cuppa bovril
+- (1) Branded for McVities chocolate digestives, and Cravendale semi-skimmed milk, because alternatives to both taste rubbish to me.
+- (1) It’s a balance, Sainsbury’s own brand diet lemonade is great. Their own brand “yeast spread” is not when compared with marmite.  I have learned with trial and error what I’m happy to compromise quality on.
+- (1) Can’t skimp on marmite. And I prefer Branston beans to any others, but I can’t be bothered to go to a different supermarket to get them since Aldi don’t stock them. Everything else is just the cheapest/ right size etc.
+- (1) Own brand for everything except:  Branston Beans, the best you can get Mutti Tomatoes, far superior to any own brand Yorkshire Tea, I think it tastes better  Can't think of anything else.
+- (0) I buy whichever is cheaper so the own brand.
+- (-1) Yea, I don't know why the OP doesn't think you can't get hazelnut chocolate spread just as good as Nutella from other brands.
+
+## [AskUK] Grocery shopping - do you buy mostly branded or not?  (score 51) https://www.reddit.com/comments/1ow5fne
+POST: I've been looking through my usual weekly shop and realised the vast majority of the food I buy now is own brand. This wasn't always the case, but obviously cost of living etc.  I would have assumed a lot of people do this nowadays, yet it still seems like most of the shelves are still assigned to branded items, so the stores must be selling them.    I also find it bizarre how many supermarkets seem to have two tiers of own-brand stuff now. Like the nicer looking Sainsburys own brand, and the cheap, garish packaging of "Stamford Street".     I'm curious, what is your split? How much branded vs own-brand are you buying?  
+- (99) I've always found the own brand beans to be tastier than the more expensive ones. I still buy Branston Beans occasionally, so I suppose this a long-winded way of saying fuck Heinz.
+- (61) As I can only afford to shop at aldi or lidl its unbranded all the way!
+- (47) Do you make your own cheese? Grow your rice? Always make fresh pasta? Press your olive oil?
+- (38) Heinz beans are easily the absolute worst beans on sale in the UK. I have no idea why people pay a premium for such a low quality product.
+- (28) I mostly by the cheapest option for food because I’m not too bothered and hardly notice a difference in taste. Even if there is, the non brand versions of products I buy are completely fine, like deli meats, dairy products, canned foods etc.  I only buy branded for cleaning stuff because I do notice a difference with that, especially things like washing up liquid and also toilet roll for that matter.
+- (28) Most of what I buy isn't branded or non branded.   Its just fresh ingredients 
+- (27) Nothing branded with the exception of Yorkshire teabags.
+- (26) They’re on the carnivore diet, they just buy unbranded live chickens
+- (21) M&S beans are great and not expensive. 25p for a mini tin and 50p for a big tin. Haven’t had Heinz in a long time. Complete rip off now too
+- (20) Heinz are tragic. I had the reduced salt and sugar ones for a while, then I thought “fuck this, I want some decent beans) then bought the normal ones; they were just as bad. I’m now a Branston convert.
+- (18) Everyone is welcome to an opinion,  but just curious why it sounds miserable?   I eat very well 
+- (17) We buy own brand most things, such as tins of beans/spaghetti loops/soups etc, bags of chips, fruit and veg etc etc   But there’s are certain things we don’t compromise on, as own brand quality is just crap. These include things like toilet roll, coffee, teabags, beef burgers etc etc   I’ve noticed a very select few things, there are no own brand, such as sugar. Have only ever seen Tate+Lyle or silver spoon.
+- (15) Well,  i don't like either of them, so I don't eat them.    Today I had porridge and mixed berries for breakfast with chia seeds.   Lunch was a steaming bowl of lamb stew with broccoli and cauliflower.   Tea was a chicken and avocado salad.    I stocked the chest freezer up with meats from the local farm shop yesterday and ill be heading to the greengrocer tomorrow for a load of fruit and veg for the next week.
+- (8) Fair play, can't fault any of that.  Enjoy the grub rest of the week!
+- (7) Both of those adapted to the UK market and sell brands for at least 7 years.  You can also buy unbranded in most. Sainsburys is often cheaper depen ding on what you want (unliek in the 90s).
+- (7) Actually you're right on the washing up liquid. My mum used to buy the cheapest stuff and it was like water. Me and my husband switched to Fairy (when we had our own house  and made our own washing up decisions haha) and a bottle would last us MONTHS! Cheap washing up liquid is a false economy.
+- (7) Rarely! Im a glutton for sweets and snacks and once I start,  I can't stop.   So I just don't buy them. And to not buy them,  I need to stay out of supermarkets.   Hence why I rarely buy anything I can't get from the butchers or greengrocer 
+- (7) I will happily go with the basic brand for most things.
+- (7) The only branded food we ever have is nestle Cheerios as autistic son won't tolerate own brand ones, otherwise only ever get own brand as that's what I was brought up on and begrudge paying more.
+- (7) It makes sense to stick with what works for your son, especially with kids and their preferences. own brands cansave money, but sometimes you just have to prioritize what your family will actually eat...
+- (7) Branded but that’s really because I only buy snacks prepackaged and the rest of the stuff is just fresh loose bits. Which I guess are unbranded?
+- (7) I buy a mix! Some of the own brand stuff is just as good but other stuff is terrible. The brands have had the time and money to invest to create the perfect recipes. I don’t buy much frozen stuff but the quality has definitely improved over the last 5-10 years.
+- (5) Love aldi own brand beans. My reasoning is they have great bean to juice ratio. Theyre actually so good 😂
+- (5) Aldi 3 ply bog roll is great. Why buy anything else?
+- (5) Do you know what I really like about Aldi and Lidl? There’s usually only one, maybe two, options for each product. Before we had a Lidl open near us, shopping used to take forever. Now there’s just zero decision fatigue. It’s in, out, done.
+- (4) Most of my stuff is own brand, but there are a couple of things I still buy branded because I just like the taste so much and the own brand stuff doesn't hit for me - Heinz soup, Branston pickle, and Walkers crisps.
+- (4) I'm just wondering what you eat aside gallons of olive oil?   As somebody who will eat pretty well anything, no pasta and no cheese sounds like the starting point of an extremely restrictive and unhappy diet.
+- (4) Been buying mostly own brand since the 2008 recession and probably buy no more than 10 branded items now. A few are because there's no own brand equivalent, a couple because we haven't found a good substitute and the rest are only ever bought on offer rarely or a seasonal product that doesn't have an own brand. Dropped some things over the years, the one currently hurting most is Cadbury raspberry mini rolls. Can't warrant spending £2 for a box of 5 when one doesn't even last 30 seconds!
+- (4) Not anymore! I refuse to give greedy brand named companies my money.. prices are getting ridiculous! There’s no way many of them can justify what they are charging.
+- (3) I bought a tin of Sainsbury's own tomato soup recently, it was disgustingly sweet - like eating a bowl of ketchup!
+- (3) Agree to this. My mum basically buys out the local M&S for beans. 
+- (3) Own brand short cut spaghetti too. Heinz is just so sweet. I saw two Italian blokes on TikTok say it tastes like Sweet Chili sauce and they're not wrong!
+- (3) You sound miserable if someone eating how they please truly upsets you that much
+- (3) Pretty much all supermarket own brand (and I tend to shop at Lidl for most of my shopping now)  The only branded things I buy regularly are Clover butter and Cravendale milk. And that’s more because it’s my partners preference. Cravendale does last longer but I’d be happy with the Lidl version of clover
+- (3) Lidl do their own version of Cravendale's filtered and it's much cheaper. It's called Dairy Manor here.
+- (3) Everything own brand except for Marmite and HP sauce.
+- (3) I thought a snob would be on the real vanilla or the extract.
+- (3) > I also find it bizarre how many supermarkets seem to have two tiers of own-brand stuff now. Like the nicer looking Sainsburys own brand, and the cheap, garish packaging of "Stamford Street".   Three tiers usually, and it's not a new thing. Tesco has Finest and Everyday Value as well as the middle tier. Sainsburys has Taste the Difference, middle tier and Stamford Street.
+- (2) Sainsburys is deffo not cheaper than Aldi!
+- (2) I think it's the brands spend the money on advertising, while off brand spend the money on the product. It's the same thing with TI vs Casio calculators in the US. Americans are convinced that TI calculators are the best in the world until they actually use a Casio. TI spent a fortune ensuring that all high school and college text books show you how to use a TI calculator, while the Japanese just got on with making the best calculators they could.
+- (2) Why not increase your consumption of olive oil?
+- (2) They drive over here once a year and drop me in 5l of first press 😃   Its someone they know over in Spains farm who drops them 10l in each season. 
+- (2) I get it haha. We have family in Lebanon and we get 2x 2L tanks shipped over when one comes to visit.
+- (2) Ah nice!   I don't think they're driving over next year and are flying. Gonna have to think about that 
+- (2) I’ve brought some over myself so I have a bit of experience, it’s fine if it’s in load, just needs to be declared
+- (2) Whitworth sugar on sale at Home Bargains too. I agree about coffee but as we get through so much tea i buy Asda's own everyday teabags. Yorkshire tea for me is horrid! But yet very popular...and I live in Yorkshire so it's not the water.
+- (2) I swear the success of Yorkshire tea is down to a good advertising campaign rather than it being a decent tea.
+- (2) Most shopping is done in Lidl and is unbranded (or at least their own made up brands). A few products where the brand is demonstrably better are the exception (e.g. I have never found an unbranded bog role that does not disintegrate when you use it on sticky shit).
+- (2) No Costcos within any sane travel distance of me.
+- (2) Probably 50/50. I never go for the bottom tier own brand though
+- (2) Loo roll, real butter and vanilla essence (I bake) are the only things I am a snob about, anything else, I don't really care about the name, just the price nowadays.
+- (2) It depends... We buy quite a lot of "own brand" stuff - Asda own butter, wheatabix, yogurts, chocolate, loo roll, pasta, chips, washing tabs/fabric softener for example.  But there's also stuff where we always buy certain brands - proper shreddies, Lloyd Grossman tomato and garlic pasta sauce, Birdseye vegetable fingers, Heinz beans and their tomato soup.   So a mix really.  My son is autistic and absolutely knows what he likes and if we try to pass stuff off. It's not marketing or whatever eith
+- (2) Almost never, rarely is it better and even if it is, it isn't worth the expense. What even is a "brand" if you think about it? Few have a secret recipe, they just have an advertising budget.
+- (2) Own brand, but I shop at Morrisons and they've steadily been reducing their own stuff in favour of branded
+- (2) Lidl and Aldi all the way here, why pay more?
+- (2) I buy mostly branded. I started in life buying mostly unbranded/smart price. I buy whatever I want now.    I'm immensely grateful to be able to buy whatever I need without caring too much about the price. However, I don't want people thinking I'm lucky, it's because that was my life's goal. 
+- (2) The amount of time and energy and stress that must incur..  There's very little wrong with ultra processed foods, it's all a load of bollocks that is feds into by the general conspiracy sphere and chemphobia crowds.   The issue at hand is the same as it has always been, people eating utter crap for their entire lives that is essentially devoid off any vaguely useful macro or micronutrients.
+- (2) Unbranded   Brands only get bought if I have to, if it's a substitute (at no extra charge) or if it's something I will only buy branded.
+- (2) There have been 3 tiers of own brand for decades. Sainsbury's for example:  Taste the Difference - luxury by Sainsbury's - normal Stamford Street (used to be Basics) - cheap  99% of the things I buy is own brand. If I want to pay extra to have a nice thing I'd much rather get the taste the difference one than a branded one.   I think pretty much the only branded thing I buy is Warburtons crumpets - none of the supermarkets can seem to do them right
+- (1) **Please help keep AskUK welcoming!**  - When replying to submission/post please **make genuine efforts to answer the question given**. Please no jokes, judgements,  etc.  - **Don't be a dick** to each other. If getting heated, just block and move on.  - This is a strictly **no-politics** subreddit!          Please help us by reporting comments that break these rules.  *I am a bot, and this action was performed automatically. Please [contact the moderators of this subreddit](/message/compose/?to
+
+## [AskReddit] Why or why not do you buy only brand products?  (score 1) https://www.reddit.com/comments/1oy466h
+- (2) Do you think though that some name brands just share its product or sell of some to generic?
+- (1) Because in general, moreso with food, I _can_ taste the difference between the cheap shit and the real shit. It is worth the extra pennies.
+- (1) As a UK consumer, I can definitely rally behind the idea that big name famous brands are ripping people off. Evidently, their markups are wayyy too high.   Aldi are Lidl are definitely the best when it comes to producing the goods that mimic the quality brands with their own brand supermarket products that mimic the original products. They are _almost_ indistinguishable from the stuff they are attempting to rip off, yet somehow half the price… which says a lot.
+- (1) I prefer to buy clothing that has no logo on it at all.
+
+## [AskUK] What are your hot takes on branded Vs unbranded?  (score 8) https://www.reddit.com/comments/1bq1qcm
+POST: Aldi's version of Warburtons toastie bread is better than Warburtons 
+- (101) Aldi cereal and crisps are nowhere near as nice as branded versions
+- (52) I think the essentials range at Waitrose is pretty good on the whole  Edit: read the room
+- (51) You have to fork out for branded kitchen roll, specifically Regina Blitz.
+- (35) I would disagree there tbh. Never had a problem with quality at Aldi and in what possible way is it unpleasant? I would say its efficient.
+- (25) "Most shop brands are vile" seems a bit of an overreaction if I'm honest.
+- (24) I love how they call them *Titan*. Titan being Saturn’s largest moon nearly the size of Mars.
+- (21) Yeah, especially their toilet paper. It's really good, on the hole.
+- (20) You could drop 20 litres of olive oil and Regina will absorb it like it’s nothing.
+- (19) Aldi own brand beers are identical to a lot of named brand beers and it seems like they probably come from the same breweries.  Anti-establishment IPA = punk IPA  Birra Mapelli = Birra Moretti  Carter's = Coors  Rossini = Peroni  Brasserie 1897 = kronenbourg
+- (16) I never understood why people say Aldo’s are bad to shop in until I went to some in bigger cities.  I live in a small town with an Aldi next to a Booths and they are both as pleasant to shop in as each other, but Aldi’s in cities are like war zones.
+- (16) Sainsbury’s baked beans just as good as Heinz.
+- (15) Yeah the bread is really good! Also the Aldi version of Mars bars and their chocolate chip cookies are better than branded.
+- (13) While i agree to an extent cornflakes are cornflakes, plain white flour is plain white flour, salt is salt and white sugar is white sugar. It doesn't matter if it's branded or not, they will taste the same.  However very few supermarket prepared products like brown sauce tastes like HP but in some cases, like Professor Preppy from Aldi, tastes better than Dr. Pepper Zero. So while they may not taste identical it's possible for them to be superior.
+- (13) But O2 will prioritise their own direct users if the network is congested, like in city centres.   So while it’s mostly the same, there are key differences- it just depends if they matter to you.
+- (11) my nan and i often meet for a saturday morning coffee at a costa opposite an aldi, it’s like watching the hunger games of all the contestants were middle aged women in dry robes
+- (11) Most branded food products used to be superior.  Not now though.  Old established brands have been bought up by multinationals who have changed recipes and downsized pack sizes in the pursuit of bigger margins.  Many are now inferior to supermarket own label equivalents and much poorer value.     But people keep buying brands because of habit, and stupidity
+- (11) Aldi's own brand version of Lilt is superior
+- (10) Until you accidentally tumble dry it. And then your primark t shirt is like a crop top   Also noticeably thinner than a "decent" t shirt in my experience.
+- (10) Also, I don't get the obsession with Aldi. Sure, it may be cheaper but the quality sucks and it's very unpleasant to shop there.
+- (10) But branstons are superior to both!  Heinz are definitely overrated though for sure.
+- (9) The Racers (Snickers) and Jives (Twix) are also really good!
+- (9) Using the same supplier is not the same as using the same product though. Suppliers have different production runs where they will change quantities and qualities for each. On the whole, cheaper products use lower quality ingredients and use more of the cheapest ingredients.
+- (9) Thinking "I don't fancy that tonight" is hardly snobbish.
+- (9) Whenever I go to Aldi or Lidl half the stuff I want is sold out so you can never get what you came for and just have to make do with whatever's left. The million miles an hour checkouts are also annoying.
+- (9) They are actually better. My local sains stopped selling the 5 bean baked beans, so had to get heinz in a pinch and they just tasted of sugar
+- (8) Aldi's own brand full-fat cola is the nicest of the supermarket own-brands.
+- (8) that really depends on the brand. Some £40 are genuinely better quality than £5 but some are exactly the same. It's really a matter of shop around and go for quality and not brand
+- (7) Most supermarkets sell an own brand soft cheese that is better than Philadelphia. Philly has binders to keep the watery whey from separating out. I’d rather have a bit of separation than gust gum.
+- (6) I can’t explain it with the crisps but I’ve tried their own brand of Walkers and McCoys, just much less flavoured and softer/don’t crunch properly. I found the cereal really mushy and bland too.
+- (6) Not sure this is usually true. Proper cheap t shirts are usually thinner material, less durable and not quite as comfortable. But there's a middle ground to be had with plain cotton tees from the likes of Next, M&S, etc.
+- (6) Clarence Court eggs are significantly nicer than any other shop bought (i.e. not obtained straight from the farm) eggs.
+- (6) Never buy branded painkillers - they are the same as unbranded, and much more expensive. You're paying for the placebo effect at best.
+- (5) To be fair, they said the bread was better, not that it lasted a long time.
+- (5) It's good. It's like Dr. Pepper Zero should be, more like Pepsi Max rather than Diet Pepsi. If that makes sense.  Basically Dr. Pepper Zero tastes like the equivalent of Diet Pepsi but Professor Preppy is more like the equivalent of Pepsi Max. It's just better.
+- (5) An analogy would be saying O2 is a superior network provider compared to GiffGaff or Tesco Mobile.  GiffGaff etc piggyback off of 02s network, providing the exact same coverage but at the fraction of the cost.
+- (5) Personally I really enjoy my food. I cook from scratch for every meal, I've spent years becoming a proficient cook. I've done cookery courses and honed my skills. Preparing food is one of the great joys of my life, especially if I am cooking for others. I love to create menus and have dinner parties. Many people do,its part of the culture of many countries, sadly not so much here, but it is not snobbish.
+- (5) There are different grades of unbranded, so they could be better or worse than the branded product
+- (5) Lidl jaffa cakes are far nicer than McVities. The chocolate is thicker, and the jelly goes all the way to the edge. No semi-naked cakey bits.
+- (5) Franks Hot Sauce is too watery and tastes of nothing. The Encona hot sauces are much hotter and taste better
+- (5) Not to sound too middle class, but all the M&S value range is very decent for butter, beans etc.
+- (5) Aldi biscoff crunchy spread is a drug
+- (4) They own brand barbecue flavour pop chips are good as well.  The only trouble is they come in a big bag and I keep eating the lot in one go
+- (4) I'm a cola snob and I prefer the aldi one, particularly at less than 1/2 price of coke.
+- (4) Love Aldis dx cola, as good as pepsi max imo
+- (4) God damn I didn't know this and it makes so much fucking sense why I have 4/5g in city centres yet my phone's incapable of loading anything
+- (4) But food has many connotations apart from being fuel.   It had a culture around it, it brings people together and evokes memories.  I get your point from biological point but I’d probably be a bit miserable if it was like that for me.   For what it is worth, I fancy some Turkish or Lebanese food this weekend. I don’t fancy a Sunday lunch or anything.
+- (4) there's a huge difference in bread and cheese quality. You're being purposefully obtuse if you're denying that.   Veg quality from aldi is far inferior that veg quality from your local farmers market. There's no denying that.  >I eat to survive  good for you, many people enjoy food because it's something we do every single day and people would rather enjoy doing that.  >"I don't fancy that tonight"  that's hardly snobbish. Seriously, you sound insufferable.  If you can't afford it, you can't aff
+- (4) Reddit truly is a bizarre place, if you aren't min maxing your life for 100% financial/time efficiency then you are downvoted. But simultaneously if you do well in life and manage to save from these efficiency gains, you are downvoted.  Just can't win with some people lol. Crabs in a bucket mentality. Gotta drag everyone else down.
+- (4) God, I've got the opposite experience usually- I like that people are moving a bit quicker in ALDI and not faffing about. Nothing worse than going to Morrisons and being perpetually stuck behind a geriatric couple taking up the whole aisle and moving at glacial pace.
+- (4) I don't how how Cadbury's fingers haven't been discontinued due to poor sales. Utter trash now, but I guess people still buy them.   Don't know how anyone who remembers what they were like before Kraft can stomach it.
+- (4) As a student I used to pack Rich Tea biscuits for extra cash. They just change the wrapper for different customers. The biscuit was just the same
+- (4) Marks and Spencer’s ketchup and brown sauce top tier and cheap
+- (4) M&S tomato sauce is way better than Heinz. Side by side comparison, heinz is very sweet and plastic tasting.  Their burger sauce is very good too.
+- (3) The weatabix, rice crispies, cornflakes, Cheerios are no different imo. The muslie and granola are banging.
+- (3) Might have to give those a try.
+- (3) I disagree, but there is a point where you get diminishing returns
+- (3) Most £40 t shirts cost at least £10 just to manufacture. A product margin of 80% is exceptional in retail.
+- (3) I will have to try this Professor Preppy you speak of.
+- (3) It's a very unpleasant shopping experience. Starting from the shop layout and lighting, down to being rushed at the checkout. It's just not very nice. Clearly, some people don't mind, but many do and avoid it.
+- (3) Ours is nice and bright, about as much room in the aisles as you get at Tesco, and I’ve never been rushed at the checkout.   Possibly another benefit of being in a small town.
+
+## [AskUK] Are most supermarket own-brand products really made in the same factory as the name-brand version ?  (score 59) https://www.reddit.com/comments/r9e5bo
+POST: ....or are there a second tier of suppliers who deal in 'replicas' ?    Some of the  biscuits etc are exactly the same,but not quite.
+- (103) Yes, many supermarket own brands come from the same factory/machinery as the name brands.  However, the supermarkets use their own ingredients, recipes, and quality control, so the products are still different. Basically they just lease a bit of an existing factory rather than build their own.
+- (45) Pretty much most of the own brands come from a name brand factory.  Worked in a Tesco for 12 years, you'd be suprised how often we got stock that was meant for Asda or Morrisons.
+- (37) Yes lots of them come from the same factories, but don't make the mistake of thinking that means they are the same product. It's super common for any production line (be that in an actual factory or elsewhere) to make different products.  There are tonnes of examples of this from different car models being made at a single factory to Big Macs being made on the same restaurant production line as a cheeseburger.
+- (24) The sad truth is that many people don't ever bother thinking more than one thought at a time. *Biscuit made in same factory so therefore the only possible outcome is they are the same biscuit* being only one example.  This is the reason why so many people fall for easily disproven crap they read on Facebook. They never bother processing anything but the initial thought whatever poorly written post they are reading puts in their head.
+- (17) This. I see comments all the time “they are all the same made in the same factory” well they aren’t the same make up or taste. A Marks & Spencer’s own brand will taste vastly different to a own brand Asda item.
+- (17) Not exactly same factory, but same ingredients etc usually have the same outcome.  For example 20p tesco 200mg ibuprofen does the exact same as £5 neurofen ultra strength neck pain 200mg ibuprofen tablets  Meanwhile tesco's cola is trash compared to coke/pespi
+- (14) Delivered for Iceland and amount of free stuff we go, because had wrong label.
+- (11) In many cases they are made in the same factory. Many food products are manufactured to a specified "recipe". For example bread (when it is bought in -- I'm not talking about in-store finished bread) has a specified mix of grain type and baking process. So if you are, let's say, Sainsbury's, there isn't a factory somewhere where all the employees are Sainsbury's staff. It's just a contract. After they have made the 5,000 loaves for Sainsbury's, they'll alter the recipe and make 7,500 for Tesco. 
+- (9) Yes this...I used to pick and pack cucumbers (yes I've heard every joke in the book, and them some lol) the dead straight long ones went to M&S, then the slightly bent ones Waitrose...all the way down to the downright boomerangs which were sold to staff...
+- (9) Ibuprofen etc always seems like the most stark example for this - when they have to list the active ingredients and they’re the same it’s hard to understand what the massive price difference is for beyond branding.
+- (9) Medicine is a special case. There will be a PL number on the box. Same PL number, *same exact pills*. Different PL numbers, different recipe as it were even with the same active ingredient. Usually the brand name pills are different, but the chemists' and supermarkets' own brand are all the same stuff - but you'll pay way more in Boots than you do in Wilko.  The brand names are real buggers for marketing the exact same pill as "migraine pain" or "period pain" at an increased price compared to th
+- (8) I have that same issue.  I used to work in a fruit distributor. People makes serveral assumptions:  * Fruits are the same, strawberry from A is same as strawberry from B. Wothoit knowing there are different variety or so in place.  * Fruits comes from the same farm therefore the same fruits. Yes and no. If you have a full container of fruit, from the same grower, unfortunately it still does not mean they are all the same. Unlike white goods, quality of fruits varies even in the same farm, and fr
+- (8) I would imagine they are aiming for best tasting *for the budgeted ingredients*.
+- (8) They're the same companies but they'll use cheaper ingredients. Tesco's doesn't have a factory making its own biscuits, cereal, ketchup and curry ready meals.
+- (7) Fruit and veg gets chosen from best to worse depending who paid the most for the “nicer looking” stuff
+- (7) Keep your eye on the product recalls
+- (7) Not necessarily with the name brand one.  But many supermarkets own brand are all from the same place.
+- (6) I remember opening a case of Waitrose corn flakes to find one box out of twelve that was Sainsbury's own brand. It wasn't even the same colour.
+- (6) They absolutely do taste every product you are dead wrong there. On what planet would a food retailer release a product that had not been tasted?
+- (6) They'll use cheaper ingredients, that's why they're sold for a lower price.
+- (5) I had similar, but it was a single Morrison's romaine lettuce in a case of Waitrose romaine lettuces.
+- (5) I'm not being pedantic, I'm disagreeing with you.
+- (5) Yes  I worked I. Factory and we're told at set time to change labels
+- (5) This is the most correct answer in my experience with food. M&S, Aldi, etc can all come from the same factory. Different recipes, the Aldi one often seemed to have more of the good stuff in.  With beans I don't think you are going to get anything but Heinz from a Heinz factory.  Morrisons do/did have some of their own factories.   There seems to be some confusion over named brands and products with supermarket names on them.   Brands aren't going to give up the higher profit and quality on their
+- (5) 9 times out of 10. The product comes off the same production line in the same factory. In most cases, the recipes are almost identical, recipes are the customers' IP, and other supermarkets can easily copy the recipe. It either put less of a specific/ expensive ingredient in, then there is no copyright. As an example, you would purchase a garlic based sauce from say Lloyd Grossman that uses garlic from Madagasca. That's a unique selling point,  the identical cheap sauce will use garlic from Chin
+- (4) I could understand if it was the whole case, but when it's just one I'm inclined to think someone was fucking about.
+- (4) The comments already made are correct. The own brand stuff might be to a slightly inferior spec. The specifying company will calculate that saving a bit on the cost (and therefore price) will be more imprtoant to some customers than the taste of the finest ingredients. That's a trade-off every retailer has to make, of course.  So far as you and all consumers are concerned, the thing to do is to try both the premium product and the cheaper no-name one. If you can't tell the difference, then you k
+- (4) Women are not more gullible, its a standard shitty advertising trick used for a variety of "specialised" OTC medication. The company got in shit for charging more for period pain relief, migraine pain relief, etc when it was no different to their standard pain relief.
+- (4) My friend's mum worked in a factory that made multivitamins and literally the exact same pills came off the line and went into 3 different brand bottles that sold for vastly different prices.  I think that was about 20 years ago, so it may not be exactly the same now, but certainly *some* products are the exact same thing in a different wrapper.
+- (4) Some of them are, some of them aren't.  Also some things that are made in the same factory aren't the same product, for example sauces, I worked at a sauce factory and the 'high end' brands weren't the same at all as the 'own brands' that we were putting out.
+- (3) It's probably just slipped through or been chucked in there by someone in the factory that sorts them when there has been an order swap over.
+- (3) From previous answers on this, they can be exactly the same rebadged, or the more premium company will get first pick of the ingredients and take the best ones.  Search the sub.
+- (3) Depends on the item and what the cost of ingredients / selling price / contract says
+- (3) Same pill is the same pill if its the same ingredients. In fact many are made in the exact same factory, just different packaging (they have literally the same code on the packaging showing they were made on the same place)  Your comment just proves the placebo effect
+- (3) It’s not a flat out yes or no but more of a it depends.  There is a lot of stuff which you’ll find in the likes of aldi or lidl which is branded stuff in different packaging.  Things such as vegetables, is generally all the same. The processor will get a huge bunch of whatever say carrots and it will be divided up between their customers (the supermarkets). Sometimes, some that don’t look exactly as they should might get filtered more into the discount supermarkets lot but it’s not that cut and 
+- (3) Think of the cost of supermarkets having factories to make their own stuff. Easier to buy from a 3rd party manufacturer.  Whilst they are made in the same place many shops will stipulate their own recipes
+- (3) Yes but as said supermarkets and other purchasers can set their own ingredients and quality control. Just because its 1/3 of the price doesn't mean it's the same thing.   Same applies to electronics from China.
+- (3) Worked at Yeo Valley yoghurt when I was 18. Apart the normal base yogurt and the organic stuff it's all exactly the same yogurt. Only difference is Tesco Finest had more fruit added to the blend than Tesco Value that's is literally the only difference.
+- (3) My sister works for a company that makes the vast majority of a specific product for the UK., from posh designer brands to supermarket brands (being deliberately vague on the product as super identifiable). However, there is a big difference in the specific materials used to make it, from the base material to the flavour/scent/etc. So even if they come off the same line, it’s no guarantee it’s exactly the same.
+- (3) Foxes produce biscuits produce for M&S, Waitrose and Sainsburys.  Nearly all food production companies produce for one or all of the supermarkets in some shape or form. The value range tend to be  watered down versions of the normal brand, curry for instance, whereas the deluxe version will be more concentrated.
+- (3) Sometimes not always. I work for a big branded manufacturer and we don’t produce any private label
+- (2) Yes, or at least they were when I worked in one of the detergent factories. They did Fairy plus Sainsburys own brand and one or two others .
+- (2) do you think they 'intentionally' make a very slightly inferior recipe ?  or they make it more or less equally and trust in the power of their brand ?
+- (2) So they’re just trusting the power of their brand to charge higher prices I guess
+- (2) I remember a few years back when a big biscuit factory flooded and my local Tesco's had no bourbon biscuits at all from any brand... except Fox's. So they're the only ones that had their own factory? Maybe?
+- (2) I know someone who worked in a sweet factory, they made jelly babies.   They had the same products going into M&S, Lidl and Tesco I think it was. The only difference was the packaging and the best before date - the more expensive shops had a shorter date to assure quality , that was it.
+- (2) I used to work for a company that made yorkshire puddings and I can tell you with great authority that nearly all the big supermarkets get theirs from the same place. All we did was swap the packaging. Three different qualities. Budget, normal and "nice". While the qualities *are* different (that's down to the cheapness of the ingredients) the budget range from one brand is the same as the next etc etc.  If anyone tells you they prefer X brand to Y brand, it's in their head. Chances are, it's fr
+- (2) Yes, but its not like they have a pipe that splits the same product into two 'tanks' - one with branding and one without. Which seems to be a common urban legend about certain things like Saint-Etienne beer from Aldi and Stella Artois or Kirkland vodka from CostCo and Grey Goose.   They'll just be using the same machinery and lines, perhaps in a different area of the factory, with different staff and a different manufacturing process. So the products might be similar but definitely not the same.
+- (2) The asda cola i tried once was horrible was somehow even worse than sparkling water
+- (2) I've found a packet of Hula Hoops in an own brand multipack before, so yes
+- (2) Its like having a recording studio  Really bad artists can record, so can really good artists  They are pretty much only using the equipment  Food factorys are like that, alot are very specialised to certain products so if cadburys gets a contract to product a chocolate bar for asda then they will do it but will do it according to the price the supermarket is willing to pay, ie cheaper ingredients, or lower standards of quality, but its worse ingredients using the same equipment as the better in
+- (2) I worked for a company that imported Chinese made products and sold them into Lidl and Aldi as well as John Lewis. All the same crap but they were 10 x the price in JL and branded to make them appear more luxurious.
+- (2) My BIL worked for p&g on the lines.   Items like tomato purée would get more and more water added as it went from best to value.   Even in steel making. New roller steel goes to the best cars, Toyota are very picky.  Ford… mid roll  End of the life time … Kia, Skoda. That’s why their paint has more of an orange peel effect.
+- (2) Tyrells make the veg crisps for Aldi. Also i worked at Haywoods vinegar factory and and we did vinegar and condiments for all of the major supermarkets,  they just used to change the label.
+- (2) I used ro do agency work at golden wonder, and they made the Asda own brand crisps
+- (2) I can't speak for all products on supermarket shelves but I work for one of the largest food manufacturers in the UK.  The answer for us is absolutely NOT.  My suspicion is that this is also true for our competitors.  Why damage a brand for a low margin supermarket own brand that you'll lose market share to.  What we do do is make our competitors products for supermarket own brand.  They do the same to us.
+- (2) Its not just supermarket products either.    Restaurants share a lot of the same factories too.    Ask and Zizzi both used to get their dough from the same factory as Pizza Express. Monday Wednesday the dough was set up for Pizza Express then on Thursdays and Fridays they'd change the ingredients a little bit and make the dough for the other two restaurants.    You'd be surprised at how often this actually happens with pretty much all suppliers.
+- (2) I can confirm from a friend who used to work in a name branded warehouse for certain type of potato crisps -    YES! - own store equivalents of the name branded same products are indeed made in the same factories.
+- (1)  **A reminder to posters and commenters of some of [our subreddit rules](https://www.reddit.com/r/AskUK/about/rules/)**  - Don't be a dickhead to each other, or about others - Assume questions are asked in good faith - Avoid political threads and related discussion - No medical advice or mental health (specific to a person) content          Please keep /r/AskUK a great subreddit by reporting posts and comments which break our rules.  *I am a bot, and this action was performed automatically. Plea
+- (1) Glad it's not just our store, then.
+
+## [AskUK] Which supermarket own brand do you think is better than the branded version?  (score 62) https://www.reddit.com/comments/r38ifw
+POST: I much prefer Aldi's own brand chocolate digestives to McVitties (or any other in fact).
+- (84) I like the Lidl fake Bailey’s. It’s a fraction of the price and tastes identical. I get their more expensive version of it - it’s a two tier thing.
+- (47) They say that a lot of the branded stuff is made in the same factory as the cheapest supermarket stuff. I remember somebody telling me about the supermarket lemonade was made in the same place once.
+- (39) Virtually all of Lidl and Aldi's own brand stuff is better than the major brands for me. The only branded stuff that beats lidl and aldi for me is cereal and peanut butter.   I can't remember the last time I did a major shop at tesco, sainsburys or asda.
+- (35) I remember a news story once of someone that bought Aldi's hoops (crisps) and the individual packets inside were actually hoola hoops!
+- (21) Spoiler alert. It happens in all supermarkets. Own brand is most of the time (not always) the same stuff as the branded one. There is less cost in packaging, advertising and marketing.
+- (21) Most own brand stuff is nicer especially nowadays where branded stuff has changed recipes so often to make it cheaper. They're just more well known so people think they're better.
+- (16) Yes, Ballycastle or something. Got three bottles in a nice box a few christmases ago, all different flavours and all much less sickly than Baileys.
+- (12) Lidl's Greek-style yogurt is so much better than the other supermarkets, and better than most of the branded ones too.  Lidl's dishwasher tablets are miles more effective than Finish tablets.
+- (11) It’s not really most of the time. A quick check on the ingredients list and nutrition will show you that. Plus in the case where is actually is the same it’s more often than not the product that doesn’t quite make the standards for the branded version gets sold as a supermarkets own.
+- (11) Aldi Moser Roth chocolate is better than anything else.
+- (10) When inwas 15 we went on a youth club trip to Denmark and as part of it we went to a (not sure the exact term but...) pig slaughtering and meat processing factory. It was as grim a trip as it sounds. The same food was being labeled for different companies and supermarkets. That was 25yrs ago but an example.  Approx 10yrs ago working in a supermarket, we'd often get a case of biscuits that would be labelled as our supermarkets but contain biscuits wrapped and labelled for another.  I'm guessing t
+- (9) For the price, not much, but probably better than Greggs. Nothing will make me eat the 85p Morisson's lasagne, though. That's probably made with hedgehog roadkill and bluebottles.
+- (8) Morrisons steak slices are better than the Gregg's versions they are obviously copying.
+- (8) Ballycastle is Aldi, I don’t know how they do it for £4.50ish a bottle.
+- (8) Some tesco cereals are top notch! And their pasta is great!
+- (8) What’s your problem with Finland?    😉
+- (7) That'll be because they're actually putting some steak in.
+- (7) Bailey's just tastes like evaporated milk with whiskey in it. I suspect that's not too far off from what it is.
+- (7) i know a guy who worked at these factories i think and he told me that for many products (in this case it was shreddies) they just put the fresh bake in the branded boxes and the ones that've been out longer in the offbrand boxes
+- (7) No, but you can have a biscuit factory that makes digestives and the process is tweaked slightly for different products or for different brands
+- (7) I prefer most of the supermarket own brand squash over robinsons
+- (6) I eat a lot of the corale beans and sausage tins from Aldi, 40p or so a tin great value
+- (6) Anything from Waitrose. Not as expensive as people think either!
+- (6) Aldi's duck breasts are better than Gressingham. Lidl's chocolate sea shells are better than Guylian.
+- (5) The food standards in the UK have to legally be quite high though, compared to say the US. So even the 80 odd p beef lasagnas, will infact be beef and not horse or hamster etc
+- (5) To be fair, it's hard to make worse beans then Heinz.
+- (5) Yes, I prefer the Tesco Fruit n Fibre to the Kellogg's version, it is much less sweet and literally half the price.
+- (5) I prefer mid value weetabix to branded stuff. Although the really cheap stuff is horrible
+- (5) Same with Lidl’s. Half the price, twice the weight. Still absolutely bangin.
+- (4) Aldi hoops are great because they are exactly Hula hoops. Lidl hoops are junk because they certainly aren't!
+- (4) I’m going to put 10 hoola hoops on my fingers and eat them one by one! Yum yum
+- (4) It is indeed, but they claim they will add more flavourings to the branded version. Whether that's true, well hmmmm.
+- (4) Skips! Skips are now shit and the own brand ones have more flavour
+- (4) [He’s no finished he’s only 28!](https://youtu.be/tvreCDC61Zw)
+- (4) My husband rates Coop cream of tomato soup more than Heinz.
+- (4) Omg I’ve just had my last 2 shopping deliveries from Waitrose and it’s like a new world. It’s not even more expensive and definitely better quality.
+- (4) I like m&s chocolate digestives more than mcvities
+- (4) Your shopping is much posher than mine
+- (3) Same with the one from Sainsbury's. Think their 1 litre is about the same price as the 70 cl Baileys and is as good.
+- (3) I make my own... Condensed milk, evaporated milk, glycerin and whisky, much nicer and much cheaper.
+- (3) The Lidl Honey Nut Clusters cereal is my absolute favourite, outshines any of the branded stuff for me.
+- (3) I mean if you want a good healthy breakfast have porridge. No sugar added outside what’s already in oats and milk
+- (3) That is the singular most erotic thing anyone has ever said to me.
+- (3) Yeah, I went to the Mcvities factory years ago. They do biscuits for Tesco
+- (3) I’m with you on this.  Also their tinned tomatoes are just as good as brand ones, especially the herby ones.
+- (3) Aldis chocolate pillows over Krave
+- (3) Never get the Tesco version - they're utterly vile.
+- (3) Co-op Bacon Rashers are better than Frazzles. They have a stronger flavour.
+- (3) Waitrose baked beans are great.
+- (3) Marks and Spencer’s tomato ketchup.   Truss meh
+- (3) Morrisons cereals, they’re often less than a quid and the nutritional values are around 3x higher than a £3/4 box of big brand stuff.   To be fair, I usually buy their own brand stuff in general as it’s cheaper, better/nicer.  I look after lots of children so it’s always a bonus.
+- (3) Poundland's White Chocolate and nougat Toblerone is to DIE for. And if you don't like White chocolate then there's Dark and Milk. Tastes so good and for £1.
+- (2) Stackems are better than Pringles
+- (2) Totally agree, I have had the Amarula gold before as well, like a clear liqueur but can't find it now!!
+- (2) I always used to microwave them, worst thing to do. Best in a pan and without too much liquid, just doesnt compare !
+- (2) Nah, the cheaper the PB the better.
+- (2) Yes, I concur, Sainsbury's is my local supermarket and theirs is much better than kellogg's
+- (2) The Tesco Weetabix - oops, sorry Wheat Biscuits - are great. I was worried they'd fall apart as soon they encounter a splash of milk, but they don't.
+- (2) Just took 1 item. First coming to my head  Kellogs cornflakes v sainsbury own brand  Sugar   8  v  4.9 Salt     1.3 v  0.9 Vitamin b6   1.2  v  1.4  This is only an example
+- (2) More sugar wonder why they taste better 🧐
+
+## [explainlikeimfive] ELI5 Why are supermarket own brand foods so much cheaper?  (score 131) https://www.reddit.com/comments/1s6g52a
+POST: I'm in the UK and a supermarket's own brand of, say, garden peas, is way cheaper than something like Birdseye garden peas. Why is that? Is the brand offering better quality?
+- (473) No the brand is paying for marketing and a better spot on the shelf. You notice that the more expensive brands are stocked at eye level with the cheaper stuff nearer the top or bottom.   Store brand is not paying for marketing. 
+- (193) not just marketing, private label gets to skip all the R&D and can cut corners on cost too. They save on not having to do market research, recipe dev, testing, packaging. They take a proven concept and just need to get their product close *enough*
+- (136) It’s often, but not always, made by the same company.  I do energy efficiency consulting for industrials and once asked a tissue mill that was making the flagship brand as well as others if they put less fiber in the off brands or something else.  They said it’s the exact same product.    I’ve also been to mills that only make product for places like Costco / Sam’s and it’s all they do.  That could easily be slightly different.  
+- (65) >Market segmentation is the process of dividing a broad target market into smaller, distinct groups of consumers with shared characteristics, demographics, behaviors, geography, or psychographics; to tailor marketing efforts and products more effectively. This strategy improves customer engagement, optimizes marketing budgets, and boosts competitive advantage by allowing companies to focus on the most profitable segments.    Generic brands are often made side by side the name brand stuff.   The 
+- (32) It is more expensive to produce and operate different tooling than just to make a slightly more expensive same thing.
+- (30) It’s also often a matter of what does and doesn’t pass their (non-safety) quality control.  Joe’s Pretzels may require that 99% of the pretzels that go into their own bags have to be fully intact when they leave the factory. Meanwhile, a grocery chain might be willing to buy bags of those same pretzels for 75% as much, at a minimum of 90% intact. The result is that the manufacturer doesn’t have to worry about as much waste, and the grocery gets a product that’s slightly worse largely aesthetical
+- (24) That's just not true.  All medication sold on the US market needs to pass the test USP905 Uniformity of Dosage Units. Doesn't matter whether it's branded or generic. Every batch is tested.
+- (21) Also, no RnD goes into it. The store brand isn’t “inventing” new flavors or the like. They leave that to Lays, Coke, Sara Lee, Red Barron, etc and then just “make” the generic or store brand. 
+- (20) Very true. I wanted to skip over the white label discussion as that gets a little weird. Theres lots of legend and lore about how Costco partners with folks Grey Goose or Duracell to simply slap the Kirkland brand onto existing product, but more often than not the manufacturers will typically tweak the formulation out of necessity to drive price/COGS down or just so that the product isnt quite the same or as good.
+- (20) This just isn't true. At least in food, less than half are made by national brands in most categories. Store brands are also innovating new flavors. I'm a food scientist that works for a store brand, I'd say anywhere from 30 to 50% of my projects require new development and aren't just "me too" items
+- (19) You can be more relaxed on QC for the own brand stuff though, in terms of cosmetic defects
+- (15) Since you mentioned vegetables, I will add my experience working in a canning factory one summer (worst job of my life).  I canned green beans.  The green beans would arrive and get graded by size, plumpness, flavor, appearance, etc.  The highest grade went into the name brand products, the second grade would go into store brand and generics, and the bottom grade would go into large cans for cafeterias, hospitals, or other such areas.  The grading didn't change the nutrition, just the appearance
+- (14) Because super market brands are a win win situation for all involved. No super market have their own production lines for all the different kinds of products they may have under their brand. These are made for them by companies that actually specialise on those products, and in many cases may be identical to a "branded" product that's also sold in the same super market. While supermarkets often try to conceal the origin of those products, you can often find out what company makes them for the su
+- (11) The supermarket sets the price. They want their stuff to sell as they get a bigger cut off the profit even if it's costs less 
+- (10) McVities, if I'm not mistaken, in the UK produce most of the countries biscuits (both using their brand and for supermarkets). It's why several years ago when there was a massive flood in Carlisle, where their biggest factory is, we had ["The Great Biscuit Famine"](https://www.independent.co.uk/news/uk/home-news/the-great-british-biscuit-crisis-is-finally-over-a6973411.html?test_group=lighteradlayout). I'd just started uni and was convinced that gingernuts just weren't a thing in that part of th
+- (8) Technically it’s not more expensive per se, it’s the most profitable products placed at eye level. 
+- (8) That's true especially for active ingredients. They can vary more in terms of things like buffers and coatings, from what I've heard (a friend couldn't take a generic because it upset his stomach, and the pharmacist said the coating was different).
+- (8) Honestly like 10 years ago, that was true. But there has been a huge push for store brands as they position themselves not only as a cheap alternative for the same thing but also as an equivalent force for newness and innovation.    I can't specifically to Albertsons but I know Kroger does put in a decent amount of work. Also national retailers also have a lot of RnD, if you've looked at Walmart, their great value brand is all "me too" items but they are really trying to differentiate with Bette
+- (7) How much R&D really goes into a bag of peas?
+- (7) There’s a good podcast episode on this.   [99% Invisible episode 411.](https://99percentinvisible.org/episode/podcast-episode/)  
+- (7) Yep, an example of this is bread. Sara Lee factory makes everything, the loafs that don't look perfect get the local generic brand. Same thing at the end of the day.
+- (7) I was told differently. I knew someone who was very high up with Albertsons and Krogers who said that, yes, there was *some* RnD, but less than 0.5% of the store brand budget. At that point, it’s more of an accounting error than a budget.   Thanks for the info. 
+- (6) My guess would be they just have lower standards for QA or use cheaper inputs/ingredients.  For plywood, instead of requiring all splits to be less than 6 inches long, on the no brand ones they are less than a foot and. That might not save A TON, but maybe it's 5% cheaper?
+- (6) Yeah the formulations can be different, so long as the efficacy of the medicine is maintained.
+- (6) No marketing for one.  Second, no middle man, or one less at least. Gor example Kellogg Corn Flakes, you pay the store, the store pays Kellogg and they get a cut. With the store brand they are the manufacturer and the seller. So there’s one less corporation taking a piece.
+- (6) >Second, no middle man, or one less at least. Gor example Kellogg Corn Flakes, you pay the store, the store pays Kellogg and they get a cut. With the store brand they are the manufacturer and the seller. So there’s one less corporation taking a piece.  No. With the exception of things like in-store food, grocers arent manufacturing their own products. They engage in some form of contract manufacturing either white label or private label products.  Krogers isnt out there making cheesy poofs. Its 
+- (5) Used it at multiple events and used to stock home bar (tho can't anymore cause Costco can't sell liquor where I live).   Its a solid vodka, no weird hangovers.  Might not use it if you are making a spirit heavy drink (think like a martini), especially if you are picky.   We used for mules and lemon drops and it was perfect.
+- (5) No that's the point, they don't reverse engineer anything. They pay one of the brand name companies to make the store brand version of the product. They might make slight alterations so it isn't literally the exact same product but it is produced by a big name company and given a different label.
+- (5) Because supermarket chains are effectively acting like cartels, using their control over the distribution of groceries to badger companies into manufacturing white-label versions of their primary products that they then sell alongside those products to compete with them.  Because French's or whatever gets say 30% of their revenue from that one grocery chain they kinda don't really have a choice but to do it, especially for the really big chains like Walmart.
+- (4) True.  In this tissue mill example they can easily make the sheet thicker or thinner, as they do that all the time (e.g. toilet paper or paper towels).  But I’ve also seen plywood labeled differently at the same mill.  I don’t know how they could possibly change the product when 3/4” ply is 3/4” ply.   But food products, like cereal, I don’t have much experience in to know how feasible it is to change the recipe.  But I suspect you’re right in most cases.  
+- (4) I was a pharmaceutical scientist for one of the world's largest biotechs, and we made drugs under our brand, under contract for competitors, and generic versions.  Only the packaging was different.  All the ingredients and specifications and criteria were the same.
+- (4)  >I’ve also been to mills that only make product for places like Costco / Sam’s and it’s all they do.  That could easily be slightly different.    From what i have heard, Costco aims to make their house brand products slightly *better* than the name brand.
+- (4) Costco is a different business model to supermarket own brand. I don’t know if what you say is true, but they do generally have higher-quality own brand
+- (4) I work for a company that made some of the machinery in that factory, and we have photos of the whole production line underwater. 
+- (4) Very frequently it is the same product in the same factory (i've installed few production lines and, one they day would run expensive brand product then the next day store brand, recipe was mostly the same, real difference was flavourings they have used not the things that really mattered)
+- (4) Neither of which are elements of R&D...
+- (4) You'd be surprised how much perfectly good food would get thrown out if generic brands didn't buy it.     Doesn't look perfect?  Throw it out unless it can be packaged as cheap, generic brands.  
+- (3) Honestly, it’s great Vodka.   Better than Tito’s in my opinion.    Vodka is mainly produced industrially, and then diluted to hit the specific ABV (80 proof).  And the Costco vodka is a steal.  It’s $13 a handle in my neck of the woods.
+- (3) i commented to a similar response  >Very true. I wanted to skip over the white label discussion as that gets a little weird. Theres lots of legend and lore about how Costco partners with folks Grey Goose or Duracell to simply slap the Kirkland brand onto existing product, but more often than not the manufacturers will typically tweak the formulation out of necessity to drive price/COGS down or just so that the product isnt quite the same or as good.
+- (3) I don’t know but at this point I’m rarely buying name brand packaged goods. At ShopRite here in New England, I just bought store brand hamburger buns for $1.49 ($4.59 for name brand) and kettle cooked potato chips for $2.49 ($5.79 for Lays.) Same quality stuff too.
+- (3) Supermarkets have a lot of leverage when going to suppliers. Say they carry 5 name brands of beans and they now want to carry their own store brand. They go to each of those 5 name brand bean suppliers and say "make us store branded beans for the biggest discount you can and if yours is the cheapest we'll buy them". The store is going to have name brand beans from one of those companies, so the bean companies are incentived to offer a low price. If the bean company doesn't win the store brand co
+- (2) >You notice that the more expensive brands are stocked at eye level with the cheaper stuff nearer the top or bottom.  I guess this based on specific stores? For instance, Publix doesn't put their brand any lower or higher than other brands. I tend to see their brand of products mixed with the name brands whether at the bottom, middle, or top. Take, for example, the ice cream and frozen yogurt aisle. You'll see name brands on every level, then you'll get to Publix's brand ice cream and frozen yog
+- (2) You don't always need different tooling. In my company we make some white label products, and it's just a different recipe going through all the exact same equipment. We don't have to change any tooling to simply add less or different polymer.
+- (2) Kirkland vodka is produced by LaVecke. A huge private label spirits manufacturer. I doubt it is top shelf quality. 
+- (2) Can vouch. Worked at a flour mill, they packed their own brand product.  Then loaded a different set of bags on for generic brand, no change at all to the product in the packing bin
+- (2) When my name-brand company was making the private label version of our products for a drug store, we actually made more per unit of the private label version. We had to give the store a discount for them to carry our branded version. 
+- (2) My mother worked in a food factory that produced both brand-name and own-brand versions of the same product. Apparently the complete change-over consisted of stopping the line, putting a different roll of labels on the appropriate machine, and starting up again. 
+- (2) Both brands might come out of the same operation - many producers use "contract packagers" essentially leased production from independent food plants, and that same operation can make a good product with a store label.  There's no advertising and darn little corporate overhead for the store brand.
+- (2) Enough to get you that country goodness and green peaness 
+- (2) When I knew the person and was in a field to know people like that, it was about 12 years ago, so that tracks. Thanks for the info. 
+- (2) Or sold as boxes of assorted broken biscuits
+- (1) Yeah the brands aren't paying the stores for some particular spot on the shelves, stores just place stuff where they think the they will make the most money. Maybe Publix has comparable margins on their own store brands compared to the brand names, so they put them where people are likely to see them. 
+- (1) They are getting validation and credibility through association. 
+- (1) Walmart will shake companies down to get them to make their products.  they took glad bags off their shelves till they agreed to their terms to make their bags.  the only difference is the color   of the seal on the bag.
+- (1) I'm sure they did that with Gillette as well, as it's the only place I know where I can get replacement blades for my Fusion razor that aren't super expensive. 
+- (1) I wonder how those Costco mills started out? Who funded the factory?
+- (1) Used to work for an engine oil distribution company. Basically we'd fill 330 gallon plastic totes with oil and send them off to mechanic shops and dealerships. The companies oil was always at least 20 percent cheaper, and was stored in the exact same tanks as Penzoil. Also,  there was often stuff stored in the same tanks like the "cheap" name brand oil was stored in the same as their "platinum" stuff.
+- (1) They are slightly different. My sister worked for P&G in diapers(among many other projects). When the factory re-tools for Costco or Walmart, the materials list is different than for Kroger or Target. Walmart sets the price they will pay manufacturers. Manufacturers, if they want to play ball, work backwards with the formula, switching out ingredients, working on their profit/price. 
+- (1) Type of packaging for easiest logistics, maintaining product quality and customer convenience. 
+- (1) Why is all of that not relevant for an own brand bag of frozen peas then?  Where things like logistics and cold-carry transport are outsourced the costs will flow through regardless of the logo, and where the own brand is doing the supply chain orchestration in house the costs still apply.  Why don't supermarkets care about "easier logistics" ?
