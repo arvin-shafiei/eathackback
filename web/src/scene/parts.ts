@@ -92,7 +92,17 @@ export const GEO = {
   ].map((g) => g.toNonIndexed())),
   foot: () => new THREE.SphereGeometry(0.1, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2).scale(1, 0.75, 1.45),
   blob: () => new THREE.CircleGeometry(0.46, 24).rotateX(-Math.PI / 2),
+  /** goggles: a dark strap round the head and a silver ring at each eye */
+  goggles: () => mergeGeometries([
+    colored(new THREE.TorusGeometry(BODY.r + 0.012, 0.034, 8, 30).rotateX(Math.PI / 2).translate(0, BODY.eyeY, 0), '#141014'),
+    colored(new THREE.TorusGeometry(0.128, 0.036, 8, 22).translate(BODY.eyeX + 0.01, BODY.eyeY, BODY.eyeZ + 0.03), '#c9ced6'),
+    colored(new THREE.TorusGeometry(0.128, 0.036, 8, 22).translate(-BODY.eyeX - 0.01, BODY.eyeY, BODY.eyeZ + 0.03), '#c9ced6'),
+  ]),
 };
+/** where the dungarees stop (bean spans y 0..1.2) */
+const OVERALLS_WAIST = 0.52;
+/** every human shopper's skin; the shopper-type colour moves to the dungarees */
+export const SHOPPER_SKIN = '#FFD83D';
 
 // ---------- carriers ----------
 function colored(g: THREE.BufferGeometry, color: string) {

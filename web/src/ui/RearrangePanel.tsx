@@ -171,7 +171,7 @@ function Summary({ plan }: { plan: RearrangePlan }) {
         move <b>{plural(plan.moves, 'product')}</b> to sell about <span className="ra-lift">{pct(t.lift_pct)}</span> more.
       </p>
       <p className="ra-sum-l muted" title={`${t.before} → ${t.after} ${t.value_unit}`}>
-        a prediction from {plural(plan.learned_from.shoppers, plan.learned_from.engines.includes('mock') ? 'mock shopper' : 'shopper')}, across {plural(units, 'unit')}{plan.units_total ? ` of ${plan.units_total}` : ''}. test it before you apply it.
+        a prediction from {plural(plan.learned_from.shoppers, plan.learned_from.engines.includes('mock') ? 'practice shopper' : 'shopper')}, across {plural(units, 'shelf unit')}{plan.units_total ? ` of ${plan.units_total}` : ''}. test it before you apply it.
       </p>
       {plan.learned_from.other_store && (
         <p className="notice">this run was made on a different store layout, so only the products the two share have data. run this store once for a full plan.</p>
@@ -193,7 +193,7 @@ function Actions({ check, useLLM, busy, seeds, onCheck }: ActionsProps) {
       </div>
       {check.busy && (
         <p className="notice ok" role="status">
-          {useLLM ? 'real model calls. this can take a few minutes; keep this open.' : 'mock shoppers are walking.'}
+          {useLLM ? 'real model calls. this can take a few minutes; keep this open.' : 'practice shoppers are walking.'}
         </p>
       )}
       {check.err && <ErrorNote err={check.err} what="the test failed:" />}
@@ -214,7 +214,7 @@ function CheckResult({ check }: { check: RearrangeCheck }) {
         {tone === 'flat' ? 'no clear change: ' : tone === 'up' ? 'it works: ' : 'it got worse: '}
         shoppers bought <b>{d.picks_before.toLocaleString()} → {d.picks_after.toLocaleString()}</b>
         {d.picks_before > 0 && <> ({lift((d.picks_after - d.picks_before) / d.picks_before)})</>}.
-        {check.mock && <Sticker tone="yellow" title="use llm is off: picks come from the mock heuristic in sim/run.py, not from a model">mock shoppers</Sticker>}
+        {check.mock && <Sticker tone="yellow" title="use llm is off: picks come from the mock heuristic in sim/run.py, not from a model">practice shoppers</Sticker>}
       </p>
       <details className="ra-how">
       <summary>the numbers</summary>
