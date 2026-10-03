@@ -84,6 +84,18 @@ Only agents whose path enters the edited unit are re-run, with the same seed and
 - `GET /api/personas`: every persona from `data/personas/lens/*.json` and `data/personas/custom/*.json`, each with `custom: true|false`.
 - `POST /api/personas` (persona builder): body in CONTRACT shape; required `name, archetype, mission, budget_gbp, ocean{O,C,E,A,N}, lens[{attribute, off_field, direction, weight, why}], rejection_triggers[], trust_signals[]`. Validation: mission must be a known mission; OCEAN clamped to 0–1 (clamps recorded); every `off_field` must be a real catalogue field (400 with the valid list otherwise); lens weights normalised to sum to 1 (the typed value is kept as `weight_input`). Missing `sim_params` are borrowed from the nearest existing persona by 0.5·cosine(OCEAN centred at 0.5) + 0.5·cosine(lens weights by off_field), recorded in `sim_params_borrowed_from` and per key in `sim_params_sources`. Every user-set value has source `"user-defined (dashboard)"`. Saved to `data/personas/custom/<slug>.json` (id `p_custom_<slug>`), which `run.py` loads automatically.
 
+## Brand upload (`uploads.py`, `tesco.py`, `placement.py`)
+
+- **`uploads.py`**: `run_simulation`, `optimise` and `run_agents` take `extra_products`, a list of products a brand typed in. Each is cleaned (text capped, numbers coerced, category must be a unit in the store) and stamped `brand_supplied: true`, `source: "brand-supplied, unverified"`. The run echoes them as `catalog_inline`. `run_agents` also takes `exclude`, the codes the upload replaced, so both arms shop the same range; if no sourced mission covers the upload's category, one generic request per archetype is added and labelled an assumption.
+- **`tesco.py`**: `POST /api/import {"ref": ...}` takes a Tesco product link, a barcode or an Open Food Facts link and returns a product draft with `field_sources`. Tesco refuses curl and headless Chrome, so a link is opened once in a normal Chrome window placed off screen and read over the devtools port (needs Chrome on the server machine), then cached in `data/products/tesco_cache/`. A barcode reads Open Food Facts only.
+- **`placement.py`**: `scan` computes the notice rate of every row x position x facings (1 to 3, an assumption) in the product's unit over the same agent population a run would spawn, with no model call. `experiment` swaps the product into chosen spots and measures pick rate before and after on the same seed, re-running only shoppers who enter the unit, with a Newcombe interval.
+- **Store selection**: every POST takes `"store": "xl"` to simulate `store_xl.config.json` + `planogram_xl.json` + `catalog_xl.json`; without it the standard store is used. Shelf rows map to notice rows through the store's `notice_row_map`.
+
+```bash
+python3 sim/tesco.py https://www.tesco.com/groceries/en-GB/products/254656543   # or a barcode
+python3 sim/placement.py --product <code> [--experiment] [--mock]
+```
+
 ## LLM plumbing (`llm.py`, only for `--engine llm` or explicit OpenRouter models)
 
 - Calls OpenRouter `/chat/completions` with `response_format: json_object`, `usage.include` (to get the real cost per call) and `reasoning.enabled=false`. It retries with backoff on 429/5xx or bad JSON.

@@ -320,6 +320,16 @@ def run_agents(models=None, runs=5, seed=1, mock=False, max_tokens=250, missions
     archs = load_archetypes()
     want = [a for a in (archetypes or archs.keys()) if a in archs]
     ms = [m for m in MISSIONS if m["archetype_id"] in want and (not missions or m["id"] in missions)]
+    # a brand upload in a category no sourced mission shops would never reach a feed; give each archetype one
+    # plain request for that category so both arms see the product (only added when an upload needs it)
+    covered = {c for m in ms for c in m["categories"]}
+    for cat in sorted({p["category"] for p in uploaded} - covered):
+        label = cat.replace("_", " ")
+        ms += [{"id": f"upload_{cat}_{aid}", "categories": [cat], "archetype_id": aid,
+                "text": f"I need {label} for this week. Pick one for me.",
+                "source": "assumption: generic one-line request, added because no sourced mission in "
+                          "sim/agent_shopper.py covers this category and a brand-supplied product sits in it"}
+               for aid in want]
     # stratified sampling: every chosen archetype x each of its missions x runs (population_weight is reported, not used
     # to subsample, so small archetypes still get enough runs for a CI)
     jobs = [(mo, m, r) for mo in models for m in ms for r in range(runs)]

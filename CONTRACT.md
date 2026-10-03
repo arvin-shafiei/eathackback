@@ -56,6 +56,10 @@ Lens archetypes (one persona each, minimum): `eco_low_chemical, upf_avoider_pare
              "pick_rate":0,"ci95":[0,0],"by_archetype":{},"by_ocean_segment":{},"top_reject_reasons":[],"mean_sentiment":0}}}}
 ```
 
+Brand uploads (additive, optional): a run simulated with brand-supplied products carries `catalog_inline: [product, ...]`
+(same shape as a catalog product, plus `brand_supplied: true`, `source`, `imported_from`, `field_sources`); an AI-arm
+run also carries `excluded: [codes]`.
+
 ## Agent shopper (AI agent arm): `sim/agent_shopper.py`
 Same catalogue rendered as a feed (JSON/HTML list), randomised order, run against N OpenRouter models. Logs the same event shape with `persona_id:"ai_agent"`.
 

@@ -59,7 +59,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).
 interface Props {
   cfg: StoreConfig; live: MutableRefObject<OpsLive>; products: Record<string, Product>;
   /** the ops day being replayed (its visits drive the queues) */
-  day: OpsDay | null;
+  day?: OpsDay | null;
 }
 interface Sticker { id: string; x: number; z: number; text: string; until: number }
 

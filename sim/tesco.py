@@ -9,21 +9,26 @@ Two sources, both recorded per field in `field_sources`:
   2. Open Food Facts, looked up by that barcode: ingredients, nutrition per 100g, labels, allergens,
      Nutri-Score, NOVA. Open licence (ODbL), same source as the rest of the catalogue.
 
-Limitation, measured 3 Oct 2026: Tesco's bot protection answers curl and headless Chrome with
-"Access Denied"; only a normal browser window gets the page. So a link resolves from
-data/products/tesco_cache/<id>.json when that product page was captured in a real browser (each file
-records when), and otherwise the live attempt fails with a message asking for the barcode instead. A
-barcode skips Tesco entirely and reads Open Food Facts, which always works.
+Measured 3 Oct 2026: Tesco's bot protection answers curl and headless Chrome with "Access Denied"; only a
+normal browser window gets the page. So a link is opened once in the local Chrome, in a real window placed
+off screen, and its schema.org block is read over the devtools port. The result is saved to
+data/products/tesco_cache/<id>.json (with the date) and reused. This needs Chrome on the machine running
+the sim server; without it, or if Tesco still refuses, the error asks for the barcode instead. A barcode
+skips Tesco entirely and reads Open Food Facts.
 """
 from __future__ import annotations
 
+import base64
 import json
 import os
 import re
 import shutil
+import socket
+import struct
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -34,8 +39,6 @@ URL_RE = re.compile(r"^https://www\.tesco\.com/(?:groceries|shop)/en-GB/products
 CHROME_PATHS = ("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
                 "/Applications/Chromium.app/Contents/MacOS/Chromium",
                 "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge")
-UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
-      "Chrome/129.0.0.0 Safari/537.36")
 OFF_FIELDS = ("product_name,brands,quantity,ingredients_text_en,ingredients_text,nutriments,labels_tags,"
               "allergens_tags,additives_tags,nutriscore_grade,nova_group,categories_tags,image_front_url")
 # assumption: keyword match on Open Food Facts category tags; the brand confirms the unit in the form
@@ -61,20 +64,114 @@ def find_chrome() -> str:
     raise RuntimeError("no Chrome/Chromium found on this machine; type the product in instead")
 
 
-BLOCKED = ("tesco blocks automated page loads, and this product page has not been captured yet. "
+BLOCKED = ("tesco would not serve that page to this machine's browser. "
            "paste the barcode from the back of the pack instead (it reads open food facts).")
 
 
-def fetch_html(url: str, timeout: int = 20) -> str:
-    with tempfile.TemporaryDirectory(prefix="tesco-chrome-") as prof:
+
+class _DevTools:
+    """Just enough of a WebSocket client (stdlib only) to ask one Chrome tab to evaluate an expression."""
+
+    def __init__(self, ws_url: str):
+        host_port, path = ws_url[len("ws://"):].split("/", 1)
+        host, port = host_port.split(":")
+        self.sock = socket.create_connection((host, int(port)), timeout=10)
+        key = base64.b64encode(os.urandom(16)).decode()
+        self.sock.sendall((f"GET /{path} HTTP/1.1\r\nHost: {host_port}\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n"
+                           f"Sec-WebSocket-Key: {key}\r\nSec-WebSocket-Version: 13\r\n\r\n").encode())
+        buf = b""
+        while b"\r\n\r\n" not in buf:
+            buf += self.sock.recv(4096)
+        if b" 101 " not in buf.split(b"\r\n", 1)[0]:
+            raise RuntimeError("chrome refused the devtools connection")
+        self.n = 0
+
+    def _read(self, n: int) -> bytes:
+        out = b""
+        while len(out) < n:
+            chunk = self.sock.recv(n - len(out))
+            if not chunk:
+                raise RuntimeError("chrome closed the devtools connection")
+            out += chunk
+        return out
+
+    def _recv(self) -> str:
+        data = b""
+        while True:
+            b1, b2 = self._read(2)
+            size = b2 & 0x7F
+            if size == 126:
+                size = struct.unpack(">H", self._read(2))[0]
+            elif size == 127:
+                size = struct.unpack(">Q", self._read(8))[0]
+            data += self._read(size)
+            if b1 & 0x80:  # FIN
+                return data.decode("utf-8", "replace")
+
+    def evaluate(self, expression: str):
+        self.n += 1
+        payload = json.dumps({"id": self.n, "method": "Runtime.evaluate",
+                              "params": {"expression": expression, "returnByValue": True}}).encode()
+        mask = os.urandom(4)
+        head = bytes([0x81]) + (bytes([0x80 | len(payload)]) if len(payload) < 126
+                                else bytes([0x80 | 126]) + struct.pack(">H", len(payload)))
+        self.sock.sendall(head + mask + bytes(b ^ mask[i % 4] for i, b in enumerate(payload)))
+        while True:
+            msg = json.loads(self._recv())
+            if msg.get("id") == self.n:
+                return ((msg.get("result") or {}).get("result") or {}).get("value")
+
+    def close(self):
         try:
-            out = subprocess.run(
-                [find_chrome(), "--headless=old", "--disable-gpu", "--no-first-run", f"--user-data-dir={prof}",
-                 f"--user-agent={UA}", "--dump-dom", url],
-                capture_output=True, text=True, timeout=timeout)
+            self.sock.close()
+        except OSError:
+            pass
+
+
+LD_JSON = "JSON.stringify([...document.querySelectorAll('script[type=\"application/ld+json\"]')].map(s => s.textContent))"
+
+
+def fetch_ld_json_in_window(url: str, timeout: int = 30) -> str:
+    """Open the page in a normal (not headless) Chrome window, off screen, and read its ld+json blocks over the
+    devtools port. Returns them wrapped as script tags so parse_product can read them."""
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        port = s.getsockname()[1]
+    prof = tempfile.mkdtemp(prefix="tesco-chrome-")
+    proc = subprocess.Popen(
+        [find_chrome(), f"--remote-debugging-port={port}", f"--user-data-dir={prof}", "--no-first-run",
+         "--no-default-browser-check", "--window-position=-2400,-2400", "--window-size=1200,900", url],
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    dev = None
+    try:
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            time.sleep(0.6)
+            try:
+                with urllib.request.urlopen(f"http://127.0.0.1:{port}/json", timeout=2) as r:
+                    tabs = json.load(r)
+            except Exception:
+                continue
+            tab = next((t for t in tabs if t.get("type") == "page" and "tesco.com" in t.get("url", "")), None)
+            if not tab:
+                continue
+            if dev is None:
+                dev = _DevTools(tab["webSocketDebuggerUrl"])
+            blocks = json.loads(dev.evaluate(LD_JSON) or "[]")
+            if any('"Product"' in b for b in blocks):
+                return "".join(f'<script type="application/ld+json">{b}</script>' for b in blocks)
+            if "Access Denied" in (dev.evaluate("document.title") or ""):
+                break
+        raise RuntimeError(BLOCKED)
+    finally:
+        if dev:
+            dev.close()
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
         except subprocess.TimeoutExpired:
-            raise RuntimeError(BLOCKED) from None
-    return out.stdout
+            proc.kill()
+        shutil.rmtree(prof, ignore_errors=True)
 
 
 def tesco_node(url: str, product_id: str) -> tuple[dict, str]:
@@ -84,7 +181,14 @@ def tesco_node(url: str, product_id: str) -> tuple[dict, str]:
         with open(cached) as f:
             snap = json.load(f)
         return snap["product"], f"captured in a browser {snap.get('captured', '')}"
-    return parse_product(fetch_html(url)), "loaded live"
+    node = parse_product(fetch_ld_json_in_window(url))
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    with open(cached, "w") as f:
+        json.dump({"captured": time.strftime("%Y-%m-%d"), "url": url,
+                   "note": "schema.org Product node from the public product page, read in a normal browser window",
+                   "product": {k: node.get(k) for k in ("@type", "name", "brand", "image", "gtin13", "sku", "description", "offers")}},
+                  f, indent=1, ensure_ascii=False)
+    return node, "loaded live in a browser window"
 
 
 def parse_product(html: str) -> dict:

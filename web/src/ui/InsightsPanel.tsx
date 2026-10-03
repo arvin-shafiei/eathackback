@@ -114,7 +114,7 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
         run <code>{run.run_id}</code>{run.mock ? ' (mock heuristic, not an llm)' : ''}
       </p>
       {!!run.cost?.errors && (
-        <p className="notice">{plural(run.cost.errors, 'llm call')} failed in this run. each one is logged as a walk-past with the reason "(llm error)", so the walk-past counts below are inflated by that much.</p>
+        <p className="notice">{plural(run.cost.errors, 'llm call')} failed in this run. the sim logs each as a walk-past with the reason "(llm error)"; they are not shopper decisions, so every count on this page leaves them out.</p>
       )}
       {s.ai_loaded && s.ai_sessions === 0 && (
         <p className="notice">no ai agent was shown this product: none of the agent missions in <code>sim/agent_shopper.py</code> shops this category, so it never appeared in a feed. that is a gap in the test, not a result.</p>
