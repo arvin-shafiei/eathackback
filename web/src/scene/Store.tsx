@@ -1,17 +1,21 @@
-// The supermarket shell, built only from store.config.json (via layout.storePlan): walls, sliding doors at every
-// entrance + exit, gondolas of any length (bays), fridges with glass, shelf dividers + price rails, end caps,
-// overhead aisle signs, staffed tills with conveyor belts, self-checkout banks, EAS security gates, a café, a
-// stockroom and a meal-deal stand. Everything solid is also a fixed rapier collider, so nobody walks through it.
-import { useMemo, useRef } from 'react';
+// The supermarket, laid out like a UK superstore by layout.storePlan: shopfront with sliding doors + EAS gates,
+// produce + flowers at the entrance, bakery and chilled multidecks round the walls (the "racetrack"), numbered
+// gondola aisles with end caps, glass-door freezer aisles, beer/wine/spirits by the tills, a checkout bank of staffed
+// tills + self-checkout pods, a café, goods-in and a stockroom. Department floors, signs and dividers are in
+// Departments.tsx. Static fixtures are merged per material (storeKit) and shelf-edge price rails share one atlas
+// texture, so a 150+ unit superstore is a few dozen draw calls. Everything solid is a fixed rapier collider.
+import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { Edges } from '@react-three/drei';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
-import type { Planogram, Product, StoreConfig, Unit } from '../types';
-import { G, gondolaX, rowGap, rowY, slotPlacements, storePlan, unitFrame, type Lane } from '../layout';
-import { BRAND_A, CAT_EMOJI, CHILLED, INK, catColor, catLabel } from '../theme';
+import type { Planogram, Product, StoreConfig } from '../types';
+import { G, rowGap, rowY, slotPlacements, storePlan, unitFrame, type Lane, type StorePlan, type UnitPlace } from '../layout';
+import { BRAND_A, CAT_EMOJI, INK, catColor, catLabel } from '../theme';
 import { canvasTex, floorTexture, productMaterials, stickerSign } from './textures';
 import { bus } from './fx';
+import { Kit, LabelAtlas, QuadBatch, disposeGroup, shade } from './storeKit';
+import { Departments, promoSign } from './Departments';
 
 export interface StoreProps {
   cfg: StoreConfig; planogram: Planogram; products: Record<string, Product>;
@@ -21,106 +25,185 @@ export interface StoreProps {
 }
 
 const noRay = () => null;
-const walkwayUnits = (cfg: StoreConfig, w: number) => cfg.units.filter((u) => (u.side === 'L' ? u.aisle - 1 : u.aisle) === w);
 const WHITE = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.5 });
 const INKMAT = new THREE.MeshStandardMaterial({ color: INK, roughness: 0.5 });
+const T = (x: number, y: number, z: number) => new THREE.Matrix4().makeTranslation(x, y, z);
+const unitM = (p: UnitPlace) => Kit.m(p.x, 0, p.z, p.rotY);
+const rowsOf = (cfg: StoreConfig, p?: UnitPlace) => Array.from({ length: p ? p.rows : cfg.rows_per_unit }, (_, i) => i + 1);
 
-function railTexture(slot: string, set: Planogram[string] | undefined, products: Record<string, Product>, changed: boolean, heat: Record<string, string> | null) {
-  return canvasTex(1024, 64, (ctx) => {
-    ctx.fillStyle = changed ? '#FFE14D' : '#ffffff'; ctx.fillRect(0, 0, 1024, 64);
-    ctx.fillStyle = INK; ctx.fillRect(0, 0, 1024, 5); ctx.fillRect(0, 59, 1024, 5);
-    for (const p of slotPlacements(slot, set)) {
-      const cx = ((p.lx + G.unitLen / 2) / G.unitLen) * 1024;
-      const pw = (p.width * p.facings / G.unitLen) * 1024;
-      if (heat?.[p.code]) { ctx.fillStyle = heat[p.code]; ctx.fillRect(cx - pw / 2 + 4, 5, pw - 8, 12); }
-      const price = products[p.code]?.price_gbp;
-      const txt = price ? `£${Number(price).toFixed(2)}` : '£?';
-      ctx.font = '800 34px "Baloo 2", system-ui'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const tw = Math.min(pw - 6, ctx.measureText(txt).width + 22);
-      const role = products[p.code]?.role;
-      ctx.fillStyle = role === 'challenger' ? '#FFE14D' : role === 'own_label' ? '#ffe4ec' : '#fff8ef';
-      ctx.strokeStyle = INK; ctx.lineWidth = 4;
-      ctx.beginPath(); ctx.roundRect(cx - tw / 2, 17, tw, 40, 10); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = INK; ctx.fillText(txt, cx, 39, tw - 8);
+// ---------------------------------------------------------------- fixtures (merged)
+function buildFixtures(cfg: StoreConfig, P: StorePlan) {
+  const k = new Kit();
+  const H = G.height;
+  let L = G.unitLen, rows = rowsOf(cfg);
+  const shelves = (at: (x: number, y: number, z: number) => THREE.Matrix4, board: string, lip = '#ffffff') => {
+    for (const r of rows) {
+      const y = rowY(cfg, r);
+      k.box(L, 0.05, 0.5, at(0, y - 0.03, -0.22), board);
+      k.box(L, 0.075, 0.02, at(0, y - 0.03, 0.04), lip);
     }
-  });
-}
-
-function ShelvingUnit({ cfg, u, planogram, products, editMode, editSel, onSlot, changed, heat }: StoreProps & { u: Unit }) {
-  const f = unitFrame(cfg, u);
-  const chilled = CHILLED.has(u.category);
-  const sign = useMemo(() => stickerSign([{ text: catLabel(u.category), size: 92 }, { text: `${u.id} · aisle ${u.aisle}${u.side.toLowerCase()}`, size: 40, color: '#6b5a66', font: '700 40px Inter, system-ui' }], { w: 1024, h: 240, chip: CAT_EMOJI[u.category] ?? '·', chipColor: catColor(u.category) }), [u]);
-  const gap = rowGap(cfg);
-  const rows = Array.from({ length: cfg.rows_per_unit }, (_, i) => i + 1);
-  const rails = useMemo(() => rows.map((r) => { const slot = `${u.id}-r${r}`; return railTexture(slot, planogram[slot], products, changed.has(slot), heat); }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [u.id, planogram, products, changed, heat, cfg.rows_per_unit]);
-  const backCol = useMemo(() => new THREE.Color(catColor(u.category)).lerp(new THREE.Color('#ffffff'), chilled ? 0.75 : 0.82), [u.category, chilled]);
-  return (
-    <group position={[f.x, 0, f.z]} rotation={[0, f.rotY, 0]}>
-      <mesh position={[0, G.height / 2 + 0.05, -0.46]} raycast={noRay}>
-        <boxGeometry args={[G.unitLen, G.height, 0.03]} />
-        <meshStandardMaterial color={backCol} emissive={chilled ? '#bfe9ff' : '#000'} emissiveIntensity={chilled ? 0.35 : 0} />
-      </mesh>
-      <mesh position={[0, G.height + 0.42, -0.2]} raycast={noRay}>
-        <planeGeometry args={[2.9, 0.68]} />
-        <meshBasicMaterial map={sign} transparent />
-      </mesh>
-      {rows.map((r, i) => {
-        const slot = `${u.id}-r${r}`;
+  };
+  for (const u of cfg.units) {
+    const p = P.units[u.id]; if (!p) continue;
+    const M = unitM(p);
+    const at = (x: number, y: number, z: number) => M.clone().multiply(T(x, y, z));
+    const cat = catColor(u.category);
+    L = p.len; rows = rowsOf(cfg, p);
+    // units with fewer shelves than the store (e.g. produce tables): solid base under the lowest one
+    if (p.rows < cfg.rows_per_unit) { const yb = rowY(cfg, p.rows) - 0.06; k.box(L - 0.04, yb, 0.56, at(0, yb / 2, -0.2), p.fixture === 'produce' ? '#a86b3c' : '#e9dfd8', { ink: true }); }
+    if (p.fixture === 'gondola') {
+      k.box(L, H, 0.03, at(0, H / 2 + 0.05, -0.45), shade(cat, 0.82));
+      shelves(at, '#f3ece6');
+      for (const s of [-1, 1]) k.box(0.05, H, 0.5, at(s * (L / 2 - 0.025), H / 2 + 0.05, -0.22), '#d9ccd4');
+    } else if (p.fixture === 'freezer') {
+      k.box(L, H, 0.03, at(0, H / 2 + 0.05, -0.45), '#e3f6ff');
+      shelves(at, '#e9f6ff');
+      const nd = 4, dw = L / nd;
+      for (let i = 0; i < nd; i++) {
+        const dx = -L / 2 + (i + 0.5) * dw;
+        k.box(dw - 0.05, H - 0.08, 0.03, at(dx, H / 2 + 0.06, 0.13), '#d6f3ff', { bucket: 'glass', ink: true });
+        k.box(0.04, 0.7, 0.05, at(dx + dw / 2 - 0.16, 1.15, 0.17), '#d6d9e2', { bucket: 'metal' });
+      }
+      k.box(L, 0.08, 0.06, at(0, H + 0.06, 0.1), '#8fdcff', { bucket: 'glow' });
+      k.box(L, 0.12, 0.6, at(0, 0.06, -0.15), '#e9eef5');
+    } else if (p.fixture === 'multideck') {
+      k.box(L, H, 0.03, at(0, H / 2 + 0.05, -0.45), '#dcf1ff');
+      shelves(at, '#e9f6ff', '#ffffff');
+      for (const s of [-1, 1]) k.box(0.07, H + 0.32, 0.7, at(s * (L / 2 - 0.035), (H + 0.32) / 2, -0.12), '#ffffff', { ink: true });
+      k.box(L, 0.32, 0.66, at(0, H + 0.16, -0.14), '#ffffff', { ink: true });
+      k.box(L - 0.1, 0.05, 0.03, at(0, H - 0.03, 0.17), '#8fe3ff', { bucket: 'glow' });
+      k.box(L, 0.14, 0.64, at(0, 0.07, -0.13), '#3d3346');
+      k.box(L - 0.2, 0.04, 0.12, at(0, 0.16, 0.12), '#c9cfdc', { bucket: 'metal' }); // air-curtain grille
+    } else if (p.fixture === 'produce') {
+      k.box(L, H, 0.03, at(0, H / 2 + 0.05, -0.45), '#d7ecc6');
+      for (const r of rows) {
         const y = rowY(cfg, r);
-        const isSel = editSel === slot, isChanged = changed.has(slot);
-        return (
-          <group key={slot} position={[0, y, 0]}>
-            <mesh receiveShadow position={[0, -0.03, -0.22]} raycast={noRay}>
-              <boxGeometry args={[G.unitLen, 0.05, 0.5]} />
-              <meshStandardMaterial color={chilled ? '#e9f6ff' : '#f3ece6'} />
-            </mesh>
-            <mesh position={[0, -0.03, 0.04]} raycast={noRay}>
-              <boxGeometry args={[G.unitLen, 0.075, 0.02]} />
-              <meshStandardMaterial attach="material-0" color="#fff" />
-              <meshStandardMaterial attach="material-1" color="#fff" />
-              <meshStandardMaterial attach="material-2" color="#fff" />
-              <meshStandardMaterial attach="material-3" color="#fff" />
-              <meshStandardMaterial attach="material-4" map={rails[i]} />
-              <meshStandardMaterial attach="material-5" color="#fff" />
-            </mesh>
-            {editMode && (
-              <mesh position={[0, gap / 2 - 0.05, 0.08]} onClick={(e: ThreeEvent<MouseEvent>) => { e.stopPropagation(); onSlot(slot); }}>
-                <planeGeometry args={[G.unitLen - 0.1, gap - 0.12]} />
-                <meshBasicMaterial color={isSel ? BRAND_A : isChanged ? '#FFE14D' : '#ffffff'} transparent opacity={isSel ? 0.38 : isChanged ? 0.24 : 0.06} depthWrite={false} />
-              </mesh>
-            )}
-          </group>
-        );
-      })}
-      {chilled && (
-        <group>
-          {[-1, 0, 1].map((k) => (
-            <group key={k} position={[k * (G.unitLen / 3), G.height / 2 + 0.02, 0.13]}>
-              <mesh raycast={noRay}>
-                <boxGeometry args={[G.unitLen / 3 - 0.06, G.height - 0.06, 0.03]} />
-                <meshStandardMaterial color="#cfefff" transparent opacity={0.16} roughness={0.05} metalness={0.1} depthWrite={false} />
-                <Edges color={INK} />
-              </mesh>
-              <mesh position={[G.unitLen / 6 - 0.16, 0, 0.04]} raycast={noRay}>
-                <boxGeometry args={[0.04, 0.7, 0.04]} />
-                <meshStandardMaterial color="#d6d9e2" metalness={0.6} roughness={0.25} />
-              </mesh>
-            </group>
-          ))}
-          <mesh position={[0, G.height + 0.03, 0.1]} raycast={noRay}>
-            <boxGeometry args={[G.unitLen, 0.09, 0.12]} />
-            <meshBasicMaterial color="#8fe3ff" />
-          </mesh>
-          <pointLight position={[0, 1.2, 0.8]} color="#9fe6ff" intensity={0.6} distance={3.2} decay={2} />
-        </group>
-      )}
-    </group>
-  );
+        k.box(L - 0.06, 0.1, 0.52, at(0, y - 0.05, -0.2), '#c98f55', { ink: true });
+        k.box(L - 0.06, 0.16, 0.03, at(0, y + 0.02, 0.06), '#b5793f');
+      }
+      for (const s of [-1, 1]) k.box(0.08, H + 0.4, 0.6, at(s * (L / 2 - 0.04), (H + 0.4) / 2, -0.17), '#a86b3c', { ink: true });
+      // striped awning
+      const n = 10;
+      for (let i = 0; i < n; i++) {
+        const m = at(-L / 2 + (i + 0.5) * (L / n), H + 0.3, 0.0).multiply(new THREE.Matrix4().makeRotationX(0.38));
+        k.box(L / n, 0.05, 0.75, m, i % 2 ? '#ffffff' : '#2fa84f');
+      }
+    } else { // bakery: warm wooden bread racks
+      k.box(L, H, 0.03, at(0, H / 2 + 0.05, -0.45), '#c8915a');
+      shelves(at, '#d9a86c', '#f6dcb4');
+      for (const s of [-1, 1]) k.box(0.08, H + 0.35, 0.6, at(s * (L / 2 - 0.04), (H + 0.35) / 2, -0.17), '#9c6436', { ink: true });
+      k.box(L, 0.3, 0.6, at(0, H + 0.2, -0.17), '#9c6436', { ink: true });
+    }
+  }
+  // gondola runs: plinth, centre spine, end panels, blank backs on outer faces, brand trim
+  for (const g of P.gondolas) {
+    const len = g.z1 - g.z0, mid = (g.z0 + g.z1) / 2;
+    k.boxAt(g.x, 0.06, mid, G.depth, 0.12, len + 0.1, '#e9dfd8', { ink: true });
+    k.boxAt(g.x, H / 2, mid, 0.08, H, len, g.frozen ? '#eaf7ff' : '#fff6ef');
+    for (const s of [-1, 1]) k.boxAt(g.x, (H + 0.1) / 2, mid + s * (len / 2 + 0.03), G.depth, H + 0.1, 0.06, '#ffffff', { ink: true });
+    if (!g.faces.L) k.boxAt(g.x - G.depth / 2 + 0.03, H / 2 + 0.05, mid, 0.04, H, len, '#f6efe9', { ink: true });
+    if (!g.faces.R) k.boxAt(g.x + G.depth / 2 - 0.03, H / 2 + 0.05, mid, 0.04, H, len, '#f6efe9', { ink: true });
+    k.boxAt(g.x, H + 0.08, mid, G.depth + 0.04, 0.08, len + 0.12, g.frozen ? '#2ba8ff' : BRAND_A);
+  }
+  return k.build({ shadows: true });
 }
 
-/** shelf dividers: one thin ink fin between product sets on every row, all units in one draw call */
+// ---------------------------------------------------------------- end caps (merged) + promo headers
+const PROMOS = ['half price', '£1 each', '3 for 2', 'new in', 'save 25%', 'member price'];
+function buildEndcaps(P: StorePlan) {
+  const k = new Kit();
+  const signs: Record<string, QuadBatch> = {};
+  let i = 0;
+  for (const g of P.gondolas) for (const s of [-1, 1]) {
+    const z = s < 0 ? g.z0 - G.endcapDepth / 2 - 0.06 : g.z1 + G.endcapDepth / 2 + 0.06;
+    const rot = s < 0 ? Math.PI : 0;
+    const M = Kit.m(g.x, 0, z, rot);
+    const at = (x: number, y: number, zz: number) => M.clone().multiply(T(x, y, zz));
+    const dept = P.depts.find((d) => d.kind === 'aisles' && g.x >= d.rect.x0 - 1 && g.x <= d.rect.x1 + 1 && z >= d.rect.z0 - 1.5 && z <= d.rect.z1 + 1.5);
+    const col = dept?.color ?? '#ffd6e0';
+    k.box(G.depth + 0.1, 0.5, G.endcapDepth, at(0, 0.25, 0), '#ffffff', { ink: true });
+    k.box(G.depth + 0.1, 1.9, 0.06, at(0, 0.95 + 0.5, -G.endcapDepth / 2 + 0.03), shade(col, -0.1));
+    for (const [ty, tz, n] of [[0.5, 0.12, 3], [0.9, -0.08, 3], [1.3, -0.22, 2]] as const) {
+      for (let j = 0; j < n; j++) {
+        const cx = (j - (n - 1) / 2) * 0.32;
+        k.box(0.28, 0.28, 0.26, at(cx, ty + 0.14, tz), (i + j) % 3 === 0 ? '#ffffff' : shade(col, -0.35 + ((j + i) % 2) * 0.2), { ink: true });
+      }
+    }
+    const text = PROMOS[i % PROMOS.length];
+    (signs[text] ??= new QuadBatch()).add(at(0, 2.1, -G.endcapDepth / 2 + 0.08), 1.25, 1.25 * (200 / 768), [0, 0, 1, 1]);
+    i++;
+  }
+  const grp = k.build({ shadows: true });
+  Object.entries(signs).forEach(([text, q], j) => {
+    const m = new THREE.Mesh(q.geometry(), new THREE.MeshBasicMaterial({ map: promoSign(text, j % 2 === 0), transparent: true, alphaTest: 0.05 }));
+    m.raycast = noRay; grp.add(m);
+  });
+  return grp;
+}
+
+// ---------------------------------------------------------------- shelf-edge price rails + wall headers (atlases)
+function drawRail(ctx: CanvasRenderingContext2D, W: number, H: number, slot: string, set: Planogram[string] | undefined, products: Record<string, Product>, changed: boolean, heat: Record<string, string> | null, len: number) {
+  ctx.fillStyle = changed ? '#FFE14D' : '#ffffff'; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = INK; ctx.fillRect(0, 0, W, H * 0.08); ctx.fillRect(0, H * 0.92, W, H * 0.08);
+  const sx = W / len;
+  for (const p of slotPlacements(slot, set)) {
+    const cx = (p.lx + len / 2) * sx, pw = p.width * p.facings * sx;
+    if (heat?.[p.code]) { ctx.fillStyle = heat[p.code]; ctx.fillRect(cx - pw / 2 + 2, H * 0.08, pw - 4, H * 0.2); }
+    const price = products[p.code]?.price_gbp;
+    const txt = price ? `£${Number(price).toFixed(2)}` : '£?';
+    ctx.font = `800 ${Math.round(H * 0.52)}px "Baloo 2", system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const tw = Math.min(pw - 3, ctx.measureText(txt).width + H * 0.34);
+    const role = products[p.code]?.role;
+    ctx.fillStyle = role === 'challenger' ? '#FFE14D' : role === 'own_label' ? '#ffe4ec' : '#fff8ef';
+    ctx.strokeStyle = INK; ctx.lineWidth = Math.max(2, H * 0.06);
+    ctx.beginPath(); ctx.roundRect(cx - tw / 2, H * 0.27, tw, H * 0.62, H * 0.16); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = INK; ctx.fillText(txt, cx, H * 0.6, tw - 4);
+  }
+}
+function buildRails(cfg: StoreConfig, P: StorePlan, planogram: Planogram, products: Record<string, Product>, changed: Set<string>, heat: Record<string, string> | null) {
+  const slots: { slot: string; p: UnitPlace; row: number }[] = [];
+  for (const u of cfg.units) { const p = P.units[u.id]; if (!p) continue; for (const r of rowsOf(cfg, p)) { const slot = `${u.id}-r${r}`; if (planogram[slot]) slots.push({ slot, p, row: r }); } }
+  const cw = slots.length > 1024 ? 256 : 512;
+  const atlas = new LabelAtlas(cw, cw / 16, slots.length, 4096);
+  const q = new QuadBatch();
+  for (const s of slots) {
+    const uv = atlas.add((ctx, w, h) => drawRail(ctx, w, h, s.slot, planogram[s.slot], products, changed.has(s.slot), heat, s.p.len));
+    q.add(unitM(s.p).multiply(T(0, rowY(cfg, s.row) - 0.03, 0.052)), s.p.len, 0.075, uv);
+  }
+  const mesh = new THREE.Mesh(q.geometry(), new THREE.MeshStandardMaterial({ map: atlas.texture(), roughness: 0.5 }));
+  mesh.raycast = noRay;
+  return mesh;
+}
+function buildHeaders(cfg: StoreConfig, P: StorePlan) {
+  const wallUnits = cfg.units.filter((u) => P.units[u.id] && P.units[u.id].fixture !== 'gondola' && P.units[u.id].fixture !== 'freezer');
+  if (!wallUnits.length) return null;
+  const atlas = new LabelAtlas(512, 96, wallUnits.length, 4096);
+  const q = new QuadBatch();
+  const cache = new Map<string, [number, number, number, number]>();
+  for (const u of wallUnits) {
+    const p = P.units[u.id];
+    const key = `${u.category}|${p.fixture}`;
+    let uv = cache.get(key);
+    if (!uv) {
+      uv = atlas.add((ctx, W, H) => {
+        ctx.fillStyle = p.fixture === 'bakery' ? '#9c6436' : p.fixture === 'produce' ? '#2fa84f' : '#ffffff'; ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = catColor(u.category); ctx.fillRect(0, 0, 18, H);
+        ctx.font = `800 ${H * 0.56}px "Baloo 2", system-ui`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = p.fixture === 'multideck' ? INK : '#ffffff';
+        ctx.fillText(`${CAT_EMOJI[u.category] ?? ''} ${catLabel(u.category)}`.trim(), W / 2 + 9, H * 0.55, W - 40);
+      });
+      cache.set(key, uv);
+    }
+    const y = p.fixture === 'produce' ? G.height + 0.05 : p.fixture === 'bakery' ? G.height + 0.2 : G.height + 0.16;
+    const z = p.fixture === 'produce' ? 0.06 : p.fixture === 'bakery' ? 0.135 : 0.195;
+    q.add(unitM(p).multiply(T(0, y, z)), Math.min(1.7, p.len - 0.3), Math.min(1.7, p.len - 0.3) * 0.176, uv);
+  }
+  const mesh = new THREE.Mesh(q.geometry(), new THREE.MeshBasicMaterial({ map: atlas.texture() }));
+  mesh.raycast = noRay;
+  return mesh;
+}
+
+/** shelf dividers: one thin fin between product sets on every row, all units in one draw call */
 function Dividers({ cfg, planogram }: { cfg: StoreConfig; planogram: Planogram }) {
   const mesh = useMemo(() => {
     const mats: THREE.Matrix4[] = [];
@@ -142,31 +225,30 @@ function Dividers({ cfg, planogram }: { cfg: StoreConfig; planogram: Planogram }
     mats.forEach((x, i) => m.setMatrixAt(i, x)); m.count = mats.length; m.raycast = () => null;
     return m;
   }, [cfg, planogram]);
+  useEffect(() => () => { mesh.geometry.dispose(); (mesh.material as THREE.Material).dispose(); }, [mesh]);
   return <primitive object={mesh} />;
 }
 
-function EndCap({ x, z, dir, category, idx }: { x: number; z: number; dir: number; category: string; idx: number }) {
-  const sign = useMemo(() => stickerSign([{ text: `${CAT_EMOJI[category] ?? ''} ${catLabel(category)}`, size: 74 }], { w: 1024, h: 200, brand: idx % 2 === 0 }), [category, idx]);
-  const col = catColor(category);
-  const tiers = [0, 1, 2];
+/** edit mode: one click target per shelf row */
+function SlotTargets({ cfg, P, editSel, changed, onSlot }: { cfg: StoreConfig; P: StorePlan; editSel: string | null; changed: Set<string>; onSlot: (s: string) => void }) {
+  const gap = rowGap(cfg);
   return (
-    <group position={[x, 0, z]} rotation={[0, dir > 0 ? 0 : Math.PI, 0]}>
-      <mesh position={[0, 0.45, G.endcapDepth / 2]} castShadow raycast={noRay} material={WHITE}>
-        <boxGeometry args={[G.depth + 0.1, 0.9, G.endcapDepth]} />
-        <Edges color={INK} />
-      </mesh>
-      {/* carton pyramid in the category colour: promo display only, no product claims */}
-      {tiers.map((t) => Array.from({ length: 3 - t }, (_, i) => (
-        <mesh key={`${t}-${i}`} position={[(i - (2 - t) / 2) * 0.34, 0.9 + 0.15 + t * 0.3, G.endcapDepth / 2]} castShadow raycast={noRay}>
-          <boxGeometry args={[0.3, 0.28, 0.3]} />
-          <meshStandardMaterial color={t % 2 ? '#ffffff' : col} roughness={0.35} />
-          <Edges color={INK} />
-        </mesh>
-      )))}
-      <mesh position={[0, 2.15, G.endcapDepth / 2]} raycast={noRay}>
-        <planeGeometry args={[1.5, 0.3]} />
-        <meshBasicMaterial map={sign} transparent />
-      </mesh>
+    <group>
+      {cfg.units.flatMap((u) => {
+        const p = P.units[u.id]; if (!p) return [];
+        return rowsOf(cfg, p).map((r) => {
+          const slot = `${u.id}-r${r}`;
+          const isSel = editSel === slot, isChanged = changed.has(slot);
+          const m = unitM(p).multiply(T(0, rowY(cfg, r) + gap / 2 - 0.05, 0.08));
+          const pos = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3(); m.decompose(pos, q, s);
+          return (
+            <mesh key={slot} position={pos} quaternion={q} onClick={(e: ThreeEvent<MouseEvent>) => { e.stopPropagation(); onSlot(slot); }}>
+              <planeGeometry args={[p.len - 0.1, gap - 0.12]} />
+              <meshBasicMaterial color={isSel ? BRAND_A : isChanged ? '#FFE14D' : '#ffffff'} transparent opacity={isSel ? 0.38 : isChanged ? 0.24 : 0.06} depthWrite={false} />
+            </mesh>
+          );
+        });
+      })}
     </group>
   );
 }
@@ -213,6 +295,7 @@ function Doors({ x, z, idx, label, sub }: { x: number; z: number; idx: number; l
     </group>
   );
 }
+
 
 function MealDeal({ planogram, products, onProduct, x, z }: { planogram: Planogram; products: Record<string, Product>; onProduct: (c: string) => void; x: number; z: number }) {
   // stocked from the planogram's own meal-deal-ish categories (real products, clickable)
@@ -261,28 +344,6 @@ function MealDeal({ planogram, products, onProduct, x, z }: { planogram: Planogr
   );
 }
 
-function AisleSign({ cfg, w, z }: { cfg: StoreConfig; w: number; z: number }) {
-  const units = walkwayUnits(cfg, w);
-  const cats = [...new Set(units.map((u) => u.category))];
-  const tex = useMemo(() => stickerSign([{ text: cats.map((c) => `${CAT_EMOJI[c] ?? ''} ${catLabel(c)}`).join('  ·  ') || 'aisle', size: cats.length > 3 ? 46 : 64 }], { w: 1400, h: 220, chip: String(w + 1), chipColor: '#FF4079' }), [cats.join()]);
-  const x = gondolaX(cfg, w + 0.5);
-  return (
-    <group position={[x, 3.75, z]}>
-      {[-1, 1].map((k) => (
-        <mesh key={k} position={[0, 0, k * 0.012]} rotation={[0, k < 0 ? Math.PI : 0, 0]} raycast={noRay}>
-          <planeGeometry args={[4.2, 0.66]} />
-          <meshBasicMaterial map={tex} transparent />
-        </mesh>
-      ))}
-      {[-1.6, 1.6].map((dx) => (
-        <mesh key={dx} position={[dx, 0.9, 0]} raycast={noRay}>
-          <cylinderGeometry args={[0.012, 0.012, 1.2]} />
-          <meshBasicMaterial color={INK} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
 
 const beltTex = () => canvasTex(64, 256, (ctx) => {
   ctx.fillStyle = '#2a2230'; ctx.fillRect(0, 0, 64, 256);
@@ -427,8 +488,10 @@ function Gate({ id, x, z }: { id: string; x: number; z: number }) {
   );
 }
 
+
 function Cafe({ cfg }: { cfg: StoreConfig }) {
   const c = storePlan(cfg).cafe;
+  const lobbyZ = storePlan(cfg).lobbyZ;
   const sign = useMemo(() => stickerSign([{ text: 'café', size: 120 }, { text: 'sit · sip · chill', size: 40, font: '700 40px Inter, system-ui' }], { w: 1024, h: 280, brand: true, chip: '☕', chipColor: '#ffffff' }), []);
   const wood = useMemo(() => canvasTex(256, 256, (ctx) => {
     for (let i = 0; i < 8; i++) { ctx.fillStyle = i % 2 ? '#e7c39a' : '#dcb488'; ctx.fillRect(0, i * 32, 256, 32); }
@@ -495,8 +558,8 @@ function Cafe({ cfg }: { cfg: StoreConfig }) {
         </group>
       ))}
       {/* planters as a low fence between café and shop floor */}
-      {Array.from({ length: Math.max(2, Math.floor(c.d / 1.6)) }, (_, i) => (
-        <group key={i} position={[c.x + c.w / 2 + 0.2, 0, c.z - c.d / 2 + 0.8 + i * 1.6]}>
+      {Array.from({ length: Math.max(2, Math.floor(c.d / 1.6)) }, (_, i) => c.z - c.d / 2 + 0.8 + i * 1.6).filter((pz) => Math.abs(pz - lobbyZ) > 1.5).map((pz, i) => (
+        <group key={i} position={[c.x + c.w / 2 + 0.2, 0, pz]}>
           <mesh position={[0, 0.3, 0]} raycast={noRay}><boxGeometry args={[0.4, 0.6, 1.0]} /><meshStandardMaterial color="#fff" /><Edges color={INK} /></mesh>
           <mesh position={[0, 0.78, 0]} raycast={noRay}><sphereGeometry args={[0.42, 14, 10]} /><meshStandardMaterial color="#3fbf5f" roughness={0.7} /></mesh>
         </group>
@@ -504,6 +567,7 @@ function Cafe({ cfg }: { cfg: StoreConfig }) {
     </group>
   );
 }
+
 
 function Stockroom({ cfg }: { cfg: StoreConfig }) {
   const s = storePlan(cfg).stockroom;
@@ -532,45 +596,51 @@ function Stockroom({ cfg }: { cfg: StoreConfig }) {
   );
 }
 
+
 export function Store(props: StoreProps) {
-  const { cfg } = props;
+  const { cfg, planogram, products, changed, heat, editMode, editSel, onSlot } = props;
   const P = storePlan(cfg);
   const B = P.bounds;
-  const aisles = Array.from({ length: cfg.aisles }, (_, i) => i + 1);
   const floor = useMemo(() => { const t = floorTexture(); t.repeat.set(B.w / 1.2, B.d / 1.2); return t; }, [B.w, B.d]);
   const band = useMemo(() => canvasTex(512, 32, (ctx) => { const g = ctx.createLinearGradient(0, 0, 512, 0); g.addColorStop(0, '#FF4079'); g.addColorStop(1, '#FE831B'); ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 32); }), []);
   const belt = useMemo(beltTex, []);
   useFrame((_, dt) => { belt.offset.y -= dt * 0.6; });
-  const { z0, z1 } = P;
-  const gLen = z1 - z0, gMid = (z0 + z1) / 2;
-  const wallH = 2.6;
+  const fixtures = useMemo(() => buildFixtures(cfg, P), [cfg, P]);
+  const endcaps = useMemo(() => buildEndcaps(P), [P]);
+  const headers = useMemo(() => buildHeaders(cfg, P), [cfg, P]);
+  const rails = useMemo(() => buildRails(cfg, P, planogram, products, changed, heat), [cfg, P, planogram, products, changed, heat]);
+  useEffect(() => () => disposeGroup(fixtures), [fixtures]);
+  useEffect(() => () => disposeGroup(endcaps), [endcaps]);
+  useEffect(() => () => { if (headers) disposeGroup(headers); }, [headers]);
+  useEffect(() => () => disposeGroup(rails), [rails]);
+
+  const wallH = 3.2;
   const doorHalf = 1.7;
-  // walls with door gaps: front (entrances), back (exits), right (stockroom door)
   const spans = (from: number, to: number, holes: number[], half: number) => {
     const hs = holes.slice().sort((a, b) => a - b);
     const out: [number, number][] = []; let s = from;
-    for (const h of hs) { if (h - half > s) out.push([s, h - half]); s = h + half; }
+    for (const h of hs) { if (h - half > s) out.push([s, h - half]); s = Math.max(s, h + half); }
     if (to > s) out.push([s, to]);
     return out;
   };
-  const front = spans(B.xMin, B.xMax, P.entrances.map((e) => e.x), doorHalf);
-  const back = spans(B.xMin, B.xMax, P.exits.map((e) => e.x), doorHalf);
+  // street (+z) wall is a glazed shopfront with door gaps; the rest are solid
+  const front = spans(B.xMin, B.xMax, [...P.entrances.map((e) => e.x), ...P.exits.map((e) => e.x)], doorHalf);
   const right = spans(B.zMin, B.zMax, [P.stockroom.door.z], 1.1);
   const wallBoxes: [number, number, number, number][] = [ // cx, cz, w, d
-    ...back.map(([a, b]) => [(a + b) / 2, B.zMax, b - a, 0.24] as [number, number, number, number]),
+    [B.cx, B.zMin, B.w + 0.24, 0.24],
     [B.xMin, B.cz, 0.24, B.d],
     ...right.map(([a, b]) => [B.xMax, (a + b) / 2, 0.24, b - a] as [number, number, number, number]),
   ];
-  const endCats = (a: number) => { const us = cfg.units.filter((u) => u.aisle === a); return [us[0]?.category ?? '', us[us.length - 1]?.category ?? '']; };
+  const wallUnits = cfg.units.map((u) => P.units[u.id]).filter((p): p is UnitPlace => !!p && !!p.wall);
   return (
     <group>
-      {/* floor + outdoor pavement */}
+      {/* floor + outdoor car park apron */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[B.cx, 0, B.cz]} receiveShadow raycast={noRay}>
         <planeGeometry args={[B.w, B.d]} />
         <meshStandardMaterial map={floor} roughness={0.75} />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[B.cx, -0.01, B.cz]} raycast={noRay}>
-        <planeGeometry args={[B.w + 30, B.d + 24]} />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[B.cx, -0.01, B.cz + 6]} raycast={noRay}>
+        <planeGeometry args={[B.w + 40, B.d + 40]} />
         <meshStandardMaterial color="#f6d9cf" roughness={1} />
       </mesh>
       {wallBoxes.map(([x, z, w, d], i) => (
@@ -586,61 +656,44 @@ export function Store(props: StoreProps) {
         </group>
       ))}
       {front.map(([a, b], i) => (
-        <group key={`f${i}`} position={[(a + b) / 2, 0, P.frontZ]}>
+        <group key={`f${i}`} position={[(a + b) / 2, 0, B.zMax]}>
           <mesh position={[0, 0.3, 0]} raycast={noRay}><boxGeometry args={[b - a, 0.6, 0.24]} /><meshStandardMaterial color="#fff3ec" /><Edges color={INK} /></mesh>
           <mesh position={[0, 1.6, 0]} raycast={noRay}><boxGeometry args={[b - a, 2.0, 0.06]} /><meshStandardMaterial color="#d8f3ff" transparent opacity={0.22} depthWrite={false} /><Edges color={INK} /></mesh>
           <mesh position={[0, wallH - 0.1, 0]} raycast={noRay}><boxGeometry args={[b - a, 0.2, 0.26]} /><meshBasicMaterial map={band} /></mesh>
         </group>
       ))}
-      {P.entrances.map((e, i) => <Doors key={`in${i}`} x={e.x} z={P.frontZ} idx={i} label="same shelf" sub={P.entrances.length > 1 ? `entrance ${i + 1} · two shoppers, one shelf` : 'two shoppers · one shelf'} />)}
-      {P.exits.map((e, i) => <Doors key={`out${i}`} x={e.x} z={P.bounds.zMax} idx={P.entrances.length + i} label="exit" sub="thanks for shopping!" />)}
+      {P.entrances.map((e, i) => <Doors key={`in${i}`} x={e.x} z={B.zMax} idx={i} label="same shelf" sub={P.entrances.length > 1 ? `entrance ${i + 1} · two shoppers, one shelf` : 'two shoppers · one shelf'} />)}
+      {P.exits.map((e, i) => <Doors key={`out${i}`} x={e.x} z={B.zMax} idx={P.entrances.length + i} label="exit" sub="thanks for shopping!" />)}
       {P.gates.map((g) => <Gate key={g.id} id={g.id} x={g.x} z={g.z} />)}
 
-      {/* gondolas: plinth + centre divider + end panels, as long as the most bays on any side */}
-      {aisles.map((a) => (
-        <group key={a} position={[gondolaX(cfg, a), 0, gMid]}>
-          <mesh position={[0, 0.06, 0]} castShadow raycast={noRay}>
-            <boxGeometry args={[G.depth, 0.12, gLen + 0.1]} />
-            <meshStandardMaterial color="#e9dfd8" />
-            <Edges color={INK} />
-          </mesh>
-          <mesh position={[0, G.height / 2, 0]} castShadow raycast={noRay}>
-            <boxGeometry args={[0.08, G.height, gLen]} />
-            <meshStandardMaterial color="#fff6ef" />
-          </mesh>
-          {[-1, 1].map((s) => (
-            <mesh key={s} position={[0, G.height / 2, s * (gLen / 2 + 0.03)]} castShadow raycast={noRay} material={WHITE}>
-              <boxGeometry args={[G.depth, G.height, 0.06]} />
-              <Edges color={INK} />
-            </mesh>
-          ))}
-        </group>
-      ))}
-      {cfg.units.map((u) => <ShelvingUnit key={u.id} u={u} {...props} />)}
-      <Dividers cfg={cfg} planogram={props.planogram} />
-      {aisles.flatMap((a) => {
-        const [c0, c1] = endCats(a);
-        return [-1, 1].map((s, k) => <EndCap key={`${a}${s}`} x={gondolaX(cfg, a)} z={s < 0 ? z0 - 0.03 : z1 + 0.03} dir={s} category={k ? c1 : c0} idx={a + k} />);
-      })}
-      {Array.from({ length: cfg.aisles + 1 }, (_, w) => <AisleSign key={w} cfg={cfg} w={w} z={z0 + 0.4} />)}
-      {P.bays > 1 && Array.from({ length: cfg.aisles + 1 }, (_, w) => <AisleSign key={`b${w}`} cfg={cfg} w={w} z={z1 - 0.4} />)}
+      <primitive object={fixtures} />
+      <primitive object={endcaps} />
+      {headers && <primitive object={headers} />}
+      <primitive object={rails} />
+      <Dividers cfg={cfg} planogram={planogram} />
+      {editMode && <SlotTargets cfg={cfg} P={P} editSel={editSel} changed={changed} onSlot={onSlot} />}
+      <Departments cfg={cfg} planogram={planogram} />
       {P.lanes.map((l) => (l.kind === 'staffed' ? <Till key={l.id} lane={l} belt={belt} /> : <Kiosk key={l.id} lane={l} />))}
-      <MealDeal planogram={props.planogram} products={props.products} onProduct={props.onProduct} x={P.mealDeal.x} z={P.mealDeal.z} />
-      <Cafe cfg={cfg} />
+      <MealDeal planogram={planogram} products={products} onProduct={props.onProduct} x={P.mealDeal.x} z={P.mealDeal.z} />
+      {P.cafe.w > 0 && <Cafe cfg={cfg} />}
       <Stockroom cfg={cfg} />
 
       {/* static colliders */}
       <RigidBody type="fixed" colliders={false}>
         <CuboidCollider args={[B.w / 2 + 12, 0.1, B.d / 2 + 10]} position={[B.cx, -0.1, B.cz]} friction={0.9} restitution={0.2} />
         {wallBoxes.map(([x, z, w, d], i) => <CuboidCollider key={i} args={[w / 2, wallH / 2, d / 2 + 0.05]} position={[x, wallH / 2, z]} />)}
-        {front.map(([a, b], i) => <CuboidCollider key={`f${i}`} args={[(b - a) / 2, 1.3, 0.14]} position={[(a + b) / 2, 1.3, P.frontZ]} />)}
-        {aisles.map((a) => <CuboidCollider key={a} args={[G.depth / 2 + 0.06, 1.1, gLen / 2 + G.endcapDepth]} position={[gondolaX(cfg, a), 1.1, gMid]} restitution={0.5} />)}
+        {front.map(([a, b], i) => <CuboidCollider key={`f${i}`} args={[(b - a) / 2, 1.3, 0.14]} position={[(a + b) / 2, 1.3, B.zMax]} />)}
+        {P.gondolas.map((g, i) => <CuboidCollider key={`g${i}`} args={[G.depth / 2 + 0.06, 1.1, (g.z1 - g.z0) / 2 + G.endcapDepth]} position={[g.x, 1.1, (g.z0 + g.z1) / 2]} restitution={0.5} />)}
+        {wallUnits.map((p, i) => <CuboidCollider key={`w${i}`} args={[p.len / 2, 1.1, 0.42]} position={[p.x - Math.sin(p.rotY) * 0.2, 1.1, p.z - Math.cos(p.rotY) * 0.2]} rotation={[0, p.rotY, 0]} />)}
+        {P.produce.tables.map((t, i) => <CuboidCollider key={`pt${i}`} args={[t.w / 2, 0.5, t.d / 2]} position={[t.x, 0.5, t.z]} />)}
+        {P.produce.flowers && <CuboidCollider args={[0.8, 0.6, 0.8]} position={[P.produce.flowers.x, 0.6, P.produce.flowers.z]} />}
+        {P.dividers.map((r, i) => <CuboidCollider key={`d${i}`} args={[(r.x1 - r.x0) / 2, 0.55, (r.z1 - r.z0) / 2]} position={[(r.x0 + r.x1) / 2, 0.55, (r.z0 + r.z1) / 2]} />)}
         {P.lanes.map((l) => (l.kind === 'staffed'
           ? <CuboidCollider key={l.id} args={[0.48, 0.5, 1.3]} position={[l.x, 0.5, l.z]} />
           : <CuboidCollider key={l.id} args={[0.32, 0.5, 0.26]} position={[l.x, 0.5, l.z]} />))}
         {P.gates.map((g) => [-0.5, 0.5].map((dx) => <CuboidCollider key={`${g.id}${dx}`} args={[0.07, 0.8, 0.25]} position={[g.x + dx, 0.8, g.z]} />))}
         <CuboidCollider args={[1.3, 0.6, 0.55]} position={[P.mealDeal.x, 0.6, P.mealDeal.z]} />
-        <CuboidCollider args={[1.6, 0.5, 0.4]} position={[P.cafe.counter.x, 0.5, P.cafe.counter.z]} />
+        {P.cafe.w > 0 && <CuboidCollider args={[1.6, 0.5, 0.4]} position={[P.cafe.counter.x, 0.5, P.cafe.counter.z]} />}
         {P.cafe.tables.map((t, i) => <CuboidCollider key={`t${i}`} args={[0.3, 0.4, 0.3]} position={[t.x, 0.4, t.z]} />)}
       </RigidBody>
     </group>

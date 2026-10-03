@@ -349,6 +349,118 @@
    "unit": "gamma shape k (CV = 1/sqrt(k) = 0.58)",
    "source": "assumption: an exponential patience (k=1, the Erlang-A default) makes ~1 in 4 meal-deal shoppers quit after 2 min, which is not what UK tills look like; k=3 keeps impatience but thins that tail. No grocery reneging data fetched",
    "confidence": "low"
+  },
+  "margin_proxy_default": {
+   "value": 0.3,
+   "unit": "gross-margin share",
+   "source": "assumption: margin proxy for a SKU whose role is missing from margin_proxy_by_role (= the challenger value, the middle of the three); restock ranking only",
+   "confidence": "low"
+  },
+  "restock_task_s_prior": {
+   "value": 300.0,
+   "unit": "s per restock trip",
+   "source": "assumption: prior mean restock-trip duration used to size the look-ahead window before any trip has finished (then the mean of the last 50 trips is used); ~ walk to stockroom + bay + 2-3 cases at restock_cases_per_hour",
+   "confidence": "low"
+  },
+  "restock_lookahead_s": {
+   "value": [
+    300.0,
+    3600.0
+   ],
+   "unit": "s [min, max]",
+   "source": "assumption: the 'time until the next round' T in the priority scores = (bays or SKUs due / restockers) x mean trip time, clamped to 5 min .. 1 h (the max clamp applies to priority_bay only, as built); keeps the forecast horizon inside one trading hour",
+   "confidence": "low"
+  },
+  "restock_bay_shortfall_units": {
+   "value": 0.5,
+   "unit": "expected units short before next round",
+   "source": "assumption: priority_bay counts a SKU into a bay's score (and into the cage) when E[(D - s)+] over the look-ahead exceeds half a unit, i.e. a stock-out is more likely than not to cost a sale",
+   "confidence": "low"
+  },
+  "default_capacity_units": {
+   "value": 6,
+   "unit": "units per SKU facing",
+   "source": "assumption: used only when a planogram slot has no capacity for a product (the small-store fallback; planogram_xl.json carries capacity for all 480 SKUs, so the XL run never uses it)",
+   "confidence": "low"
+  },
+  "default_seconds_at_shelf": {
+   "value": 6,
+   "unit": "s per row scanned",
+   "source": "assumption: used only for a persona without sim_parameters.seconds_at_shelf (all 12 lens personas have it; custom personas may not)",
+   "confidence": "low"
+  },
+  "staff_idle_poll_s": {
+   "value": 30,
+   "unit": "s",
+   "source": "assumption: an idle restocker re-checks the task list every 30 s; the cafe seat queue is also re-checked every 30 s (simulation granularity, not a measured behaviour)",
+   "confidence": "low"
+  },
+  "cleaner_poll_s": {
+   "value": 15,
+   "unit": "s",
+   "source": "assumption: an idle cleaner learns of a new spill within <=15 s (radio/tannoy latency). This delay is INSIDE spills.mean_response_s (mean ~7.5 s of it)",
+   "confidence": "low"
+  },
+  "post_close_drain_h": {
+   "value": 3,
+   "unit": "hours",
+   "source": "assumption: simulation keeps running up to 3 h after close so shoppers inside at closing finish (and the replay keeps frames); no trading effect",
+   "confidence": "low"
+  },
+  "ocean_phrase_thresholds": {
+   "value": [
+    0.35,
+    0.65
+   ],
+   "unit": "OCEAN score [low, high]",
+   "source": "assumption: a Big Five trait is described to Jev as high (>= 0.65) or low (<= 0.35), otherwise omitted; only shapes the Jev self-checkout question text",
+   "confidence": "low"
+  },
+  "theatre_bag_pay_offsets": {
+   "value": {
+    "bag_before_end_x_pay": 0.5,
+    "pay_before_end_x_pay": 0.25
+   },
+   "unit": "fraction of payment time before service end",
+   "source": "assumption: replay-only timestamps for the 'bag' and 'pay' animation events inside the payment window; no KPI depends on them",
+   "confidence": "low"
+  },
+  "surrogate_min_pair_n": {
+   "value": 5,
+   "unit": "noticed events",
+   "source": "assumption: an (archetype, product) pair needs >= 5 noticed events in the Jev runs to enter the lens_logit slope fit (fewer is mostly shrinkage noise)",
+   "confidence": "low"
+  },
+  "dayparts": {
+   "value": {
+    "08-12": [
+     0,
+     12
+    ],
+    "12-14": [
+     12,
+     14
+    ],
+    "14-15": [
+     14,
+     15
+    ],
+    "15-17": [
+     15,
+     17
+    ],
+    "17-19": [
+     17,
+     19
+    ],
+    "19-22": [
+     19,
+     24
+    ]
+   },
+   "unit": "hour ranges [start, end) per mission_mix_by_daypart key",
+   "source": "assumption: the hour windows behind the mission_mix_by_daypart keys (data/ops/params.json); pre-08 and post-22 hours fold into the first/last window",
+   "confidence": "low"
   }
  }
 }

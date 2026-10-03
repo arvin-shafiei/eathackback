@@ -25,3 +25,8 @@ export function onCrowd(fn: Fn): () => void {
 export function emitCrowd(e: CrowdEvent): void {
   for (const f of subs) { try { f(e); } catch { /* a bad listener never breaks the crowd */ } }
 }
+
+/** live crowd health (updated ~10 Hz by the crowd): handy for HUDs and headless checks */
+export const crowdStats = { active: 0, overlaps: 0, queued: 0, inCarriers: 0, flights: 0 };
+
+if (typeof window !== 'undefined') (window as unknown as { __crowd?: unknown }).__crowd = { onCrowd, stats: crowdStats };

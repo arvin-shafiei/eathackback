@@ -14,9 +14,10 @@ import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import type { Planogram, Product, StoreConfig, Unit } from '../types';
-import { G, parseSlot, rowGap, rowY, shelfSlotFor, slotPlacements, unitFrame } from '../layout';
+import { G, parseSlot, rowGap, rowY, shelfSlotFor, slotPlacements, storePlan, unitFrame, unitLength } from '../layout';
 import { CHILLED, catColor } from '../theme';
 import { bus } from './fx';
+import { registerShelf } from './shelfBus';
 import { PackAtlas, packBoxGeometry, packColor, packMaterial, packUniforms, tagPlaneGeometry } from './textures';
 
 // ------------------------------------------------------------------ pack dims
@@ -84,6 +85,8 @@ interface Rec {
   w: number; h: number; d: number; D: number; cols: number; layers: number; runL: number; runW: number; y0: number; back: number;
   stacks: Stack[]; total: number; idx: number; group: Group; nearStart: number; farIdx: number;
   removed: number; manualApplied: number; popT: number;
+  /** overstock filler on a slot the planogram left empty (visual only, never resolved by code alone) */
+  fill?: boolean;
 }
 export interface ShelfUnitPos { x: number; y: number; z: number; w: number; h: number; d: number; rotY: number; slot: string; code: string; left: number; total: number }
 
@@ -197,10 +200,34 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
     const ua = cfg.units.findIndex((u) => u.id === A.unit), ub = cfg.units.findIndex((u) => u.id === B.unit);
     return ua - ub || A.row - B.row;
   });
-  for (const slot of slots) {
-    const set = planogram[slot];
+  const plan = storePlan(cfg);
+  // every shelf the fixtures actually draw, so rows the planogram left empty still get stock (see filler below)
+  const allSlots = new Set(slots);
+  for (const u of cfg.units) { const up = plan.units[u.id]; if (!up) continue; for (let r = 1; r <= up.rows; r++) allSlots.add(`${u.id}-r${r}`); }
+  const ordered = [...allSlots].sort((a, b) => {
+    const A = parseSlot(a), B = parseSlot(b);
+    return cfg.units.findIndex((u) => u.id === A.unit) - cfg.units.findIndex((u) => u.id === B.unit) || A.row - B.row;
+  });
+  /** an empty shelf takes overstock of the nearest stocked row of the same unit (assumption: visual only, UK
+   *  gondolas keep cases / back-up stock on bare base decks; never a planogram fact, never counted in a stat) */
+  const donor = (unit: string, row: number) => {
+    let best: { set: NonNullable<Planogram[string]>; dr: number } | null = null;
+    for (let r = 1; r <= cfg.rows_per_unit; r++) {
+      const s2 = planogram[`${unit}-r${r}`];
+      if (r === row || !s2?.products?.length) continue;
+      const dr = Math.abs(r - row) + (r < row ? 0.1 : 0); // prefer the row below's twin above
+      if (!best || dr < best.dr) best = { set: s2, dr };
+    }
+    return best?.set ?? null;
+  };
+  for (const slot of ordered) {
     const { unit, row } = parseSlot(slot);
-    const u = units.get(unit); if (!u || !set) continue;
+    const u = units.get(unit); if (!u) continue;
+    const up = plan.units[u.id];
+    if (up && row > up.rows) continue;
+    let set = planogram[slot];
+    let fill = false;
+    if (!set?.products?.length) { const d = donor(unit, row); if (!d) continue; set = d; fill = true; }
     let ub = unitBase.get(u.id);
     if (!ub) {
       const f = unitFrame(cfg, u);
@@ -214,11 +241,12 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
     const pl = slotPlacements(slot, set);
     const runTotal = pl.reduce((s, p) => s + p.width * p.facings, 0);
     if (!runTotal) continue;
-    const usable = G.unitLen - 0.16;
+    const L = up?.len ?? unitLength(u.id);
+    const usable = L - (up?.fixture === 'gondola' ? 0.12 : 0.2); // inside the side panels
     const scale = usable / runTotal; // fill the bay edge to edge whatever slotPlacements leaves free
     // shelf-edge strip in the department colour
     strips.push({
-      m: new THREE.Matrix4().compose(new THREE.Vector3(0, y0 - 0.028, 0.06), new THREE.Quaternion(), new THREE.Vector3(G.unitLen, 0.07, 0.014)).premultiply(ub.base),
+      m: new THREE.Matrix4().compose(new THREE.Vector3(0, y0 - 0.028, 0.06), new THREE.Quaternion(), new THREE.Vector3(L, 0.07, 0.014)).premultiply(ub.base),
       c: new THREE.Color(catColor(set.category ?? u.category)).lerp(new THREE.Color('#ffffff'), 0.12),
     });
     let maxH = 0.1;
@@ -241,17 +269,17 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
       const tagInfo = {
         price: prod.price_gbp, role: prod.role,
         assumption: typeof prod.price_source === 'string' ? /^assum|estimat|model/i.test(prod.price_source) : !prod.price_gbp,
-        unit: num(prod.price_per_100g) ? `£${Number(prod.price_per_100g).toFixed(2)}/100g` : num(prod.price_per_kg_gbp) ? `£${Number(prod.price_per_kg_gbp).toFixed(2)}/kg` : num(prod.price_per_litre_gbp) ? `£${Number(prod.price_per_litre_gbp).toFixed(2)}/l` : null,
+        unit: num(prod.price_per_100g) ? `£${Number(prod.price_per_100g).toFixed(2)}/100g` : num(prod.unit_price_gbp_per_kg) ? `£${Number(prod.unit_price_gbp_per_kg).toFixed(2)}/kg` : num(prod.unit_price_gbp_per_l) ? `£${Number(prod.unit_price_gbp_per_l).toFixed(2)}/l` : num(prod.price_per_kg_gbp) ? `£${Number(prod.price_per_kg_gbp).toFixed(2)}/kg` : num(prod.price_per_litre_gbp) ? `£${Number(prod.price_per_litre_gbp).toFixed(2)}/l` : null,
       };
-      const cell = atlas.add(prod, tagInfo);
+      const cell = atlas.cell(prod.code) ?? atlas.add(prod, tagInfo);
       const proto: Proto = {
-        key: `${slot}|${p.code}`, slot, code: p.code, unit: u, base: ub.base, rotY: ub.rotY,
+        key: `${slot}|${p.code}`, slot, code: p.code, fill, unit: u, base: ub.base, rotY: ub.rotY,
         w, h, d, D, cols, layers, runL, runW, y0, back: FRONT - D * d, stacks, total: stacks.length * D, idx: cell.idx,
         removed: 0, manualApplied: 0, popT: -1, page: cell.page, tint: new THREE.Color(packColor(prod)).multiplyScalar(0.82), glow: cold, cell,
       };
       slotProtos.push(proto); protos.push(proto);
       const tw = Math.min(runW - 0.02, 0.13), th = tw * (atlas.tagH / atlas.cellW);
-      tags.push({ m: new THREE.Matrix4().compose(new THREE.Vector3(runL + 0.012 + tw / 2, y0 - 0.028, 0.0675), new THREE.Quaternion(), new THREE.Vector3(tw, th, 1)).premultiply(ub.base), cell, idx: cell.idx });
+      if (!fill) tags.push({ m: new THREE.Matrix4().compose(new THREE.Vector3(runL + 0.012 + tw / 2, y0 - 0.028, 0.0675), new THREE.Quaternion(), new THREE.Vector3(tw, th, 1)).premultiply(ub.base), cell, idx: cell.idx });
     }
     // dividers: a clear fin at every run edge
     const fh = Math.min(room, maxH + 0.04);
@@ -359,15 +387,30 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
   useEffect(() => {
     REG.recs = new Map(built.recs.map((r) => [r.key, r]));
     REG.byCode = new Map();
-    for (const r of built.recs) (REG.byCode.get(r.code) ?? REG.byCode.set(r.code, []).get(r.code)!).push(r);
+    for (const r of built.recs) if (!r.fill) (REG.byCode.get(r.code) ?? REG.byCode.set(r.code, []).get(r.code)!).push(r);
     REG.plan = planogram;
+    // the crowd and staff talk to shelves through shelfBus (they never import this file)
+    const unreg = registerShelf({
+      take: (slot, code) => { const p = takeFromShelf(slot, code); return p ? new THREE.Vector3(p.x, p.y, p.z) : null; },
+      restock: (slot, code, n) => restockShelf(slot, code, n),
+    });
     return () => {
+      unreg();
       built.geoms.forEach((g) => g.dispose()); built.mats.forEach((m) => m.dispose());
       const r0 = built.recs[0]; if (r0 && REG.recs.get(r0.key) === r0) { REG.recs = new Map(); REG.byCode = new Map(); }
     };
   }, [built, planogram]);
 
   const lastV = useRef(-1), lastSig = useRef('');
+  // dev only: ?shelfcam=x,y,z,tx,ty,tz pins the camera for headless shelf screenshots
+  const pin = useMemo(() => { try { const v = new URLSearchParams(location.search).get('shelfcam'); const n = v?.split(',').map(Number); return n && n.length === 6 && n.every(Number.isFinite) ? n : null; } catch { return null; } }, []);
+  const scene = useThree((s) => s.scene);
+  useEffect(() => {
+    if (!pin) return;
+    const prev = scene.onBeforeRender;
+    scene.onBeforeRender = (...a) => { camera.position.set(pin[0], pin[1], pin[2]); camera.lookAt(pin[3], pin[4], pin[5]); camera.updateMatrixWorld(); prev.apply(scene, a); };
+    return () => { scene.onBeforeRender = prev; };
+  }, [pin, scene, camera]);
   useFrame((state) => {
     const now = state.clock.elapsedTime, t = timeRef.current;
     packUniforms.uTime.value = now;
@@ -396,7 +439,7 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
         const manual = REG.manual.get(r.key) ?? 0;
         let want = manual;
         if (live) {
-          if (!firstOf.has(r.code)) { firstOf.add(r.code); want += hidden.get(r.code) ?? 0; }
+          if (!r.fill && !firstOf.has(r.code)) { firstOf.add(r.code); want += hidden.get(r.code) ?? 0; }
           const frac = stock?.[r.slot];
           if (frac !== undefined) want = Math.max(want, Math.round((1 - Math.max(0, Math.min(1, frac))) * r.total));
         }

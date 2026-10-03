@@ -1,0 +1,1355 @@
+{
+ "name": "eat_hack Express (convenience, ~10 units)",
+ "format": "express",
+ "coordinate_system": "metres; origin = front-left outside corner; x to the right, z towards the back wall; front wall z=0 holds entrances, exits and the checkout bank (real UK layout, NOT the web/store_xl grid where the tills are behind the aisles). Each unit has x,z (centre of its shelf face run), facing and length_m.",
+ "footprint_m": {
+  "w": 22.4,
+  "d": 26.2,
+  "back_of_house_d": 12.0,
+  "sales_floor_m2": 587,
+  "promo_seasonal_floor_depth_m": 0.0
+ },
+ "aisles": 10,
+ "centre_aisles": 2,
+ "aisles_note": "'aisle' on every unit keeps the store_xl schema (perimeter units get pseudo-aisle numbers after the centre aisles, aisle_number=null); renderers should place units by x/z/facing",
+ "rows_per_unit": 5,
+ "row_names": {
+  "1": "top",
+  "2": "eye",
+  "3": "middle",
+  "4": "lower",
+  "5": "bottom"
+ },
+ "notice_row_map": {
+  "1": "top",
+  "2": "eye",
+  "3": "bottom",
+  "4": "bottom",
+  "5": "bottom",
+  "source": "assumption: sim/notice.py has alphas for top/eye/bottom only; rows below eye level get the bottom alpha (same conservative rule as store_xl)"
+ },
+ "products_per_slot": 6.0,
+ "products_per_slot_note": "variable per slot (shelves are filled by width); this is the mean",
+ "units": [
+  {
+   "id": "E1",
+   "department": "fruit_veg",
+   "zone": "produce",
+   "fixture": "produce_tables",
+   "fixture_type": "produce_tables",
+   "rows": 3,
+   "bays": 2,
+   "bay_width_cm": 120,
+   "shelf_width_cm": 240,
+   "shelf_depth_cm": 40,
+   "row_clear_cm": 25,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "fresh_produce"
+   ],
+   "category": "fresh_produce",
+   "x": 3.0,
+   "z": 16.5,
+   "facing": "-z",
+   "length_m": 2.4,
+   "aisle": 3,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E2",
+   "department": "bakery",
+   "zone": "bakery",
+   "fixture": "bakery_counter",
+   "fixture_type": "bakery_counter",
+   "rows": 4,
+   "bays": 2,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 200,
+   "shelf_depth_cm": 40,
+   "row_clear_cm": 40,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "bakery_bread"
+   ],
+   "category": "bakery_bread",
+   "x": 0.85,
+   "z": 22.5,
+   "facing": "+x",
+   "length_m": 2.0,
+   "aisle": 4,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E3",
+   "department": "food_to_go",
+   "zone": "food_to_go",
+   "fixture": "wall_chiller",
+   "fixture_type": "wall_chiller",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 125,
+   "shelf_width_cm": 250,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "categories": [
+    "food_to_go"
+   ],
+   "category": "food_to_go",
+   "x": 9.25,
+   "z": 13.45,
+   "facing": "+z",
+   "length_m": 2.5,
+   "aisle": 5,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E4",
+   "department": "drinks",
+   "zone": "perimeter",
+   "fixture": "wall_chiller",
+   "fixture_type": "wall_chiller",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 125,
+   "shelf_width_cm": 250,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "categories": [
+    "soft_drinks",
+    "water",
+    "juice_smoothies"
+   ],
+   "category": "soft_drinks",
+   "x": 7.25,
+   "z": 25.35,
+   "facing": "-z",
+   "wall": "back",
+   "length_m": 2.5,
+   "aisle": 6,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E5",
+   "department": "dairy",
+   "zone": "perimeter",
+   "fixture": "multideck_fridge",
+   "fixture_type": "multideck_fridge",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 125,
+   "shelf_width_cm": 250,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "categories": [
+    "milk_butter_eggs",
+    "yoghurt",
+    "plant_milk_dairy_alt"
+   ],
+   "category": "milk_butter_eggs",
+   "x": 9.75,
+   "z": 25.35,
+   "facing": "-z",
+   "wall": "back",
+   "length_m": 2.5,
+   "aisle": 7,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E6",
+   "department": "dairy",
+   "zone": "perimeter",
+   "fixture": "multideck_fridge",
+   "fixture_type": "multideck_fridge",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 125,
+   "shelf_width_cm": 250,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "categories": [
+    "cheese",
+    "cooked_meats_deli",
+    "dips_salads_deli"
+   ],
+   "category": "cheese",
+   "x": 12.25,
+   "z": 25.35,
+   "facing": "-z",
+   "wall": "back",
+   "length_m": 2.5,
+   "aisle": 8,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E7",
+   "department": "ready_meals",
+   "zone": "perimeter",
+   "fixture": "multideck_fridge",
+   "fixture_type": "multideck_fridge",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 125,
+   "shelf_width_cm": 250,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "categories": [
+    "ready_meals_soup",
+    "chilled_pizza_pasta_pies",
+    "meat_free",
+    "chilled_desserts"
+   ],
+   "category": "ready_meals_soup",
+   "x": 14.75,
+   "z": 25.35,
+   "facing": "-z",
+   "wall": "back",
+   "length_m": 2.5,
+   "aisle": 9,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E8",
+   "department": "frozen",
+   "zone": "perimeter",
+   "fixture": "freezer_doors",
+   "fixture_type": "freezer_doors",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 75,
+   "shelf_width_cm": 150,
+   "shelf_depth_cm": 60,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": true,
+   "doors": 2,
+   "categories": [
+    "frozen_meals_veg",
+    "frozen_icecream"
+   ],
+   "category": "frozen_icecream",
+   "x": 16.75,
+   "z": 25.35,
+   "facing": "-z",
+   "wall": "back",
+   "length_m": 1.5,
+   "aisle": 10,
+   "aisle_number": null,
+   "side": "L",
+   "bay": 0,
+   "perimeter": true
+  },
+  {
+   "id": "E9",
+   "department": "snacks",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 200,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "crisps_savoury",
+    "snack_bars"
+   ],
+   "category": "crisps_savoury",
+   "aisle": 1,
+   "aisle_number": 1,
+   "side": "L",
+   "bay": 0,
+   "perimeter": false,
+   "x": 10.4,
+   "z": 19.1,
+   "facing": "+x",
+   "length_m": 2.0
+  },
+  {
+   "id": "E10",
+   "department": "snacks",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 200,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "nuts_dried_fruit",
+    "confectionery_sweets",
+    "biscuits_chocolate"
+   ],
+   "category": "confectionery_sweets",
+   "aisle": 1,
+   "aisle_number": 1,
+   "side": "R",
+   "bay": 0,
+   "perimeter": false,
+   "x": 13.2,
+   "z": 19.1,
+   "facing": "-x",
+   "length_m": 2.0
+  },
+  {
+   "id": "E11",
+   "department": "grocery",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 200,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "breakfast_cereal",
+    "spreads_honey_jam",
+    "hot_drinks"
+   ],
+   "category": "breakfast_cereal",
+   "aisle": 2,
+   "aisle_number": 2,
+   "side": "L",
+   "bay": 0,
+   "perimeter": false,
+   "x": 13.8,
+   "z": 19.1,
+   "facing": "+x",
+   "length_m": 2.0
+  },
+  {
+   "id": "E12",
+   "department": "grocery",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 2,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 200,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "tinned_jars",
+    "pasta_rice_grains",
+    "sauces_condiments",
+    "oils_vinegar_spices"
+   ],
+   "category": "pasta_rice_grains",
+   "aisle": 2,
+   "aisle_number": 2,
+   "side": "R",
+   "bay": 0,
+   "perimeter": false,
+   "x": 16.6,
+   "z": 19.1,
+   "facing": "-x",
+   "length_m": 2.0
+  }
+ ],
+ "departments": [
+  {
+   "id": "fruit_veg",
+   "name": "fruit & veg",
+   "zone": {
+    "x0": 0.3,
+    "z0": 14.0,
+    "x1": 6.0,
+    "z1": 20.5
+   },
+   "zone_kind": "produce",
+   "floor_color": "#5f9e4a",
+   "sign_text": "Fruit & Veg · Flowers",
+   "aisle_numbers": [],
+   "fixture_type": "produce_tables",
+   "categories": [
+    "fresh_produce"
+   ],
+   "units": [
+    "E1"
+   ],
+   "sub_zones": [
+    {
+     "id": "flowers",
+     "name": "flowers",
+     "zone": {
+      "x0": 0.3,
+      "z0": 14.0,
+      "x1": 4.3,
+      "z1": 16.0
+     },
+     "note": "cut flowers / plants stand at the entrance; no OFF products (not food), shown as a fixture only"
+    }
+   ]
+  },
+  {
+   "id": "bakery",
+   "name": "bakery",
+   "zone": {
+    "x0": 0.3,
+    "z0": 20.5,
+    "x1": 6.0,
+    "z1": 24.5
+   },
+   "zone_kind": "bakery",
+   "floor_color": "#c8955a",
+   "sign_text": "Bakery",
+   "aisle_numbers": [],
+   "fixture_type": "bakery_counter",
+   "categories": [
+    "bakery_bread"
+   ],
+   "units": [
+    "E2"
+   ]
+  },
+  {
+   "id": "food_to_go",
+   "name": "food to go · meal deal",
+   "zone": {
+    "x0": 8.0,
+    "z0": 11.62,
+    "x1": 10.5,
+    "z1": 13.77
+   },
+   "zone_kind": "food_to_go",
+   "floor_color": "#d9534f",
+   "sign_text": "Food to Go · Meal Deal",
+   "aisle_numbers": [],
+   "fixture_type": "wall_chiller",
+   "categories": [
+    "food_to_go"
+   ],
+   "units": [
+    "E3"
+   ]
+  },
+  {
+   "id": "drinks",
+   "name": "chilled drinks",
+   "zone": {
+    "x0": 6.0,
+    "z0": 21.53,
+    "x1": 8.5,
+    "z1": 25.68
+   },
+   "zone_kind": "perimeter",
+   "floor_color": "#3a8fd9",
+   "sign_text": "Soft Drinks · Water",
+   "aisle_numbers": [],
+   "fixture_type": "wall_chiller",
+   "categories": [
+    "soft_drinks",
+    "water",
+    "juice_smoothies"
+   ],
+   "units": [
+    "E4"
+   ]
+  },
+  {
+   "id": "dairy",
+   "name": "dairy, cheese & deli",
+   "zone": {
+    "x0": 8.5,
+    "z0": 21.53,
+    "x1": 13.5,
+    "z1": 25.68
+   },
+   "zone_kind": "perimeter",
+   "floor_color": "#f2f2e6",
+   "sign_text": "Milk · Butter · Eggs · Yoghurt · Juice",
+   "aisle_numbers": [],
+   "fixture_type": "multideck_fridge",
+   "categories": [
+    "milk_butter_eggs",
+    "yoghurt",
+    "plant_milk_dairy_alt",
+    "cheese",
+    "cooked_meats_deli",
+    "dips_salads_deli"
+   ],
+   "units": [
+    "E5",
+    "E6"
+   ]
+  },
+  {
+   "id": "ready_meals",
+   "name": "ready meals & desserts",
+   "zone": {
+    "x0": 13.5,
+    "z0": 21.53,
+    "x1": 16.0,
+    "z1": 25.68
+   },
+   "zone_kind": "perimeter",
+   "floor_color": "#9a6fb0",
+   "sign_text": "Ready Meals · Pizza · Meat-free",
+   "aisle_numbers": [],
+   "fixture_type": "multideck_fridge",
+   "categories": [
+    "ready_meals_soup",
+    "chilled_pizza_pasta_pies",
+    "meat_free",
+    "chilled_desserts"
+   ],
+   "units": [
+    "E7"
+   ]
+  },
+  {
+   "id": "snacks",
+   "name": "crisps, snacks & confectionery",
+   "zone": {
+    "x0": 9.9,
+    "z0": 17.3,
+    "x1": 13.7,
+    "z1": 20.9
+   },
+   "zone_kind": "centre",
+   "floor_color": "#f0c419",
+   "sign_text": "Crisps · Snacks · Chocolate · Sweets",
+   "aisle_numbers": [
+    1
+   ],
+   "fixture_type": "gondola",
+   "categories": [
+    "crisps_savoury",
+    "snack_bars",
+    "nuts_dried_fruit",
+    "confectionery_sweets",
+    "biscuits_chocolate"
+   ],
+   "units": [
+    "E9",
+    "E10"
+   ]
+  },
+  {
+   "id": "grocery",
+   "name": "food cupboard",
+   "zone": {
+    "x0": 13.3,
+    "z0": 17.3,
+    "x1": 17.1,
+    "z1": 20.9
+   },
+   "zone_kind": "centre",
+   "floor_color": "#c0a060",
+   "sign_text": "Cereals · Tea & Coffee · Tins · Pasta · Sauces",
+   "aisle_numbers": [
+    2
+   ],
+   "fixture_type": "gondola",
+   "categories": [
+    "breakfast_cereal",
+    "spreads_honey_jam",
+    "hot_drinks",
+    "tinned_jars",
+    "pasta_rice_grains",
+    "sauces_condiments",
+    "oils_vinegar_spices"
+   ],
+   "units": [
+    "E11",
+    "E12"
+   ]
+  },
+  {
+   "id": "frozen",
+   "name": "frozen",
+   "zone": {
+    "x0": 16.0,
+    "z0": 21.48,
+    "x1": 17.5,
+    "z1": 25.73
+   },
+   "zone_kind": "perimeter",
+   "floor_color": "#a8d8f0",
+   "sign_text": "Frozen · Ice Cream",
+   "aisle_numbers": [],
+   "fixture_type": "freezer_doors",
+   "categories": [
+    "frozen_meals_veg",
+    "frozen_icecream"
+   ],
+   "units": [
+    "E8"
+   ]
+  }
+ ],
+ "aisle_signage": [
+  {
+   "aisle_number": 1,
+   "sign_text": "1 · crisps, snacks & confectionery",
+   "categories": [
+    "crisps_savoury",
+    "snack_bars",
+    "nuts_dried_fruit",
+    "confectionery_sweets",
+    "biscuits_chocolate"
+   ],
+   "departments": [
+    "snacks"
+   ],
+   "bank": "front",
+   "x": 11.8,
+   "z": 17.1,
+   "hang_height_m": 2.8
+  },
+  {
+   "aisle_number": 2,
+   "sign_text": "2 · food cupboard",
+   "categories": [
+    "breakfast_cereal",
+    "spreads_honey_jam",
+    "hot_drinks",
+    "tinned_jars",
+    "pasta_rice_grains",
+    "sauces_condiments",
+    "oils_vinegar_spices"
+   ],
+   "departments": [
+    "grocery"
+   ],
+   "bank": "front",
+   "x": 15.2,
+   "z": 17.1,
+   "hang_height_m": 2.8
+  }
+ ],
+ "end_caps": [
+  {
+   "id": "EC1",
+   "bank": "front",
+   "end": "front",
+   "adjacent_aisles": [
+    1
+   ],
+   "x": 10.1,
+   "z": 17.8,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "5053990127726",
+     "8410076481597",
+     "5053990107384"
+    ],
+    "facings": {
+     "5053990127726": 2,
+     "8410076481597": 2,
+     "5053990107384": 4
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.958,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC2",
+   "bank": "front",
+   "end": "back",
+   "adjacent_aisles": [
+    1
+   ],
+   "x": 10.1,
+   "z": 20.4,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "5053990127726",
+     "8410076481597",
+     "5053990107384"
+    ],
+    "facings": {
+     "5053990127726": 2,
+     "8410076481597": 2,
+     "5053990107384": 4
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.958,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC3",
+   "bank": "front",
+   "end": "front",
+   "adjacent_aisles": [
+    1,
+    2
+   ],
+   "x": 13.5,
+   "z": 17.8,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "8076800195057",
+     "5053990127726",
+     "8076800376999"
+    ],
+    "facings": {
+     "8076800195057": 3,
+     "5053990127726": 3,
+     "8076800376999": 2
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.938,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC4",
+   "bank": "front",
+   "end": "back",
+   "adjacent_aisles": [
+    1,
+    2
+   ],
+   "x": 13.5,
+   "z": 20.4,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "8076800195057",
+     "5053990127726",
+     "8076800376999"
+    ],
+    "facings": {
+     "8076800195057": 3,
+     "5053990127726": 3,
+     "8076800376999": 2
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.938,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC5",
+   "bank": "front",
+   "end": "front",
+   "adjacent_aisles": [
+    2
+   ],
+   "x": 16.9,
+   "z": 17.8,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "8076800195057",
+     "8076800376999",
+     "8076802085981"
+    ],
+    "facings": {
+     "8076800195057": 4,
+     "8076800376999": 3,
+     "8076802085981": 3
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 1.0,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC6",
+   "bank": "front",
+   "end": "back",
+   "adjacent_aisles": [
+    2
+   ],
+   "x": 16.9,
+   "z": 20.4,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "8076800195057",
+     "8076800376999",
+     "8076802085981"
+    ],
+    "facings": {
+     "8076800195057": 4,
+     "8076800376999": 3,
+     "8076802085981": 3
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 1.0,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  }
+ ],
+ "entrance": {
+  "x": 4.0,
+  "z": 0.0
+ },
+ "entrances": [
+  {
+   "id": "E1",
+   "x": 4.0,
+   "z": 0.0,
+   "note": "main entrance, front-left, into fruit & veg"
+  }
+ ],
+ "exits": [
+  {
+   "id": "X1",
+   "x": 19.4,
+   "z": 0.0
+  }
+ ],
+ "security_gates": [
+  {
+   "id": "GX1a",
+   "exit": "X1",
+   "x": 18.4,
+   "z": 1.2,
+   "type": "EAS pedestal"
+  },
+  {
+   "id": "GX1b",
+   "exit": "X1",
+   "x": 20.4,
+   "z": 1.2,
+   "type": "EAS pedestal"
+  }
+ ],
+ "checkout": {
+  "x": 18.85,
+  "z": 8.0
+ },
+ "checkouts": [
+  {
+   "id": "T1",
+   "type": "staffed",
+   "bank": "tills",
+   "x": 14.95,
+   "z": 8.0,
+   "lanes": 1
+  },
+  {
+   "id": "T2",
+   "type": "staffed",
+   "bank": "tills",
+   "x": 17.85,
+   "z": 8.0,
+   "lanes": 1
+  },
+  {
+   "id": "S1",
+   "type": "self",
+   "bank": "self",
+   "x": 22.03,
+   "z": 6.65,
+   "lanes": 1
+  },
+  {
+   "id": "S2",
+   "type": "self",
+   "bank": "self",
+   "x": 23.48,
+   "z": 6.65,
+   "lanes": 1
+  },
+  {
+   "id": "S3",
+   "type": "self",
+   "bank": "self",
+   "x": 22.03,
+   "z": 9.35,
+   "lanes": 1
+  },
+  {
+   "id": "S4",
+   "type": "self",
+   "bank": "self",
+   "x": 23.48,
+   "z": 9.35,
+   "lanes": 1
+  }
+ ],
+ "checkout_counts": {
+  "staffed": 2,
+  "self": 4,
+  "source": "assumption: format convention (express 2+4, metro 4+8); scaled down from the superstore's params-derived 10 staffed lanes"
+ },
+ "cafe": null,
+ "stockroom": {
+  "x": 11.2,
+  "z": 32.2,
+  "w": 21.8,
+  "d": 12.0,
+  "zone": {
+   "x0": 0,
+   "z0": 26.2,
+   "x1": 22.4,
+   "z1": 38.2
+  },
+  "doors": [
+   {
+    "x": 7.84,
+    "z": 26.2
+   },
+   {
+    "x": 15.68,
+    "z": 26.2
+   }
+  ],
+  "source": "assumption: back-of-house stockroom behind the back-wall chillers, two staff doors through the chilled run"
+ },
+ "goods_in": {
+  "x": 16.4,
+  "z": 38.2,
+  "dock_doors": 1,
+  "zone": {
+   "x0": 10.4,
+   "z0": 34.2,
+   "x1": 22.4,
+   "z1": 38.2
+  },
+  "source": "assumption: rear service yard with dock leveller(s); daily chilled delivery (data/ops/params.json lead_time_days_chilled=1)"
+ },
+ "walls": [
+  {
+   "x0": 0.0,
+   "z0": 0.0,
+   "x1": 2.5,
+   "z1": 0.0,
+   "kind": "exterior_front"
+  },
+  {
+   "x0": 5.5,
+   "z0": 0.0,
+   "x1": 17.9,
+   "z1": 0.0,
+   "kind": "exterior_front"
+  },
+  {
+   "x0": 20.9,
+   "z0": 0.0,
+   "x1": 22.4,
+   "z1": 0.0,
+   "kind": "exterior_front"
+  },
+  {
+   "x0": 22.4,
+   "z0": 0.0,
+   "x1": 22.4,
+   "z1": 38.2,
+   "kind": "exterior_side"
+  },
+  {
+   "x0": 0.0,
+   "z0": 0.0,
+   "x1": 0.0,
+   "z1": 38.2,
+   "kind": "exterior_side"
+  },
+  {
+   "x0": 0.0,
+   "z0": 38.2,
+   "x1": 22.4,
+   "z1": 38.2,
+   "kind": "exterior_back"
+  },
+  {
+   "x0": 0.0,
+   "z0": 26.2,
+   "x1": 22.4,
+   "z1": 26.2,
+   "kind": "stockroom_partition",
+   "doors": [
+    {
+     "x": 7.84,
+     "z": 26.2
+    },
+    {
+     "x": 15.68,
+     "z": 26.2
+    }
+   ]
+  }
+ ],
+ "dividers": [
+  {
+   "between": [
+    "food_to_go",
+    "drinks"
+   ],
+   "x": 8.25,
+   "z": 19.4,
+   "kind": "end_panel"
+  },
+  {
+   "between": [
+    "drinks",
+    "dairy"
+   ],
+   "x": 8.5,
+   "z": 25.35,
+   "kind": "end_panel"
+  },
+  {
+   "between": [
+    "dairy",
+    "ready_meals"
+   ],
+   "x": 13.5,
+   "z": 25.35,
+   "kind": "end_panel"
+  },
+  {
+   "between": [
+    "ready_meals",
+    "frozen"
+   ],
+   "x": 15.75,
+   "z": 25.35,
+   "kind": "end_panel"
+  },
+  {
+   "between": [
+    "shop_floor",
+    "checkouts"
+   ],
+   "x0": 12.5,
+   "x1": 25.2,
+   "z": 13.7,
+   "kind": "checkout_rail"
+  }
+ ],
+ "meal_deal": {
+  "stand_units": [
+   "E3"
+  ],
+  "eligible": {
+   "main": [
+    "00155915",
+    "00235624",
+    "00237628",
+    "00453479",
+    "00485289",
+    "00577663",
+    "00668002",
+    "00676403",
+    "01389814",
+    "03236420",
+    "03258743",
+    "03297537",
+    "03446171",
+    "10089156",
+    "29320646",
+    "29347582",
+    "4056489354086",
+    "4061459957396",
+    "4061464443174",
+    "4088600454887",
+    "5000116035540",
+    "5000116101641",
+    "5000116128198",
+    "5000128834810",
+    "5000171050434",
+    "5000171050656",
+    "5000171054449",
+    "5032490051069",
+    "5036589257455",
+    "5057624422997",
+    "5057753902308",
+    "5060470842130",
+    "5060482843217",
+    "5060963011906",
+    "5390605004073",
+    "8718300872211"
+   ],
+   "snack": [
+    "00125642",
+    "00362122",
+    "00539494",
+    "00706216",
+    "01835151",
+    "03266052",
+    "1230000097048",
+    "20047238",
+    "20096809",
+    "20369361",
+    "20622930",
+    "3023290037577",
+    "3046920028721",
+    "3073780918763",
+    "3329770051584",
+    "4009900522120",
+    "4056489258353",
+    "4056489353508",
+    "4056489920045",
+    "4056489920069",
+    "4088600121987",
+    "4088600192468",
+    "4251097401669",
+    "4251097405391",
+    "5000159537858",
+    "5010251737841",
+    "5010477323194",
+    "5010975030020",
+    "50168064",
+    "5017764003142",
+    "50251797",
+    "5053990107384",
+    "5055958705526",
+    "5055958706561",
+    "5056138201807",
+    "5060011816149",
+    "5060040253731",
+    "5060042640744",
+    "5060042641413",
+    "5060088705179",
+    "5060088705230",
+    "5060234310431",
+    "5060482841992",
+    "5060482843422",
+    "50663811",
+    "51000005",
+    "5411188094159",
+    "5411188124191",
+    "6413300018042",
+    "8410076801197",
+    "8901063092853",
+    "90111334"
+   ],
+   "drink": [
+    "0898999010007",
+    "20917609",
+    "3068320014067",
+    "4056489005568",
+    "4056489010104",
+    "4056489181415",
+    "4056489346364",
+    "4056489406679",
+    "4056489738732",
+    "40822938",
+    "4335619173125",
+    "5000112545326",
+    "5000118047794",
+    "5010459005179",
+    "5022313318332",
+    "5022313729824",
+    "5024115330055",
+    "50271511",
+    "5033022002306",
+    "5034033000220",
+    "5038862238854",
+    "5059697704932",
+    "5060108450003",
+    "5060335635174",
+    "5060406461855",
+    "5060444850208",
+    "5060489730657",
+    "5449000011527",
+    "5449000020987",
+    "8002270000515",
+    "8002270576829",
+    "90162602",
+    "90162800",
+    "90357473",
+    "9350271002014"
+   ]
+  },
+  "counts": {
+   "main": 36,
+   "snack": 52,
+   "drink": 35
+  },
+  "price_gbp": 3.85,
+  "price_source": "data/personas/lens/meal_deal_office.json budget_source (Reddit corpus: '£3.75 in Sainsburys ... £3.80 in Tesco')",
+  "rule": "assumption: main = any food_to_go SKU; snack = single item <= the size cap of its category {\"crisps_savoury\": 55, \"snack_bars\": 60, \"confectionery_sweets\": 60, \"biscuits_chocolate\": 60, \"nuts_dried_fruit\": 60, \"yoghurt\": 200, \"chilled_desserts\": 150, \"fresh_produce\": 200, \"dips_salads_deli\": 150, \"cheese\": 50, \"cooked_meats_deli\": 100}; drink = single item <= {\"soft_drinks\": 500, \"water\": 750, \"juice_smoothies\": 400, \"plant_milk_dairy_alt\": 330, \"milk_butter_eggs\": 500} (flavoured milk only for milk_butter_eggs). Sizes from OFF quantity; items with unknown size are not eligible."
+ },
+ "fixtures": {
+  "gondola": {
+   "rows": 5,
+   "bay_cm": 100,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "source": "assumption: 1.0 m is a common UK gondola bay module (1.25 m also common); 5 shelves; 0.45 m shelf depth (same as store_xl stock_rules); ~35 cm clear per shelf on a ~2.0 m gondola"
+  },
+  "multideck_fridge": {
+   "rows": 5,
+   "bay_cm": 125,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "source": "assumption: open-front chilled multideck, 1.25 m module (common UK lengths 1.25/1.875/2.5 m), 5 shelves incl. base deck"
+  },
+  "wall_chiller": {
+   "rows": 5,
+   "bay_cm": 125,
+   "shelf_depth_cm": 50,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": false,
+   "source": "assumption: same multideck module, wall-mounted on the perimeter (meal deal / chilled racetrack)"
+  },
+  "freezer_doors": {
+   "rows": 5,
+   "bay_cm": 75,
+   "shelf_depth_cm": 60,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": true,
+   "source": "assumption: upright glass-door freezer, one ~75 cm door per bay, 5 shelves"
+  },
+  "produce_tables": {
+   "rows": 3,
+   "bay_cm": 120,
+   "shelf_depth_cm": 40,
+   "row_clear_cm": 25,
+   "fridge": false,
+   "freezer": false,
+   "source": "assumption: tiered produce table with crates (60x40 cm crates, 2 per 120 cm bay), 3 tiers; NOT a shelf"
+  },
+  "bakery_counter": {
+   "rows": 4,
+   "bay_cm": 100,
+   "shelf_depth_cm": 40,
+   "row_clear_cm": 40,
+   "fridge": false,
+   "freezer": false,
+   "source": "assumption: wooden bread racks + in-store bakery counter, 4 tiers"
+  }
+ },
+ "geometry": {
+  "walkway_m": 2.2,
+  "gondola_side_depth_m": 0.6,
+  "racetrack_m": 3.5,
+  "cross_aisle_m": 3.0,
+  "endcap_depth_m": 0.6,
+  "wall_fixture_depth_m": 1.1,
+  "front_band_m": 14.0,
+  "back_of_house_m": 12.0,
+  "wall_m": 0.3,
+  "source": "assumption: centre walkway 2.2 m (two trolleys pass), 0.6 m per gondola side (0.45 m shelf + upright), 3.5 m perimeter 'racetrack', 3.0 m cross-aisle between aisle banks, 0.6 m end caps, 1.1 m wall multidecks, 14 m front band for checkouts + lobby + café, 12 m back of house (stockroom + goods-in). Not measured."
+ },
+ "aisle_widths": {
+  "walkway_m": 2.2,
+  "cross_aisle_m": 3.0,
+  "racetrack_m": 3.5,
+  "gondola_depth_m": 1.2,
+  "unit_len_m": 2.0,
+  "source": "assumption: centre walkway 2.2 m (two trolleys pass), 0.6 m per gondola side (0.45 m shelf + upright), 3.5 m perimeter 'racetrack', 3.0 m cross-aisle between aisle banks, 0.6 m end caps, 1.1 m wall multidecks, 14 m front band for checkouts + lobby + café, 12 m back of house (stockroom + goods-in). Not measured."
+ },
+ "adjacency": {
+  "walk_order": [
+   "fruit_veg",
+   "bakery",
+   "food_to_go",
+   "drinks",
+   "dairy",
+   "ready_meals",
+   "snacks",
+   "grocery",
+   "frozen"
+  ],
+  "source": "assumption (standard UK grocery layout, as used by the large multiples; not a cited planogram): entrance -> fruit & veg + flowers (Underhill's 'decompression zone' idea: fresh, colourful, low-decision products first) -> in-store bakery -> chilled perimeter 'racetrack' along the back and side walls (meat, fish, cheese & deli, dairy, ready meals, desserts) -> numbered centre-store ambient aisles -> frozen towards the end (limits time out of the freezer; same rule as store_xl layout_notes) -> beer, wine & spirits next to the tills (age checks at the till) -> checkout bank across the front (staffed + self) -> exits with EAS security gates; café by the entrance; stockroom + goods-in at the back."
+ },
+ "layout_notes": [
+  "12 units: 4 centre-aisle sides (2 numbered aisles x 2) + 8 perimeter fixtures (produce tables, bakery, food-to-go, chilled racetrack, wall freezer).",
+  "centre store space is fixed by the aisle count; perimeter fixtures are sized so their mean facings match the centre (space-to-range ratio 2.72 shelf-cm per single-facing-cm).",
+  "rows are assigned to categories within each department in walk order, proportional to the category's total single-facing width (sequential blocking); products go to rows by role preference (incumbent eye, own-label low, challenger top/middle).",
+  "the range is ~10% of a real superstore's (~25-40k SKUs, assumption), so aisles are short (3 m runs) to keep facings plausible; set FORMATS[...]['bays_per_side'] to lengthen them (facings scale up proportionally)."
+ ],
+ "stock_rules": {
+  "facings": "fill each shelf: start every SKU at 1 facing, then repeatedly add a facing to the SKU with the lowest facings/weight (weight incumbent 2.0, own_label 1.5, challenger 1.0; assumption: leaders hold more facings) while it still fits the remaining width; max 14 facings (assumption)",
+  "depth_units_per_facing": "floor(shelf_depth_cm / pack depth_cm), min 1 (pack dims are labelled assumptions in the catalog)",
+  "capacity": "facings x depth_units_per_facing",
+  "stock": "starts at capacity (store opens fully faced up)",
+  "fill_ratio": "per slot sum(facings x width_cm) / shelf width_cm"
+ },
+ "derivation": {
+  "script": "scripts/scale_superstore.py",
+  "rules": "data/products/superstore_rules.md",
+  "catalog": "data/products/catalog_superstore.json",
+  "range_rule": "assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens\n    (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or\n    own-label) -> now: 40% of each role per category by popularity (keeps the role mix). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy).",
+  "skus_in_range": 343,
+  "skus_placed": 343,
+  "unplaced": [],
+  "space_to_range_ratio": 2.716,
+  "geometry": {
+   "W": 22.4,
+   "D": 26.2,
+   "D0": 26.2,
+   "promo_floor_m": 0.0,
+   "left": 6.0,
+   "xc0": 9.5,
+   "pitch": 3.4000000000000004,
+   "C": 2,
+   "bank_z": [
+    [
+     18.1,
+     20.1
+    ]
+   ],
+   "produce_z1": 20.5,
+   "bakery_z1": 24.5,
+   "x_e1": 4.0,
+   "chilled_run_m": 11.5
+  }
+ }
+}

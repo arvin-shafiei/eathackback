@@ -20,9 +20,9 @@ import { productMaterials } from './textures';
 import { accessoriesFor, ROBOT_PARTS, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, cupGeometry, type PartUse } from './parts';
 import type { Beat, Beats } from './beats';
 import { bus, sfx } from './fx';
-import { CarrierLoad, GROUP, carrierDims, createCarrier, insideCarrier, stackLocal, throwPack } from './Basket';
+import { CarrierLoad, GROUP, createCarrier, insideCarrier, setSolid, stackLocal, throwPack } from './Basket';
 import { restockShelf, takeFromShelf } from './shelfBus';
-import { emitCrowd } from './crowdBus';
+import { crowdStats, emitCrowd } from './crowdBus';
 
 export type ThoughtMode = 'off' | 'selected' | 'all';
 
@@ -48,7 +48,7 @@ interface QGroup { head: XY; dir: XY; side: XY; startOff: number; len: number; p
 
 interface Shopper {
   si: number; agent: Agent; ai: boolean; arch: string; color: THREE.Color; carrier: Carrier; tl: Timeline; beats: Beat[];
-  body: RigidBody | null; cbody: RigidBody | null; active: boolean; held: number;
+  body: RigidBody | null; cbody: RigidBody | null; active: boolean; held: number; cbOn: boolean;
   knock: THREE.Vector2; sq: number; sqv: number; cool: number; step: number;
   /** smoothed arm rotations (shoulder frame) + rubber-arm stretch */
   qR: THREE.Quaternion; qL: THREE.Quaternion; strR: number; strL: number; look: THREE.Vector3;
@@ -143,6 +143,7 @@ interface Bonk { id: number; x: number; y: number; z: number; word: string }
 const AI_SCALE = 0.8;
 const BONK_WORDS = ['bonk!', 'oof!', 'boing!', 'sorry!', 'bump!', 'whoops!', 'mind out!', 'ope!'];
 const CELL = 1.25;
+const FAR = 4000; // where off-floor bodies wait (no collisions, far from everything)
 const cellKey = (x: number, z: number) => (Math.floor(x / CELL) + 2048) * 4096 + (Math.floor(z / CELL) + 2048);
 
 export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, products, selectedAgent, onAgent, onEvent, thoughts, speed }: Props) {
@@ -159,7 +160,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const tl = timelines[a.agent_id];
     return {
       si, agent: a, ai, arch, color: new THREE.Color(archColor(ai ? 'ai' : arch)), carrier, tl, beats: beats.byAgent[a.agent_id] ?? [],
-      body: null, cbody: null, active: false, held: 0, knock: new THREE.Vector2(), sq: 0, sqv: 0, cool: 0, step: Math.random() * 6,
+      body: null, cbody: null, active: false, held: 0, cbOn: false, knock: new THREE.Vector2(), sq: 0, sqv: 0, cool: 0, step: Math.random() * 6,
       qR: poseQ(new THREE.Quaternion(), 1, 0, 0.12), qL: poseQ(new THREE.Quaternion(), -1, 0, 0.12), strR: 1, strL: 1,
       look: new THREE.Vector3(0, 0, 1), handR: new THREE.Matrix4(), handL: new THREE.Matrix4(),
       parts, pos: new THREE.Vector3(0, -50, 0), yaw: 0, px: 0, pz: -999,
@@ -169,6 +170,16 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       co: tl.checkout ?? null, park: parkMatrix(tl.checkout ?? null, carrier), cafeT: cafeWindow(tl),
     };
   }), [agents, timelines, personas, beats]);
+
+  useEffect(() => {
+    // headless debug: where everyone is, what they're doing (no stat reads this)
+    const w = window as unknown as { __crowd?: Record<string, unknown> };
+    if (!w.__crowd) return;
+    w.__crowd.dump = () => {
+      const sp = storePlan(cfg);
+      return { bounds: sp.bounds, lanes: sp.lanes.map((l) => ({ id: l.id, kind: l.kind, x: +l.x.toFixed(1), z: +l.z.toFixed(1) })), people: shoppers.filter((s) => s.active).map((s) => ({ id: s.agent.agent_id, x: +s.px.toFixed(2), z: +s.pz.toFixed(2), q: s.q?.group ?? null, inQ: !!s.qT, c: s.carrier, ph: sampleTimeline(s.tl, timeRef.current).seg?.phase ?? sampleTimeline(s.tl, timeRef.current).seg?.kind })) };
+    };
+  }, [cfg, shoppers, timeRef]);
 
   const groups = useMemo(() => {
     const g = queueGroups(storePlan(cfg));
@@ -186,23 +197,24 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const made: RigidBody[] = [];
     load.current = new CarrierLoad(world, R);
     for (const s of shoppers) {
-      const bd = R.RigidBodyDesc.dynamic().setTranslation(0, -20 - s.si, 0).setGravityScale(0).setLinearDamping(0.5).setAngularDamping(4).setCanSleep(false).setEnabled(false);
+      const bd = R.RigidBodyDesc.dynamic().setTranslation(FAR + s.si * 6, BODY.center, FAR).setGravityScale(0).setLinearDamping(0.5).setAngularDamping(4).setCanSleep(false);
       const body = world.createRigidBody(bd);
       body.setEnabledTranslations(true, false, true, false);
       body.setEnabledRotations(false, true, false, false);
       const col = world.createCollider(
-        (s.ai ? R.ColliderDesc.cuboid(0.31 * AI_SCALE, 0.46 * AI_SCALE, 0.25 * AI_SCALE) : R.ColliderDesc.capsule(0.3, BODY.r)).setDensity(220).setFriction(0.1).setRestitution(0.4).setCollisionGroups(GROUP.shopper),
+        (s.ai ? R.ColliderDesc.cuboid(0.31 * AI_SCALE, 0.46 * AI_SCALE, 0.25 * AI_SCALE) : R.ColliderDesc.capsule(0.3, BODY.r)).setDensity(220).setFriction(0.1).setRestitution(0.4).setCollisionGroups(0),
         body,
       );
       owner.set(col.handle, s.si);
       s.body = body; made.push(body);
-      s.cbody = createCarrier(world, R, body, s.carrier, -20 - s.si, (c) => owner.set(c.handle, s.si));
+      s.cbody = createCarrier(world, R, body, s.carrier, BODY.center, (c) => owner.set(c.handle, s.si));
       if (s.cbody) made.push(s.cbody);
+      placeAt(s, FAR + s.si * 6, FAR, 0); // carrier starts welded in place, not yanked across the map
     }
     return () => {
       load.current?.clear(); load.current = null;
       for (const b of made) { try { world.removeRigidBody(b); } catch { /* world already gone */ } }
-      for (const s of shoppers) { s.body = null; s.cbody = null; s.active = false; }
+      for (const s of shoppers) { s.body = null; s.cbody = null; s.active = false; s.cbOn = false; }
       owner.clear();
     };
   }, [shoppers, world, rapier]);
@@ -222,7 +234,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   }, [shoppers, world]);
   const bake = (s: Shopper, b: Beat, local: THREE.Matrix4, size: { w: number; h: number; d: number }) => {
     baked.current.set(b.id, local);
-    if (s.cbody && s.cbody.isEnabled()) load.current?.add(s.cbody, b.id, local, size);
+    if (s.cbody && s.cbOn) load.current?.add(s.cbody, b.id, local, size);
   };
   const unbake = (id: number) => { baked.current.delete(id); load.current?.remove(id); };
 
@@ -243,6 +255,13 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     s.knock.set(0, 0);
   };
 
+  /** carrier collisions on/off (parked at a till = ghost: drawn from the park matrix, collides with nothing) */
+  const setCarrierSolid = (s: Shopper, on: boolean) => { s.cbOn = on && !!s.cbody; setSolid(s.cbody, on ? GROUP.carrier : null); if (on) load.current?.reghost(s.cbody); };
+  /** off the floor: no collisions, parked far away (no rapier setEnabled toggling) */
+  const ghost = (s: Shopper) => {
+    setSolid(s.body, null); setCarrierSolid(s, false);
+    placeAt(s, FAR + s.si * 6, FAR, 0);
+  };
   const beatOfShopper = (s: Shopper, t: number): Beat | null => {
     for (const b of s.beats) { if (t >= b.t0 && t < b.t1) return b; if (b.t0 > t) break; }
     return null;
@@ -296,7 +315,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       if (!s.body) continue;
       const smp = sampleTimeline(s.tl, t);
       if (!smp.visible) {
-        if (s.active) { s.active = false; s.body.setEnabled(false); s.cbody?.setEnabled(false); s.pos.set(0, -50, 0); s.px = 0; s.pz = -999; }
+        if (s.active) { s.active = false; ghost(s); s.pos.set(0, -50, 0); s.px = 0; s.pz = -999; }
         s.held = 0;
         continue;
       }
@@ -308,7 +327,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         let blocked = false;
         if (early) near(sp0!.x, sp0!.z, SPAWN_CLEAR, s.si, () => { blocked = true; });
         if (blocked && t - s.tl.start < SPAWN_MAX_HOLD) { s.held = t; continue; }
-        s.active = true; s.body.setEnabled(true); s.cbody?.setEnabled(!parked);
+        s.active = true; setSolid(s.body, GROUP.shopper); setCarrierSolid(s, !parked);
         if (early) placeAt(s, sp0!.x + (blocked ? s.laneOff * 1.6 : 0), sp0!.z, smp.heading);
         else placeAt(s, smp.x, smp.z, smp.heading);
         const k = cellKey(s.px, s.pz); const l = g.get(k); if (l) l.push(s.si); else g.set(k, [s.si]);
@@ -316,9 +335,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         continue;
       }
       if (s.cbody) {
-        const en = s.cbody.isEnabled();
-        if (parked && en) s.cbody.setEnabled(false);
-        else if (!parked && !en) { s.cbody.setEnabled(true); placeAt(s, smp.x, smp.z, smp.heading); continue; }
+        if (parked && s.cbOn) setCarrierSolid(s, false);
+        else if (!parked && !s.cbOn) { setCarrierSolid(s, true); placeAt(s, smp.x, smp.z, smp.heading); continue; }
       }
       const p = s.body.translation();
       const seg = smp.seg;
@@ -361,7 +379,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       const fm = Math.hypot(fx, fz) || 1;
       near(p.x, p.z, R0, s.si, (_o, ddx, ddz, dd) => {
         if (dd < 1e-4) { ddx = Math.sin(s.si); ddz = Math.cos(s.si); dd = 1; }
-        const wgt = (R0 - dd) / R0;
+        // soft personal space + a hard push once bodies would touch (setLinvel would otherwise win over contacts)
+        const wgt = (R0 - dd) / R0 + Math.max(0, 0.66 - dd) * 6;
         sx += (ddx / dd) * wgt; sz += (ddz / dd) * wgt;
         if (!busy && (-(ddx * fx + ddz * fz) / (dd * fm)) > 0.5) { sx += (-fz / fm) * wgt * 0.8; sz += (fx / fm) * wgt * 0.8; }
       });
@@ -405,7 +424,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           let nx = a.x - b.x, nz = a.z - b.z; const nl = Math.hypot(nx, nz) || 1; nx /= nl; nz /= nl;
           const va = s.body!.linvel(), vb = o.body.linvel();
           const closing = -((va.x - vb.x) * nx + (va.z - vb.z) * nz);
-          if (closing < 0.25) return;
+          if (closing < 0.6) return; // only real collisions bonk, not the polite shuffle of a crowd
           const kick = Math.min(3.4, 1.5 + closing * 0.7);
           s.knock.x += nx * kick; s.knock.y += nz * kick; o.knock.x -= nx * kick; o.knock.y -= nz * kick;
           s.sqv -= 3.4; o.sqv -= 3.4;
@@ -804,7 +823,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
             if (!m) {
               let local = baked.current.get(b.id);
               if (!local) { local = stackLocal(s.carrier, b.pickIdx, sz.h, new THREE.Matrix4()); bake(s, b, local, sz); }
-              else if (ld && !ld.has(b.id) && s.cbody.isEnabled()) ld.add(s.cbody, b.id, local, sz);
+              else if (ld && !ld.has(b.id) && s.cbOn) ld.add(s.cbody, b.id, local, sz);
               m = new THREE.Matrix4().multiplyMatrices(cm, local);
             }
             m.multiply(new THREE.Matrix4().makeScale(sz.w, sz.h, sz.d));
@@ -828,6 +847,14 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     // stickers (10 Hz)
     if (now - lastSticker.current.t > 0.1) {
       lastSticker.current.t = now;
+      // crowd health: bodies closer than two body radii would be interpenetrating
+      let act = 0, ov = 0, qd = 0;
+      for (const s of shoppers) {
+        if (!s.active) continue;
+        act++; if (s.qT) qd++;
+        if (!s.ai) near(s.px, s.pz, BODY.r * 2 - 0.08, s.si, (o) => { if (!o.ai && o.si > s.si && o.active) ov++; });
+      }
+      crowdStats.active = act; crowdStats.overlaps = ov; crowdStats.queued = qd; crowdStats.flights = flights.current.size; crowdStats.inCarriers = baked.current.size;
       const out: Sticker[] = [];
       for (const s of shoppers) {
         if (!s.active) continue;

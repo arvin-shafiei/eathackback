@@ -15,7 +15,7 @@
 import type { StoreConfig, Planogram, Unit, Agent, SimEvent } from './types';
 
 export const G = {
-  spacing: 5.0, // gondola centre-to-centre (assumption: visual only, ~4m walkway so trolleys can pass + 1m gondola)
+  spacing: 7.0, // gondola centre-to-centre (assumption: visual only, widened 3 Oct so crowds spread: ~6m walkway + 1m gondola)
   depth: 1.0, // gondola depth, both sides
   height: 2.1,
   unitLen: 6.4, // one bay of shelving along the aisle
@@ -23,11 +23,11 @@ export const G = {
   standOff: 1.3, // how far in front of the shelf face a shopper stands
   walkSpeed: 1.3, // m/s. assumption: typical in-store walking speed is slower than the ~1.4 m/s street pace
   aiWalkSpeed: 2.2, // m/s. assumption: visual only. ai agents read a feed, so their "walk" is just a way to show which slot they read
-  crossGap: 2.4, // cross-aisle distance from the gondola ends (room for end caps + trolleys)
+  crossGap: 3.6, // cross-aisle distance from the gondola ends (room for end caps + trolleys)
   endcapDepth: 0.7,
   wallDepth: 1.0, // wall multideck / bakery rack / produce rack depth
-  wallWalk: 3.8, // walkway in front of wall fixtures (assumption: visual, two trolleys pass)
-  midAisle: 4.2, // middle cross aisle between the back and front block (between end caps)
+  wallWalk: 5.2, // walkway in front of wall fixtures (assumption: visual, two trolleys pass)
+  midAisle: 5.6, // middle cross aisle between the back and front block (between end caps)
 };
 
 /** dwell (replay seconds) per decision. visual pacing only, never feeds a stat. */
@@ -126,6 +126,8 @@ export interface Lane {
 /** where one unit stands and what kind of fixture it is */
 export interface UnitPlace {
   x: number; z: number; rotY: number; fixture: Fixture; dept: string;
+  /** shelf run length (m) and number of shelves this unit actually has (rows 1..rows) */
+  len: number; rows: number;
   /** customer-facing aisle number (gondola / freezer aisles), null for wall fixtures */
   aisleNo: number | null; walkway: number | null; wall: 'L' | 'R' | 'B' | null; block: number | null;
 }
@@ -160,12 +162,16 @@ export interface StorePlan {
   bank: Rect;
   /** goods-in doors on the back wall */
   goodsIn: XY;
+  /** seasonal / promo floor between aisle banks (when the chilled racetrack needs a deeper store) + pallet displays on it */
+  promo: { zones: Rect[]; pallets: (XY & { w: number; d: number })[] };
   /** obstacles the shopper router walks around (unexpanded) */
   obstacles: Rect[];
   lobbyZ: number;
 }
 
 const plans = new WeakMap<StoreConfig, StorePlan>();
+/** unit id → shelf run length of the store planned last (slotPlacements has no cfg; one store is on screen at a time) */
+const UNIT_LEN = new Map<string, number>();
 const num = (v: unknown, d: number) => (typeof v === 'number' && Number.isFinite(v) ? v : d);
 type AnyRec = Record<string, unknown>;
 const rec = (v: unknown) => (v && typeof v === 'object' ? (v as AnyRec) : {});
@@ -199,7 +205,7 @@ export function deptDefs(cfg: StoreConfig): Record<string, DeptDef> {
   return out;
 }
 
-interface Resolved { u: Unit; dept: DeptDef; fixture: Fixture; aisleNo: number | null; side: 'L' | 'R' | null; bay: number }
+interface Resolved { u: Unit; dept: DeptDef; fixture: Fixture; aisleNo: number | null; side: 'L' | 'R' | null; bay: number; idx: number; len: number; rows: number }
 function resolveUnits(cfg: StoreConfig): Resolved[] {
   const defs = deptDefs(cfg);
   const anyAisleNo = cfg.units.some((u) => typeof (u as unknown as AnyRec).aisle_number === 'number');
@@ -211,7 +217,10 @@ function resolveUnits(cfg: StoreConfig): Resolved[] {
     if (fixture === 'gondola' && x.fridge === true) fixture = 'multideck';
     const aisleNo = anyAisleNo ? (typeof x.aisle_number === 'number' ? x.aisle_number : null) : (typeof u.aisle === 'number' ? u.aisle : null);
     const side = u.side === 'L' || u.side === 'R' ? u.side : null;
-    return { u, dept, fixture, aisleNo, side, bay: num(x.bay, i) };
+    // per-unit run length (generator: length_m) and shelf count (generator: rows); default = one 6.4 m bay, every row
+    const len = Math.max(1.2, Math.min(12, num(x.length_m, G.unitLen)));
+    const rows = Math.max(1, Math.min(cfg.rows_per_unit, num(x.rows, cfg.rows_per_unit)));
+    return { u, dept, fixture, aisleNo, side, bay: num(x.bay, i), idx: i, len, rows };
   });
 }
 
@@ -219,10 +228,11 @@ export function storePlan(cfg: StoreConfig): StorePlan {
   const hit = plans.get(cfg); if (hit) return hit;
   const x = cfg as StoreConfig & AnyRec;
   const R = resolveUnits(cfg);
-  const pitch = G.unitLen + 0.06;
+  const lenOf = (r: Resolved) => r.len;
+  const GAPU = 0.06; // gap between neighbouring units in a run
 
   // ---------------- 1. split: wall fixtures vs numbered gondola / freezer aisles
-  const onWall = (r: Resolved) => r.fixture === 'multideck' || r.fixture === 'produce' || r.fixture === 'bakery' || (r.fixture !== 'gondola' && r.fixture !== 'freezer');
+  const onWall = (r: Resolved) => r.fixture !== 'gondola' && r.fixture !== 'freezer';
   const wallR = R.filter(onWall);
   const aisleR = R.filter((r) => !onWall(r));
   // walkways keyed by customer aisle number (units with no number get one per department, after the numbered ones)
@@ -243,81 +253,97 @@ export function storePlan(cfg: StoreConfig): StorePlan {
   }
   const label = new Map<number, number>(aisleKeys.map((k, i) => [k, anyAisleNo ? k : i + 1]));
   const A = aisleKeys.length;
-  const nBlocks = A > 18 ? 2 : 1;
-  const frontN = nBlocks === 2 ? Math.ceil(A / 2) : A;
-  // blocks[0] = back (low z), blocks[last] = front (next to the tills)
-  const blockOf = (i: number) => (nBlocks === 2 ? (i < frontN ? 1 : 0) : 0);
+  // aisle banks: at most 16 walkways side by side; bank 0 (front, by the tills) numbers right→left, the next snakes back
+  const nBlocks = Math.max(1, Math.ceil(A / 16));
+  const perBlock = Math.max(1, Math.ceil(A / nBlocks));
+  // blocks[] runs back (low z) → front; bf = bank index counted from the front
   const blockAisles: number[][] = Array.from({ length: nBlocks }, () => []);
-  aisleKeys.forEach((k, i) => blockAisles[blockOf(i)].push(k));
+  aisleKeys.forEach((k, i) => blockAisles[nBlocks - 1 - Math.floor(i / perBlock)].push(k));
   const sides = new Map<number, { L: Resolved[]; R: Resolved[] }>();
   for (const k of aisleKeys) {
-    const list = byAisle.get(k)!.slice().sort((a, b) => a.bay - b.bay);
+    const list = byAisle.get(k)!.slice().sort((a, b) => a.bay - b.bay || a.idx - b.idx);
     const s = { L: [] as Resolved[], R: [] as Resolved[] };
     let alt = 0;
     for (const r of list) { const sd = r.side ?? (alt++ % 2 ? 'R' : 'L'); s[sd].push(r); }
     sides.set(k, s);
   }
-  const blockBays = blockAisles.map((ks) => Math.max(1, ...ks.map((k) => Math.max(sides.get(k)!.L.length, sides.get(k)!.R.length))));
+  const runLen = (list: Resolved[]) => list.reduce((s, r) => s + lenOf(r), 0) + Math.max(0, list.length - 1) * GAPU;
+  const blockLen = blockAisles.map((ks) => Math.max(G.unitLen * 0.5, ...ks.map((k) => Math.max(runLen(sides.get(k)!.L), runLen(sides.get(k)!.R)))));
   const nCols = Math.max(2, ...blockAisles.map((ks) => ks.length + 1));
 
-  // ---------------- 2. z layout (back wall at zMin, street at zMax)
+  // ---------------- 2. checkout counts + wall demand (decides width + depth)
   const co = x.checkouts;
   const coRec = rec(co);
   const coList = Array.isArray(co) ? co.map(rec) : null;
+  const counts = rec(x.checkout_counts);
   const ptsOf = (v: unknown) => (Array.isArray(v) ? v.length : null);
-  const nStaffed = coList ? Math.max(1, coList.filter((c) => /staff|till|manned/.test(String(c.type ?? c.kind ?? ''))).length) : ptsOf(coRec.staffed) ?? num(coRec.staffed, Math.max(3, Math.min(10, Math.round(A / 2.5))));
-  const nSelf = coList ? coList.filter((c) => /self|sco/.test(String(c.type ?? c.kind ?? ''))).length : ptsOf(coRec.self) ?? num(coRec.self, Math.max(4, Math.min(16, A + 2)));
+  const nStaffed = typeof counts.staffed === 'number' ? counts.staffed : coList ? Math.max(1, coList.filter((c) => /staff|till|manned/.test(String(c.type ?? c.kind ?? ''))).length) : ptsOf(coRec.staffed) ?? num(coRec.staffed, Math.max(3, Math.min(10, Math.round(A / 2.5))));
+  const nSelf = typeof counts.self === 'number' ? counts.self : coList ? coList.filter((c) => /self|sco/.test(String(c.type ?? c.kind ?? ''))).length : ptsOf(coRec.self) ?? num(coRec.self, Math.max(4, Math.min(16, A + 2)));
+  const wallSorted = wallR.slice().sort((a, b) => a.dept.rank - b.dept.rank || a.bay - b.bay || a.idx - b.idx);
+  const rightWant = wallSorted.filter((r) => r.dept.rank <= 2.5 || r.fixture === 'produce' || r.fixture === 'bakery');
+  const chilled = wallSorted.filter((r) => !rightWant.includes(r));
+  const hasCafe = (x.cafe !== false) && (A >= 6 || cfg.units.length >= 24);
+  const cafeW = hasCafe ? Math.min(10, 6 + A * 0.12) : 0;
+  const pitchS = 2.9, kpitch = 1.45;
+  const selfCols = Math.ceil(nSelf / 2);
+  const bankW = nStaffed * pitchS + (nSelf ? 1.6 + selfCols * kpitch : 0);
+  const produceW = rightWant.length ? 12.6 : 0;
+  const leftStrip = G.wallDepth + G.wallWalk + G.depth / 2;
+  const blockW = (nCols - 1) * G.spacing + G.depth;
+  const rightStrip = G.depth / 2 + (rightWant.length ? produceW : G.wallWalk + G.wallDepth);
+  let W = leftStrip + blockW - G.depth + rightStrip;
+  W = Math.max(W, cafeW + 3.4 + bankW + 1.4 + 3.2 + produceW * 0.6 + 2, 26);
+
+  // ---------------- 3. z layout (back wall at zMin, street at zMax); deepen with promo floor if the racetrack needs more wall
   const zMin = 0;
-  const z0 = zMin + G.wallDepth + G.wallWalk + G.endcapDepth;
+  const midGap = 2 * G.endcapDepth + G.midAisle;
+  const frontDepth = G.endcapDepth + 6.8 + 1.3 + 6.2; // last bank → tills → lobby → front wall
+  const baseD = G.wallDepth + G.wallWalk + G.endcapDepth + blockLen.reduce((s, l) => s + l, 0) + (nBlocks - 1) * midGap + frontDepth;
+  const totalWall = runLen(wallSorted);
+  // perimeter available for a depth D: right (D - 8.3) + left (D - 15.5) + back (W - 2.5)
+  const needD = (totalWall + 8.3 + 15.5 - (W - 2.5)) / 2 + 2;
+  const promoExtra = Math.max(0, needD - baseD);
+  const promoGap = promoExtra / nBlocks; // added in front of each bank's back edge (seasonal / promo floor)
+  const z0 = zMin + G.wallDepth + G.wallWalk + G.endcapDepth + promoGap;
   const blocks: StorePlan['blocks'] = [];
+  const promoZones: Rect[] = [];
   let zc = z0;
   for (let b = 0; b < nBlocks; b++) {
-    const zs = zc, ze = zs + blockBays[b] * G.unitLen;
+    if (b > 0) { promoZones.push({ x0: 0, x1: 0, z0: zc - promoGap, z1: zc }); }
+    const zs = zc, ze = zs + blockLen[b];
     blocks.push({ z0: zs, z1: ze, aisles: [] });
-    zc = ze + 2 * G.endcapDepth + G.midAisle;
+    zc = ze + midGap + (b < nBlocks - 1 ? promoGap : 0);
   }
+  if (promoGap > 3) promoZones.unshift({ x0: 0, x1: 0, z0: z0 - promoGap, z1: z0 });
   const z1 = blocks[blocks.length - 1].z1;
   const crossFront = z0 - G.crossGap, crossBack = z1 + G.crossGap;
   const belt = 2.6;
   const checkoutZ = z1 + G.endcapDepth + 6.8;
   const lobbyZ = checkoutZ + belt / 2 + 1.7;
   const zMax = checkoutZ + belt / 2 + 6.2;
-
-  // ---------------- 3. wall runs (right: food to go → produce → bakery; back: chilled right→left; left: back→front)
-  const wallSorted = wallR.slice().sort((a, b) => a.dept.rank - b.dept.rank || a.bay - b.bay);
-  const rightWant = wallSorted.filter((r) => r.dept.rank <= 2.5 || r.fixture === 'produce' || r.fixture === 'bakery');
-  const chilled = wallSorted.filter((r) => !rightWant.includes(r));
-  const hasCafe = (x.cafe !== false) && (A >= 6 || cfg.units.length >= 24);
-  const cafeW = hasCafe ? Math.min(10, 6 + A * 0.12) : 0;
   const cafeZ0 = checkoutZ - 2.4;
-  const rightZ0 = zMin + 3.9, rightZ1 = zMax - 4.4; // stockroom door at the back, entrance + flowers at the front
-  const rightCap = Math.max(0, Math.floor((rightZ1 - rightZ0) / pitch));
-  const rightUnits = rightWant.slice(0, rightCap);
-  const backQueue = [...rightWant.slice(rightCap), ...chilled];
-  const leftZ0 = zMin + G.wallDepth + 0.2, leftZ1 = (hasCafe ? cafeZ0 : checkoutZ - 1) - 0.8;
-  const leftCap = Math.max(0, Math.floor((leftZ1 - leftZ0) / pitch));
 
-  // ---------------- 4. x layout
-  const produceW = rightUnits.length ? 12.6 : 0;
-  const leftStrip = G.wallDepth + G.wallWalk + G.depth / 2;
-  const blockW = (nCols - 1) * G.spacing + G.depth;
-  const rightStrip = G.depth / 2 + (rightUnits.length ? produceW : G.wallWalk + G.wallDepth);
-  const pitchS = 2.9, kpitch = 1.45;
-  const selfCols = Math.ceil(nSelf / 2);
-  const bankW = nStaffed * pitchS + (nSelf ? 1.6 + selfCols * kpitch : 0);
-  let W = leftStrip + blockW - G.depth + rightStrip;
-  W = Math.max(W, cafeW + 3.4 + bankW + 1.4 + 3.2 + produceW * 0.6 + 2);
+  // ---------------- 4. wall runs (right: food to go → produce → bakery; back: chilled right→left; left: back→front)
+  const rightZ0 = zMin + 3.9, rightZ1 = zMax - 4.4; // stockroom door at the back, entrance + flowers at the front
+  const leftZ0 = zMin + G.wallDepth + 0.2, leftZ1 = (hasCafe ? cafeZ0 : checkoutZ - 1) - 0.8;
+  const take = (queue: Resolved[], cap: number) => { const out: Resolved[] = []; let used = 0; while (queue.length && used + lenOf(queue[0]) <= cap + 1e-6) { const r = queue.shift()!; out.push(r); used += lenOf(r) + GAPU; } return out; };
+  const rq = rightWant.slice();
+  const rightUnits = take(rq, rightZ1 - rightZ0);
+  const backQueue = [...rq, ...chilled];
+  const leftCapLen = Math.max(0, leftZ1 - leftZ0);
   // back wall must hold whatever the left wall can't
-  const backNeed = Math.max(0, backQueue.length - leftCap);
-  W = Math.max(W, backNeed * pitch + 2 * (G.wallDepth + 0.25), 26);
+  const backNeedLen = Math.max(0, runLen(backQueue) - leftCapLen);
+  W = Math.max(W, backNeedLen + 2 * (G.wallDepth + 0.25) + 0.5);
+
+  // ---------------- 5. x layout
   const xMin = -W / 2, xMax = W / 2;
   const blockLeft = xMin + leftStrip;
   const cols: number[] = [0];
   for (let c = 1; c <= nCols; c++) cols.push(blockLeft + (c - 1) * G.spacing);
-  const blockRightEdge = cols[nCols] + G.depth / 2;
   const produceX0 = rightUnits.length ? xMax - produceW : xMax;
+  for (const p of promoZones) { p.x0 = cols[1] - G.depth / 2; p.x1 = cols[nCols] + G.depth / 2; }
 
-  // ---------------- 5. units → frames
+  // ---------------- 6. units → frames
   const units: Record<string, UnitPlace> = {};
   const unitPos: StorePlan['unitPos'] = {};
   const walkways: Walkway[] = [];
@@ -326,11 +352,11 @@ export function storePlan(cfg: StoreConfig): StorePlan {
   blockAisles.forEach((ks, b) => {
     const blk = blocks[b];
     const n = ks.length;
-    const front = b === blocks.length - 1;
-    // front block numbers run right→left from the produce side; the back block snakes back left→right
-    const colStart = front ? nCols - n : 1;
+    const bf = nBlocks - 1 - b; // 0 = front bank
+    const rl = bf % 2 === 0; // front bank numbers right→left from the produce side; the next one snakes back
+    const colStart = rl ? nCols - n : 1;
     ks.forEach((k, i) => {
-      const slotIdx = front ? n - 1 - i : i;
+      const slotIdx = rl ? n - 1 - i : i;
       const cL = colStart + slotIdx, cR = cL + 1;
       const s = sides.get(k)!;
       const all = [...s.L, ...s.R];
@@ -342,12 +368,14 @@ export function storePlan(cfg: StoreConfig): StorePlan {
       walkways.push(w); blk.aisles.push(w.aisleNo);
       (['L', 'R'] as const).forEach((sd) => {
         const list = s[sd];
+        let along = 0;
         list.forEach((r, bay) => {
           const gx = sd === 'L' ? cols[cL] + G.depth / 2 : cols[cR] - G.depth / 2;
           const rotY = sd === 'L' ? Math.PI / 2 : -Math.PI / 2;
-          // run bays from the end nearest the shopper's way in: front block from the tills side
-          const zb = front ? blk.z1 - (bay + 0.5) * G.unitLen : blk.z0 + (bay + 0.5) * G.unitLen;
-          units[r.u.id] = { x: gx, z: zb, rotY, fixture: r.fixture, dept: r.dept.id, aisleNo: w.aisleNo, walkway: wid, wall: null, block: b };
+          const c = along + lenOf(r) / 2; along += lenOf(r) + GAPU;
+          // run bays from the end nearest the shopper's way in: the front bank from the tills side
+          const zb = bf === 0 ? blk.z1 - c : blk.z0 + c;
+          units[r.u.id] = { x: gx, z: zb, rotY, len: lenOf(r), rows: r.rows, fixture: r.fixture, dept: r.dept.id, aisleNo: w.aisleNo, walkway: wid, wall: null, block: b };
           unitPos[r.u.id] = { bay, nb: list.length };
         });
       });
@@ -363,25 +391,31 @@ export function storePlan(cfg: StoreConfig): StorePlan {
   // wall fixtures
   const placeWall = (r: Resolved, wall: 'L' | 'R' | 'B', along: number, i: number, n: number) => {
     // frame origin 0.48 m off the wall so the back panel (local z -0.46) sits against it
-    const base = { fixture: r.fixture, dept: r.dept.id, aisleNo: null, walkway: null, wall, block: null };
+    const base = { len: lenOf(r), rows: r.rows, fixture: r.fixture, dept: r.dept.id, aisleNo: null, walkway: null, wall, block: null };
     units[r.u.id] = wall === 'B' ? { ...base, x: along, z: zMin + 0.48, rotY: 0 }
       : wall === 'L' ? { ...base, x: xMin + 0.48, z: along, rotY: Math.PI / 2 }
         : { ...base, x: xMax - 0.48, z: along, rotY: -Math.PI / 2 };
     unitPos[r.u.id] = { bay: i, nb: n };
   };
-  rightUnits.forEach((r, i) => placeWall(r, 'R', rightZ1 - (i + 0.5) * pitch, i, rightUnits.length));
-  const backCap = Math.max(0, Math.floor((W - 2 * (G.wallDepth + 0.25)) / pitch));
-  const backUnits = backQueue.slice(0, backCap), leftUnits = backQueue.slice(backCap, backCap + leftCap), overflow = backQueue.slice(backCap + leftCap);
-  // back run is centred-right so the goods-in doors fit at the left end when there's room
+  /** lay a run along a wall from `start` in direction `dir` (+1 / -1) */
+  const run = (list: Resolved[], wall: 'L' | 'R' | 'B', start: number, dir: number) => {
+    let a = 0;
+    list.forEach((r, i) => { placeWall(r, wall, start + dir * (a + lenOf(r) / 2), i, list.length); a += lenOf(r) + GAPU; });
+    return a;
+  };
+  run(rightUnits, 'R', rightZ1, -1);
   const backX1 = xMax - G.wallDepth - 0.25;
-  backUnits.forEach((r, i) => placeWall(r, 'B', backX1 - (i + 0.5) * pitch, i, backUnits.length));
-  leftUnits.forEach((r, i) => placeWall(r, 'L', leftZ0 + (i + 0.5) * pitch, i, leftUnits.length));
+  const bq = backQueue.slice();
+  const backUnits = take(bq, W - 2 * (G.wallDepth + 0.25));
+  const leftUnits = take(bq, leftCapLen);
+  const overflow = bq;
+  const backUsed = run(backUnits, 'B', backX1, -1);
+  run(leftUnits, 'L', leftZ0, 1);
   // anything left over joins the right wall behind the bakery (very chilled-heavy formats)
-  overflow.forEach((r, i) => placeWall(r, 'R', rightZ0 + (i + 0.5) * pitch, i, overflow.length));
-  const backUsed = backUnits.length * pitch;
+  run(overflow, 'R', rightZ0, 1);
   const goodsIn = { x: backUsed < W - 2 * (G.wallDepth + 0.25) - 4 ? backX1 - backUsed - 2.2 : xMin + G.wallDepth + 2, z: zMin };
 
-  // ---------------- 6. checkouts: staffed tills (left) + self-checkout pods (right), centred between café and produce
+  // ---------------- 7. checkouts: staffed tills (left) + self-checkout pods (right), centred between café and produce
   const regionL = xMin + (hasCafe ? cafeW + 3.4 : 2.5), regionR = (rightUnits.length ? produceX0 : xMax) - 3.4;
   const bankLeft = Math.max(regionL, (regionL + regionR) / 2 - bankW / 2);
   const lanes: Lane[] = [];
@@ -440,8 +474,8 @@ export function storePlan(cfg: StoreConfig): StorePlan {
     // produce tables down the middle of the strip (between the wall racks and the outer gondola)
     const tx = xMax - G.wallDepth - G.wallWalk - 1.25;
     const prodUnits = rightUnits.filter((r) => r.fixture === 'produce');
-    const pz = prodUnits.map((r) => units[r.u.id].z);
-    const pz0 = pz.length ? Math.min(...pz) - G.unitLen / 2 : rightZ0 + 2, pz1 = pz.length ? Math.max(...pz) + G.unitLen / 2 : zMax - 8;
+    const pu = prodUnits.map((r) => units[r.u.id]).filter((p) => p.wall === 'R');
+    const pz0 = pu.length ? Math.min(...pu.map((p) => p.z - p.len / 2)) : rightZ0 + 2, pz1 = pu.length ? Math.max(...pu.map((p) => p.z + p.len / 2)) : zMax - 8;
     for (let z = pz1 - 1.8; z > pz0 + 0.6; z -= 4.2) ptables.push({ x: tx, z, w: 2.2, d: 2.6 });
     flowers = { x: xMax - 1.6, z: zMax - 2.4 };
     mealDeal = { x: produceX0 + 2.6, z: zMax - 4.6 };
@@ -456,7 +490,7 @@ export function storePlan(cfg: StoreConfig): StorePlan {
     const p = units[r.u.id]; if (!p) continue;
     const key = `${r.dept.id}|${p.wall}`;
     const z = wallZones.get(key) ?? { units: [], wall: p.wall! };
-    const reach = G.wallDepth + G.wallWalk - 0.6, half = G.unitLen / 2 + 0.03;
+    const reach = G.wallDepth + G.wallWalk - 0.6, half = p.len / 2 + 0.03;
     const rr: Rect = p.wall === 'B' ? { x0: p.x - half, x1: p.x + half, z0: zMin, z1: zMin + reach }
       : p.wall === 'L' ? { x0: xMin, x1: xMin + reach, z0: p.z - half, z1: p.z + half }
         : { x0: xMax - reach, x1: xMax, z0: p.z - half, z1: p.z + half };
@@ -509,22 +543,36 @@ export function storePlan(cfg: StoreConfig): StorePlan {
   obstacles.push({ x0: mealDeal.x - 1.3, x1: mealDeal.x + 1.3, z0: mealDeal.z - 0.55, z1: mealDeal.z + 0.55 });
   if (flowers) obstacles.push({ x0: flowers.x - 0.9, x1: flowers.x + 0.9, z0: flowers.z - 0.9, z1: flowers.z + 0.9 });
   obstacles.push(bank);
+  // promo / seasonal floor: pallet displays in a loose grid, walkways kept clear round the edges
+  const pallets: StorePlan['promo']['pallets'] = [];
+  for (const zn of promoZones) {
+    const zA = zn.z0 + 3.2, zB = zn.z1 - 3.2;
+    if (zB - zA < 1) continue;
+    const nz = Math.max(1, Math.floor((zB - zA) / 5.5) + 1);
+    for (let iz = 0; iz < nz; iz++) {
+      const pz = nz === 1 ? (zA + zB) / 2 : zA + (iz * (zB - zA)) / (nz - 1);
+      for (let px = zn.x0 + 3.5 + (iz % 2) * 3; px < zn.x1 - 3; px += 7.5) pallets.push({ x: px, z: pz, w: 1.6, d: 1.3 });
+    }
+  }
+  for (const pl of pallets) obstacles.push({ x0: pl.x - pl.w / 2, x1: pl.x + pl.w / 2, z0: pl.z - pl.d / 2, z1: pl.z + pl.d / 2 });
+  for (const zn of promoZones) if (zn.z1 - zn.z0 > 4) depts.push(service('seasonal', 'seasonal & offers', 'seasonal & offers', '🎉', '#ffe3c2', zn, { x: (zn.x0 + zn.x1) / 2, z: (zn.z0 + zn.z1) / 2, rot: 0 }));
   if (hasCafe) obstacles.push({ x0: xMin, x1: xMin + cw + 0.4, z0: cafeZ0 - 0.25, z1: zMax });
   for (const d of dividers) obstacles.push(d);
   // wall runs (so nobody cuts a corner through a fridge)
   const wallRect = (ids: Resolved[]) => ids.reduce<Rect | undefined>((a, r) => {
-    const p = units[r.u.id]; const h = G.unitLen / 2;
+    const p = units[r.u.id]; const h = p.len / 2;
     const rr: Rect = p.wall === 'B' ? { x0: p.x - h, x1: p.x + h, z0: zMin, z1: zMin + G.wallDepth } : p.wall === 'L' ? { x0: xMin, x1: xMin + G.wallDepth, z0: p.z - h, z1: p.z + h } : { x0: xMax - G.wallDepth, x1: xMax, z0: p.z - h, z1: p.z + h };
     return grow(a, rr);
   }, undefined);
   for (const list of [rightUnits, backUnits, leftUnits, overflow]) { const r = wallRect(list); if (r) obstacles.push(r); }
 
-  const bays = Math.max(...blockBays);
+  const bays = Math.max(1, ...[...sides.values()].map((v) => Math.max(v.L.length, v.R.length)));
   const bounds = { xMin, xMax, zMin, zMax, cx: 0, cz: (zMin + zMax) / 2, w: W, d: zMax - zMin };
   const plan: StorePlan = {
     bays, z0, z1, crossFront, crossBack, frontZ: zMax, entrances, exits, gates, lanes, checkoutZ, cafe, stockroom, mealDeal, bounds, unitPos,
-    streetDir: 1, units, walkways, depts, gondolas, blocks, cols, produce: { rect: produceRect, tables: ptables, flowers }, dividers, bank, goodsIn, obstacles, lobbyZ,
+    streetDir: 1, units, walkways, depts, gondolas, blocks, cols, produce: { rect: produceRect, tables: ptables, flowers }, dividers, bank, goodsIn, obstacles, lobbyZ, promo: { zones: promoZones, pallets },
   };
+  UNIT_LEN.clear(); for (const [id, u] of Object.entries(units)) UNIT_LEN.set(id, u.len);
   plans.set(cfg, plan);
   return plan;
 }
@@ -558,12 +606,15 @@ export const parseSlot = (slot: string) => {
   return m ? { unit: m[1], row: Number(m[2]) } : { unit: slot, row: 1 };
 };
 
+/** shelf run length of a unit (m): generator `length_m`, else one 6.4 m bay */
+export const unitLength = (unitId: string) => UNIT_LEN.get(unitId) ?? G.unitLen;
+
 export interface ProductPlacement { code: string; slot: string; lx: number; width: number; facings: number; index: number }
 /** lay products of a slot out along the row; facings contiguous */
 export function slotPlacements(slot: string, set: { products: string[]; facings: Record<string, number> } | undefined): ProductPlacement[] {
   if (!set) return [];
   const total = set.products.reduce((s, c) => s + Math.max(1, set.facings?.[c] ?? 1), 0);
-  const usable = G.unitLen - 0.4;
+  const usable = unitLength(parseSlot(slot).unit) - 0.4;
   const fw = Math.min(0.62, usable / Math.max(total, 1));
   let x = -(total * fw) / 2;
   return set.products.map((code, index) => {
@@ -585,6 +636,7 @@ const unitCache = new WeakMap<StoreConfig, Record<string, Unit>>();
 export const unitsById = (cfg: StoreConfig) => { let m = unitCache.get(cfg); if (!m) { m = Object.fromEntries(cfg.units.map((u) => [u.id, u])); unitCache.set(cfg, m); } return m; };
 /** world centre of the front facing of `code` in `slot` (falls back to slot centre) */
 export function productWorld(cfg: StoreConfig, plan: Planogram, rawSlot: string, code: string | null) {
+  storePlan(cfg);
   const slot = shelfSlotFor(plan, rawSlot, code);
   const { unit, row } = parseSlot(slot);
   const u = unitsById(cfg)[unit];
@@ -830,6 +882,7 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       const c = sp.cafe;
       const door = { x: c.x + c.w / 2 + 0.9, z: lobby, walkway: null };
       go(door);
+      go({ x: c.x + c.w / 2 - 0.6, z: lobby, walkway: null });
       go({ x: c.x + c.w / 2 - 0.6, z: c.counter.z + 1.0, walkway: null });
       go({ x: c.counter.x, z: c.counter.z + 0.8, walkway: null });
       hold(1.2, 'cafe', Math.PI, 'counter');
@@ -839,6 +892,7 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       seatFree[si] = t;
       tl.cafeSeat = si;
       go({ x: c.x + c.w / 2 - 0.6, z: Math.min(sp.bounds.zMax - 1.2, seat.z + 1), walkway: null }, 'exit');
+      go({ x: c.x + c.w / 2 - 0.6, z: lobby, walkway: null }, 'exit');
       go({ ...door }, 'exit');
     }
     const ex = sp.exits.reduce((b, e) => (Math.abs(e.x - cur.x) < Math.abs(b.x - cur.x) ? e : b), sp.exits[0]);

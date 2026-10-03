@@ -45,11 +45,11 @@ export function insideCarrier(c: Carrier, lp: THREE.Vector3) {
 export function createCarrier(world: World, R: Rapier, owner: RigidBody, carrier: Carrier, parkY: number, own: (c: Collider) => void): RigidBody | null {
   if (carrier === 'none') return null;
   const tr = carrier === 'trolley';
-  const cb = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, parkY, 1).setGravityScale(0).setLinearDamping(0.6).setAngularDamping(3).setCanSleep(false).setEnabled(false));
+  const cb = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, parkY, 1).setGravityScale(0).setLinearDamping(0.6).setAngularDamping(3).setCanSleep(false));
   cb.setEnabledTranslations(true, false, true, false);
   cb.setEnabledRotations(false, true, false, false);
   const add = (hx: number, hy: number, hz: number, x: number, y: number, z: number) => {
-    own(world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setDensity(tr ? 30 : 15).setFriction(0.7).setRestitution(0.25).setCollisionGroups(GROUP.carrier), cb));
+    own(world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setDensity(tr ? 30 : 15).setFriction(0.7).setRestitution(0.25).setCollisionGroups(0), cb));
   };
   if (tr) {
     const { hx, hz, floorY, wallH } = TROLLEY;
@@ -69,31 +69,54 @@ export function createCarrier(world: World, R: Rapier, owner: RigidBody, carrier
   return cb;
 }
 
-/** settled packs welded into carriers, keyed by beat id */
+/** collisions on/off for every collider of a body (instead of rapier's setEnabled, which panics the 0.14 solver when
+ *  toggled on jointed bodies near kinematic ones). Off = collision groups 0: touches nothing. */
+export function setSolid(rb: RigidBody | null, group: number | null) {
+  if (!rb) return;
+  const n = rb.numColliders();
+  for (let i = 0; i < n; i++) rb.collider(i).setCollisionGroups(group ?? 0);
+}
+
+/** settled packs welded into carriers, keyed by beat id. Colliders are never removed at runtime (removing colliders
+ *  from jointed bodies mid-replay panics rapier 0.14): a "removed" pack is ghosted (groups 0) and its collider is
+ *  reused, re-posed, when that pack is welded in again. */
 export class CarrierLoad {
-  private items = new Map<number, { body: RigidBody; col: Collider }>();
+  private items = new Map<number, { body: RigidBody; col: Collider; live: boolean }>();
   constructor(private world: World, private R: Rapier) {}
-  has(id: number) { return this.items.has(id); }
+  has(id: number) { return !!this.items.get(id)?.live; }
   /** weld a pack into `cbody` at carrier-local pose `local` (box size w,h,d) */
   add(cbody: RigidBody | null, id: number, local: THREE.Matrix4, size: { w: number; h: number; d: number }) {
-    if (!cbody || this.items.has(id)) return;
+    if (!cbody) return;
+    const it = this.items.get(id);
+    if (it?.live) return;
     const p = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3();
     local.decompose(p, q, s);
     try {
+      if (it && it.body === cbody) {
+        it.col.setTranslationWrtParent({ x: p.x, y: p.y, z: p.z });
+        it.col.setRotationWrtParent({ x: q.x, y: q.y, z: q.z, w: q.w });
+        it.col.setCollisionGroups(GROUP.carrier); it.live = true;
+        return;
+      }
       const col = this.world.createCollider(
         this.R.ColliderDesc.cuboid(size.w / 2, size.h / 2, size.d / 2).setTranslation(p.x, p.y, p.z).setRotation({ x: q.x, y: q.y, z: q.z, w: q.w })
           .setDensity(2).setFriction(0.9).setRestitution(0.1).setCollisionGroups(GROUP.carrier),
         cbody,
       );
-      this.items.set(id, { body: cbody, col });
+      this.items.set(id, { body: cbody, col, live: true });
     } catch { /* body already removed */ }
   }
   remove(id: number) {
-    const it = this.items.get(id); if (!it) return;
-    this.items.delete(id);
-    try { this.world.removeCollider(it.col, true); } catch { /* gone with its body */ }
+    const it = this.items.get(id); if (!it || !it.live) return;
+    it.live = false;
+    try { it.col.setCollisionGroups(0); } catch { /* gone with its body */ }
   }
-  clear() { for (const id of [...this.items.keys()]) this.remove(id); }
+  /** re-ghost dead packs after a whole-body setSolid() */
+  reghost(cbody: RigidBody | null) {
+    if (!cbody) return;
+    for (const it of this.items.values()) if (!it.live && it.body === cbody) { try { it.col.setCollisionGroups(0); } catch { /* */ } }
+  }
+  clear() { for (const id of [...this.items.keys()]) this.remove(id); this.items.clear(); }
 }
 
 /** spawn a pack as a dynamic body flying from `src` to land at `dst` after T seconds (ballistic, CCD on) */

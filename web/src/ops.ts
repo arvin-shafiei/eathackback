@@ -21,10 +21,31 @@ export interface OpsMinute {
   kpi?: Record<string, number>;
   events?: { kind: string; lane?: string }[];
 }
+/** one shopper's trip through the checkout, in SECONDS of day (engine `shoppers[]`, or synthesised from the
+ *  per-minute queue counts for the fixture). The checkout queue replays these first come, first served. */
+export interface OpsVisit {
+  id: string; lane: string; kind: 'staffed' | 'self';
+  /** joined the back of the line */
+  tJoin: number;
+  /** reached the till / kiosk (null: gave up waiting) */
+  tStart: number | null;
+  /** each item crossing the scanner */
+  scans: number[]; bag: number; pay: number; done: number;
+  /** walked off (paid, or abandoned at tJoin + wait) */
+  tLeave: number;
+  items: number; abandoned: boolean; waitS: number; qAhead?: number;
+  basket?: string[]; arch?: string; synthetic?: boolean;
+}
 export interface OpsDay {
   day: string; store?: string; open?: string; close?: string; _fixture?: string;
   params?: { name: string; value: unknown; unit?: string; source?: string }[];
   staff?: OpsStaff[]; minutes: OpsMinute[]; kpi_sources?: Record<string, string>;
+  /** checkout trips sorted by tJoin (engine shoppers[] when present, else synthesised from minutes[].queues) */
+  visits?: OpsVisit[];
+  /** engine lane ids in engine order (used to map onto this layout's lanes) */
+  laneOrder?: string[];
+  /** routing policy the engine ran (jsq / smart / …) */
+  routing?: string;
 }
 export interface OpsIndexEntry { file: string; day?: string; fixture?: boolean }
 
@@ -41,10 +62,159 @@ const parseT = (t: unknown) => {
 export function normaliseOps(raw: unknown): OpsDay | null {
   if (!raw || typeof raw !== 'object') return null;
   const r = raw as Record<string, unknown>;
+  const tl = r.timeline as { frames?: unknown[] } | undefined;
+  if (tl && Array.isArray(tl.frames)) return fromEngine(r);
   const list = (Array.isArray(r.minutes) ? r.minutes : Array.isArray(r.timeline) ? r.timeline : []) as Record<string, unknown>[];
   const minutes = list.map((m) => ({ ...(m as object), t: parseT(m.t ?? m.minute ?? m.time) }) as OpsMinute).filter((m) => Number.isFinite(m.t)).sort((a, b) => a.t - b.t);
   if (!minutes.length) return null;
-  return { ...(r as unknown as OpsDay), minutes };
+  const day = { ...(r as unknown as OpsDay), minutes };
+  if (!day.visits) day.visits = synthVisits(day);
+  return day;
+}
+
+// ---------------------------------------------------------------- the ops engine's own format (sim/ops.py)
+// { timeline: { frames: [{ t (s of day), inside, q, fill, staff, spills, cafe }] , fill_slot_order }, shoppers[], events[],
+//   orders[], geometry.lanes, kpis } → per-minute OpsMinute rows + per-shopper checkout visits.
+interface EFrame { t: number; inside?: number; q?: Record<string, number>; fill?: number[]; staff?: { id: string; role: string; x: number; z: number; task: string }[]; spills?: string[]; cafe?: number }
+interface EShopper { id: string; arch?: string; lane?: string; lane_type?: string; t_join?: number; t_start?: number; wait_s?: number; q_ahead?: number; items_n?: number; basket?: string[]; outcome?: string; t_leave?: number; theatre?: { unload?: number; scans?: number[]; bag?: number; pay?: number; done?: number }; oos?: { t: number; price?: number; recovered_gbp?: number; reaction?: string }[] }
+const ROLE_MAP: Record<string, string> = { restock: 'restocker', clean: 'cleaner', guard: 'guard', manager: 'manager', cashier: 'cashier' };
+function fromEngine(r: Record<string, unknown>): OpsDay | null {
+  const tl = r.timeline as { frames: EFrame[]; fill_slot_order?: string[] };
+  const frames = tl.frames.filter((f) => Number.isFinite(f.t)).sort((a, b) => a.t - b.t);
+  if (!frames.length) return null;
+  const order = tl.fill_slot_order ?? [];
+  const events = (Array.isArray(r.events) ? r.events : []) as { t: number; type: string; [k: string]: unknown }[];
+  const shoppers = (Array.isArray(r.shoppers) ? r.shoppers : []) as EShopper[];
+  const geo = (r.geometry ?? {}) as { lanes?: { id: string; type?: string }[]; cafe?: { seats?: number } };
+  const seats = geo.cafe?.seats ?? 24;
+  const minOf = (t: number) => Math.floor(t / 60);
+  // spills: id → unit; orders / alarms bucketed by minute
+  const spillUnit: Record<string, string> = {};
+  const alarms: Record<number, OpsMinute['alarms']> = {};
+  for (const e of events) {
+    if (e.type === 'spill') spillUnit[String(e.id)] = String(e.unit ?? '');
+    if (e.type === 'alarm') (alarms[minOf(e.t)] ??= []).push({ gate: String(e.gate ?? ''), kind: 'eas' });
+  }
+  const orders: Record<number, NonNullable<OpsMinute['orders']>> = {};
+  for (const o of (Array.isArray(r.orders) ? r.orders : []) as { t: number; code: string; qty?: number; ROP?: number; IP?: number }[]) {
+    const b = (orders[minOf(o.t)] ??= []);
+    if (b.length < 3) b.push({ code: o.code, qty: o.qty, why: o.IP !== undefined && o.ROP !== undefined ? `on hand + on order ${o.IP} < reorder point ${Math.round(o.ROP)}` : undefined });
+  }
+  // lost sales: out-of-stock moments the shopper didn't recover (price - recovered), cumulative by minute
+  const lostAt: { t: number; gbp: number }[] = [];
+  for (const s of shoppers) for (const o of s.oos ?? []) { const g = Math.max(0, (o.price ?? 0) - (o.recovered_gbp ?? 0)); if (g > 0) lostAt.push({ t: o.t, gbp: g }); }
+  lostAt.sort((a, b) => a.t - b.t);
+  const visits = engineVisits(shoppers);
+  let li = 0, lost = 0;
+  const minutes: OpsMinute[] = frames.map((f) => {
+    const m = minOf(f.t);
+    while (li < lostAt.length && lostAt[li].t <= f.t) lost += lostAt[li++].gbp;
+    const stock: Record<string, number> = {};
+    (f.fill ?? []).forEach((v, i) => { if (order[i]) stock[order[i]] = v; });
+    const staff = (f.staff ?? []).map((s) => {
+      const [verb, arg = ''] = s.task.split(' ');
+      const role = ROLE_MAP[s.role] ?? s.role;
+      let task = verb, at: At = { x: s.x, z: s.z };
+      if (verb === 'restock') at = arg.split(':')[0];
+      else if (verb === 'to') { task = 'walk'; at = arg; }
+      else if (verb === 'fetch') at = 'stockroom';
+      else if (verb === 'clean') at = `spill:${arg}`;
+      else if (verb === 'respond_alarm') task = 'respond';
+      else if (verb === 'idle') at = role === 'restocker' ? 'stockroom' : role === 'cleaner' ? 'cafe' : role === 'guard' ? 'G1a' : at;
+      return { id: s.id, task, at };
+    });
+    return {
+      t: m, in_store: f.inside, queues: f.q, staff,
+      spills: (f.spills ?? []).map((id) => ({ id, at: spillUnit[id] ? `${spillUnit[id]}-r2` : 'U1-r2', state: staff.some((x) => x.at === `spill:${id}` && x.task === 'clean') ? 'cleaning' : 'open' })),
+      orders: orders[m], alarms: alarms[m],
+      cafe: { occupied: f.cafe ?? 0, seats },
+      stock, kpi: { lost_sales_gbp: Math.round(lost * 100) / 100 },
+    };
+  });
+  const roster = new Map<string, OpsStaff>();
+  for (const f of frames) for (const s of f.staff ?? []) if (!roster.has(s.id)) roster.set(s.id, { id: s.id, role: ROLE_MAP[s.role] ?? s.role });
+  if (![...roster.values()].some((s) => s.role === 'manager')) roster.set('M1', { id: 'M1', role: 'manager', name: 'duty manager (presentation: places the engine\'s orders)' });
+  const cli = (r.cli ?? {}) as { routing?: string; restock?: string };
+  return {
+    day: String(r.id ?? 'ops day'), store: 'xl', staff: [...roster.values()], minutes, visits,
+    laneOrder: (geo.lanes ?? []).map((l) => l.id), routing: cli.routing,
+    kpi_sources: { lost_sales_gbp: `sum over shoppers[].oos of price − recovered_gbp up to now (ops engine ${String(r.id ?? '')})` },
+  };
+}
+function engineVisits(shoppers: EShopper[]): OpsVisit[] {
+  const out: OpsVisit[] = [];
+  for (const s of shoppers) {
+    if (!s.lane || s.t_join === undefined) continue;
+    const kind = s.lane_type === 'staffed' || /^T/.test(s.lane) ? 'staffed' : 'self';
+    const th = s.theatre;
+    const abandoned = s.outcome === 'abandoned' || s.t_start === undefined || !th;
+    const tLeaveQ = s.t_join + (s.wait_s ?? 60);
+    const done = th?.done ?? tLeaveQ;
+    out.push({
+      id: s.id, lane: s.lane, kind, tJoin: s.t_join, tStart: abandoned ? null : (s.t_start ?? th!.unload ?? s.t_join),
+      scans: th?.scans ?? [], bag: th?.bag ?? done, pay: th?.pay ?? done, done,
+      tLeave: abandoned ? tLeaveQ : done, items: s.items_n ?? th?.scans?.length ?? 0, abandoned, waitS: s.wait_s ?? 0, qAhead: s.q_ahead,
+      basket: s.basket, arch: s.arch,
+    });
+  }
+  return out.sort((a, b) => a.tJoin - b.tJoin);
+}
+/** fixture days only carry minutes[].queues: synthesise a first-come-first-served stream per lane whose in-system
+ *  count tracks those numbers (presentation; labelled synthetic). service times: assumption (staffed ~140 s for
+ *  ~26 items, self ~110 s for ~9 items, the engine's own by_lane_type means on the xl run). */
+export function synthVisits(day: OpsDay): OpsVisit[] {
+  const out: OpsVisit[] = [];
+  const lanes = new Set<string>();
+  for (const m of day.minutes) for (const k of Object.keys(m.queues ?? {})) lanes.add(k);
+  let n = 0;
+  for (const lane of lanes) {
+    const kind: OpsVisit['kind'] = /^T/.test(lane) ? 'staffed' : 'self';
+    const line: OpsVisit[] = []; // in system, FIFO
+    let free = 0;
+    for (const m of day.minutes) {
+      const T = m.t * 60;
+      while (line.length && line[0].tLeave <= T) line.shift();
+      const want = Math.max(0, Math.round(m.queues?.[lane] ?? 0));
+      let add = want - line.length, k = 0;
+      while (add-- > 0) {
+        const h = hash01(`${lane}${m.t}${k++}`);
+        const tJoin = T + h * 45;
+        const items = kind === 'staffed' ? 8 + Math.floor(h * 20) : 2 + Math.floor(hash01(`${lane}${n}i`) * 10);
+        const scanGap = kind === 'staffed' ? 3.6 : 7;
+        const tStart = Math.max(tJoin, free);
+        const scans = Array.from({ length: items }, (_, i) => tStart + 8 + i * scanGap);
+        const bag = scans[items - 1] + 6, pay = bag + 10, done = pay + 12;
+        free = done;
+        const v: OpsVisit = { id: `fx${n++}`, lane, kind, tJoin, tStart, scans, bag, pay, done, tLeave: done, items, abandoned: false, waitS: tStart - tJoin, synthetic: true };
+        line.push(v); out.push(v);
+      }
+    }
+  }
+  return out.sort((a, b) => a.tJoin - b.tJoin);
+}
+const hash01 = (s: string) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 100000) / 100000; };
+
+/** engine lane id → this layout's lane id. Same id when the layout has it; else staffed T<n> by number and self
+ *  lanes (S<n>, SW<n>, SE<n>) by their position in the engine's lane order, both wrapped onto what this store has. */
+export function laneMapper(cfg: StoreConfig, laneOrder?: string[]): (id: string) => string | null {
+  const P = storePlan(cfg);
+  const ids = new Set(P.lanes.map((l) => l.id));
+  const st = P.lanes.filter((l) => l.kind === 'staffed'), se = P.lanes.filter((l) => l.kind === 'self');
+  const engSelf = (laneOrder ?? []).filter((x) => !/^T/.test(x));
+  const cache = new Map<string, string | null>();
+  return (id: string) => {
+    if (cache.has(id)) return cache.get(id)!;
+    let out: string | null = null;
+    if (ids.has(id) && !engSelf.length) out = id;
+    else if (/^T\d+$/.test(id)) out = st.length ? st[(Number(id.slice(1)) - 1) % st.length].id : se[0]?.id ?? null;
+    else if (se.length) {
+      let i = engSelf.indexOf(id);
+      if (i < 0) { const m = /(\d+)$/.exec(id); i = m ? Number(m[1]) - 1 : 0; }
+      out = se[i % se.length].id;
+    } else out = st[0]?.id ?? null;
+    cache.set(id, out);
+    return out;
+  };
 }
 export function minuteAt(day: OpsDay | null, t: number): OpsMinute | null {
   if (!day?.minutes.length) return null;
@@ -62,7 +232,7 @@ export function resolveAt(cfg: StoreConfig, at: At | undefined, spills?: OpsMinu
   if (typeof at === 'object') return at;
   const P = storePlan(cfg);
   if (at === 'stockroom') return { x: P.stockroom.door.x + 1.4, z: P.stockroom.door.z + (role === 'cleaner' ? 1 : 0) };
-  if (at === 'office') return { x: P.stockroom.door.x - 1.6, z: P.stockroom.door.z - 1.5 };
+  if (at === 'office') return { x: P.stockroom.door.x - 1.6, z: P.stockroom.door.z + 1.5 };
   if (at === 'cafe') return { x: P.cafe.counter.x + 1.9, z: P.cafe.counter.z + 0.4 };
   if (at.startsWith('spill:')) { const sp = spills?.find((s) => s.id === at.slice(6)); const p = sp ? spillPos(cfg, sp.at) : null; return p ? { x: p.x + 0.7, z: p.z } : null; }
   const lane = P.lanes.find((l) => l.id === at);
@@ -81,8 +251,8 @@ export function gateFor(cfg: StoreConfig, id: string | undefined) {
   if (!id) return gates[0];
   const g = gates.find((x) => x.id === id);
   if (g) return g;
-  const m = /^G(\d+)([ab])?$/.exec(id);
-  if (!m) return null;
+  const m = /^[GE](\d+)([ab])?$/.exec(id);
+  if (!m || !gates.length) return null;
   return gates[((Number(m[1]) - 1) * 2 + (m[2] === 'b' ? 1 : 0)) % gates.length];
 }
 
@@ -126,6 +296,14 @@ function alarmsUpTo(day: OpsDay, t: number) {
   return best < 0 ? { n: 0, gbp: 0 } : c[best];
 }
 
+/** checkout waits of the shoppers who reached a till (or gave up) in the 30 minutes up to `min` */
+function visitWaits(day: OpsDay, min: number): { p50: number | null; p90: number | null; src: string } {
+  const T = min * 60, vs = day.visits ?? [];
+  const w: number[] = [];
+  for (const v of vs) { if (v.tJoin > T) break; const t = v.tStart ?? v.tLeave; if (t <= T && t > T - 1800) w.push(v.waitS); }
+  const src = `${w.length} checkout visits (${vs[0]?.synthetic ? 'synthesised from minutes[].queues' : 'engine shoppers[].wait_s'}) reaching a till in ${hhmm(min - 30)}–${hhmm(min)} (ops day ${day.day})`;
+  return w.length ? { p50: Math.round(quant(w, 0.5)), p90: Math.round(quant(w, 0.9)), src } : { p50: null, p90: null, src };
+}
 /** pure: KPIs of `day` at minute-of-day `opsMin` */
 export function opsKpisAt(day: OpsDay | null, opsMin: number): OpsKpis | null {
   const m = minuteAt(day, opsMin);
@@ -144,19 +322,21 @@ export function opsKpisAt(day: OpsDay | null, opsMin: number): OpsKpis | null {
   const stockouts = pick('stockouts', stockCount, 'stock (< 5%)');
   const spills = pick('spills_open', (m.spills ?? []).filter((s) => s.state !== 'done').length, 'spills');
   const cafeOcc = pick('cafe_occupancy', seats ? occ / seats : 0, 'cafe');
+  const vw = visitWaits(day, m.t);
   const lost = pick('lost_sales_gbp', 0, 'kpi.lost_sales_gbp');
   const shrink = pick('shrink_gbp', al.gbp, 'alarms[].value_gbp (cumulative)');
   const incidents = pick('incidents', al.n, 'alarms (cumulative)');
   return {
     opsMin: m.t, time: hhmm(m.t),
     queueP50: quant(q, 0.5), queueP90: quant(q, 0.9), queueMax: q.length ? Math.max(...q) : 0, queueTotal: q.reduce((a, b) => a + b, 0),
-    waitP50s: num(k.wait_p50_s), waitP90s: num(k.wait_p90_s),
+    waitP50s: num(k.wait_p50_s) ?? vw.p50, waitP90s: num(k.wait_p90_s) ?? vw.p90,
     stockouts: stockouts.v, lostSalesGbp: lost.v, spillsOpen: spills.v,
     cafeOccupied: occ, cafeSeats: seats, cafeOccupancy: cafeOcc.v, cafeTurnedAway: m.cafe?.turned_away ?? 0,
     alarms: al.n, alarmActive: recent, shrinkGbp: shrink.v, incidents: incidents.v,
     inStore: m.in_store ?? 0,
     sources: {
-      queue: counted('queues'), wait_p50_s: engine('wait_p50_s'), wait_p90_s: engine('wait_p90_s'),
+      queue: counted('queues'),
+      wait_p50_s: num(k.wait_p50_s) !== null ? engine('wait_p50_s') : vw.src, wait_p90_s: num(k.wait_p90_s) !== null ? engine('wait_p90_s') : vw.src,
       stockouts: stockouts.s, lost_sales_gbp: lost.s, spills_open: spills.s, cafe_occupancy: cafeOcc.s,
       alarms: counted('alarms (cumulative)'), shrink_gbp: shrink.s, incidents: incidents.s, in_store: counted('in_store'),
     },

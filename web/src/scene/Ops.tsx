@@ -105,7 +105,7 @@ export function Ops({ cfg, ops: opsProp, timeRef, clockStart: clockProp, planogr
 
   const stockouts = useMemo(() => {
     if (!rec?.stock) return [];
-    return Object.entries(rec.stock).filter(([, v]) => v < 0.05).map(([slot]) => ({ slot, p: productWorld(cfg, planogram, slot, null) })).filter((x) => x.p).slice(0, 8);
+    return Object.entries(rec.stock).filter(([, v]) => v < 0.05).map(([slot]) => ({ slot, p: productWorld(cfg, planogram, slot, null) })).filter((x, i, a) => x.p && a.findIndex((y) => y.slot.split('-r')[0] === x.slot.split('-r')[0]) === i).slice(0, 8); // one sticker per unit
   }, [rec, cfg, planogram]);
 
   const on = (k: 'staff' | 'checkout' | 'cafe' | 'security') => show?.[k] !== false;
