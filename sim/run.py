@@ -28,6 +28,7 @@ sys.path.insert(0, HERE)
 
 import notice  # noqa: E402
 import prompts  # noqa: E402
+import uploads  # noqa: E402
 
 FIX = os.path.join(HERE, "fixtures")
 RUNS_DIR = os.path.join(ROOT, "data", "sim", "runs")
@@ -60,8 +61,31 @@ def load_json(path):
         return json.load(f)
 
 
+# which store layout to simulate: None = the standard 8-unit store, "xl" = data/store/store_xl.config.json with
+# planogram_xl.json and catalog_xl.json. sim/server.py sets it per request (under its run lock) from "store".
+STORE_VARIANT = None
+STORE_VARIANTS = (None, "xl")
+
+
+def _variant_file(path: str) -> str:
+    """data/store/planogram.json -> data/store/planogram_xl.json when the xl store is selected and the file exists."""
+    if not STORE_VARIANT:
+        return path
+    head, tail = os.path.split(path)
+    stem, ext = tail.split(".", 1)
+    alt = os.path.join(head, f"{stem}_{STORE_VARIANT}.{ext}")
+    return alt if os.path.exists(alt) else path
+
+
+def notice_row(store: dict, r: int) -> int:
+    """Shelf row -> the row sim/notice.py has a coefficient for (top/eye/bottom), via the store's notice_row_map."""
+    name = (store.get("notice_row_map") or {}).get(str(r))
+    by_name = {v: k for k, v in notice.ROW_NAMES.items()}
+    return by_name.get(name, r if r in notice.ROW_NAMES else 3)
+
+
 def load_store():
-    p = _first_existing(os.path.join(ROOT, "data/store/store.config.json"), os.path.join(FIX, "store.config.json"))
+    p = _first_existing(_variant_file(os.path.join(ROOT, "data/store/store.config.json")), os.path.join(FIX, "store.config.json"))
     return load_json(p), os.path.relpath(p, ROOT)
 
 
@@ -69,12 +93,12 @@ def load_planogram(planogram):
     if isinstance(planogram, dict):
         return planogram, "inline"
     p = _first_existing(planogram and os.path.join(ROOT, planogram) if planogram and not os.path.isabs(planogram) else planogram,
-                        os.path.join(ROOT, "data/store/planogram.json"), os.path.join(FIX, "planogram.json"))
+                        _variant_file(os.path.join(ROOT, "data/store/planogram.json")), os.path.join(FIX, "planogram.json"))
     return load_json(p), os.path.relpath(p, ROOT)
 
 
 def load_catalog(planogram: dict | None = None):
-    real = os.path.join(ROOT, "data/products/catalog.json")
+    real = _variant_file(os.path.join(ROOT, "data/products/catalog.json"))
     paths = [real, os.path.join(FIX, "catalog.json")]
     cat = {}
     used = []
@@ -246,7 +270,7 @@ def simulate_agent(a, ctx):
             for pos, code in enumerate(prods):
                 prod = catalog[code]
                 fac = int((slot.get("facings") or {}).get(code, 1))
-                p, factors = notice.p_notice(row=r, facings=fac, pos=pos, n_in_set=n, on_mission=on_mission,
+                p, factors = notice.p_notice(row=notice_row(store, r), facings=fac, pos=pos, n_in_set=n, on_mission=on_mission,
                                              ocean=ocean, role=prod.get("role", ""), persona_params=sp,
                                              nutriscore=prod.get("nutriscore", ""), category=u["category"])
                 is_noticed = hu(seed, aid, "notice", code) < p
@@ -297,7 +321,7 @@ def simulate_agent(a, ctx):
                         slot_events[code].update(decision="walk_past", stage_reached="looked", reason="(jev error)",
                                                  mechanism="error", engine="jev", label_read=reads_labels)
             elif noticed:
-                cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES[r],
+                cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES[notice_row(store, r)],
                                               facings=fac) for code, prod, fac in noticed]
                 if engine == "mock":
                     for c, (_, prod, _) in zip(cards, noticed):
@@ -513,7 +537,7 @@ def compute_stats(agents, catalog):
 # ---------------------------------------------------------------- driver
 def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False, max_tokens=250,
                    workers=None, only_agents=None, save=True, run_id=None, label="", catalog_patch=None,
-                   engine=None, persona_ids=None, agents_per_persona=None):
+                   engine=None, persona_ids=None, agents_per_persona=None, extra_products=None):
     engine = "mock" if mock else (engine or DEFAULT_ENGINE)
     if engine not in ENGINES:
         raise ValueError(f"engine must be one of {ENGINES}")
@@ -526,10 +550,11 @@ def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False
     store, store_src = load_store()
     plan, plan_src = load_planogram(planogram)
     catalog, cat_src = load_catalog(plan)
+    catalog, uploaded = uploads.merge(catalog, extra_products, store)
     if catalog_patch:
         catalog = dict(catalog)
         for code, upd in catalog_patch.items():
-            catalog[code] = {**catalog[code], **upd}
+            catalog[code] = {**catalog.get(code, {}), **upd}
     personas, pers_src = load_personas()
     if persona_ids:
         want = list(dict.fromkeys(persona_ids))
@@ -575,6 +600,8 @@ def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False
                     **({"pricing": "TypeSafe Jev: $0.042 per 1M input tokens, output free"} if engine == "jev" else {})}}
     if isinstance(planogram, dict):
         run["planogram_inline"] = plan
+    if uploaded:
+        run["catalog_inline"] = uploaded
     if save:
         os.makedirs(RUNS_DIR, exist_ok=True)
         with open(os.path.join(RUNS_DIR, run_id + ".json"), "w") as f:

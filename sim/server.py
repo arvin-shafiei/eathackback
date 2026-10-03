@@ -8,6 +8,11 @@ POST /api/run  also takes "persona_ids": [...] and "agents_per_persona": N to te
 GET  /api/personas        all personas (data/personas/lens + data/personas/custom), each with "custom": bool
 POST /api/personas        persona builder: validate, normalise, fill sim_params from the nearest persona, save
                           to data/personas/custom/<slug>.json, return it
+POST /api/placement/scan        {"product": "<code>", "planogram": <dict>, "agents": 200, "seed": 1}
+POST /api/placement/experiment  {"product": "<code>", "planogram": <dict>, "placements": [{"slot","pos","facings"}], "agents": 60, "seeds": [1], "engine": "jev"}
+POST /api/import     {"ref": "<tesco product link | barcode | open food facts link>"}  -> product draft
+/api/run, /api/agent_run, /api/optimise and /api/placement/* also take "products": [<brand-supplied product>, ...]
+(sim/uploads.py); /api/agent_run takes "exclude": [codes].
 GET  /api/runs            list of runs (id, created, models, n_agents, cost)
 GET  /api/runs/<run_id>   full run json
 GET  /api/coefficients    notice-model coefficients with sources
@@ -15,6 +20,7 @@ GET  /api/health
 """
 from __future__ import annotations
 
+import contextlib
 import datetime as dt
 import glob
 import json
@@ -33,6 +39,19 @@ import run as simrun  # noqa: E402
 
 MAX_AGENTS = 200  # guard against an accidental huge spend from the UI
 _run_lock = threading.Lock()
+
+
+@contextlib.contextmanager
+def _store_for(body):
+    """Hold the run lock and point the loaders in sim/run.py at the store the request names ("store": "xl").
+    Reset on the way out, so a request that names no store always gets the standard one."""
+    with _run_lock:
+        simrun.STORE_VARIANT = body.get("store") if body.get("store") in simrun.STORE_VARIANTS else None
+        try:
+            yield
+        finally:
+            simrun.STORE_VARIANT = None
+
 USER_SRC = "user-defined (dashboard)"
 OCEAN_KEYS = "OCEAN"
 
@@ -260,7 +279,7 @@ class H(BaseHTTPRequestHandler):
             b = self._body()
             if path == "/api/personas":
                 return self._send(200, build_persona(b))
-            with _run_lock:
+            with _store_for(b):
                 if path == "/api/run":
                     engine = "mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE)
                     pids = b.get("persona_ids") or None
@@ -273,13 +292,15 @@ class H(BaseHTTPRequestHandler):
                                                 models=b.get("models") if engine == "llm" else None,
                                                 seed=int(b.get("seed", 1)), engine=engine,
                                                 max_tokens=min(int(b.get("max_tokens", 250)), 300),
-                                                label=b.get("label", "ui"))
+                                                label=b.get("label", "ui"),
+                                                extra_products=b.get("products"))
                     return self._send(200, run)
                 if path == "/api/agent_run":
                     import agent_shopper
                     run = agent_shopper.run_agents(b.get("models") or ["jev"],
                                                    min(int(b.get("runs", 3)), 20), int(b.get("seed", 1)),
-                                                   bool(b.get("mock", False)))
+                                                   bool(b.get("mock", False)),
+                                                   extra_products=b.get("products"), exclude=b.get("exclude"))
                     return self._send(200, run)
                 if path == "/api/optimise":
                     import optimise
@@ -287,7 +308,26 @@ class H(BaseHTTPRequestHandler):
                                             b.get("seeds", [1]), b.get("models"), bool(b.get("mock", False)),
                                             b.get("edits", ["eye", "facings", "claim"]), b.get("price"),
                                             b.get("planogram"),
-                                            engine="mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE))
+                                            engine="mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE),
+                                            extra_products=b.get("products"))
+                    return self._send(200, out)
+                if path == "/api/import":
+                    import tesco
+                    return self._send(200, tesco.import_product(str(b.get("ref") or "")))
+                if path == "/api/placement/scan":
+                    import placement
+                    out = placement.scan(b["product"], planogram=b.get("planogram"),
+                                         extra_products=b.get("products"),
+                                         agents=min(int(b.get("agents", 200)), 1000), seed=int(b.get("seed", 1)))
+                    return self._send(200, out)
+                if path == "/api/placement/experiment":
+                    import placement
+                    out = placement.experiment(b["product"], planogram=b.get("planogram"),
+                                               extra_products=b.get("products"),
+                                               placements=(b.get("placements") or [])[:5],
+                                               agents=min(int(b.get("agents", 60)), MAX_AGENTS),
+                                               seeds=b.get("seeds", [1]), models=b.get("models"),
+                                               engine="mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE))
                     return self._send(200, out)
             self._send(404, {"error": "not found"})
         except BadRequest as e:

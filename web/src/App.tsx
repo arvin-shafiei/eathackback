@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Arm, Persona, Planogram, Product, Run, RunIndexEntry } from './types';
 import { isAI } from './types';
 import { loadAll, loadRun, SIM_SERVER, type Loaded } from './data';
+import { api } from './api';
 import { buildTimeline, scheduleCheckouts, type Timeline } from './layout';
 import { armFilter, pickRates, archetypeOf } from './stats';
 import { Scene, type CamMode } from './scene/Scene';
@@ -14,6 +15,8 @@ import { AgentPanel } from './ui/AgentPanel';
 import { TracePanel } from './ui/TracePanel';
 import { EditPanel } from './ui/EditPanel';
 import { ComparePanel } from './ui/ComparePanel';
+import { AddProductPanel } from './ui/AddProductPanel';
+import { InsightsPanel } from './ui/InsightsPanel';
 import { aiGear, isAIArch, shopperLabel } from './ui/aiArch';
 import { archColor, archLabel, AI_COLOR, ARCH_GEAR, carrierFor } from './theme';
 
@@ -22,7 +25,11 @@ type Panel =
   | { kind: 'agent'; id: string }
   | { kind: 'trace'; agentId: string; step: number; back?: Panel }
   | null;
-type Mode = 'replay' | 'edit' | 'compare';
+type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights';
+const MODE_LABEL: Record<Mode, string> = { replay: '▶ replay', compare: '🧍 vs 🤖', edit: '✏️ edit shelf', add: '＋ add product', insights: '📊 analytics' };
+/** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
+const UPLOAD_AGENTS = 150;
+const UPLOAD_AI_RUNS = 3;
 type Heat = 'off' | 'pick' | 'gap';
 
 const SPEEDS = [0.5, 1, 2, 4, 8];
@@ -69,6 +76,8 @@ export default function App() {
   const [editSel, setEditSel] = useState<string | null>(null);
   const [rerun, setRerun] = useState<{ busy: boolean; msg: string | null; ok?: boolean }>({ busy: false, msg: null });
   const [showLegend, setShowLegend] = useState(true);
+  const [focus, setFocus] = useState<string | null>(null);
+  const [job, setJob] = useState<{ busy: boolean; msg: string | null }>({ busy: false, msg: null });
   const [soundOn, setSoundOn] = useState(false);
   const [shakeOn, setShakeOn] = useState(true);
   const [bonks, setBonks] = useState(0);
@@ -114,7 +123,7 @@ export default function App() {
     window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
   }, []);
 
-  const products = useMemo<Record<string, Product>>(() => Object.fromEntries((data?.catalog ?? []).map((p) => [p.code, p])), [data]);
+  const products = useMemo<Record<string, Product>>(() => Object.fromEntries([...(data?.catalog ?? []), ...(aiRun?.catalog_inline ?? []), ...(run?.catalog_inline ?? [])].map((p) => [p.code, p])), [data, run, aiRun]);
   const personas = useMemo<Record<string, Persona>>(() => Object.fromEntries((data?.personas ?? []).map((p) => [p.id, p])), [data]);
   // merge a separate ai-agent-arm run (agent_*.json) into the human run for the compare view
   const view = useMemo<Run | null>(() => {
@@ -177,7 +186,7 @@ export default function App() {
     if (!plan || !run) return;
     setRerun({ busy: true, msg: null });
     try {
-      const init: RequestInit = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planogram: plan, agents: 20, seed: 1, mock: !useLLM, label: 'ui-edit', base_run_id: run.run_id, moves }) };
+      const init: RequestInit = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planogram: plan, agents: 20, seed: 1, mock: !useLLM, label: 'ui-edit', base_run_id: run.run_id, moves, products: run.catalog_inline }) };
       // try the vite dev proxy first (no CORS needed), then the sim server directly
       let res = await fetch('/api/run', init).catch(() => null);
       if (!res || !res.ok || !(res.headers.get('content-type') ?? '').includes('json')) res = await fetch(`${SIM_SERVER}/api/run`, init);
@@ -197,6 +206,47 @@ export default function App() {
     }
   };
 
+  const register = (r: Run, ai = false) => {
+    setLocalRuns((m) => ({ ...m, [r.run_id]: r }));
+    setRuns((rs) => [{ run_id: r.run_id, file: '', created: r.created, agents: r.agents.length, ai_agents: ai ? r.agents.length : 0 }, ...rs]);
+    if (ai) setAiRunId(r.run_id); else setRunId(r.run_id);
+  };
+  /** simulate a store (optionally with brand-supplied products) and load the result */
+  const simulate = async (p: Planogram, extra: Product[], label: string, withAI = false) => {
+    setJob({ busy: true, msg: `${UPLOAD_AGENTS} shoppers are walking the store…` });
+    try {
+      const human = await api.run({ planogram: p, products: extra, agents: UPLOAD_AGENTS, seed: 1, mock: !useLLM, label });
+      let warn: string | null = null;
+      let ai: Run | null = null;
+      if (withAI && data) {
+        setJob({ busy: true, msg: 'ai shopping agents are reading the feed…' });
+        // both arms shop the same range: drop every catalogue product that is no longer on this shelf
+        const onShelf = new Set(Object.values(p).flatMap((s) => s.products));
+        const exclude = Object.values(data.planogram).flatMap((s) => s.products).filter((c) => !onShelf.has(c));
+        try { ai = await api.agentRun({ products: extra, exclude, runs: UPLOAD_AI_RUNS, seed: 1, mock: !useLLM }); }
+        catch (e) { setAiRunId(''); warn = `the shoppers finished, but the ai-agent arm failed (${(e as Error).message}), so there is no human vs ai comparison for this run.`; }
+      }
+      // both runs land in one render: the physics crowd rebuilds its bodies once, not twice in a row
+      if (ai) register(ai, true);
+      register(human);
+      setJob({ busy: false, msg: warn });
+      return true;
+    } catch (e) {
+      setJob({ busy: false, msg: `the sim server did not finish the run: ${(e as Error).message}. start it with "python3 sim/server.py".` });
+      return false;
+    }
+  };
+  const addProduct = async (product: Product, slot: string, replaces: string) => {
+    const set = basePlan?.[slot];
+    if (!basePlan || !set) return;
+    if (!set.products.includes(replaces)) { setJob({ busy: false, msg: 'that product is no longer in that slot. pick the product to replace again.' }); return; }
+    const { [replaces]: oldFacings, ...facings } = set.facings ?? {};
+    const next: Planogram = { ...basePlan, [slot]: { ...set, products: set.products.map((c) => (c === replaces ? product.code : c)), facings: { ...facings, [product.code]: oldFacings ?? 1 } } };
+    const others = (run?.catalog_inline ?? []).filter((x) => x.code !== product.code && x.code !== replaces);
+    setFocus(product.code);
+    if (await simulate(next, [...others, product], `upload ${product.name}`, true)) setMode('insights');
+  };
+
   if (err) return <div className="splash"><div className="card splash-card"><h1 className="display">couldn't load the store</h1><p>{err}</p><p className="muted">run <code>npm run fixtures</code> or <code>npm run sync</code> in <code>web/</code> so <code>public/data/</code> has the json files.</p></div></div>;
   if (!data || !plan || !basePlan || !fontsReady) return <div className="splash"><div className="sticker sticker-brand big pulse">stocking shelves…</div></div>;
 
@@ -207,6 +257,9 @@ export default function App() {
   const archetypesInRun = view ? [...new Set(view.agents.map((a) => archetypeOf(a, personas)))] : []; // AI agents group by archetype too
   const slotOf = (code: string) => Object.entries(basePlan).find(([, s]) => s.products.includes(code))?.[0];
   const counts = view ? agents.reduce((acc, a) => { const tl = timelines[a.agent_id]; if (!tl) return acc; for (const s of tl.segs) if (s.kind === 'dwell' && s.t0 <= uiTime && s.event) acc[s.event.decision] = (acc[s.event.decision] ?? 0) + 1; return acc; }, {} as Record<string, number>) : {};
+
+  const onShelf = Object.values(basePlan).flatMap((s) => s.products);
+  const focusProduct = products[focus ?? ''] ?? products[run?.catalog_inline?.[0]?.code ?? ''] ?? products[onShelf[0]];
 
   let side: JSX.Element | null = null;
   if (view && panel?.kind === 'product' && products[panel.code]) side = <ProductPanel run={view} product={products[panel.code]} slot={slotOf(panel.code)} arm={arm} personas={personas} onTrace={openTrace} onClose={() => setPanel(null)} />;
@@ -232,7 +285,7 @@ export default function App() {
       <div className="stage">
         <Scene
           cfg={data.config} planogram={mode === 'edit' ? plan : basePlan} replayPlan={basePlan} products={products} personas={personas}
-          agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && mode !== 'edit'} speed={speed} duration={duration}
+          agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && mode !== 'edit' && mode !== 'add' && mode !== 'insights'} speed={speed} duration={duration}
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
@@ -248,9 +301,9 @@ export default function App() {
           <span className="brand-chip" aria-hidden>🛒🤖</span>
         </div>
         <nav className="seg seg-main" aria-label="mode">
-          {(['replay', 'compare', 'edit'] as Mode[]).map((m) => (
+          {(['replay', 'compare', 'edit', 'add', 'insights'] as Mode[]).map((m) => (
             <button key={m} className={`seg-btn ${mode === m ? 'on' : ''}`} onClick={() => { setMode(m); if (m === 'edit') setPanel(null); }}>
-              {m === 'replay' ? '▶ replay' : m === 'compare' ? '🧍 vs 🤖' : '✏️ edit shelf'}
+              {MODE_LABEL[m]}
             </button>
           ))}
         </nav>
@@ -342,7 +395,18 @@ export default function App() {
           onReset={() => { setPlan(basePlan); setMoves([]); setEditSel(null); setRerun({ busy: false, msg: null }); }} onRerun={doRerun} rerunState={rerun} moves={moves}
           useLLM={useLLM} onUseLLM={setUseLLM} />
       )}
-      {side && mode !== 'edit' && <div className="side">{side}</div>}
+      {mode === 'add' && (
+        <AddProductPanel cfg={data.config} planogram={basePlan} products={products} useLLM={useLLM} onUseLLM={setUseLLM}
+          busy={job.busy} msg={job.msg} onSubmit={addProduct} onClose={() => setMode('replay')} />
+      )}
+      {mode === 'insights' && view && focusProduct && (
+        <InsightsPanel run={view} product={focusProduct} slot={slotOf(focusProduct.code)} planogram={basePlan} cfg={data.config} products={products} personas={personas}
+          extraProducts={run?.catalog_inline ?? []} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy}
+          onPickProduct={setFocus} onTrace={openTrace} onClose={() => setMode('replay')}
+          onApplyPlanogram={(p, label) => { setFocus(focusProduct.code); void simulate(p, run?.catalog_inline ?? [], label); }} />
+      )}
+      {job.msg && mode === 'insights' && <div className="loading-run sticker">{job.msg}</div>}
+      {side && mode !== 'edit' && mode !== 'add' && <div className="side">{side}</div>}
 
       {mode !== 'edit' && !intro && (
         <footer className="replay card">
