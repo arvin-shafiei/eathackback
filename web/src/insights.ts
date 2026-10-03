@@ -1,6 +1,8 @@
 import type { Agent, Persona, Planogram, Product, Run, SimEvent } from './types';
 import { isAI } from './types';
 import { archetypeOf, armFilter, pct, wilson, type DecisionRef } from './stats';
+import { isFailed, isSecondary, pickedUp } from './events';
+export { isFailed, isSecondary } from './events';
 
 /** assumption: a step under one percentage point below the unit median counts as level with it */
 export const MIN_GAP_PTS = 1;
@@ -14,11 +16,6 @@ export const ARM_GAP = 0.1;
 export type InsightArm = 'human' | 'ai';
 export type Step = 'notice' | 'consider' | 'pick';
 export const STEPS: Step[] = ['notice', 'consider', 'pick'];
-
-type Ev = SimEvent & { secondary?: boolean };
-/** a model call that failed is logged as a walk-past with mechanism "error"; it is not a shopper decision, so nothing counts it */
-export const isFailed = (e: SimEvent) => e.mechanism === 'error';
-export const isSecondary = (e: SimEvent) => Boolean((e as Ev).secondary) || (e.reason ?? '').startsWith('(secondary');
 
 export const ratio = (k: number, n: number): number | null => (n > 0 ? k / n : null);
 export const pts = (x: number) => Math.round(x * 100);
@@ -79,10 +76,10 @@ export function funnels(run: Run, arm: InsightArm): Record<string, Funnel> {
       f.shown++;
       mine.add(e.product);
       if (e.noticed) f.noticed++;
-      if (e.decision === 'pick' || e.decision === 'reject') f.considered++;
+      if (pickedUp(e)) f.considered++;
       if (e.decision === 'pick') f.picked++;
-      if (e.decision === 'reject') f.rejected++;
-      if (e.decision === 'walk_past') f.walk_past++;
+      if (e.decision === 'reject' && pickedUp(e)) f.rejected++;
+      if (e.noticed && !pickedUp(e)) f.walk_past++;
       if (typeof e.sentiment === 'number' && !isSecondary(e)) { sent[e.product] = (sent[e.product] ?? 0) + e.sentiment; f.sentiment_n++; }
     }
     for (const code of mine) out[code].shoppers++;
@@ -182,7 +179,7 @@ export function diagnosisText(d: Diagnosis): { main: string; arm: string | null 
   }
   else {
     const rej = b.step === 'pick' && d.top_reject ? `. top reason: ${mechLabel(d.top_reject.mechanism)} (${d.top_reject.count})` : '';
-    main = `${STEP_LEAD[b.step]} ${pct(b.rate)} ${STEP_DID[b.step]} (${b.k} of ${b.n}); its shelf neighbours average ${pct(b.unit_median)}. ${STEP_FIX[b.step]}${rej}.`;
+    main = `${STEP_LEAD[b.step]} ${pct(b.rate)} ${STEP_DID[b.step]} (${b.k} of ${b.n}); its shelf neighbours have a median of ${pct(b.unit_median)}. ${STEP_FIX[b.step]}${rej}.`;
   }
   const g = d.arm_gap;
   const arm = g
@@ -264,7 +261,7 @@ export function rejections(run: Run, code: string, arm: InsightArm): Rejections 
   let total = 0, secondary = 0;
   for (const a of run.agents.filter(armFilter(arm))) for (const e of a.events) {
     if (isFailed(e)) continue;
-    if (e.product !== code || e.decision !== 'reject') continue;
+    if (e.product !== code || e.decision !== 'reject' || !pickedUp(e)) continue;
     if (isSecondary(e)) { secondary++; continue; }
     total++;
     (by[e.mechanism || 'unspecified'] ??= []).push({ agent: a, event: e });
@@ -277,6 +274,7 @@ export function rejections(run: Run, code: string, arm: InsightArm): Rejections 
 
 export type Outcome = 'pick' | 'reject' | 'walk_past' | 'not_noticed';
 export interface BehaviourRow {
+  step: number;
   agent_id: string; persona_id: string; archetype: string; mission: string; slot: string;
   /** seconds this shopper gives a shelf: the persona's sim_parameters.seconds_at_shelf, an input to the notice model */
   seconds_at_shelf: number | null;
@@ -308,7 +306,7 @@ export function behaviour(run: Run, code: string, personas: Record<string, Perso
     const x = e as SimEvent & { picked_up?: unknown; back_of_pack_seen?: unknown };
     const secs = (e.notice_factors as Record<string, unknown> | undefined)?.seconds_at_shelf;
     rows.push({
-      agent_id: a.agent_id, persona_id: a.persona_id, archetype: archetypeOf(a, personas), mission: a.mission ?? '', slot: e.slot,
+      step: e.step, agent_id: a.agent_id, persona_id: a.persona_id, archetype: archetypeOf(a, personas), mission: a.mission ?? personas[a.persona_id]?.mission ?? '', slot: e.slot,
       seconds_at_shelf: typeof secs === 'number' ? secs : null, p_notice: e.p_notice, noticed: e.noticed,
       picked_up: typeof x.picked_up === 'boolean' ? x.picked_up : null,
       back_of_pack: typeof x.back_of_pack_seen === 'boolean' ? x.back_of_pack_seen : null,
@@ -340,7 +338,7 @@ export function behaviour(run: Run, code: string, personas: Record<string, Perso
   };
 }
 
-const CSV_COLS: (keyof BehaviourRow)[] = ['agent_id', 'persona_id', 'archetype', 'mission', 'slot', 'seconds_at_shelf', 'p_notice', 'noticed', 'picked_up', 'back_of_pack', 'decision', 'mechanism', 'feeling', 'sentiment', 'reason'];
+const CSV_COLS: (keyof BehaviourRow)[] = ['agent_id', 'step', 'persona_id', 'archetype', 'mission', 'slot', 'seconds_at_shelf', 'p_notice', 'noticed', 'picked_up', 'back_of_pack', 'decision', 'mechanism', 'feeling', 'sentiment', 'reason'];
 export function behaviourCsv(rows: BehaviourRow[]): string {
   const cell = (v: unknown) => { const s = v === null || v === undefined ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   return [CSV_COLS.join(','), ...rows.map((r) => CSV_COLS.map((c) => cell(r[c])).join(','))].join('\n');

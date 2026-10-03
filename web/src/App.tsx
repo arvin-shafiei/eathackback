@@ -90,7 +90,7 @@ export default function App() {
   const [plan, setPlan] = useState<Planogram | null>(null);
   const [fontsReady, setFontsReady] = useState(false);
 
-  const [mode, setMode] = useState<Mode>('replay');
+  const [mode, setMode] = useState<Mode>(() => new URLSearchParams(location.search).get('view') === 'analytics' ? 'insights' : 'replay');
   const [arm, setArm] = useState<Arm>(() => { const a = new URLSearchParams(location.search).get('arm'); return a === 'human' || a === 'ai' ? a : 'both'; });
   const [panel, setPanel] = useState<Panel>(null);
   const [playing, setPlaying] = useState(true);
@@ -109,7 +109,7 @@ export default function App() {
   const [rerun, setRerun] = useState<{ busy: boolean; msg: string | null; ok?: boolean }>({ busy: false, msg: null });
   const [showLegend, setShowLegend] = useState(true);
   const [opts, setOpts] = useState(false);
-  const [focus, setFocus] = useState<string | null>(null);
+  const [focus, setFocus] = useState<string | null>(() => new URLSearchParams(location.search).get('product'));
   const [job, setJob] = useState<{ busy: boolean; msg: string | null }>({ busy: false, msg: null });
   const [preview, setPreview] = useState<Planogram | null>(null);
   useEffect(() => { if (mode !== 'rearrange') setPreview(null); }, [mode]);
@@ -124,7 +124,7 @@ export default function App() {
   useEffect(() => {
     Promise.all([document.fonts?.load('800 40px "Baloo 2"').catch(() => null), document.fonts?.load('600 20px Inter').catch(() => null)]).finally(() => setFontsReady(true));
     loadAll()
-      .then((d) => { setData(d); setRuns(d.runIndex); setBasePlan(d.planogram); setPlan(d.planogram); const humanRuns = d.runIndex.filter((r) => !isAgentArm(r)); const first = humanRuns.find((r) => (r.agents ?? 0) >= 10) ?? humanRuns[0] ?? d.runIndex[0]; if (first) setRunId(first.run_id); const ai0 = d.runIndex.find(isAgentArm); if (ai0 && first && first.ai_agents === 0) setAiRunId(ai0.run_id); })
+      .then((d) => { setData(d); setRuns(d.runIndex); setBasePlan(d.planogram); setPlan(d.planogram); const humanRuns = d.runIndex.filter((r) => !isAgentArm(r)); const requested = new URLSearchParams(location.search).get('run'); const first = humanRuns.find((r) => r.run_id === requested) ?? humanRuns.find((r) => (r.agents ?? 0) >= 10) ?? humanRuns[0] ?? d.runIndex[0]; if (first) setRunId(first.run_id); const ai0 = d.runIndex.find(isAgentArm); if (ai0 && first && first.ai_agents === 0) setAiRunId(ai0.run_id); })
       .catch((e) => setErr(String(e?.message ?? e)));
   }, []);
   useEffect(() => {
@@ -328,13 +328,17 @@ export default function App() {
 
   const onShelf = Object.values(basePlan).flatMap((s) => s.products);
   const focusProduct = products[focus ?? ''] ?? products[run?.catalog_inline?.[0]?.code ?? ''] ?? products[onShelf[0]];
+  const openAnalytics = (code?: string) => {
+    if (code) setFocus(code);
+    setPanel(null); setCam('overview'); setMode('insights');
+  };
 
   let side: JSX.Element | null = null;
-  if (view && panel?.kind === 'product' && products[panel.code]) side = <ProductPanel run={view} product={products[panel.code]} slot={slotOf(panel.code)} arm={arm} personas={personas} onTrace={openTrace} onClose={() => setPanel(null)} />;
+  if (view && panel?.kind === 'product' && products[panel.code]) side = <ProductPanel key={panel.code} run={view} product={products[panel.code]} slot={slotOf(panel.code)} arm={arm} personas={personas} onTrace={openTrace} onAnalytics={() => openAnalytics(panel.code)} onClose={() => setPanel(null)} />;
   if (view && panel?.kind === 'agent') { const a = view.agents.find((x) => x.agent_id === panel.id); if (a) side = <AgentPanel agent={a} persona={personaFor(a)} products={products} time={uiTime} timeline={timelines[a.agent_id]} config={data.config} following={cam === 'follow'} onFollow={() => setCam((c) => (c === 'follow' ? 'overview' : 'follow'))} onTrace={openTrace} onClose={() => setPanel(null)} />; }
   if (view && panel?.kind === 'trace') {
     const f = findEvent(panel.agentId, panel.step);
-    if (f?.e) side = <TracePanel run={view} agent={f.a} event={f.e} persona={personaFor(f.a)} product={products[f.e.product]} products={products} onAgent={() => setPanel({ kind: 'agent', id: f.a.agent_id })} onProduct={() => setPanel({ kind: 'product', code: f.e!.product })} onBack={panel.back ? () => setPanel(panel.back!) : undefined} onClose={() => setPanel(null)} />;
+    if (f?.e) side = <TracePanel run={view} agent={f.a} event={f.e} persona={personaFor(f.a)} product={products[f.e.product]} products={products} onAgent={() => setPanel({ kind: 'agent', id: f.a.agent_id })} onProduct={() => setPanel({ kind: 'product', code: f.e!.product })} onBack={panel.back ? () => setPanel(panel.back!) : mode === 'insights' ? () => setPanel(null) : undefined} onClose={() => setPanel(null)} />;
   }
 
   const legend = archetypesInRun.map((a) => {
@@ -371,7 +375,7 @@ export default function App() {
         </div>
         <nav className="seg seg-main" aria-label="mode">
           {(opts ? ALL_MODES : ALL_MODES.filter((m) => MAIN_MODES.includes(m) || m === mode)).map((m) => (
-            <button key={m} className={`seg-btn ${mode === m ? 'on' : ''}`} onClick={() => { setMode(m); if (m === 'edit') setPanel(null); }}>
+            <button key={m} className={`seg-btn ${mode === m ? 'on' : ''}`} aria-pressed={mode === m} onClick={() => { if (m === 'insights') openAnalytics(panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product : undefined); else { setMode(m); setPanel(null); } }}>
               {MODE_LABEL[m]}
             </button>
           ))}
@@ -461,8 +465,8 @@ export default function App() {
         <AddProductPanel cfg={data.config} planogram={basePlan} products={products} useLLM={useLLM} onUseLLM={setUseLLM}
           busy={job.busy} msg={job.msg} onSubmit={addProduct} onClose={() => setMode('replay')} />
       )}
-      {mode === 'insights' && view && focusProduct && (
-        <InsightsPanel run={view} product={focusProduct} slot={slotOf(focusProduct.code)} planogram={basePlan} cfg={data.config} products={products} personas={personas}
+      {mode === 'insights' && run && view && focusProduct && (
+        <InsightsPanel key={`${runId}:${focusProduct.code}`} run={view} sourceRun={run} product={focusProduct} slot={slotOf(focusProduct.code)} planogram={basePlan} cfg={data.config} products={products} personas={personas}
           extraProducts={run?.catalog_inline ?? []} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy}
           onPickProduct={setFocus} onTrace={openTrace} onClose={() => setMode('replay')}
           onRearrange={() => { setFocus(focusProduct.code); setMode('rearrange'); }}

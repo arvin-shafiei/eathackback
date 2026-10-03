@@ -13,7 +13,7 @@ const N = 10;
 const pct = (x: number) => `${(x * 100).toFixed(x < 0.1 ? 1 : 0)}%`;
 
 export function RankSection({ run, products, current, onPickProduct }: { run: Run; products: Record<string, Product>; current: string; onPickProduct: (code: string) => void }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   // a run can hold products from another store format: look their names up in every format's catalogue
   const [more, setMore] = useState<Record<string, Product>>({});
   useEffect(() => {

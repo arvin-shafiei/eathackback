@@ -3,6 +3,7 @@ import type { Planogram, Product, RearrangeCheck, RearrangeMove, RearrangePlan, 
 import { productWorld, unitLocalToWorld } from '../layout';
 import { moveFx, type MoveArrow } from '../scene/MoveFx';
 import { api } from '../api';
+import { applySteps, shelfSuggestions, MAX_SWAPS, MAX_STEPS } from '../rearrange';
 import { catColor, catLabel, prodLabel } from '../theme';
 import type { RearrangeProps } from './featureProps';
 import { Src } from './bits';
@@ -59,19 +60,13 @@ export function RearrangePanel(props: RearrangeProps) {
   }, [run.run_id, scope, objective]);
 
   const proposed = plan.data?.planogram ?? null;
-  // per unit: the two-swap plan if it is ONE loop of ≤ MAX_STEPS products, else the one-swap plan; best gain first
+  // Same small-loop selection as the product overview, keeping the focused shelf visible.
   const units = useMemo(() => {
-    if (!plan.data) return [];
-    const by1 = new Map((plan1?.units ?? []).map((u) => [u.unit, u]));
-    const out: { u: RearrangeUnit; steps: RearrangeMove[] }[] = [];
-    for (const u2 of plan.data.units) {
-      const loop = u2.moves.length ? orderSteps(u2.moves) : null;
-      if (loop && loop.length === u2.moves.length && loop.length <= MAX_STEPS) { out.push({ u: u2, steps: loop }); continue; }
-      const u1 = by1.get(u2.unit), l1 = u1?.moves.length ? orderSteps(u1.moves) : null;
-      if (u1 && l1 && l1.length === u1.moves.length) out.push({ u: u1, steps: l1 });
-    }
-    return out.sort((a, b) => b.u.lift_pct - a.u.lift_pct).slice(0, TOP_UNITS);
-  }, [plan.data, plan1]);
+    const choices = shelfSuggestions(plan1, plan.data);
+    const focusUnit = props.focus && Object.keys(planogram).find((slot) => planogram[slot].products.includes(props.focus!))?.split('-r')[0];
+    if (focusUnit) choices.sort((a, b) => Number(b.u.unit === focusUnit) - Number(a.u.unit === focusUnit) || b.u.lift_pct - a.u.lift_pct);
+    return choices.slice(0, TOP_UNITS);
+  }, [plan.data, plan1, props.focus, scope]);
   const cur = units.find((x) => x.u.unit === sel) ?? null;
   // the store with ONLY the chosen unit's steps done
   const one = useMemo(() => (cur ? applySteps(planogram, cur.steps) : null), [cur, scope]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -99,6 +94,12 @@ export function RearrangePanel(props: RearrangeProps) {
     const span = Math.max(...xs.map((p) => Math.hypot(p.x - c.x, p.y - c.y, p.z - c.z))) * 2;
     moveFx.flyTo({ ...c, fx: pts[0].fx, fz: pts[0].fz, span });
   };
+
+  useEffect(() => {
+    if (!props.focus || !plan.data || !plan1) return;
+    const focused = units.find((x) => Object.entries(planogram).some(([slot, set]) => slot.startsWith(`${x.u.unit}-r`) && set.products.includes(props.focus!)));
+    if (focused) choose(focused);
+  }, [plan.data, plan1, props.focus]);
 
   const runCheck = () => {
     if (!one) return;
@@ -163,37 +164,6 @@ export function RearrangePanel(props: RearrangeProps) {
 const TOP_UNITS = 6;
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length);
 /** most products one suggestion may touch (assumption: a loop a person can do by hand without losing track) */
-const MAX_STEPS = 3;
-const spotKey = (s: { slot: string; pos: number }) => `${s.slot}#${s.pos}`;
-/**
- * the moves as steps you can do by hand, or null if they are not one closed loop.
- * loop A→B's spot, B→C's spot, C→A's spot: hold A, then C into A's gap, B into C's gap, A into B's gap.
- */
-function orderSteps(moves: RearrangeMove[]): RearrangeMove[] | null {
-  const byFrom = new Map(moves.map((m) => [spotKey(m.from), m]));
-  const seq: RearrangeMove[] = [moves[0]];
-  for (let m = byFrom.get(spotKey(moves[0].to)); m && m !== moves[0]; m = byFrom.get(spotKey(m.to))) {
-    if (seq.length > moves.length) return null;
-    seq.push(m);
-  }
-  if (spotKey(seq[seq.length - 1].to) !== spotKey(moves[0].from)) return null;
-  return [...seq.slice(1).reverse(), seq[0]];
-}
-/** the current planogram with just these moves done (each product takes its facings with it) */
-function applySteps(before: Planogram, steps: RearrangeMove[]): Planogram {
-  const out: Planogram = { ...before };
-  const touch = (slot: string) => (out[slot] = { ...out[slot], products: [...out[slot].products], facings: { ...out[slot].facings } });
-  const f = new Map(steps.map((m) => [m.code, before[m.from.slot]?.facings?.[m.code] ?? 1]));
-  for (const m of steps) if (out[m.from.slot] === before[m.from.slot]) touch(m.from.slot);
-  for (const m of steps) if (out[m.to.slot] === before[m.to.slot]) touch(m.to.slot);
-  for (const m of steps) delete out[m.from.slot].facings[m.code];
-  for (const m of steps) { out[m.to.slot].products[m.to.pos] = m.code; out[m.to.slot].facings[m.code] = f.get(m.code) ?? 1; }
-  return out;
-}
-
-// assumption: at most two swaps per shelf unit, so a suggestion is a swap or a loop of three
-const MAX_SWAPS = 2;
-
 /** the aisle-facing direction of a unit (local +z), world xz */
 function frontOf(cfg: StoreConfig, u: Unit) {
   const a = unitLocalToWorld(cfg, u, 0, 0), b = unitLocalToWorld(cfg, u, 0, 1);

@@ -52,6 +52,8 @@ export interface SimEvent {
   noticed: boolean; decision: Decision; reason?: string;
   attributes_cited?: string[]; feeling?: string; sentiment?: number | null;
   mechanism?: string; source_refs?: string[];
+  stage_reached?: 'not_noticed' | 'looked' | 'put_back' | 'taken';
+  picked_up?: boolean; back_of_pack_seen?: boolean; secondary?: boolean;
 }
 export interface Agent {
   agent_id: string; persona_id: string; archetype?: string; mission?: string; model?: string; ocean?: Ocean;

@@ -21,6 +21,8 @@ export interface PlacementSectionProps {
 
 export interface InsightsProps extends PlacementSectionProps {
   run: Run; personas: Record<string, Persona>;
+  /** Original human run ID for server-side learning; the displayed run may include an AI feed arm. */
+  sourceRun: Run;
   onUseLLM: (v: boolean) => void;
   onPickProduct: (code: string) => void;
   onTrace: (agentId: string, step: number) => void;
