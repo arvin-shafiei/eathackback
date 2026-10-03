@@ -412,6 +412,9 @@ function planFlights(prev: Rec[], next: Rec[], camPos: THREE.Vector3): Flight[] 
 }
 const _fp = new THREE.Vector3(), _fq = new THREE.Quaternion(), _fs = new THREE.Vector3(), _fspin = new THREE.Quaternion(), _fm = new THREE.Matrix4();
 /** matrix of one flying pack at local time k (seconds since its own start) */
+/** furthest the panel's camera fly steps back from a shelf face, metres (assumption: visual, under half a walkway) */
+const FLY_MAX_BACK = 3.6;
+
 function flyMatrix(f: Flight, a: Pose, b: Pose, k: number): THREE.Matrix4 {
   if (k <= 0) return _fm.compose(a.p, a.q, a.s);
   const u = Math.min(1, k / f.dur);
@@ -621,9 +624,15 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     // camera fly requested by the panel (show me where / a move row)
     if (flyNonce.current !== moveFx.flyNonce && moveFx.fly) {
       flyNonce.current = moveFx.flyNonce;
-      const q = moveFx.fly, dist = q.dist ?? 5.2;
+      // stay inside the walkway: never step back further than FLY_MAX_BACK (walkways are ~5-6 m, layout.ts G.spacing / wallWalk);
+      // a wider shot (long arrow) climbs higher instead of backing into the opposite shelves
+      const q = moveFx.fly, want = q.dist ?? 2.6, back = Math.min(want, FLY_MAX_BACK);
       const tgt = new THREE.Vector3(q.x, q.y, q.z);
-      const pos = tgt.clone().add(new THREE.Vector3(q.fx, 0, q.fz).normalize().multiplyScalar(dist)); pos.y = Math.min(2.2, Math.max(1.5, q.y + 0.7 + dist * 0.08));
+      const pos = tgt.clone().add(new THREE.Vector3(q.fx, 0, q.fz).normalize().multiplyScalar(back));
+      pos.y = Math.min(3.6, Math.max(1.5, q.y + 0.5 + (want - back) * 0.6));
+      // the rearrange panel covers the right of the screen: slide the shot right so the arrow sits in the open part
+      const right = new THREE.Vector3().subVectors(tgt, pos).setY(0).normalize().cross(new THREE.Vector3(0, 1, 0)).multiplyScalar(back * 0.14);
+      pos.add(right); tgt.add(right);
       fly.current = { nonce: moveFx.flyNonce, t0: now, pos, tgt };
     }
     const controls = state.controls as unknown as { target: THREE.Vector3; update: () => void } | null;
