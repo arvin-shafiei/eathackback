@@ -209,3 +209,18 @@
 .ra-pos { flex: none; width: 18px; height: 18px; border-radius: 4px; background: #f1ebe4; font-size: 11px; font-weight: 700; display: grid; place-items: center; }
 .ra-check-list .is-done span { text-decoration: line-through; opacity: .55; }
 .ra-new { margin-left: auto; flex: none; font-size: 10px; font-weight: 800; color: #fff; background: #ff4f8b; border-radius: 999px; padding: 1px 6px; }
+
+/* pick a category -> one swap */
+.ra-cats { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ra-cat { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 12px; border: 2px solid var(--line, #e6dfd6); border-radius: 12px; background: var(--card, #fff); font-size: 14px; }
+.ra-cat:hover { border-color: #ffb3cc; }
+.ra-cat.on { border-color: #ff4f8b; box-shadow: 0 0 0 3px rgba(255, 79, 139, .18); }
+.ra-cat .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.ra-cat-name { flex: 1; font-weight: 700; }
+.ra-cat-lift { color: #1a9e55; font-size: 15px; }
+.ra-swap { margin: 6px 2px 4px; padding: 12px; border-radius: 12px; background: #fff4f8; }
+.ra-swap-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+.ra-swap-side { display: flex; flex-direction: column; gap: 3px; font-size: 12px; text-align: center; }
+.ra-swap-name { font-weight: 800; font-size: 13px; text-align: center; }
+.ra-swap-x { font-size: 26px; font-weight: 900; color: #ff4f8b; }
+.ra-swap-why { font-size: 12px; margin: 10px 0 8px; }

@@ -3,7 +3,7 @@ import type { Planogram, Product, RearrangeCheck, RearrangeMove, RearrangePlan, 
 import { productWorld, unitLocalToWorld } from '../layout';
 import { moveFx, type MoveArrow } from '../scene/MoveFx';
 import { api } from '../api';
-import { catLabel, prodLabel } from '../theme';
+import { catColor, catLabel, prodLabel } from '../theme';
 import type { RearrangeProps } from './featureProps';
 import { Src } from './bits';
 import './rearrange.css';
@@ -36,8 +36,7 @@ export function RearrangePanel(props: RearrangeProps) {
   const [plan, setPlan] = useState<Job<RearrangePlan>>(loading);
   const [check, setCheck] = useState<Job<RearrangeCheck>>(idle);
   const [sel, setSel] = useState<string | null>(null);
-  // restock checklist ticks, keyed slot#pos; and which unit is open
-  const [done, setDone] = useState<Set<string>>(() => new Set());
+  const [after, setAfter] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const gen = useRef(0);
   // extraProducts and the callbacks are fresh on every render; the effects read the latest without re-running for them
@@ -49,7 +48,7 @@ export function RearrangePanel(props: RearrangeProps) {
     const id = ++gen.current;
     setPlan(loading);
     setCheck(idle);
-    setSel(null); setDone(new Set());
+    setSel(null); setAfter(false);
     api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps: MAX_SWAPS })
       .then((data) => { if (gen.current === id) setPlan({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setPlan({ busy: false, data: null, err: fail(e) }); });
@@ -57,42 +56,44 @@ export function RearrangePanel(props: RearrangeProps) {
   }, [run.run_id, scope, objective]);
 
   const proposed = plan.data?.planogram ?? null;
-  // the shelves always show the store as it is now; the arrow points at where a product would go
-  useEffect(() => { live.current.onPreview(null); }, []);
+  // categories with a swap worth making, best first; one swap each keeps every card to two products
+  const units = useMemo(() => plan.data ? [...plan.data.units].filter((u) => u.moves.length >= 2).sort((a, b) => b.lift_pct - a.lift_pct).slice(0, TOP_UNITS) : [], [plan.data]);
+  const cur = units.find((u) => u.unit === sel) ?? null;
+  // the store with ONLY the chosen unit swapped
+  const one = useMemo(() => (cur && proposed ? onlyUnit(planogram, proposed, cur.unit) : null), [cur, proposed, scope]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // preview: the shelves animate (packs fly) whenever this flips
+  useEffect(() => { live.current.onPreview(after && one ? one : null); }, [after, one]);
   useEffect(() => () => { live.current.onPreview(null); moveFx.setArrows([]); }, []);
-
-  // units that change, biggest lift first; each is restocked from empty, so its list is the whole unit, not a chain of swaps
-  const units = useMemo(() => plan.data ? [...plan.data.units].filter((u) => u.moves.length).sort((a, b) => b.lift_pct - a.lift_pct) : [], [plan.data]);
-  const totalMoves = plan.data?.moves ?? 0;
-
-  // tapping a unit: small arrows for everything that changes place in it, camera framed on the whole unit
+  // arrows for the chosen swap, only while showing 'before'
   useEffect(() => {
-    const u = sel && proposed ? units.find((x) => x.unit === sel) : null;
     const list: MoveArrow[] = [];
-    if (u && proposed) for (const m of u.moves) { const a = arrowFor(cfg, planogram, proposed, m, false); if (a) list.push(a); }
+    if (cur && proposed && !after) for (const m of cur.moves) { const a = arrowFor(cfg, planogram, proposed, m, true); if (a) list.push(a); }
     moveFx.setArrows(list);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sel, proposed, scope, cfg]);
+  }, [cur, proposed, after, scope, cfg]);
 
-  const pick = (u: RearrangeUnit) => {
+  const choose = (u: RearrangeUnit) => {
+    setAfter(false);
     if (sel === u.unit) { setSel(null); return; }
     setSel(u.unit);
-    const unit = cfg.units.find((x) => x.id === u.unit);
-    if (!unit) return;
-    const mid = unitLocalToWorld(cfg, unit, 0, -0.2), f = frontOf(cfg, unit);
-    moveFx.flyTo({ x: mid.x, y: 1, z: mid.z, fx: f.x, fz: f.z, span: UNIT_LEN });
+    const pts = proposed ? u.moves.map((m) => arrowFor(cfg, planogram, proposed, m, true)).filter(Boolean) as MoveArrow[] : [];
+    if (!pts.length) return;
+    const xs = pts.flatMap((a) => [a.from, a.to]);
+    const c = { x: avg(xs.map((p) => p.x)), y: avg(xs.map((p) => p.y)), z: avg(xs.map((p) => p.z)) };
+    const span = Math.max(...xs.map((p) => Math.hypot(p.x - c.x, p.y - c.y, p.z - c.z))) * 2;
+    moveFx.flyTo({ ...c, fx: pts[0].fx, fz: pts[0].fz, span });
   };
-  const tick = (k: string) => setDone((d) => { const n = new Set(d); if (n.has(k)) n.delete(k); else n.add(k); return n; });
 
   const runCheck = () => {
-    if (!proposed) return;
+    if (!one) return;
     const id = gen.current;
     setCheck(loading);
-    api.rearrangeValidate({ before: planogram, after: proposed, products: extraProducts, agents: TEST_AGENTS, seeds: testSeeds(run.seed), mock: !useLLM })
+    api.rearrangeValidate({ before: planogram, after: one, products: extraProducts, agents: TEST_AGENTS, seeds: testSeeds(run.seed), mock: !useLLM })
       .then((data) => { if (gen.current === id) setCheck({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setCheck({ busy: false, data: null, err: fail(e) }); });
   };
-  const apply = () => { if (proposed) { setSel(null); props.onApplyPlanogram(proposed, 'rearranged shelves'); } };
+  const apply = () => { if (one && cur) props.onApplyPlanogram(one, `swap in ${catLabel(cur.category)}`); };
 
   if (collapsed) {
     return (
@@ -105,28 +106,36 @@ export function RearrangePanel(props: RearrangeProps) {
     <aside className="card rearrange ra-narrow" aria-label="rearrange the shelves">
       <Head objective={objective} onObjective={setObjective} onClose={props.onClose} onCollapse={() => setCollapsed(true)} />
       <div className="ra-board">
-        {plan.busy && <p className="ra-tile ra-wait muted" role="status">working out the best order…</p>}
+        {plan.busy && <p className="ra-tile ra-wait muted" role="status">working out the best swaps…</p>}
         {plan.err && <ErrorNote err={plan.err} />}
-        {!plan.busy && !plan.err && !plan.data && <p className="ra-tile ra-wait muted" role="status">no plan yet.</p>}
-        {plan.data && <Summary plan={plan.data} />}
-        {plan.data && proposed && plan.data.moves > 0 && (
+        {plan.data && !units.length && <p className="ra-tile ra-none">nothing to swap. the shelves are already in their best order.</p>}
+        {plan.data?.learned_from.other_store && <p className="notice">learned on a different layout: only shared products have data.</p>}
+        {!!units.length && proposed && (
           <>
-            <p className="ra-tm-h muted">clear these shelves, then put everything back in this order. tap a unit to see it in the store.</p>
-            <ol className="ra-cards">
-              {units.map((u, i) => (
-                <UnitCard key={u.unit} n={i + 1} u={u} on={u.unit === sel} cfg={cfg} after={proposed} products={props.products}
-                  done={done} onTick={tick} onPick={() => pick(u)} />
-              ))}
+            <p className="ra-tm-h"><b>pick a category.</b> <span className="muted">one swap each, best first.</span></p>
+            <ol className="ra-cats">
+              {units.map((u) => {
+                const unit = cfg.units.find((x) => x.id === u.unit);
+                return (
+                  <li key={u.unit}>
+                    <button className={`ra-cat ${u.unit === sel ? 'on' : ''}`} aria-pressed={u.unit === sel} onClick={() => choose(u)}
+                      title={`${u.before} → ${u.after} ${u.value_unit}`}>
+                      <i className="dot" style={{ background: catColor(u.category) }} aria-hidden />
+                      <span className="ra-cat-name">{catLabel(u.category)}<small className="muted"> aisle {unit?.aisle ?? '?'}{unit ? (unit.side === 'L' ? ', left' : ', right') : ''}</small></span>
+                      <b className="ra-cat-lift">{lift(u.lift_pct)}</b>
+                    </button>
+                    {u.unit === sel && <SwapCard u={u} cfg={cfg} before={planogram} after={proposed} products={props.products}
+                      showing={after} onWatch={() => setAfter(!after)} onApply={apply} busy={busy} onAnalytics={props.onPickProduct} />}
+                  </li>
+                );
+              })}
             </ol>
-            <div className="ra-btns">
-              <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy} title="re-run the store on the new layout">
-                {busy ? 're-running…' : `apply all ${plural(units.length, 'unit')} (${plural(totalMoves, 'product')} change place)`}
-              </button>
-            </div>
-            <details className="ra-how">
-              <summary>test it with new shoppers</summary>
-              <Actions check={check} useLLM={useLLM} busy={busy} seeds={testSeeds(run.seed)} onCheck={runCheck} />
-            </details>
+            {cur && (
+              <details className="ra-how">
+                <summary>test this swap with new shoppers</summary>
+                <Actions check={check} useLLM={useLLM} busy={busy} seeds={testSeeds(run.seed)} onCheck={runCheck} />
+              </details>
+            )}
           </>
         )}
         {plan.data && <Method plan={plan.data} />}
@@ -135,8 +144,18 @@ export function RearrangePanel(props: RearrangeProps) {
   );
 }
 
-// assumption: 'medium' plan size (up to three swaps per shelf unit) keeps the list short enough to act on
-const MAX_SWAPS = 3;
+/** categories listed (assumption: a short list a store owner can act on today) */
+const TOP_UNITS = 6;
+const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length);
+/** the current planogram with one unit's shelves replaced by the proposal */
+function onlyUnit(before: Planogram, proposed: Planogram, unit: string): Planogram {
+  const out: Planogram = { ...before };
+  for (const k of Object.keys(proposed)) if (k.startsWith(`${unit}-r`)) out[k] = proposed[k];
+  return out;
+}
+
+// assumption: one swap per shelf unit, so every suggestion is two products trading places
+const MAX_SWAPS = 1;
 
 /** the aisle-facing direction of a unit (local +z), world xz */
 function frontOf(cfg: StoreConfig, u: Unit) {
@@ -150,58 +169,33 @@ function arrowFor(cfg: StoreConfig, before: Planogram, after: Planogram, m: Rear
   return { from: { x: a.x, y: a.y, z: a.z }, to: { x: b.x, y: b.y, z: b.z }, fx: f.x, fz: f.z, main };
 }
 
-/** length of one shelf bay along the aisle, metres (layout.ts G.unitLen) */
-const UNIT_LEN = 6.4;
-
-interface UnitCardProps {
-  n: number; u: RearrangeUnit; on: boolean; cfg: StoreConfig; after: Planogram; products: Record<string, Product>;
-  done: Set<string>; onTick: (k: string) => void; onPick: () => void;
+interface SwapCardProps {
+  u: RearrangeUnit; cfg: StoreConfig; before: Planogram; after: Planogram; products: Record<string, Product>;
+  showing: boolean; busy: boolean; onWatch: () => void; onApply: () => void; onAnalytics: (code: string) => void;
 }
 
-/** one shelf unit as a restock checklist: shelves top to bottom, products left to right (as you face the shelf) */
-function UnitCard({ n, u, on, cfg, after, products, done, onTick, onPick }: UnitCardProps) {
-  const unit = cfg.units.find((x) => x.id === u.unit);
-  const moved = new Set(u.moves.map((m) => m.code));
-  const rows = Array.from({ length: cfg.rows_per_unit }, (_, i) => i + 1);
-  const keys = rows.flatMap((r) => (after[`${u.unit}-r${r}`]?.products ?? []).map((_, p) => `${u.unit}-r${r}#${p}`));
-  const ticked = keys.filter((k) => done.has(k)).length;
-  return (
-    <li className={`ra-card ${on ? 'on' : ''}`}>
-      <button className="ra-card-btn" aria-pressed={on} onClick={onPick}>
-        <span className="ra-card-n">{n}</span>
-        <span className="ra-card-body">
-          <b className="ra-card-name">aisle {unit?.aisle ?? '?'}, {unit?.side === 'L' ? 'left' : 'right'} side · {catLabel(u.category)}</b>
-          <span className="muted small">{u.unit} · {plural(u.moves.length, 'product')} change place · {ticked}/{keys.length} placed</span>
-        </span>
-      </button>
-      <div className="ra-shelves">
-        {rows.map((r) => {
-          const slot = `${u.unit}-r${r}`, set = after[slot], codes = set?.products ?? [];
-          const w = productWorld(cfg, after, slot, null);
-          return (
-            <div key={r} className="ra-shelf-l">
-              <p className="ra-shelf-h"><b>{cfg.row_names[String(r)] ?? `row ${r}`} shelf</b> <span className="muted">· {r} of {cfg.rows_per_unit} from the top{w ? ` · ${(w.y - w.h / 2).toFixed(2)} m off the floor` : ''} · left → right</span></p>
-              <ol className="ra-check-list">
-                {codes.map((c, p) => {
-                  const k = `${slot}#${p}`, f = set?.facings?.[c] ?? 1;
-                  return (
-                    <li key={k} className={done.has(k) ? 'is-done' : ''}>
-                      <label>
-                        <input type="checkbox" checked={done.has(k)} onChange={() => onTick(k)} />
-                        <span className="ra-pos">{p + 1}</span>
-                        <span>{prodLabel(products[c], c)}{f > 1 ? <span className="muted"> ×{f} facings</span> : null}</span>
-                        {moved.has(c) && <span className="ra-new" title="this product is in a different spot from today">new spot</span>}
-                      </label>
-                    </li>
-                  );
-                })}
-                {!codes.length && <li className="muted">leave empty</li>}
-              </ol>
-            </div>
-          );
-        })}
+/** one swap in kid words: two products, where each is now (shelf + height), and what the swap buys */
+function SwapCard({ u, cfg, before, products, showing, busy, onWatch, onApply, onAnalytics }: SwapCardProps) {
+  const [a, b] = u.moves;
+  const side = (m: RearrangeMove) => {
+    const w = productWorld(cfg, before, m.from.slot, m.code);
+    return (
+      <div className="ra-swap-side">
+        <button className="link-btn ra-swap-name" onClick={() => onAnalytics(m.code)}>{prodLabel(products[m.code] ?? m, m.code)}</button>
+        <span className="ra-swap-where"><b>{m.from.row_name} shelf</b>{w ? ` · ${(w.y - w.h / 2).toFixed(1)} m up` : ''} · spot {m.from.pos + 1}</span>
+        <span className="muted small">seen by {pct(m.notice_before)} → <b>{pct(m.notice_after)}</b></span>
       </div>
-    </li>
+    );
+  };
+  return (
+    <div className="ra-swap">
+      <div className="ra-swap-pair">{side(a)}<span className="ra-swap-x" aria-label="swaps with">⇄</span>{b && side(b)}</div>
+      <p className="ra-swap-why muted">{a.why}.</p>
+      <div className="ra-btns">
+        <button className="btn btn-white" onClick={onWatch}>{showing ? '↺ put it back' : '▶ watch it'}</button>
+        <button className="btn btn-brand" onClick={onApply} disabled={busy}>{busy ? 're-running…' : 'do this swap'}</button>
+      </div>
+    </div>
   );
 }
 
