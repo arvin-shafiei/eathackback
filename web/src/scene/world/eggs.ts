@@ -42,3 +42,14 @@ export function pickCar(x: number, z: number, r: () => number, maxD = 40) {
 
 export const ease = (t: number) => (t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t));
 export const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
+
+/** Store-wide egg state the store itself reads (Tsunami.tsx writes it). Defaults leave everything unchanged:
+ *  ShelfFill hides `1 - stock` of every slot (swept across x0..x1 so bays empty / refill one after another),
+ *  Store.tsx registers its outer walls + shopfront as `shell` (an egg may drive those children's matrices and must
+ *  restore them), Scene.tsx registers the shoppers + staff layers as `people` (an egg may hide it while its own
+ *  evacuees are on screen). */
+export const EGG_FX = {
+  stock: 1, x0: 0, x1: 1,
+  shell: null as THREE.Group | null,
+  people: null as THREE.Group | null,
+};

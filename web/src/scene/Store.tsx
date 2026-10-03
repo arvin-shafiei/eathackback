@@ -18,6 +18,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { bus } from './fx';
 import { Kit, LabelAtlas, QuadBatch, disposeGroup, shade } from './storeKit';
 import { Departments, promoSign } from './Departments';
+import { EGG_FX } from './world/eggs';
 
 export interface StoreProps {
   cfg: StoreConfig; planogram: Planogram; products: Record<string, Product>;
@@ -691,6 +692,8 @@ export function Store(props: StoreProps) {
       </mesh>
       {/* walkway runner strips (slightly darker vinyl down each aisle + the cross aisles) and entrance mats */}
       <mesh geometry={runners} raycast={noRay}><meshStandardMaterial vertexColors roughness={0.45} envMap={env} envMapIntensity={0.35} /></mesh>
+      {/* outer walls + shopfront: registered for the easter eggs (world/Tsunami.tsx crumbles + rebuilds them, then restores) */}
+      <group ref={(g) => { EGG_FX.shell = g; }}>
       {wallBoxes.map(([x, z, w, d], i) => (
         <group key={i}>
           <mesh position={[x, wallH / 2, z]} receiveShadow raycast={noRay}>
@@ -712,6 +715,7 @@ export function Store(props: StoreProps) {
       ))}
       {P.entrances.map((e, i) => <Doors key={`in${i}`} x={e.x} z={B.zMax} idx={i} label="simsbury" sub={P.entrances.length > 1 ? `entrance ${i + 1} · two shoppers, one shelf` : 'two shoppers · one shelf'} />)}
       {P.exits.map((e, i) => <Doors key={`out${i}`} x={e.x} z={B.zMax} idx={P.entrances.length + i} label="exit" sub="thanks for shopping!" />)}
+      </group>
       {P.gates.map((g) => <Gate key={g.id} id={g.id} x={g.x} z={g.z} />)}
 
       <primitive object={fixtures} />

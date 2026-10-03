@@ -18,6 +18,7 @@ import { Air } from './Air';
 import { Ufo } from './Ufo';
 import { Villain } from './Villain';
 import { PlaneCrash } from './PlaneCrash';
+import { Tsunami } from './Tsunami';
 import { snowable } from './wxState';
 
 const noRay = () => null;
@@ -275,6 +276,7 @@ export function World({ cfg }: { cfg: StoreConfig }) {
       <Ufo W={W} />
       <Villain W={W} />
       <PlaneCrash W={W} sc={sc} />
+      <Tsunami W={W} />
       <Weather W={W} />
     </group>
   );

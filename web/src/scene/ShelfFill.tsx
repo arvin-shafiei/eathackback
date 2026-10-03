@@ -19,6 +19,7 @@ import { CHILLED, catColor } from '../theme';
 import { bus } from './fx';
 import { MoveFxLayer, moveFx } from './MoveFx';
 import { registerShelf } from './shelfBus';
+import { EGG_FX } from './world/eggs';
 import { PackAtlas, packBoxGeometry, packColor, packMaterial, packUniforms, tagPlaneGeometry } from './textures';
 
 // ------------------------------------------------------------------ pack dims
@@ -561,6 +562,7 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     if (useGaps) { let lo = 0, hi = gapEdges.length; while (lo < hi) { const m = (lo + hi) >> 1; if (gapEdges[m] <= t) lo = m + 1; else hi = m; } sig += `|g${lo}`; }
     const stock = live ? bus.stock : null;
     if (stock) sig += `|s${bus.opsMin}`;
+    if (EGG_FX.stock < 1) sig += `|e${Math.round(EGG_FX.stock * 200)}`; // easter egg (Tsunami): shelves empty / refill bay by bay
     const animating = popping.current.size > 0;
     if (sig !== lastSig.current || lastV.current !== REG.version || animating) {
       lastSig.current = sig; lastV.current = REG.version;
@@ -578,6 +580,7 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
           const frac = stock?.[r.slot];
           if (frac !== undefined) want = Math.max(want, Math.round((1 - Math.max(0, Math.min(1, frac))) * r.total));
         }
+        if (EGG_FX.stock < 1) { const u = (r.base.elements[12] - EGG_FX.x0) / Math.max(1, EGG_FX.x1 - EGG_FX.x0); want = Math.max(want, Math.round((1 - Math.max(0, Math.min(1, EGG_FX.stock * 1.5 - 0.5 * u))) * r.total)); }
         want = Math.max(0, Math.min(r.total, want));
         r.manualApplied = manual;
         if (want < r.removed) { r.popT = now; popping.current.add(r); }

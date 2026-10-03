@@ -16,6 +16,7 @@ import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
 import { buildBeats } from './beats';
 import { Ops } from './Ops';
+import { EGG_FX } from './world/eggs';
 import type { OpsDay } from '../ops';
 import { bus } from './fx';
 
@@ -250,11 +251,14 @@ const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
           <Store cfg={p.cfg} planogram={p.planogram} products={p.products} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
           <TrafficHeat cfg={p.cfg} timelines={p.timelines} on={!!p.ownerHeat} lastMinutes={p.ownerHeatMin ?? null} timeRef={p.timeRef} minLevel={p.ownerHeatLevel ?? 0} />
           <Shelves cfg={p.cfg} planogram={p.planogram} products={p.products} gaps={beats.gaps} timeRef={p.timeRef} live={!p.editMode} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} onSlot={p.onSlot} highlightMoves={p.highlightMoves} />
+          {/* shoppers + staff, registered so an easter egg (world/Tsunami.tsx) can swap in its own evacuees */}
+          <group ref={(g) => { EGG_FX.people = g; }}>
           <Ops cfg={p.cfg} ops={p.ops} timeRef={p.timeRef} clockStart={p.clockStart} planogram={p.replayPlan} products={p.products} live={!p.editMode} />
           {!p.editMode && (
             <Crowd cfg={p.cfg} agents={p.agents} timelines={p.timelines} beats={beats} timeRef={p.timeRef} personas={p.personas} products={p.products}
               selectedAgent={p.selectedAgent} onAgent={p.onAgent} onEvent={p.onEvent} thoughts={p.thoughts} speed={p.speed} />
           )}
+          </group>
         </Physics>
       </Suspense>
       <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.04} minDistance={1.5} maxDistance={Math.max(90, ov.dist * 1.35)} target={ov.target.toArray()} />
