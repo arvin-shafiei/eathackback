@@ -32,6 +32,21 @@
 7. **Optimisation for brands.** The system tests honest changes and re-runs the store to show the lift with a confidence interval: shelf slot, facings, pack claim, description rewrite (true facts only), price, own-label adjacency.
    - Output: *"move to eye level: +X% notice; add the true 'high fibre' claim: +Y% pick among conscientious, GLP-1 shoppers."*
 
+### one engine, three surfaces (+ embed)
+
+Every product has a **4-step funnel**: 👀 **look** → 🤚 **pick up** → ↩️ **put back** *or* 🧺 **take**. EPOS only sees the last step. We simulate all four, so we can say *where* a product loses people and *why*.
+
+| surface | question | what it does |
+|---|---|---|
+| 🏪 **retailer / store owner** | "Which layout sells best, and which is easiest for my shoppers?" | Whole-store layout optimiser. Objective 1 is revenue and challenger exposure; objective 2 is shopper ease (shorter mission paths: put products where people already go). You can blend them. It respects the chilled-unit and UK HFSS placement rules, and shows before/after with CIs and a "move X to Y because…" diff. |
+| 🏷️ **brand** | "Do people look, pick up, then put my product back, and why?" | Per-product funnel by persona and OCEAN segment. It diagnoses where people drop off: at *look* (shelf position/salience), at *pick-up* (the pack doesn't earn a second look), or at *put-back* (a label, price or trigger kills it, with the Jev probability and the Reddit verbatim). Plus a **pack test**: true claims the product qualifies for under Reg (EC) 1924/2006, tested for which version wins the pick-up. |
+| 🧺 **shopper** | "What better option should I swap to?" | **Basket swaps**, e.g. a high-fibre alternative to an item in the basket, ranked by P(accept) × lens improvement. Shows the price delta, because claim-marketed products ("high fibre", "protein", "gut") usually carry a premium; we quantify that, and check whether the claim actually meets the legal threshold. |
+| 🔌 **embed** | Use it inside retail workplaces and e-commerce | REST API (OpenAPI); a `<shelf-insight>` web component for product pages and intranets; an e-commerce search **re-ranker** per shopper type, with an agent-readiness check; a Slack brand digest; a Shopify mapping. |
+
+**Engine: TypeSafe Jev** (System One). It returns calibrated probabilities instead of generated text: Choice for take / put-back / walk-past, Score for appeal, and Noul for each rejection trigger. Every "why" therefore comes with a probability, and the arithmetic stays in code. It costs about $0.04 per million input tokens, roughly $0.40 per 1,000 shoppers. **No LLM calls in the loop.**
+
+**What a real deployment collects:** shopping mission and why they're shopping (big shop vs top-up), dwell, pick-up and put-back (shelf sensors / on-device CV counts), and the e-commerce equivalents (impression → detail view → add-to-cart → remove → purchase). Everything is aggregated (k ≥ 10) and consented. See `docs/data-collection.md`.
+
 **Rule we build by** (RGC's own words): *"A number that cannot be traced back to its source is worse than no number at all."*
 - Every stat is a count of logged agent decisions.
 - Every decision carries its persona, OCEAN scores, the product fields it read, its stated reason, and the source each assumption came from: a Reddit verbatim, a paper, or an OFF field.
