@@ -1,4 +1,4 @@
-import type { OptimiseResponse, Placement, PlacementExperiment, PlacementScan, Planogram, Product, Run } from './types';
+import type { OptimiseResponse, Placement, PlacementExperiment, PlacementScan, Planogram, Product, RearrangeCheck, RearrangePlan, Run } from './types';
 import { SIM_SERVER, STORE_VARIANT } from './data';
 
 /** POST to the sim server: the vite dev proxy first (no CORS needed), then the server directly. */
@@ -26,6 +26,10 @@ export const api = {
     post<OptimiseResponse>('/api/optimise', b),
   placementScan: (b: { product: string; planogram?: Planogram; products?: Product[]; agents?: number; seed?: number }) =>
     post<PlacementScan>('/api/placement/scan', b),
+  rearrangeSuggest: (b: { planogram: Planogram; products?: Product[]; run_ids: string[]; objective: 'picks' | 'revenue'; max_swaps?: number | null; units?: string[] }) =>
+    post<RearrangePlan>('/api/rearrange/suggest', b),
+  rearrangeValidate: (b: { before: Planogram; after: Planogram; products?: Product[]; agents: number; seeds: number[]; mock?: boolean }) =>
+    post<RearrangeCheck>('/api/rearrange/validate', b),
   placementExperiment: (b: Common & { product: string; placements: Placement[]; agents: number; seeds?: number[] }) =>
     post<PlacementExperiment>('/api/placement/experiment', b),
 };

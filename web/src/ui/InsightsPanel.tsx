@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Persona, Product, Run } from '../types';
 import { isAI } from '../types';
 import { archetypeOf, pct } from '../stats';
@@ -12,6 +12,7 @@ import { AI_COLOR, DECISION, archColor, archLabel, catColor, catLabel, prodLabel
 import { Bar, Sticker } from './bits';
 import type { InsightsProps } from './featureProps';
 import { PlacementSection } from './PlacementSection';
+import { Select } from './Select';
 import './insights.css';
 
 const HUMAN_COLOR = '#2bb673';
@@ -44,9 +45,8 @@ export function InsightsPanel(props: InsightsProps) {
         <p className="notice">no shopper and no ai agent was shown this product in <code>{run.run_id}</code>, so there is nothing to count. pick another run in the run picker, or re-run the store with this product on the shelf.</p>
       ) : (
         <div className="ins-board">
-          <KpiRow own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} />
-          <DiagnosisSection d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined} onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
-          <FunnelSection f={own} />
+          <Story own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined}
+            onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
           <BreakdownSection run={run} code={p.code} personas={personas} aiLoaded={sample.ai_loaded} />
           <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
           <LostToSection run={run} code={p.code} products={products} aiLoaded={sample.ai_loaded} onPickProduct={onPickProduct} />
@@ -81,7 +81,7 @@ interface HeadProps {
 }
 function Head({ product: p, slot, rowName, options, products, onPickProduct }: HeadProps) {
   const mine = options.filter((o) => o.brand_supplied), rest = options.filter((o) => !o.brand_supplied);
-  const opt = (o: (typeof options)[number]) => <option key={o.code} value={o.code}>{prodLabel(products[o.code], o.code)} · {o.slot}</option>;
+  const opt = (group: string) => (o: (typeof options)[number]) => ({ value: o.code, label: prodLabel(products[o.code], o.code), hint: o.slot, group });
   return (
     <header className="prod-head ins-head">
       <div className="prod-thumb" style={{ background: p.color || catColor(p.category) }}>
@@ -95,14 +95,13 @@ function Head({ product: p, slot, rowName, options, products, onPickProduct }: H
           <Sticker title="where it sits in this planogram">{slot ? `${slot}${rowName ? ` · ${rowName} row` : ''}` : 'not on the shelf'}</Sticker>
           <Sticker title={p.price_source}>£{Number(p.price_gbp).toFixed(2)}</Sticker>
         </div>
-        <label className="select ins-select">
-          <span>product</span>
-          <select value={p.code} onChange={(e) => onPickProduct(e.target.value)} aria-label="switch product">
-            {!options.some((o) => o.code === p.code) && <option value={p.code}>{prodLabel(p, p.code)} · not on the shelf</option>}
-            {mine.length > 0 && <optgroup label="brand-supplied">{mine.map(opt)}</optgroup>}
-            <optgroup label={`on the shelf (${rest.length})`}>{rest.map(opt)}</optgroup>
-          </select>
-        </label>
+        <Select
+          className="ins-select" ariaLabel="switch product" prefix="product" searchable value={p.code} onChange={onPickProduct}
+          options={[
+            ...(options.some((o) => o.code === p.code) ? [] : [{ value: p.code, label: prodLabel(p, p.code), hint: 'not on the shelf' }]),
+            ...mine.map(opt('brand-supplied')), ...rest.map(opt(`on the shelf (${rest.length})`)),
+          ]}
+        />
       </div>
     </header>
   );
@@ -113,8 +112,8 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
     <>
       <p className="ins-sample">
         <b>{plural(s.human_shoppers, 'shopper')}</b> passed it ·{' '}
-        {s.ai_loaded ? <><b>{plural(s.ai_sessions, 'ai session')}</b> saw it</> : <span className="muted">no ai arm loaded</span>} ·{' '}
-        run <code>{run.run_id}</code>{run.mock ? ' · mock shoppers' : ''}
+        {s.ai_loaded ? <><b>{plural(s.ai_sessions, 'ai session')}</b> saw it</> : <span className="muted">no ai arm loaded</span>}
+        {run.mock ? ' · mock shoppers' : ''}
       </p>
       {!!run.cost?.errors && (
         <p className="notice">{plural(run.cost.errors, 'llm call')} failed in this run. the sim logs each as a walk-past with the reason "(llm error)"; they are not shopper decisions, so every count on this page leaves them out.</p>
@@ -129,61 +128,44 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
   );
 }
 
-/** gap_pts is unit median minus this product, so a positive gap means this product is behind */
-function Versus({ gap, of }: { gap: number | null | undefined; of: string }) {
-  if (gap === null || gap === undefined) return <span className="kpi-vs is-flat">no {of} to compare</span>;
-  const n = Math.round(Math.abs(gap));
-  if (n < 1) return <span className="kpi-vs is-flat">level with {of}</span>;
-  return <span className={`kpi-vs ${gap > 0 ? 'is-down' : 'is-up'}`}>{gap > 0 ? '▼' : '▲'} {n} pts vs {of}</span>;
-}
+const STEP_OF: Record<string, string> = { notice: 'noticed', consider: 'considered', pick: 'bought' };
 
-function KpiRow({ own, ai, aiLoaded, d }: { own: Funnel; ai: Funnel; aiLoaded: boolean; d: Diagnosis }) {
-  const [notice, consider] = stepRates(own);
-  const gap = (step: string) => d.gaps.find((g) => g.step === step)?.gap_pts;
-  const rate = (r: number | null) => (r === null ? '–' : pct(r));
-  return (
-    <div className="ins-kpis">
-      <div className="kpi is-hero">
-        <span className="kpi-l">picked</span>
-        <span className="kpi-n">{own.shown ? pct(own.pick_rate) : '–'}</span>
-        <span className="kpi-s">{own.picked} of {own.shown} at the shelf · 95% ci {pct(own.ci95[0])}–{pct(own.ci95[1])}</span>
-      </div>
-      <div className="kpi">
-        <span className="kpi-l">noticed</span>
-        <span className="kpi-n">{rate(notice.rate)}</span>
-        <span className="kpi-s">{notice.k} of {notice.n} at the shelf</span>
-        <Versus gap={gap('notice')} of="unit median" />
-      </div>
-      <div className="kpi">
-        <span className="kpi-l">considered</span>
-        <span className="kpi-n">{rate(consider.rate)}</span>
-        <span className="kpi-s">{consider.k} of {consider.n} who noticed it</span>
-        <Versus gap={gap('consider')} of="unit median" />
-      </div>
-      <div className="kpi is-ai">
-        <span className="kpi-l">ai agents picked</span>
-        <span className="kpi-n">{aiLoaded && ai.shown ? pct(ai.pick_rate) : '–'}</span>
-        <span className="kpi-s">{aiLoaded ? `${ai.picked} of ${ai.shown} feed views` : 'no ai arm loaded'}</span>
-        {aiLoaded && ai.shown > 0 && own.shown > 0 && <Versus gap={(own.pick_rate - ai.pick_rate) * 100} of="shoppers" />}
-      </div>
-    </div>
-  );
-}
-
-function DiagnosisSection({ d, unit, onPlacement }: { d: Diagnosis; unit?: string; onPlacement: () => void }) {
+interface StoryProps { own: Funnel; ai: Funnel; aiLoaded: boolean; d: Diagnosis; unit?: string; onPlacement: () => void }
+/** the whole page in one tile: did it sell, where it loses shoppers, and the four steps behind that */
+function Story({ own, ai, aiLoaded, d, unit, onPlacement }: StoryProps) {
   const text = diagnosisText(d);
+  const [notice, consider, pick] = stepRates(own);
+  const leak = d.bottleneck ? STEP_OF[d.bottleneck.step] : null;
+  const steps = [
+    { k: 'passed', v: own.shown, rate: null as number | null, why: 'stood at its shelf' },
+    { k: 'noticed', v: own.noticed, rate: notice.rate, why: 'of those who passed' },
+    { k: 'considered', v: own.considered, rate: consider.rate, why: 'of those who noticed: picked it up or weighed it' },
+    { k: 'bought', v: own.picked, rate: pick.rate, why: 'of those who considered' },
+  ];
   return (
-    <section className="tile t-12 ins-diag" aria-label="diagnosis">
+    <section className="tile t-12 ins-story" aria-label="summary">
+      <p className="ins-headline">
+        {own.shown ? <><b>{own.picked} of {own.shown}</b> shoppers who passed it bought it.</> : 'no shopper passed it in this run.'}
+      </p>
       <p className="ins-diagnosis">{text.main}</p>
-      {text.arm && <p className="ins-diagnosis ins-arm">{text.arm}</p>}
+      <ol className="ins-steps">
+        {steps.map((st) => (
+          <li key={st.k} className={`ins-step ${leak === st.k ? 'is-leak' : ''}`} title={st.why}>
+            <b>{st.v}</b>
+            <span>{st.k}</span>
+            {st.rate !== null && <i>{pct(st.rate)}</i>}
+            {leak === st.k && <em>drops here</em>}
+          </li>
+        ))}
+      </ol>
+      {aiLoaded && ai.shown > 0 && <p className="ins-ai">ai agents picked it <b>{ai.picked} of {ai.shown}</b> times.</p>}
       {d.bottleneck?.step === 'notice' && <button className="link-btn" onClick={onPlacement}>see the best spots ↓</button>}
       <details className="ins-how">
         <summary>how this was decided</summary>
         <p>
-          human shoppers only. three step conversions: notice = noticed ÷ shown, consider = (picked + rejected) ÷ noticed, pick = picked ÷ considered.
-          for each step we take the median over the other products in unit {unit ?? '?'}, and the step where this product sits furthest below that median, in percentage points, is the bottleneck.
-          notice → placement. consider → pack copy or claim. pick → price or ingredients. no step below the median → at or above its neighbours.
-          the ai sentence appears only when the ai and human pick rates differ by {pct(ARM_GAP)} or more (an assumption).
+          shoppers only. three steps: noticed ÷ passed, considered ÷ noticed, bought ÷ considered. each is compared with the median of the other products in unit {unit ?? '?'}; the step furthest below is where it loses shoppers.
+          pick rate {pct(own.pick_rate)}, 95% ci {pct(own.ci95[0])}–{pct(own.ci95[1])}. {own.walk_past} walked past, {own.rejected} put it back.
+          {text.arm && <> {text.arm}</>}
         </p>
         <table className="kv ins-table">
           <thead><tr><th>step</th><th>this product</th><th>unit median</th><th>gap</th></tr></thead>
@@ -203,36 +185,13 @@ function DiagnosisSection({ d, unit, onPlacement }: { d: Diagnosis; unit?: strin
   );
 }
 
-function FunnelSection({ f }: { f: Funnel }) {
-  const [notice, consider, pick] = stepRates(f);
-  const rows = [
-    { k: 'shown', v: f.shown, why: 'a shopper stood at this slot', prev: null },
-    { k: 'noticed', v: f.noticed, why: 'the p_notice roll succeeded', prev: { ...notice, of: 'shown' } },
-    { k: 'considered', v: f.considered, why: 'picked or actively rejected', prev: { ...consider, of: 'noticed' } },
-    { k: 'picked', v: f.picked, why: 'went in the basket', prev: { ...pick, of: 'considered' } },
-  ];
-  const max = Math.max(1, f.shown);
+/** a closed row: the question, and its one-line answer, so the page reads without opening anything */
+function Fold({ q, a, children }: { q: string; a?: ReactNode; children: ReactNode }) {
   return (
-    <section className="tile t-7">
-      <h3>funnel</h3>
-      {f.shown === 0 && <p className="muted">no shopper passed this product in this run. only the ai arm saw it.</p>}
-      <div className="fn">
-        {rows.map((r) => (
-          <div key={r.k} className={`fn-step fn-${r.k}`} title={r.why}>
-            <div className="fn-label"><b>{r.v}</b> {r.k}</div>
-            <div className="fn-track"><div className="fn-fill" style={{ width: `${(r.v / max) * 100}%` }} /></div>
-            <div className="fn-conv">
-              {r.prev ? (r.prev.rate === null ? `no ${r.prev.of} to convert` : <><b>{pct(r.prev.rate)}</b> of {r.prev.of} <span className="ins-drop">−{r.prev.n - r.prev.k}</span></>) : 'at the shelf'}
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="fn-out">
-        <span className="chip" style={{ background: DECISION.walk_past.color }}>{f.walk_past} walked past</span>
-        <span className="chip chip-bad">{f.rejected} put it back</span>
-        <span className="muted small">of {f.shown} at the shelf</span>
-      </div>
-    </section>
+    <details className="tile t-12 fold">
+      <summary><span className="fold-q">{q}</span>{a && <span className="fold-a">{a}</span>}</summary>
+      <div className="fold-body">{children}</div>
+    </details>
   );
 }
 
@@ -248,10 +207,8 @@ function BehaviourSection({ run, code, name, personas }: { run: Run; code: strin
   const per100 = (x: number | null) => (x === null ? '–' : x.toFixed(1));
   const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged on mock</span>);
   return (
-    <section className="tile t-12 ins-beh">
-      <h3>behaviour log <span className="muted">{b.rows.length} shoppers</span>
-        <button className="btn btn-white ins-dl" onClick={download} disabled={!b.rows.length}>download csv</button>
-      </h3>
+    <Fold q="what did each shopper do?" a={`${b.rows.length} shoppers logged`}>
+      <button className="btn btn-white ins-dl" onClick={download} disabled={!b.rows.length}>download csv</button>
       <div className="beh-stats">
         <div><span className="kpi-l">buying frequency</span><b className="beh-n">{per100(b.buys_per_100_visits)}</b><span className="kpi-s">buys per 100 store visits · {b.store_shoppers} visits</span></div>
         <div><span className="kpi-l">per shelf pass</span><b className="beh-n">{per100(b.buys_per_100_passes)}</b><span className="kpi-s">buys per 100 at the shelf</span></div>
@@ -277,7 +234,7 @@ function BehaviourSection({ run, code, name, personas }: { run: Run; code: strin
           every shopper makes one trip per run, so there is no repeat purchase or retention here. rows under {LOW_N_ROW} shoppers are greyed.
         </p>
       </details>
-    </section>
+    </Fold>
   );
 }
 
@@ -292,9 +249,9 @@ function BreakdownSection({ run, code, personas, aiLoaded }: { run: Run; code: s
   const rows = useMemo(() => breakdown(run, code, dim, personas), [run, code, dim, personas]);
   const arm = DIMENSION_ARM[dim];
   const color = (key: string) => (dim === 'archetype' ? archColor(key) : dim === 'model' ? AI_COLOR : HUMAN_COLOR);
+  const top = useMemo(() => breakdown(run, code, 'archetype', personas).find((r) => r.picked > 0), [run, code, personas]);
   return (
-    <section className="tile t-5">
-      <h3>who picks it <span className="muted">{arm === 'ai' ? 'ai agents' : 'shoppers'}</span></h3>
+    <Fold q="who buys it?" a={top ? `${archLabel(top.key)}, ${pct(top.rate)}` : 'nobody yet'}>
       <div className="seg small">
         {DIMENSIONS.map((d) => <button key={d.key} className={`seg-btn ${dim === d.key ? 'on' : ''}`} onClick={() => setDim(d.key)}>by {d.label}</button>)}
       </div>
@@ -313,7 +270,7 @@ function BreakdownSection({ run, code, personas, aiLoaded }: { run: Run; code: s
         rows under {LOW_N_ROW} shoppers are greyed.
         {dim === 'ocean' && ' each shopper counts once per trait; 0.5 or more is high.'}
       </p>
-    </section>
+    </Fold>
   );
 }
 
@@ -345,12 +302,11 @@ function LostToSection({ run, code, products, aiLoaded, onPickProduct }: LostToP
   const human = useMemo(() => lostTo(run, code, 'human'), [run, code]);
   const ai = useMemo(() => lostTo(run, code, 'ai'), [run, code]);
   return (
-    <section className="tile t-6">
-      <h3>lost to</h3>
+    <Fold q="what do they buy instead?" a={human.rows[0] ? prodLabel(products[human.rows[0].code], human.rows[0].code) : 'nothing else'}>
       <LostList lost={human} arm="human" products={products} onPickProduct={onPickProduct} />
       <h4 className="ins-sub">ai agents</h4>
       {aiLoaded ? <LostList lost={ai} arm="ai" products={products} onPickProduct={onPickProduct} /> : <p className="muted">no ai arm loaded.</p>}
-    </section>
+    </Fold>
   );
 }
 
@@ -382,8 +338,7 @@ function RejectSection({ run, code, personas, onTrace }: RejectProps) {
   const human = useMemo(() => rejections(run, code, 'human'), [run, code]);
   const ai = useMemo(() => rejections(run, code, 'ai'), [run, code]);
   return (
-    <section className="tile t-6">
-      <h3>why they put it back <span className="muted">{human.total}</span></h3>
+    <Fold q="why do they put it back?" a={human.groups[0] ? `${mechLabel(human.groups[0].mechanism)} (${human.groups[0].items.length})` : 'no one did'}>
       {human.total > 0 ? <RejectList rej={human} personas={personas} onTrace={onTrace} /> : <p className="muted">no shopper put it back with a reason in this run.</p>}
       {human.secondary > 0 && <p className="why">{plural(human.secondary, 'more rejection')} left out: the shopper was looking at something else.</p>}
       {ai.total > 0 && (
@@ -392,7 +347,7 @@ function RejectSection({ run, code, personas, onTrace }: RejectProps) {
           <RejectList rej={ai} personas={personas} onTrace={onTrace} />
         </>
       )}
-    </section>
+    </Fold>
   );
 }
 
@@ -401,9 +356,14 @@ interface NeighbourProps {
   products: Record<string, Product>; onPickProduct: (code: string) => void;
 }
 function NeighbourSection({ codes, me, slot, human, products, onPickProduct }: NeighbourProps) {
+  const mine = human[me]?.pick_rate ?? 0;
+  const ahead = codes.filter((c) => (human[c]?.pick_rate ?? 0) > mine).length;
+  const level = codes.filter((c) => c !== me && (human[c]?.pick_rate ?? 0) === mine).length;
+  const answer = !codes.includes(me) ? 'not on a shelf'
+    : !human[me]?.shown ? 'no shopper passed it'
+    : `${ahead + 1} of ${codes.length} on its shelf${level ? `, level with ${level}` : ''}`;
   return (
-    <section className="tile t-12">
-      <h3>shelf neighbours <span className="muted">{slot ?? 'no slot'}</span></h3>
+    <Fold q="how does it compare with its neighbours?" a={answer}>
       {!codes.length && <p className="muted">this product is not on this shelf plan.</p>}
       {codes.length > 0 && (
         <table className="kv ins-table">
@@ -425,6 +385,6 @@ function NeighbourSection({ codes, me, slot, human, products, onPickProduct }: N
         </table>
       )}
       <p className="why">notice rate = noticed ÷ shown. pick rate = picked ÷ shown. sentiment runs −1 to +1, averaged over the events where the shopper gave one.</p>
-    </section>
+    </Fold>
   );
 }

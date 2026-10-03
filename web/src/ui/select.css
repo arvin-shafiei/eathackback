@@ -1,0 +1,55 @@
+.sel { position: relative; display: inline-flex; min-width: 0; max-width: 100%; vertical-align: middle; }
+.sel-btn {
+  display: inline-flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%;
+  height: 34px; padding: 0 11px 0 12px; border-radius: 999px; background: #fff;
+  border: 2px solid var(--ink); box-shadow: var(--ledge-chip);
+  font-size: 12px; font-weight: 600; text-align: left; white-space: nowrap;
+  transition: transform 120ms ease-out, box-shadow 120ms ease-out, background 120ms, border-color 120ms;
+}
+.sel-btn:hover:not(:disabled) { background: var(--surface-dim); }
+.sel-btn:active:not(:disabled), .sel.is-open > .sel-btn { transform: translateY(3px); box-shadow: 0 0 0 var(--ink); }
+.sel-btn[aria-invalid=true] { border-color: var(--bad); background: #fff5f7; }
+.sel-pre { flex: none; font-weight: 800; }
+.sel-val { flex: 1; min-width: 0; max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
+.sel-val.is-empty { color: var(--muted); }
+.sel-chev { flex: none; transition: transform 140ms ease-out; }
+.sel.is-open .sel-chev { transform: rotate(180deg); }
+
+/* inside a form field: fills the column at input height, flat like the inputs beside it */
+.sel.select-field { display: flex; width: 100%; }
+.select-field > .sel-btn { width: 100%; height: auto; padding: 8px 10px; border-radius: 12px; box-shadow: none; font-size: 13px; font-weight: 400; }
+.select-field > .sel-btn:active:not(:disabled), .sel.select-field.is-open > .sel-btn { transform: none; box-shadow: none; background: var(--surface-dim); }
+.select-field .sel-val { max-width: none; }
+
+.sel-pop {
+  position: absolute; top: calc(100% + 8px); left: 0; z-index: 40;
+  display: flex; flex-direction: column; overflow: hidden;
+  width: max-content; min-width: min(100%, calc(100vw - 32px)); max-width: min(420px, calc(100vw - 32px)); max-height: 320px;
+  background: #fff; border: 2px solid var(--ink); border-radius: 16px; box-shadow: var(--ledge-card);
+  font-size: 13px; font-weight: 600; text-align: left; white-space: nowrap;
+  animation: sel-in 140ms ease-out both;
+}
+.sel-pop[data-up] { top: auto; bottom: calc(100% + 8px); }
+@keyframes sel-in { from { opacity: 0; transform: translateY(-4px); } }
+
+.sel-pop .sel-search {
+  flex: none; width: auto; height: 34px; margin: 8px 8px 2px; padding: 0 10px; border-radius: 10px;
+  border: 2px solid var(--line); background: var(--surface-dim); font: inherit; color: var(--ink);
+  transition: border-color 120ms, background 120ms;
+}
+.sel-pop .sel-search:focus { outline: none; border-color: var(--ink); background: #fff; }
+/* ios zooms the page when a focused input is under 16px */
+@media (pointer: coarse) { .sel-pop .sel-search { font-size: 16px; } }
+
+.sel-list { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px; }
+.sel-group { padding: 8px 8px 4px; font-size: 11px; font-weight: 800; color: var(--muted); }
+.sel-opt { display: flex; align-items: center; gap: 8px; padding: 7px 8px; border-radius: 10px; cursor: pointer; transition: background 120ms; }
+.sel-opt.is-active { background: var(--surface-dim); }
+.sel-opt:active:not([aria-disabled]) { background: var(--blush); }
+.sel-opt[aria-selected=true] { font-weight: 800; }
+.sel-opt[aria-disabled] { opacity: 0.45; cursor: not-allowed; }
+.sel-tick { flex: none; visibility: hidden; }
+.sel-opt[aria-selected=true] .sel-tick { visibility: visible; }
+.sel-lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.sel-hint { flex: none; margin-left: 8px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.sel-none { padding: 10px 8px; color: var(--muted); }

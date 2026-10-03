@@ -107,10 +107,7 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
   return (
     <section className="placement">
       <div className="pl-main">
-      <h3>where on the shelf</h3>
-      <p className="muted pl-note">
-        how often each spot gets noticed. computed from the notice model, no model call.
-      </p>
+      <h3>where should it sit?</h3>
       {scan.busy && <p className="muted pl-note" role="status">scanning the shelf…</p>}
       {scan.err && <ErrorNote msg={scan.err} />}
       {scan.data && (
@@ -119,11 +116,8 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
       )}
 
       </div>
-      <div className="pl-side">
-      <h3>test it with shoppers</h3>
-      <p className="muted pl-note">
-        noticing isn't buying. {TEST_AGENTS} shoppers walk each spot on the same seed, and we count who buys.
-      </p>
+      <details className="pl-side pl-fold" open={!!exp.data || exp.busy || !!exp.err || undefined}>
+      <summary><h3>test a spot with shoppers</h3></summary>
       <Chosen cfg={cfg} chosen={chosen} onToggle={toggle} />
       <div className="pl-actions">
         <button className="btn btn-brand" onClick={runExperiment} disabled={!chosen.length || exp.busy}>
@@ -134,13 +128,9 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
       {exp.busy && <BusyNote useLLM={useLLM} />}
       {exp.err && <ErrorNote msg={exp.err} />}
       {exp.data && <ExperimentResults exp={exp.data} cfg={cfg} product={product} busy={busy} onApply={onApplyPlanogram} />}
-
-      </div>
-      <div className="pl-side">
-      <h3>other fixes</h3>
-      <p className="muted pl-note">
-        a claim the product already earns, one more facing{hasPrice ? ', your new price' : ''}. same {TEST_AGENTS} shoppers.
-      </p>
+      </details>
+      <details className="pl-side pl-fold" open={!!opt.data || opt.busy || !!opt.err || undefined}>
+      <summary><h3>try a claim, a facing or a price</h3></summary>
       <div className="pl-actions">
         <label className="pl-price">
           new price £
@@ -153,7 +143,7 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
       {opt.busy && <BusyNote useLLM={useLLM} />}
       {opt.err && <ErrorNote msg={opt.err} />}
       {opt.data && <Fixes opt={opt.data} />}
-      </div>
+      </details>
     </section>
   );
 }
@@ -196,6 +186,11 @@ function Heatmap({ scan, cfg, planogram, products, facings, onFacings, picked, o
   const best = shown.reduce<PlacementCandidate | null>((a, c) => (!a || c.notice_rate > a.notice_rate ? c : a), null);
   return (
     <>
+      <p className="pl-answer">
+        {best && !best.is_current
+          ? <>best spot: <b>{where(cfg, best)}</b>, noticed {pct1(best.notice_rate)} against {pct1(scan.current.notice_rate)} now.</>
+          : <>it is already in the best spot for {facingsText(facings)}.</>}
+      </p>
       <div className="pl-bar">
         <div className="seg small" role="group" aria-label="facings to show">
           {FACINGS.map((f) => (
@@ -225,12 +220,11 @@ function Heatmap({ scan, cfg, planogram, products, facings, onFacings, picked, o
         <span>{pct1(lo)}</span><i aria-hidden /><span>{pct1(hi)}</span>
         <span>notice rate across {scan.candidates.length} spots</span>
       </div>
-      <p className="pl-note">
-        <b>{pct1(scan.current.reach)}</b> of shoppers pass this unit ({passing} of {scan.n_agents}). lift is against your current spot,{' '}
-        {pct1(scan.current.notice_rate)}.
-      </p>
       <details className="pl-method">
         <summary>how this is counted</summary>
+        <p>
+          <b>{pct1(scan.current.reach)}</b> of shoppers pass this unit ({passing} of {scan.n_agents}). each spot shows how often it gets noticed; lift is against your current spot, {pct1(scan.current.notice_rate)}. no model call.
+        </p>
         <p>{scan.method}</p>
         {!!scan.sources?.length && <ul className="refs">{scan.sources.map((s) => <li key={s}><Src s={s} /></li>)}</ul>}
       </details>

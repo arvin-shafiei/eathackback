@@ -18,6 +18,8 @@ import { EditPanel } from './ui/EditPanel';
 import { ComparePanel } from './ui/ComparePanel';
 import { AddProductPanel } from './ui/AddProductPanel';
 import { InsightsPanel } from './ui/InsightsPanel';
+import { RearrangePanel } from './ui/RearrangePanel';
+import { Select } from './ui/Select';
 import { aiGear, isAIArch, shopperLabel } from './ui/aiArch';
 import { archColor, archLabel, AI_COLOR, ARCH_GEAR, carrierFor } from './theme';
 
@@ -26,8 +28,8 @@ type Panel =
   | { kind: 'agent'; id: string }
   | { kind: 'trace'; agentId: string; step: number; back?: Panel }
   | null;
-type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights';
-const MODE_LABEL: Record<Mode, string> = { replay: '▶ replay', compare: '🧍 vs 🤖', edit: '✏️ edit shelf', add: '＋ add product', insights: '📊 analytics' };
+type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange';
+const MODE_LABEL: Record<Mode, string> = { replay: '▶ replay', compare: '🧍 vs 🤖', edit: '✏️ edit shelf', add: '＋ add product', insights: '📊 analytics', rearrange: '🔀 rearrange' };
 /** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
 const UPLOAD_AGENTS = 150;
 const UPLOAD_AI_RUNS = 3;
@@ -98,6 +100,8 @@ export default function App() {
   const [showLegend, setShowLegend] = useState(true);
   const [focus, setFocus] = useState<string | null>(null);
   const [job, setJob] = useState<{ busy: boolean; msg: string | null }>({ busy: false, msg: null });
+  const [preview, setPreview] = useState<Planogram | null>(null);
+  useEffect(() => { if (mode !== 'rearrange') setPreview(null); }, [mode]);
   const [soundOn, setSoundOn] = useState(false);
   const [shakeOn, setShakeOn] = useState(true);
   const [bonks, setBonks] = useState(0);
@@ -338,8 +342,8 @@ export default function App() {
     <div className={`app mode-${mode} ${intro ? 'is-intro' : ''}`}>
       <div className="stage">
         <Scene
-          cfg={data.config} planogram={mode === 'edit' ? plan : basePlan} replayPlan={basePlan} products={products} personas={personas}
-          agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && mode !== 'edit' && mode !== 'add' && mode !== 'insights'} speed={speed} duration={duration}
+          cfg={data.config} planogram={mode === 'edit' ? plan : mode === 'rearrange' && preview ? preview : basePlan} replayPlan={basePlan} products={products} personas={personas}
+          agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && (mode === 'replay' || mode === 'compare')} speed={speed} duration={duration}
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
@@ -355,27 +359,22 @@ export default function App() {
           <span className="brand-chip" aria-hidden>🛒🤖</span>
         </div>
         <nav className="seg seg-main" aria-label="mode">
-          {(['replay', 'compare', 'edit', 'add', 'insights'] as Mode[]).map((m) => (
+          {(['replay', 'compare', 'edit', 'add', 'insights', 'rearrange'] as Mode[]).map((m) => (
             <button key={m} className={`seg-btn ${mode === m ? 'on' : ''}`} onClick={() => { setMode(m); if (m === 'edit') setPanel(null); }}>
               {MODE_LABEL[m]}
             </button>
           ))}
         </nav>
         <div className="tools">
-          <label className="select">
-            <span>run</span>
-            <select value={runId ?? ''} onChange={(e) => setRunId(e.target.value)}>
-              {runs.filter((r) => !isAgentArm(r)).map((r) => <option key={r.run_id} value={r.run_id}>{r.run_id}{r.fixture ? ' (fixture)' : ''}{r.agents ? ` · ${r.agents}` : ''}</option>)}
-            </select>
-          </label>
+          <Select
+            ariaLabel="run" prefix="run" searchable value={runId ?? ''} onChange={setRunId}
+            options={runs.filter((r) => !isAgentArm(r)).map((r) => ({ value: r.run_id, label: `${r.run_id}${r.fixture ? ' (fixture)' : ''}`, hint: r.agents ? `${r.agents} agents` : undefined }))}
+          />
           {runs.some(isAgentArm) && (
-            <label className="select">
-              <span>+ ai arm</span>
-              <select value={aiRunId} onChange={(e) => setAiRunId(e.target.value)}>
-                <option value="">none</option>
-                {runs.filter(isAgentArm).map((r) => <option key={r.run_id} value={r.run_id}>{r.run_id}{r.agents ? ` · ${r.agents}` : ''}</option>)}
-              </select>
-            </label>
+            <Select
+              ariaLabel="ai arm" prefix="+ ai arm" searchable value={aiRunId} onChange={setAiRunId}
+              options={[{ value: '', label: 'none' }, ...runs.filter(isAgentArm).map((r) => ({ value: r.run_id, label: r.run_id, hint: r.agents ? `${r.agents} agents` : undefined }))]}
+            />
           )}
           <div className="seg small" aria-label="who">
             {(['both', 'human', 'ai'] as Arm[]).map((a) => <button key={a} className={`seg-btn ${arm === a ? 'on' : ''}`} onClick={() => setArm(a)}>{a === 'both' ? 'everyone' : a === 'human' ? 'humans' : 'ai agents'}</button>)}
@@ -459,10 +458,16 @@ export default function App() {
           onPickProduct={setFocus} onTrace={openTrace} onClose={() => setMode('replay')}
           onApplyPlanogram={(p, label) => { setFocus(focusProduct.code); void simulate(p, run?.catalog_inline ?? [], label); }} />
       )}
-      {job.msg && mode === 'insights' && <div className="loading-run sticker">{job.msg}</div>}
-      {side && mode !== 'edit' && mode !== 'add' && <div className="side">{side}</div>}
+      {mode === 'rearrange' && run && (
+        <RearrangePanel run={run} planogram={basePlan} cfg={data.config} products={products} extraProducts={run.catalog_inline ?? []}
+          focus={focus ?? undefined} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy} onPreview={setPreview}
+          onPickProduct={(code) => { setFocus(code); setMode('insights'); }} onClose={() => setMode('replay')}
+          onApplyPlanogram={(p, label) => { setPreview(null); void simulate(p, run.catalog_inline ?? [], label); }} />
+      )}
+      {job.msg && (mode === 'insights' || mode === 'rearrange') && <div className="loading-run sticker">{job.msg}</div>}
+      {side && mode !== 'edit' && mode !== 'add' && mode !== 'rearrange' && <div className="side">{side}</div>}
 
-      {mode !== 'edit' && !intro && (
+      {(mode === 'replay' || mode === 'compare') && !intro && (
         <footer className="replay card">
           <button className="btn btn-brand round" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'pause' : 'play'}>{playing ? '❚❚' : '▶'}</button>
           <input type="range" min={0} max={duration} step={0.1} value={uiTime} onChange={(e) => { timeRef.current = Number(e.target.value); setUiTime(timeRef.current); }} aria-label="replay time" />

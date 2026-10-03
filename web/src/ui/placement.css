@@ -77,3 +77,12 @@
 .placement .pl-skip { font-size: 13px; line-height: 1.45; margin: 0 0 8px; padding: 8px 12px; border: 2px dashed var(--line); border-radius: 14px; color: var(--muted); }
 .placement .pl-sub { font-family: var(--display); font-weight: 800; font-size: 14px; margin: 14px 0 6px; }
 .placement .pl-claim { font-size: 12.5px; line-height: 1.5; margin: 0 0 8px; }
+
+/* ---- simplified: the answer first, the tests folded */
+.placement .pl-answer { font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1.3; margin: 0 0 12px; }
+.placement details.pl-fold > summary { list-style: none; cursor: pointer; }
+.placement details.pl-fold > summary::-webkit-details-marker { display: none; }
+.placement details.pl-fold > summary h3 { margin: 0; }
+.placement details.pl-fold > summary h3::before { content: '▸'; display: inline-block; margin-right: 8px; transition: transform 140ms ease-out; }
+.placement details.pl-fold[open] > summary h3::before { transform: rotate(90deg); }
+.placement details.pl-fold[open] > summary { margin-bottom: 12px; }
