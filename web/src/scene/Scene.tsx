@@ -7,6 +7,7 @@ import type { OrbitControls as OrbitImpl } from 'three-stdlib';
 import type { Agent, Persona, Planogram, Product, StoreConfig } from '../types';
 import { gondolaX, storeBounds, storePlan, zRange, type Timeline } from '../layout';
 import { Store } from './Store';
+import { TrafficHeat } from './TrafficHeat';
 import { World } from './world/World';
 import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
@@ -190,6 +191,7 @@ export interface SceneProps {
   selectedProduct: string | null; onProduct: (code: string) => void;
   selectedAgent: string | null; onAgent: (id: string) => void; onEvent: (agentId: string, step: number) => void;
   editMode: boolean; editSel: string | null; onSlot: (slot: string) => void; changed: Set<string>;
+  ownerHeat?: boolean; ownerHeatMin?: number | null;
   heat: Record<string, string> | null; thoughts: ThoughtMode;
   cam: CamMode; camNonce: number; onBackground: () => void; onIntroDone: () => void; onUserCamera: () => void;
   /** both optional, like Ops' own props: undefined lets the ops layer load its day and clock itself */
@@ -238,6 +240,7 @@ const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>
           <Store cfg={p.cfg} planogram={p.planogram} products={p.products} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
+          <TrafficHeat cfg={p.cfg} timelines={p.timelines} on={!!p.ownerHeat} lastMinutes={p.ownerHeatMin ?? null} timeRef={p.timeRef} />
           <Shelves cfg={p.cfg} planogram={p.planogram} products={p.products} gaps={beats.gaps} timeRef={p.timeRef} live={!p.editMode} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} onSlot={p.onSlot} />
           <Ops cfg={p.cfg} ops={p.ops} timeRef={p.timeRef} clockStart={p.clockStart} planogram={p.replayPlan} products={p.products} live={!p.editMode} />
           {!p.editMode && (

@@ -3,10 +3,16 @@ import { isAI } from '../types';
 import { archColor, archLabel, DECISION, AI_COLOR, prodLabel } from '../theme';
 import { Radar, Src, Sticker } from './bits';
 import { aiArchOf, aiLabel, decidedBy } from './aiArch';
+import { DecisionNumbers } from './AgentPanel';
+import { ENGINE_TEXT, eventEngine, type LiveAgent, type LiveEvent } from './agentLive';
+import './engine.css';
+import './agent-live.css';
 
 interface Props {
   run: Run; agent: Agent; event: SimEvent; persona?: Persona; product?: Product;
   onAgent: () => void; onProduct: () => void; onBack?: () => void; onClose: () => void;
+  /** whole catalogue, so the take distribution can name the other options on the shelf */
+  products?: Record<string, Product>;
 }
 
 function valueOf(p: Product | undefined, attr: string) {
@@ -40,7 +46,7 @@ const fmtVal = (v: unknown): string => {
   return String(v);
 };
 
-export function TracePanel({ run, agent, event: e, persona, product, onAgent, onProduct, onBack, onClose }: Props) {
+export function TracePanel({ run, agent, event: e, persona, product, onAgent, onProduct, onBack, onClose, products }: Props) {
   const ai = isAI(agent);
   const arch = ai ? aiArchOf(agent) : agent.archetype ?? persona?.archetype ?? '';
   const color = ai ? AI_COLOR : archColor(arch);
@@ -60,6 +66,7 @@ export function TracePanel({ run, agent, event: e, persona, product, onAgent, on
           {e.feeling && <Sticker>feels {e.feeling}</Sticker>}
           {typeof e.sentiment === 'number' && <Sticker tone={e.sentiment > 0.1 ? 'good' : e.sentiment < -0.1 ? 'bad' : 'white'}>sentiment {e.sentiment.toFixed(2)}</Sticker>}
           {e.mechanism && <Sticker tone="ink">{e.mechanism.replace(/_/g, ' ')}</Sticker>}
+          {(() => { const en = ENGINE_TEXT[eventEngine(e as LiveEvent, agent as LiveAgent)]; return <span className={`engine-badge ${en.css}`} title={en.title}>{en.text}</span>; })()}
         </div>
       </div>
 
@@ -101,7 +108,12 @@ export function TracePanel({ run, agent, event: e, persona, product, onAgent, on
           )}
         </li>
         <li>
-          <h3>4 · why it went that way</h3>
+          <h3>4 · the model's numbers</h3>
+          <p className="muted small">exactly what the run recorded for this call.</p>
+          <DecisionNumbers e={e as LiveEvent} agent={agent} persona={persona} products={products ?? (product ? { [e.product]: product } : {})} color={color} />
+        </li>
+        <li>
+          <h3>5 · why it went that way</h3>
           <p>mechanism: <b>{(e.mechanism ?? 'unspecified').replace(/_/g, ' ')}</b></p>
           <ul className="refs">
             {(e.source_refs ?? []).map((s, i) => <li key={i}><Src s={s} /></li>)}

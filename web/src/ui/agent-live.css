@@ -1,0 +1,42 @@
+/* live shopper panel: thinking now / about to buy / in the trolley (AgentPanel + TracePanel) */
+.panel h4 { font-family: var(--display); font-weight: 800; font-size: 13px; margin: 12px 0 6px; display: flex; gap: 8px; align-items: baseline; justify-content: space-between; }
+.al-now { border-top-style: solid !important; }
+.al-prod { display: flex; gap: 10px; align-items: center; width: 100%; text-align: left; background: #fff; border: 2px solid var(--line); border-radius: 14px; padding: 8px; font-size: 13px; line-height: 1.35; }
+button.al-prod { cursor: pointer; transition: border-color 120ms; }
+button.al-prod:hover { border-color: var(--ink); }
+.al-prod > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.al-thumb { width: 44px; height: 44px; flex: none; border-radius: 10px; border: 2px solid var(--ink); overflow: hidden; display: grid; place-items: center; font-weight: 800; font-size: 13px; color: #fff; }
+.al-thumb img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+.al-dec { font-weight: 800; font-size: 12px; }
+.al-reason { font-size: 12px; line-height: 1.45; margin: 8px 0 0; color: var(--muted); }
+.al-mission { font-size: 13px; line-height: 1.45; margin: 8px 0 4px; background: var(--surface-dim); border-radius: 12px; padding: 8px 10px; }
+.al-numbers { margin-top: 6px; }
+.al-numbers p { margin: 6px 0; }
+.al-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: 6px; margin: 8px 0 4px; }
+.al-kpis > div { background: var(--surface-dim); border-radius: 10px; padding: 6px 8px; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.al-kpis b { font-size: 13px; line-height: 1.2; overflow-wrap: anywhere; }
+.al-kpis span { font-size: 11px; color: var(--muted); }
+.al-dist { list-style: none; padding: 0; margin: 0; }
+.al-dist li { display: grid; grid-template-columns: minmax(0, 1fr) 70px 46px; gap: 6px; align-items: center; font-size: 12px; margin: 3px 0; }
+.al-dist li.self .al-dist-label { font-weight: 800; }
+.al-dist-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.al-dist-track { position: relative; height: 10px; border-radius: 999px; background: var(--surface-dim); border: 2px solid var(--ink); overflow: hidden; }
+.al-dist-fill { position: absolute; inset: 0 auto 0 0; border-radius: 999px; }
+.al-dist-p { text-align: right; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.al-trig { list-style: none; padding: 0; margin: 0; font-size: 12px; line-height: 1.4; }
+.al-trig li { padding: 3px 0; color: var(--muted); }
+.al-trig li.fired { color: var(--ink); }
+.al-trig li.fired b { color: #e11d48; }
+.al-trig-kind { display: inline-block; font-size: 10px; font-weight: 800; border-radius: 999px; padding: 0 6px; border: 1.5px solid currentColor; margin-right: 2px; }
+.al-trig-kind.put-off { color: #e11d48; }
+.al-trig-kind.trust { color: #16a34a; }
+.al-items { list-style: none; padding: 0; margin: 0; font-size: 12px; }
+.al-items li { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.al-items li > span { font-weight: 700; white-space: nowrap; }
+.al-items.back li { flex-direction: column; gap: 1px; }
+.al-items.back .q { font-weight: 400; white-space: normal; color: var(--muted); }
+.al-items .link-btn { text-align: left; }
+.al-more { margin-top: 14px; border-top: 2px dashed var(--line); padding-top: 10px; }
+.al-more > summary { font-family: var(--display); font-weight: 800; font-size: 15px; cursor: pointer; }
+.al-more > section:first-of-type { border-top: 0; margin-top: 0; }
+.quote.al-cur { border-color: var(--ink); }

@@ -18,6 +18,7 @@ import { EditPanel } from './ui/EditPanel';
 import { ComparePanel } from './ui/ComparePanel';
 import { AddProductPanel } from './ui/AddProductPanel';
 import { InsightsPanel } from './ui/InsightsPanel';
+import { OwnerPanel } from './ui/OwnerPanel';
 import { RearrangePanel } from './ui/RearrangePanel';
 import { Select } from './ui/Select';
 import { aiGear, isAIArch, shopperLabel } from './ui/aiArch';
@@ -28,11 +29,11 @@ type Panel =
   | { kind: 'agent'; id: string }
   | { kind: 'trace'; agentId: string; step: number; back?: Panel }
   | null;
-type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange';
-const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange' };
+type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange' | 'owner';
+const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange', owner: 'your store' };
 /** the four things a brand does; the rest sit behind "options" */
-const MAIN_MODES: Mode[] = ['replay', 'add', 'insights', 'rearrange'];
-const ALL_MODES: Mode[] = ['replay', 'compare', 'edit', 'add', 'insights', 'rearrange'];
+const MAIN_MODES: Mode[] = ['replay', 'add', 'insights', 'owner', 'rearrange'];
+const ALL_MODES: Mode[] = ['replay', 'compare', 'edit', 'add', 'insights', 'owner', 'rearrange'];
 /** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
 const UPLOAD_AGENTS = 150;
 const UPLOAD_AI_RUNS = 3;
@@ -93,6 +94,8 @@ export default function App() {
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(2);
   const [uiTime, setUiTime] = useState(0);
+  const [ownerHeat, setOwnerHeat] = useState(false);
+  const [ownerHeatMin, setOwnerHeatMin] = useState<number | null>(null);
   const timeRef = useRef(0);
   const [cam, setCam] = useState<CamMode>(() => (/[?&]nointro/.test(location.search) ? 'overview' : 'intro'));
   const [camNonce, setCamNonce] = useState(0);
@@ -324,10 +327,10 @@ export default function App() {
 
   let side: JSX.Element | null = null;
   if (view && panel?.kind === 'product' && products[panel.code]) side = <ProductPanel run={view} product={products[panel.code]} slot={slotOf(panel.code)} arm={arm} personas={personas} onTrace={openTrace} onClose={() => setPanel(null)} />;
-  if (view && panel?.kind === 'agent') { const a = view.agents.find((x) => x.agent_id === panel.id); if (a) side = <AgentPanel agent={a} persona={personaFor(a)} products={products} following={cam === 'follow'} onFollow={() => setCam((c) => (c === 'follow' ? 'overview' : 'follow'))} onTrace={openTrace} onClose={() => setPanel(null)} />; }
+  if (view && panel?.kind === 'agent') { const a = view.agents.find((x) => x.agent_id === panel.id); if (a) side = <AgentPanel agent={a} persona={personaFor(a)} products={products} time={uiTime} timeline={timelines[a.agent_id]} config={data.config} following={cam === 'follow'} onFollow={() => setCam((c) => (c === 'follow' ? 'overview' : 'follow'))} onTrace={openTrace} onClose={() => setPanel(null)} />; }
   if (view && panel?.kind === 'trace') {
     const f = findEvent(panel.agentId, panel.step);
-    if (f?.e) side = <TracePanel run={view} agent={f.a} event={f.e} persona={personaFor(f.a)} product={products[f.e.product]} onAgent={() => setPanel({ kind: 'agent', id: f.a.agent_id })} onProduct={() => setPanel({ kind: 'product', code: f.e!.product })} onBack={panel.back ? () => setPanel(panel.back!) : undefined} onClose={() => setPanel(null)} />;
+    if (f?.e) side = <TracePanel run={view} agent={f.a} event={f.e} persona={personaFor(f.a)} product={products[f.e.product]} products={products} onAgent={() => setPanel({ kind: 'agent', id: f.a.agent_id })} onProduct={() => setPanel({ kind: 'product', code: f.e!.product })} onBack={panel.back ? () => setPanel(panel.back!) : undefined} onClose={() => setPanel(null)} />;
   }
 
   const legend = archetypesInRun.map((a) => {
@@ -352,7 +355,7 @@ export default function App() {
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
           editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={changed}
-          heat={heatMap} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
+          heat={heatMap} ownerHeat={mode === 'owner' && ownerHeat} ownerHeatMin={ownerHeatMin} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
           onIntroDone={() => setCam('overview')} onUserCamera={() => { if (cam === 'intro') { setCam('overview'); setCamNonce((n) => n + 1); } }}
         />
       </div>
@@ -468,6 +471,11 @@ export default function App() {
           focus={focus ?? undefined} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy} onPreview={setPreview}
           onPickProduct={(code) => { setFocus(code); setMode('insights'); }} onClose={() => setMode('replay')}
           onApplyPlanogram={(p, label) => { setPreview(null); void simulate(p, run.catalog_inline ?? [], label); }} />
+      )}
+      {mode === 'owner' && (
+        <OwnerPanel cfg={data.config} planogram={basePlan} products={products} timelines={timelines} run={view}
+          onToggleHeat={setOwnerHeat} onHeatWindow={setOwnerHeatMin}
+          onOpenRearrange={() => setMode('rearrange')} onClose={() => setMode('replay')} />
       )}
       {job.msg && (mode === 'insights' || mode === 'rearrange') && <div className="loading-run sticker">{job.msg}</div>}
       {side && mode !== 'edit' && mode !== 'add' && mode !== 'rearrange' && <div className="side">{side}</div>}
