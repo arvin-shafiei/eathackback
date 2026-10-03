@@ -96,7 +96,7 @@ export default function App() {
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(2);
   const [uiTime, setUiTime] = useState(0);
-  const [ownerHeat, setOwnerHeat] = useState(false);
+  const [ownerHeat, setOwnerHeat] = useState(true);
   const [routeSlots, setRouteSlots] = useState<string[]>([]);
   const [ownerHeatMin, setOwnerHeatMin] = useState<number | null>(null);
   const [ownerHeatLevel, setOwnerHeatLevel] = useState(0);

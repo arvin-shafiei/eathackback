@@ -21,8 +21,8 @@ export interface TrafficHeatProps {
   minLevel?: number;
 }
 
-/** one warm ramp (pale sand, amber, orange, red), so only the busy floor draws the eye. k in 0..1 */
-const RAMP: [number, number, number][] = [[255, 232, 170], [255, 190, 80], [250, 125, 30], [225, 30, 40]];
+/** a strong ramp that never matches the cream floor: blue (quiet) → green → yellow → orange → red (busiest). k in 0..1 */
+const RAMP: [number, number, number][] = [[40, 90, 255], [0, 190, 120], [255, 214, 0], [255, 110, 0], [220, 0, 50]];
 function ramp(k: number): [number, number, number] {
   const x = Math.max(0, Math.min(1, k)) * (RAMP.length - 1), i = Math.min(RAMP.length - 2, Math.floor(x)), f = x - i;
   const a = RAMP[i], b = RAMP[i + 1];
@@ -36,12 +36,12 @@ function paint(g: OccGrid, data: Uint8Array, minLevel = 0) {
     const d = g.density[iz * g.nx + ix];
     // texture row 0 = world +z edge (plane is rotated -90° about x, so v=0 lands at max z)
     const o = ((g.nz - 1 - iz) * g.nx + ix) * 4;
-    if (d <= 0) { data[o + 3] = 0; continue; }
+    // the floor under the map is dimmed (dark, see-through) so every colour stands out from the cream tiles
+    if (d <= 0) { data[o] = 20; data[o + 1] = 16; data[o + 2] = 30; data[o + 3] = 110; continue; }
     const k = Math.sqrt(d / max);
-    if (k < minLevel) { data[o + 3] = 0; continue; }
+    if (k < minLevel) { data[o] = 20; data[o + 1] = 16; data[o + 2] = 30; data[o + 3] = 110; continue; }
     const c = ramp(k);
-    // quiet cells stay faint; opacity climbs steeply towards the hotspots
-    data[o] = c[0]; data[o + 1] = c[1]; data[o + 2] = c[2]; data[o + 3] = Math.round(18 + 222 * Math.pow(k, 1.7));
+    data[o] = c[0]; data[o + 1] = c[1]; data[o + 2] = c[2]; data[o + 3] = Math.round(170 + 85 * k);
   }
 }
 
@@ -95,9 +95,9 @@ export function TrafficHeat({ cfg, timelines, on, lastMinutes = null, timeRef, m
   const w = grid.nx * grid.cell, d = grid.nz * grid.cell;
   return (
     <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[grid.x0 + w / 2, 0.03, grid.z0 + d / 2]} renderOrder={2} raycast={() => null}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[grid.x0 + w / 2, 0.07, grid.z0 + d / 2]} renderOrder={6} raycast={() => null}>
         <planeGeometry args={[w, d]} />
-        <meshBasicMaterial map={tex} transparent depthWrite={false} toneMapped={false} polygonOffset polygonOffsetFactor={-2} />
+        <meshBasicMaterial map={tex} transparent depthWrite={false} toneMapped={false} polygonOffset polygonOffsetFactor={-4} />
       </mesh>
       {top.map((h) => <HotLabel key={h.cell} h={h} />)}
     </group>
