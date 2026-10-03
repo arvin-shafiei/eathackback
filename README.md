@@ -29,7 +29,7 @@ RGC's judges say *"a number that cannot be traced back to its source is worse th
      - Neuroticism → risk aversion, loss aversion and health anxiety
      - Agreeableness → ethical and eco concern
      - Extraversion → social proof and impulse
-   - Agents run through **OpenRouter** (several models, so the audience isn't one model's monoculture).
+   - Decisions run on **TypeSafe Jev**, which returns typed answers with calibrated probabilities. An early prototype used OpenRouter LLMs; that is now retired for cost and traceability.
 4. **What each persona looks for, made explicit.** Every persona has a weighted **attribute lens**. The eco-minded parent looks for fewer additives, organic, eco-score A/B and recyclable packaging. The GLP-1 user looks for small portions, high fibre and low sugar. The frugal student looks for price per 100g and meal-deal eligibility. The protein-sceptic looks for the "gimmick" cue.
    - We **pick products to span those lenses**: high and low additives, NOVA 1→4, organic vs not, challenger vs incumbent vs own-label, cheap vs premium.
    - Each product is **graded per lens** with a visible, traceable score.
@@ -53,7 +53,7 @@ Every product has a **4-step funnel**: 👀 **look** → 🤚 **pick up** → �
 | 🧺 **shopper** | "What better option should I swap to?" | **Basket swaps**, e.g. a high-fibre alternative to an item in the basket, ranked by P(accept) × lens improvement. Shows the price delta, because claim-marketed products ("high fibre", "protein", "gut") usually carry a premium; we quantify that, and check whether the claim actually meets the legal threshold. |
 | 🔌 **embed** | Use it inside retail workplaces and e-commerce | REST API (OpenAPI); a `<shelf-insight>` web component for product pages and intranets; an e-commerce search **re-ranker** per shopper type, with an agent-readiness check; a Slack brand digest; a Shopify mapping. |
 
-**Engine: TypeSafe Jev** (System One). It returns calibrated probabilities instead of generated text: Choice for take / put-back / walk-past, Score for appeal, and Noul for each rejection trigger. Every "why" therefore comes with a probability, and the arithmetic stays in code. It costs about $0.04 per million input tokens, roughly $0.40 per 1,000 shoppers. **No LLM calls in the loop.**
+**Engine: TypeSafe Jev** (System One). It returns calibrated probabilities instead of generated text: Choice for take / put-back / walk-past, Score for appeal, and Noul for each rejection trigger. Every "why" therefore comes with a probability, and the arithmetic stays in code. Jev costs $0.042 per million input tokens and output is free (docs.typesafe.ai/models). **Measured:** a 300-shopper run made 6,187 requests over 22.7M input tokens and cost $0.87, which is **about $3.20 per 1,000 shoppers**: roughly 415 typed answers per shopper in about 13 minutes per 1,000, with the 100k tok/s rate limit as the bottleneck (`sim/README.md`, `data/sim/cost_log.jsonl`). **No LLM calls in the loop.**
 
 **What a real deployment collects:** shopping mission and why they're shopping (big shop vs top-up), dwell, pick-up and put-back (shelf sensors / on-device CV counts), and the e-commerce equivalents (impression → detail view → add-to-cart → remove → purchase). Everything is aggregated (k ≥ 10) and consented. See `docs/data-collection.md`.
 
