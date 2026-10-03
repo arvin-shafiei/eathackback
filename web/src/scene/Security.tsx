@@ -18,7 +18,7 @@ export interface Lifter { id: number; gate: { x: number; z: number; id?: string 
 const RED = new THREE.Color('#ff2244'), OFF = new THREE.Color('#e8f1f7');
 
 function GateAlarm({ id, x, z }: { id: string; x: number; z: number }) {
-  const ring = useRef<THREE.Mesh>(null), col = useRef<THREE.Mesh>(null), lamp = useRef<THREE.MeshBasicMaterial>(null);
+  const ring = useRef<THREE.Mesh>(null), lamp = useRef<THREE.MeshBasicMaterial>(null);
   useFrame((st) => {
     const now = st.clock.elapsedTime;
     const on = (bus.alarm[id] ?? 0) > now;
@@ -30,7 +30,6 @@ function GateAlarm({ id, x, z }: { id: string; x: number; z: number }) {
       ring.current.scale.setScalar(0.6 + k * 1.8);
       (ring.current.material as THREE.MeshBasicMaterial).opacity = on ? (1 - k) * 0.7 : 0;
     }
-    if (col.current) { col.current.visible = blink; }
   });
   return (
     <group position={[x, 0, z]}>
@@ -40,10 +39,6 @@ function GateAlarm({ id, x, z }: { id: string; x: number; z: number }) {
       <mesh ref={ring} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.02, 0]} visible={false} raycast={noRay}>
         <ringGeometry args={[0.55, 0.75, 40]} />
         <meshBasicMaterial color="#ff2244" transparent opacity={0} depthWrite={false} />
-      </mesh>
-      <mesh ref={col} position={[0, 1.0, 0]} visible={false} raycast={noRay}>
-        <cylinderGeometry args={[0.6, 0.9, 2.0, 24, 1, true]} />
-        <meshBasicMaterial color="#ff2244" transparent opacity={0.22} depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} />
       </mesh>
     </group>
   );

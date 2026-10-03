@@ -107,7 +107,6 @@ export function Checkout({ cfg, live, products, day }: Props) {
   const bodies = useRef<THREE.InstancedMesh>(null), hulls = useRef<THREE.InstancedMesh>(null);
   const overalls = useRef<THREE.InstancedMesh>(null);
   const cards = useRef<Record<string, THREE.MeshBasicMaterial | null>>({});
-  const beams = useRef<Record<string, THREE.Mesh | null>>({});
   const bodiesById = useRef(new Map<string, Body>());
   const beeped = useRef(new Map<string, number>());
   const approved = useRef(new Set<string>());
@@ -326,8 +325,6 @@ export function Checkout({ cfg, live, products, day }: Props) {
       const cm = cards.current[L.id];
       const sc = screens[L.id] ?? 'idle';
       if (cm) cm.color.set(sc === 'ok' ? '#22c55e' : sc === 'tap' ? (Math.sin(now * 14) > 0 ? '#7CC8FF' : '#ffffff') : '#24324a');
-      const beam = beams.current[L.id];
-      if (beam) { const since = now - (bus.flash[L.id] ?? -9); const k = Math.max(0, 1 - since / 0.22); beam.visible = k > 0.01; beam.scale.set(1, 0.4 + k * 0.6, 1); ((beam.material as THREE.MeshBasicMaterial).opacity = k * 0.55); }
     }
     for (const m of [bodies.current, hulls.current, overalls.current]) if (m) { m.count = np; m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
     itemMeshes.current.forEach((m, i) => { if (m) { m.count = counts[i]; m.instanceMatrix.needsUpdate = true; } });
@@ -342,7 +339,6 @@ export function Checkout({ cfg, live, products, day }: Props) {
 
   const mg = minionGeo();
   const ink = useMemo(() => new THREE.MeshBasicMaterial({ color: INK }), []);
-  const beamMats = useMemo(() => Object.fromEntries(P.lanes.map((l) => [l.id, new THREE.MeshBasicMaterial({ color: '#ff2a4f', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide })])), [P]);
 
   return (
     <group>
@@ -362,12 +358,6 @@ export function Checkout({ cfg, live, products, day }: Props) {
             <meshBasicMaterial ref={(m) => { cards.current[L.id] = m; }} color="#24324a" />
           </mesh>
         </group>
-      ))}
-      {/* scanner beams: a red fan of light on every beep */}
-      {P.lanes.map((L) => (
-        <mesh key={L.id} ref={(m) => { beams.current[L.id] = m; }} position={[L.scanner.x, L.scanner.y + 0.14, L.scanner.z]} material={beamMats[L.id]} visible={false} raycast={noRay} rotation={[Math.PI, 0, 0]}>
-          <coneGeometry args={[0.2, 0.28, 18, 1, true]} />
-        </mesh>
       ))}
       {/* queue signs: how many are waiting per till / kiosk pod (from the engine's join/serve times) */}
       {staffed.map((L) => {

@@ -16,6 +16,7 @@ import { PlacementSection } from './PlacementSection';
 import { InterviewSection } from './InterviewSection';
 import { Select } from './Select';
 import './insights.css';
+import { RankSection } from './RankSection';
 
 const HUMAN_COLOR = '#2bb673';
 const TRAIT_NAME: Record<string, string> = { O: 'openness', C: 'conscientiousness', E: 'extraversion', A: 'agreeableness', N: 'neuroticism' };
@@ -63,6 +64,7 @@ export function InsightsPanel(props: InsightsProps) {
         <p className="notice">no shopper and no ai agent was shown this product in <code>{run.run_id}</code>, so there is nothing to count. pick another run in the run picker, or re-run the store with this product on the shelf.</p>
       ) : (
         <div className="ins-board">
+          <RankSection run={run} products={products} current={p.code} onPickProduct={onPickProduct} />
           <Story own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined}
             best={best} rowNames={cfg.row_names} topReject={diagnosis.top_reject} onRearrange={props.onRearrange}
             onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />

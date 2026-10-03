@@ -200,3 +200,18 @@
 .insights .ins-next li::before { content: counter(step); display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: #fff; font-family: var(--display); font-weight: 800; font-size: 14px; }
 .insights .ins-next .btn { height: 34px; padding: 0 14px; font-size: 14px; white-space: nowrap; }
 @media (max-width: 760px) { .insights .ins-next li { grid-template-columns: 26px minmax(0, 1fr); } .insights .ins-next .btn { grid-column: 2; justify-self: start; } }
+
+/* best / worst sellers */
+.rk-head { all: unset; cursor: pointer; display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.rk-head h3 { margin: 0; }
+.rk-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.rk-h { margin: 0 0 4px; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.rk-h-up { color: #1a9e55; } .rk-h-down { color: #d23a3a; }
+.rk-list { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.rk-row { all: unset; box-sizing: border-box; cursor: pointer; display: flex; align-items: center; gap: 6px; width: 100%; padding: 2px 4px; border-radius: 6px; }
+.rk-row:hover { background: #f4efe9; }
+.rk-list li.on .rk-row { background: #ffe3ee; font-weight: 700; }
+.rk-row .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.rk-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rk-up .rk-rate { color: #1a9e55; } .rk-down .rk-rate { color: #d23a3a; }
+.rk-n { font-size: 11px; flex: none; }
