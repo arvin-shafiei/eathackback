@@ -432,11 +432,11 @@ export default function App() {
                   onClick={() => first && setPanel({ kind: 'agent', id: first.agent_id })}
                   onKeyDown={(ev) => { if (first && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); setPanel({ kind: 'agent', id: first.agent_id }); } }}>
                   <span className="dot" style={{ background: archColor(a) }} />
-                  <span className="leg-name">{ai ? shopperLabel(a === 'ai_agent' ? 'ai_agent' : a, persona) : archLabel(a)}<em>{ai ? aiGear(a) : ARCH_GEAR[a] ?? ''}</em></span>
-                  <span className="leg-carrier" title={c === 'trolley' ? 'trolley' : c === 'basket' ? 'basket' : 'no carrier'}>{c === 'trolley' ? '🛒' : c === 'basket' ? '🧺' : '🤖'}</span>
+                  <span className="leg-name">{ai ? shopperLabel(a === 'ai_agent' ? 'ai_agent' : a, persona) : archLabel(a)}{ai && <em>ai agent</em>}</span>
+                  <span className="leg-carrier" title={`trolley (visual); checkout lane uses the mission carrier: ${c}`}>🛒</span>
                 </div>
               ))}
-              <p className="legend-foot">carrier follows the mission (assumption: big shop = trolley, top-up = basket). bonks are physics, not data.</p>
+              <p className="legend-foot">everyone pushes a trolley (visual). checkout lane choice still follows the mission carrier (assumption: big shop = trolley, top-up = basket). bonks are visual, not data.</p>
             </div>
           )}
         </div>

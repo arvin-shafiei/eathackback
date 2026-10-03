@@ -1,5 +1,6 @@
-// The crowd: replayed shoppers drawn as a handful of InstancedMeshes (bodies, ink hulls, eyes, arms, feet, hats per
-// accessory, carriers, carried packs), all written from ONE useFrame. No rapier bodies and no React state per frame:
+// The crowd: replayed shoppers drawn as a handful of InstancedMeshes (one shared goggle-wearing capsule character for
+// everyone, people and AI agents alike: body, ink hull, dungarees, goggles, eyes, mouth, hair, gloved arms, shoes,
+// trolleys, carried packs), all written from ONE useFrame. No rapier bodies and no React state per frame:
 // steering is a cheap 2D model in JS (feed-forward along the routed timeline + spring to the replay position +
 // grid-hashed separation), so 300+ shoppers stay smooth. Decisions, products and order come ONLY from the run log
 // (timelines/beats); the steering is a visual offset. Queues follow layout's scheduled slots (Timeline.queue /
@@ -12,9 +13,9 @@ import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import type { Agent, Persona, Product, StoreConfig } from '../types';
 import { isAI } from '../types';
 import { BEAT, G, TILL, categoryHeight, sampleTimeline, storePlan, type CheckoutPlan, type Timeline } from '../layout';
-import { archColor, archLabel, carrierFor, DECISION, BRAND_A, type Carrier } from '../theme';
+import { archColor, archLabel, DECISION, BRAND_A, type Carrier } from '../theme';
 import { archetypeOf } from '../stats';
-import { accessoriesFor, aiKindOf, robotPartsFor, AI_KIND, type AiKind, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, type PartUse } from './parts';
+import { aiKindOf, AI_KIND, type AiKind, GEO, BODY, TROLLEY, inkHull, trolleyGeometry, bagGeometry } from './parts';
 import type { Beat, Beats } from './beats';
 import { bus, sfx } from './fx';
 import { stackLocal } from './Basket';
@@ -47,7 +48,10 @@ interface Shopper {
   px: number; pz: number; vx: number; vz: number; yaw: number; kx: number; kz: number;
   qR: THREE.Quaternion; qL: THREE.Quaternion; strR: number; strL: number; look: THREE.Vector3;
   R: THREE.Matrix4; handR: THREE.Matrix4; handL: THREE.Matrix4; carrierM: THREE.Matrix4;
-  parts: PartUse[];
+  /** look: one big goggle or two; tuft of hair; blink period / phase */
+  oneEye: boolean; hair: boolean; blinkP: number; blinkO: number;
+  /** clock time until which this shopper waves (after a bonk) */
+  wave: number;
   laneOff: number;
   co: CheckoutPlan | null; park: THREE.Matrix4 | null; cafeT: [number, number] | null;
   queued: boolean;
@@ -70,8 +74,6 @@ const REACH = { approach: 0.14, reach0: 0.1, leave: 0.88 } as const;
 const REACH_D = { basket: 0.72, trolley: 0.8, none: 0.72 } as const;
 const SPAWN_CLEAR = 1.05; // m: a door only lets the next shopper in once the last one has stepped clear
 const SPAWN_MAX_HOLD = 6; // replay s: never hold anyone at the door longer than this
-/** robots are a bit smaller than people so a 240-agent ai arm doesn't bury the humans */
-const AI_SCALE = 0.8;
 const BONK_WORDS = ['bonk!', 'oof!', 'boing!', 'sorry!', 'bump!', 'whoops!', 'mind out!', 'ope!'];
 const CELL = 1.25;
 const MAX_STICKERS = 12, MAX_BONKS = 6;
@@ -79,6 +81,12 @@ const MAX_STICKERS = 12, MAX_BONKS = 6;
 const DETAIL_R = 38;
 const cellKey = (x: number, z: number) => (Math.floor(x / CELL) + 2048) * 4096 + (Math.floor(z / CELL) + 2048);
 const SHOULDER_R = new THREE.Vector3(BODY.shoulderX, BODY.shoulderY, 0.02), SHOULDER_L = new THREE.Vector3(-BODY.shoulderX, BODY.shoulderY, 0.02);
+/** trolley push pose (body frame): each gloved hand on the handle bar, rubber arms stretched to reach it */
+const HANDLE_Y = TROLLEY.floorY + TROLLEY.wallH + TROLLEY.handleUp + TROLLEY.anchor[1] + BODY.center, HANDLE_Z = TROLLEY.anchor[2] - TROLLEY.hz - 0.1;
+const PUSH = ([1, -1] as const).map((sd) => {
+  const d = new THREE.Vector3(sd * 0.22, HANDLE_Y, HANDLE_Z).sub(sd > 0 ? SHOULDER_R : SHOULDER_L);
+  return { q: new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, -1, 0), d.clone().normalize()), str: d.length() / BODY.armLen };
+});
 
 /** classic pose: pitch θ about x, then roll φ about z (φ>0 = outward) */
 function poseQ(out: THREE.Quaternion, side: 1 | -1, th: number, ph: number) { return out.setFromEuler(tmpE.set(th, 0, side * ph, 'ZXY')); }
@@ -110,14 +118,9 @@ function cafeWindow(tl: Timeline): [number, number] | null {
   return end > start ? [start, end] : null;
 }
 
-/** carrier per mission: trolley for a big shop / family archetypes, basket for top-ups, meal deals, gym, glp1;
- *  ai agents carry nothing (they read a feed) */
-function carrierOf(arch: string, mission: string | undefined, kind: string | undefined, ai: boolean): Carrier {
-  if (ai) return 'none';
-  if (kind === 'big_shop') return 'trolley';
-  if (kind === 'meal_deal' || kind === 'top_up') return /family|parent/.test(arch) ? 'trolley' : 'basket';
-  return carrierFor(arch, mission, ai);
-}
+/** visual carrier: everyone (people and AI agents) pushes the same trolley. Checkout lane choice still uses the
+ *  data carrier (theme.carrierFor in App), so queues / lanes are unchanged */
+const CARRIER: Carrier = 'trolley';
 
 // ---------- sprite labels (canvas textures, cached) ----------
 const texCache = new Map<string, { tex: THREE.CanvasTexture; aspect: number }>();
@@ -178,9 +181,9 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     // ai shoppers are labelled by archetype (persona_id / archetype), never by model
     const arch = ai ? (a.archetype ?? personas[a.persona_id]?.archetype ?? a.persona_id) : archetypeOf(a, personas);
     const aiKind: AiKind | null = ai ? aiKindOf(`${arch} ${a.persona_id}`) : null;
-    const mission = a.mission ?? personas[a.persona_id]?.mission;
     const tl = timelines[a.agent_id];
-    const carrier = carrierOf(arch, mission, tl.mission, ai);
+    const carrier = CARRIER;
+    const h = hash01(a.agent_id);
     const bs = beats.byAgent[a.agent_id] ?? [];
     return {
       si, agent: a, ai, aiKind, arch, label: aiKind ? `🤖 ${archLabel(arch) || AI_KIND[aiKind].label}` : archLabel(arch),
@@ -190,9 +193,9 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       px: 0, pz: -999, vx: 0, vz: 0, yaw: 0, kx: 0, kz: 0,
       qR: poseQ(new THREE.Quaternion(), 1, 0, 0.12), qL: poseQ(new THREE.Quaternion(), -1, 0, 0.12), strR: 1, strL: 1,
       look: new THREE.Vector3(0, 0, 1), R: new THREE.Matrix4(), handR: new THREE.Matrix4(), handL: new THREE.Matrix4(), carrierM: new THREE.Matrix4(),
-      parts: aiKind ? robotPartsFor(aiKind) : accessoriesFor(arch),
+      oneEye: h < 0.38, hair: ((h * 7.3) % 1) > 0.22, blinkP: 2.6 + ((h * 13.7) % 1) * 3.2, blinkO: ((h * 31.1) % 1) * 6, wave: 0,
       // keep left (UK) by direction of travel + a per-shopper golden-ratio spread so a crowd fills the walkway width
-      laneOff: -(0.25 + ((si * 0.6180339) % 1) * 0.9) * (carrier === 'trolley' ? 0.8 : ai ? 0.6 : 1),
+      laneOff: -(0.25 + ((si * 0.6180339) % 1) * 0.9) * 0.8,
       co: tl.checkout ?? null, park: parkMatrix(tl.checkout ?? null, carrier), cafeT: cafeWindow(tl), queued: false,
     };
   }), [agents, timelines, personas, beats, products]);
@@ -214,7 +217,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
 
   // ---------- instanced meshes ----------
   const meshes = useMemo(() => {
-    const humans = shoppers.filter((s) => !s.ai), robots = shoppers.filter((s) => s.ai);
+    const N = shoppers.length;
     const mk = (geo: THREE.BufferGeometry, mat: THREE.Material | THREE.Material[], n: number) => {
       const m = new THREE.InstancedMesh(geo, mat, Math.max(1, n));
       m.count = n; m.frustumCulled = false; m.castShadow = false; m.receiveShadow = false;
@@ -222,35 +225,24 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       for (let i = 0; i < Math.max(1, n); i++) m.setMatrixAt(i, ZERO);
       return m;
     };
-    const bodyMat = new THREE.MeshStandardMaterial({ roughness: 0.32, metalness: 0.02 });
-    const robotMat = new THREE.MeshStandardMaterial({ roughness: 0.25, metalness: 0.2 });
-    const beanGeo = GEO.bean(), robotGeo = GEO.robot(), eyeGeo = GEO.eyeWhite(), armGeo = GEO.arm();
-    const bean = mk(beanGeo, bodyMat, humans.length);
-    const beanInk = mk(beanGeo, inkHull(0.028), humans.length);
-    const robot = mk(robotGeo, robotMat, robots.length);
-    const robotInk = mk(robotGeo, inkHull(0.028), robots.length);
-    const eye = mk(eyeGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.2 }), humans.length * 2);
-    const pupil = mk(GEO.pupil(), new THREE.MeshBasicMaterial({ color: '#141014' }), humans.length * 2);
-    const arm = mk(armGeo, new THREE.MeshStandardMaterial({ roughness: 0.4 }), shoppers.length * 2);
-    const foot = mk(GEO.foot(), new THREE.MeshStandardMaterial({ color: '#141014', roughness: 0.5 }), humans.length * 2);
-    const blob = mk(GEO.blob(), new THREE.MeshBasicMaterial({ color: '#7a3550', transparent: true, opacity: 0.18, depthWrite: false }), shoppers.length);
-    const trolleys = shoppers.filter((s) => s.carrier === 'trolley'), baskets = shoppers.filter((s) => s.carrier === 'basket');
-    const trolley = mk(trolleyGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.35, metalness: 0.25 }), trolleys.length);
-    const basket = mk(basketGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.4 }), baskets.length);
-    const beanIdx = new Int32Array(shoppers.length).fill(-1), robotIdx = new Int32Array(shoppers.length).fill(-1), carIdx = new Int32Array(shoppers.length).fill(-1);
-    const armC = new THREE.Color();
-    humans.forEach((s, i) => { beanIdx[s.si] = i; bean.setColorAt(i, s.color); armC.copy(s.color).multiplyScalar(0.82); arm.setColorAt(s.si * 2, armC); arm.setColorAt(s.si * 2 + 1, armC); });
-    robots.forEach((s, i) => { robotIdx[s.si] = i; robot.setColorAt(i, s.color); armC.set(AI_KIND[s.aiKind ?? 'general'].arm); arm.setColorAt(s.si * 2, armC); arm.setColorAt(s.si * 2 + 1, armC); });
-    if (!shoppers.length) arm.setColorAt(0, armC.set('#fff'));
-    if (!humans.length) bean.setColorAt(0, armC.set('#fff'));
-    if (!robots.length) robot.setColorAt(0, armC.set('#fff'));
-    trolleys.forEach((s, i) => { carIdx[s.si] = i; });
-    baskets.forEach((s, i) => { carIdx[s.si] = i; });
-    // accessories: one instanced mesh per accessory kind (hats, props, robot gear)
-    const partCount: Record<string, number> = {};
-    const partIdx: number[][] = shoppers.map((s) => s.parts.map((p) => (partCount[p.key] = (partCount[p.key] ?? 0) + 1) - 1));
-    const parts: Record<string, THREE.InstancedMesh> = {};
-    for (const [k, n] of Object.entries(partCount)) parts[k] = mk(PARTS[k].geom(), PARTS[k].mat(), n);
+    const ink = '#1d1b22';
+    const bodyGeo = GEO.body();
+    const body = mk(bodyGeo, new THREE.MeshStandardMaterial({ roughness: 0.34, metalness: 0.02 }), N);
+    const bodyInk = mk(bodyGeo, inkHull(0.026), N);
+    const overalls = mk(GEO.overalls(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.75 }), N);
+    const strap = mk(GEO.strap(), new THREE.MeshStandardMaterial({ color: '#232127', roughness: 0.6 }), N);
+    const rim = mk(GEO.rim(), new THREE.MeshStandardMaterial({ color: '#e4e8ef', roughness: 0.22, metalness: 0.35, emissive: '#8a909c', emissiveIntensity: 0.35 }), N * 2);
+    const eye = mk(GEO.eye(), new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.12 }), N * 2);
+    const iris = mk(GEO.iris(), new THREE.MeshBasicMaterial({ vertexColors: true }), N * 2);
+    const mouth = mk(GEO.mouth(), new THREE.MeshBasicMaterial({ color: ink, side: THREE.DoubleSide }), N);
+    const hair = mk(GEO.hair(), new THREE.MeshBasicMaterial({ color: ink }), N);
+    const arm = mk(GEO.arm(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.42 }), N * 2);
+    const foot = mk(GEO.foot(), new THREE.MeshStandardMaterial({ color: '#17151a', roughness: 0.45 }), N * 2);
+    const blob = mk(GEO.blob(), new THREE.MeshBasicMaterial({ color: '#7a3550', transparent: true, opacity: 0.18, depthWrite: false }), N);
+    const trolley = mk(trolleyGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.35, metalness: 0.25 }), N);
+    const c = new THREE.Color();
+    shoppers.forEach((s) => { body.setColorAt(s.si, s.color); c.copy(s.color).multiplyScalar(0.94); arm.setColorAt(s.si * 2, c); arm.setColorAt(s.si * 2 + 1, c); });
+    if (!N) { body.setColorAt(0, c.set('#fff')); arm.setColorAt(0, c); }
     // carried packs: ONE instanced box for every pick / reject beat, tinted per product (no per-SKU draw calls)
     const packIdx = new Map<number, number>(); const packSize: { w: number; h: number; d: number }[] = [];
     let np = 0; for (const s of shoppers) for (const b of s.hands) { packIdx.set(b.id, np); packSize[np] = carriedSize(b.code, products); np++; }
@@ -258,13 +250,12 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const pc = new THREE.Color();
     for (const s of shoppers) for (const b of s.hands) pc.setHSL(hash01(products[b.code]?.brand ?? b.code), 0.62, 0.55), pack.setColorAt(packIdx.get(b.id)!, pc);
     if (!np) pack.setColorAt(0, pc.set('#fff'));
-    const bag = mk(bagGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.7 }), humans.length);
-    const beam = mk(new THREE.ConeGeometry(0.16, 1, 10, 1, true).rotateX(Math.PI).translate(0, 0.5, 0), new THREE.MeshBasicMaterial({ color: '#7CFFCB', transparent: true, opacity: 0.22, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }), robots.length);
-    for (const m of [bean, robot, arm, pack]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
+    const bag = mk(bagGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.7 }), N);
+    for (const m of [body, arm, pack]) if (m.instanceColor) m.instanceColor.needsUpdate = true;
     const group = new THREE.Group();
-    group.add(beanInk, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, ...Object.values(parts));
-    const all = [bean, beanInk, robot, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, ...Object.values(parts)];
-    return { group, all, bean, beanInk, robot, robotInk, eye, pupil, arm, foot, blob, trolley, basket, bag, beam, pack, packIdx, packSize, parts, partIdx, beanIdx, robotIdx, carIdx, beanList: humans, robotList: robots };
+    const all = [body, bodyInk, overalls, strap, rim, eye, iris, mouth, hair, arm, foot, blob, trolley, bag, pack];
+    group.add(...all.filter((m) => m !== body));
+    return { group, all, body, bodyInk, overalls, strap, rim, eye, iris, mouth, hair, arm, foot, blob, trolley, bag, pack, packIdx, packSize };
   }, [shoppers, products]);
   useEffect(() => () => {
     for (const m of meshes.all) { m.geometry.dispose(); (Array.isArray(m.material) ? m.material : [m.material]).forEach((x) => x.dispose()); }
@@ -359,7 +350,6 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const doors = doorPts.map(() => 0);
 
     for (const s of shoppers) {
-      const bi = s.ai ? M.robotIdx[s.si] : M.beanIdx[s.si];
       const smp = sampleTimeline(s.tl, t);
       const inCafe = !!s.cafeT && t >= s.cafeT[0] && t < s.cafeT[1];
       if (s.cafeT && !jump) {
@@ -371,7 +361,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         if (prev < c[1] && t >= c[1]) emitCrowd({ type: 'cafe_leave', shopperId: s.agent.agent_id, agentId: s.agent.agent_id, t, x: smp.x, z: smp.z });
       }
       if (!smp.visible || inCafe) {
-        if (s.active) { s.active = false; hideShopper(s, bi); }
+        if (s.active) { s.active = false; hideShopper(s); }
         s.held = 0;
         continue;
       }
@@ -383,7 +373,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         const early = !!sp0 && !jump && t - s.tl.start < SPAWN_MAX_HOLD + 2;
         let blocked = false;
         if (early) near(sp0!.x, sp0!.z, SPAWN_CLEAR, s.si, () => { blocked = true; });
-        if (blocked && t - s.tl.start < SPAWN_MAX_HOLD) { s.held = t; hideShopper(s, bi); continue; }
+        if (blocked && t - s.tl.start < SPAWN_MAX_HOLD) { s.held = t; hideShopper(s); continue; }
         s.active = true;
         s.px = early ? sp0!.x : smp.x; s.pz = early ? sp0!.z : smp.z; s.vx = s.vz = 0; s.kx = s.kz = 0; s.yaw = smp.heading;
         if (early) emitCrowd({ type: 'enter', agentId: s.agent.agent_id, door: s.si % Math.max(1, SP.entrances.length), t });
@@ -405,7 +395,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           }
         }
       }
-      if (b && !s.ai && b.shelf && (b.kind === 'pick' || b.kind === 'reject')) {
+      if (b && b.shelf && (b.kind === 'pick' || b.kind === 'reject')) {
         // step up to the exact facing, then step back
         const u = (t - b.t0) / Math.max(1e-3, b.t1 - b.t0);
         const k = ease(u / REACH.approach) * ease((1 - u) / (1 - REACH.leave));
@@ -420,7 +410,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       else {
         let sx = 0, sz = 0;
         if (!s.queued) {
-          const R0 = s.ai ? 0.62 : s.carrier === 'trolley' ? 1.0 : 0.82;
+          const R0 = 1.0;
           const fm = Math.hypot(fx, fz) || 1;
           near(s.px, s.pz, R0, s.si, (o, ddx, ddz, dd) => {
             if (dd < 1e-4) { ddx = Math.sin(s.si); ddz = Math.cos(s.si); dd = 1; }
@@ -433,7 +423,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
               if (closing > 1.0 && sp <= 4) {
                 const kick = Math.min(3, 1.4 + closing * 0.6);
                 s.kx += (ddx / dd) * kick; s.kz += (ddz / dd) * kick; o.kx -= (ddx / dd) * kick; o.kz -= (ddz / dd) * kick;
-                s.sqv -= 3.4; o.sqv -= 3.4; s.cool = o.cool = now + 1.4;
+                s.sqv -= 3.4; o.sqv -= 3.4; s.cool = o.cool = now + 1.4; s.wave = o.wave = now + 1.2;
                 bus.bonks++; bus.shake = Math.min(1, bus.shake + 0.25); sfx.bonk();
                 emitCrowd({ type: 'bonk', a: s.agent.agent_id, b: o.agent.agent_id, x: (s.px + o.px) / 2, z: (s.pz + o.pz) / 2 });
                 const bl = bonkList.current; if (bl.length < MAX_BONKS) bl.push({ x: (s.px + o.px) / 2, z: (s.pz + o.pz) / 2, until: now + 0.9, slot: -1 });
@@ -463,7 +453,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         s.yaw += angDiff(s.yaw, face) * (1 - Math.exp(-dt * 7));
       }
       for (let di = 0; di < doorPts.length; di++) if (Math.abs(s.px - doorPts[di].x) < 2.4 && Math.abs(s.pz - doorPts[di].z) < 3.2) doors[di]++;
-      drawShopper(s, bi, b, t, now, dt, parked, crossed);
+      drawShopper(s, b, t, now, dt, parked, crossed);
     }
     bus.doors = doors;
 
@@ -482,7 +472,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     // hover label
     const hs = hovered.current !== null ? shoppers[hovered.current] : null;
     const hv = pools.hover;
-    if (hs?.active) { setSlot(hv, 'h:' + hs.label, () => labelTex('h:' + hs.label, () => ({ lines: [hs.label], color: '#' + hs.color.getHexString(), bubble: false })), 0.28); hv.sprite.position.set(hs.px, hs.ai ? 1.6 : 1.5, hs.pz); }
+    if (hs?.active) { setSlot(hv, 'h:' + hs.label, () => labelTex('h:' + hs.label, () => ({ lines: [hs.label], color: '#' + hs.color.getHexString(), bubble: false })), 0.28); hv.sprite.position.set(hs.px, 1.55, hs.pz); }
     else hv.sprite.visible = false;
 
     // bonk pops
@@ -536,7 +526,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           const key = `s:${b.kind}:${s.ai ? 1 : 0}:${isNear ? 1 : 0}`;
           setSlot(sl, key, () => labelTex(key, () => ({ lines: [isNear ? `${emoji} ${word}` : emoji], color: dk.color, bubble: false })), (isNear ? 0.24 : 0.3) * grow);
         }
-        sl.si = s.si; sl.beat = b; sl.y = s.ai ? 1.75 : 1.85;
+        sl.si = s.si; sl.beat = b; sl.y = 1.85;
       });
     }
     for (const sl of pools.stickers) {
@@ -548,59 +538,69 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   });
 
   // ---------- drawing helpers (called from the one useFrame) ----------
-  function hideShopper(s: Shopper, bi: number) {
-    const M = meshes;
-    (s.ai ? M.robot : M.bean).setMatrixAt(bi, ZERO); (s.ai ? M.robotInk : M.beanInk).setMatrixAt(bi, ZERO);
-    for (let k = 0; k < 2; k++) { M.arm.setMatrixAt(s.si * 2 + k, ZERO); if (!s.ai) { M.eye.setMatrixAt(bi * 2 + k, ZERO); M.pupil.setMatrixAt(bi * 2 + k, ZERO); M.foot.setMatrixAt(bi * 2 + k, ZERO); } }
-    M.blob.setMatrixAt(s.si, ZERO);
-    if (!s.ai) M.bag.setMatrixAt(bi, ZERO); else M.beam.setMatrixAt(bi, ZERO);
-    const pi = M.partIdx[s.si]; for (let k = 0; k < s.parts.length; k++) M.parts[s.parts[k].key].setMatrixAt(pi[k], ZERO);
-    if (s.carrier === 'trolley') M.trolley.setMatrixAt(M.carIdx[s.si], ZERO);
-    if (s.carrier === 'basket') M.basket.setMatrixAt(M.carIdx[s.si], ZERO);
+  function hideShopper(s: Shopper) {
+    const M = meshes, i = s.si;
+    M.body.setMatrixAt(i, ZERO); M.bodyInk.setMatrixAt(i, ZERO); M.overalls.setMatrixAt(i, ZERO); M.strap.setMatrixAt(i, ZERO);
+    M.mouth.setMatrixAt(i, ZERO); M.hair.setMatrixAt(i, ZERO); M.blob.setMatrixAt(i, ZERO); M.bag.setMatrixAt(i, ZERO); M.trolley.setMatrixAt(i, ZERO);
+    for (let k = 0; k < 2; k++) { const j = i * 2 + k; M.arm.setMatrixAt(j, ZERO); M.eye.setMatrixAt(j, ZERO); M.rim.setMatrixAt(j, ZERO); M.iris.setMatrixAt(j, ZERO); M.foot.setMatrixAt(j, ZERO); }
     for (const b of s.hands) M.pack.setMatrixAt(M.packIdx.get(b.id)!, ZERO);
   }
 
-  function drawShopper(s: Shopper, bi: number, b: Beat | null, t: number, now: number, dt: number, parked: boolean, crossed: (x: number) => boolean) {
+  function drawShopper(s: Shopper, b: Beat | null, t: number, now: number, dt: number, parked: boolean, crossed: (x: number) => boolean) {
     const M = meshes;
-    const R = s.R;
+    const R = s.R, i = s.si;
     const spd = Math.hypot(s.vx, s.vz);
     const moving = spd > 0.25;
     const detail = (camP.x - s.px) ** 2 + (camP.z - s.pz) ** 2 + camP.y * camP.y < DETAIL_R * DETAIL_R || s.agent.agent_id === selRef.current;
     s.step += dt * (4 + spd * 5.5) * (moving ? 1 : 0.25);
     s.sqv += (-140 * s.sq - 10 * s.sqv) * dt; s.sq += s.sqv * dt;
     const D = b ? b.t1 - b.t0 : 1, u = b ? (t - b.t0) / D : 0;
-    let hop = 0, wiggle = 0, roll = 0, lean = 0;
-    let thR = moving ? Math.sin(s.step) * 0.55 : Math.sin(now * 1.6 + s.si) * 0.05, phR = 0.14;
-    let thL = moving ? -Math.sin(s.step) * 0.55 : -Math.sin(now * 1.6 + s.si) * 0.05, phL = 0.14;
-    if (s.carrier === 'trolley' && !parked) { thR = thL = -1.3; phR = phL = -0.12; }
-    if (s.carrier === 'basket' && !parked) { thL = 0.02; phL = 0.32; }
-    if (s.arch === 'novelty_seeker_tiktok') { thR = -2.15; phR = 0.42; }
-    if (moving) { roll = Math.sin(s.step) * (s.carrier === 'trolley' ? 0.14 : 0.11); hop = Math.abs(Math.sin(s.step)) * 0.05; } else hop = (Math.sin(now * 2.2 + s.si) * 0.5 + 0.5) * 0.02;
-    if (s.ai) { hop = 0.06 + Math.sin(now * 3 + s.si) * 0.04; roll *= 0.3; }
+    const pushing = !parked;
+    let hop = 0, wiggle = 0, roll = 0, lean = 0, spin = 0, mood = 1, hairK = 0;
+    // free-arm swing (used whenever a hand is off the handle)
+    let thR = moving ? Math.sin(s.step) * 0.55 : Math.sin(now * 1.6 + i) * 0.06, phR = 0.2;
+    let thL = moving ? -Math.sin(s.step) * 0.55 : -Math.sin(now * 1.6 + i) * 0.06, phL = 0.2;
+    let onR = pushing, onL = pushing; // hands on the trolley handle
+    // waddle: side-to-side roll + bob, feet alternate (below)
+    if (moving) { roll = Math.sin(s.step) * 0.16; hop = Math.abs(Math.sin(s.step)) * 0.06; lean = 0.07; hairK = Math.sin(s.step * 2) * 0.35; }
+    else { hop = (Math.sin(now * 2.2 + i) * 0.5 + 0.5) * 0.02; roll = Math.sin(now * 1.1 + i) * 0.03; hairK = Math.sin(now * 1.7 + i) * 0.12; }
     let ik = 0; let ikAt: { x: number; y: number; z: number } | null = null;
     const gs = b ? grabSide(s, b) : 1;
     let lookW: THREE.Vector3 | null = null;
     if (b?.shelf && b.kind !== 'ignore') lookW = tmpV2.set(b.shelf.x, b.shelf.y, b.shelf.z);
-    if (b && !s.ai) {
+    const grabArm = (th: number, ph: number) => { if (gs > 0) { onR = false; thR = th; phR = ph; } else { onL = false; thL = th; phL = ph; } };
+    if (b) {
       const reach = clamp01((u - REACH.reach0) / (BEAT.grab - REACH.reach0));
       if (b.kind === 'pick') {
         const g0 = BEAT.grab, l0 = BEAT.launch;
-        if (u < g0) { ik = ease(reach); ikAt = b.shelf; lean = 0.18 * ik; }
-        else if (u < l0) { const k = ease((u - g0) / (l0 - g0)); ik = 1 - k; ikAt = b.shelf; thR = -1.3; phR = 0.05; lean = 0.18 * (1 - k); if (gs < 0) { thL = -1.3; phL = 0.05; } lookW = null; }
-        else if (u < 0.92) { const k = (u - l0 - 0.04) / (0.9 - l0 - 0.04); hop = Math.max(hop, Math.sin(Math.PI * clamp01(k)) * 0.3); thR = -2.6; phR = 0.4; }
+        if (u < g0) { ik = ease(reach); ikAt = b.shelf; lean = 0.18 * ik; if (ik > 0.01) grabArm(thR, phR); }
+        else if (u < l0) { const k = ease((u - g0) / (l0 - g0)); ik = 1 - k; ikAt = b.shelf; grabArm(-1.3, 0.05); lean = 0.18 * (1 - k); lookW = null; }
+        else if (u < 0.92) {
+          // happy hop + little spin, both arms up
+          const k = clamp01((u - l0 - 0.04) / (0.9 - l0 - 0.04));
+          hop = Math.max(hop, Math.sin(Math.PI * k) * 0.34); spin = ease(k) * Math.PI * 2;
+          onR = onL = false; thR = thL = -2.7; phR = phL = 0.45 + Math.sin(k * Math.PI * 4) * 0.15; mood = 1.25;
+        }
       } else if (b.kind === 'reject') {
-        if (u < BEAT.grab) { ik = ease(reach); ikAt = b.shelf; lean = 0.18 * ik; }
+        mood = -1;
+        if (u < BEAT.grab) { ik = ease(reach); ikAt = b.shelf; lean = 0.18 * ik; mood = 1; if (ik > 0.01) grabArm(thR, phR); }
         else if (u < BEAT.putBack) {
           const k = clamp01((u - BEAT.grab) / 0.08); ik = 1 - ease(k); ikAt = b.shelf;
-          thR = -1.95; phR = -0.38; if (gs < 0) { thL = -1.95; phL = -0.38; }
+          grabArm(-1.95, -0.38);
+          // inspect + head-shake
           wiggle = Math.sin(now * 17) * 0.38 * Math.sin(Math.PI * clamp01((u - BEAT.grab) / (BEAT.putBack - BEAT.grab))); lookW = null;
-        } else if (u < BEAT.backOnShelf) { ik = ease(clamp01((u - BEAT.putBack) / ((BEAT.backOnShelf - BEAT.putBack) * 0.8))); ikAt = b.shelf; lean = 0.15 * ik; }
-        else { const k = Math.sin(Math.PI * clamp01((u - BEAT.backOnShelf) / (1 - BEAT.backOnShelf))); thR = -0.4 - k * 0.3; phR = 0.4 + k * 0.9; hop = Math.max(hop, k * 0.06); }
+        } else if (u < BEAT.backOnShelf) { ik = ease(clamp01((u - BEAT.putBack) / ((BEAT.backOnShelf - BEAT.putBack) * 0.8))); ikAt = b.shelf; lean = 0.15 * ik; grabArm(thR, phR); }
+        else {
+          // shrug: both palms out, shoulders up, head shake
+          const k = Math.sin(Math.PI * clamp01((u - BEAT.backOnShelf) / (1 - BEAT.backOnShelf)));
+          onR = onL = false; thR = thL = -0.35 - k * 0.35; phR = phL = 0.35 + k * 1.0; hop = Math.max(hop, k * 0.05);
+          wiggle = Math.sin(now * 15) * 0.25 * k; s.sq = Math.max(s.sq, k * 0.05);
+        }
       } else if (b.kind === 'glance') lean = Math.sin(Math.PI * clamp01(u)) * 0.12;
     }
     // checkout choreography (phases come from the scheduled timeline, not the run log)
     const co = s.co;
-    if (co && !s.ai) {
+    if (co) {
       if (crossed(co.tBag)) emitCrowd({ type: 'bag', agentId: s.agent.agent_id, lane: co.lane.id, t });
       if (crossed(co.tPay)) { emitCrowd({ type: 'pay', agentId: s.agent.agent_id, lane: co.lane.id, t }); sfx.ding(); }
       if (t >= co.tArrive && t < co.tBag) {
@@ -609,81 +609,87 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         if (unloading) { const k = Math.abs(Math.sin(ph * Math.PI)); thR = -0.9 - k * 0.7; phR = 0.05; thL = -0.9 - (1 - k) * 0.7; phL = 0.05; }
         else { thR = Math.sin(now * 2) * 0.1; thL = -thR; phR = phL = 0.2; }
       } else if (t >= co.tBag && t < co.tPay) { const k = Math.abs(Math.sin((t - co.tBag) * 6)); thR = -1.1 - k * 0.4; thL = -1.1 - (1 - k) * 0.4; phR = phL = 0; }
-      else if (t >= co.tPay && t < co.tDone) { thR = -1.5; phR = -0.25; if (t > co.tDone - 0.5) hop = Math.max(hop, Math.sin(Math.PI * (co.tDone - t) / 0.5) * 0.18); }
+      else if (t >= co.tPay && t < co.tDone) {
+        // card tap, then a celebratory jump with both arms up
+        const tj = Math.max(co.tPay + 0.25, co.tDone - 0.9);
+        if (t < tj) { thR = -1.5; phR = -0.25; }
+        else { const k = clamp01((t - tj) / Math.max(0.2, co.tDone - tj)); hop = Math.max(hop, Math.sin(Math.PI * k) * 0.42); thR = thL = -2.8; phR = phL = 0.5 + Math.sin(k * 20) * 0.12; mood = 1.3; }
+      }
     }
-    if (s.queued) { thR = Math.sin(now * 1.3 + s.si) * 0.06; phR = 0.18; if (s.carrier === 'none') { thL = -thR; phL = 0.18; } }
+    // queuing: idle sway, hands stay on the handle
+    if (s.queued && !moving) { roll = Math.sin(now * 1.5 + i) * 0.09; hop = Math.max(hop, Math.abs(Math.sin(now * 3 + i)) * 0.025); }
+    // bonk: a tiny surprised wave
+    if (now < s.wave && !ik) { onR = false; thR = -2.65; phR = 0.25 + Math.sin(now * 16) * 0.38; mood = 0; }
     const st = s.sq + hop * 0.35;
-    tmpQ.setFromEuler(tmpE.set(lean, s.yaw + wiggle * 0.6, roll, 'YXZ'));
-    const sc = s.ai ? AI_SCALE : 1;
-    R.compose(tmpV.set(s.px, hop, s.pz), tmpQ, tmpS.set((1 - st * 0.55) * sc, (1 + st) * sc, (1 - st * 0.55) * sc));
-    (s.ai ? M.robot : M.bean).setMatrixAt(bi, R); (s.ai ? M.robotInk : M.beanInk).setMatrixAt(bi, R);
-    M.blob.setMatrixAt(s.si, tmpM.compose(tmpV.set(s.px, 0.012, s.pz), tmpQ2.identity(), tmpS.setScalar(1 - hop * 0.8)));
+    tmpQ.setFromEuler(tmpE.set(lean, s.yaw + wiggle * 0.6 + spin, roll, 'YXZ'));
+    R.compose(tmpV.set(s.px, hop, s.pz), tmpQ, tmpS.set(1 - st * 0.55, 1 + st, 1 - st * 0.55));
+    M.body.setMatrixAt(i, R); M.bodyInk.setMatrixAt(i, R); M.overalls.setMatrixAt(i, R);
+    M.blob.setMatrixAt(i, tmpM.compose(tmpV.set(s.px, 0.012, s.pz), tmpQ2.identity(), tmpS.setScalar(1 - hop * 0.8)));
 
-    // arms: blend toward the IK aim for the grabbing arm, rubber-stretch to reach the facing
+    // arms: push pose / free pose, blended toward the IK aim for the grabbing arm, rubber-stretch to reach
     const ka = 1 - Math.exp(-dt * 14);
     let wantR = 1, wantL = 1;
-    poseQ(tmpQ3, 1, thR, phR); poseQ(tmpQ4, -1, thL, phL);
+    if (onR) { tmpQ3.copy(PUSH[0].q); wantR = PUSH[0].str; } else poseQ(tmpQ3, 1, thR, phR);
+    if (onL) { tmpQ4.copy(PUSH[1].q); wantL = PUSH[1].str; } else poseQ(tmpQ4, -1, thL, phL);
     if (ik > 0.001 && ikAt) {
       const inv = tmpM3.copy(R).invert();
       const dir = tmpV.set(ikAt.x, ikAt.y, ikAt.z).applyMatrix4(inv).sub(gs > 0 ? SHOULDER_R : SHOULDER_L);
-      const need = Math.min(3.4, Math.max(1, dir.length() / (BODY.armLen + 0.05)));
+      const need = Math.min(3.6, Math.max(1, dir.length() / (BODY.armLen + 0.05)));
       tmpQ2.setFromUnitVectors(DOWN, dir.normalize());
-      if (gs > 0) { tmpQ3.slerp(tmpQ2, ik); wantR = 1 + (need - 1) * ik; } else { tmpQ4.slerp(tmpQ2, ik); wantL = 1 + (need - 1) * ik; }
+      if (gs > 0) { tmpQ3.slerp(tmpQ2, ik); wantR = wantR + (need - wantR) * ik; } else { tmpQ4.slerp(tmpQ2, ik); wantL = wantL + (need - wantL) * ik; }
     }
     s.qR.slerp(tmpQ3, ka); s.qL.slerp(tmpQ4, ka);
     const ks = 1 - Math.exp(-dt * 18);
     s.strR += (wantR - s.strR) * ks; s.strL += (wantL - s.strL) * ks;
-    M.arm.setMatrixAt(s.si * 2, tmpM2.multiplyMatrices(R, tmpM.compose(SHOULDER_R, s.qR, tmpS.set(1, s.strR, 1))));
-    M.arm.setMatrixAt(s.si * 2 + 1, tmpM2.multiplyMatrices(R, tmpM.compose(SHOULDER_L, s.qL, tmpS.set(1, s.strL, 1))));
+    M.arm.setMatrixAt(i * 2, tmpM2.multiplyMatrices(R, tmpM.compose(SHOULDER_R, s.qR, tmpS.set(1, s.strR, 1))));
+    M.arm.setMatrixAt(i * 2 + 1, tmpM2.multiplyMatrices(R, tmpM.compose(SHOULDER_L, s.qL, tmpS.set(1, s.strL, 1))));
     s.handR.multiplyMatrices(R, tmpM.compose(SHOULDER_R, s.qR, ONE)).multiply(tmpM3.makeTranslation(0, -BODY.armLen * s.strR, 0));
     s.handL.multiplyMatrices(R, tmpM.compose(SHOULDER_L, s.qL, ONE)).multiply(tmpM3.makeTranslation(0, -BODY.armLen * s.strL, 0));
 
-    if (!s.ai) {
-      if (detail) {
-        // googly eyes: pupils slide toward what they're looking at
-        const inv = tmpM3.copy(R).invert();
-        let lx = 0, ly = -0.1, lz = 1;
-        if (lookW) { const lw = lookW.applyMatrix4(inv); lx = lw.x; ly = lw.y - BODY.eyeY; lz = lw.z; }
-        else if (b?.kind === 'ignore') { lx = 0.3; ly = 0.8; lz = 0.6; }
-        else if ((b?.kind === 'reject' && u > BEAT.grab && u < BEAT.putBack) || (b?.kind === 'pick' && u > BEAT.grab && u < BEAT.launch)) { lx = 0.15 * gs; ly = -0.4; lz = 1; }
-        s.look.lerp(tmpV.set(lx, ly, Math.max(0.25, lz)).normalize(), 1 - Math.exp(-dt * 12));
-        const jig = moving ? Math.sin(s.step * 2) * 0.012 : 0;
-        tmpM4.compose(tmpV3.set(s.px, 0, s.pz), tmpQ2.setFromAxisAngle(UP, s.yaw), ONE);
-        for (let k = 0; k < 2; k++) {
-          const ex = (k ? -1 : 1) * BODY.eyeX;
-          M.eye.setMatrixAt(bi * 2 + k, tmpM.makeTranslation(ex, BODY.eyeY, BODY.eyeZ).premultiply(R));
-          M.pupil.setMatrixAt(bi * 2 + k, tmpM.makeTranslation(ex + s.look.x * 0.065, BODY.eyeY + s.look.y * 0.065 + jig, BODY.eyeZ + 0.062 + s.look.z * 0.012).premultiply(R));
-          const ph = s.step + (k ? Math.PI : 0);
-          M.foot.setMatrixAt(bi * 2 + k, tmpM.makeTranslation(ex * 1.05, 0.045 + (moving ? Math.max(0, Math.sin(ph)) * 0.07 : 0), 0.06 + (moving ? Math.cos(ph) * 0.1 : 0)).premultiply(tmpM4));
-        }
-      } else for (let k = 0; k < 2; k++) { M.eye.setMatrixAt(bi * 2 + k, ZERO); M.pupil.setMatrixAt(bi * 2 + k, ZERO); M.foot.setMatrixAt(bi * 2 + k, ZERO); }
-      M.bag.setMatrixAt(bi, co && t >= co.tPay + 0.5 ? tmpM.multiplyMatrices(s.carrier === 'basket' ? s.handR : s.handL, tmpM3.makeTranslation(0, -0.02, 0.02)) : ZERO);
+    if (detail) {
+      // goggles: strap, chrome rims, eyes (blink = squash eye Y), irises slide toward what they look at
+      M.strap.setMatrixAt(i, R);
+      const inv = tmpM3.copy(R).invert();
+      let lx = 0, ly = -0.1, lz = 1;
+      if (lookW) { const lw = lookW.applyMatrix4(inv); lx = lw.x; ly = lw.y - BODY.eyeY; lz = lw.z; }
+      else if (b?.kind === 'ignore') { lx = 0.3; ly = 0.8; lz = 0.6; }
+      else if ((b?.kind === 'reject' && u > BEAT.grab && u < BEAT.putBack) || (b?.kind === 'pick' && u > BEAT.grab && u < BEAT.launch)) { lx = 0.15 * gs; ly = -0.4; lz = 1; }
+      s.look.lerp(tmpV.set(lx, ly, Math.max(0.25, lz)).normalize(), 1 - Math.exp(-dt * 12));
+      const bph = (now + s.blinkO) % s.blinkP;
+      const blink = bph < 0.13 ? Math.max(0.08, Math.abs(bph / 0.065 - 1)) : 1;
+      const wide = mood === 0 ? 1.18 : 1;
+      const es = (s.oneEye ? 1.4 : 1) * wide;
+      for (let k = 0; k < 2; k++) {
+        const j = i * 2 + k;
+        if (s.oneEye && k) { M.eye.setMatrixAt(j, ZERO); M.rim.setMatrixAt(j, ZERO); M.iris.setMatrixAt(j, ZERO); continue; }
+        const ex = s.oneEye ? 0 : (k ? -1 : 1) * BODY.eyeX;
+        const ez = s.oneEye ? BODY.eyeZ + 0.03 : BODY.eyeZ;
+        tmpQ2.setFromAxisAngle(UP, ex * 1.6);
+        M.rim.setMatrixAt(j, tmpM.compose(tmpV.set(ex, BODY.eyeY, ez), tmpQ2, tmpS.setScalar(es)).premultiply(R));
+        M.eye.setMatrixAt(j, tmpM.compose(tmpV.set(ex, BODY.eyeY, ez), tmpQ2, tmpS.set(es, es * blink, es)).premultiply(R));
+        const r = BODY.eyeR * es * 0.55;
+        M.iris.setMatrixAt(j, tmpM.compose(tmpV.set(ex + s.look.x * r + ex * 0.1, BODY.eyeY + s.look.y * r * blink, ez + BODY.eyeR * 0.72 * es + 0.002), tmpQ2.identity(), tmpS.set(es, es * blink, 1)).premultiply(R));
+      }
+      // mouth: smile / frown (flipped) / little "o" when surprised
+      const my = mood === 0 ? 0.55 : mood;
+      M.mouth.setMatrixAt(i, tmpM.compose(tmpV.set(0, BODY.mouthY, BODY.mouthZ), tmpQ2.setFromAxisAngle(tmpV2.set(1, 0, 0), -0.25), tmpS.set(mood === 0 ? 0.55 : 1, my, 1)).premultiply(R));
+      M.hair.setMatrixAt(i, s.hair ? tmpM.compose(tmpV.set(0, BODY.top - 0.02, 0), tmpQ2.setFromEuler(tmpE.set(hairK * 0.4 - lean, 0, hairK - roll * 1.5)), ONE).premultiply(R) : ZERO);
+      tmpM4.compose(tmpV3.set(s.px, 0, s.pz), tmpQ2.setFromAxisAngle(UP, s.yaw + spin), ONE);
+      for (let k = 0; k < 2; k++) {
+        const ph = s.step + (k ? Math.PI : 0);
+        const fy = hop > 0.12 ? hop * 0.85 : 0;
+        M.foot.setMatrixAt(i * 2 + k, tmpM.makeTranslation((k ? -1 : 1) * 0.13, 0.01 + fy + (moving ? Math.max(0, Math.sin(ph)) * 0.08 : 0), 0.05 + (moving ? Math.cos(ph) * 0.1 : 0)).premultiply(tmpM4));
+      }
     } else {
-      // scanner beam over the shelf it is reading (ai agents carry nothing: they read the feed)
-      if (b?.shelf && detail) {
-        const eye = tmpV.set(0, 0.9, 0.3).applyMatrix4(R);
-        const sweep = Math.sin(now * 9 + s.si) * 0.16;
-        const dir = tmpV2.set(b.shelf.x - eye.x, b.shelf.y + sweep - eye.y, b.shelf.z - eye.z); const len = dir.length();
-        tmpQ2.setFromUnitVectors(UP, dir.normalize());
-        M.beam.setMatrixAt(bi, tmpM.compose(eye, tmpQ2, tmpS.set(1, len, 1)));
-      } else M.beam.setMatrixAt(bi, ZERO);
+      M.strap.setMatrixAt(i, ZERO); M.mouth.setMatrixAt(i, ZERO); M.hair.setMatrixAt(i, ZERO);
+      for (let k = 0; k < 2; k++) { const j = i * 2 + k; M.eye.setMatrixAt(j, ZERO); M.rim.setMatrixAt(j, ZERO); M.iris.setMatrixAt(j, ZERO); M.foot.setMatrixAt(j, ZERO); }
     }
-    // accessories (hats etc.)
-    const pi = M.partIdx[s.si];
-    for (let k = 0; k < s.parts.length; k++) {
-      const pt = s.parts[k];
-      if (!detail && pt.attach !== 'root') { M.parts[pt.key].setMatrixAt(pi[k], ZERO); continue; }
-      const base = pt.attach === 'handR' ? s.handR : pt.attach === 'handL' ? s.handL : R;
-      M.parts[pt.key].setMatrixAt(pi[k], tmpM.multiplyMatrices(base, pt.m));
-    }
-    // carrier: rides with its owner (trolley in front, basket on the arm); parked at the till while checking out
-    if (s.carrier !== 'none') {
-      const a = s.carrier === 'trolley' ? TROLLEY.anchor : BASKET.anchor;
-      s.carrierM.compose(tmpV.set(s.px, 0, s.pz), tmpQ2.setFromAxisAngle(UP, s.yaw), ONE).multiply(tmpM3.makeTranslation(a[0], BODY.center + a[1] + (s.carrier === 'basket' ? hop : 0), a[2]));
-      let cm: THREE.Matrix4 = s.carrierM;
-      if (parked && co) { cm = t < co.tDone ? s.park! : ZERO; if (t < co.tDone) s.carrierM.copy(s.park!); }
-      (s.carrier === 'trolley' ? M.trolley : M.basket).setMatrixAt(M.carIdx[s.si], cm);
-    }
+    M.bag.setMatrixAt(i, co && t >= co.tPay + 0.5 ? tmpM.multiplyMatrices(s.handL, tmpM3.makeTranslation(0, -0.02, 0.02)) : ZERO);
+    // trolley: rides in front of its owner; parked at the till while they check out
+    s.carrierM.compose(tmpV.set(s.px, 0, s.pz), tmpQ2.setFromAxisAngle(UP, s.yaw), ONE).multiply(tmpM3.makeTranslation(TROLLEY.anchor[0], BODY.center + TROLLEY.anchor[1], TROLLEY.anchor[2]));
+    let cm: THREE.Matrix4 = s.carrierM;
+    if (parked && co) { cm = t < co.tDone ? s.park! : ZERO; if (t < co.tDone) s.carrierM.copy(s.park!); }
+    M.trolley.setMatrixAt(i, cm);
   }
 
   function drawPack(s: Shopper, b: Beat, t: number, now: number, crossed: (x: number) => boolean) {
@@ -704,18 +710,6 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const hand = grabSide(s, b) < 0 ? s.handL : s.handR;
     const inHand = () => M.pack.setMatrixAt(i, tmpM.multiplyMatrices(hand, tmpM2.makeTranslation(0, -0.1, 0.06)).multiply(tmpM3.makeScale(sz.w * 1.25, sz.h * 1.25, sz.d * 1.25)));
     if (b.kind === 'reject') { if (t < b.tBack) inHand(); else M.pack.setMatrixAt(i, ZERO); return; }
-    if (s.ai) {
-      // hologram: the pack zips from the shelf into the robot's screen and shrinks away
-      const end = b.tGrab + (b.t1 - b.tGrab) * 0.7;
-      if (t < end && b.shelf) {
-        const k = ease((t - b.tGrab) / Math.max(0.01, end - b.tGrab));
-        const z = tmpV2.set(0, 0.9, 0.3).applyMatrix4(s.R);
-        const pos = tmpV.set(b.shelf.x, b.shelf.y, b.shelf.z).lerp(z, k); pos.y += Math.sin(Math.PI * k) * 0.3;
-        const sc = 1.4 * (1 - k * 0.9);
-        M.pack.setMatrixAt(i, tmpM.compose(pos, tmpQ.setFromEuler(tmpE.set(0, now * 4, 0)), tmpS.set(sz.w * sc, sz.h * sc, sz.d * sc)));
-      } else M.pack.setMatrixAt(i, ZERO);
-      return;
-    }
     const co = s.co;
     if (co && b.pickIdx >= 0 && b.pickIdx < co.tScan.length && t >= co.tArrive) {
       // checkout: carrier → belt / scanner → bag
@@ -748,7 +742,6 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       return;
     }
     if (t < b.tLaunch) { launchAt.current.delete(b.id); inHand(); return; }
-    if (s.carrier === 'none') { M.pack.setMatrixAt(i, ZERO); return; }
     // thrown: arc from the hand into its spot on the pile, then stays in the carrier
     if (crossed(b.tLaunch)) { launchAt.current.set(b.id, new THREE.Vector3().setFromMatrixPosition(hand)); sfx.pick(); }
     const dst = tmpM.multiplyMatrices(s.carrierM, stackLocal(s.carrier, b.pickIdx, sz.h, tmpM2));
@@ -784,8 +777,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   return (
     <group>
       <primitive object={meshes.group} />
-      <primitive object={meshes.bean} onClick={click(meshes.beanList)} {...hover(meshes.beanList)} />
-      <primitive object={meshes.robot} onClick={click(meshes.robotList)} {...hover(meshes.robotList)} />
+      <primitive object={meshes.body} onClick={click(shoppers)} {...hover(shoppers)} />
       <primitive object={pools.group} onClick={clickSticker} />
       <mesh ref={selRing} rotation={[-Math.PI / 2, 0, 0]} visible={false}>
         <ringGeometry args={[0.52, 0.66, 40, 1, 0, Math.PI * 1.6]} />

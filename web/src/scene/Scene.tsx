@@ -7,6 +7,7 @@ import type { OrbitControls as OrbitImpl } from 'three-stdlib';
 import type { Agent, Persona, Planogram, Product, StoreConfig } from '../types';
 import { gondolaX, storeBounds, storePlan, zRange, type Timeline } from '../layout';
 import { Store } from './Store';
+import { World } from './world/World';
 import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
 import { buildBeats } from './beats';
@@ -221,17 +222,18 @@ const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
   return (
     <Canvas
       flat shadows={SHADOWS} dpr={[1, 1.5]} frameloop={demand ? 'demand' : 'always'}
-      camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: Math.max(400, ov.dist * 4) }}
+      camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: Math.max(1000, ov.dist * 8) }}
       onPointerMissed={p.onBackground} onPointerDown={p.onUserCamera} onWheel={p.onUserCamera}
       gl={{ antialias: true, alpha: true, stencil: false, powerPreference: 'high-performance' }}
     >
       <AutoDpr />
       <PausedTicker on={demand} />
-      <fog attach="fog" args={['#ffe6dc', Math.max(70, ov.dist * 0.95), Math.max(170, ov.dist * 2.3)]} />
+      <fog attach="fog" args={['#ffe3d6', Math.max(80, ov.dist * 1.0), Math.max(260, ov.dist * 3.2)]} />
       <hemisphereLight args={['#fff4ec', '#f3c9d6', 1.15]} />
       <Sun cx={B.cx} cz={B.cz} zMin={B.zMin} r={shadowR} />
       <ambientLight intensity={0.45} />
       <PerfHook />
+      <World cfg={p.cfg} />
       <Clock timeRef={p.timeRef} playing={p.playing} speed={p.speed} duration={p.duration} />
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>

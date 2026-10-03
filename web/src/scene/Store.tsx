@@ -12,7 +12,9 @@ import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import type { Planogram, Product, StoreConfig } from '../types';
 import { G, rowGap, rowY, slotPlacements, storePlan, unitFrame, type Lane, type StorePlan, type UnitPlace } from '../layout';
 import { BRAND_A, CAT_EMOJI, INK, catColor, catLabel } from '../theme';
-import { canvasTex, floorTexture, productMaterials, stickerSign } from './textures';
+import { canvasTex, productMaterials, stickerSign } from './textures';
+import { FLOOR_REPEAT_M, floorEnv, terrazzoTexture } from './world/floor';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { bus } from './fx';
 import { Kit, LabelAtlas, QuadBatch, disposeGroup, shade } from './storeKit';
 import { Departments, promoSign } from './Departments';
@@ -598,11 +600,44 @@ function Stockroom({ cfg }: { cfg: StoreConfig }) {
 }
 
 
+/** one merged, vertex-coloured mesh: darker runner down every aisle walkway + the front / back cross aisles,
+ *  (the doors already carry their own pink barrier mats) */
+function buildRunners(P: StorePlan) {
+  const B = P.bounds;
+  const parts: THREE.BufferGeometry[] = [];
+  const quad = (x0: number, z0: number, x1: number, z1: number, y: number, col: string) => {
+    if (x1 - x0 < 0.05 || z1 - z0 < 0.05) return;
+    const g = new THREE.PlaneGeometry(x1 - x0, z1 - z0).toNonIndexed();
+    g.rotateX(-Math.PI / 2); g.translate((x0 + x1) / 2, y, (z0 + z1) / 2);
+    const c = new THREE.Color(col); const n = g.attributes.position.count;
+    g.setAttribute('color', new THREE.Float32BufferAttribute(Array.from({ length: n * 3 }, (_, i) => [c.r, c.g, c.b][i % 3]), 3));
+    g.deleteAttribute('uv');
+    parts.push(g);
+  };
+  const RUN = '#e2c9bd', EDGE = '#cfb2a6';
+  for (const w of P.walkways) {
+    quad(w.x - 0.55, w.z0, w.x + 0.55, w.z1, 0.0022, RUN);
+    quad(w.x - 0.62, w.z0, w.x - 0.55, w.z1, 0.0022, EDGE); quad(w.x + 0.55, w.z0, w.x + 0.62, w.z1, 0.0022, EDGE);
+  }
+  if (P.gondolas.length) {
+    const g0 = Math.min(...P.gondolas.map((g) => g.x)) - 1.2, g1 = Math.max(...P.gondolas.map((g) => g.x)) + 1.2;
+    for (const z of [P.crossFront - 0.2, P.crossBack + 0.4]) quad(Math.max(B.xMin, g0), z - 0.9, Math.min(B.xMax, g1), z + 0.9, 0.0018, RUN);
+  }
+  if (!parts.length) quad(B.cx - 0.01, B.cz - 0.01, B.cx + 0.01, B.cz + 0.01, -1, RUN);
+  const merged = mergeGeometries(parts)!;
+  parts.forEach((p) => p.dispose());
+  return merged;
+}
+
 export function Store(props: StoreProps) {
   const { cfg, planogram, products, changed, heat, editMode, editSel, onSlot } = props;
   const P = storePlan(cfg);
   const B = P.bounds;
-  const floor = useMemo(() => { const t = floorTexture(); t.repeat.set(B.w / 1.2, B.d / 1.2); return t; }, [B.w, B.d]);
+  const gl = useThree((s) => s.gl);
+  const floor = useMemo(() => { const t = terrazzoTexture().clone(); t.repeat.set(B.w / FLOOR_REPEAT_M, B.d / FLOOR_REPEAT_M); t.needsUpdate = true; return t; }, [B.w, B.d]);
+  const env = useMemo(() => floorEnv(gl), [gl]);
+  const runners = useMemo(() => buildRunners(P), [P]);
+  useEffect(() => () => runners.dispose(), [runners]);
   const band = useMemo(() => canvasTex(512, 32, (ctx) => { const g = ctx.createLinearGradient(0, 0, 512, 0); g.addColorStop(0, '#FF4079'); g.addColorStop(1, '#FE831B'); ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 32); }), []);
   const belt = useMemo(beltTex, []);
   useFrame((_, dt) => { belt.offset.y -= dt * 0.6; });
@@ -647,15 +682,13 @@ export function Store(props: StoreProps) {
   const wallUnits = cfg.units.map((u) => P.units[u.id]).filter((p): p is UnitPlace => !!p && p.fixture !== 'gondola' && p.fixture !== 'freezer');
   return (
     <group>
-      {/* floor + outdoor car park apron */}
+      {/* polished terrazzo floor (the outdoor world / car park is world/World.tsx) */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[B.cx, 0, B.cz]} receiveShadow raycast={noRay}>
         <planeGeometry args={[B.w, B.d]} />
-        <meshStandardMaterial map={floor} roughness={0.75} />
+        <meshStandardMaterial map={floor} roughness={0.36} metalness={0} envMap={env} envMapIntensity={0.22} />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[B.cx, -0.01, B.cz + 6]} raycast={noRay}>
-        <planeGeometry args={[B.w + 40, B.d + 40]} />
-        <meshStandardMaterial color="#f6d9cf" roughness={1} />
-      </mesh>
+      {/* walkway runner strips (slightly darker vinyl down each aisle + the cross aisles) and entrance mats */}
+      <mesh geometry={runners} raycast={noRay}><meshStandardMaterial vertexColors roughness={0.45} envMap={env} envMapIntensity={0.35} /></mesh>
       {wallBoxes.map(([x, z, w, d], i) => (
         <group key={i}>
           <mesh position={[x, wallH / 2, z]} receiveShadow raycast={noRay}>
