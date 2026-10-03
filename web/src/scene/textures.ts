@@ -150,7 +150,12 @@ const hashStr = (s: string) => { let h = 2166136261; for (let i = 0; i < s.lengt
 /** product colour with some brand-driven variety so a run of one category doesn't look like one block */
 export function packColor(p: Pick<Product, 'brand' | 'category' | 'code'> & { color?: string }) {
   if (p.color) return p.color;
-  const c = new THREE.Color(catColor(p.category));
+  // categories without a theme colour (the superstore's long tail) would all fall back to one grey: give each a
+  // stable hue of its own instead, so a full aisle reads as colourful packaging (visual only)
+  const known = catColor(p.category);
+  const c = known.toLowerCase() === catColor('\u0000').toLowerCase()
+    ? new THREE.Color().setHSL((hashStr(p.category || 'x') % 360) / 360, 0.62, 0.52)
+    : new THREE.Color(known);
   const hsl = { h: 0, s: 0, l: 0 }; c.getHSL(hsl);
   const h = hashStr(p.brand || p.code);
   c.setHSL((hsl.h + ((h % 1000) / 1000 - 0.5) * 0.22 + 1) % 1, Math.min(0.9, hsl.s * (0.75 + ((h >> 10) % 100) / 200)), Math.min(0.72, Math.max(0.28, hsl.l + (((h >> 17) % 100) / 100 - 0.5) * 0.3)));
@@ -285,7 +290,8 @@ export class PackAtlas {
           ctx.drawImage(img, o.x + (W - dw) / 2, o.y + (H - dh) / 2, dw, dh);
           ctx.restore();
           this.photo.add(code); this.dirty.add(c.page);
-          const a = photoAverage(img); if (a) { this.avgs.get(code)?.copy(a); this.avgVersion++; }
+          // perf: the average is computed off the main thread (createImageBitmap resizes to 16x16 before we read it)
+          photoAverageAsync(img).then((a) => { if (a && !this.dead) { this.avgs.get(code)?.copy(a); this.avgVersion++; } });
         } catch { ctx.restore(); }
       };
       img.onerror = () => { this.inflight--; };
@@ -303,9 +309,18 @@ export class PackAtlas {
 /** average colour of a pack photo on a tiny canvas, skipping the near-white studio backdrop; saturation nudged up so
  *  a whole shelf of averages still reads as colourful packaging from the overview (not grey) */
 let _avgCanvas: HTMLCanvasElement | null = null;
-function photoAverage(img: HTMLImageElement): THREE.Color | null {
+const AVG_N = 16;
+async function photoAverageAsync(img: HTMLImageElement): Promise<THREE.Color | null> {
+  if (typeof createImageBitmap !== 'function') return photoAverage(img);
   try {
-    const N = 16; _avgCanvas ??= document.createElement('canvas'); _avgCanvas.width = N; _avgCanvas.height = N;
+    const bm = await createImageBitmap(img, { resizeWidth: AVG_N, resizeHeight: AVG_N, resizeQuality: 'low' });
+    const c = photoAverage(bm); bm.close(); return c;
+  } catch { return photoAverage(img); }
+}
+function photoAverage(img: CanvasImageSource): THREE.Color | null {
+  try {
+    const N = AVG_N;
+    if (!_avgCanvas) { _avgCanvas = document.createElement('canvas'); _avgCanvas.width = N; _avgCanvas.height = N; }
     const ctx = _avgCanvas.getContext('2d', { willReadFrequently: true })!; ctx.clearRect(0, 0, N, N); ctx.drawImage(img, 0, 0, N, N);
     const d = ctx.getImageData(0, 0, N, N).data;
     let r = 0, g = 0, b = 0, n = 0, wsat = 0;
@@ -358,8 +373,14 @@ export function packMaterial(map: THREE.Texture) {
           diffuseColor.rgb *= c;
         } else if (vFace > 0.5) {
           vec2 t = fract(vBoxUv * max(vTile.xy, vec2(1.0)));
-          vec4 tx = texture2D(uAtlas, vCell.xy + t * vCell.zw);
-          diffuseColor.rgb *= tx.rgb;
+          // mip level by hand (fract() breaks the hardware derivatives at pack seams), clamped so a cell never
+          // blurs into its neighbours; past that the pack fades to its own colour instead of the atlas-average grey
+          vec2 uvA = vCell.xy + t * vCell.zw;
+          vec2 dpx = dFdx(vBoxUv * max(vTile.xy, vec2(1.0)) * vCell.zw * ${PAGE}.0), dpy = dFdy(vBoxUv * max(vTile.xy, vec2(1.0)) * vCell.zw * ${PAGE}.0);
+          float lod = 0.5 * log2(max(dot(dpx, dpx), dot(dpy, dpy)));
+          vec4 tx = textureLod(uAtlas, uvA, clamp(lod, 0.0, 2.5));
+          vec3 far = mix(vTint.rgb * 1.15, vec3(1.0), 0.18);
+          diffuseColor.rgb *= mix(tx.rgb, far, smoothstep(2.6, 4.2, lod));
           vec2 e = min(t, 1.0 - t);
           if (vTile.x > 1.5 || vTile.y > 1.5) diffuseColor.rgb *= mix(0.7, 1.0, smoothstep(0.0, 0.035, min(e.x, e.y)));
         } else {
@@ -372,7 +393,7 @@ export function packMaterial(map: THREE.Texture) {
         totalEmissiveRadiance += vTint.w * vec3(0.55, 0.85, 1.0) * 0.16;
         if (uSel >= 0.0 && abs(vTile.w - uSel) < 0.5) totalEmissiveRadiance += vec3(1.0, 0.25, 0.47) * (0.32 + 0.16 * sin(uTime * 5.0));`);
   };
-  m.customProgramCacheKey = () => 'pack-atlas-v2';
+  m.customProgramCacheKey = () => 'pack-atlas-v3';
   return m;
 }
 

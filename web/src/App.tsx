@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { Arm, Persona, Planogram, Product, Run, RunIndexEntry } from './types';
+import type { Agent, Arm, Persona, Planogram, Product, Run, RunIndexEntry } from './types';
 import { isAI } from './types';
 import { loadAll, loadRun, SIM_SERVER, type Loaded } from './data';
 import { api } from './api';
 import { buildTimeline, scheduleCheckouts, storePlan, QUEUE, TILL, type Timeline } from './layout';
-import { EngineBadge, engineOfAll } from './ui/engineBadge';
+import { engineOfAll } from './ui/engineBadge';
 import { armFilter, pickRates, archetypeOf } from './stats';
 import { Scene, type CamMode } from './scene/Scene';
 import type { ThoughtMode } from './scene/Crowd';
@@ -43,6 +43,21 @@ const CAFE_SHARE = 0.15;
 const ARRIVAL_UTIL = 0.7;
 /** assumption: nobody joins a checkout line 6+ deep; they keep browsing until it shortens (visual only) */
 const QUEUE_CAP = 6;
+/** perf: decision counts up to time t. App re-renders ~8x/s, so the dwell-event times are indexed once per
+ *  (agents, timelines) and each render is a binary search instead of a walk over every segment. */
+const countsIdx = new WeakMap<object, { tl: object; byDec: Record<string, number[]> }>();
+function countsAt(agents: Agent[], timelines: Record<string, Timeline>, t: number) {
+  let ix = countsIdx.get(agents);
+  if (!ix || ix.tl !== timelines) {
+    const byDec: Record<string, number[]> = {};
+    for (const a of agents) { const tl = timelines[a.agent_id]; if (!tl) continue; for (const s of tl.segs) if (s.kind === 'dwell' && s.event) (byDec[s.event.decision] ??= []).push(s.t0); }
+    for (const k in byDec) byDec[k].sort((x, y) => x - y);
+    ix = { tl: timelines, byDec }; countsIdx.set(agents, ix);
+  }
+  const out: Record<string, number> = {};
+  for (const k in ix.byDec) { const xs = ix.byDec[k]; let lo = 0, hi = xs.length; while (lo < hi) { const m = (lo + hi) >> 1; if (xs[m] <= t) lo = m + 1; else hi = m; } if (lo) out[k] = lo; }
+  return out;
+}
 const hash01 = (s: string) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; };
 /** deep links for demos: ?t=40 starts the replay at 40s, ?nointro skips the fly-through */
 const START_T = (() => { const v = Number(new URLSearchParams(location.search).get('t')); return Number.isFinite(v) && v > 0 ? v : 0; })();
@@ -298,7 +313,7 @@ export default function App() {
   const openTrace = (agentId: string, step: number) => setPanel((cur) => ({ kind: 'trace', agentId, step, back: cur && cur.kind !== 'trace' ? cur : cur?.kind === 'trace' ? cur.back : undefined }));
   const archetypesInRun = view ? [...new Set(view.agents.map((a) => archetypeOf(a, personas)))] : []; // AI agents group by archetype too
   const slotOf = (code: string) => Object.entries(basePlan).find(([, s]) => s.products.includes(code))?.[0];
-  const counts = view ? agents.reduce((acc, a) => { const tl = timelines[a.agent_id]; if (!tl) return acc; for (const s of tl.segs) if (s.kind === 'dwell' && s.t0 <= uiTime && s.event) acc[s.event.decision] = (acc[s.event.decision] ?? 0) + 1; return acc; }, {} as Record<string, number>) : {};
+  const counts = view ? countsAt(agents, timelines, uiTime) : {};
 
   const onShelf = Object.values(basePlan).flatMap((s) => s.products);
   const focusProduct = products[focus ?? ''] ?? products[run?.catalog_inline?.[0]?.code ?? ''] ?? products[onShelf[0]];
@@ -458,7 +473,6 @@ export default function App() {
           <input type="range" min={0} max={duration} step={0.1} value={uiTime} onChange={(e) => { timeRef.current = Number(e.target.value); setUiTime(timeRef.current); }} aria-label="replay time" />
           <span className="time">{fmt(uiTime)} / {fmt(duration)}</span>
           <div className="seg small">{SPEEDS.map((s) => <button key={s} className={`seg-btn ${speed === s ? 'on' : ''}`} onClick={() => setSpeed(s)}>{s}×</button>)}</div>
-          <EngineBadge info={engineInfo} className="hud-engine" />
           <div className="counts">
             <span className="count count-good" title="picked so far">✅ {counts.pick ?? 0}</span>
             <span className="count count-bad" title="rejected so far">✖ {counts.reject ?? 0}</span>

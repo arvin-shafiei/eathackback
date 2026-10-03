@@ -401,7 +401,16 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     };
   }, [built, planogram]);
 
-  const lastV = useRef(-1), lastSig = useRef(''), lastAvg = useRef(-1);
+  const lastV = useRef(-1), lastSig = useRef(''), lastAvg = useRef(-1), lastAvgT = useRef(-1);
+  // perf: every gap start/end time, sorted. The hidden set can only change when t crosses one of these, so the
+  // per-frame check is a binary search instead of a walk over every product's gaps.
+  const gapEdges = useMemo(() => {
+    const xs: number[] = [];
+    if (gaps) for (const code in gaps) for (const [a, b] of gaps[code]) xs.push(a, b);
+    return Float64Array.from(xs.sort((x, y) => x - y));
+  }, [gaps]);
+  const popping = useRef(new Set<Rec>());
+  useEffect(() => { popping.current.clear(); }, [built]);
   // dev only: ?shelfcam=x,y,z,tx,ty,tz pins the camera for headless shelf screenshots
   const pin = useMemo(() => { try { const v = new URLSearchParams(location.search).get('shelfcam'); const n = v?.split(',').map(Number); return n && n.length === 6 && n.every(Number.isFinite) ? n : null; } catch { return null; } }, []);
   const scene = useThree((s) => s.scene);
@@ -417,8 +426,8 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     packUniforms.uSel.value = selectedProduct ? atlasKit.atlas.cell(selectedProduct)?.idx ?? -1 : -1;
     atlasKit.atlas.tick(now);
     // far LOD colours follow the photo averages as product images stream in
-    if (atlasKit.atlas.avgVersion !== lastAvg.current) {
-      lastAvg.current = atlasKit.atlas.avgVersion;
+    if (atlasKit.atlas.avgVersion !== lastAvg.current && now - lastAvgT.current > 0.5) {
+      lastAvg.current = atlasKit.atlas.avgVersion; lastAvgT.current = now;
       for (const g of built.groups) {
         g.farRecs.forEach((r, i) => { const c = atlasKit.atlas.avg(r.code); if (c) g.farTint.setXYZ(i, c.r, c.g, c.b); });
         g.farTint.needsUpdate = true;
@@ -431,17 +440,18 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     }
     // stock: crowd takes (module registry) + replay gaps (when not crowd-driven) + ops stock share
     const useGaps = live && !REG.driven && gaps;
-    const hidden = new Map<string, number>();
     let sig = `${REG.version}|${live}`;
-    if (useGaps) for (const code in gaps) {
-      let n = 0; for (const [a, b] of gaps[code]) if (t >= a && t < b) n++;
-      if (n) { hidden.set(code, n); sig += `${code}${n}`; }
-    }
+    if (useGaps) { let lo = 0, hi = gapEdges.length; while (lo < hi) { const m = (lo + hi) >> 1; if (gapEdges[m] <= t) lo = m + 1; else hi = m; } sig += `|g${lo}`; }
     const stock = live ? bus.stock : null;
     if (stock) sig += `|s${bus.opsMin}`;
-    const animating = built.recs.some((r) => r.popT >= 0);
+    const animating = popping.current.size > 0;
     if (sig !== lastSig.current || lastV.current !== REG.version || animating) {
       lastSig.current = sig; lastV.current = REG.version;
+      const hidden = new Map<string, number>();
+      if (useGaps) for (const code in gaps) {
+        let n = 0; for (const [a, b] of gaps[code]) if (t >= a && t < b) n++;
+        if (n) hidden.set(code, n);
+      }
       const firstOf = new Set<string>();
       for (const r of built.recs) {
         const manual = REG.manual.get(r.key) ?? 0;
@@ -453,10 +463,10 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
         }
         want = Math.max(0, Math.min(r.total, want));
         r.manualApplied = manual;
-        if (want < r.removed) r.popT = now;
+        if (want < r.removed) { r.popT = now; popping.current.add(r); }
         if (r.popT >= 0) {
           const k = (now - r.popT) / POP;
-          if (k >= 1) { r.popT = -1; applyRec(r, want); } else applyRec(r, want, 1 + Math.sin(k * Math.PI) * 0.18);
+          if (k >= 1) { r.popT = -1; popping.current.delete(r); applyRec(r, want); } else applyRec(r, want, 1 + Math.sin(k * Math.PI) * 0.18);
         } else if (want !== r.removed) applyRec(r, want);
       }
     }

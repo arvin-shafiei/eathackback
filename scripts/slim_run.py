@@ -22,8 +22,20 @@ for a in r.get("agents", []):
             table.setdefault(key, {"trait": t.get("trait"), "effect": t.get("effect"), "file": t.get("file")})
             slim.append({"k": key, "term": t.get("term")})
         nf["trait_terms"] = slim
+# not-noticed events: keep the notice INPUTS (row, facings, centrality, on_mission, seconds_at_shelf) + p_notice,
+# drop the stored per-term arithmetic; it is exactly recomputable with sim/notice.py p_notice(...) from those inputs.
+dropped = 0
+for a in r.get("agents", []):
+    for ev in a.get("events", []):
+        if ev.get("stage_reached") == "not_noticed" or ev.get("decision") == "not_noticed":
+            nf = ev.get("notice_factors") or {}
+            for k in ("logit_terms", "trait_terms"):
+                if k in nf:
+                    nf.pop(k); dropped += 1
+            ev["notice_trace"] = "recompute: sim/notice.py p_notice(row, facings, centrality, on_mission, ocean, persona_params)"
 r["trait_effects"] = table
-r["slimmed"] = "trait_terms[].effect/file moved to top-level trait_effects (scripts/slim_run.py); values unchanged"
+r["slimmed"] = ("trait_terms[].effect/file moved to top-level trait_effects; not-noticed events keep notice inputs + p_notice, "
+              "their per-term arithmetic is dropped (recompute with sim/notice.py) — scripts/slim_run.py; no values changed")
 with open(path, "w") as f:
     json.dump(r, f, separators=(",", ":"))
 print(path, "trait effects:", len(table))

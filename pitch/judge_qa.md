@@ -1,79 +1,94 @@
-# Judge Q&A: the 15 hardest questions, with crisp answers
+# Judge Q&A: the 15 hardest questions
 
-There are 2 minutes of Q&A in the live final. Answer in **one sentence, then one piece of proof**, and point at the screen where possible. The judge profiles behind these come from `research/06-rgc-team-linkedin.md`. **[ ]** = fill from today's run logs, or drop the number.
+The live final allows up to 2 minutes of Q&A. Give **one sentence, then one piece of proof (a file or a screen)**. Judge profiles come from `research/06-rgc-team-linkedin.md`. **REAL** = a TypeSafe Jev run log. **MOCK** = the rule-based demo engine. Never quote MOCK numbers.
+
+Main REAL file: `data/sim/runs/run_20261003_120823_s11_jev_4482.json` (300 shoppers, `jev-1.13.0`, 19,992 product passes, 0 errors). Below it is called **run 4482**.
 
 ---
 
-### Adam Williams (co-founder): incrementality, buyers, "GPT wrapper"
+### Adam Williams (co-founder): GPT wrappers, incrementality, buyers
 
 **1. "Isn't this just a GPT wrapper with a 3D skin?"**
-No. The LLM never decides whether a product gets seen. A deterministic, literature-calibrated notice model does that first (eye level vs floor ≈ +39% sales; facings elasticity 0.17), and most products never reach the LLM. The LLM only reads real OFF label fields for products that were noticed. Its output is tagged to a coded mechanism and checked against real Shelf votes. Adam's own line was "proprietary data creation, systems built to replace labour". What we produce is a new dataset of walk-pasts that EPOS can't see.
+No. Code decides what gets noticed, using a literature-calibrated logit (`sim/notice.py`, coefficients and sources in `sim/coefficients.json`). Jev never writes prose; it returns typed, calibrated probabilities to a few dozen narrow questions per shelf. For example, agent a006 at slot U1-r1 got 33 questions in one request, then 29 more after the back of pack was revealed. The "why" is assembled from the triggers that fired, with p values and the Reddit verbatim behind them. Proof: any event in run 4482 stores the full Choice distribution, P(pick-up), the appeal levels and the trigger Nouls (`events[].jev`).
 
-**2. "A buyer only cares about incrementality. Where does the volume come from?"**
-Every pick in the log records what the shopper *would otherwise* have taken from the same slot set (the challenger, the incumbent, own-label, or nothing), so the optimiser reports lift split into *new-to-slot picks* and *switches from named SKUs*. That split is the start of the "what happens to my category if I say yes" slide. It is simulated, so we show it as a hypothesis with a CI, not as EPOS.
-*(Only say this if the optimiser output includes source-of-volume. Otherwise say: "We report pick lift per segment today. Source-of-volume is the next field, because the event log already holds the counterfactual set.")*
+**2. "Buyers only care about incrementality. Where does the volume come from?"**
+Each slot decision is one Jev Choice over the products the shopper noticed, plus "walk past". So every take records what it beat, and every put-back records what was taken instead. Example: run 4482, agent a006 put back Gut Lovin' Soda and took Remedy Kombucha. We have **not** aggregated that into a source-of-volume report yet. The counterfactual set is in every event; the buyer-ready rollup is the next build.
 
-**3. "Buyers don't trust brand-funded evidence. Why would they trust this?"**
-Because they can audit it. Click any number and it opens the agent, slot, notice factors, fields read, reason, mechanism and source. RGC's careers page says "a number that cannot be traced back to its source is worse than no number at all", and we built to that rule. The optimiser also can't cheat: it only allows slot, facings, a true claim already on the label, or price.
+**3. "Buyers don't trust brand-funded evidence. Why trust this?"**
+Because they can audit it, and we publish our nulls. Click any number to see the shopper, slot, notice terms, Jev distribution, trigger and source. Two results did *not* work:
+- Route cards: +0.002 [0.000, +0.004] basket completion, which is not a lift (`data/sim/visits/RESULTS.md`).
+- The best legal pack claim on Raspberry Probiotic Soda moved P(pick-up) by +0.018, below our 0.02 noise floor (`data/sim/brand/pack_test/5060494810665.md`).
 
 **4. "Tesco and Waitrose shoppers differ. Does this?"**
-Yes, structurally. Missions, archetype mix and channel are parameters, and the store layout is a config file. So a Waitrose-skewed archetype mix versus an Express meal-deal mix is a re-run, not a rebuild. We haven't calibrated retailer-specific mixes today, and we say so.
+Structurally, yes. Store formats are config files (`data/store/formats/{express,metro,superstore}.config.json`, and `sim/run.py --store-format`), and the persona mix and missions are parameters. We have **not** calibrated a retailer-specific shopper mix, and we say so.
 
-### David Cook (co-founder): EPOS, buyers deciding on other people's evidence
+### David Cook (co-founder): EPOS, evidence
 
-**5. "EPOS is the best data in retail. Why should anyone believe a sim over sales?"**
-We don't replace EPOS. We cover what your own blog says it can't see: "the ranges you did not run, the prices you did not test, or the shoppers who walked past without buying". When EPOS exists, it becomes the calibration target, exactly as we used The Shelf today.
+**5. "EPOS is the best data in retail. Why believe a sim over sales?"**
+We don't ask you to. We model the part EPOS can't see: the look, the pick-up and the put-back. Where sales exist, they are the benchmark. Each brand page shows our in-category take rank next to the NielsenIQ rank (as published by The Grocer and Talking Retail) for the 42 of 96 products that match (`data/sim/brand/index.json → niq_rank`, `data/sales/uk_bestsellers.csv`). We have not computed a formal rank correlation, so don't claim one.
 
 **6. "How do you know the sim is right?"**
-We checked it against [n] real people at The Shelf today: rank correlation ρ = [rho], segment errors are shown next to their n, and the sim was more positive than humans ([sim] vs [human]). We correct that with a doubly robust (AIPW) estimator. Tigre & Souto (arXiv 2609.13148) report 83–94% bias reduction on consumer pricing with 50–300 real responses. Our 80/20 holdout today: error [a]pp → [b]pp.
-*If the votes didn't land: "We built the harness and ran it end-to-end; we won't quote a fit we haven't measured."*
+We don't yet, and we won't pretend. The Shelf-vote calibration harness is built (`calibration/`: Bradley–Terry shares, Spearman/Kendall, per-segment error, AIPW correction), but only fake `DEMO_*` outputs exist. Today we have internal checks only:
+- the notice model reproduces published shelf effects by construction (eye vs floor +39% sales, facings elasticity 0.17; `sim/README.md`);
+- `data/sim/layout/summary.json → runlog_check` compares the surrogate against run logs per persona.
 
-**7. "Star ratings are shallow. What's deeper here?"**
-The why, not the score: each decision carries a mechanism (habit, trust, price anchor, gimmick reactance, loss aversion), grounded in coded Reddit comments. For example, *"Since when did people need to be told that meat is protein?"* (r/AskUK, [thread](https://www.reddit.com/comments/1oqtnv1)) grounds protein-gimmick reactance. It's the "what they nearly bought and why not" layer, which RGC's voice memos capture for real.
+**7. "What's the non-obvious finding?"**
+Once noticed, challengers are picked up as often as incumbents, 34.6% vs 33.9%, but only 48.0% of challenger pick-ups are kept, against 54.2% for incumbents and 67.3% for own-label (run 4482, Wilson CIs in `pitch/submission.md`). For 20 of 40 challengers, the biggest leak is the put-back (`data/sim/brand/index.json → leak_stage == "keep"`). Challengers lose in the hand, and EPOS is blind to that.
 
-### Sophie Yau (product and growth lead): taste, speed of trends, context
+### Sophie Yau (product & growth): taste, trends, context
 
-**8. "Trends move fast. How quickly can this test a new one?"**
-Add the SKUs from OFF by barcode, drop them into a slot in the config, and re-run. That's minutes, not the weeks a virtual-store study takes (£20–60k each, README). New Reddit or forum signals become new mechanism weights, each with its source, so the shopper model updates as fast as the culture feed does.
+**8. "Trends move fast. How quickly can you test a new product?"**
+Paste a Tesco link or a barcode. `sim/tesco.py` reads that single page, and Open Food Facts supplies the rest by barcode. Put it in a slot and 150 shoppers plus the AI arm run on it (`sim/uploads.py`, ＋ add product in the app). Compute cost is about $3.20 per 1,000 Jev shoppers (`sim/README.md`, measured).
 
 **9. "Where's the taste? Anyone can run agents."**
-The taste is in what we refused to do. No made-up numbers: a sourced number or nothing. No adversarial copy: honest edits only. No asking an LLM whether it likes a product before deciding whether it would even be seen. We also chose to measure the shopper nobody models yet, the AI agent.
+The taste is in what we refused to do:
+- no number without a source;
+- no LLM deciding what gets *seen*;
+- no adversarial copy, only true Reg 1924/2006 claims computed from OFF;
+- a "mock engine, not evidence" badge on every demo run (`web/src/ui/engineBadge.tsx`).
 
-**10. "You said Claude has no retail context. How is this different?"**
-The context is the product. Real OFF label fields, a real shelf position, a persona built from UK shopper verbatims, and a mission and budget. The model is told what is on the pack and where it sits, and it can walk past.
+**10. "Claude and GPT have no retail context. How is this different?"**
+The context is in the data, not the model. Each shopper gets real OFF label fields turned into words (UK traffic lights, "about 2x the cheapest here", NOVA), a real shelf position, a mission, a budget, and put-offs taken from UK shopper verbatims. Jev never sees a raw number it would have to do maths on (`sim/README.md`, "engine: TypeSafe Jev").
 
 ### Ege Kemal Karaca (AI engineer): grounding
 
 **11. "Synthetic shoppers are only as good as the data underneath. What's underneath yours?"**
-Four layers, each one inspectable:
-1. 10,642 Reddit comments from 133 threads, coded into eight mechanisms with counts and verbatims;
-2. shelf-effect literature for noticing;
-3. OCEAN → food-behaviour links, applied only where a citation exists;
-4. Open Food Facts fields for every product attribute.
+- 10,642 Reddit comments from 133 threads, coded into 15 themes and 8 human truths (`data/reddit/`, `research/03-reddit-human-truths.md`);
+- shelf-effect papers;
+- OCEAN → food-behaviour links with citations (`data/personas/ocean/*.json`);
+- Open Food Facts fields.
 
-We agree with your blog: the grounding matters more than the simulation. That's why the calibration harness ships with it.
+Every persona field is tagged with its evidence class. Across the 12 lens personas, a mean 38.9% of fields are Reddit-sourced and **28.4% are still assumptions** (range 20.6–33.7%). The 13 staged dossiers are 53% assumption (`data/provenance/personas/index.json`). The dashboard prints that meter on every persona.
 
-**12. "Isn't OCEAN pop-psych? And LLMs role-playing personality is shaky."**
-Traits are *modifiers* on grounded personas, not the model. Each trait effect has a coefficient and a citation, visible on hover. We also collected real TIPI scores (Gosling 2003, 10 items) from the room, so we can compare the OCEAN we assumed against the OCEAN of real people. Room means only.
+**12. "OCEAN is pop-psych, and LLM role-play of personality is shaky."**
+OCEAN only adjusts what each shopper notices, and only through effects that cite a source. Each term is logged per event (`notice_factors.trait_terms` → `data/personas/ocean/O.json`, etc.). Personality reaches Jev only as behaviour phrases for extreme traits (≥ 0.65 or ≤ 0.35), not as a number it role-plays.
 
-### Oriol Morros Vilaseca (full-stack / AI engineer): does it actually work?
+### Oriol Morros Vilaseca (full-stack / AI): does it work?
 
-**13. "Is anything here live, or is it a pre-rendered video?"**
-The runs are real logs, replayed in 3D. We can kick off a live re-run on stage. The agent arm calls real models through OpenRouter on a randomised product feed (ACES-style) and logs the same event shape as the human arm. Responses are cached, so re-runs are reproducible and cheap.
+**13. "Is anything here live?"**
+The REAL runs are cached Jev logs, replayed in 3D with every distribution stored. Re-running them is $0 and gives identical results. Live runs work through `sim/server.py`. Honest caveat: our TypeSafe credits ran out (HTTP 402) during the 12:36 visits run. Since then:
+- new runs are mock, or fall back to OpenRouter's `typesafe/jev-router`;
+- the app badges that fallback as "LLM, uncalibrated";
+- `run_20261003_125423_s909_jev_5c63.json` is one of these despite its filename.
+
+The superstore crowd in the video is MOCK, and it is badged.
 
 **14. "What breaks first at scale?"**
-Mostly the cost of LLM reads. It scales with *noticed* products, roughly $1.5–18 per 1,000 shoppers depending on model at today's OpenRouter prices (see `pitch/submission.md`). Next comes run-to-run variance between models. ACES shows position bias flipping between model versions, so we report across several models with CIs rather than trusting one.
+1. The Jev token rate limit (100k tok/s). 1,000 shoppers take about 13 minutes (`sim/README.md`). Cost is not the bottleneck: $0.87 for 300 shoppers, and all of today's Jev spend was $2.69 over 19,580 calls (`data/sim/cost_log.jsonl`).
+2. Prices: 85 of 96 are curator assumptions (`data/sim/swaps/claim_premium.md`), so revenue-based outputs such as the layout optimiser's £ lift need a real price feed.
+3. Calibration against real shoppers (Q6).
 
-### Gianni Austin (B2B growth / GTM): the story
+### Gianni Austin (B2B growth): the story
 
-**15. "In one sentence: who pays, and for what?"**
-A challenger brand pays to walk into a buyer meeting with traced evidence: who walks past their SKU, why, which honest change fixes it, and how AI shopping agents see it. Anchors are the £999 Retail Report add-on and digital-shelf tools at around £10–50k a year (README). For RGC it's an eighth dimension, "agent", that none of the seven covers.
+**15. "One sentence: who pays, and for what?"**
+A challenger brand pays to walk into a buyer meeting knowing *where* shoppers drop its product (look, pick-up or put-back), *why* (the trigger, its p value and the verbatim), and which honest fix to test. A retailer pays for HFSS-safe layout what-ifs. Price anchors are the £999 Watch Humans Retail Report add-on and virtual-store studies at £20–60k each. Both are market references from `README.md` "who pays", not our pricing.
 
 ---
 
-## Grenades: answers to keep in your pocket
+## Grenades (one-liners)
 
-- **"RGC already shipped Buyer Agent and Signal Twins."** Yes, and they don't have a shelf, a walk-past or an AI-agent shopper arm. This is the grounding and space layer underneath them, plus a calibration harness that gives them a per-segment trust score.
-- **"n = 50 builders isn't a panel."** Agreed. It's a topline sanity check, and we report it as one. The AIPW correction is built to take RGC's real voice-memo or EPOS data at n = 50–300.
-- **"Your personas scored 5–6.5/10 on realism."** That's our own skeptic audit (research/05 §6), and we published it. It's why walk-pasts come from the notice gate and corpus rules, not from the LLM's judgement.
-- **"Is gaming AI agents ethical?"** We only allow true facts. If a field is missing from the feed and the product genuinely has 6 g of fibre, filling it in is honesty, not gaming.
+- **"RGC already shipped Buyer Agent and Signal Twins."** Those have no shelf, no notice gate, no put-back stage and no per-number trace. This is the grounding layer they could sit on.
+- **"Your AI-agent arm is tiny."** Agreed: 80 Jev feeds and 80 per OpenRouter model. The position-bias result is solid (GPT-4.1-mini 13/80 at slot 1, Gemini Flash 10/76, against 3.5% chance; Jev 2/80; `data/sim/runs/agent_*.json`). Per-product human-vs-agent divergences are not, and the dashboard greys categories with fewer than 10 agent picks.
+- **"Claim-marketed products cost more. So what?"** Of UK OFF products with no fibre claim, 22% already qualify for "high fibre" (6,865 of 30,621; `data/sim/swaps/claim_premium.md`). That is a free, honest claim the brand isn't using.
+- **"Checkout routing cut waits from 25.5 s to 8.4 s?"** That is a discrete-event model, and its self-checkout acceptance is a **labelled fallback table**, because Jev was out of credits (`data/sim/ops/RESULTS.md`). Treat it as a hypothesis, not evidence.
+- **"Is gaming AI agents ethical?"** We only fill in true facts. A missing fibre value that legally qualifies is honesty, not gaming.
