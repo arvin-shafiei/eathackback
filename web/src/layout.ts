@@ -13,6 +13,7 @@
 // without it (standard, xl) get departments derived from unit categories.
 // Gondola aisles: a walkway lined by two gondola faces; unit side 'L' = the face on the walkway's -x side.
 import type { StoreConfig, Planogram, Unit, Agent, SimEvent } from './types';
+import { techFloor, type TechFloor } from './techFloor';
 
 export const G = {
   spacing: 7.0, // gondola centre-to-centre (assumption: visual only, widened 3 Oct so crowds spread: ~6m walkway + 1m gondola)
@@ -167,6 +168,15 @@ export interface StorePlan {
   /** obstacles the shopper router walks around (unexpanded) */
   obstacles: Rect[];
   lobbyZ: number;
+  /** tech corner + seasonal decor on free floor (big stores only; visual, its rects are already in obstacles) */
+  tech?: TechFloor | null;
+}
+
+/** add the tech / decor floor to a finished plan and register its solid pieces with the router */
+function withTech(p: StorePlan) {
+  p.tech = techFloor(p);
+  if (p.tech) p.obstacles.push(...p.tech.rects);
+  return p;
 }
 
 const plans = new WeakMap<StoreConfig, StorePlan>();
@@ -522,7 +532,7 @@ export function storePlan(cfg: StoreConfig): StorePlan {
   const dp = dataPlan(cfg);
   if (dp) {
     UNIT_LEN.clear(); for (const [id, u] of Object.entries(dp.units)) UNIT_LEN.set(id, u.len);
-    plans.set(cfg, dp);
+    plans.set(cfg, withTech(dp));
     return dp;
   }
   const x = cfg as StoreConfig & AnyRec;
@@ -872,7 +882,7 @@ export function storePlan(cfg: StoreConfig): StorePlan {
     streetDir: 1, units, walkways, depts, gondolas, blocks, cols, produce: { rect: produceRect, tables: ptables, flowers }, dividers, bank, goodsIn, obstacles, lobbyZ, promo: { zones: promoZones, pallets },
   };
   UNIT_LEN.clear(); for (const [id, u] of Object.entries(units)) UNIT_LEN.set(id, u.len);
-  plans.set(cfg, plan);
+  plans.set(cfg, withTech(plan));
   return plan;
 }
 
