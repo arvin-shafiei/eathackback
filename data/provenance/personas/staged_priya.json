@@ -407,7 +407,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.17; shared=['claims', 'high', 'protei'])",
+     "method": "inferred:keyword_overlap(jaccard=0.18; shared=['claims', 'high', 'protei'])",
      "theme": "protein_gimmick",
      "coded_section": "rejection_triggers",
      "coded_text": "'Protein' or 'High in Protein' claims on foods that are inherently protein (chicken, eggs, tuna), which reads as insulting."
@@ -429,10 +429,10 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.21; shared=['label', 'own', 'price', 'well'])",
-     "theme": "own_brand_vs_branded",
-     "coded_section": "surprising",
-     "coded_text": "Own label is sometimes cited as healthier (less sugar and salt), giving it a health angle as well as a price one."
+     "method": "inferred:keyword_overlap(jaccard=0.16; shared=['above', 'price', 'unit'])",
+     "theme": "small_brand_listing",
+     "coded_section": "rejection_triggers",
+     "coded_text": "Unit price far above the category's price per ounce (an $83/lb salt, or local small-batch costs in a price-sensitive store)."
     }
    ],
    "classes": [
@@ -471,7 +471,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.19; shared=['back', 'sent', 'substi'])",
+     "method": "inferred:keyword_overlap(jaccard=0.20; shared=['back', 'sent', 'substi'])",
      "theme": "own_brand_vs_branded",
      "coded_section": "rejection_triggers",
      "coded_text": "Unwanted online substitutions (one shopper sent back a branded Colman's sub; Ocado praised for 'no bloody substitutes')"
@@ -513,7 +513,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.23; shared=['ingred', 'pack', 'short'])",
+     "method": "inferred:keyword_overlap(jaccard=0.27; shared=['ingred', 'pack', 'short'])",
      "theme": "trust_unknown_brand",
      "coded_section": "trust_builders",
      "coded_text": "Short, clean ingredient lists that people can check on pack."
@@ -554,24 +554,18 @@
    "value": "The kids' own taste test and repeat requests",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['kids', 'own', 'reques'])",
-     "theme": "trust_unknown_brand",
-     "coded_section": "mechanism",
-     "coded_text": "Proxy / household veto (buying for others with stricter preferences). Pets, partners and kids veto switching. A cat refusing generic food or a husband requesting Heinz overrides the buyer's own willingness to trade down.",
-     "url": "https://www.reddit.com/comments/1jns9wh",
-     "subreddit": "AskReddit",
-     "score": 72,
-     "verbatim": "My cat would just plain starve to death if I got generic."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "The kids' own taste test and repeat requests"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[3]",
@@ -581,7 +575,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.22; shared=['again', 'alread', 'buy', 'habit'])",
+     "method": "inferred:keyword_overlap(jaccard=0.20; shared=['again', 'alread', 'habit'])",
      "theme": "buy_it_again_repeat",
      "coded_section": "surprising",
      "coded_text": "Power users already filter the Instacart buy-it-again tab by items on sale, combining habit and deal-seeking in one view."
@@ -623,7 +617,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.24; shared=['brand', 'label', 'own', 'retail'])",
+     "method": "inferred:keyword_overlap(jaccard=0.20; shared=['brand', 'label', 'retail'])",
      "theme": "delisted",
      "coded_section": "trust_builders",
      "coded_text": "Own label that beats the brand on taste ('Aldi hobnobs really are better than McVities'), which builds loyalty to the retailer."
@@ -685,7 +679,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.17; shared=['again', 'buy', 'repeat', 'under', 'weekly'])",
+     "method": "inferred:keyword_overlap(jaccard=0.15; shared=['again', 'repeat', 'under', 'weekly'])",
      "theme": "buy_it_again_repeat",
      "coded_section": "surprising",
      "coded_text": "The data is noisy for this theme: under 5% of comments mention buy-it-again directly. Most repeat behaviour shows up as lists, meal plans and fixed weekly baskets, not as use of the retailer feature."
@@ -706,20 +700,18 @@
    "value": "Healthy lunchbox x 10 (two kids, five days): a snack bar or bake, a fruit item and a dairy item that 'isn't UPF' and that the kids will actually eat",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['actual', 'fruit', 'health'])",
-     "theme": "meal_deal",
-     "coded_section": "say_vs_do_gaps",
-     "coded_text": "Health-defensive commenters say the deal 'can be healthy' (salad, fruit, water), but the combos people actually report are all-day breakfast, pasty, Monster or Red Bull, and crisps."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Healthy lunchbox x 10 (two kids, five days): a snack bar or bake, a fruit item and a dairy item that 'isn't UPF' and that the kids will actually eat"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[2]",
@@ -728,20 +720,18 @@
    "value": "After-school snack that 'isn't junk' (her stated criteria: low sugar, short ingredient list, no sweeteners)",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['ingred', 'list', 'short'])",
-     "theme": "delisted",
-     "coded_section": "trust_builders",
-     "coded_text": "A clean, short ingredient list and a differentiated base (almond vs coconut or soya) as proof of quality ('the one vegan yoghurt that isn't pumped full of artificial rubbish')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "After-school snack that 'isn't junk' (her stated criteria: low sugar, short ingredient list, no sweeteners)"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[3]",
@@ -792,20 +782,18 @@
    "value": "Delegated basket rebuild: asks an in-app assistant or ChatGPT to 'make this week's shop healthier' or 'plan lunchboxes', then accepts most of what it adds",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['app', 'basket', 'plan'])",
-     "theme": "chatgpt_shopping",
-     "coded_section": "channel_differences",
-     "coded_text": "AI agent: used for new or variable missions (weekly meal plan, a weekend's food, diet or macro targets, sale-driven planning). Rejected for routine repeat baskets, where app reorder is faster."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Delegated basket rebuild: asks an in-app assistant or ChatGPT to 'make this week's shop healthier' or 'plan lunchboxes', then accepts most of what it adds"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "says_vs_does",
@@ -1087,20 +1075,20 @@
   "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
   "pct": {
    "reddit": 16.7,
-   "reddit_inferred": 31.0,
+   "reddit_inferred": 21.4,
    "paper": 0.8,
    "off_field": 0.0,
    "sales_data": 0.0,
    "staged_persona": 0.0,
    "web_other": 7.9,
    "internal_research": 11.5,
-   "assumption": 32.1
+   "assumption": 41.7
   },
   "headline": {
-   "reddit": 47.7,
+   "reddit": 38.1,
    "paper": 0.8,
    "off_field": 0.0,
-   "assumption": 32.1,
+   "assumption": 41.7,
    "other (sales, staged, web, internal)": 19.4
   },
   "n_fields": 42,
@@ -1108,18 +1096,23 @@
    "reddit": 8,
    "paper": 1,
    "web_other": 2,
-   "reddit_inferred": 13,
-   "assumption": 9,
+   "reddit_inferred": 9,
+   "assumption": 13,
    "internal_research": 9
   },
   "pct_fields_with_any": {
    "reddit": 19.0,
-   "reddit_inferred": 31.0,
+   "reddit_inferred": 21.4,
    "paper": 2.4,
    "web_other": 11.9,
    "internal_research": 23.8,
-   "assumption": 42.9
+   "assumption": 52.4
   },
-  "pct_fields_with_any_assumption": 42.9
+  "pct_fields_with_any_assumption": 52.4,
+  "lens_fields_measured_by_off_field": {
+   "n": 0,
+   "of": 0,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
  }
 }

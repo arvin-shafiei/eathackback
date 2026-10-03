@@ -167,6 +167,9 @@ FAMILIES = [
       "recommend", "underdog"]),
     ("ai_agent", "AI-agent delegation and agent trust",
      ["chatgpt", "rufus", "ai ", "agent", "assistant", "hallucinat", "llm", "alexa"]),
+    ("self_control", "Self-control, precommitment and temporal discounting",
+     ["precommitment", "self-control", "self control", "cooling-off", "temporal discounting", "restriction-rebound",
+      "all-or-nothing", "self-binding", "sunk-cost", "hype regret", "trying new then going back"]),
     ("choice_architecture", "Choice architecture, visibility and availability",
      ["choice architecture", "shelf", "placement", "eye level", "eye-level", "layout", "choice overload",
       "availability", "visib", "position", "aisle", "notice"]),
@@ -174,12 +177,32 @@ FAMILIES = [
 FAM_LABEL = {k: lbl for k, lbl, _ in FAMILIES}
 
 
-def family_of(text: str, name_only=False):
-    """Return (family_key, matched_keyword, hits) by keyword count; ties broken by FAMILIES order."""
+def _kw_pos(t: str, k: str) -> int:
+    k = k.strip()
+    if len(k) <= 4:  # short keywords need whole-word match ('con' must not hit 'control')
+        m = re.search(r"\b" + re.escape(k) + r"\b", t)
+        return m.start() if m else -1
+    return t.find(k)
+
+
+def family_of(text: str):
+    """Return (family_key, matched_keyword, hits).
+    Rule 1: in the lead phrase (text before the first '('), the family whose keyword appears EARLIEST wins
+            (coders put the mechanism name first).
+    Rule 2: otherwise the family with the most keyword hits over the full text; ties -> FAMILIES order."""
     t = " " + (text or "").lower() + " "
+    head = t.split("(")[0]
+    best = (None, None, 10 ** 9)
+    for key, _lbl, kws in FAMILIES:
+        for k in kws:
+            pos = _kw_pos(head, k)
+            if pos >= 0 and pos < best[2]:
+                best = (key, k, pos)
+    if best[0]:
+        return best[0], best[1], 1
     best = (None, None, 0)
     for key, _lbl, kws in FAMILIES:
-        hits = [k for k in kws if (re.search(r"\b" + re.escape(k.strip()), t) if len(k.strip()) <= 4 else k in t)]
+        hits = [k for k in kws if _kw_pos(t, k) >= 0]
         if len(hits) > best[2]:
             best = (key, hits[0], len(hits))
     return best
@@ -236,7 +259,8 @@ for m in coded_mechs:
 STOP = set("""a an the and or of to in on for with is are was be it its this that as at by from not no but if
 they them their she he her his i we you our your so do does did than then very more most less just only into out
 up about over can will would should could have has had been being which who what when where how all any some one
-two three per vs via also e g eg etc s t don doesn isn""".split())
+two three per vs via also e g eg etc s t don doesn isn buy own get like make product products food item items
+well actual really thing things people shop shopper shoppers""".split())
 
 
 def toks(s):
@@ -258,7 +282,7 @@ def infer_from_corpus(text: str):
         j = len(inter) / len(tt | st)
         if j > bs:
             best, bs = (sn, inter), j
-    if not best or bs < 0.08:
+    if not best or bs < 0.14:
         return None
     sn, inter = best
     ref = {"class": "reddit_inferred", "method": f"inferred:keyword_overlap(jaccard={bs:.2f}; shared={sorted(inter)[:6]})",
@@ -334,7 +358,7 @@ def classify_source(text: str, verbatims_by_url=None, field_hint=""):
             if not ref:
                 if th:
                     ref = {"url": th["url"], "thread_id": rid, "subreddit": th["subreddit"], "theme": th["theme"],
-                           "score": th["post_score"], "thread_title": th["title"],
+                           "score": th["post_score"], "score_is": "post_score(thread)", "thread_title": th["title"],
                            "verbatim": words25(cands[0]) if cands else None,
                            "verified_in_corpus": False,
                            "method": "url_match(thread_only; quote not located)" if cands else "url_match(thread_only)"}
@@ -367,10 +391,15 @@ def classify_source(text: str, verbatims_by_url=None, field_hint=""):
                 got = True
                 out.append({"class": "paper", "method": "text:citation_pattern", "citation": words25(seg, 40),
                             "url": ("https://doi.org/" + m.group(1)) if m else None})
-        if SALES_RE.search(seg):
+        sm = SALES_RE.search(seg)
+        if sm:
             got = True
-            out.append({"class": "sales_data", "method": f"keyword:'{SALES_RE.search(seg).group(0)}'",
-                        "citation": words25(seg, 40)})
+            if re.search(r"\d\s*%|£\s*\d|\d+(\.\d+)?\s*(m|bn)\b|share|sales|yoy|growth|\+\d", seg, re.I):
+                out.append({"class": "sales_data", "method": f"keyword:'{sm.group(0)}'+figure",
+                            "citation": words25(seg, 40)})
+            else:  # e.g. a quote from The Grocer with no figure = trade press, not sales data
+                out.append({"class": "web_other", "method": f"trade_press:'{sm.group(0)}'(no figure)",
+                            "citation": words25(seg, 40)})
         if OFF_RE.search(seg) and not any("openfoodfacts" in u for u in urls):
             got = True
             out.append({"class": "off_field", "method": "keyword:'OFF'", "citation": words25(seg, 40)})
@@ -584,6 +613,11 @@ staged = json.load(open(P("data/personas/staged_personas_v1.json"), encoding="ut
 personas += [build_staged_persona(i, p) for i, p in enumerate(staged)]
 for pp in personas:
     pp["evidence_mix"] = evidence_mix(pp["fields"])
+    lens_f = [f for f in pp["fields"] if f["field"].startswith("lens.") and f["field"] != "lens._weights"]
+    pp["evidence_mix"]["lens_fields_measured_by_off_field"] = {
+        "n": sum(1 for f in lens_f if f.get("measured_by_off_field")), "of": len(lens_f),
+        "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is "
+                "what it is, so it is reported here and not counted in the mix unless the source text cites OFF"}
 
 # --------------------------------------------------------------------------------------
 # graph
@@ -658,7 +692,8 @@ SRC_NODES = {
 for pp in personas:
     pn = node(f"persona:{pp['persona_id']}", "persona", f"{pp.get('name')} ({pp['persona_id']})", 0,
               kind=pp["kind"], evidence_mix=pp["evidence_mix"]["headline"])
-    inflow = defaultdict(lambda: {"value": 0, "ev": [], "methods": Counter(), "fields": []})
+    inflow = defaultdict(lambda: {"value": 0, "ev": [], "methods": Counter(), "fields": [], "themes": Counter(),
+                                  "threads": set()})
     for f in pp["fields"]:
         aid = f"attr:{pp['persona_id']}:{f['field']}"
         node(aid, "attribute", f["label"], 1, kind=f["kind"], primary_class=f["primary_class"], persona=pp["persona_id"])
@@ -675,7 +710,7 @@ for pp in personas:
                 th = next((s.get("theme") for s in reddit_srcs if s.get("theme")), None)
                 cands = [(a["value"], fam_) for (tk, fam_), a in agg.items() if tk == th]
                 fam = max(cands)[1] if cands else None
-                method = f"url_match->theme:{th}->top_mechanism" if fam else "unmapped"
+                method = f"url_match->theme:{th}->top_mechanism" if fam else "unattributed:reddit_source_without_theme_or_keyword"
             if reddit_srcs[0]["class"] == "reddit_inferred":
                 method = reddit_srcs[0]["method"].split("(")[0] + "+" + method
             elif any(s.get("thread_id") for s in reddit_srcs):
@@ -686,10 +721,12 @@ for pp in personas:
             method = best["method"] if best["class"] != "assumption" else "unattributed:" + best["method"]
         if src_node.startswith("src:"):
             node(src_node, "mechanism", SRC_NODES[src_node[4:]], 0, source_class=src_node[4:])
-        nodes[src_node]["count"] += 0
+        elif src_node not in nodes:
+            node(src_node, "mechanism", FAM_LABEL.get(src_node[5:], src_node[5:]), 0, family=src_node[5:])
         e = []
-        for s in f["sources"][:3]:
-            e.append({"verbatim": s.get("verbatim") or s.get("citation") or s.get("text") or s.get("coded_text"),
+        for s in sorted(f["sources"], key=lambda s: STRENGTH[s["class"]])[:3]:
+            e.append({"verbatim": s.get("verbatim") or s.get("citation") or s.get("text") or s.get("coded_text")
+                                  or (("thread title: " + words25(s["thread_title"], 20)) if s.get("thread_title") else None),
                       "url": s.get("url"), "class": s["class"], **({"score": s["score"]} if s.get("score") is not None else {}),
                       **({"subreddit": s["subreddit"]} if s.get("subreddit") else {})})
         e = [x for x in e if x["verbatim"]] or [{"verbatim": words25(str(f.get("value"))), "url": None,
@@ -702,14 +739,26 @@ for pp in personas:
         a["methods"][method] += 1
         a["fields"].append(f["field"])
         a["ev"] += e[:1]
+        for s_ in reddit_srcs:
+            if s_.get("theme"):
+                a["themes"][s_["theme"]] += 1
+            if s_.get("thread_id"):
+                a["threads"].add(s_["thread_id"])
     for src_node, a in inflow.items():
         ev = sorted(a["ev"], key=lambda v: -(v.get("score") or 0))[:4]
         links.append({"source": src_node, "target": pn, "value": a["value"], "value_unit": "attributes",
                       "method": "; ".join(f"{m} x{n}" for m, n in a["methods"].most_common()),
-                      "fields": a["fields"], "evidence": ev})
+                      "fields": a["fields"], "via_themes": dict(a["themes"]),
+                      "via_thread_ids": sorted(a["threads"]), "evidence": ev})
 
 for nid in [n for n in nodes if n.startswith("src:")]:
     nodes[nid]["count"] = sum(l["value"] for l in links if l["source"] == nid)
+
+for l in links:  # hard cap: graph evidence is <= 25 words
+    for e in l["evidence"]:
+        v = re.sub(r"\s*\.\.\.$", "", e["verbatim"] or "")
+        if len(v.split()) > 25:
+            e["verbatim"] = words25(v)
 
 graph = {
     "generated_by": "scripts/build_provenance.py",
@@ -837,6 +886,8 @@ for pp in personas:
 for l in links:
     if not l.get("method"):
         problems.append(f"link without method {l['source']}->{l['target']}")
+    if any(len(re.sub(r"\s*\.\.\.$", "", e.get("verbatim") or "").split()) > 25 for e in l.get("evidence") or []):
+        problems.append(f"evidence over 25 words {l['source']}->{l['target']}")
     if not l.get("evidence") or not all(e.get("verbatim") for e in l["evidence"]):
         problems.append(f"link without evidence {l['source']}->{l['target']}")
     if l["source"] not in nodes or l["target"] not in nodes:

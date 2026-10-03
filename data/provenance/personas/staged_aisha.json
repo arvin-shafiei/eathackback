@@ -24,7 +24,7 @@
     },
     {
      "class": "sales_data",
-     "method": "keyword:'market share'",
+     "method": "keyword:'market share'+figure",
      "citation": "\"Model updates can drastically reshuffle market shares.\" (ACES audit, https://arxiv.org/abs/2508.02630, via research/02-issue-discovery.md)"
     },
     {
@@ -506,7 +506,7 @@
    "sources": [
     {
      "class": "sales_data",
-     "method": "keyword:'market share'",
+     "method": "keyword:'market share'+figure",
      "citation": "Divergence claims based on n=50 non-representative tasters presented as absolute market share rather than relative, same-SKU divergence"
     }
    ],
@@ -526,7 +526,7 @@
    "sources": [
     {
      "class": "sales_data",
-     "method": "keyword:'EPOS'",
+     "method": "keyword:'EPOS'+figure",
      "citation": "Requirements to share raw EPOS or customer-level data before seeing value"
     }
    ],
@@ -625,20 +625,18 @@
    "value": "A Kendall tau across models and versions showing which brands' share depends on one model, i.e. model-update risk",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['depend', 'model', 'versio'])",
-     "theme": "chatgpt_shopping",
-     "coded_section": "say_vs_do_gaps",
-     "coded_text": "Users report that ChatGPT 'looks at this week's ad'. Others with the same prompts get only estimates or generic lists, so perceived accuracy depends partly on the user and the model version ('switched to 4o and it worked fine')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A Kendall tau across models and versions showing which brands' share depends on one model, i.e. model-update risk"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[3]",
@@ -647,20 +645,18 @@
    "value": "A live 'honest fix' re-run: fill a true missing field (review count, fibre claim, price per 100g), then show predicted vs observed agent-share change",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['honest', 'review', 'show'])",
-     "theme": "tried_new_went_back",
-     "coded_section": "say_vs_do_gaps",
-     "coded_text": "Shark owner: 'I hated it but couldn't admit it to my wife so we suffered with it for 3 years'. Dissatisfaction does not show up as switching or as honest reviews while sunk cost and self-image are at stake."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A live 'honest fix' re-run: fill a true missing field (review count, fibre claim, price per 100g), then show predicted vs observed agent-share change"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[4]",
@@ -689,18 +685,18 @@
    "value": "Output phrased in her decision units: per-SKU breakthrough threshold, effect on rate of sale per facing, keep/cut implication at the range review",
    "sources": [
     {
-     "class": "sales_data",
-     "method": "keyword:'rate of sale'",
+     "class": "web_other",
+     "method": "trade_press:'rate of sale'(no figure)",
      "citation": "Output phrased in her decision units: per-SKU breakthrough threshold, effect on rate of sale per facing, keep/cut implication at the range review"
     }
    ],
    "classes": [
-    "sales_data"
+    "web_other"
    ],
    "class_share": {
-    "sales_data": 1.0
+    "web_other": 1.0
    },
-   "primary_class": "sales_data"
+   "primary_class": "web_other"
   },
   {
    "field": "trust_signals[6]",
@@ -769,20 +765,18 @@
    "value": "Decide how to price sponsored search slots when a growing share of 'shoppers' are agents that penalise the Sponsored tag and don't share humans' position bias: reprice by position, by badge or endorsement, or by agent-share outcome?",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['price', 'share', 'shoppe'])",
-     "theme": "tried_new_went_back",
-     "coded_section": "say_vs_do_gaps",
-     "coded_text": "Partner conflict in r/adhdwomen: the cheapest-price shopper (the husband) and the habit or brand shopper share one basket. Household purchase data hides two very different decision rules."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Decide how to price sponsored search slots when a growing share of 'shoppers' are agents that penalise the Sponsored tag and don't share humans' position bias: reprice by position, by ..."
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[1]",
@@ -791,20 +785,18 @@
    "value": "Decide which challengers keep space at the next range review, knowing a taste-winning challenger with thin structured data may be getting 0% of agent-built baskets",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['agent', 'data', 'thin'])",
-     "theme": "trust_unknown_brand",
-     "coded_section": "channel_differences",
-     "coded_text": "The data is thin. Nearly all of it is in-store grocery own-label discussion, and there is no AI-agent shopping content in this corpus."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Decide which challengers keep space at the next range review, knowing a taste-winning challenger with thin structured data may be getting 0% of agent-built baskets"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[2]",
@@ -833,20 +825,18 @@
    "value": "Set a supplier product-data standard (reviews, claims, price per 100g, attributes) as the honest lever that makes challengers agent-readable",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['makes', 'produc', 'suppli'])",
-     "theme": "buyer_meeting",
-     "coded_section": "rejection_triggers",
-     "coded_text": "A buyer who sees the supplier's operations and then passes, followed by a private-label copy (Spanx), which makes suppliers refuse to show future products."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Set a supplier product-data standard (reviews, claims, price per 100g, attributes) as the honest lever that makes challengers agent-readable"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[4]",
@@ -902,18 +892,18 @@
      "verified_in_corpus": false
     },
     {
-     "class": "sales_data",
-     "method": "keyword:'rate of sale'",
+     "class": "web_other",
+     "method": "trade_press:'rate of sale'(no figure)",
      "citation": "SAYS: Ocado is the home for challengers (Ocado Roots, often a challenger's first or last listing). Range diversity is a strategic differentiator, and she wants the online shelf to be 'agent-ready'. DOES: she prunes on rate of sale per facing ..."
     }
    ],
    "classes": [
     "reddit",
-    "sales_data"
+    "web_other"
    ],
    "class_share": {
     "reddit": 0.5,
-    "sales_data": 0.5
+    "web_other": 0.5
    },
    "primary_class": "reddit"
   },
@@ -1181,41 +1171,44 @@
   "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
   "pct": {
    "reddit": 22.8,
-   "reddit_inferred": 10.9,
+   "reddit_inferred": 0.0,
    "paper": 1.6,
    "off_field": 0.0,
-   "sales_data": 8.2,
+   "sales_data": 4.9,
    "staged_persona": 0.0,
-   "web_other": 0.7,
-   "internal_research": 12.1,
-   "assumption": 43.7
+   "web_other": 4.0,
+   "internal_research": 12.2,
+   "assumption": 54.5
   },
   "headline": {
-   "reddit": 33.7,
+   "reddit": 22.8,
    "paper": 1.6,
    "off_field": 0.0,
-   "assumption": 43.7,
-   "other (sales, staged, web, internal)": 21.0
+   "assumption": 54.5,
+   "other (sales, staged, web, internal)": 21.1
   },
   "n_fields": 46,
   "fields_by_primary_class": {
    "paper": 1,
    "reddit": 12,
-   "web_other": 1,
-   "assumption": 15,
-   "sales_data": 3,
-   "reddit_inferred": 5,
+   "web_other": 2,
+   "assumption": 20,
+   "sales_data": 2,
    "internal_research": 9
   },
   "pct_fields_with_any": {
    "reddit": 26.1,
-   "reddit_inferred": 10.9,
    "paper": 4.3,
-   "sales_data": 10.9,
-   "web_other": 2.2,
+   "sales_data": 6.5,
+   "web_other": 6.5,
    "internal_research": 26.1,
-   "assumption": 56.5
+   "assumption": 67.4
   },
-  "pct_fields_with_any_assumption": 56.5
+  "pct_fields_with_any_assumption": 67.4,
+  "lens_fields_measured_by_off_field": {
+   "n": 0,
+   "of": 0,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
  }
 }

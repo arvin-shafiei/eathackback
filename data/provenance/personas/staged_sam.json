@@ -51,7 +51,7 @@
    "sources": [
     {
      "class": "sales_data",
-     "method": "keyword:'Worldpanel'",
+     "method": "keyword:'Worldpanel'+figure",
      "citation": "Worldpanel by Numerator (11,500+ households): GLP-1 households 2.3% -> 4.1% -> 6.3%"
     },
     {
@@ -524,7 +524,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.20; shared=['added', 'bloati', 'gas', 'protei'])",
+     "method": "inferred:keyword_overlap(jaccard=0.21; shared=['added', 'bloati', 'gas', 'protei'])",
      "theme": "protein_gimmick",
      "coded_section": "rejection_triggers",
      "coded_text": "Digestive side-effects such as gas and bloating from added protein concentrates."
@@ -546,7 +546,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.26; shared=['100g', '147g', 'like', 'pack', 'size'])",
+     "method": "inferred:keyword_overlap(jaccard=0.22; shared=['100g', '147g', 'pack', 'size'])",
      "theme": "protein_gimmick",
      "coded_section": "rejection_triggers",
      "coded_text": "Serving-size manipulation and odd pack weights ('x per 100g and the pack is like 147g')."
@@ -568,7 +568,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['brandi', 'label', 'price'])",
+     "method": "inferred:keyword_overlap(jaccard=0.17; shared=['brandi', 'label', 'price'])",
      "theme": "tried_new_went_back",
      "coded_section": "say_vs_do_gaps",
      "coded_text": "Shoppers condemn own-label renames as meaningless, but admit that if you have to buy the range, the branding makes little difference. Only the price change counts."
@@ -673,20 +673,18 @@
    "value": "'No sweeteners' or 'no added sugar' stated, and confirmed by a short, recognisable ingredient list",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.13; shared=['ingred', 'list', 'short'])",
-     "theme": "delisted",
-     "coded_section": "trust_builders",
-     "coded_text": "A clean, short ingredient list and a differentiated base (almond vs coconut or soya) as proof of quality ('the one vegan yoghurt that isn't pumped full of artificial rubbish')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "'No sweeteners' or 'no added sugar' stated, and confirmed by a short, recognisable ingredient list"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[2]",
@@ -737,20 +735,18 @@
    "value": "Single-serve or snack-size packs that are 'the right size'",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['packs', 'right', 'size'])",
-     "theme": "shrinkflation_switch",
-     "coded_section": "surprising",
-     "coded_text": "Some welcome smaller portions as a health aid ('it's the right size for me'). One former overeater says shrinking packs helped, and an industry insider describes aeration and moisture as the next stage of reformulation."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Single-serve or snack-size packs that are 'the right size'"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[5]",
@@ -760,7 +756,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.20; shared=['100g', 'kcal', 'protei', 'ratio'])",
+     "method": "inferred:keyword_overlap(jaccard=0.21; shared=['100g', 'kcal', 'protei', 'ratio'])",
      "theme": "protein_gimmick",
      "coded_section": "trust_builders",
      "coded_text": "Passing the ratio test (10 kcal or fewer per gram of protein), stated per pack and per 100g."
@@ -781,24 +777,18 @@
    "value": "Fibre that comes from the food itself (oats, seeds, pulses), not 'added fibre' fizzy drinks ('the fiber they put in soda isn't the same as eating fibrous foods')",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['added', 'drinks', 'fibre', 'same'])",
-     "theme": "protein_gimmick",
-     "coded_section": "mechanism",
-     "coded_text": "Fad-cycle expectation (fibre as the anticipated next claim). People expect protein to fade the way previous fads did and nominate fibre as the more legitimate 'next' claim. Some are already buying added-fibre drinks, although others say added fibre gets the ...",
-     "url": "https://www.reddit.com/comments/1tbf6zw",
-     "subreddit": "AskBrits",
-     "score": 32,
-     "verbatim": "I am 100% confident fibre-added foods will be next year's fad."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Fibre that comes from the food itself (oats, seeds, pulses), not 'added fibre' fizzy drinks ('the fiber they put in soda isn't the same as eating fibrous foods')"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[7]",
@@ -889,20 +879,18 @@
    "value": "Get fibre in without volume: add fibre to a shrunken diet (oats, beans, seeded crackers, kefir) because 'trying to do it on a calorie deficit is also a proper struggle'",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['beans', 'becaus', 'oats'])",
-     "theme": "say_do_healthy",
-     "coded_section": "trust_builders",
-     "coded_text": "Long-life healthy staples (cabbage, carrots, beans, oats) work because they cut the waste risk"
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Get fibre in without volume: add fibre to a shrunken diet (oats, beans, seeded crackers, kefir) because 'trying to do it on a calorie deficit is also a proper struggle'"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[2]",
@@ -911,20 +899,18 @@
    "value": "Single-portion treat: a small dessert or yoghurt that is NOT a 'protein' variant ('I didn't want to buy a big tub, just a nice single serving one. And I couldn't find one that didn't have added protein')",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['protei', 'servin', 'small'])",
-     "theme": "protein_gimmick",
-     "coded_section": "rejection_triggers",
-     "coded_text": "Small protein claims such as 'source of protein' at 4 to 6g per serving ('100% of the time it translates to has basically no protein')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Single-portion treat: a small dessert or yoghurt that is NOT a 'protein' variant ('I didn't want to buy a big tub, just a nice single serving one. And I couldn't ..."
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[3]",
@@ -933,20 +919,18 @@
    "value": "Meal-deal lunch where Sam will only manage half: pick a main plus a protein-pot snack and skip the full-sugar drink",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['deal', 'lunch', 'meal', 'protei'])",
-     "theme": "meal_deal",
-     "coded_section": "say_vs_do_gaps",
-     "coded_text": "UKFrugal commenters say meal deals are 'burning money' and home-made is far cheaper, while the meal-deal-positive threads say making it yourself 'isn't as cheap as you'd hope' once time, waste and protein items are counted. Cost-of-home-lunch claims are inconsistent."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Meal-deal lunch where Sam will only manage half: pick a main plus a protein-pot snack and skip the full-sugar drink"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[4]",
@@ -955,20 +939,18 @@
    "value": "Prune the weekly online favourites: drop crisps, chocolate and share bags from the Tesco/Ocado buy-it-again list and replace them with plain Greek yoghurt, eggs, cooked chicken pieces and tinned fish",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['chicke', 'chocol', 'greek', 'replac', 'yoghur'])",
-     "theme": "shrinkflation_switch",
-     "coded_section": "rejection_triggers",
-     "coded_text": "Recipe downgrades labelled 'NEW Recipe': palm oil, waxy chocolate, more water in ketchup, salad cream or Greek yoghurt, sauce sachets replacing chicken weight, hollow breaded chicken."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Prune the weekly online favourites: drop crisps, chocolate and share bags from the Tesco/Ocado buy-it-again list and replace them with plain Greek yoghurt, eggs, cooked chicken pieces and tinned fish"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[5]",
@@ -977,20 +959,18 @@
    "value": "Delegate a search to an AI assistant: 'high-protein snack, no sweeteners, gut-friendly, small portion'. Then check what it returns against the back of the pack before buying",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['assist', 'return', 'search'])",
-     "theme": "tried_new_went_back",
-     "coded_section": "channel_differences",
-     "coded_text": "No AI-agent or AI-shopping-assistant discussion appears in this corpus. The closest equivalent is the search or locator box in the app ('a simple search box that returns an isle number')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Delegate a search to an AI assistant: 'high-protein snack, no sweeteners, gut-friendly, small portion'. Then check what it returns against the back of the pack before buying"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[6]",
@@ -999,20 +979,18 @@
    "value": "Gut-settling mission on bad jab days: plain, bland, small (broth, bread, plain yoghurt) and nothing with added protein powder",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['powder', 'protei', 'yoghur'])",
-     "theme": "protein_gimmick",
-     "coded_section": "rejection_triggers",
-     "coded_text": "Chalky or plasticine texture, or protein-powder off-taste, in bars, Mars and Snickers variants, yoghurt and ready meals."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Gut-settling mission on bad jab days: plain, bland, small (broth, bread, plain yoghurt) and nothing with added protein powder"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "says_vs_does",
@@ -1029,7 +1007,7 @@
     },
     {
      "class": "sales_data",
-     "method": "keyword:'Worldpanel'",
+     "method": "keyword:'Worldpanel'+figure",
      "citation": "SAYS: Sam is sceptical of the protein fad and calls it gimmicky marketing aimed at 'skinny jabbers' money'. Sam says they read labels, buy real food, want small portions and fibre, and don't need protein-branded products. DOES: Sam still buys ..."
     }
    ],
@@ -1306,20 +1284,20 @@
   "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
   "pct": {
    "reddit": 16.5,
-   "reddit_inferred": 38.3,
+   "reddit_inferred": 19.1,
    "paper": 0.5,
    "off_field": 0.0,
    "sales_data": 1.8,
    "staged_persona": 0.0,
    "web_other": 10.8,
    "internal_research": 9.6,
-   "assumption": 22.5
+   "assumption": 41.7
   },
   "headline": {
-   "reddit": 54.8,
+   "reddit": 35.6,
    "paper": 0.5,
    "off_field": 0.0,
-   "assumption": 22.5,
+   "assumption": 41.7,
    "other (sales, staged, web, internal)": 22.2
   },
   "n_fields": 47,
@@ -1327,19 +1305,24 @@
    "reddit": 11,
    "sales_data": 1,
    "web_other": 3,
-   "reddit_inferred": 18,
-   "assumption": 5,
+   "reddit_inferred": 9,
+   "assumption": 14,
    "internal_research": 9
   },
   "pct_fields_with_any": {
    "reddit": 23.4,
-   "reddit_inferred": 38.3,
+   "reddit_inferred": 19.1,
    "paper": 2.1,
    "sales_data": 4.3,
    "web_other": 17.0,
    "internal_research": 19.1,
-   "assumption": 36.2
+   "assumption": 55.3
   },
-  "pct_fields_with_any_assumption": 36.2
+  "pct_fields_with_any_assumption": 55.3,
+  "lens_fields_measured_by_off_field": {
+   "n": 0,
+   "of": 0,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
  }
 }

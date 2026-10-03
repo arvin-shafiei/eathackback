@@ -89,8 +89,8 @@
      "url": null
     },
     {
-     "class": "sales_data",
-     "method": "keyword:'Kantar'",
+     "class": "web_other",
+     "method": "trade_press:'Kantar'(no figure)",
      "citation": "Kantar 2026: \"If an agent can't parse you, it can't choose you.\" (https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026)"
     },
     {
@@ -103,13 +103,11 @@
    "principle": "Structured-data and feed reliance: the agent picks what its feed can parse, so a thin or missing feed means invisibility",
    "classes": [
     "paper",
-    "sales_data",
     "web_other"
    ],
    "class_share": {
-    "paper": 0.3333,
-    "sales_data": 0.3333,
-    "web_other": 0.3333
+    "paper": 0.5,
+    "web_other": 0.5
    },
    "primary_class": "paper"
   },
@@ -220,7 +218,7 @@
    "sources": [
     {
      "class": "sales_data",
-     "method": "keyword:'market share'",
+     "method": "keyword:'market share'+figure",
      "citation": "\"Model updates can drastically reshuffle market shares.\" (ACES)"
     },
     {
@@ -335,7 +333,7 @@
     },
     {
      "class": "sales_data",
-     "method": "keyword:'market share'",
+     "method": "keyword:'market share'+figure",
      "citation": "\"simple, query-conditional description tweaks can drive significant gains in market share\" (ACES, https://arxiv.org/abs/2508.02630)"
     },
     {
@@ -448,20 +446,18 @@
    "value": "Low review count or no rating (e.g. 11 reviews vs incumbent's thousands): loses on the tie-break, because a +0.075-star edge flips the choice",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.13; shared=['rating', 'review', 'star'])",
-     "theme": "online_favourites_lockin",
-     "coded_section": "trust_builders",
-     "coded_text": "Reading 1-3 star reviews and the newest reviews, and photo reviews; people trust mid-star and negative reviews more than the average rating."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Low review count or no rating (e.g. 11 reviews vs incumbent's thousands): loses on the tie-break, because a +0.075-star edge flips the choice"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "rejection_triggers[3]",
@@ -516,24 +512,18 @@
    "value": "Combined basket price over £4.00: a hard filter with no trade-off reasoning",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['hard', 'off', 'price'])",
-     "theme": "say_do_healthy",
-     "coded_section": "mechanism",
-     "coded_text": "Attribution bias / moral licensing of the 'excuse' (fundamental attribution error). Better-off or diet-successful commenters call cost an excuse and the cause laziness, or say 'it's a priority'. Others push back hard, calling this poor-shaming. Some former junk eaters admit ...",
-     "url": "https://www.reddit.com/comments/1l225m",
-     "subreddit": "Fitness",
-     "score": 2,
-     "verbatim": "Like I said, excuses from lazy people."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Combined basket price over £4.00: a hard filter with no trade-off reasoning"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "rejection_triggers[6]",
@@ -562,20 +552,18 @@
    "value": "Not a trigger, which is the point: the agent never rejects on taste, sweetener aftertaste, quark texture or 'gimmick protein'. Those are human rejection triggers it cannot see.",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['protei', 'taste', 'textur'])",
-     "theme": "protein_gimmick",
-     "coded_section": "rejection_triggers",
-     "coded_text": "Chalky or plasticine texture, or protein-powder off-taste, in bars, Mars and Snickers variants, yoghurt and ready meals."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Not a trigger, which is the point: the agent never rejects on taste, sweetener aftertaste, quark texture or 'gimmick protein'. Those are human rejection triggers it cannot see."
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[0]",
@@ -585,7 +573,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['rating', 'review', 'star'])",
+     "method": "inferred:keyword_overlap(jaccard=0.15; shared=['rating', 'review', 'star'])",
      "theme": "online_favourites_lockin",
      "coded_section": "trust_builders",
      "coded_text": "Reading 1-3 star reviews and the newest reviews, and photo reviews; people trust mid-star and negative reviews more than the average rating."
@@ -626,24 +614,18 @@
    "value": "Complete, consistent structured feed: title, price, price per 100g or 100ml, full nutrition, claims and allergens all filled in",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['claims', 'consis', 'price'])",
-     "theme": "trust_unknown_brand",
-     "coded_section": "mechanism",
-     "coded_text": "Cheap talk vs costly signal (stated transparency is not trusted without a remedy). When a small brand claims 'we admit mistakes', readers discount it. They want concrete compensation, price fairness and consistent delivery.",
-     "url": "https://www.reddit.com/comments/1lidcyl",
-     "subreddit": "pokhara",
-     "score": 4,
-     "verbatim": "Just admitting you are not perfect doesn't do much imo."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Complete, consistent structured feed: title, price, price per 100g or 100ml, full nutrition, claims and allergens all filled in"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[3]",
@@ -652,20 +634,18 @@
    "value": "Front-of-pack claim text that matches the prompt wording ('0g sugar', 'prebiotic', 'high protein', 'high fibre'), read at face value",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['high', 'protei', 'sugar'])",
-     "theme": "protein_gimmick",
-     "coded_section": "rejection_triggers",
-     "coded_text": "A poor protein-to-calorie ratio: more than 10 kcal per gram of protein, or protein added to calorie-dense desserts and bars with high sugar."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Front-of-pack claim text that matches the prompt wording ('0g sugar', 'prebiotic', 'high protein', 'high fibre'), read at face value"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[4]",
@@ -740,24 +720,18 @@
    "value": "Two-slot work basket: 'healthy-ish fizzy drink + snack for work under £4' (the seed mission)",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['basket', 'drink', 'slot', 'snack', 'work'])",
-     "theme": "meal_deal",
-     "coded_section": "mechanism",
-     "coded_text": "Anchoring on inflated reference prices / transaction utility (maximise the 'saving' by picking the highest-RRP item). Pick the most expensive drink or snack in each slot (Innocent smoothie, large Red Bull/Monster, coconut water, Ginsters pasty), work out what the basket ...",
-     "url": "https://www.reddit.com/comments/1bc79kh",
-     "subreddit": "CasualUK",
-     "score": 3,
-     "verbatim": "I have a giant can of Redbull collection in the office, I don't even drink redbull but at £3 a can I'm absolutely getting it ..."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Two-slot work basket: 'healthy-ish fizzy drink + snack for work under £4' (the seed mission)"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[1]",
@@ -786,24 +760,18 @@
    "value": "Single-shot answer: return one confident basket with a short justification, never 'none of these'",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['justif', 'never', 'single'])",
-     "theme": "meal_deal",
-     "coded_section": "mechanism",
-     "coded_text": "Bundling as a low-risk trial route for premium SKUs they would never buy alone. They use the deal to try premium smoothies, shakes and sandwiches whose single price they 'can't justify'. Without the bundle they would not buy the item ...",
-     "url": "https://www.reddit.com/comments/1d3amm2",
-     "subreddit": "AskUK",
-     "score": 2,
-     "verbatim": "I like the fancy smoothies and fruit juices but can't justify them as single item purchases. (AskUK)"
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Single-shot answer: return one confident basket with a short justification, never 'none of these'"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[3]",
@@ -832,20 +800,18 @@
    "value": "Mission-to-need-state mapping: answer 'the gut-healthy one' or 'the high-protein one' by matching claim text rather than category",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['catego', 'health', 'protei'])",
-     "theme": "say_do_healthy",
-     "coded_section": "rejection_triggers",
-     "coded_text": "'Healthy' premium price (organic, protein bars, healthy fast-food salads), which makes people reject the whole healthy category"
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Mission-to-need-state mapping: answer 'the gut-healthy one' or 'the high-protein one' by matching claim text rather than category"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "says_vs_does",
@@ -1134,41 +1100,46 @@
  "evidence_mix": {
   "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
   "pct": {
-   "reddit": 15.0,
-   "reddit_inferred": 22.0,
-   "paper": 8.1,
+   "reddit": 15.1,
+   "reddit_inferred": 2.4,
+   "paper": 8.5,
    "off_field": 0.0,
-   "sales_data": 2.4,
+   "sales_data": 1.6,
    "staged_persona": 0.0,
-   "web_other": 2.9,
+   "web_other": 3.3,
    "internal_research": 13.8,
-   "assumption": 35.8
+   "assumption": 55.3
   },
   "headline": {
-   "reddit": 37.0,
-   "paper": 8.1,
+   "reddit": 17.5,
+   "paper": 8.5,
    "off_field": 0.0,
-   "assumption": 35.8,
-   "other (sales, staged, web, internal)": 19.1
+   "assumption": 55.3,
+   "other (sales, staged, web, internal)": 18.7
   },
   "n_fields": 41,
   "fields_by_primary_class": {
    "paper": 5,
    "reddit": 8,
    "sales_data": 1,
-   "assumption": 9,
-   "reddit_inferred": 9,
+   "assumption": 17,
+   "reddit_inferred": 1,
    "internal_research": 9
   },
   "pct_fields_with_any": {
    "reddit": 19.5,
-   "reddit_inferred": 22.0,
+   "reddit_inferred": 2.4,
    "paper": 17.1,
-   "sales_data": 7.3,
+   "sales_data": 4.9,
    "web_other": 7.3,
    "internal_research": 29.3,
-   "assumption": 51.2
+   "assumption": 70.7
   },
-  "pct_fields_with_any_assumption": 51.2
+  "pct_fields_with_any_assumption": 70.7,
+  "lens_fields_measured_by_off_field": {
+   "n": 0,
+   "of": 0,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
  }
 }

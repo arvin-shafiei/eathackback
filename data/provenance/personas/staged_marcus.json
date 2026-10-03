@@ -40,12 +40,12 @@
    "sources": [
     {
      "class": "sales_data",
-     "method": "keyword:'IRI'",
+     "method": "keyword:'IRI'+figure",
      "citation": "IRI, 3,000+ UK launches: '10% of all new products were pulled in their first year, lasting an average of 32 weeks'"
     },
     {
-     "class": "sales_data",
-     "method": "keyword:'rate of sale'",
+     "class": "web_other",
+     "method": "trade_press:'rate of sale'(no figure)",
      "citation": "'Products with SRI below 40 begin delisting after 36 weeks'. Also: Little Dish 'started as a trial in twenty Waitrose stores, and the challenge was whether a short shelf-life product could meet the rate of sale and wastage targets needed ..."
     },
     {
@@ -57,11 +57,13 @@
    "principle": "The rate-of-sale cliff: a short, unforgiving trial window, so every week of the 40-store test feels existential",
    "classes": [
     "sales_data",
+    "web_other",
     "internal_research"
    ],
    "class_share": {
-    "sales_data": 0.5,
-    "internal_research": 0.5
+    "sales_data": 0.3333,
+    "web_other": 0.3333,
+    "internal_research": 0.3333
    },
    "primary_class": "sales_data"
   },
@@ -100,7 +102,7 @@
     },
     {
      "class": "sales_data",
-     "method": "keyword:'Kantar'",
+     "method": "keyword:'Kantar'+figure",
      "citation": "Kantar 2026: \"If an agent can't parse you, it can't choose you.\" Incumbent Advantage paper: at identical specs incumbents are recommended 100% of the time"
     },
     {
@@ -121,7 +123,7 @@
     },
     {
      "class": "sales_data",
-     "method": "keyword:'kantar'",
+     "method": "keyword:'kantar'+figure",
      "citation": "brand identity accounts for only 1.2%.' (research/02-issue-discovery.md, kantarretailiq.com, arxiv.org/html/2606.17443v1)"
     },
     {
@@ -425,20 +427,18 @@
    "value": "Black-box 'agent visibility scores' with no traceable source or controlled experiment behind them (RGC: 'A number that cannot be traced back to its source is worse than no number at all')",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['agent', 'box', 'number'])",
-     "theme": "tried_new_went_back",
-     "coded_section": "channel_differences",
-     "coded_text": "No AI-agent or AI-shopping-assistant discussion appears in this corpus. The closest equivalent is the search or locator box in the app ('a simple search box that returns an isle number')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Black-box 'agent visibility scores' with no traceable source or controlled experiment behind them (RGC: 'A number that cannot be traced back to its source is worse than no number at ..."
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "rejection_triggers[1]",
@@ -447,20 +447,18 @@
    "value": "Vendor or agency pitches for 'Rufus/ChatGPT optimisation' that read like an ad and show no before/after proof",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['optimi', 'read', 'rufus'])",
-     "theme": "rufus_ai_bias",
-     "coded_section": "surprising",
-     "coded_text": "Seller subreddits read most 'Rufus insight' posts as thinly disguised SaaS marketing. The AI-optimisation advice market itself is a trust problem."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Vendor or agency pitches for 'Rufus/ChatGPT optimisation' that read like an ad and show no before/after proof"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "rejection_triggers[2]",
@@ -469,20 +467,18 @@
    "value": "Any recommendation that amounts to gaming or prompt-injecting agents rather than filling true missing facts (brand-safety and buyer-trust risk)",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['brand', 'rather', 'trust'])",
-     "theme": "trust_unknown_brand",
-     "coded_section": "surprising",
-     "coded_text": "Blatant lookalike packaging is celebrated rather than resented in UK subs ('shamelessly blatant brand rip-offs'). Mimicry works as a trust shortcut, not a negative, and only one US poster framed it as unethical."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Any recommendation that amounts to gaming or prompt-injecting agents rather than filling true missing facts (brand-safety and buyer-trust risk)"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "rejection_triggers[3]",
@@ -571,24 +567,18 @@
    "value": "Single-run agent rankings ('you're #7 in ChatGPT'); he has seen rankings reshuffle and won't trust a point estimate",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['agent', 'point', 'seen'])",
-     "theme": "rufus_ai_bias",
-     "coded_section": "mechanism",
-     "coded_text": "Perceived self-interest of the agent: a conflicted adviser, seen as an ad in disguise. People read Rufus as working for Amazon and its advertisers, not for the shopper. They point to sponsored placements inside Rufus answers. One person built an ...",
-     "url": "https://www.reddit.com/comments/1rc3t5x",
-     "subreddit": "amazonemployees",
-     "score": 43,
-     "verbatim": "does not help me it often feels like yet another add, a sponsored recommendation"
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Single-run agent rankings ('you're #7 in ChatGPT'); he has seen rankings reshuffle and won't trust a point estimate"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "rejection_triggers[8]",
@@ -638,7 +628,7 @@
    "sources": [
     {
      "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.18; shared=['gap', 'label', 'own', 'taste'])",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['gap', 'label', 'taste'])",
      "theme": "chatgpt_shopping",
      "coded_section": "trust_builders",
      "coded_text": "Own label that matches or beats a named brand on taste, at a clear price gap"
@@ -699,20 +689,18 @@
    "value": "Peer founder evidence and named UK cases (Penrhos 85% on promo, Nush delisting, Invest NI £111k/SKU safeguarded)",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['delist', 'founde', 'nush'])",
-     "theme": "delisted",
-     "coded_section": "trust_builders",
-     "coded_text": "A founder or employee telling the delisting story honestly and personally (Nush OP): the community responded with stockist lists, trial purchases and wholesaler leads."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Peer founder evidence and named UK cases (Penrhos 85% on promo, Nush delisting, Invest NI £111k/SKU safeguarded)"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "trust_signals[5]",
@@ -781,20 +769,18 @@
    "value": "Clear the Tesco 40-store rate-of-sale bar before the week 12-14 review, and know store by store, early, whether he is on track or heading for the cut",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['before', 'clear', 'store'])",
-     "theme": "online_favourites_lockin",
-     "coded_section": "trust_builders",
-     "coded_text": "Clear fibre and composition labelling, plus filters to sort by cotton, linen or wool on local shops' websites, used before a store visit."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Clear the Tesco 40-store rate-of-sale bar before the week 12-14 review, and know store by store, early, whether he is on track or heading for the cut"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[1]",
@@ -823,20 +809,18 @@
    "value": "Get Gutsy Pop picked by AI shopping agents (Tesco in-app assistant, ChatGPT Shopping) for the missions it wins with humans ('healthy lunchbox drink', 'gut-friendly soda under £2'), using honest data fixes only",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['app', 'assist', 'shoppi'])",
-     "theme": "tried_new_went_back",
-     "coded_section": "channel_differences",
-     "coded_text": "No AI-agent or AI-shopping-assistant discussion appears in this corpus. The closest equivalent is the search or locator box in the app ('a simple search box that returns an isle number')."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Get Gutsy Pop picked by AI shopping agents (Tesco in-app assistant, ChatGPT Shopping) for the missions it wins with humans ('healthy lunchbox drink', 'gut-friendly soda under £2'), using honest data ..."
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[3]",
@@ -845,20 +829,18 @@
    "value": "Decide whether to accept the Clubcard Price and media ask, or counter-offer, with a payback case he can defend to the buyer and his investors",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['buyer', 'case', 'price'])",
-     "theme": "small_brand_listing",
-     "coded_section": "trust_builders",
-     "coded_text": "A tight buyer pitch: retail price, cost, the retailer's margin, shelf life, case pack and current weekly sales."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Decide whether to accept the Clubcard Price and media ask, or counter-offer, with a payback case he can defend to the buyer and his investors"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "missions[4]",
@@ -887,20 +869,18 @@
    "value": "Build a buyer-grade data pack (per-store ROS, source of volume, incrementality vs incumbents and own-label) to win national rollout instead of quoting TikTok views",
    "sources": [
     {
-     "class": "reddit_inferred",
-     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['data', 'label', 'own', 'store'])",
-     "theme": "trust_unknown_brand",
-     "coded_section": "channel_differences",
-     "coded_text": "The data is thin. Nearly all of it is in-store grocery own-label discussion, and there is no AI-agent shopping content in this corpus."
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Build a buyer-grade data pack (per-store ROS, source of volume, incrementality vs incumbents and own-label) to win national rollout instead of quoting TikTok views"
     }
    ],
    "classes": [
-    "reddit_inferred"
+    "assumption"
    ],
    "class_share": {
-    "reddit_inferred": 1.0
+    "assumption": 1.0
    },
-   "primary_class": "reddit_inferred"
+   "primary_class": "assumption"
   },
   {
    "field": "says_vs_does",
@@ -1184,21 +1164,21 @@
   "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
   "pct": {
    "reddit": 16.7,
-   "reddit_inferred": 22.2,
-   "paper": 0.5,
+   "reddit_inferred": 2.2,
+   "paper": 0.6,
    "off_field": 0.0,
-   "sales_data": 1.7,
+   "sales_data": 1.3,
    "staged_persona": 0.0,
-   "web_other": 0.0,
-   "internal_research": 16.1,
-   "assumption": 42.8
+   "web_other": 0.7,
+   "internal_research": 15.7,
+   "assumption": 62.8
   },
   "headline": {
-   "reddit": 38.9,
-   "paper": 0.5,
+   "reddit": 18.9,
+   "paper": 0.6,
    "off_field": 0.0,
-   "assumption": 42.8,
-   "other (sales, staged, web, internal)": 17.8
+   "assumption": 62.8,
+   "other (sales, staged, web, internal)": 17.7
   },
   "n_fields": 45,
   "fields_by_primary_class": {
@@ -1206,17 +1186,23 @@
    "sales_data": 1,
    "internal_research": 11,
    "paper": 1,
-   "reddit_inferred": 10,
-   "assumption": 14
+   "assumption": 23,
+   "reddit_inferred": 1
   },
   "pct_fields_with_any": {
    "reddit": 17.8,
-   "reddit_inferred": 22.2,
+   "reddit_inferred": 2.2,
    "paper": 2.2,
    "sales_data": 4.4,
+   "web_other": 2.2,
    "internal_research": 31.1,
-   "assumption": 55.6
+   "assumption": 75.6
   },
-  "pct_fields_with_any_assumption": 55.6
+  "pct_fields_with_any_assumption": 75.6,
+  "lens_fields_measured_by_off_field": {
+   "n": 0,
+   "of": 0,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
  }
 }
