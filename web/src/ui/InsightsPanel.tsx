@@ -48,10 +48,10 @@ export function InsightsPanel(props: InsightsProps) {
           <Story own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined}
             onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
           <BreakdownSection run={run} code={p.code} personas={personas} aiLoaded={sample.ai_loaded} />
-          <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
           <LostToSection run={run} code={p.code} products={products} aiLoaded={sample.ai_loaded} onPickProduct={onPickProduct} />
           <RejectSection run={run} code={p.code} personas={personas} onTrace={onTrace} />
           <NeighbourSection codes={slotProducts(planogram, slot)} me={p.code} slot={slot} human={human} products={products} onPickProduct={onPickProduct} />
+          <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
         </div>
       )}
       <div ref={placementRef} className="ins-placement">
