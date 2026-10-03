@@ -12,6 +12,7 @@ POST /api/placement/scan        {"product": "<code>", "planogram": <dict>, "agen
 POST /api/placement/experiment  {"product": "<code>", "planogram": <dict>, "placements": [{"slot","pos","facings"}], "agents": 60, "seeds": [1], "engine": "jev"}
 POST /api/rearrange/suggest   {"planogram": <dict>, "run_ids": [...], "objective": "picks|revenue", "max_swaps": 3}
 POST /api/rearrange/validate  {"before": <planogram>, "after": <planogram>, "agents": 150, "seeds": [11, 12], "engine": "jev"}
+POST /api/interview  {"run_id", "product", "agents": [ids], "question": "at £1.20?"} -> per-shopper Jev what-if (mode "evidence" = free record-only panel)
 POST /api/import     {"ref": "<tesco product link | barcode | open food facts link>"}  -> product draft
 /api/run, /api/agent_run, /api/optimise and /api/placement/* also take "products": [<brand-supplied product>, ...]
 (sim/uploads.py); /api/agent_run takes "exclude": [codes].
@@ -19,6 +20,8 @@ POST /api/customer/profile {"basket": [codes], "visits": [[codes]...], "declared
                             "planogram": <dict>, "engine": "code|jev"} -> persona guess, likes/avoids, habits, persona
 POST /api/customer/route   {"profile": <profile> | "basket": [...], "planogram": <dict>} -> next-visit card
 POST /api/customer/save    {"profile": <profile>} -> data/personas/customers/<id>.json
+GET  /api/trolley/sessions?run=<id>  smart-trolley sessions for a run (SIMULATED, sim/trolley.py), with summaries
+POST /api/trolley/profile  {"run": <id>, "loyalty_id": "LY-.." | "session_ids": [...], "declared": {...}} -> customer profile
 GET  /api/runs            list of runs (id, created, models, n_agents, cost)
 GET  /api/runs/<run_id>   full run json
 GET  /api/coefficients    notice-model coefficients with sources
@@ -275,6 +278,15 @@ class H(BaseHTTPRequestHandler):
                 except Exception:
                     continue
             return self._send(200, out)
+        # ---- smart trolleys (sim/trolley.py): what real tracked trolleys would record for a run (SIMULATED)
+        if path == "/api/trolley/sessions":
+            import trolley
+            from urllib.parse import parse_qs, urlparse
+            q = parse_qs(urlparse(self.path).query)
+            try:
+                return self._send(200, trolley.summaries((q.get("run") or [""])[0]))
+            except ValueError as e:
+                return self._send(400, {"error": str(e)[:500]})
         if path.startswith("/api/runs/"):
             rid = os.path.basename(path)
             fp = os.path.join(simrun.RUNS_DIR, rid + ".json")
@@ -289,6 +301,14 @@ class H(BaseHTTPRequestHandler):
             b = self._body()
             if path == "/api/personas":
                 return self._send(200, build_persona(b))
+            # ---- interview (sim/interview.py): what-if re-asks Jev per interviewee; evidence answers are client-side
+            if path == "/api/interview":
+                import interview
+                if b.get("mode") == "evidence":
+                    return self._send(200, interview.panel(str(b.get("run_id") or ""), str(b.get("product") or "")))
+                return self._send(200, interview.whatif(str(b.get("run_id") or ""), str(b.get("product") or ""),
+                                                        [str(x) for x in (b.get("agents") or [])][:8],
+                                                        str(b.get("question") or "")[:240]))
             # ---- customer service (sim/customer.py): profile a real shopper from their basket, then a next-visit card
             if path.startswith("/api/customer/"):
                 import customer
@@ -299,6 +319,12 @@ class H(BaseHTTPRequestHandler):
                         return self._send(200, customer.save(b))
                     if path == "/api/customer/route":
                         return self._send(200, customer.route_card(b))
+            # ---- smart trolleys: profile a shopper from trolley sessions (opt-in loyalty_id, or one anonymous trip)
+            if path == "/api/trolley/profile":
+                import trolley
+                run_store = trolley.store_variant(trolley.load_run(str(b.get("run") or "")))
+                with _store_for({"store": run_store}):
+                    return self._send(200, trolley.profile(b))
             with _store_for(b):
                 if path == "/api/run":
                     engine = "mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE)

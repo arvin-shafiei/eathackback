@@ -20,6 +20,7 @@ import { AddProductPanel } from './ui/AddProductPanel';
 import { InsightsPanel } from './ui/InsightsPanel';
 import { OwnerPanel } from './ui/OwnerPanel';
 import { CustomerPanel } from './ui/CustomerPanel';
+import { TrolleyPanel } from './ui/TrolleyPanel';
 import { RearrangePanel } from './ui/RearrangePanel';
 import { Select } from './ui/Select';
 import { aiGear, isAIArch, shopperLabel } from './ui/aiArch';
@@ -30,11 +31,11 @@ type Panel =
   | { kind: 'agent'; id: string }
   | { kind: 'trace'; agentId: string; step: number; back?: Panel }
   | null;
-type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange' | 'owner' | 'customer';
-const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange', owner: 'your store', customer: 'shoppers' };
+type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange' | 'owner' | 'customer' | 'trolleys';
+const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange', owner: 'your store', customer: 'shoppers', trolleys: 'smart trolleys' };
 /** the four things a brand does; the rest sit behind "options" */
-const MAIN_MODES: Mode[] = ['replay', 'insights', 'owner', 'customer', 'add', 'rearrange'];
-const ALL_MODES: Mode[] = ['replay', 'edit', 'add', 'insights', 'owner', 'customer', 'rearrange'];
+const MAIN_MODES: Mode[] = ['replay', 'insights', 'owner', 'customer', 'trolleys', 'add', 'rearrange'];
+const ALL_MODES: Mode[] = ['replay', 'edit', 'add', 'insights', 'owner', 'customer', 'trolleys', 'rearrange'];
 /** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
 const UPLOAD_AGENTS = 150;
 const UPLOAD_AI_RUNS = 3;
@@ -357,7 +358,7 @@ export default function App() {
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
-          editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={mode === 'customer' && routeSlots.length ? new Set(routeSlots) : changed}
+          editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={(mode === 'customer' || mode === 'trolleys') && routeSlots.length ? new Set(routeSlots) : changed}
           heat={heatMap} ownerHeat={mode === 'owner' && ownerHeat} ownerHeatMin={ownerHeatMin} ownerHeatLevel={ownerHeatLevel} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
           onIntroDone={() => setCam('overview')} onUserCamera={() => { if (cam === 'intro') { setCam('overview'); setCamNonce((n) => n + 1); } }}
         />
@@ -473,8 +474,12 @@ export default function App() {
           onApplyPlanogram={(p, label) => { setPreview(null); void simulate(p, run.catalog_inline ?? [], label); }} />
       )}
       {mode === 'customer' && (
-        <CustomerPanel planogram={basePlan} cfg={data.config} products={products} runAgents={run?.agents}
+        <CustomerPanel planogram={basePlan} cfg={data.config} products={products} runAgents={run?.agents} runId={run?.run_id}
           onClose={() => { setRouteSlots([]); setMode('replay'); }} onShowRoute={setRouteSlots} />
+      )}
+      {mode === 'trolleys' && (
+        <TrolleyPanel run={run} products={products} cfg={data.config}
+          onClose={() => { setRouteSlots([]); setMode('replay'); }} onShowPath={setRouteSlots} />
       )}
       {mode === 'owner' && (
         <OwnerPanel cfg={data.config} planogram={basePlan} products={products} timelines={timelines} run={view}

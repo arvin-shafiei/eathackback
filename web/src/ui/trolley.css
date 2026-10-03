@@ -1,0 +1,47 @@
+.card.trolley {
+  position: fixed; left: 16px; top: 116px; bottom: 16px; z-index: 21;
+  width: min(560px, calc(100vw - 32px));
+  overflow-y: auto; overflow-x: hidden; padding: 0; background: var(--cream);
+  animation: slidein 260ms cubic-bezier(.16, 1, .3, 1) both;
+}
+.trolley .tr-top { position: relative; padding: 20px 22px 16px; background: #fff; border-bottom: 2px solid var(--ink); border-radius: var(--r-card) var(--r-card) 0 0; }
+.trolley .tr-top h2 { font-size: 32px; padding-right: 44px; }
+.trolley .tr-sub { font-size: 13px; line-height: 1.5; margin: 4px 0 0; }
+.trolley .tr-sim { display: inline-block; margin: 8px 0 0; padding: 3px 10px; font-size: 11px; font-weight: 700; background: var(--yellow); border: 2px solid var(--ink); border-radius: 999px; }
+.trolley .tr-sim code { word-break: break-all; }
+.trolley .tr-board { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 18px 16px 20px; }
+.trolley .tr-tile { background: #fff; border: 2px solid var(--ink); border-radius: 20px; box-shadow: 0 4px 0 var(--ink); padding: 16px 18px; margin: 0; min-width: 0; }
+.trolley h3 { font-family: var(--display); font-weight: 800; font-size: 18px; margin: 0 0 10px; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.trolley h3 .muted { font-family: var(--body); font-weight: 600; font-size: 12px; }
+.trolley h4 { font-size: 12px; font-weight: 800; color: var(--muted); margin: 12px 0 4px; }
+.trolley .tr-small { font-size: 12px; line-height: 1.5; margin: 6px 0 0; }
+.trolley .tr-big { font-family: var(--display); font-size: 19px; margin: 0; }
+.trolley .tr-big b { font-size: 32px; color: var(--hot); }
+.trolley .tr-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.trolley .tr-chip { height: 28px; padding: 0 10px; background: #fff; border: 2px solid var(--ink); border-radius: 999px; font: inherit; font-size: 12px; cursor: pointer; }
+.trolley .tr-chip.on { background: var(--yellow); }
+.trolley .tr-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.trolley .tr-table th { text-align: left; color: var(--muted); font-weight: 800; padding: 4px 6px; border-bottom: 2px solid var(--line); }
+.trolley .tr-table td { padding: 5px 6px; border-bottom: 1px solid var(--line); }
+.trolley .tr-table tbody tr { cursor: pointer; }
+.trolley .tr-table tbody tr:hover, .trolley .tr-table tbody tr:focus { background: var(--surface-dim); outline: none; }
+.trolley .tr-out { color: var(--hot); font-weight: 800; }
+.trolley .tr-badge { display: inline-block; padding: 1px 8px; font-size: 11px; font-weight: 800; background: var(--yellow); border: 1.5px solid var(--ink); border-radius: 999px; white-space: nowrap; }
+.trolley .tr-btns { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+.trolley .tr-puts { margin: 10px 0; padding: 10px 12px; border: 2px solid var(--hot); border-radius: 14px; background: #fff4f2; }
+.trolley .tr-puts h4 { margin-top: 0; color: var(--hot); }
+.trolley .tr-puts ul { margin: 0; padding-left: 18px; font-size: 13px; }
+.trolley .tr-timeline { list-style: none; margin: 10px 0 0; padding: 0 0 0 12px; border-left: 3px solid var(--ink); }
+.trolley .tr-timeline > li { position: relative; padding: 6px 0 6px 10px; }
+.trolley .tr-timeline > li::before { content: ''; position: absolute; left: -20px; top: 11px; width: 11px; height: 11px; border-radius: 50%; background: var(--ink); border: 2px solid #fff; }
+.trolley .tr-timeline > li.tr-quiet::before { background: var(--line); border-color: var(--ink); }
+.trolley .tr-bay { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
+.trolley .tr-dwell { margin-left: auto; font-weight: 800; }
+.trolley .tr-t { font-size: 11px; min-width: 38px; text-align: right; }
+.trolley .tr-ev { list-style: none; margin: 2px 0 0; padding: 0; font-size: 12px; line-height: 1.6; }
+.trolley .ev-scan_out { color: var(--hot); font-weight: 700; }
+.trolley .tr-tag { font-size: 10px; padding: 0 6px; border: 1.5px solid var(--hot); border-radius: 999px; }
+.trolley .tr-how summary { cursor: pointer; font-weight: 800; }
+.trolley .tr-how ul { margin: 0; padding-left: 18px; font-size: 12px; line-height: 1.5; }
+.trolley .tr-how p { font-size: 12px; }
+.tr-import-btn { margin-top: 10px; }
