@@ -79,7 +79,7 @@ export function RearrangePanel(props: RearrangeProps) {
     const a = proposed && arrowFor(cfg, planogram, proposed, m, true);
     if (a) {
       const span = Math.hypot(a.to.x - a.from.x, a.to.y - a.from.y, a.to.z - a.from.z);
-      moveFx.flyTo({ x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2, z: (a.from.z + a.to.z) / 2, fx: a.fx, fz: a.fz, dist: 3.0 + span * 0.6 });
+      moveFx.flyTo({ x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2, z: (a.from.z + a.to.z) / 2, fx: a.fx, fz: a.fz, span });
     }
   };
 

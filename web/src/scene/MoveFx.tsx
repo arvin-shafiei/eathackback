@@ -4,7 +4,8 @@
 import * as THREE from 'three';
 import { sfx } from './fx';
 
-export interface FlyTarget { x: number; y: number; z: number; fx: number; fz: number; dist?: number }
+/** span = length of what must fit on screen (m); when set, the camera backs off far enough to frame it */
+export interface FlyTarget { x: number; y: number; z: number; fx: number; fz: number; dist?: number; span?: number }
 export interface MoveArrow { from: THREE.Vector3Like; to: THREE.Vector3Like; fx: number; fz: number; main: boolean }
 
 /** the panel <-> scene channel (module level, like fx.bus): replay the last move, fly the camera to a unit */

@@ -413,7 +413,11 @@ function planFlights(prev: Rec[], next: Rec[], camPos: THREE.Vector3): Flight[] 
 const _fp = new THREE.Vector3(), _fq = new THREE.Quaternion(), _fs = new THREE.Vector3(), _fspin = new THREE.Quaternion(), _fm = new THREE.Matrix4();
 /** matrix of one flying pack at local time k (seconds since its own start) */
 /** furthest the panel's camera fly steps back from a shelf face, metres (assumption: visual, under half a walkway) */
-const FLY_MAX_BACK = 3.6;
+const FLY_MAX_BACK = 5.0;
+/** share of the screen width the arrow should fill (assumption: visual, leaves room for the side panel) */
+const FLY_FILL = 0.6;
+/** closest the camera fly gets to a shelf face, metres (assumption: visual, shows a whole bay plus its neighbours) */
+const FLY_MIN_BACK = 3.8;
 
 function flyMatrix(f: Flight, a: Pose, b: Pose, k: number): THREE.Matrix4 {
   if (k <= 0) return _fm.compose(a.p, a.q, a.s);
@@ -626,12 +630,17 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
       flyNonce.current = moveFx.flyNonce;
       // stay inside the walkway: never step back further than FLY_MAX_BACK (walkways are ~5-6 m, layout.ts G.spacing / wallWalk);
       // a wider shot (long arrow) climbs higher instead of backing into the opposite shelves
-      const q = moveFx.fly, want = q.dist ?? 2.6, back = Math.min(want, FLY_MAX_BACK);
+      const q = moveFx.fly;
+      // auto zoom: distance at which `span` fills FLY_FILL of the visible width (the panel covers the rest), from the camera's fov
+      const pc = camera as THREE.PerspectiveCamera;
+      const halfW = Math.tan(THREE.MathUtils.degToRad((pc.fov ?? 50) / 2)) * (pc.aspect ?? 1.6);
+      const want = q.span != null ? Math.max(FLY_MIN_BACK, (q.span / 2 + 0.6) / (halfW * FLY_FILL)) : q.dist ?? 2.6;
+      const back = Math.min(want, FLY_MAX_BACK);
       const tgt = new THREE.Vector3(q.x, q.y, q.z);
       const pos = tgt.clone().add(new THREE.Vector3(q.fx, 0, q.fz).normalize().multiplyScalar(back));
-      pos.y = Math.min(3.6, Math.max(1.5, q.y + 0.5 + (want - back) * 0.6));
+      pos.y = Math.min(6, Math.max(1.5, q.y + 0.5 + (want - back) * 0.9));
       // the rearrange panel covers the right of the screen: slide the shot right so the arrow sits in the open part
-      const right = new THREE.Vector3().subVectors(tgt, pos).setY(0).normalize().cross(new THREE.Vector3(0, 1, 0)).multiplyScalar(back * 0.14);
+      const right = new THREE.Vector3().subVectors(tgt, pos).setY(0).normalize().cross(new THREE.Vector3(0, 1, 0)).multiplyScalar(back * 0.12);
       pos.add(right); tgt.add(right);
       fly.current = { nonce: moveFx.flyNonce, t0: now, pos, tgt };
     }
