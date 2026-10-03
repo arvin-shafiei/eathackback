@@ -10,12 +10,13 @@
 import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
 import type { Product, StoreConfig } from '../types';
 import { storePlan } from '../layout';
 import { productMaterials, canvasTex } from './textures';
-import { ARM_GEO, BODY_GEO, EYE_GEO, INK_MAT, INKM, Person, PUPIL_GEO, WHITE, WetFloor, type OpsLive, type Walker } from './Staff';
-import { INK } from '../theme';
+import { INKM, Person, WetFloor, type OpsLive, type Walker } from './Staff';
+import { Diners, type D, type Phase, type XZ } from './cafe/Diners';
+import { TextSprite } from './cafe/TextSprite';
+import { getActiveOpsDay } from '../ops';
 import { sfx } from './fx';
 import { onCrowd } from './crowdBus';
 import { buildMenu, orderLine, type MenuItem } from './cafe/menu';
@@ -24,13 +25,6 @@ import {
   CLEAN_DRY_S, DWELL_S, ORDER_S, PAY_S, RESPONSE_TARGET_S, SPILL_BUMP_MULT, SPILL_DEMO_MULT, SPILL_P_BASE, WAIT_SEAT_S, type CafeSpill,
 } from './cafe/cafeState';
 
-type XZ = { x: number; z: number };
-type Phase = 'off' | 'queue' | 'order' | 'pay' | 'wait' | 'toSeat' | 'sit' | 'leave';
-interface D {
-  i: number; phase: Phase; x: number; z: number; yaw: number; path: XZ[]; tPhase: number;
-  seat: number; drink: MenuItem; bite: MenuItem | null; color: string; order: number;
-  bumped: boolean; walking: boolean; carrying: boolean; takeaway: boolean; tSit: number; slot: number;
-}
 /** assumption (presentation): replay walking speed of a diner, m per replay s */
 const SPEED = 1.7;
 const COLORS = ['#f6a6b2', '#ffc98a', '#a7d8f0', '#b8e0a8', '#d7c2f2', '#f2d38a', '#9fd6cf', '#f0b6d8'];
@@ -63,8 +57,11 @@ export function Cafe({ cfg, live, products }: Props) {
   const line = useRef<number[]>([]); // FIFO: diner indices, head first
   const lastT = useRef(0), lastSpawn = useRef(-99), nextName = useRef(0);
   const barX = useRef(0); // barista: 0 at the till, 1 at the machine
-  const bubble = useRef<HTMLDivElement>(null), bubbleHold = useRef({ text: '', until: -1, pay: false });
-  const occRef = useRef<HTMLDivElement>(null), occTxt = useRef('');
+  const bubbleHold = useRef({ text: '', until: -1, pay: false });
+  const occTxt = useRef('');
+  /** chairs held by replay shoppers the crowd walks in itself (seat → replay t they get up) */
+  const crowdSeat = useRef<number[]>([]);
+  if (crowdSeat.current.length !== c.seats.length) crowdSeat.current = c.seats.map(() => -1);
   const machineBusy = useRef(0), hadRec = useRef(false);
 
   const rack = useMemo(() => {
@@ -98,11 +95,18 @@ export function Cafe({ cfg, live, products }: Props) {
     if (m) { bubbleHold.current = { text: orderLine(m, nextName.current), until: live.current.t + 2.2, pay: false }; sfx.beep(); }
     void e;
   }), [drinks, live]);
-  // a crowd bump near walking diners counts as "bumped" for the spill multiplier
+  // a crowd bump near walking diners counts as "bumped" for the spill multiplier; a replay shopper entering the café
+  // (CROWD cafe_enter) orders at the counter and holds their chair until tEnd, so our own diners leave it free
   useEffect(() => onCrowd((e) => {
+    if (e.type === 'cafe_enter') {
+      const m = drinks[(nextName.current++) % Math.max(1, drinks.length)];
+      if (m) { bubbleHold.current = { text: orderLine(m, nextName.current), until: live.current.t + 2.2, pay: false }; sfx.beep(); machineBusy.current = live.current.t + 2.5; }
+      if (e.seat != null && e.seat >= 0 && e.seat < c.seats.length) crowdSeat.current[e.seat] = e.tEnd;
+      return;
+    }
     if (e.type !== 'bonk') return;
     for (const d of pool) if (d.walking && Math.hypot(d.x - e.x, d.z - e.z) < 1.2) d.bumped = true;
-  }), [pool]);
+  }), [pool, drinks, live, c.seats.length]);
 
   // debug / screenshot hook: window.__cafe.focus() frames the café
   const camera = useThree((s) => s.camera), controls = useThree((s) => s.controls) as unknown as { target: THREE.Vector3; update: () => void } | null;
@@ -112,13 +116,18 @@ export function Cafe({ cfg, live, products }: Props) {
   }, [camera, controls, c, pool, live]);
 
   const setPhase = (d: D, ph: Phase, t: number, path: XZ[] = []) => { d.phase = ph; d.tPhase = t; d.path = path; };
-  const freeSeat = () => fillOrder.find((si) => seatBy.current[si] < 0);
+  const freeSeat = () => fillOrder.find((si) => seatBy.current[si] < 0 && crowdSeat.current[si] < live.current.t);
 
   useFrame((_, __) => {
     const L = live.current, t = L.t, dtR = L.dtR;
     const rec = L.rec;
     const seatsOps = rec?.cafe?.seats ?? 0, occOps = rec?.cafe?.occupied ?? 0;
-    const want = seatsOps ? Math.min(c.seats.length, Math.round((occOps / seatsOps) * c.seats.length)) : 0;
+    // never an empty café in a demo: below the day's own mean occupancy (from the same ops log) we self-spawn up to it;
+    // no log at all → FALLBACK_OCC (assumption). Chairs the crowd's own shoppers hold count toward the total.
+    const floor01 = dayMeanOcc(getActiveOpsDay());
+    const frac = Math.max(seatsOps ? occOps / seatsOps : 0, floor01);
+    let crowdHeld = 0; for (const u of crowdSeat.current) if (u >= t) crowdHeld++;
+    const want = Math.max(0, Math.min(c.seats.length, Math.round(frac * c.seats.length)) - crowdHeld);
     const jump = L.jump || t < lastT.current - 0.01 || (!!rec && !hadRec.current);
     hadRec.current = !!rec;
     lastT.current = t;
@@ -155,8 +164,8 @@ export function Cafe({ cfg, live, products }: Props) {
       for (const d of pool) if (d.phase === 'sit' && t - d.tPhase > 3 && (!best || d.tSit < best.tSit)) best = d;
       if (best) { if (best.seat >= 0) seatBy.current[best.seat] = -1; setPhase(best, 'leave', t, pathOut(best)); best.seat = -1; }
     }
-    // no ops log at all: fall back to the params dwell (assumption) so diners still turn over
-    if (!rec) for (const d of pool) if (d.phase === 'sit' && t - d.tSit > DWELL_S) { if (d.seat >= 0) seatBy.current[d.seat] = -1; setPhase(d, 'leave', t, pathOut(d)); d.seat = -1; }
+    // diners turn over after the params dwell (assumption) — the log only fixes how many chairs are full
+    for (const d of pool) if (d.phase === 'sit' && t - d.tSit > DWELL_S) { if (d.seat >= 0) seatBy.current[d.seat] = -1; setPhase(d, 'leave', t, pathOut(d)); d.seat = -1; }
 
     // ---- queue: slots follow FIFO order
     line.current = line.current.filter((k) => pool[k].phase === 'queue' || pool[k].phase === 'order' || pool[k].phase === 'pay');
@@ -223,25 +232,40 @@ export function Cafe({ cfg, live, products }: Props) {
       const A = pool[a]; if (!A.walking || !A.carrying) continue;
       for (let b = 0; b < pool.length; b++) { if (a === b) continue; const B = pool[b]; if (B.phase === 'off') continue; if (Math.abs(A.x - B.x) < 0.42 && Math.abs(A.z - B.z) < 0.42) { A.bumped = true; break; } }
     }
-    // spills nobody came for (no cleaner on the roster): dry after the response target (assumption) + mop time
-    for (const sp of cafeSpills) if (sp.state !== 'done' && !sp.claimed && t - sp.t0 > RESPONSE_TARGET_S + CLEAN_DRY_S) { sp.state = 'done'; sp.tDone = t; spillsChanged(); }
+    // café porter: the roster cleaner (Staff.tsx) gets first dibs; a spill still unclaimed after PORTER_WAIT_S is ours.
+    // walks over with mop + bucket, puts the sign up, mops for spill_clean_and_dry_min (params, assumption), walks back.
+    {
+      const pw = porter.current!, pt = porterTask.current;
+      let sp = pt.id ? cafeSpills.find((x) => x.id === pt.id && x.state !== 'done') : undefined;
+      if (!sp) { pt.id = 0; sp = cafeSpills.find((x) => x.state !== 'done' && (!x.claimed || x.claimed === PORTER_ID) && t - x.t0 > PORTER_WAIT_S); if (sp) { pt.id = sp.id; sp.claimed = PORTER_ID; } }
+      const goal = sp ? { x: sp.x + 0.75, z: sp.z + 0.1 } : porterHome;
+      const dx = goal.x - pw.pos.x, dz = goal.z - pw.pos.z, dist = Math.hypot(dx, dz);
+      pw.moving = dist > 0.05 && dtR > 0;
+      if (pw.moving) { const st = Math.min(dist, SPEED * 1.2 * dtR); pw.pos.x += (dx / dist) * st; pw.pos.z += (dz / dist) * st; pw.yaw = Math.atan2(dx, dz); }
+      pw.task = sp && dist < 0.1 ? 'clean' : 'walk';
+      if (sp && dist < 0.1 && dtR > 0) {
+        pw.yaw = Math.atan2(sp.x - pw.pos.x, sp.z - pw.pos.z);
+        if (sp.state === 'open') { sp.state = 'cleaning'; sp.tClean = t; spillsChanged(); }
+        else if (t - sp.tClean >= CLEAN_DRY_S) { sp.state = 'done'; sp.tDone = t; sp.claimed = null; pt.id = 0; spillsChanged(); }
+      }
+      if (jump) { pw.pos.set(porterHome.x, 0, porterHome.z); pt.id = 0; }
+    }
+    // safety net (nobody reached it, e.g. paused porter): dry after the response target (assumption) + mop time
+    for (const sp of cafeSpills) if (sp.state !== 'done' && t - sp.t0 > RESPONSE_TARGET_S + CLEAN_DRY_S) { sp.state = 'done'; sp.tDone = t; spillsChanged(); }
     pruneCafeSpills(t);
 
     // ---- barista + bubble + occupancy sticker
     const want01 = t < machineBusy.current ? 1 : 0;
     barX.current += (want01 - barX.current) * Math.min(1, 0.08);
     const bw = barista.current!; bw.pos.x = c.counter.x + 0.3 + barX.current * 0.5; bw.moving = Math.abs(want01 - barX.current) > 0.05; bw.yaw = bw.moving ? (want01 ? Math.PI / 2 : -Math.PI / 2) : 0;
-    const bh = bubbleHold.current;
-    if (bubble.current) {
-      const on = t < bh.until && bh.text;
-      bubble.current.style.display = on ? '' : 'none';
-      if (on && bubble.current.textContent !== bh.text) { bubble.current.textContent = bh.text; bubble.current.style.background = bh.pay ? '#d6ff3d' : '#fff'; }
-    }
     const qn = line.current.length;
-    const txt = seatsOps ? `☕ café ${occOps}/${seatsOps} seats${qn ? ` · ${qn} in line` : ''}${(rec?.cafe?.turned_away ?? 0) > 0 ? ' · full!' : ''}` : `☕ café ${seated}/${c.seats.length} chairs`;
-    if (occRef.current && txt !== occTxt.current) { occTxt.current = txt; occRef.current.textContent = txt; }
+    // chairs actually full on screen (ours + the crowd's) out of this layout's chairs; the log's own seats/occupied are in the KPI panel
+    occTxt.current = `café ${Math.min(c.seats.length, seated + crowdHeld)}/${c.seats.length}${qn ? ` · ${qn} in line` : ''}${(rec?.cafe?.turned_away ?? 0) > 0 ? ' · full!' : ''}`;
   });
 
+  const porterHome: XZ = { x: c.x - c.w / 2 + 0.7, z: corrZ };
+  const porter = useRef<Walker | null>({ pos: new THREE.Vector3(porterHome.x, 0, porterHome.z), yaw: Math.PI / 2, path: [], goal: '', body: null, moving: false, task: 'idle', work: 0 });
+  const porterTask = useRef({ id: 0 });
   const barista = useRef<Walker | null>({ pos: new THREE.Vector3(c.counter.x + 0.3, 0, c.counter.z - 0.75), yaw: 0, path: [], goal: '', body: null, moving: false, task: 'serve', work: 0 });
 
   const rackX = c.counter.x + Math.min(2.2, c.w / 2 - 0.6), rackZ = c.counter.z + 0.05;
@@ -249,6 +273,7 @@ export function Cafe({ cfg, live, products }: Props) {
   return (
     <group>
       <Person role="barista" wref={barista} />
+      <Person role="cleaner" wref={porter} />
       <CoffeeMachine x={c.counter.x + 0.8} z={c.counter.z - 0.1} busy={() => live.current.t < machineBusy.current} />
       <MenuBoard x={c.counter.x - Math.min(2.6, c.w / 2 - 0.9)} z={c.counter.z - 0.25} menu={menu} />
       {/* grab & go rack: three tiers of real packs */}
@@ -271,24 +296,33 @@ export function Cafe({ cfg, live, products }: Props) {
           <cylinderGeometry args={[0.045, 0.035, 0.13 + i * 0.01, 12]} /><meshStandardMaterial color={i === 1 ? '#FE831B' : '#ffffff'} />
         </mesh>
       ))}
-      {pool.map((d) => (
-        <Diner key={d.i} d={d} seats={c.seats} tables={c.tables} pack={rack[(d.i * 3) % Math.max(1, rack.length)]?.mats} />
-      ))}
+      <Diners pool={pool} seats={c.seats} tables={c.tables} />
       <CafeSpills />
-      <Html position={[head.x, 2.25, head.z - 0.2]} center zIndexRange={[22, 12]}>
-        <div ref={bubble} style={{ display: 'none', ...STICKER, borderRadius: 14, padding: '3px 10px', transform: 'rotate(-3deg)' }} />
-      </Html>
-      <Html position={[c.counter.x - 1.2, 2.9, c.counter.z + 0.4]} center zIndexRange={[20, 10]}>
-        <div ref={occRef} title="occupied / seats from the ops day log (minutes[].cafe); café params are assumptions (data/sim/ops/params_extra.json cafe)" style={{ ...STICKER, background: '#ffe6cc' }} />
-      </Html>
+      <TextSprite position={[head.x, 2.3, head.z - 0.2]} height={0.4}
+        text={() => (live.current.t < bubbleHold.current.until ? bubbleHold.current.text : '')}
+        style={() => ({ bg: bubbleHold.current.pay ? '#d6ff3d' : '#ffffff', tilt: -0.05 })} />
+      <TextSprite position={[rackX + 0.2, 2.35, rackZ + 0.3]} height={0.46} text={() => occTxt.current} style={() => OCC_STYLE} />
     </group>
   );
 }
 
-const STICKER: React.CSSProperties = {
-  font: '800 13px "Baloo 2", system-ui', color: INK, background: '#fff', border: `2px solid ${INK}`, borderRadius: 999,
-  padding: '2px 10px', boxShadow: `0 3px 0 ${INK}`, whiteSpace: 'nowrap', pointerEvents: 'none', userSelect: 'none',
-};
+const OCC_STYLE = { bg: '#ffe6cc' };
+const PORTER_ID = 'cafe-porter';
+/** presentation: replay s a café spill waits for the roster cleaner before the café's own porter goes */
+const PORTER_WAIT_S = 1.5;
+/** assumption (no ops log loaded): share of café chairs taken, so the demo café is never empty */
+const FALLBACK_OCC = 0.3;
+const meanCache = new WeakMap<object, number>();
+/** mean café occupancy share over the day's open minutes, from the ops log itself (minutes[].cafe) */
+function dayMeanOcc(day: ReturnType<typeof getActiveOpsDay>): number {
+  if (!day) return FALLBACK_OCC;
+  const hit = meanCache.get(day); if (hit !== undefined) return hit;
+  let sum = 0, n = 0;
+  for (const m of day.minutes) { const se = m.cafe?.seats ?? 0; if (se > 0) { sum += (m.cafe?.occupied ?? 0) / se; n++; } }
+  const v = n && sum > 0 ? sum / n : FALLBACK_OCC;
+  meanCache.set(day, v);
+  return v;
+}
 
 // ---------------------------------------------------------------- props
 const STEAM = new THREE.SphereGeometry(0.05, 8, 6);
@@ -356,114 +390,19 @@ function CafeSpills() {
   return <>{cafeSpills.map((sp) => <CafeSpillView key={sp.id} sp={sp} />)}</>;
 }
 function CafeSpillView({ sp }: { sp: CafeSpill }) {
-  const oops = useRef<HTMLDivElement>(null);
-  const tNow = useRef(0);
-  useFrame((st) => {
-    tNow.current = st.clock.elapsedTime;
-    if (oops.current) oops.current.style.display = sp.state === 'open' ? '' : 'none';
-  });
-  const fade = () => (sp.state === 'done' ? 0 : 1);
+  // tooltip-free label; source: spill_rate_per_1000_shoppers = 2, ×5 when bumped (assumptions, data/ops/params.json)
   return (
     <group>
-      <WetFloor x={sp.x} z={sp.z} cleaning={sp.state === 'cleaning'} color="#6b3f22" sign={sp.state !== 'open'} fade={fade} size={0.75} />
+      <WetFloor x={sp.x} z={sp.z} cleaning={sp.state === 'cleaning'} color="#6b3f22" sign={sp.state !== 'open'} fade={() => (sp.state === 'done' ? 0 : 1)} size={0.75} />
       {sp.state !== 'done' && (
         <mesh position={[sp.x + 0.25, 0.05, sp.z - 0.1]} rotation={[0, 0.4, Math.PI / 2]} raycast={noRay}>
           <cylinderGeometry args={[0.05, 0.04, 0.11, 12]} /><meshStandardMaterial color="#ffffff" />
         </mesh>
       )}
-      <Html position={[sp.x, 1.3, sp.z]} center zIndexRange={[24, 14]}>
-        <div ref={oops} title={`café spill: ${sp.bumped ? 'bumped on the way (×5, assumption)' : 'base rate'} · spill_rate_per_1000_shoppers = 2 (assumption, data/ops/params.json)`} style={{ ...STICKER, background: '#ff8a3d', color: '#fff', transform: 'rotate(6deg)', font: '800 16px "Baloo 2", system-ui' }}>oops! ☕💦</div>
-      </Html>
+      <TextSprite position={[sp.x, 1.4, sp.z]} height={0.42} text={() => (sp.state === 'open' ? (sp.bumped ? 'oops! (bumped)' : 'oops!') : sp.state === 'cleaning' ? 'mopping…' : '')}
+        style={() => ({ bg: sp.state === 'open' ? '#ff8a3d' : '#ffe14d', fg: sp.state === 'open' ? '#ffffff' : undefined, tilt: 0.08 })} />
     </group>
   );
 }
 
-// ---------------------------------------------------------------- diners
-const CUP = new THREE.CylinderGeometry(0.05, 0.04, 0.11, 12);
-const CUP_MAT = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 });
-const PLATE = new THREE.CylinderGeometry(0.13, 0.11, 0.015, 18);
-const PASTRY = new THREE.SphereGeometry(0.07, 12, 8).scale(1.4, 0.6, 1);
-const SIP = new THREE.SphereGeometry(0.03, 8, 6);
-const sleeveMats = new Map<string, THREE.MeshStandardMaterial>();
-const sleeve = (c: string) => { let m = sleeveMats.get(c); if (!m) { m = new THREE.MeshStandardMaterial({ color: c, roughness: 0.5 }); sleeveMats.set(c, m); } return m; };
-
-function Diner({ d, seats, tables, pack }: { d: D; seats: (XZ & { yaw: number; table: number })[]; tables: XZ[]; pack?: THREE.Material[] }) {
-  const g = useRef<THREE.Group>(null), arm = useRef<THREE.Group>(null), armL = useRef<THREE.Group>(null), food = useRef<THREE.Group>(null), hand = useRef<THREE.Group>(null);
-  const steam = useRef<(THREE.Mesh | null)[]>([]);
-  const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: d.color, roughness: 0.45 }), [d.color]);
-  const steamMats = useMemo(() => [0, 1, 2].map(() => new THREE.MeshBasicMaterial({ color: '#fff', transparent: true, opacity: 0.5, depthWrite: false })), []);
-  const step = useRef(0);
-  const [drinkC, setDrinkC] = useState(d.drink?.color ?? '#FE831B');
-  const [hasBite, setHasBite] = useState(!!d.bite);
-  useFrame((s3, dt) => {
-    const G = g.current; if (!G) return;
-    const now = s3.clock.elapsedTime;
-    const vis = d.phase !== 'off';
-    G.visible = vis;
-    if (!vis) return;
-    if ((d.drink?.color ?? '#FE831B') !== drinkC) setDrinkC(d.drink?.color ?? '#FE831B');
-    if (!!d.bite !== hasBite) setHasBite(!!d.bite);
-    const sit = d.phase === 'sit';
-    step.current += dt * (d.walking ? 9 : 1);
-    const chill = Math.sin(now * 0.6 + d.order * 1.7);
-    // seated: sink onto the chair, lean in now and then, little laugh bounces; queue: impatient toe-tap sway
-    const y = sit ? 0.16 + Math.max(0, Math.sin(now * 7 + d.order)) * (chill > 0.85 ? 0.03 : 0) : d.walking ? Math.abs(Math.sin(step.current)) * 0.05 : 0;
-    const order = d.phase === 'order' || d.phase === 'pay';
-    G.position.set(d.x, y + (order ? Math.max(0, Math.sin(now * 9)) * 0.04 : 0), d.z);
-    const sway = d.phase === 'queue' && !d.walking ? Math.sin(now * 2 + d.order) * 0.06 : 0;
-    G.rotation.set(sit ? 0.05 + Math.max(0, chill) * 0.08 : 0, d.yaw + (sit ? Math.sin(now * 0.4 + d.order) * 0.12 : 0), d.walking ? Math.sin(step.current) * 0.1 : sway);
-    G.scale.set(1, sit ? 0.88 : 1, 1);
-    // sip / nibble every few seconds
-    const cyc = (now + d.order * 1.3) % 4.2;
-    const lift = sit && cyc < 1.1 ? Math.sin((cyc / 1.1) * Math.PI) : 0;
-    if (arm.current) arm.current.rotation.x = d.walking && !d.carrying ? Math.sin(step.current) * 0.6 : d.carrying && !sit ? -1.0 : sit ? -0.9 - lift * 1.5 : d.phase === 'pay' ? -1.6 : -0.1;
-    if (armL.current) armL.current.rotation.x = d.walking ? -Math.sin(step.current) * 0.6 : sit ? -0.7 : 0.05;
-    if (hand.current) hand.current.visible = (d.carrying && !sit) || (sit && lift > 0.05);
-    if (food.current) {
-      food.current.visible = sit;
-      if (sit && d.seat >= 0) {
-        const s = seats[d.seat], tb = tables[s.table] ?? s;
-        const tx = (tb.x - s.x) * 0.55, tz = (tb.z - s.z) * 0.55, cy = Math.cos(d.yaw), sy = Math.sin(d.yaw);
-        // inverse-rotate the table offset into the diner's local frame
-        food.current.position.set(tx * cy - tz * sy, (0.775 - y) / 0.88, tx * sy + tz * cy);
-      }
-    }
-    steam.current.forEach((m, i) => {
-      if (!m) return;
-      const k = (now * 0.5 + i * 0.33 + d.order * 0.2) % 1;
-      m.position.set(Math.sin(now * 2 + i) * 0.02, 0.1 + k * 0.3, 0);
-      m.scale.setScalar(0.6 + k);
-      steamMats[i].opacity = (1 - k) * 0.5;
-    });
-  });
-  return (
-    <group ref={g} visible={false}>
-      <mesh geometry={BODY_GEO} material={mat} castShadow raycast={noRay} />
-      <mesh geometry={BODY_GEO} material={INK_MAT} raycast={noRay} />
-      {[-1, 1].map((k) => (
-        <group key={k} position={[k * 0.11, 0.93, 0.22]}>
-          <mesh geometry={EYE_GEO} material={WHITE} raycast={noRay} />
-          <mesh geometry={PUPIL_GEO} material={INKM} position={[0, -0.01, 0.07]} raycast={noRay} />
-        </group>
-      ))}
-      <group ref={arm} position={[0.31, 0.74, 0.02]}>
-        <mesh geometry={ARM_GEO} material={mat} raycast={noRay} />
-        <group ref={hand} position={[0, -0.36, 0.04]} visible={false}>
-          <mesh geometry={CUP} material={CUP_MAT} raycast={noRay} />
-          <mesh geometry={CUP} material={sleeve(drinkC)} scale={[1.06, 0.45, 1.06]} raycast={noRay} />
-        </group>
-      </group>
-      <group ref={armL} position={[-0.31, 0.74, 0.02]}><mesh geometry={ARM_GEO} material={mat} raycast={noRay} /></group>
-      <group ref={food} visible={false}>
-        <mesh geometry={PLATE} material={WHITE} raycast={noRay} />
-        {hasBite ? <mesh geometry={PASTRY} material={sleeve('#e8a85c')} position={[0, 0.04, 0]} raycast={noRay} /> : pack ? <mesh geometry={PACK} material={pack} position={[0, 0.1, 0]} rotation={[0, 0.5, 0]} raycast={noRay} /> : null}
-        <group position={[0.16, 0.06, 0]}>
-          <mesh geometry={CUP} material={CUP_MAT} raycast={noRay} />
-          <mesh geometry={CUP} material={sleeve(drinkC)} scale={[1.06, 0.45, 1.06]} raycast={noRay} />
-          {steamMats.map((m, i) => <mesh key={i} ref={(r) => { steam.current[i] = r; }} geometry={SIP} material={m} raycast={noRay} />)}
-        </group>
-      </group>
-    </group>
-  );
-}
 const noRay = () => null;
