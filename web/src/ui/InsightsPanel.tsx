@@ -1,5 +1,6 @@
-import { useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Persona, Product, Run } from '../types';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import type { Persona, PlacementCandidate, Product, Run } from '../types';
+import { api } from '../api';
 import { isAI } from '../types';
 import { archetypeOf, pct } from '../stats';
 import {
@@ -32,6 +33,22 @@ export function InsightsPanel(props: InsightsProps) {
   const sample = useMemo(() => sampleSize(run, own, aiOwn), [run, own, aiOwn]);
   const diagnosis = useMemo(() => diagnose(run, p.code, unitProducts(planogram, slot), human, ai), [run, p.code, planogram, slot, human, ai]);
   const placementRef = useRef<HTMLDivElement>(null);
+  // the best spot for it, from the same free scan the placement section runs; null until it answers or if it fails
+  const [best, setBest] = useState<{ spot: PlacementCandidate; now: number } | null>(null);
+  const scanKey = `${p.code}|${slot ?? ''}|${run.run_id}`;
+  useEffect(() => {
+    let live = true;
+    setBest(null);
+    if (!slot) return;
+    api.placementScan({ product: p.code, planogram, products: props.extraProducts, agents: 400 })
+      .then((sc) => {
+        const top = sc.candidates.filter((c) => !c.is_current && c.facings === sc.current.facings)[0];
+        if (live && top && top.lift_vs_current > 0.005) setBest({ spot: top, now: sc.current.notice_rate });
+      })
+      .catch(() => { /* the placement section below shows the server error */ });
+    return () => { live = false; };
+    // planogram and extraProducts are fresh objects each render; the key covers what the scan depends on
+  }, [scanKey]); // eslint-disable-line react-hooks/exhaustive-deps
   const neverShown = own.shown === 0 && aiOwn.shown === 0;
 
   return (
@@ -46,6 +63,7 @@ export function InsightsPanel(props: InsightsProps) {
       ) : (
         <div className="ins-board">
           <Story own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined}
+            best={best} rowNames={cfg.row_names} topReject={diagnosis.top_reject} onRearrange={props.onRearrange}
             onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
           <BreakdownSection run={run} code={p.code} personas={personas} aiLoaded={sample.ai_loaded} />
           <LostToSection run={run} code={p.code} products={products} aiLoaded={sample.ai_loaded} onPickProduct={onPickProduct} />
@@ -130,9 +148,13 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
 
 const STEP_OF: Record<string, string> = { notice: 'noticed', consider: 'looked closer', pick: 'bought' };
 
-interface StoryProps { own: Funnel; ai: Funnel; aiLoaded: boolean; d: Diagnosis; unit?: string; onPlacement: () => void }
+interface StoryProps {
+  own: Funnel; ai: Funnel; aiLoaded: boolean; d: Diagnosis; unit?: string; onPlacement: () => void;
+  best: { spot: PlacementCandidate; now: number } | null; rowNames: Record<string, string>;
+  topReject: Diagnosis['top_reject']; onRearrange?: () => void;
+}
 /** the whole page in one tile: did it sell, where it loses shoppers, and the four steps behind that */
-function Story({ own, ai, aiLoaded, d, unit, onPlacement }: StoryProps) {
+function Story({ own, ai, aiLoaded, d, unit, onPlacement, best, rowNames, topReject, onRearrange }: StoryProps) {
   const text = diagnosisText(d);
   const [notice, consider, pick] = stepRates(own);
   const leak = d.bottleneck ? STEP_OF[d.bottleneck.step] : null;
@@ -159,7 +181,29 @@ function Story({ own, ai, aiLoaded, d, unit, onPlacement }: StoryProps) {
         ))}
       </ol>
       {aiLoaded && ai.shown > 0 && <p className="ins-ai">ai agents picked it <b>{ai.picked} of {ai.shown}</b> times.</p>}
-      {d.bottleneck?.step === 'notice' && <button className="link-btn" onClick={onPlacement}>see the best spots ↓</button>}
+      <div className="ins-next">
+        <h3>do this next</h3>
+        <ol>
+          {best && (
+            <li>
+              <span><b>move it to the {rowNames[String(best.spot.row)] ?? best.spot.row_name} shelf, spot {best.spot.pos + 1}.</b> noticed by {pct(best.spot.notice_rate)} there, {pct(best.now)} now.</span>
+              <button className="btn btn-white" onClick={onPlacement}>test this spot</button>
+            </li>
+          )}
+          {topReject && (
+            <li>
+              <span><b>answer "{mechLabel(topReject.mechanism)}".</b> it is the top reason shoppers put it back ({topReject.count}). try a new price or a claim.</span>
+              <button className="btn btn-white" onClick={onPlacement}>try a fix</button>
+            </li>
+          )}
+          {onRearrange && (
+            <li>
+              <span><b>rearrange its whole shelf.</b> see where every product in this unit would sell best.</span>
+              <button className="btn btn-white" onClick={onRearrange}>rearrange</button>
+            </li>
+          )}
+        </ol>
+      </div>
       <details className="ins-how">
         <summary>how this was decided</summary>
         <p>
