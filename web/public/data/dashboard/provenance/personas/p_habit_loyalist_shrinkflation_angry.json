@@ -1,0 +1,1926 @@
+{
+ "persona_id": "p_habit_loyalist_shrinkflation_angry",
+ "name": "Pauline",
+ "archetype": "habit_loyalist_shrinkflation_angry",
+ "kind": "lens",
+ "source_file": "data/personas/lens/habit_loyalist_shrinkflation_angry.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 90,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret dossier: 'about £85-95 a week for two, up from £60 a few years ago' (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret dossier channel mix: about 85% big Tesco in person, 12% Express, 3% M&S, 0% online (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.grocerygazette.co.uk/2026/07/10/ai-assisted-grocery/",
+     "citation": "dunnhumby: 39% of UK consumers do not trust AI (https://www.grocerygazette.co.uk/2026/07/10/ai-assisted-grocery/ via research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "dunnhumby: 39% of UK consumers do not trust AI (https://www.grocerygazette.co.uk/2026/07/10/ai-assisted-grocery/ via research/02-issue-discovery.md)"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "web_other": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "weekly_shop",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/habit_loyalist_shrinkflation_angry.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.household",
+   "kind": "profile",
+   "label": "household",
+   "value": "lives with her husband Keith in a 1960s semi outside Stockport; retired school dinner supervisor, part-time in a charity shop two mornings a week; two grown children, three grandchildren",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic modelled on the staged Margaret (63, semi-retired, couple, market town)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'not used by the sim'",
+     "text": "not used by the sim"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.age",
+   "kind": "profile",
+   "label": "age",
+   "value": 64,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic modelled on the staged Margaret (63, semi-retired, couple, market town)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'not used by the sim'",
+     "text": "not used by the sim"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.role",
+   "kind": "lens_weight",
+   "label": "lens: role (w=0.24)",
+   "value": 0.24,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1b4i3rn",
+     "thread_id": "1b4i3rn",
+     "subreddit": "ukpolitics",
+     "theme": "own_brand_vs_branded",
+     "score": 9,
+     "verbatim": "For us older people, Heinz was the only brand available... recognition and nostalgia purchases",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/vqe2sz",
+     "thread_id": "vqe2sz",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 2,
+     "verbatim": "I tend to only buy Walkers crisps out of habit because I once had a bad experience with Tesco's own brand.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.jcps.2009.08.003",
+     "citation": "Wood & Neal 2009 https://doi.org/10.1016/j.jcps.2009.08.003"
+    }
+   ],
+   "measured_by_off_field": "role (catalog field: incumbent|own_label|challenger)",
+   "direction": "incumbent > own_label (cupboard ingredients only) > challenger",
+   "why": "Habit and heritage carry most of her choice. She buys the brand she has always bought until it betrays her, and unknown makers are a non-starter",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_per_100g",
+   "kind": "lens_weight",
+   "label": "lens: price_per_100g (w=0.18)",
+   "value": 0.18,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 715,
+     "verbatim": "Sainsbury's Scottish Oats have shrunk from 1kg to 500g while the price increased from £1.25 to £2.10, a 236% rise per 100g. That's just robbery.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 529,
+     "score_is": "post_score(thread)",
+     "thread_title": "Is anyone noticing just how much Shrinkflation seems to be happening in UK manufacturers/supermarkets and they seem to be getting away with it?",
+     "verbatim": "supermarkets displaying \"price each",
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only; quote not located)",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "price_gbp / product_quantity × 100 (OFF product_quantity in g/ml)",
+   "direction": "lower_better, relative to the category median",
+   "why": "Price-alert since her shop went from £60 to £90. Her shrinkflation anger is about value per gram, but she checks it through pack weight and price memory, not the unit-price label",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.pack_copy_gimmick_claims",
+   "kind": "lens_weight",
+   "label": "lens: pack_copy_gimmick_claims (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1s9qhp0",
+     "thread_id": "1s9qhp0",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "\"NEW Recipe\". Like it's something positive that's been asked for, when everyone has literally always previously bought it because they like the old/existing recipe",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 23,
+     "verbatim": "they kept bringing out \"new recipe",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 7,
+     "verbatim": "Lidl have a protein egg box... It's a boiled egg. In a box.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "pack_copy (regex: protein|high protein|NEW|new recipe|improved|prebiotic|gut|superfood|keto)",
+   "direction": "fewer_better",
+   "why": "'NEW recipe' means a downgrade. 'Protein' on a naturally protein food reads as a price grab. Loud claims lower her trust",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.pack_copy_heritage_honesty",
+   "kind": "lens_weight",
+   "label": "lens: pack_copy_heritage_honesty (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1s9qhp0",
+     "thread_id": "1s9qhp0",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "I had a caramel wafer the other week and it was exactly the same size I remember them from decades ago... if your product is ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1p3q2ce",
+     "thread_id": "1p3q2ce",
+     "subreddit": "AskUK",
+     "theme": "tried_new_went_back",
+     "score": 86,
+     "verbatim": "Tunnocks caramel wafers. They haven't been enshittified in any way.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "pack_copy (regex: original|since 18|since 19|classic|est\\.) + quantity shown prominently",
+   "direction": "present_better",
+   "why": "She rewards brands seen as unchanged: same size, same recipe, for decades",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.ingredients_n",
+   "kind": "lens_weight",
+   "label": "lens: ingredients_n (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 53,
+     "verbatim": "Tomatoes (148g per 100g ketchup)",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret stage 3: 'ingredients are oats, peanuts, almonds, honey, short and nothing I can't say' (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    }
+   ],
+   "measured_by_off_field": "ingredients_n",
+   "direction": "lower_better",
+   "why": "A short ingredient list with the real food first is her one back-of-pack check (she picks it up and puts her glasses on)",
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.additives_n",
+   "kind": "lens_weight",
+   "label": "lens: additives_n (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1scat6b",
+     "thread_id": "1scat6b",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 1,
+     "verbatim": "Not just shrinkflation, but skimpflation too, where they degrade the quality of the ingredients... Penguin bars can't even be called chocolate biscuits now",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 28,
+     "verbatim": "It's that they use cheaper, lower quality and less of the nicer ingredients, or including filler",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "additives_n",
+   "direction": "lower_better",
+   "why": "'Chemical-sounding' lists and 'skimpflation' (cheaper ingredients) read to her as a stealth downgrade",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.palm_oil_n",
+   "kind": "lens_weight",
+   "label": "lens: palm_oil_n (w=0.07)",
+   "value": 0.07,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "I've recently switched to MS chocolate... the main ingredient is cocoa butter, it's palm oil free, and it supports a British company.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "Cadburys has gone to shite",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "palm_oil_n (OFF ingredients_from_palm_oil_n)",
+   "direction": "lower_better",
+   "why": "In her mind 'waxy' Cadbury and palm oil go with the brands that betrayed her; palm-free is part of the case for trading up to M&S",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.british_made",
+   "kind": "lens_weight",
+   "label": "lens: british_made (w=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "it supports a British company. Wins all round.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bq1qcm",
+     "thread_id": "1bq1qcm",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "I no longer buy HP as it is sadly not made in the UK. Stokes make a very good brown sauce made in England.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "labels / origins (e.g. en:made-in-the-united-kingdom, en:british, en:red-tractor)",
+   "direction": "present_better",
+   "why": "A small bonus: she will pay a little more for a British maker, and drops brands that moved production abroad",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens._weights",
+   "kind": "lens_weight",
+   "label": "lens weight magnitudes (rank/scale)",
+   "value": 1.0,
+   "sources": [
+    {
+     "class": "off_field",
+     "method": "keyword:'OFF'",
+     "citation": "assumption: weights rank the behavioural_drivers weight_0_1 values in the staged Margaret dossier (betrayal aversion 0.9, one-strike 0.85, heritage anchoring 0.75, gimmick scepticism 0.7, unit-price vigilance 0.55) onto OFF-mappable fields, then normalise to 1. Sensory heft is not in OFF, so ..."
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: weights rank the behavioural_drivers weight_0_1 values in the staged Margaret dossier (betrayal aversion 0.9, one-strike 0.85, heritage anchoring 0.75, gimmick scepticism 0.7, unit-price vigilance 0.55) onto OFF-mappable fields, then normalise to 1. Sensory heft is not in OFF, so ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: weights rank the behavioural_drivers weight_0_1 values in the staged Margaret dossier (betrayal aversion 0.9, one-strike 0.85, heritage anchoring 0.75, gimmick scepticism 0.7, unit-price vigilance 0.55) onto OFF-mappable fields, then normalise to 1. Sensory heft is not in OFF, so ..."
+    }
+   ],
+   "classes": [
+    "off_field",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "off_field": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "off_field"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.28",
+   "value": 0.28,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: habit_loyalist_shrinkflation_angry -0.8 (low O = traditional diet, Mottus 2012 r=-.14, plus neophobia)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.28 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=-0.2)",
+   "value": -0.2,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007",
+     "citation": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007 (neophobia negatively related to Openness)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: logit shift chosen so that challenger pick probability lands near the staged trust_new_brand of 0.10"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "direction from the paper"
+    }
+   ],
+   "effect": "low Openness, so high food neophobia: lower trial of unfamiliar products and a lower notice boost for role=challenger (negative trait_boost on unknown brands)",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean_effect.O.1",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.jcps.2009.08.003",
+     "citation": "Wood & Neal 2009, 'The habitual consumer', Journal of Consumer Psychology 19(4):579-592, https://doi.org/10.1016/j.jcps.2009.08.003 (repeat purchases cued by stable context)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1b4i3rn",
+     "thread_id": "1b4i3rn",
+     "subreddit": "ukpolitics",
+     "theme": "own_brand_vs_branded",
+     "score": 9,
+     "verbatim": "For us older people, Heinz was the only brand available... recognition and nostalgia purchases",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: direction only"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "folded into habit_lockin_0_1, not double-counted"
+    }
+   ],
+   "effect": "low Openness plus older age go with a preference for the familiar, which reinforces habitual repeat of the incumbent (raises habit_lockin)",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.62",
+   "value": 0.62,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: habit_loyalist_shrinkflation_angry +0.2 (traditionalism facet: Wilson et al. 2016, citing Bogg & Roberts 2004, name industriousness and traditionalism as the facets most tied to eating)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.62 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1037/a0027041",
+     "citation": "Mõttus et al. 2012, 'Personality traits and eating habits in a large sample of Estonians', Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (Conscientiousness linked to more deliberate, regular eating and shopping patterns)"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret: 'carries a written paper list and has a fixed route' (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "it raises sensitivity to pack-size and price changes only, while reads_structured_data stays at 0.03 (per research/05-personas.md section 4c (skeptic-calibrated table))"
+    }
+   ],
+   "effect": "moderately high Conscientiousness: a written paper list, a fixed route and a weekly budget. She checks weight and price on the front of the pack but does NOT read nutrition tables (this is list discipline, not label reading)",
+   "classes": [
+    "paper",
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.42",
+   "value": 0.42,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.42 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 24,
+     "verbatim": "I've been getting the M&S own brand one after my mum recommended it.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret: 'A recommendation from her daughter also works' (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: direction only"
+    }
+   ],
+   "effect": "average-to-low Extraversion: influence from family word of mouth (her daughter) rather than social media or in-store theatre. A daughter's recommendation is her one route to trying something new",
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.38",
+   "value": 0.38,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.38 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tjgl9c",
+     "thread_id": "1tjgl9c",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 1,
+     "verbatim": "I assume its cos they think we are stupids and wont notice.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "verbatim 'I assume its cos they think we are stupids and wont notice.' https://www.reddit.com/comments/1tjgl9c"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "low Agreeableness relates to cynical, suspicious appraisal of others' motives (Costa & McCrae 1992, NEO-PI-R manual",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: applied to firms by analogy)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: magnitude set so that a visible shrink on a known incumbent cuts its utility by about the same amount as the role bonus (net ≈ 0, i.e. she walks past)"
+    }
+   ],
+   "effect": "lowish Agreeableness: she reads companies in an adversarial way ('they think we are stupid'), punishes them, and voices grudges. This raises the betrayal penalty and gimmick_reactance",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.66",
+   "value": 0.66,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.66 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Nezlek & Forestell 2019 (above",
+     "url": null
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007",
+     "citation": "neophobia positively related to Neuroticism) https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://forums.moneysavingexpert.com/discussion/6653837",
+     "citation": "MSE forum 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (via research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "MSE forum 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (via research/02-issue-discovery.md)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "folded into trust_new_brand_0_1"
+    }
+   ],
+   "effect": "higher Neuroticism means stronger loss and regret aversion. The fear of wasting money on a bad new product ('that's £1.60 in the bin') drives one-strike rejection and lowers trust_new_brand",
+   "classes": [
+    "paper",
+    "web_other",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "web_other": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Known incumbent with a smaller product_quantity at the same or higher price_gbp ...",
+   "value": "Known incumbent with a smaller product_quantity at the same or higher price_gbp than her remembered pack: walk past permanently, with no recovery for that SKU",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "pringles. When they swapped into the smaller tubes for the same price... Aint bought any since",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 2,
+     "verbatim": "RIP Kerrygold it was a good run but same price for 20% less ain't it.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "'NEW recipe' / 'improved' banner in pack_copy on a product she already ...",
+   "value": "'NEW recipe' / 'improved' banner in pack_copy on a product she already buys",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1s9qhp0",
+     "thread_id": "1s9qhp0",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "'NEW Recipe'. Like it's something positive that's been asked for, when everyone has literally always previously bought it because they like the old/existing recipe",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 61,
+     "score_is": "post_score(thread)",
+     "thread_title": "What products do you now refuse to buy because of shrinkflation?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "'Protein' / 'high protein' / 'prebiotic' claim on the front of pack, ...",
+   "value": "'Protein' / 'high protein' / 'prebiotic' claim on the front of pack, especially on a food that is naturally that thing",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 160,
+     "verbatim": "Even Aldi I noticed have like a chicken curry with extra protein... WHY?! IT'S CHICKEN.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Unknown brand (role=challenger) with nothing to vouch for it: no maker she ...",
+   "value": "Unknown brand (role=challenger) with nothing to vouch for it: no maker she recognises, no family recommendation",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret stage 4: 'If it's horrible that's £1.60 in the bin, and I've no idea who they are' (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://forums.moneysavingexpert.com/discussion/6653837",
+     "citation": "MSE 'If I try... and don't like it I'll never buy it again' https://forums.moneysavingexpert.com/discussion/6653837"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "staged_persona"
+   ],
+   "class_share": {
+    "web_other": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Visibly emptier pack (slack fill, false-bottom tray, air in the bag) or ...",
+   "value": "Visibly emptier pack (slack fill, false-bottom tray, air in the bag) or light in the hand",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 294,
+     "verbatim": "I look at the insane price or pick it up to realise how light it is. I put it straight back and think \"absolutely not, ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Price only with a loyalty card, or mismatched shelf-edge units ('each' next ...",
+   "value": "Price only with a loyalty card, or mismatched shelf-edge units ('each' next to 'per 100g')",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 8,
+     "verbatim": "We should at least ban loyalty card prices.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 529,
+     "score_is": "post_score(thread)",
+     "thread_title": "Is anyone noticing just how much Shrinkflation seems to be happening in UK manufacturers/supermarkets and they seem to be getting away with it?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Cutesy, pastel or influencer-style packaging, which reads 'gimmick for young people'",
+   "value": "Cutesy, pastel or influencer-style packaging, which reads 'gimmick for young people'",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret stage 2: Gutsy Pop 'looks like a bath bomb' (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "research/05-personas.md product table row A"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Unchanged size and recipe for decades (Tunnock's, Heinz, Yorkshire Tea)",
+   "value": "Unchanged size and recipe for decades (Tunnock's, Heinz, Yorkshire Tea)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1s9qhp0",
+     "thread_id": "1s9qhp0",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "'NEW Recipe'. Like it's something positive that's been asked for, when everyone has literally always previously bought it because they like the old/existing recipe",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1p3q2ce",
+     "thread_id": "1p3q2ce",
+     "subreddit": "AskUK",
+     "theme": "tried_new_went_back",
+     "score": 208,
+     "score_is": "post_score(thread)",
+     "thread_title": "Opposite post of yesterday. What brands have kept quality high?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "Real food named first on a short ingredient list",
+   "value": "Real food named first on a short ingredient list",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 743,
+     "score_is": "post_score(thread)",
+     "thread_title": "The supermarkets appear to have moved into phase 2 of shrinkflation - Wetflation",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Retailer quality halo she already trusts (M&S, Waitrose own-label) beats an unknown ...",
+   "value": "Retailer quality halo she already trusts (M&S, Waitrose own-label) beats an unknown challenger as the place to switch to",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 24,
+     "verbatim": "I'd rather get the slightly posher stuff for the same price, now.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 6,
+     "verbatim": "I'd honestly rather pay a lot of money for something really good",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Recommendation from her daughter or a friend who has eaten it",
+   "value": "Recommendation from her daughter or a friend who has eaten it",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 24,
+     "verbatim": "after my mum recommended it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json (persona 'Margaret')"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Weight printed big on the front, and the pack feels full and ...",
+   "value": "Weight printed big on the front, and the pack feels full and heavy in the hand",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 69,
+     "verbatim": "I haven't bought a tub of Quality Street in years.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret trust_signals (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "British-made",
+   "value": "British-made",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "THe worst for me was pringles. When they swapped into the smaller tubes for the same price, some places still had old stock so you ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bq1qcm",
+     "thread_id": "1bq1qcm",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 8,
+     "score_is": "post_score(thread)",
+     "thread_title": "What are your hot takes on branded Vs unbranded?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "One weekly in-person big shop (Thursday) with a paper list and a ...",
+   "value": "One weekly in-person big shop (Thursday) with a paper list and a fixed aisle route; anything moved in a store reset is skipped, not hunted for",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 13,
+     "verbatim": "I go into the store with a shopping list and I want to grab those things and get through Point of Sale as quickly as ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json (persona 'Margaret')"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "Hero brands for things eaten on their own (beans, ketchup, mayo, tea); ...",
+   "value": "Hero brands for things eaten on their own (beans, ketchup, mayo, tea); own-label for anything that disappears into a recipe",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://forums.moneysavingexpert.com/discussion/6653837",
+     "citation": "MSE 'if it's only 1tbsp among 20+ other ingredients then price determines it.' https://forums.moneysavingexpert.com/discussion/6653837"
+    },
+    {
+     "url": "https://www.reddit.com/comments/vqe2sz",
+     "thread_id": "vqe2sz",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 5,
+     "verbatim": "Hellman's mayonnaise... I don't stray from the original, ever.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "After a betrayal she trades UP to a known premium or retailer ...",
+   "value": "After a betrayal she trades UP to a known premium or retailer brand, not across to an unknown challenger",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 61,
+     "score_is": "post_score(thread)",
+     "thread_title": "What products do you now refuse to buy because of shrinkflation?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "switched to MS chocolate",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "Says she checks price per gram, but in practice judges by heft ...",
+   "value": "Says she checks price per gram, but in practice judges by heft and price memory. Mixed units defeat her",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret says_vs_does (3) (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    },
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 529,
+     "score_is": "post_score(thread)",
+     "thread_title": "Is anyone noticing just how much Shrinkflation seems to be happening in UK manufacturers/supermarkets and they seem to be getting away with it?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[4]",
+   "kind": "habit",
+   "label": "Quiet inertia on cupboard staples despite voiced anger: most stealth-shrunk staples keep ...",
+   "value": "Quiet inertia on cupboard staples despite voiced anger: most stealth-shrunk staples keep going in the trolley; her defections cluster on visible-shrink treats",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://yougov.com/en-gb/articles/52576",
+     "citation": "YouGov 2025: among those concerned about shrinkflation, brand switching fell from 50% to 36% https://yougov.com/en-gb/articles/52576 (via research/02-issue-discovery.md)"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "YouGov 2025: among those concerned about shrinkflation, brand switching fell from 50% to 36% https://yougov.com/en-gb/articles/52576 (via research/02-issue-discovery.md)",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "YouGov 2025: among those concerned about shrinkflation, brand switching fell from 50% to 36% https://yougov.com/en-gb/articles/52576 (via research/02-issue-discovery.md)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tjgl9c",
+     "thread_id": "1tjgl9c",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 1,
+     "verbatim": "I like what I like and it costs what it costs.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "web_other": 0.25,
+    "internal_research": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[5]",
+   "kind": "habit",
+   "label": "Impulse buys only at the till, and only from trusted heritage treats",
+   "value": "Impulse buys only at the till, and only from trusted heritage treats",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Margaret stage 4: Tunnock's at the till takes the impulse slot (data/personas/staged_personas_v1.json (persona 'Margaret'))"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.75",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "Same as the skeptic-calibrated Margaret value of 0.75 (research/05-personas.md section 4c (skeptic-calibrated table))"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "eye level vs floor +39% sales (research/04-3d-sim-evidence-and-tech.md)"
+    }
+   ],
+   "classes": [
+    "internal_research"
+   ],
+   "class_share": {
+    "internal_research": 1.0
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.09",
+   "value": 0.09,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Near the human mean of 0.094 and just under Margaret's 0.10 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: a fixed-route list shopper with low O scans less of the periphery"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Near the human mean of 0.094 and just under Margaret's 0.10 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: a fixed-route list shopper with low O scans less of the periphery"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "she still glances at the bottom shelf for own-label prices on cupboard ingredients"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.9",
+   "value": 0.9,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Same as Margaret's 0.90, the highest in the table (research/05-personas.md section 4c (skeptic-calibrated table))"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "THe worst for me was pringles. When they swapped into the smaller tubes for the same price, some places still had old stock so you ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.jcps.2009.08.003",
+     "citation": "Wood & Neal 2009 https://doi.org/10.1016/j.jcps.2009.08.003 . NOTE: the sim sets lock-in to 0 for an incumbent with a detected visible shrink (betrayal override, https://www.reddit.com/comments/1qtc78s)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.58",
+   "value": 0.58,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 61,
+     "score_is": "post_score(thread)",
+     "thread_title": "What products do you now refuse to buy because of shrinkflation?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Margaret's 0.55 + 0.03 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: the small uplift reflects her stated anger that the weekly shop went from £60 to £90 (data/personas/staged_personas_v1.json (persona 'Margaret')), dampened because she trades UP after a betrayal (https://www.reddit.com/comments/1tsbmt5)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Margaret's 0.55 + 0.03 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: the small uplift reflects her stated anger that the weekly shop went from £60 to £90 (data/personas/staged_personas_v1.json (persona 'Margaret')), dampened because she trades UP after a betrayal (https://www.reddit.com/comments/1tsbmt5)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Margaret's 0.55 + 0.03 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: the small uplift reflects her stated anger that the weekly shop went from £60 to £90 (data/personas/staged_personas_v1.json (persona 'Margaret')), dampened because she trades UP after a betrayal (https://www.reddit.com/comments/1tsbmt5)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.1",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Same as Margaret's 0.10, half the human mean of 0.20 (research/05-personas.md section 4c (skeptic-calibrated table))"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007",
+     "citation": "low O and high N predict food neophobia (Nezlek & Forestell 2019 https://doi.org/10.1016/j.foodqual.2018.11.007)"
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.82",
+   "value": 0.82,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1s9qhp0",
+     "thread_id": "1s9qhp0",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "'NEW Recipe'. Like it's something positive that's been asked for, when everyone has literally always previously bought it because they like the old/existing recipe",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Margaret's 0.80 + 0.02 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: her rejection triggers include both 'NEW recipe' and protein claims (https://www.reddit.com/comments/1s9qhp0"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Margaret's 0.80 + 0.02 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: her rejection triggers include both 'NEW recipe' and protein claims (https://www.reddit.com/comments/1s9qhp0"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 97,
+     "score_is": "post_score(thread)",
+     "thread_title": "Has anyone else noticed an increase in aggressive protein marketing in supermarkets?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.03",
+   "value": 0.03,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Margaret's 0.02 + 0.01 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: she reads only the ingredients line on items she picks up, never the nutrition table, NOVA or Nutri-Score"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Margaret's 0.02 + 0.01 (research/05-personas.md section 4c (skeptic-calibrated table)). assumption: she reads only the ingredients line on items she picks up, never the nutrition table, NOVA or Nutri-Score"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 6",
+   "value": 6,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Same as Margaret's 6 s, near the human mean of 6.6 s (research/05-personas.md section 4c (skeptic-calibrated table))"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "the literature range is 3-6 s, with a pick-up only when the pack 'looks wrong' (research/05-personas.md pressure test)"
+    }
+   ],
+   "classes": [
+    "internal_research"
+   ],
+   "class_share": {
+    "internal_research": 1.0
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.05",
+   "value": 0.05,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Same as Margaret's 0.05 (research/05-personas.md section 4c (skeptic-calibrated table)). Weekly-shop retiree who has 'never bought' a meal deal (data/personas/staged_personas_v1.json (persona 'Margaret') stage 1)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Same as Margaret's 0.05 (research/05-personas.md section 4c (skeptic-calibrated table)). Weekly-shop retiree who has 'never bought' a meal deal (data/personas/staged_personas_v1.json (persona 'Margaret') stage 1)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "THe worst for me was pringles. When they swapped into the smaller tubes for the same price, some places still had old stock so you could visibly see the difference. Aint bought any since",
+   "url": "https://www.reddit.com/comments/1qtc78s"
+  },
+  {
+   "quote": "When the price goes up and you get less, that really makes me anti the brand. I assume its cos they think we are stupids and wont notice.",
+   "url": "https://www.reddit.com/comments/1tjgl9c"
+  },
+  {
+   "quote": "The thing I hate more about shrinkflation is being LIED to about it.",
+   "url": "https://www.reddit.com/comments/1oi5mf0"
+  },
+  {
+   "quote": "'NEW Recipe'. Like it's something positive that's been asked for, when everyone has literally always previously bought it because they like the old/existing recipe",
+   "url": "https://www.reddit.com/comments/1s9qhp0"
+  },
+  {
+   "quote": "I had a caramel wafer the other week and it was exactly the same size I remember them from decades ago, and tasted exactly the same. Nice one, Tunnocks, if your product is good enough, I don't care what it ...",
+   "url": "https://www.reddit.com/comments/1s9qhp0"
+  },
+  {
+   "quote": "I haven't bought a tub of Quality Street in years.",
+   "url": "https://www.reddit.com/comments/1qgcwyr"
+  },
+  {
+   "quote": "For us older people, Heinz was the only brand available for stuff like ketchup and baked beans when we were kids. So they'll get recognition and nostalgia purchases.",
+   "url": "https://www.reddit.com/comments/1b4i3rn"
+  },
+  {
+   "quote": "I bought a 200g block of butter the other day, that really pissed me off when I realised I'd been had. RIP Kerrygold it was a good run but same price for 20% less ain't it.",
+   "url": "https://www.reddit.com/comments/1oi5mf0"
+  }
+ ],
+ "built_from": [
+  "research/corpus/shrinkflation_switch.md",
+  "research/02-issue-discovery.md quotes (MSE, YouGov, dunnhumby), reused from the staged Margaret dossier",
+  "data/reddit/comments.csv (grep: never bought since, quality street, new recipe, price per gram, tunnock, british made)",
+  "data/personas/staged_personas_v1.json (persona 'Margaret')",
+  "research/05-personas.md section 4c (skeptic-calibrated table)"
+ ],
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 40.9,
+   "reddit_inferred": 0.0,
+   "paper": 6.1,
+   "off_field": 0.6,
+   "sales_data": 0.0,
+   "staged_persona": 14.2,
+   "web_other": 3.5,
+   "internal_research": 14.1,
+   "assumption": 20.6
+  },
+  "headline": {
+   "reddit": 40.9,
+   "paper": 6.1,
+   "off_field": 0.6,
+   "assumption": 20.6,
+   "other (sales, staged, web, internal)": 31.8
+  },
+  "n_fields": 53,
+  "fields_by_primary_class": {
+   "staged_persona": 4,
+   "web_other": 2,
+   "assumption": 6,
+   "reddit": 30,
+   "off_field": 1,
+   "internal_research": 6,
+   "paper": 4
+  },
+  "pct_fields_with_any": {
+   "reddit": 56.6,
+   "paper": 17.0,
+   "off_field": 1.9,
+   "staged_persona": 28.3,
+   "web_other": 9.4,
+   "internal_research": 30.2,
+   "assumption": 35.8
+  },
+  "pct_fields_with_any_assumption": 35.8,
+  "lens_fields_measured_by_off_field": {
+   "n": 8,
+   "of": 8,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}

@@ -1,0 +1,1783 @@
+{
+ "persona_id": "p_vegan_ethical",
+ "name": "Nadia",
+ "archetype": "vegan_ethical",
+ "kind": "lens",
+ "source_file": "data/personas/lens/vegan_ethical.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: single-adult weekly shop cooking mostly from scratch (lentils, beans, tofu)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1pf70di",
+     "thread_id": "1pf70di",
+     "subreddit": "TooAfraidToAsk",
+     "theme": "say_do_healthy",
+     "score": 1076,
+     "score_is": "post_score(thread)",
+     "thread_title": "Why do people say healthy food at the grocery store is expensive, when the healthy food seems to be the least expensive thing to buy there?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'data/personas/lens'",
+     "citation": "below Freya's GBP75 two-adult shop (data/personas/lens/eco_low_chemical.json). Whole-food vegan eating is described as cheap and processed substitutes as the expensive part (https://www.reddit.com/comments/1pf70di)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 2,
+     "verbatim": "Sainsbury's likes to substitute our chosen vegan products with Quorn shit, which all has eggs in it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: she shops in store because online substitutions break vegan rules ('Sainsbury's likes to substitute our chosen vegan products with Quorn shit, which all has eggs in it', https://www.reddit.com/comments/iz6kv). She uses Ocado only for delisted challenger brands (https://www.reddit.com/comments/1o3q3ez)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "weekly_shop",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/vegan_ethical.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.household",
+   "kind": "profile",
+   "label": "household",
+   "value": "lives alone in a shared-ownership flat in Manchester; vegan since 2018; works as a secondary-school science teacher",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'not used by the sim'",
+     "text": "not used by the sim"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.age",
+   "kind": "profile",
+   "label": "age",
+   "value": 31,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'not used by the sim'",
+     "text": "not used by the sim"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.vegan_status",
+   "kind": "lens_weight",
+   "label": "lens: vegan_status (w=0.26)",
+   "value": 0.26,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1vjypr7",
+     "thread_id": "1vjypr7",
+     "subreddit": "AskABrit",
+     "theme": "chatgpt_shopping",
+     "score": 1,
+     "verbatim": "Tesco's dark chocolate digestives (accidentally vegan)",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1q1ffjm",
+     "thread_id": "1q1ffjm",
+     "subreddit": "CasualUK",
+     "theme": "trust_unknown_brand",
+     "score": 3,
+     "verbatim": "store-bought which is accidentally vegan",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "labels (en:vegan); fallback ingredients_analysis_tags (en:vegan / en:maybe-vegan / en:non-vegan) from the OFF pool parquet",
+   "direction": "required_gate",
+   "why": "This is the gate for every decision. A clear vegan label saves her a pack-flip. She also hunts 'accidentally vegan' own-label lines, so an unlabelled product that passes the ingredient check still scores",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.animal_ingredients",
+   "kind": "lens_weight",
+   "label": "lens: animal_ingredients (w=0.2)",
+   "value": 0.2,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "most non-Heinz ketchup has milk in, as do lots of crisps",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "bought so much bournville chocolate all the time until they put milk in it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.vegansociety.com/your-business/vegan-trademark-standards",
+     "citation": "trace tolerance: 'may contain' is a cross-contamination warning, not an ingredient (assumption, consistent with the Vegan Society trademark criteria, https://www.vegansociety.com/your-business/vegan-trademark-standards)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "trace tolerance: 'may contain' is a cross-contamination warning, not an ingredient (assumption, consistent with the Vegan Society trademark criteria, https://www.vegansociety.com/your-business/vegan-trademark-standards)"
+    }
+   ],
+   "measured_by_off_field": "allergens (en:milk, en:eggs) + ingredients_text (whey, honey, gelatine, carmine/e120, shellac/e904, lanolin-D3)",
+   "direction": "absent_better",
+   "why": "She reads the bold allergen text first because milk hides in savoury items such as crisps and ketchup. A recipe change that adds milk ends her loyalty to the product",
+   "classes": [
+    "reddit",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.palm_oil_n",
+   "kind": "lens_weight",
+   "label": "lens: palm_oil_n (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 17,
+     "verbatim": "Just give it a stir and save the orang-utangs. By the way please boycott palm oil in everything.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 18,
+     "verbatim": "better value than the palm oil special that is Cadburys",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "palm_oil_n",
+   "direction": "lower_better",
+   "why": "Palm oil is technically vegan, so it does not trigger an automatic reject. It is an animal-welfare issue for her (orang-utan habitat), so it carries a heavy penalty",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.brand_ethics_challenger",
+   "kind": "lens_weight",
+   "label": "lens: brand_ethics_challenger (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 259,
+     "verbatim": "if there's a brand or product that you love ... remember to add to your basket otherwise they really might not be there",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "I went vegan in 2019 and bought so much bournville chocolate all the time until they put milk in it and then they suddenly started ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/r2udam",
+     "thread_id": "r2udam",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 69,
+     "verbatim": "what brands are cruelty free or not",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "role (challenger | incumbent | own_label) + brand",
+   "direction": "challenger_better",
+   "why": "She deliberately buys from small vegan brands to keep them listed, and she punishes incumbents that removed vegan lines or charge a 'vegan tax'",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_per_100g",
+   "kind": "lens_weight",
+   "label": "lens: price_per_100g (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "started selling vegan bars for twice the price",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 10,
+     "verbatim": "I could bypass the vegan tax with dark chocolate",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1pf70di",
+     "thread_id": "1pf70di",
+     "subreddit": "TooAfraidToAsk",
+     "theme": "say_do_healthy",
+     "score": 4,
+     "verbatim": "processed vegan foods, those are definitely expensive",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "price_gbp (normalised per 100g using pack size)",
+   "direction": "lower_better",
+   "why": "The 'vegan tax' on processed substitutes annoys her. A dedicated vegan SKU priced at twice the dairy version reads as exploitation, not as a premium",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.ingredients_n",
+   "kind": "lens_weight",
+   "label": "lens: ingredients_n (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "the one vegan yoghurt that isn't pumped full of artificial rubbish",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "ingredients_n",
+   "direction": "lower_better",
+   "why": "She values a 'short clean ingredient list' on vegan substitutes because many of them are 'pumped full of artificial rubbish'",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.proteins_100g",
+   "kind": "lens_weight",
+   "label": "lens: proteins_100g (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1u6l4ix",
+     "thread_id": "1u6l4ix",
+     "subreddit": "veganuk",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "I'm sick of vegan options having no decent protein source ... I want tofu, tempeh and seitan",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 2,
+     "verbatim": "Vegans know what the good sources of protein are and do not need high protein cereal",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "proteins_100g",
+   "direction": "higher_better_but_no_claim_bonus",
+   "why": "She wants real plant protein (tofu, tempeh, seitan) in meals and resents 'vegetables-only' vegan options. She also resents protein marketing aimed at gym-goers",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens._weights",
+   "kind": "lens_weight",
+   "label": "lens weight magnitudes (rank/scale)",
+   "value": 1.0,
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "assumption: weights rank how often and how strongly each cue appears in vegan-flagged Reddit comments in data/reddit/comments.csv (112 comments match vegan / palm oil / cruelty / plant-based). The vegan gate and animal ingredients come first because a failure there ...",
+     "url": null,
+     "verified_in_corpus": false
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: weights rank how often and how strongly each cue appears in vegan-flagged Reddit comments in data/reddit/comments.csv (112 comments match vegan / palm oil / cruelty / plant-based). The vegan gate and animal ingredients come first because a failure there ..."
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "palm oil and brand ethics are the next most-voiced ethical cues"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "price, ingredient count and protein are secondary"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.78",
+   "value": 0.78,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: vegan_ethical +0.7 (Pfeiler & Egloff 2018 openness predicts vegetarianism)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.78 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.5114/cipp.2021.107172",
+     "citation": "Kovac & Halama 2021, 'How vegans, vegetarians and carnists differ in personality traits and attitudes towards animals', Current Issues in Personality Psychology 10(2):147-152, https://doi.org/10.5114/cipp.2021.107172 (vegans higher in open-mindedness, the only trait difference)"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1080/03670244.2018.1455675",
+     "citation": "Forestell & Nezlek 2018, Ecology of Food and Nutrition 57(3):246-259, https://doi.org/10.1080/03670244.2018.1455675 (vegetarians 'more open to new experiences')"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small additive logit boost matching eco_low_chemical's O coefficient"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "direction from the papers"
+    }
+   ],
+   "effect": "High Openness. Openness is the one trait that consistently separates vegans and vegetarians from meat-eaters, so she notices unfamiliar challenger packs (+notice for role=challenger) and is willing to trial them",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean_effect.O.1",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007",
+     "citation": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: direction only"
+    }
+   ],
+   "effect": "Low food neophobia, so she has a lower barrier to trying a new SKU once it passes the vegan gate",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.62",
+   "value": 0.62,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: vegan_ethical 0 (that archetype is driven by O and A, not C)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.62 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.25)",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1080/03670244.2018.1455675",
+     "citation": "Forestell & Nezlek 2018, https://doi.org/10.1080/03670244.2018.1455675 ('Neither conscientiousness nor agreeableness varied as a function of dietary habits')"
+    },
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "most non-Heinz ketchup has milk in, as do lots of crisps",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: set at a mid value because the papers find no C difference by diet, so the label reading here is driven by the vegan rule rather than by trait C"
+    }
+   ],
+   "effect": "Moderately conscientious: reliably flips packs in high-risk categories (crisps, biscuits, chocolate, cereal) to read the allergen bold text for milk and egg. Feeds reads_structured_data and seconds_at_shelf, not utility",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.48",
+   "value": 0.48,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.48 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.0)",
+   "value": 0.0,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Kovac & Halama 2021 (no E difference reported)",
+     "url": null
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Forestell & Nezlek 2018",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: no reliable effect in the cited literature"
+    }
+   ],
+   "effect": "Mid Extraversion; no diet-group difference, so no coefficient",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.66",
+   "value": 0.66,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.66 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.5114/cipp.2021.107172",
+     "citation": "Kovac & Halama 2021, https://doi.org/10.5114/cipp.2021.107172 (only open-mindedness predicted attitudes towards animals)"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Forestell & Nezlek 2018 (no A difference)",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: kept small because the diet-group papers report no A difference"
+    }
+   ],
+   "effect": "Slightly above-average Agreeableness. Her concern for animals comes through Openness and her attitudes towards animals rather than through A, so A gets a small weight on brand-ethics/challenger support only",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.58",
+   "value": 0.58,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.58 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1080/03670244.2018.1455675",
+     "citation": "Forestell & Nezlek 2018, https://doi.org/10.1080/03670244.2018.1455675 (vegetarians 'more neurotic and depressed than omnivores')"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: direction from the paper, magnitude small"
+    }
+   ],
+   "effect": "Somewhat elevated Neuroticism: anxiety about delisting ('the vegan product climate seems to be getting so unstable') and about hidden animal ingredients, which strengthens rejection triggers and loss-averse stockpiling of favourites",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "allergens contains en:milk or en:eggs, or ingredients_text contains whey, gelatine, honey, carmine ...",
+   "value": "allergens contains en:milk or en:eggs, or ingredients_text contains whey, gelatine, honey, carmine (e120) or shellac (e904): hard reject, regardless of other scores",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "most non-Heinz ketchup has milk in, as do lots of crisps",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "I went vegan in 2019 and bought so much bournville chocolate all the time until they put milk in it and then they suddenly started ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "palm_oil_n > 0 on chocolate, biscuits or spreads: put back unless no ...",
+   "value": "palm_oil_n > 0 on chocolate, biscuits or spreads: put back unless no alternative exists in the bay",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 17,
+     "verbatim": "This happens when they leave out palm oil. Just give it a stir and save the orang-utangs. By the way please boycott palm oil in ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "vegan SKU from an incumbent priced at 1.8x or more per 100g ...",
+   "value": "vegan SKU from an incumbent priced at 1.8x or more per 100g above its own dairy version ('vegan tax')",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "vegan bars for twice the price",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "1.8x threshold is an assumption"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "'high protein' or 'plant-powered' front-of-pack claim on a snack with long ingredients_n: ...",
+   "value": "'high protein' or 'plant-powered' front-of-pack claim on a snack with long ingredients_n: gimmick reactance",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q6qho0",
+     "thread_id": "1q6qho0",
+     "subreddit": "UKfood",
+     "theme": "protein_gimmick",
+     "score": 64,
+     "verbatim": "They did the same with things that were actually already vegan",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 10,
+     "verbatim": "\"vegan\" it's just buzzword",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "vegetarian-only (en:vegetarian without en:vegan) treated as 'not for me' without a pack-flip, ...",
+   "value": "vegetarian-only (en:vegetarian without en:vegan) treated as 'not for me' without a pack-flip, because of eggs and milk",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "Veggie has a lot lower standards than",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 2,
+     "verbatim": "Quorn ... all has eggs in it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Vegan Society sunflower trademark or a clear 'Vegan' front-of-pack (labels en:vegan / ...",
+   "value": "Vegan Society sunflower trademark or a clear 'Vegan' front-of-pack (labels en:vegan / en:vegan-society)",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.vegansociety.com/your-business/vegan-trademark-standards",
+     "citation": "Vegan Society trademark standards https://www.vegansociety.com/your-business/vegan-trademark-standards"
+    },
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "It's the more subtle substitutions that worry me -- e.g. most non-Heinz ketchup has milk in, as do lots of crisps and random things like ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "small, UK, family-run challenger that the vegan community talks about (role=challenger)",
+   "value": "small, UK, family-run challenger that the vegan community talks about (role=challenger)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 9,
+     "verbatim": "I had no idea it was a small and family-run business ... I'll be going out to stock up",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "palm-oil-free with sunflower oil or cocoa butter as the named fat",
+   "value": "palm-oil-free with sunflower oil or cocoa butter as the named fat",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 3,
+     "verbatim": "they don't use palm oil (the products I've checked use sunflower oil)",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "cruelty-free / not tested on animals (household crossover; she carries the habit ...",
+   "value": "cruelty-free / not tested on animals (household crossover; she carries the habit into food brands)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/r2udam",
+     "thread_id": "r2udam",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 69,
+     "verbatim": "what brands are cruelty free or not",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "goes straight to the free-from / plant-based chiller and own-label 'accidentally vegan' ...",
+   "value": "goes straight to the free-from / plant-based chiller and own-label 'accidentally vegan' lines, and does not browse the main dairy yoghurt bay",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1,
+     "verbatim": "they move those sections around every ... week ... find out where the flora plant is",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1vjypr7",
+     "thread_id": "1vjypr7",
+     "subreddit": "AskABrit",
+     "theme": "chatgpt_shopping",
+     "score": 14,
+     "score_is": "post_score(thread)",
+     "thread_title": "What is your favourite own brand product from each supermarket?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "stockpiles favourites she fears will be delisted and buys 'even every other ...",
+   "value": "stockpiles favourites she fears will be delisted and buys 'even every other week' to signal demand",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "repeat staples (soya milk, tofu, oat spread) go in the basket unread; ...",
+   "value": "repeat staples (soya milk, tofu, oat spread) go in the basket unread; a pack-flip happens only on new SKUs and high-risk categories",
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "habit lock-in human mean 0.83, research/05-personas.md section 4c"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bq1qcm",
+     "thread_id": "1bq1qcm",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 2,
+     "verbatim": "Sainsbury's Soya milk is cheap and tastes the best",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "skips the meal deal because the vegan options are cut to 'the ...",
+   "value": "skips the meal deal because the vegan options are cut to 'the falafel and hummus wrap', and brings lunch from home",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1u6l4ix",
+     "thread_id": "1u6l4ix",
+     "subreddit": "veganuk",
+     "theme": "protein_gimmick",
+     "score": 80,
+     "verbatim": "removed every single vegan meal deal option except for the ... falafel and hummus wrap",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.68",
+   "value": 0.68,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1616,
+     "score_is": "post_score(thread)",
+     "thread_title": "You’ve figured out the supermarket. You know exactly where everything is, you can get in and out in 5 to 10 minutes. But then the supermarket gets bored of that layout and change it entirely. Now you’re walking around looking for the salt.",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Just below the human mean of 0.70 (research/05-personas.md section 4c). assumption: she goes straight to the plant-based chiller and skips the dairy and meat bays (https://www.reddit.com/comments/1uosc29), so overall noticing in mixed categories is slightly lower"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Just below the human mean of 0.70 (research/05-personas.md section 4c). assumption: she goes straight to the plant-based chiller and skips the dairy and meat bays (https://www.reddit.com/comments/1uosc29), so overall noticing in mixed categories is slightly lower"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.11",
+   "value": 0.11,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: she actively searches for small vegan brands that get delisted or tucked away (https://www.reddit.com/comments/1o3q3ez)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: she actively searches for small vegan brands that get delisted or tucked away (https://www.reddit.com/comments/1o3q3ez)"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "high O gives a small lift (Kovac & Halama 2021)",
+     "url": null
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.78",
+   "value": 0.78,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bq1qcm",
+     "thread_id": "1bq1qcm",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 8,
+     "score_is": "post_score(thread)",
+     "thread_title": "What are your hot takes on branded Vs unbranded?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "I went vegan in 2019 and bought so much bournville chocolate all the time until they put milk in it and then they suddenly started ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Just below the human mean of 0.83 (research/05-personas.md section 4c). Staples run on autopilot (https://www.reddit.com/comments/1bq1qcm), but a recipe change (milk added) or a delisting forces a switch (https://www.reddit.com/comments/1tsbmt5"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1pf70di",
+     "thread_id": "1pf70di",
+     "subreddit": "TooAfraidToAsk",
+     "theme": "say_do_healthy",
+     "score": 1076,
+     "score_is": "post_score(thread)",
+     "thread_title": "Why do people say healthy food at the grocery store is expensive, when the healthy food seems to be the least expensive thing to buy there?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tsbmt5",
+     "thread_id": "1tsbmt5",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "I went vegan in 2019 and bought so much bournville chocolate all the time until they put milk in it and then they suddenly started ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Near the human mean of 0.57 (research/05-personas.md section 4c). She cooks cheap whole foods (https://www.reddit.com/comments/1pf70di) but reacts strongly to the 'vegan tax' on processed swaps (https://www.reddit.com/comments/1tsbmt5"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 454,
+     "score_is": "post_score(thread)",
+     "thread_title": "'Shrinkflation' bashing Brits budgets as companies reduce sizes of household essentials",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.4",
+   "value": 0.4,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.5114/cipp.2021.107172",
+     "citation": "Twice the human mean of 0.20 (research/05-personas.md section 4c). High Openness / low neophobia (Kovac & Halama 2021 https://doi.org/10.5114/cipp.2021.107172"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Twice the human mean of 0.20 (research/05-personas.md section 4c). High Openness / low neophobia (Kovac & Halama 2021 https://doi.org/10.5114/cipp.2021.107172"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Nezlek & Forestell 2019) plus active support for small vegan brands (https://www.reddit.com/comments/1o3q3ez). assumption: conditional on passing the vegan gate",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Nezlek & Forestell 2019) plus active support for small vegan brands (https://www.reddit.com/comments/1o3q3ez). assumption: conditional on passing the vegan gate"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q6qho0",
+     "thread_id": "1q6qho0",
+     "subreddit": "UKfood",
+     "theme": "protein_gimmick",
+     "score": 64,
+     "verbatim": "Supermarkets decided to cash in and charge people more for the same product but just labelling it protein. They did the same with things that ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Above the human mean of 0.53 (research/05-personas.md section 4c). Strong reaction to 'high protein' relabelling of already-vegan food and to 'vegan' as a buzzword (https://www.reddit.com/comments/1q6qho0"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 259,
+     "score_is": "post_score(thread)",
+     "thread_title": "Sudden influx of \"High Protein\" products",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1u6l4ix",
+     "thread_id": "1u6l4ix",
+     "subreddit": "veganuk",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "Tbh I'm sick of vegan options having no decent protein source. I don't want a mushroom and vegan cheese toastje, or cauliflower 'wings' - I ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "It's the more subtle substitutions that worry me -- e.g. most non-Heinz ketchup has milk in, as do lots of crisps and random things like ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Nearly three times the human mean of 0.18 and above Sam's 0.45 (research/05-personas.md section 4c). The vegan rule forces allergen and ingredient reading on any unfamiliar SKU in risky categories (https://www.reddit.com/comments/iz6kv). assumption: she reads the allergens and ingredients, not NOVA, ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Nearly three times the human mean of 0.18 and above Sam's 0.45 (research/05-personas.md section 4c). The vegan rule forces allergen and ingredient reading on any unfamiliar SKU in risky categories (https://www.reddit.com/comments/iz6kv). assumption: she reads the allergens and ingredients, not NOVA, ..."
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 9",
+   "value": 9,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Above the human mean of 6.6 s (research/05-personas.md section 4c). assumption: 9 s covers one pack-flip and an allergen scan on a non-staple"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Above the human mean of 6.6 s (research/05-personas.md section 4c). assumption: 9 s covers one pack-flip and an allergen scan on a non-staple"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "staples take about 2 s"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.15",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1u6l4ix",
+     "thread_id": "1u6l4ix",
+     "subreddit": "veganuk",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "over 20 meal deal mains that were chicken, they had 3 vegan ones",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Far below the human mean of 0.67 (research/05-personas.md section 4c). Vegan meal-deal mains have shrunk to the falafel wrap (https://www.reddit.com/comments/1u6l4ix: 'over 20 meal deal mains that were chicken, they had 3 vegan ones')"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: she brings lunch on most days"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "It's the more subtle substitutions that worry me -- e.g. most non-Heinz ketchup has milk in, as do lots of crisps and random things like that.",
+   "url": "https://www.reddit.com/comments/iz6kv"
+  },
+  {
+   "quote": "I went vegan in 2019 and bought so much bournville chocolate all the time until they put milk in it and then they suddenly started selling vegan bars for twice the price... Screw Cadburys",
+   "url": "https://www.reddit.com/comments/1tsbmt5"
+  },
+  {
+   "quote": "This happens when they leave out palm oil. Just give it a stir and save the orang-utangs. By the way please boycott palm oil in everything.",
+   "url": "https://www.reddit.com/comments/1511znd"
+  },
+  {
+   "quote": "I now either order it online or go to a branch a bit further out who still stock it, because it's the one vegan yoghurt that isn't pumped full of artificial rubbish.",
+   "url": "https://www.reddit.com/comments/1o3q3ez"
+  },
+  {
+   "quote": "Tbh I'm sick of vegan options having no decent protein source. I don't want a mushroom and vegan cheese toastje, or cauliflower 'wings' - I want tofu, tempeh and seitan etc.",
+   "url": "https://www.reddit.com/comments/1u6l4ix"
+  },
+  {
+   "quote": "Supermarkets decided to cash in and charge people more for the same product but just labelling it protein. They did the same with things that were actually already vegan.",
+   "url": "https://www.reddit.com/comments/1q6qho0"
+  },
+  {
+   "quote": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, it's palm oil free, and it supports a British company.",
+   "url": "https://www.reddit.com/comments/1qtc78s"
+  }
+ ],
+ "built_from": [
+  "CONTRACT.md Personas shape",
+  "data/reddit/comments.csv (grep: vegan|palm oil|cruelty|animal product|plant-based, 112 short comments)",
+  "research/corpus/delisted.md, protein_gimmick.md, impulse_instore_vs_online.md, shrinkflation_switch.md",
+  "research/05-personas.md section 4c (skeptic-calibrated human means)",
+  "data/personas/lens/eco_low_chemical.json (structure reference)",
+  "PubMed abstracts PMID 29595331 and 38013920 (fetched via NCBI E-utilities)"
+ ],
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 49.6,
+   "reddit_inferred": 0.0,
+   "paper": 6.9,
+   "off_field": 0.0,
+   "sales_data": 0.0,
+   "staged_persona": 0.0,
+   "web_other": 1.8,
+   "internal_research": 11.6,
+   "assumption": 30.1
+  },
+  "headline": {
+   "reddit": 49.6,
+   "paper": 6.9,
+   "off_field": 0.0,
+   "assumption": 30.1,
+   "other (sales, staged, web, internal)": 13.4
+  },
+  "n_fields": 46,
+  "fields_by_primary_class": {
+   "reddit": 33,
+   "assumption": 6,
+   "internal_research": 3,
+   "paper": 4
+  },
+  "pct_fields_with_any": {
+   "reddit": 71.7,
+   "paper": 17.4,
+   "web_other": 4.3,
+   "internal_research": 28.3,
+   "assumption": 54.3
+  },
+  "pct_fields_with_any_assumption": 54.3,
+  "lens_fields_measured_by_off_field": {
+   "n": 7,
+   "of": 7,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}

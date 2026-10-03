@@ -1,0 +1,1568 @@
+{
+ "persona_id": "p_meal_deal_office",
+ "name": "Callum",
+ "archetype": "meal_deal_office",
+ "kind": "lens",
+ "source_file": "data/personas/lens/meal_deal_office.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 3.85,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1h1g0jq",
+     "thread_id": "1h1g0jq",
+     "subreddit": "wikipedia",
+     "theme": "meal_deal",
+     "score": 102,
+     "verbatim": "£3.75 in Sainsburys, I think £3.80 in Tesco but £3.50 with a clubcard.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1pmmtcv",
+     "thread_id": "1pmmtcv",
+     "subreddit": "MealDealRates",
+     "theme": "meal_deal",
+     "score": 6,
+     "verbatim": "£3.85 is a bargain IMO",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "'£3.85 is a bargain IMO' https://www.reddit.com/comments/1pmmtcv. Budget = the deal price, assumption: per-visit hard ceiling"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "anything outside the deal is a separate, rare spend"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] (Jordan) dossier.profile: weekday lunch is IN STORE at a Tesco Express near the office. This persona is the in-store half of Jordan with the ChatGPT arm removed"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "meal_deal",
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "research/04-3d-sim-evidence-and-tech.md §1 'UK meal-deal and missions': meal deal = ~3-6 min in store, 3 items (main + snack + drink) [M, flagged as assumption there]"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "research/04-3d-sim-evidence-and-tech.md §1 'UK meal-deal and missions': meal deal = ~3-6 min in store, 3 items (main + snack + drink) [M, flagged as assumption there]"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "lens.familiarity / incumbent",
+   "kind": "lens_weight",
+   "label": "lens: familiarity / incumbent (w=0.26)",
+   "value": 0.26,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal",
+     "citation": "Harry Wallop, 'What's Britain's favourite meal deal' https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal (via research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "Harry Wallop, 'What's Britain's favourite meal deal' https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal (via research/02-issue-discovery.md)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "Tesco, I always get the bacon, sausage and egg triple, with the biggest can of redbull and anything for the snack",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "role",
+   "direction": "incumbent_or_own_label_better",
+   "why": "Same combo most days. The UK's top Tesco combo is Chicken Club + Egg Protein Pot + Coca-Cola, and habit beats the value people say they chase.",
+   "classes": [
+    "reddit",
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "web_other": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.standalone price (deal value)",
+   "kind": "lens_weight",
+   "label": "lens: standalone price (deal value) (w=0.24)",
+   "value": 0.24,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 172,
+     "verbatim": "I always get the monster and save it for my partner seems a waste not to get something expensive",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "I'd never pay the price for an innocent or naked outside of a meal deal",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "price_gbp",
+   "direction": "higher_better_within_deal",
+   "why": "Inside the deal the drink slot is valued at its standalone price: the expensive Monster or smoothie feels free and gets kept for later. NOT unit-price frugality.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.protein",
+   "kind": "lens_weight",
+   "label": "lens: protein (w=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1h1g0jq",
+     "thread_id": "1h1g0jq",
+     "subreddit": "wikipedia",
+     "theme": "meal_deal",
+     "score": 10,
+     "verbatim": "a lot of them now do things like protein yogurts/shakes which you can't buy in bulk. I certainly wouldn't be able to replicate my standard ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal",
+     "citation": "Egg Protein Pot overtook McCoy's: https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal"
+    }
+   ],
+   "measured_by_off_field": "proteins_100g",
+   "direction": "higher_better",
+   "why": "Protein pots and shakes fill the snack/drink slot because they feel free in the deal. The Egg Protein Pot became the top meal-deal snack.",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.front-of-pack legibility in 4 s",
+   "kind": "lens_weight",
+   "label": "lens: front-of-pack legibility in 4 s (w=0.14)",
+   "value": 0.14,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "staged_personas_v1.json[1] verdict.corrections: 'In store, D wins on \"20g PROTEIN\" legibility, facings, deal eligibility and familiarity only.' Dickson & Sawyer 1990 (~12 s per category decision, many look only at the chosen brand) [M] via research/04 §1",
+     "url": null
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] verdict.corrections: 'In store, D wins on \"20g PROTEIN\" legibility, facings, deal eligibility and familiarity only.' Dickson & Sawyer 1990 (~12 s per category decision, many look only at the chosen brand) [M] via research/04 §1"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "staged_personas_v1.json[1] verdict.corrections: 'In store, D wins on \"20g PROTEIN\" legibility, facings, deal eligibility and familiarity only.' Dickson & Sawyer 1990 (~12 s per category decision, many look only at the chosen brand) [M] via research/04 §1"
+    }
+   ],
+   "measured_by_off_field": "pack_copy",
+   "direction": "big_single_claim_better",
+   "why": "With ~4 s at the bay, only one big number or word gets read ('20g PROTEIN'). Long copy counts as zero.",
+   "classes": [
+    "paper",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.sugar",
+   "kind": "lens_weight",
+   "label": "lens: sugar (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "I get water because usually every other option has a stupid amount of sugar in it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "sugars_100g",
+   "direction": "lower_better",
+   "why": "A weak pull: sometimes chooses water or a lower-sugar drink, but it is often overridden by craving or value.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.overall healthiness",
+   "kind": "lens_weight",
+   "label": "lens: overall healthiness (w=0.07)",
+   "value": 0.07,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 5,
+     "verbatim": "I'll usually try to get one with some kind of vegetables or fruit though.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 9,
+     "verbatim": "Nutritional value isn't often a primary concern.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "'Nutritional value isn't often a primary concern.' https://www.reddit.com/comments/1qazvyk. Mapping UK traffic light ≈ nutriscore = assumption"
+    }
+   ],
+   "measured_by_off_field": "nutriscore",
+   "direction": "better_grade_better",
+   "why": "Knows roughly what is healthy and sometimes aims for veg or fruit, but 'nutritional value isn't often a primary concern'. Not printed on UK packs, so he picks it up only through the traffic-light colours.",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.sweetener aftertaste risk",
+   "kind": "lens_weight",
+   "label": "lens: sweetener aftertaste risk (w=0.06)",
+   "value": 0.06,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan dossier.rejection_triggers: 'Chalky or plasticky texture, or sweetener aftertaste, on first try: one strike and the brand is gone for good'"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 0,
+     "verbatim": "Meal deals are pointless when you don't consume liquid sugars or sweeteners.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "sweeteners",
+   "direction": "lower_better",
+   "why": "One bad chalky or sweetener-aftertaste protein item and that brand is out of the slot for good.",
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens._weights",
+   "kind": "lens_weight",
+   "label": "lens weight magnitudes (rank/scale)",
+   "value": 1.0,
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "assumption: weights rank-ordered by how often each driver appears in research/corpus/meal_deal.md threads (habit/value talk dominates, nutrition talk is minority) and by staged Jordan behavioural_drivers weights (habit 0.75, protein arbitrage 0.7)",
+     "url": null,
+     "verified_in_corpus": false
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: weights rank-ordered by how often each driver appears in research/corpus/meal_deal.md threads (habit/value talk dominates, nutrition talk is minority) and by staged Jordan behavioural_drivers weights (habit 0.75, protein arbitrage 0.7)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "normalised to 1"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "gate.meal_deal_eligible",
+   "kind": "trigger",
+   "label": "hard gate: meal_deal_eligible",
+   "value": "In the 3-slot meal-deal mission, a product NOT in the deal is effectively invisible (p_pick ≈ 0.02). Eligibility is a filter that applies before any lens scoring.",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan dossier.rejection_triggers: 'Item not in the Tesco Express meal deal or not stocked at Express: it doesn't exist for the lunch mission'"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "verdict.supporting_evidence: 'A (not deal-eligible) is out of scope rather than a near-choice.' Value 0.02 = assumption"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.38",
+   "value": 0.38,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Eats close to the same combo every working day. Novelty only gets in when the usual is sold out or a colleague recommends something."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: meal_deal_office 0"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.38 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=-0.25)",
+   "value": -0.25,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 9,
+     "verbatim": "Convenience trumps nutrition. If I'm out and about and need a quick and easy option for lunch, a meal deal is one of the best ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007: food-neophobia 'avoidance' negatively related to Openness. Behaviour: 'I have a coworker who gets almost the exact same one every single day. It's very normal.' https://www.reddit.com/comments/1qazvyk. coef magnitude = assumption, scaled ...",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007:"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007: food-neophobia 'avoidance' negatively related to Openness. Behaviour: 'I have a coworker who gets almost the exact same one every single day. It's very normal.' https://www.reddit.com/comments/1qazvyk. coef magnitude = assumption, scaled ..."
+    }
+   ],
+   "effect": "low O → lower p_notice and lower trial for unfamiliar challenger brands in the chiller; habitual combo is the default",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.48",
+   "value": 0.48,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Organised enough to hold an office job and keep a Clubcard on the phone, but does not read labels at lunch: 'convenience trumps nutrition'."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: meal_deal_office -0.2 (assumption: convenience and time pressure)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.48 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 9,
+     "verbatim": "Convenience trumps nutrition.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Bogg & Roberts 2004, Psychological Bulletin 130(6):887-919, doi:10.1037/0033-2909.130.6.887: C predicts health-related behaviours, incl. diet [M, not re-fetched]. Behaviour: 'Convenience trumps nutrition.' https://www.reddit.com/comments/1qazvyk. coef = assumption",
+     "url": "https://doi.org/10.1037/0033-2909.130.6.887:"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Bogg & Roberts 2004, Psychological Bulletin 130(6):887-919, doi:10.1037/0033-2909.130.6.887: C predicts health-related behaviours, incl. diet [M, not re-fetched]. Behaviour: 'Convenience trumps nutrition.' https://www.reddit.com/comments/1qazvyk. coef = assumption"
+    }
+   ],
+   "effect": "near-mean C → almost no extra attention to the nutrition panel/ingredients; reads_structured_data stays 0.06",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Lunch is semi-social: goes with a co-worker, compares combos, takes tips."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 320,
+     "verbatim": "Got lunch with a co-worker earlier and he couldn't believe that I got a water on a meal deal.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Thread OP: 'Got lunch with a co-worker earlier and he couldn't believe that I got a water on a meal deal.' https://www.reddit.com/comments/1bc79kh. E value = assumption: no archetype-specific Big Five data, set near the mean"
+    }
+   ],
+   "effect": "a colleague's pick acts as a trust signal (small lift to a co-worker-endorsed SKU)",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Grumbles about price creep but does not boycott. Accepts the deal as fair enough."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1pmmtcv",
+     "thread_id": "1pmmtcv",
+     "subreddit": "MealDealRates",
+     "theme": "meal_deal",
+     "score": 6,
+     "verbatim": "Personally yes, £3.85 is a bargain IMO",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "'Personally yes, £3.85 is a bargain IMO' https://www.reddit.com/comments/1pmmtcv. A value = assumption, set near the mean"
+    }
+   ],
+   "effect": "weak fairness reactance; price-rise anger does not turn into switching store",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Stress or a bad morning turns lunch into a treat (energy drink, all-day breakfast). Otherwise neutral."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.5 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 9,
+     "verbatim": "People know that a meal deal consisting of an all day breakfast sandwich, Ginsters pasty and a can of Monster isn't a healthy option.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015, Appetite 84:128-138, 'Does personality influence eating styles and food choices? Direct and indirect effects' (Neuroticism → emotional eating) [M, not re-fetched]. Behaviour: 'People know that a meal deal consisting of an all day breakfast sandwich, Ginsters ...",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Keller & Siegrist 2015, Appetite 84:128-138, 'Does personality influence eating styles and food choices? Direct and indirect effects' (Neuroticism → emotional eating) [M, not re-fetched]. Behaviour: 'People know that a meal deal consisting of an all day breakfast sandwich, Ginsters ..."
+    }
+   ],
+   "effect": "N × stressful-day flag → higher pick of indulgent mains and full-sugar or energy drinks; lower weight on sugars_100g on those visits",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Not in the meal deal (no deal ticket on the shelf edge): ...",
+   "value": "Not in the meal deal (no deal ticket on the shelf edge): not considered at all",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan rejection_triggers + verdict.supporting_evidence (meal_deal.md)"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "A 'protein' version with no more protein than the standard one, or ...",
+   "value": "A 'protein' version with no more protein than the standard one, or a trivial uplift (gimmick)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 226,
+     "verbatim": "I saw a protein chicken sandwich in Asda a few days ago which had less protein than the regular chicken sandwich. Ridiculous.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Anything that slows the break: hunting for an item after a range ...",
+   "value": "Anything that slows the break: hunting for an item after a range reset, the usual sold out, queue",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 7,
+     "verbatim": "when I'm buying a meal deal I'm on my 20 min un paid break 😭 every second counts",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Low-value item in a slot (water, banana) when a higher-value eligible item ...",
+   "value": "Low-value item in a slot (water, banana) when a higher-value eligible item exists, unless he really wants it",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "You got water on a meal deal? That's crazy. You might as well throw money in the toilet.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Chalky texture or sweetener aftertaste on first try: brand dropped permanently",
+   "value": "Chalky texture or sweetener aftertaste on first try: brand dropped permanently",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan dossier.rejection_triggers (assumption-level, composite)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "staged_personas_v1.json[1] Jordan dossier.rejection_triggers (assumption-level, composite)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Shrinkflation spotted on a deal item (smaller pot, same deal)",
+   "value": "Shrinkflation spotted on a deal item (smaller pot, same deal)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 3,
+     "verbatim": "They have also reduced the pasta pots I switched to from sandwiches by 10g each. Fuck shrinkflation.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Purple/yellow meal-deal ticket on the shelf edge: inclusion in the deal works ...",
+   "value": "Purple/yellow meal-deal ticket on the shelf edge: inclusion in the deal works as an endorsement",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan trust_signals: 'In the Tesco meal deal at the Clubcard price: inclusion in the slot works as an endorsement'"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "A big grams-of-protein number readable at arm's length",
+   "value": "A big grams-of-protein number readable at arm's length",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan trust_signals + verdict.corrections ('20g PROTEIN' legibility)"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Known incumbent brand (Coca-Cola, Monster, McCoy's, Naked/Innocent)",
+   "value": "Known incumbent brand (Coca-Cola, Monster, McCoy's, Naked/Innocent)",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal",
+     "citation": "Wallop top combo (Coca-Cola) https://harrywallop.substack.com/p/whats-britains-favourite-meal-deal"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 104,
+     "verbatim": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "A co-worker's recommendation",
+   "value": "A co-worker's recommendation",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 104,
+     "verbatim": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "High standalone price printed on the shelf edge (signals 'value' inside the ...",
+   "value": "High standalone price printed on the shelf edge (signals 'value' inside the deal)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 990,
+     "verbatim": "some other overpriced abomination that's in the deal but retailing separately at £2.50",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "Same main most days (chicken club / chicken triple / all-day breakfast). ...",
+   "value": "Same main most days (chicken club / chicken triple / all-day breakfast). Usually decided before entering.",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 5,
+     "verbatim": "almost the exact same one every single day",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "Tesco, I always get the bacon, sausage and egg triple, with the biggest can of redbull and anything for the snack but it's usually pork ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "Snack is the least-attended slot ('anything for the snack'), so it is ...",
+   "value": "Snack is the least-attended slot ('anything for the snack'), so it is the most contestable slot for a challenger",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "with the biggest can of redbull and anything for the snack",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "staged Jordan verdict.supporting_evidence"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "Takes the most expensive eligible drink and saves it for later or ...",
+   "value": "Takes the most expensive eligible drink and saves it for later or for a partner",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 104,
+     "verbatim": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Jordan verdict.corrections 'save for later drink behaviour'"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "Clubcard on phone or key fob so he gets the lower deal ...",
+   "value": "Clubcard on phone or key fob so he gets the lower deal price",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1h1g0jq",
+     "thread_id": "1h1g0jq",
+     "subreddit": "wikipedia",
+     "theme": "meal_deal",
+     "score": 10,
+     "verbatim": "a lot of them now do things like protein yogurts/shakes which you can't buy in bulk. I certainly wouldn't be able to replicate my standard ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1h1g0jq",
+     "thread_id": "1h1g0jq",
+     "subreddit": "wikipedia",
+     "theme": "meal_deal",
+     "score": 102,
+     "verbatim": "£3.80 in Tesco but £3.50 with a clubcard",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[4]",
+   "kind": "habit",
+   "label": "Self-checkout; walks the chiller → snack bay → drinks fridge loop in ...",
+   "value": "Self-checkout; walks the chiller → snack bay → drinks fridge loop in that order",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 2,
+     "verbatim": "the self checkouts group yellow labelled things with the normal meal deal",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "order = assumption: typical Express layout"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[1] Jordan verdict.sim_parameters = 0.8 (skeptic-calibrated). Kept as is: same in-store meal-deal mode"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "staged_personas_v1.json[1] Jordan verdict.sim_parameters = 0.8 (skeptic-calibrated). Kept as is: same in-store meal-deal mode"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.06",
+   "value": 0.06,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "keyword:'Wikipedia'",
+     "citation": "Jordan calibrated 0.07, lowered to 0.06. assumption: no AI/TikTok scanning arm, purely goal-directed. Direction from eye level vs floor +39% sales and top vs bottom +17% noticing (research/04 §1, Wikipedia Planogram [V]"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "Jordan calibrated 0.07, lowered to 0.06. assumption: no AI/TikTok scanning arm, purely goal-directed. Direction from eye level vs floor +39% sales and top vs bottom +17% noticing (research/04 §1, Wikipedia Planogram [V]"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan calibrated 0.07, lowered to 0.06. assumption: no AI/TikTok scanning arm, purely goal-directed. Direction from eye level vs floor +39% sales and top vs bottom +17% noticing (research/04 §1, Wikipedia Planogram [V]"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Chandon et al. 2009 [M])",
+     "url": null
+    }
+   ],
+   "classes": [
+    "paper",
+    "web_other",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "web_other": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.82",
+   "value": 0.82,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan calibrated 0.8, raised to 0.82. assumption: corrections say the default snack holds and challengers win the slot only ~15-25% of visits through an OOS/promo/TikTok shock"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Wallop top-combo persistence"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.4",
+   "value": 0.4,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan calibrated 0.45, lowered to 0.4. assumption: the deal price is fixed, so within-deal price sensitivity is mostly inverted (prefers high standalone price, see lens price_gbp)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "sensitivity applies only to non-deal add-ons"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.18",
+   "value": 0.18,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan calibrated 0.2, lowered to 0.18. assumption: no TikTok/creator exposure modelled for this archetype"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "low O (Nezlek & Forestell 2019)",
+     "url": null
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 226,
+     "verbatim": "protein chicken sandwich... less protein than the regular",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 2,
+     "verbatim": "egg protein pot... It's just 2 eggs",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.06",
+   "value": 0.06,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qazvyk",
+     "thread_id": "1qazvyk",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 9,
+     "verbatim": "Convenience trumps nutrition",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 7,
+     "verbatim": "every second counts",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 4",
+   "value": 4,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Jordan calibrated 4 s ('Chicken Club in hand in about 4 seconds', journey stage 2, accepted by the skeptic). Shorter than the ~12 s per category in Dickson & Sawyer 1990 [M] because the mission is habitual and has 3 ...",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "Jordan calibrated 4 s ('Chicken Club in hand in about 4 seconds', journey stage 2, accepted by the skeptic). Shorter than the ~12 s per category in Dickson & Sawyer 1990 [M] because the mission is habitual and has 3 ..."
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.92",
+   "value": 0.92,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan calibrated 0.88, raised to 0.92. assumption: this archetype is defined by the meal-deal mission"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "non-eligible items are walk-pasts (hard_gates)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+   "url": "https://www.reddit.com/comments/1bc79kh"
+  },
+  {
+   "quote": "Defo makes sense but when I'm buying a meal deal I'm on my 20 min un paid break 😭 every second counts",
+   "url": "https://www.reddit.com/comments/1bc79kh"
+  },
+  {
+   "quote": "I always get the monster and save it for my partner seems a waste not to get something expensive",
+   "url": "https://www.reddit.com/comments/1bc79kh"
+  },
+  {
+   "quote": "Tesco, I always get the bacon, sausage and egg triple, with the biggest can of redbull and anything for the snack but it's usually pork pies.",
+   "url": "https://www.reddit.com/comments/1d3amm2"
+  },
+  {
+   "quote": "Convenience trumps nutrition. If I'm out and about and need a quick and easy option for lunch, a meal deal is one of the best options out there.",
+   "url": "https://www.reddit.com/comments/1qazvyk"
+  },
+  {
+   "quote": "a lot of them now do things like protein yogurts/shakes which you can't buy in bulk. I certainly wouldn't be able to replicate my standard meal deal for much less",
+   "url": "https://www.reddit.com/comments/1h1g0jq"
+  },
+  {
+   "quote": "I saw a protein chicken sandwich in Asda a few days ago which had less protein than the regular chicken sandwich. Ridiculous.",
+   "url": "https://www.reddit.com/comments/1tbf6zw"
+  }
+ ],
+ "built_from": null,
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 40.1,
+   "reddit_inferred": 0.0,
+   "paper": 5.5,
+   "off_field": 0.0,
+   "sales_data": 0.0,
+   "staged_persona": 13.5,
+   "web_other": 3.3,
+   "internal_research": 7.3,
+   "assumption": 30.3
+  },
+  "headline": {
+   "reddit": 40.1,
+   "paper": 5.5,
+   "off_field": 0.0,
+   "assumption": 30.3,
+   "other (sales, staged, web, internal)": 24.1
+  },
+  "n_fields": 47,
+  "fields_by_primary_class": {
+   "reddit": 27,
+   "staged_persona": 7,
+   "internal_research": 3,
+   "paper": 4,
+   "assumption": 6
+  },
+  "pct_fields_with_any": {
+   "reddit": 57.4,
+   "paper": 14.9,
+   "staged_persona": 19.1,
+   "web_other": 8.5,
+   "internal_research": 17.0,
+   "assumption": 51.1
+  },
+  "pct_fields_with_any_assumption": 51.1,
+  "lens_fields_measured_by_off_field": {
+   "n": 7,
+   "of": 7,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}

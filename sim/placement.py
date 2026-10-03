@@ -184,7 +184,11 @@ def scan(product, planogram=None, extra_products=None, agents=200, seed=1):
 
 
 def experiment(product, planogram=None, extra_products=None, placements=None, agents=60, seeds=(1,),
-               models=None, mock=False, max_tokens=250):
+               models=None, mock=False, max_tokens=250, engine=None):
+    engine = "mock" if mock else (engine or simrun.DEFAULT_ENGINE)
+    mock = engine == "mock"
+    if engine != "llm":
+        models = None
     store, base_plan, catalog = _load(planogram, extra_products)
     product = str(product)
     cur_sid = _locate(base_plan, catalog, product)[0]
@@ -200,7 +204,7 @@ def experiment(product, planogram=None, extra_products=None, placements=None, ag
     base_k = base_n = base_noticed = 0
     run_ids = []
     for seed in seeds:
-        base = simrun.run_simulation(planogram=base_plan, agents=agents, models=models, seed=seed, mock=mock,
+        base = simrun.run_simulation(planogram=base_plan, agents=agents, models=models, seed=seed, engine=engine,
                                      max_tokens=max_tokens, label=f"placement baseline {product}",
                                      extra_products=extra_products)
         run_ids.append(base["run_id"])
@@ -211,7 +215,7 @@ def experiment(product, planogram=None, extra_products=None, placements=None, ag
         affected = [a["agent_id"] for a in base["agents"] if any(_unit_of(p) == unit for p in a["path"])]
         for arm in arms:
             rerun = simrun.run_simulation(planogram=arm["planogram"], agents=agents, models=models, seed=seed,
-                                          mock=mock, max_tokens=max_tokens, only_agents=affected, save=False,
+                                          engine=engine, max_tokens=max_tokens, only_agents=affected, save=False,
                                           extra_products=extra_products) if affected else {"agents": [], "cost": {"usd": 0}}
             by_id = {a["agent_id"]: a for a in rerun["agents"]}
             merged = [by_id.get(a["agent_id"], a) for a in base["agents"]]

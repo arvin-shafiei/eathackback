@@ -1,0 +1,1726 @@
+{
+ "persona_id": "p_eco_low_chemical",
+ "name": "Freya",
+ "archetype": "eco_low_chemical",
+ "kind": "lens",
+ "source_file": "data/personas/lens/eco_low_chemical.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 75,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: 2-adult household weekly shop"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "sits inside the GBP120-160/wk for a family of four in the staged Priya dossier (data/personas/staged_personas_v1.json, persona 'Priya'), scaled down for two adults with a small premium allowance for organic swaps"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: label-turning and palm-oil checks are in-store behaviours (verbatims below are about picking up and checking packs)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "online share kept for repeat staples"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "weekly_shop",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/eco_low_chemical.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.household",
+   "kind": "profile",
+   "label": "household",
+   "value": "lives with partner in a rented flat in Bristol, no kids, one cat; works as a hybrid-working NHS admin coordinator",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'not used by the sim'",
+     "text": "not used by the sim"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.age",
+   "kind": "profile",
+   "label": "age",
+   "value": 34,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'not used by the sim'",
+     "text": "not used by the sim"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.additives_n",
+   "kind": "lens_weight",
+   "label": "lens: additives_n (w=0.24)",
+   "value": 0.24,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1jns9wh",
+     "thread_id": "1jns9wh",
+     "subreddit": "AskReddit",
+     "theme": "trust_unknown_brand",
+     "score": 7,
+     "verbatim": "once I realized all the additives going into generic sour cream and cottage cheese, I quickly became a Daisy convert",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1p3q2ce",
+     "thread_id": "1p3q2ce",
+     "subreddit": "AskUK",
+     "theme": "tried_new_went_back",
+     "score": 110,
+     "verbatim": "some of the food to go ... have loads of additives in them",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/",
+     "citation": "cue-based UPF heuristics, PMC11311829 https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/"
+    }
+   ],
+   "measured_by_off_field": "additives_n",
+   "direction": "lower_better",
+   "why": "Her main heuristic: she counts E-numbers and 'emulsifier' on the back. That is the strongest and most often-voiced cue in the corpus for 'chemicals'",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.palm_oil",
+   "kind": "lens_weight",
+   "label": "lens: palm_oil (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 17,
+     "verbatim": "please boycott palm oil in everything",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "it's palm oil free, and it supports a British company. Wins all round.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "count from grep of data/reddit/comments.csv (keyword 'palm oil' = 21 hits)",
+     "url": null,
+     "verified_in_corpus": false
+    }
+   ],
+   "measured_by_off_field": "palm_oil_n (ingredients_from_palm_oil_n + ingredients_that_may_be_from_palm_oil_n)",
+   "direction": "lower_better",
+   "why": "Palm oil is her single named ingredient boycott and is binary. It is also the eco cue most often voiced in UK threads (21 of 142 eco/chemical comments in comments.csv)",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.ecoscore",
+   "kind": "lens_weight",
+   "label": "lens: ecoscore (w=0.14)",
+   "value": 0.14,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1177/0013916521995473",
+     "citation": "Potter et al. 2021, 'The effects of environmental sustainability labels on selection, purchase, and consumption of food and drink products: a systematic review', Environment and Behavior 53(8):891-925, https://doi.org/10.1177/0013916521995473 (small and inconsistent effects)"
+    },
+    {
+     "class": "off_field",
+     "method": "url:openfoodfacts",
+     "url": "https://world.openfoodfacts.org/eco-score-the-environmental-impact-of-food-products",
+     "citation": "OFF field definition https://world.openfoodfacts.org/eco-score-the-environmental-impact-of-food-products"
+    }
+   ],
+   "measured_by_off_field": "ecoscore_grade (a-e; now 'Green-Score' on OFF)",
+   "direction": "higher_better",
+   "why": "Captures her environmental values. Weight kept modest because eco labels shift real selection only weakly, and UK packs rarely print the score, so she mostly can't see it in store",
+   "classes": [
+    "paper",
+    "off_field"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "off_field": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.organic_label",
+   "kind": "lens_weight",
+   "label": "lens: organic_label (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 7,
+     "verbatim": "If you eat oats daily, it's worth spending out for organic to avoid excess glyphosates.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/r2udam",
+     "thread_id": "r2udam",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 5,
+     "verbatim": "obviously no worries of chemicals passing into the milk",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.appet.2021.105239",
+     "citation": "mean WTP premium for sustainable/organic food about 29.5%, Li & Kallas 2021 meta-analysis, Appetite 163:105239, https://doi.org/10.1016/j.appet.2021.105239"
+    }
+   ],
+   "measured_by_off_field": "labels_tags contains en:organic or en:eu-organic or en:soil-association-organic",
+   "direction": "present_better",
+   "why": "Organic is her front-of-pack shortcut for 'no pesticides or chemicals'. She pays the premium only on items she eats daily (oats, milk) because the price premium caps it",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.ingredients_n",
+   "kind": "lens_weight",
+   "label": "lens: ingredients_n (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1buwayp",
+     "thread_id": "1buwayp",
+     "subreddit": "LifeProTips",
+     "theme": "trust_unknown_brand",
+     "score": 1,
+     "verbatim": "Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1e8k6o1",
+     "thread_id": "1e8k6o1",
+     "subreddit": "AskUK",
+     "theme": "delisted",
+     "score": 1,
+     "verbatim": "the ingredients list was so good and simple… no unnecessary stuff",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "ingredients_n",
+   "direction": "lower_better",
+   "why": "A short, recognisable ingredient list reads as 'real food' and as fewer chemicals",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.recyclable_packaging",
+   "kind": "lens_weight",
+   "label": "lens: recyclable_packaging (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 42,
+     "verbatim": "it dramatically increases packaging (often plastic) quantity for every g of product",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 8,
+     "verbatim": "how much plastic actually gets recycled",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "packaging_recycling_tags / packagings[].recycling (catalog field 'recycling')",
+   "direction": "recyclable_better",
+   "why": "She is angry about excess plastic per gram, especially when shrinkflation adds packaging. It is a secondary cue because recycling info sits on the back in small print",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.nova",
+   "kind": "lens_weight",
+   "label": "lens: nova (w=0.06)",
+   "value": 0.06,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/",
+     "citation": "PMC11311829 (54% of 2,386 UK adults say they avoid UPF, 13% identify all five) https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/"
+    }
+   ],
+   "measured_by_off_field": "nova_group (1-4)",
+   "direction": "lower_better",
+   "why": "She never sees NOVA directly, but it is the ground truth her additive and ingredient heuristics try to approximate. The low weight records the say-do gap: only 13% of UK adults identify UPFs correctly",
+   "classes": [
+    "paper"
+   ],
+   "class_share": {
+    "paper": 1.0
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.price_per_100g",
+   "kind": "lens_weight",
+   "label": "lens: price_per_100g (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1pf70di",
+     "thread_id": "1pf70di",
+     "subreddit": "TooAfraidToAsk",
+     "theme": "say_do_healthy",
+     "score": 17,
+     "verbatim": "If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/food_and_recipes/4922485-how-do-you-cut-out-ultra-processed-food-from-your-diet",
+     "citation": "'I can't afford to buy the organic/non upf versions of these staples ... our food bill is ridiculous as it is' https://www.mumsnet.com/talk/food_and_recipes/4922485-how-do-you-cut-out-ultra-processed-food-from-your-diet"
+    }
+   ],
+   "measured_by_off_field": "price_gbp / product_quantity * 100 (catalog price_gbp + OFF product_quantity)",
+   "direction": "lower_better",
+   "why": "Her values hit a budget ceiling. 'Organic' or 'clean' premiums get paid on daily hero items and skipped elsewhere",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens._weights",
+   "kind": "lens_weight",
+   "label": "lens weight magnitudes (rank/scale)",
+   "value": 1.0,
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "assumption: rank order from verbatim frequency in the 142 eco/chemical comments grepped from data/reddit/comments.csv (organic 59, palm oil 21, additive/emulsifier/preservative 17, recycling/plastic 11), adjusted down for eco-score and NOVA because they are invisible on UK packs (Potter et al. 2021",
+     "url": null,
+     "verified_in_corpus": false
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: rank order from verbatim frequency in the 142 eco/chemical comments grepped from data/reddit/comments.csv (organic 59, palm oil 21, additive/emulsifier/preservative 17, recycling/plastic 11), adjusted down for eco-score and NOVA because they are invisible on UK packs (Potter et al. 2021",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: rank order from verbatim frequency in the 142 eco/chemical comments grepped from data/reddit/comments.csv (organic 59, palm oil 21, additive/emulsifier/preservative 17, recycling/plastic 11), adjusted down for eco-score and NOVA because they are invisible on UK packs (Potter et al. 2021"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "PMC11311829)",
+     "url": null
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.74",
+   "value": 0.74,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: eco_low_chemical +0.5 (Soutter 2020 r=.21)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.74 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1111/j.1467-6494.2011.00721.x",
+     "citation": "Markowitz, Goldberg, Ashton & Lee 2012, 'Profiling the pro-environmental individual: a personality perspective', Journal of Personality 80(1):81-111, https://doi.org/10.1111/j.1467-6494.2011.00721.x"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.jenvp.2010.01.004",
+     "citation": "Hirsh 2010, 'Personality and environmental concern', J. Environmental Psychology 30(2):245-248, https://doi.org/10.1016/j.jenvp.2010.01.004"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small additive logit boost"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'set so '",
+     "text": "direction from the papers, magnitude set so challenger notice rises about 3 points at eye level"
+    }
+   ],
+   "effect": "high Openness: strongest Big Five predictor of environmental concern and pro-environmental behaviour, so she is more likely to notice unfamiliar challenger or organic brands (+notice for role=challenger)",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean_effect.O.1",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007",
+     "citation": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007 (neophobia negatively related to Openness)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: direction only from the paper"
+    }
+   ],
+   "effect": "low food neophobia, so she is willing to trial a new SKU once it is noticed (lower trial barrier than the habit loyalists)",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.66",
+   "value": 0.66,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: eco_low_chemical +0.2 (Soutter 2020, r=.11 with pro-environmental behaviour, C6)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.66 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.25)",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1037/a0027041",
+     "citation": "Mõttus et al. 2012, 'Personality traits and eating habits in a large sample of Estonians', Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (C and O linked to healthier, more deliberate eating)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: maps C onto reads_structured_data and seconds_at_shelf (see sim_params), not double-counted in utility"
+    }
+   ],
+   "effect": "turns the pack over and reads the ingredients and E-numbers, giving +attention to additives_n, ingredients_n and palm_oil_n once the product is picked up",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.45 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.0)",
+   "value": 0.0,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Mõttus et al. 2012, Health Psychology 31(6):806-814 (E effects on eating small and inconsistent)",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: no reliable effect in the cited literature"
+    }
+   ],
+   "effect": "mid Extraversion; no strong food-choice link, so no coefficient (avoids an invented number)",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.68",
+   "value": 0.68,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.68 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.jenvp.2010.01.004",
+     "citation": "Hirsh 2010, J. Environmental Psychology 30(2):245-248, https://doi.org/10.1016/j.jenvp.2010.01.004 (Agreeableness and Openness both predict environmental concern)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "folded into palm_oil_n and recycling lens weights"
+    }
+   ],
+   "effect": "higher Agreeableness tracks concern for others, animals and the environment, which raises the weight on palm oil (orang-utans) and packaging waste",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.56",
+   "value": 0.56,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.56 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1111/risa.13375",
+     "citation": "Saleh, Bearth & Siegrist 2019, 'Chemophobia today: consumers' knowledge and perceptions of chemicals', Risk Analysis 39(12):2668-2682, https://doi.org/10.1111/risa.13375"
+    },
+    {
+     "url": "https://www.reddit.com/comments/r2udam",
+     "thread_id": "r2udam",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 5,
+     "verbatim": "I know we are swimming in chemicals/microplastics (not a hippy, promise)",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: chemophobia literature does not report an N coefficient"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'plausible'",
+     "text": "direction is a plausible link via health-risk anxiety and is flagged as weak"
+    }
+   ],
+   "effect": "moderate Neuroticism: worries about 'chemicals' in food (chemophobia) and treats E-numbers as risk cues rather than checking NOVA, which strengthens additive rejection triggers",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "palm oil in the ingredients (palm_oil_n > 0): put back, no compensating ...",
+   "value": "palm oil in the ingredients (palm_oil_n > 0): put back, no compensating score",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 17,
+     "verbatim": "please boycott palm oil in everything",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 18,
+     "verbatim": "palm oil special that is Cadburys",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "a long list of E-numbers, or sweeteners (sucralose, acesulfame K) behind a ...",
+   "value": "a long list of E-numbers, or sweeteners (sucralose, acesulfame K) behind a health claim, e.g. 'high protein' bars",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 65,
+     "verbatim": "Check the ingredients as you're bound to find a bunch of additives and sweeteners",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "it's all e numbers and crap but it's got protein in it so must be good right",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "'green' copy that turns out to be greenwashing (e.g. 'made from recycled ...",
+   "value": "'green' copy that turns out to be greenwashing (e.g. 'made from recycled bottles' as a selling point, or vague 'natural' with a long ingredients list)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1kb3qj5",
+     "thread_id": "1kb3qj5",
+     "subreddit": "AskWomenOver30",
+     "theme": "online_favourites_lockin",
+     "score": 216,
+     "verbatim": "Made from recycled water bottles... THAT IS NOT A SELLING POINT",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "excess or multi-wrapped plastic, especially after a pack shrank",
+   "value": "excess or multi-wrapped plastic, especially after a pack shrank",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 42,
+     "verbatim": "What annoys me further is that it dramatically increases packaging (often plastic) quantity for every g of product.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "the organic premium is too large on a non-hero item (price per ...",
+   "value": "the organic premium is too large on a non-hero item (price per 100g above about 1.3x the category median)",
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "1.3x is assumption: close to the 29.5% mean WTP premium in Li & Kallas 2021, Appetite 163:105239",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "1.3x is assumption: close to the 29.5% mean WTP premium in Li & Kallas 2021, Appetite 163:105239"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1pf70di",
+     "thread_id": "1pf70di",
+     "subreddit": "TooAfraidToAsk",
+     "theme": "say_do_healthy",
+     "score": 17,
+     "verbatim": "If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Soil Association / EU organic leaf logo (labels en:organic)",
+   "value": "Soil Association / EU organic leaf logo (labels en:organic)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/r2udam",
+     "thread_id": "r2udam",
+     "subreddit": "AskUK",
+     "theme": "trust_unknown_brand",
+     "score": 5,
+     "verbatim": "I know we are swimming in chemicals/microplastics (not a hippy, promise) so switching the milk was just a tiny thing to salve my conscience - ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 7,
+     "verbatim": "If you eat oats daily, it's worth spending out for organic to avoid excess glyphosates.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "'palm oil free' / 'no palm oil' on pack, or palm-free checked ...",
+   "value": "'palm oil free' / 'no palm oil' on pack, or palm-free checked in the ingredients (e.g. M&S chocolate, Sun-Pat)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 12,
+     "verbatim": "Their basic chocolate doesn't have palm oil in",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1511znd",
+     "thread_id": "1511znd",
+     "subreddit": "britishproblems",
+     "theme": "shrinkflation_switch",
+     "score": 2,
+     "verbatim": "Sun pat doesn't use palm oil",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "short ingredient list of fewer than about 6 recognisable items with no ...",
+   "value": "short ingredient list of fewer than about 6 recognisable items with no E-numbers",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1buwayp",
+     "thread_id": "1buwayp",
+     "subreddit": "LifeProTips",
+     "theme": "trust_unknown_brand",
+     "score": 1020,
+     "score_is": "post_score(thread)",
+     "thread_title": "LPT: Don't fall for the marketing ploy that has you thinking no name/unbranded foods are somehow inferior, often times they are made in the same factory as the branded ones.",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1e8k6o1",
+     "thread_id": "1e8k6o1",
+     "subreddit": "AskUK",
+     "theme": "delisted",
+     "score": 23,
+     "score_is": "post_score(thread)",
+     "thread_title": "Is there a supermarket item that has been discontinued that you miss?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "kerbside-recyclable / paper or card packaging statement",
+   "value": "kerbside-recyclable / paper or card packaging statement",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/eraymp",
+     "thread_id": "eraymp",
+     "subreddit": "UKPersonalFinance",
+     "theme": "shrinkflation_switch",
+     "score": 42,
+     "verbatim": "What annoys me further is that it dramatically increases packaging (often plastic) quantity for every g of product.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: inverse of the packaging rejection trigger, https://www.reddit.com/comments/eraymp"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "a better-ingredient challenger she can switch to from an incumbent she has ...",
+   "value": "a better-ingredient challenger she can switch to from an incumbent she has fallen out with (Tony's over Cadbury)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 18,
+     "verbatim": "shifted entirely to Tony's ... better value than the palm oil special that is Cadburys",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "turns the pack over only for categories she has flagged (chocolate, biscuits, ...",
+   "value": "turns the pack over only for categories she has flagged (chocolate, biscuits, nut butter, yoghurt, protein snacks); repeat staples go in the basket unread",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "habit lock-in from staged Priya dossier, data/personas/staged_personas_v1.json"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "research/05-personas.md section 4c"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "pays the organic premium only on daily staples (oats, milk, coffee), and ...",
+   "value": "pays the organic premium only on daily staples (oats, milk, coffee), and buys organic coffee when there's a Nectar price",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oi5mf0",
+     "thread_id": "1oi5mf0",
+     "subreddit": "unitedkingdom",
+     "theme": "shrinkflation_switch",
+     "score": 7,
+     "verbatim": "If you eat oats daily, it's worth spending out for organic to avoid excess glyphosates.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 5,
+     "verbatim": "Organic coffee, although they sometimes reduce the price with Nectar card",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "after a palm-oil or shrinkflation disappointment she switches brand permanently rather than ...",
+   "value": "after a palm-oil or shrinkflation disappointment she switches brand permanently rather than 'eat less of it'",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 35,
+     "verbatim": "I just stop buying it... Just buy better gear",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "uses frozen veg as the 'no preservatives, less waste' option",
+   "value": "uses frozen veg as the 'no preservatives, less waste' option",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ln69mo",
+     "thread_id": "1ln69mo",
+     "subreddit": "unitedkingdom",
+     "theme": "say_do_healthy",
+     "score": 15,
+     "verbatim": "you dont need the help of artificial preservatives. Not to mention the reduced food waste",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[4]",
+   "kind": "habit",
+   "label": "most aisles get a walk-past at normal speed, and she only stops ...",
+   "value": "most aisles get a walk-past at normal speed, and she only stops at about 1 in 5 bays",
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "assumption: consistent with the 3-6 s shelf-dwell literature in research/05-personas.md (pressure test, line ~279) and human mean seconds_at_shelf 6.6 (research/05-personas.md section 4c)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: consistent with the 3-6 s shelf-dwell literature in research/05-personas.md (pressure test, line ~279) and human mean seconds_at_shelf 6.6 (research/05-personas.md section 4c)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "Same as the skeptic-calibrated human mean of 0.70 (research/05-personas.md section 4c)"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Wikipedia'",
+     "citation": "eye level vs floor +39% sales, Wikipedia Planogram field-study summary cited in research/04-3d-sim-evidence-and-tech.md"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "eye level vs floor +39% sales, Wikipedia Planogram field-study summary cited in research/04-3d-sim-evidence-and-tech.md"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "web_other": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Copied from Priya at 0.12, slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: high Openness gives a small lift for unfamiliar packs (Markowitz et al. 2012)",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Copied from Priya at 0.12, slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: high Openness gives a small lift for unfamiliar packs (Markowitz et al. 2012)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Copied from Priya at 0.12, slightly above the human mean of 0.094 (research/05-personas.md section 4c). assumption: high Openness gives a small lift for unfamiliar packs (Markowitz et al. 2012)"
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.75",
+   "value": 0.75,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Below the human mean of 0.83 (research/05-personas.md section 4c). assumption: she re-evaluates flagged categories and switches permanently after palm-oil or shrinkflation events (https://www.reddit.com/comments/1qtc78s), but staples stay on autopilot"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Below the human mean of 0.83 (research/05-personas.md section 4c). assumption: she re-evaluates flagged categories and switches permanently after palm-oil or shrinkflation events (https://www.reddit.com/comments/1qtc78s), but staples stay on autopilot"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1pf70di",
+     "thread_id": "1pf70di",
+     "subreddit": "TooAfraidToAsk",
+     "theme": "say_do_healthy",
+     "score": 17,
+     "verbatim": "If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Close to the human mean of 0.57 (research/05-personas.md section 4c). Organic premium accepted only on daily staples (https://www.reddit.com/comments/1pf70di"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Li & Kallas 2021, mean WTP premium about 29.5%)",
+     "url": null
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qtc78s",
+     "thread_id": "1qtc78s",
+     "subreddit": "AskBrits",
+     "theme": "shrinkflation_switch",
+     "score": 9,
+     "verbatim": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Above the human mean of 0.20 (research/05-personas.md section 4c). assumption: low neophobia from high O (Nezlek & Forestell 2019) and a record of switching to challengers (Tony's, https://www.reddit.com/comments/1qtc78s)",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Above the human mean of 0.20 (research/05-personas.md section 4c). assumption: low neophobia from high O (Nezlek & Forestell 2019) and a record of switching to challengers (Tony's, https://www.reddit.com/comments/1qtc78s)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Above the human mean of 0.20 (research/05-personas.md section 4c). assumption: low neophobia from high O (Nezlek & Forestell 2019) and a record of switching to challengers (Tony's, https://www.reddit.com/comments/1qtc78s)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.65",
+   "value": 0.65,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 65,
+     "verbatim": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Above the human mean of 0.53, below Margaret's 0.80 (research/05-personas.md section 4c). Reacts to 'high protein' and greenwash copy (https://www.reddit.com/comments/191icpc"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1kb3qj5",
+     "thread_id": "1kb3qj5",
+     "subreddit": "AskWomenOver30",
+     "theme": "online_favourites_lockin",
+     "score": 505,
+     "score_is": "post_score(thread)",
+     "thread_title": "Does anyone else have the same problem of not being able to find ANYTHING cute or unique  in the stores anymore?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "About twice the human mean of 0.18 and below Sam's 0.45 (research/05-personas.md section 4c). assumption: reads ingredients and E-numbers on flagged categories (C=0.66, Mõttus et al. 2012) but not eco-score, NOVA or the nutrition table",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "About twice the human mean of 0.18 and below Sam's 0.45 (research/05-personas.md section 4c). assumption: reads ingredients and E-numbers on flagged categories (C=0.66, Mõttus et al. 2012) but not eco-score, NOVA or the nutrition table"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "About twice the human mean of 0.18 and below Sam's 0.45 (research/05-personas.md section 4c). assumption: reads ingredients and E-numbers on flagged categories (C=0.66, Mõttus et al. 2012) but not eco-score, NOVA or the nutrition table"
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 8",
+   "value": 8,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Above the human mean of 6.6 s and within the 3-6 s literature range plus a pack-flip (research/05-personas.md pressure test). assumption: 8 s counts one pack-turn on flagged bays"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Above the human mean of 6.6 s and within the 3-6 s literature range plus a pack-flip (research/05-personas.md pressure test). assumption: 8 s counts one pack-turn on flagged bays"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1p3q2ce",
+     "thread_id": "1p3q2ce",
+     "subreddit": "AskUK",
+     "theme": "tried_new_went_back",
+     "score": 110,
+     "verbatim": "loads of additives",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Well below the office-worker default of 0.70-0.75 (research/05-personas.md section 4c). assumption: hybrid worker, weekly-shop mission, and the meal-deal sandwiches are 'loads of additives' to her (https://www.reddit.com/comments/1p3q2ce)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Well below the office-worker default of 0.70-0.75 (research/05-personas.md section 4c). assumption: hybrid worker, weekly-shop mission, and the meal-deal sandwiches are 'loads of additives' to her (https://www.reddit.com/comments/1p3q2ce)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "once I realized all the additives going into generic sour cream and cottage cheese, I quickly became a Daisy convert.",
+   "url": "https://www.reddit.com/comments/1jns9wh"
+  },
+  {
+   "quote": "I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it tastes great, the main ingredient is cocoa butter, it's palm oil free, and it supports a British company. Wins all round.",
+   "url": "https://www.reddit.com/comments/1qtc78s"
+  },
+  {
+   "quote": "This happens when they leave out palm oil. Just give it a stir and save the orang-utangs. By the way please boycott palm oil in everything.",
+   "url": "https://www.reddit.com/comments/1511znd"
+  },
+  {
+   "quote": "If you eat oats daily, it's worth spending out for organic to avoid excess glyphosates.",
+   "url": "https://www.reddit.com/comments/1oi5mf0"
+  },
+  {
+   "quote": "What annoys me further is that it dramatically increases packaging (often plastic) quantity for every g of product.",
+   "url": "https://www.reddit.com/comments/eraymp"
+  },
+  {
+   "quote": "I know we are swimming in chemicals/microplastics (not a hippy, promise) so switching the milk was just a tiny thing to salve my conscience - that im doing *something* rather than nothing.",
+   "url": "https://www.reddit.com/comments/r2udam"
+  },
+  {
+   "quote": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+   "url": "https://www.reddit.com/comments/191icpc"
+  },
+  {
+   "quote": "If you're on a budget, you don't eat organic. Buy normal food, and get special shit when it's on sale.",
+   "url": "https://www.reddit.com/comments/1pf70di"
+  }
+ ],
+ "built_from": [
+  "data/reddit/comments.csv (142 comments matching organic|palm oil|additive|E-number|recycl|plastic packaging|chemicals|emulsifier|preservative|pesticide|sustainab|carbon)",
+  "research/corpus/shrinkflation_switch.md, say_do_healthy.md, trust_unknown_brand.md, protein_gimmick.md",
+  "data/personas/staged_personas_v1.json (Priya: closest staged dossier, E-number counting heuristic)",
+  "research/05-personas.md section 4c (skeptic-calibrated parameter table)",
+  "research/04-3d-sim-evidence-and-tech.md (notice model anchors)"
+ ],
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 38.3,
+   "reddit_inferred": 0.0,
+   "paper": 14.8,
+   "off_field": 1.0,
+   "sales_data": 0.0,
+   "staged_persona": 2.0,
+   "web_other": 2.0,
+   "internal_research": 11.1,
+   "assumption": 30.8
+  },
+  "headline": {
+   "reddit": 38.3,
+   "paper": 14.8,
+   "off_field": 1.0,
+   "assumption": 30.8,
+   "other (sales, staged, web, internal)": 15.1
+  },
+  "n_fields": 49,
+  "fields_by_primary_class": {
+   "staged_persona": 2,
+   "assumption": 7,
+   "reddit": 26,
+   "paper": 9,
+   "internal_research": 4,
+   "web_other": 1
+  },
+  "pct_fields_with_any": {
+   "reddit": 53.1,
+   "paper": 32.7,
+   "off_field": 2.0,
+   "staged_persona": 4.1,
+   "web_other": 4.1,
+   "internal_research": 26.5,
+   "assumption": 53.1
+  },
+  "pct_fields_with_any_assumption": 53.1,
+  "lens_fields_measured_by_off_field": {
+   "n": 8,
+   "of": 8,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}

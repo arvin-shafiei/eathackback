@@ -6,6 +6,13 @@ export const MAGENTA = '#C2185B';
 export const CATEGORY_COLOR: Record<string, string> = {
   soft_drinks: '#e8463c', crisps_savoury: '#f4b400', snack_bars: '#a0643a', breakfast_cereal: '#f08a24',
   yoghurt: '#7fb8e6', biscuits_chocolate: '#6b4430', plant_milk_dairy_alt: '#8fbf4a', ready_meals_soup: '#c0392b',
+  bakery_bread: '#d9a05b', frozen_icecream: '#9ad7f5', hot_drinks: '#7a4b2a', confectionery_sweets: '#ff7ac8',
+};
+/** categories that live in a fridge/freezer: glass doors + cold glow in the 3D store */
+export const CHILLED = new Set(['yoghurt', 'plant_milk_dairy_alt', 'ready_meals_soup', 'frozen_icecream']);
+export const CAT_EMOJI: Record<string, string> = {
+  soft_drinks: '🥤', crisps_savoury: '🥔', snack_bars: '🍫', breakfast_cereal: '🥣', yoghurt: '🥛', biscuits_chocolate: '🍪',
+  plant_milk_dairy_alt: '🌱', ready_meals_soup: '🍲', bakery_bread: '🍞', frozen_icecream: '🍦', hot_drinks: '☕', confectionery_sweets: '🍬',
 };
 export const catColor = (c: string) => CATEGORY_COLOR[c] ?? '#b9a9b5';
 export const catLabel = (c: string) => c.replace(/_/g, ' ');
@@ -36,3 +43,19 @@ export const DECISION = {
   walk_past: { emoji: '👀', label: 'walked past', color: '#f59e0b' },
   not_noticed: { emoji: '·', label: "didn't notice", color: '#9ca3af' },
 } as const;
+
+/** what each shopper carries. visual only: mission → carrier (assumption: big shops use trolleys, top-ups use baskets) */
+export type Carrier = 'trolley' | 'basket' | 'none';
+const TROLLEY_MISSIONS = /weekly|big|family|stock/;
+const TROLLEY_ARCH = new Set(['upf_avoider_parent', 'habit_loyalist_shrinkflation_angry']);
+export function carrierFor(arch: string, mission: string | undefined, ai: boolean): Carrier {
+  if (ai || arch.startsWith('ai ·') || arch === 'ai_agent') return 'none';
+  if (TROLLEY_ARCH.has(arch) || TROLLEY_MISSIONS.test(mission ?? '')) return 'trolley';
+  return 'basket';
+}
+/** one emoji per archetype for the legend: mirrors the 3D accessory */
+export const ARCH_GEAR: Record<string, string> = {
+  eco_low_chemical: '🍃 leaf hat', upf_avoider_parent: '🔍 label magnifier', glp1_small_appetite: '🧢 beanie', frugal_unit_price: '🧮 calculator',
+  protein_gym: '🏋️ headband + dumbbell', protein_sceptic_gimmick_reactant: '🤨 side-eye brows', habit_loyalist_shrinkflation_angry: '🧢 flat cap',
+  meal_deal_office: '👔 tie + lanyard', vegan_ethical: '🌱 sprout', allergen_coeliac: '🏷️ gf badge', ai_delegator: '🎧 headphones', novelty_seeker_tiktok: '🤳 selfie stick',
+};

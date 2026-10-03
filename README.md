@@ -2,6 +2,16 @@
 
 **EAT_HACK · Really Good Culture · 3 Oct 2026**: Track 1 *Human Truth*, with a Track 2 *Retail Futures* output
 
+## ⛔ rule zero: we don't build a black box
+
+RGC's judges say *"a number that cannot be traced back to its source is worse than no number at all."* So we hold ourselves to this standard:
+
+- **Every number can be clicked down to its source.** That means an Open Food Facts field (barcode + field), a Jev probability (the exact question + answer distribution), a Reddit verbatim (thread URL), a paper or URL, real NielsenIQ sales (`data/sales/`), or a clearly **labelled assumption**.
+- **Every persona shows its provenance:** Reddit threads → coded themes → behavioural mechanisms → the persona's lens weights, triggers and verbatims → the sim parameters it ends up with. You can see the breakdown visually on the dashboard.
+- **Personas are editable, not magic.** A shop owner can build a new persona on the dashboard (OCEAN sliders, mission, budget, lens weights, triggers), run it through the store, and see why each of its decisions happened.
+- **Arithmetic lives in code. Judgment lives in Jev**, which returns typed answers with calibrated probabilities. There is no generated prose pretending to be data.
+- **It's enforced.** A Claude Code Stop hook (`.claude/hooks/blackbox-check.sh`) makes every work session end by answering *"is anything I just built a black box? if so, explain it."*
+
 ## the idea (v2, locked 3 Oct)
 
 **Deep synthetic shoppers walk a 3D store, read real products, and every number they produce traces back to a source.**
@@ -19,7 +29,7 @@
      - Neuroticism → risk aversion, loss aversion and health anxiety
      - Agreeableness → ethical and eco concern
      - Extraversion → social proof and impulse
-   - Agents run through **OpenRouter** (several models, so the audience isn't one model's monoculture).
+   - Decisions run on **TypeSafe Jev**, which returns typed answers with calibrated probabilities. An early prototype used OpenRouter LLMs; that is now retired for cost and traceability.
 4. **What each persona looks for, made explicit.** Every persona has a weighted **attribute lens**. The eco-minded parent looks for fewer additives, organic, eco-score A/B and recyclable packaging. The GLP-1 user looks for small portions, high fibre and low sugar. The frugal student looks for price per 100g and meal-deal eligibility. The protein-sceptic looks for the "gimmick" cue.
    - We **pick products to span those lenses**: high and low additives, NOVA 1→4, organic vs not, challenger vs incumbent vs own-label, cheap vs premium.
    - Each product is **graded per lens** with a visible, traceable score.
@@ -31,6 +41,21 @@
    - an AI-agent shopper comparison (human ↔ agent divergence).
 7. **Optimisation for brands.** The system tests honest changes and re-runs the store to show the lift with a confidence interval: shelf slot, facings, pack claim, description rewrite (true facts only), price, own-label adjacency.
    - Output: *"move to eye level: +X% notice; add the true 'high fibre' claim: +Y% pick among conscientious, GLP-1 shoppers."*
+
+### one engine, three surfaces (+ embed)
+
+Every product has a **4-step funnel**: 👀 **look** → 🤚 **pick up** → ↩️ **put back** *or* 🧺 **take**. EPOS only sees the last step. We simulate all four, so we can say *where* a product loses people and *why*.
+
+| surface | question | what it does |
+|---|---|---|
+| 🏪 **retailer / store owner** | "Which layout sells best, and which is easiest for my shoppers?" | Whole-store layout optimiser. Objective 1 is revenue and challenger exposure; objective 2 is shopper ease (shorter mission paths: put products where people already go). You can blend them. It respects the chilled-unit and UK HFSS placement rules, and shows before/after with CIs and a "move X to Y because…" diff. |
+| 🏷️ **brand** | "Do people look, pick up, then put my product back, and why?" | Per-product funnel by persona and OCEAN segment. It diagnoses where people drop off: at *look* (shelf position/salience), at *pick-up* (the pack doesn't earn a second look), or at *put-back* (a label, price or trigger kills it, with the Jev probability and the Reddit verbatim). Plus a **pack test**: true claims the product qualifies for under Reg (EC) 1924/2006, tested for which version wins the pick-up. |
+| 🧺 **shopper** | "What better option should I swap to?" | **Basket swaps**, e.g. a high-fibre alternative to an item in the basket, ranked by P(accept) × lens improvement. Shows the price delta, because claim-marketed products ("high fibre", "protein", "gut") usually carry a premium; we quantify that, and check whether the claim actually meets the legal threshold. |
+| 🔌 **embed** | Use it inside retail workplaces and e-commerce | REST API (OpenAPI); a `<shelf-insight>` web component for product pages and intranets; an e-commerce search **re-ranker** per shopper type, with an agent-readiness check; a Slack brand digest; a Shopify mapping. |
+
+**Engine: TypeSafe Jev** (System One). It returns calibrated probabilities instead of generated text: Choice for take / put-back / walk-past, Score for appeal, and Noul for each rejection trigger. Every "why" therefore comes with a probability, and the arithmetic stays in code. Jev costs $0.042 per million input tokens and output is free (docs.typesafe.ai/models). **Measured:** a 300-shopper run made 6,187 requests over 22.7M input tokens and cost $0.87, which is **about $3.20 per 1,000 shoppers**: roughly 415 typed answers per shopper in about 13 minutes per 1,000, with the 100k tok/s rate limit as the bottleneck (`sim/README.md`, `data/sim/cost_log.jsonl`). **No LLM calls in the loop.**
+
+**What a real deployment collects:** shopping mission and why they're shopping (big shop vs top-up), dwell, pick-up and put-back (shelf sensors / on-device CV counts), and the e-commerce equivalents (impression → detail view → add-to-cart → remove → purchase). Everything is aggregated (k ≥ 10) and consented. See `docs/data-collection.md`.
 
 **Rule we build by** (RGC's own words): *"A number that cannot be traced back to its source is worse than no number at all."*
 - Every stat is a count of logged agent decisions.
@@ -161,4 +186,32 @@ Results: [`research/05-personas.md`](research/05-personas.md)
 
 ## stack (planned)
 
-react-three-fiber + drei (3D store), Kenney Mini Market / Food Kit (CC0) assets, Open Food Facts product data and images (UK), grid A* pathing, a fast utility model in JS for thousands of shoppers, and the Claude API for real agent shoppers and "thought bubbles".
+react-three-fiber + drei (3D store), Kenney Mini Market / Food Kit (CC0) assets, Open Food Facts product data and images (UK), grid A* pathing, a literature-calibrated notice model in code, and TypeSafe Jev for every shopper and AI-agent judgment (no LLM calls).
+
+## engine: typesafe jev
+
+The shopper decisions in `sim/` are made by **TypeSafe Jev** (System One, `jev-1.13.0`), the default engine (`python3 sim/run.py --engine jev`). Code owns the walk, the notice model, every price and nutrition comparison, and the budget. Jev only answers narrow, typed questions about one shelf at a time. Full design: [`sim/README.md`](sim/README.md#engine-typesafe-jev-simjevpy).
+
+**What we ask.** One request per (shopper, slot) carries every question for every product the shopper noticed ([speculative fan-out](https://docs.typesafe.ai/patterns/fan-out.md)):
+
+- **Choice `decision`**: which noticed product the shopper takes, or `none` (walks past). Option order is shuffled and recorded, because Jev 1.13 can lean to the first option ([jaggedness #8](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)).
+- **Noul `pickup_i`**: does the shopper pick this product up to look closer? This is the 👀 look → 🤚 pick-up step of the funnel. If a shopper who doesn't usually read labels picks something up, a second request re-judges with the back of pack revealed.
+- **Score `appeal_i`** (5 levels, from "would actively avoid" to "really wants it"), mapped to sentiment −1..1 in code.
+- **Noul per rejection trigger and trust signal** (the persona's top 3 + top 2): "Does `products[i]` show what `shopper.put_offs[k]` describes?". This is the *why*.
+- **Choice `mechanism_i`**: habit, betrayal/loss aversion, price anchor, trust, gimmick reactance, social proof, health goal, mission fit, novelty, effort or indifference.
+
+Jev never sees a raw number it would have to do maths on. Prices arrive as "about 2x the cheapest here", nutrition as UK traffic lights ("sugar: red (high)"), additives as "one or two additives" and processing as "ultra-processed (NOVA 4)" ([keep arithmetic in code](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)).
+
+**Why calibrated probabilities make it traceable.** Every answer is a distribution, not prose: P(take) for each option, P(pick up), P(the card shows this put-off), and the appeal-level probabilities with a [confidence](https://docs.typesafe.ai/confidence.md) score. Code samples the take/put-back outcome from that distribution with a seeded, recorded draw. So any single decision can be replayed exactly, and the aggregate pick rate *is* the model's probability mass, not one verbose sample. The "why" is assembled from the evidence that fired, for example *"picked it up, put it back: sees 'Protein/new recipe claim carrying a price premium' (p=0.53)"*, followed by the persona's Reddit verbatim and URL. Each event stores the cache key of the exact state + questions + raw answer (`data/sim/cache/jev/`), so a judge can click from a stat to the question Jev was asked and the full distribution it returned.
+
+**Cost at scale** ($0.042 per 1M input tokens, output free; limits 80 req/s and 100k tok/s):
+
+| run | requests | input tokens | cost | wall |
+|---|---|---|---|---|
+| 300 shoppers (seed 11, 96 SKUs, 24 slots) | 6,187 | 22.7M | $0.95 uncached ($0.87 actual) | 223 s |
+| **per 1,000 shoppers** | ~20.6k | ~76M | **~$3.20** | ~13 min (limited by 100k tok/s) |
+| AI-agent arm, per 1,000 feed sessions (24–36 items each) | 1,000 | ~8M | ~$0.34 | ~1 min |
+
+That is about **$0.003 per shopper** for ~20 requests holding ~415 typed judgments, versus ~$0.006 per shopper for one free-text LLM call per slot. Re-runs with unchanged inputs are served from cache for $0.
+
+**Result from the 300-shopper run:** 57% of product passes are noticed. Of noticed products, 38% are picked up, and 56% of pick-ups are taken. Take rate is 20.0% for own-label, 11.0% for incumbents and 8.9% for challengers. In the AI-agent arm, Jev shows **no first-position bias** (2.5% of picks at position 1 vs 3.5% expected by chance). The Gemini Flash and GPT-4.1-mini agents earlier showed a 4–5x bias.

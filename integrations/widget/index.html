@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>shelf insight widget demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Inter:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;padding:24px 16px;background:linear-gradient(180deg,#FFE3EC,#FFF1E3 40%,#FFF9F2);font:500 15px/1.5 Inter,system-ui,sans-serif;color:#141014}
+  @media (prefers-color-scheme:dark){body{background:#120E11;color:#F5EDF1}}
+  h1{font:800 32px/1 "Baloo 2",sans-serif;margin:0 0 4px}
+  p{max-width:720px}
+  code{background:rgba(20,16,20,.08);padding:1px 5px;border-radius:6px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;margin-top:20px}
+  label{font-weight:700}
+  select{font:inherit;border:2px solid currentColor;border-radius:10px;padding:4px 8px;background:transparent;color:inherit}
+</style>
+</head>
+<body>
+<h1>shelf insight, embedded</h1>
+<p>One script tag, one element. This demo reads <code>fixture.json</code>, a static snapshot counted from the sim run logs
+(<code>python3 integrations/widget/build_fixture.py</code>). Point <code>api</code> at <code>integrations/api_server.py</code> for live data.</p>
+<pre><code>&lt;script src="shelf-insight.js"&gt;&lt;/script&gt;
+&lt;shelf-insight product="5000168036755" api="https://your-host:8788"&gt;&lt;/shelf-insight&gt;</code></pre>
+<p><label>product <select id="pick"></select></label></p>
+<div class="grid">
+  <shelf-insight id="main" api="fixture.json"></shelf-insight>
+  <shelf-insight id="second" api="fixture.json" compact></shelf-insight>
+</div>
+<script src="shelf-insight.js"></script>
+<script>
+  fetch("fixture.json").then(r => r.json()).then(j => {
+    const codes = Object.keys(j.products), sel = document.getElementById("pick");
+    sel.innerHTML = codes.map(c => `<option value="${c}">${j.products[c].product.name} (${c})</option>`).join("");
+    const set = () => {
+      document.getElementById("main").setAttribute("product", sel.value);
+      document.getElementById("second").setAttribute("product", codes[(codes.indexOf(sel.value) + 1) % codes.length]);
+    };
+    sel.onchange = set; set();
+  }).catch(e => document.body.insertAdjacentHTML("beforeend", `<p>open via a local server (fetch needs http): <code>python3 -m http.server -d integrations/widget 8123</code>. ${e}</p>`));
+</script>
+</body>
+</html>

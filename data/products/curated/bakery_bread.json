@@ -1,0 +1,1963 @@
+{
+ "category": "bakery_bread",
+ "row_themes": {
+  "1": "sourdough, rye & organic: craft challenger vs organic vs own-label premium",
+  "2": "everyday sliced: the big three (Warburtons / Hovis / Kingsmill) vs discounter own-label",
+  "3": "free-from & wraps: gluten-free loaves, veg-flour wraps, protein wraps"
+ },
+ "rows": {
+  "1": [
+   "5025125000006",
+   "5032722312920",
+   "5010092736812",
+   "4088600246291"
+  ],
+  "2": [
+   "5010044000275",
+   "5010003064744",
+   "5010092093441",
+   "4088600011820"
+  ],
+  "3": [
+   "5060195901334",
+   "5391526414385",
+   "5391521690494",
+   "5036034406803"
+  ]
+ },
+ "rules": "data/products/curated/bakery_bread_rules.md",
+ "source_pool": "data/products/uk_products.parquet (Open Food Facts UK)",
+ "products": [
+  {
+   "code": "5025125000006",
+   "name": "White Ciabatta Sourdough Bread",
+   "brand": "Jason's Sourdough",
+   "category": "bakery_bread",
+   "role": "challenger",
+   "role_source": "assumption: independent craft sourdough brand vs plant-bakery incumbents",
+   "row": 1,
+   "price_gbp": 2.5,
+   "price_source": "assumption: typical UK RRP for a Jason's 580g sourdough loaf in Sainsbury's/Tesco (~£2.50), Oct 2026; no retailer page fetched",
+   "pack_g": 580,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 4.31,
+   "pack_copy": "white ciabatta sourdough - just flour, water, salt and fermented wheat flour; great taste award",
+   "pack_copy_source": "OFF ingredients_text + labels en:great-taste",
+   "nova": 3,
+   "nutriscore": "b",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:vegan",
+    "en:great-taste"
+   ],
+   "allergens": [
+    "en:gluten"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Wheat Flour (Wheat Flour, Calcium Carbonate, Folic Acid Iron, Niacin, Thiamin),Water, Salt, Fermented Wheat Flour.",
+   "sugars_100g": 2.4,
+   "fiber_100g": 2.9,
+   "proteins_100g": 10.1,
+   "salt_100g": 0.92,
+   "energy_kcal_100g": 209.43,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis en:palm-oil-free",
+   "organic": false,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "580 g",
+   "stores": "Sainsbury's|Tesco",
+   "recycling": [],
+   "packaging": [],
+   "image": "https://images.openfoodfacts.org/images/products/502/512/500/0006/front_en.106.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5025125000006",
+   "completeness": 0.9,
+   "scans": 392.0,
+   "data_caveat": null,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.8,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=1.0 (OFF analysis en:palm-oil-free)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.685,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "emulsifiers=none (OFF additives)",
+      "preservatives=none (OFF additives)",
+      "sugars_100g=2.4 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.536,
+     "why": [
+      "fiber_100g=2.9 (OFF)",
+      "proteins_100g=10.1 (OFF)",
+      "energy-kcal_100g=209.43 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.619,
+     "why": [
+      "price_per_kg=£4.31 (price_gbp/580g; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.605,
+     "why": [
+      "proteins_100g=10.1 (OFF)",
+      "fiber_100g=2.9 (OFF)",
+      "sugars_100g=2.4 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.146,
+     "why": [
+      "role=challenger",
+      "standard_800g_loaf=False (pack_g=580, OFF quantity)",
+      "price_per_kg=£4.31 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.856,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=True (OFF name/categories)",
+      "mainstream=True (role=challenger; OFF stores=\"Sainsbury's|Tesco\")",
+      "sugars_100g=2.4 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=['en:gluten'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.86,
+     "why": [
+      "completeness=0.9 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5032722312920",
+   "name": "Organic Rye Bread Chia & Flax Seed",
+   "brand": "Biona Organic",
+   "category": "bakery_bread",
+   "role": "challenger",
+   "role_source": "assumption: niche organic import (made in Germany, OFF labels)",
+   "row": 1,
+   "price_gbp": 2.6,
+   "price_source": "assumption: typical UK RRP for Biona 500g organic rye (~£2.40-£2.80, health-food/online), not fetched",
+   "pack_g": 500,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 5.2,
+   "pack_copy": "organic wholegrain rye sourdough with chia & flax seed",
+   "pack_copy_source": "OFF name + labels en:organic|en:eu-organic",
+   "nova": 3,
+   "nutriscore": "a",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:vegetarian",
+    "en:organic",
+    "en:eu-organic",
+    "en:vegan",
+    "en:de-oko-001",
+    "en:made-in-germany"
+   ],
+   "allergens": [
+    "en:gluten"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Organic Wholegrain Rye Meal, Water, Organic Sourdough (Wholegrain Rye Meal, Water), Organic Flax Seeds (5%), Organic Chia Seeds (Salvia hispanica) (2.5%), Sea Salt. Allergy: Gluten",
+   "sugars_100g": 2.9,
+   "fiber_100g": 11.0,
+   "proteins_100g": 6.0,
+   "salt_100g": 1.2,
+   "energy_kcal_100g": 598.31,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis en:palm-oil-free",
+   "organic": true,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "500 g",
+   "stores": "Danube",
+   "recycling": [],
+   "packaging": [],
+   "image": "https://images.openfoodfacts.org/images/products/503/272/231/2920/front_en.28.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5032722312920",
+   "completeness": 0.79,
+   "scans": 26.0,
+   "data_caveat": "OFF energy-kcal_100g=598 is implausible for rye bread (likely kJ or data-entry error); kcal-based terms use neutral 0.5",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 1.0,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF; unknown->0.5)",
+      "organic=True (OFF labels)",
+      "palm-oil-free=1.0 (OFF analysis en:palm-oil-free)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.675,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "emulsifiers=none (OFF additives)",
+      "preservatives=none (OFF additives)",
+      "sugars_100g=2.9 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.7,
+     "why": [
+      "fiber_100g=11.0 (OFF)",
+      "proteins_100g=6.0 (OFF)",
+      "energy-kcal_100g=598.31 (OFF; implausible -> neutral 0.5)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.562,
+     "why": [
+      "price_per_kg=£5.2 (price_gbp/500g; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.524,
+     "why": [
+      "proteins_100g=6.0 (OFF)",
+      "fiber_100g=11.0 (OFF)",
+      "sugars_100g=2.9 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.8,
+     "why": [
+      "claims=['superfood/veg halo'] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.132,
+     "why": [
+      "role=challenger",
+      "standard_800g_loaf=False (pack_g=500, OFF quantity)",
+      "price_per_kg=£5.2 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.126,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=False (role=challenger; OFF stores='Danube')",
+      "sugars_100g=2.9 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=True (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=['en:gluten'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.916,
+     "why": [
+      "completeness=0.79 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5010092736812",
+   "name": "Scandalous Seeds Wholemeal Loaf",
+   "brand": "Allinson’s",
+   "category": "bakery_bread",
+   "role": "incumbent",
+   "role_source": "assumption: Allinson's is a heritage ABF (Kingsmill stablemate) bread brand",
+   "row": 1,
+   "price_gbp": 2.2,
+   "price_source": "assumption: typical UK RRP for Allinson's 650g organic seeded loaf (~£2.20), not fetched",
+   "pack_g": 650,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 3.38,
+   "pack_copy": "scandalous seeds wholemeal - organic, 14% mixed seeds, b corp",
+   "pack_copy_source": "OFF name + ingredients_text + labels en:organic|en:certified-b-corporation",
+   "nova": 3,
+   "nutriscore": "a",
+   "ecoscore": "a-plus",
+   "additives_n": 1,
+   "additives": [
+    "en:e300"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:organic",
+    "en:eu-organic",
+    "en:vegan",
+    "en:certified-b-corporation",
+    "en:fsc",
+    "en:gb-org-05",
+    "en:soil-association-organic"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Wholemeal Wheat Flour, Water, Mixed Seeds (14%) (Sunflower Seeds, Brown Linseed, Golden Linseed, Pumpkin Seeds, Poppy Seeds), Wheat Protein, Yeast, Fermented Wheat Flour, Cracked Wheat (1%), Malted Barley Flour, Salt, Vegetable Oils (Rapeseed, Sustainable Palm), Vinegar, Molasses Sugar, Sustainable Soya Flour, Flour Treatment Agent: Ascorbic Acid (Vitamin C). With 52% Wholegrain (Wholemeal Wheat Flour, Malted Barley Flour, Cracked Wheat). ALLERGY ADVICE:",
+   "sugars_100g": 2.5,
+   "fiber_100g": 8.2,
+   "proteins_100g": 13.2,
+   "salt_100g": 0.75,
+   "energy_kcal_100g": 269.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 1,
+   "palm_oil_source": "OFF ingredients_text mentions palm / analysis en:palm-oil",
+   "organic": true,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "650g",
+   "stores": null,
+   "recycling": [],
+   "packaging": [
+    "en:paper-bag"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/501/009/273/6812/front_en.6.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5010092736812",
+   "completeness": 0.89,
+   "scans": 63.0,
+   "data_caveat": null,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.86,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=a-plus (OFF; unknown->0.5)",
+      "organic=True (OFF labels)",
+      "palm-oil-free=0.0 (OFF ingredients_text mentions palm / analysis en:palm-oil)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.658,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=1 (OFF)",
+      "emulsifiers=none (OFF additives)",
+      "preservatives=none (OFF additives)",
+      "sugars_100g=2.5 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.731,
+     "why": [
+      "fiber_100g=8.2 (OFF)",
+      "proteins_100g=13.2 (OFF)",
+      "energy-kcal_100g=269.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.679,
+     "why": [
+      "price_per_kg=£3.38 (price_gbp/650g; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.828,
+     "why": [
+      "proteins_100g=13.2 (OFF)",
+      "fiber_100g=8.2 (OFF)",
+      "sugars_100g=2.5 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.78,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=True (OFF ingredients_text)",
+      "additives_n=1 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.66,
+     "why": [
+      "role=incumbent",
+      "standard_800g_loaf=False (pack_g=650, OFF quantity)",
+      "price_per_kg=£3.38 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.45,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=incumbent; OFF stores=None)",
+      "sugars_100g=2.5 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 1.0,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=True (OFF labels)",
+      "ethical_labels=['en:certified-b-corporation', 'en:fsc', 'en:soil-association-organic'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.756,
+     "why": [
+      "completeness=0.89 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=incumbent",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "4088600246291",
+   "name": "Seeded Sourdough Bread",
+   "brand": "Specially Selected",
+   "category": "bakery_bread",
+   "role": "own_label",
+   "role_source": "OFF brand 'Specially Selected' = Aldi premium own label; OFF stores=Aldi",
+   "row": 1,
+   "price_gbp": 1.49,
+   "price_source": "assumption: Aldi Specially Selected 500g sourdough typically £1.39-£1.59, not fetched",
+   "pack_g": 500,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 2.98,
+   "pack_copy": "seeded sourdough bread with 10% mixed seeds",
+   "pack_copy_source": "OFF name + ingredients_text",
+   "nova": 3,
+   "nutriscore": "a",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Wheat Flour (Wheat Flour, Calcium Carbonate, Iron, Niacin, Thiamin), Water, MIXED SEEDS (10%) (Brown Linseed, Millet Seeds, Golden Linseed, Sunflower Seeds, Poppy Seeds, Pumpkin Seeds), Rye Flour, Malted Wheat, Salt, Wheat Bran, Malted Barley Flour,",
+   "sugars_100g": 0.52,
+   "fiber_100g": 5.52,
+   "proteins_100g": 8.62,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 244.83,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis en:palm-oil-free",
+   "organic": false,
+   "vegan": false,
+   "gluten_free_label": false,
+   "quantity": "500g",
+   "stores": "Aldi",
+   "recycling": [],
+   "packaging": [],
+   "image": "https://images.openfoodfacts.org/images/products/408/860/024/6291/front_en.52.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/4088600246291",
+   "completeness": 0.7,
+   "scans": 214.0,
+   "data_caveat": "OFF salt_100g=0.002 is implausible (likely mis-scaled sodium); not used in any lens",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=1.0 (OFF analysis en:palm-oil-free)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.723,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "emulsifiers=none (OFF additives)",
+      "preservatives=none (OFF additives)",
+      "sugars_100g=0.52 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.639,
+     "why": [
+      "fiber_100g=5.52 (OFF)",
+      "proteins_100g=8.62 (OFF)",
+      "energy-kcal_100g=244.83 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.854,
+     "why": [
+      "price_per_kg=£2.98 (price_gbp/500g; price is assumption)",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.708,
+     "why": [
+      "proteins_100g=8.62 (OFF)",
+      "fiber_100g=5.52 (OFF)",
+      "sugars_100g=0.52 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.166,
+     "why": [
+      "role=own_label",
+      "standard_800g_loaf=False (pack_g=500, OFF quantity)",
+      "price_per_kg=£2.98 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.569,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=own_label; OFF stores='Aldi')",
+      "sugars_100g=0.52 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.3,
+     "why": [
+      "vegan_signal=0.5 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.88,
+     "why": [
+      "completeness=0.7 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=own_label",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5010044000275",
+   "name": "TOASTIE SOFT THICK WHITE",
+   "brand": "Warburtons",
+   "category": "bakery_bread",
+   "role": "incumbent",
+   "role_source": "assumption: Warburtons, Hovis and Kingsmill are the long-standing UK branded sliced-bread leaders; data/sales/uk_bestsellers.csv has no bakery rows, so no NIQ rank is cited",
+   "row": 2,
+   "price_gbp": 1.15,
+   "price_source": "assumption: typical UK RRP for Warburtons Toastie 400g (~£1.15), not fetched",
+   "pack_g": 400,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 2.88,
+   "pack_copy": "toastie soft thick white - the classic sliced white",
+   "pack_copy_source": "OFF name + categories en:sliced-breads|en:white-breads",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 4,
+   "additives": [
+    "en:e282",
+    "en:e300",
+    "en:e472e",
+    "en:e481"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:kosher",
+    "en:vegan",
+    "en:kashrut-division-of-the-london-beth-din"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "wheat flour [with calcium, iron, niacin (b3) and thiamin (b1)), water, yeast, salt, vegetable oil (rapeseed, sustainable palm), soya flour, preservative: calcium propionate, emulsifiers: e481, e472e, flour treatment agent: ascorbic acid (vitamin c).",
+   "sugars_100g": 2.9,
+   "fiber_100g": 2.1,
+   "proteins_100g": 9.1,
+   "salt_100g": 0.95,
+   "energy_kcal_100g": 244.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 1,
+   "palm_oil_source": "OFF ingredients_text mentions palm / analysis en:palm-oil",
+   "organic": false,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "400g",
+   "stores": "Coop",
+   "recycling": [],
+   "packaging": [
+    "en:ldpe-bag"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/501/004/400/0275/front_en.53.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5010044000275",
+   "completeness": 0.8,
+   "scans": 58.0,
+   "data_caveat": null,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.465,
+     "why": [
+      "additives_n=4 (OFF)",
+      "ecoscore=b (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=0.0 (OFF ingredients_text mentions palm / analysis en:palm-oil)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.192,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=4 (OFF)",
+      "emulsifiers=['e472e', 'e481'] (OFF additives)",
+      "preservatives=['e282'] (OFF additives)",
+      "sugars_100g=2.9 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.423,
+     "why": [
+      "fiber_100g=2.1 (OFF)",
+      "proteins_100g=9.1 (OFF)",
+      "energy-kcal_100g=244.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.711,
+     "why": [
+      "price_per_kg=£2.88 (price_gbp/400g; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.518,
+     "why": [
+      "proteins_100g=9.1 (OFF)",
+      "fiber_100g=2.1 (OFF)",
+      "sugars_100g=2.9 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.92,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=4 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.667,
+     "why": [
+      "role=incumbent",
+      "standard_800g_loaf=False (pack_g=400, OFF quantity)",
+      "price_per_kg=£2.88 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.426,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=incumbent; OFF stores='Coop')",
+      "sugars_100g=2.9 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.72,
+     "why": [
+      "completeness=0.8 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=incumbent",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5010003064744",
+   "name": "Seed Sensations Seven Seeds",
+   "brand": "Hovis",
+   "category": "bakery_bread",
+   "role": "incumbent",
+   "role_source": "assumption: Warburtons, Hovis and Kingsmill are the long-standing UK branded sliced-bread leaders; data/sales/uk_bestsellers.csv has no bakery rows, so no NIQ rank is cited",
+   "row": 2,
+   "price_gbp": 2.1,
+   "price_source": "assumption: typical UK RRP for Hovis Seed Sensations 800g (~£2.00-£2.25), not fetched",
+   "pack_g": 800,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 2.62,
+   "pack_copy": "seed sensations seven seeds - 13% seed mix",
+   "pack_copy_source": "OFF name + ingredients_text",
+   "nova": 4,
+   "nutriscore": "a",
+   "ecoscore": "a",
+   "additives_n": 3,
+   "additives": [
+    "en:e282",
+    "en:e300",
+    "en:e472e"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:kosher",
+    "en:vegan",
+    "en:kashrut-division-of-the-london-beth-din"
+   ],
+   "allergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "analysis": [
+    "en:may-contain-palm-oil",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Wheat Flour (Calcium, Iron, Niacin, Thiamin), Water, Seed Mix 13% (Toasted Brown Linseed, Toasted Sunflower Seeds, Pumpkin Seeds, Sunflower Seeds, Millet Seeds, Golden Linseed, Poppy Seeds), Yeast, Wheat  Protein, Salt, Soya Flour, Malted Barley Flour, Granulated Sugar, Barley Flour, Preservative (E282), Caramelised Sugar, Barley Fibre, Emulsifier (E472e), Flour Treatment Agent (Ascorbic Acid).",
+   "sugars_100g": 3.8,
+   "fiber_100g": 5.3,
+   "proteins_100g": 10.0,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 277.27,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": null,
+   "palm_oil_source": "OFF analysis en:may-contain-palm-oil",
+   "organic": false,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "800g",
+   "stores": "Costco|Sainsbury's|Asda",
+   "recycling": [],
+   "packaging": [
+    "en:ldpe-bag"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/501/000/306/4744/front_en.76.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5010003064744",
+   "completeness": 0.9,
+   "scans": 170.0,
+   "data_caveat": "OFF salt_100g=0.002 is implausible; not used in any lens",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.6,
+     "why": [
+      "additives_n=3 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=0.5 (OFF analysis en:may-contain-palm-oil)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.199,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "emulsifiers=['e472e'] (OFF additives)",
+      "preservatives=['e282'] (OFF additives)",
+      "sugars_100g=3.8 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.626,
+     "why": [
+      "fiber_100g=5.3 (OFF)",
+      "proteins_100g=10.0 (OFF)",
+      "energy-kcal_100g=277.27 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.727,
+     "why": [
+      "price_per_kg=£2.62 (price_gbp/800g; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.625,
+     "why": [
+      "proteins_100g=10.0 (OFF)",
+      "fiber_100g=5.3 (OFF)",
+      "sugars_100g=3.8 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.74,
+     "why": [
+      "claims=['superfood/veg halo'] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=3 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.971,
+     "why": [
+      "role=incumbent",
+      "standard_800g_loaf=True (pack_g=800, OFF quantity)",
+      "price_per_kg=£2.62 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.372,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=incumbent; OFF stores=\"Costco|Sainsbury's|Asda\")",
+      "sugars_100g=3.8 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=['en:gluten', 'en:soybeans'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.96,
+     "why": [
+      "completeness=0.9 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=incumbent",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5010092093441",
+   "name": "Kingsmill 50/50",
+   "brand": "Kingsmill",
+   "category": "bakery_bread",
+   "role": "incumbent",
+   "role_source": "assumption: Warburtons, Hovis and Kingsmill are the long-standing UK branded sliced-bread leaders; data/sales/uk_bestsellers.csv has no bakery rows, so no NIQ rank is cited",
+   "row": 2,
+   "price_gbp": 1.4,
+   "price_source": "assumption: typical UK RRP for Kingsmill 50/50 800g (~£1.40); a Reddit verbatim also prices 'loaf of bread 1.40' (https://www.reddit.com/comments/1k4ayi9)",
+   "pack_g": 800,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 1.75,
+   "pack_copy": "50/50 - half white, half wholemeal flour; carbon trust reducing co2",
+   "pack_copy_source": "OFF ingredients_text (33%/33%) + labels en:carbon-trust-reducing-co2",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "b",
+   "additives_n": 3,
+   "additives": [
+    "en:e282",
+    "en:e300",
+    "en:e472e"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:halal",
+    "en:kosher",
+    "en:vegan",
+    "en:carbon-trust",
+    "en:carbon-trust-reducing-co2",
+    "en:halal-food-authority",
+    "en:sephardi-kashrut-autority"
+   ],
+   "allergens": [
+    "en:gluten",
+    "en:soybeans"
+   ],
+   "analysis": [
+    "en:palm-oil",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "_wheat_ flour 33% (with calcium, iron, niacin (b3), thiamin (b1)), wholemeal _wheat_ flour 33%, water, yeast, salt, vegetable oils (rapeseed, sustainable palm), vinegar, sustainable _soya_ flour, emulsifier (e472e), preservative (calcium propionate), flour treatment agent (ascorbic acid (vitamin c)).",
+   "sugars_100g": 3.5,
+   "fiber_100g": 4.75,
+   "proteins_100g": 9.5,
+   "salt_100g": 0.93,
+   "energy_kcal_100g": 234.0,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 1,
+   "palm_oil_source": "OFF ingredients_text mentions palm / analysis en:palm-oil",
+   "organic": false,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "800 g",
+   "stores": "Asda",
+   "recycling": [],
+   "packaging": [
+    "en:04-ldpe",
+    "en:ldpe-bag"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/501/009/209/3441/front_en.61.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5010092093441",
+   "completeness": 0.9,
+   "scans": 87.0,
+   "data_caveat": null,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.505,
+     "why": [
+      "additives_n=3 (OFF)",
+      "ecoscore=b (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=0.0 (OFF ingredients_text mentions palm / analysis en:palm-oil)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.205,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "emulsifiers=['e472e'] (OFF additives)",
+      "preservatives=['e282'] (OFF additives)",
+      "sugars_100g=3.5 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.62,
+     "why": [
+      "fiber_100g=4.75 (OFF)",
+      "proteins_100g=9.5 (OFF)",
+      "energy-kcal_100g=234.0 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.783,
+     "why": [
+      "price_per_kg=£1.75 (price_gbp/800g; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.598,
+     "why": [
+      "proteins_100g=9.5 (OFF)",
+      "fiber_100g=4.75 (OFF)",
+      "sugars_100g=3.5 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.94,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=3 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.984,
+     "why": [
+      "role=incumbent",
+      "standard_800g_loaf=True (pack_g=800, OFF quantity)",
+      "price_per_kg=£1.75 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.39,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=incumbent; OFF stores='Asda')",
+      "sugars_100g=3.5 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:carbon-trust', 'en:carbon-trust-reducing-co2'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=['en:gluten', 'en:soybeans'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.86,
+     "why": [
+      "completeness=0.9 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "4088600011820",
+   "name": "Medium Sliced White Bread",
+   "brand": "Aldi,Everyday Essentials",
+   "category": "bakery_bread",
+   "role": "own_label",
+   "role_source": "OFF brand 'Aldi,Everyday Essentials' = Aldi entry own label",
+   "row": 2,
+   "price_gbp": 0.59,
+   "price_source": "assumption: Aldi Everyday Essentials 800g white typically £0.55-£0.65 (UK entry-price loaf), not fetched",
+   "pack_g": 800,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 0.74,
+   "pack_copy": "medium sliced white bread - suitable for vegans, no palm oil",
+   "pack_copy_source": "OFF ingredients_text dietary advice",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "a",
+   "additives_n": 3,
+   "additives": [
+    "en:e282",
+    "en:e300",
+    "en:e472e"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:vegan"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:may-contain-palm-oil",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Wheat Flour (Wheat Flour, Calcium Carbonate, Iron, Niacin, Thiamin), Water, Salt, Yeast, Preservative: Calcium Propionate; Emulsifier: Mono - and Diacetyl Tartaric Acid Esters of Mono-and Diglycerides of Fatty Acids; Spirit Vinegar, Rapeseed Oil, Flour Treatment Agent: Ascorbic Acid. ALLERGY ADVICE: For allergens, see ingredients in bold. May also contain soya. DIETARY ADVICE: Suitable for vegans. No artificial flavourings. No palm oil.",
+   "sugars_100g": 3.33,
+   "fiber_100g": 3.61,
+   "proteins_100g": 7.5,
+   "salt_100g": 0.85,
+   "energy_kcal_100g": 233.33,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF ingredients_text states 'No palm oil'",
+   "organic": false,
+   "vegan": true,
+   "gluten_free_label": false,
+   "quantity": "800 g",
+   "stores": null,
+   "recycling": [],
+   "packaging": [
+    "en:plastic"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/408/860/001/1820/front_en.9.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/4088600011820",
+   "completeness": 0.79,
+   "scans": 2.0,
+   "data_caveat": "OFF analysis says may-contain-palm-oil, but the ingredients_text states 'No palm oil'; the ingredients statement is used",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=3 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=1.0 (OFF ingredients_text states 'No palm oil')"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.208,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "emulsifiers=['e472e'] (OFF additives)",
+      "preservatives=['e282'] (OFF additives)",
+      "sugars_100g=3.33 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.495,
+     "why": [
+      "fiber_100g=3.61 (OFF)",
+      "proteins_100g=7.5 (OFF)",
+      "energy-kcal_100g=233.33 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.997,
+     "why": [
+      "price_per_kg=£0.74 (price_gbp/800g; price is assumption)",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.487,
+     "why": [
+      "proteins_100g=7.5 (OFF)",
+      "fiber_100g=3.61 (OFF)",
+      "sugars_100g=3.33 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.94,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=3 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.499,
+     "why": [
+      "role=own_label",
+      "standard_800g_loaf=True (pack_g=800, OFF quantity)",
+      "price_per_kg=£0.74 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=own_label; OFF stores=None)",
+      "sugars_100g=3.33 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.616,
+     "why": [
+      "completeness=0.79 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=own_label",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060195901334",
+   "name": "Gluten Free Soft White Farmhouse",
+   "brand": "Genius",
+   "category": "bakery_bread",
+   "role": "challenger",
+   "role_source": "assumption: specialist gluten-free brand (free-from fixture)",
+   "row": 3,
+   "price_gbp": 3.5,
+   "price_source": "assumption: typical UK RRP for Genius 535g GF loaf (~£3.25-£3.75); GF premium echoed by verbatim 'all gluten free stuff is premium' (https://www.reddit.com/comments/191icpc)",
+   "pack_g": 535,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 6.54,
+   "pack_copy": "gluten free soft white farmhouse - no milk",
+   "pack_copy_source": "OFF name + labels en:no-gluten|en:no-milk",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "a",
+   "additives_n": 3,
+   "additives": [
+    "en:e415",
+    "en:e422",
+    "en:e464"
+   ],
+   "labels": [
+    "en:no-gluten",
+    "en:vegetarian",
+    "en:no-milk"
+   ],
+   "allergens": [
+    "en:eggs"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Starches (Maize, Potato, Tapioca), Water, Rapeseed Oil, Humectant (Vegetable Glycerol), Psyllium Husk, Yeast, Stabilisers (Hydroxypropyl Methyl Cellulose, Xanthan Gum), Golden Flaxseed, Free Range Dried _Egg_ White, Rice Flour, iodised Salt (Salt, Potassium iodate), Dextrose, Fermented Maize Starch, Partially Inverted Sugar Syrup, Calcium Carbonate, Niacin, Iron, Riboflavin, Thiamine, Folic Acid.",
+   "sugars_100g": 1.39,
+   "fiber_100g": 6.94,
+   "proteins_100g": 5.56,
+   "salt_100g": 1.2,
+   "energy_kcal_100g": 227.78,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis en:palm-oil-free",
+   "organic": false,
+   "vegan": false,
+   "gluten_free_label": true,
+   "quantity": "535 g",
+   "stores": "Sainsbury's",
+   "recycling": [],
+   "packaging": [
+    "en:plastic",
+    "en:ldpe-bag"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/506/019/590/1334/front_en.31.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060195901334",
+   "completeness": 0.79,
+   "scans": 2.0,
+   "data_caveat": "only 2 OFF scans; analysis en:non-vegan from free-range egg white",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=3 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=1.0 (OFF analysis en:palm-oil-free)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.347,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=3 (OFF)",
+      "emulsifiers=['e464'] (OFF additives)",
+      "preservatives=none (OFF additives)",
+      "sugars_100g=1.39 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.611,
+     "why": [
+      "fiber_100g=6.94 (OFF)",
+      "proteins_100g=5.56 (OFF)",
+      "energy-kcal_100g=227.78 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.477,
+     "why": [
+      "price_per_kg=£6.54 (price_gbp/535g; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.567,
+     "why": [
+      "proteins_100g=5.56 (OFF)",
+      "fiber_100g=6.94 (OFF)",
+      "sugars_100g=1.39 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.94,
+     "why": [
+      "claims=[] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=3 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.112,
+     "why": [
+      "role=challenger",
+      "standard_800g_loaf=False (pack_g=535, OFF quantity)",
+      "price_per_kg=£6.54 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.517,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=challenger; OFF stores=\"Sainsbury's\")",
+      "sugars_100g=1.39 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.18,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "label en:no-gluten (OFF labels)",
+      "allergens=['en:eggs'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.816,
+     "why": [
+      "completeness=0.79 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5391526414385",
+   "name": "Multi Grain Loaf",
+   "brand": "Promise Gluten Free",
+   "category": "bakery_bread",
+   "role": "challenger",
+   "role_source": "assumption: Irish specialist gluten-free brand",
+   "row": 3,
+   "price_gbp": 3.25,
+   "price_source": "assumption: typical UK RRP for Promise GF 480g loaf (~£3.25), not fetched",
+   "pack_g": 480,
+   "pack_g_source": "OFF quantity",
+   "unit_price_gbp_per_kg": 6.77,
+   "pack_copy": "gluten free multi grain loaf - high fibre",
+   "pack_copy_source": "OFF name + labels en:no-gluten|en:high-fibres",
+   "nova": 4,
+   "nutriscore": "a",
+   "ecoscore": "a",
+   "additives_n": 8,
+   "additives": [
+    "en:e200",
+    "en:e281",
+    "en:e415",
+    "en:e422",
+    "en:e461",
+    "en:e464",
+    "en:e466",
+    "en:e500",
+    "en:e500i"
+   ],
+   "labels": [
+    "en:no-gluten",
+    "en:source-of-fibre",
+    "en:high-fibres",
+    "en:without-addition-of-dairy-products"
+   ],
+   "allergens": [
+    "en:eggs"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "water, rice flour, tapioca starch, humectant: glycerine, seeds (7%) (sunflower seed, golden millet seed, brown linseed, poppy seed, quinoa), maize starch, yeast, sugar cane fibre, potato starch, rapeseed oil, psyllium husk powder,  egg  white powder, thickeners: hydroxypropyl methyl cellulose, sodium carboxymethyl cellulose, methyl cellulose, xanthan gum, spirit vinegar, prune purée, black treacle, sugar beet fibre, iodised salt (salt,   potassium iodate), pea protein, preservatives: sodium propionate, sorbic acid, sugar, rice starch, concentrated grape juice, wholegrain maize flour, rice bran, acidity regulator: sodium carbonate, folic acid, thiamin, natural flavouring",
+   "sugars_100g": 0.8,
+   "fiber_100g": 12.9,
+   "proteins_100g": 6.0,
+   "salt_100g": 0.95,
+   "energy_kcal_100g": 219.59,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis en:palm-oil-free",
+   "organic": false,
+   "vegan": false,
+   "gluten_free_label": true,
+   "quantity": "480g",
+   "stores": "Tesco",
+   "recycling": [],
+   "packaging": [
+    "en:plastic"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/539/152/641/4385/front_en.10.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5391526414385",
+   "completeness": 0.89,
+   "scans": 20.0,
+   "data_caveat": null,
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.45,
+     "why": [
+      "additives_n=8 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=1.0 (OFF analysis en:palm-oil-free)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.134,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=8 (OFF)",
+      "emulsifiers=['e461', 'e464', 'e466'] (OFF additives)",
+      "preservatives=['e200', 'e281'] (OFF additives)",
+      "sugars_100g=0.8 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.63,
+     "why": [
+      "fiber_100g=12.9 (OFF)",
+      "proteins_100g=6.0 (OFF)",
+      "energy-kcal_100g=219.59 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.462,
+     "why": [
+      "price_per_kg=£6.77 (price_gbp/480g; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.608,
+     "why": [
+      "proteins_100g=6.0 (OFF)",
+      "fiber_100g=12.9 (OFF)",
+      "sugars_100g=0.8 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.44,
+     "why": [
+      "claims=['high fibre'] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=True (OFF ingredients_text)",
+      "additives_n=8 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.109,
+     "why": [
+      "role=challenger",
+      "standard_800g_loaf=False (pack_g=480, OFF quantity)",
+      "price_per_kg=£6.77 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.552,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=False (OFF name/categories)",
+      "mainstream=True (role=challenger; OFF stores='Tesco')",
+      "sugars_100g=0.8 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.18,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "label en:no-gluten (OFF labels)",
+      "allergens=['en:eggs'] (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.956,
+     "why": [
+      "completeness=0.89 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5391521690494",
+   "name": "Sweet Potato Wraps",
+   "brand": "BFree",
+   "category": "bakery_bread",
+   "role": "challenger",
+   "role_source": "assumption: Irish specialist gluten-free brand",
+   "row": 3,
+   "price_gbp": 2.75,
+   "price_source": "assumption: typical UK RRP for BFree 6-pack wraps (~£2.75), not fetched",
+   "pack_g": 252,
+   "pack_g_source": "OFF quantity '6 x 42 g'",
+   "unit_price_gbp_per_kg": 10.91,
+   "pack_copy": "gluten free sweet potato wraps - 13% sweet potato flour, vegan",
+   "pack_copy_source": "OFF name + ingredients_text + labels en:vegan + categories en:gluten-free-breads",
+   "nova": 4,
+   "nutriscore": "c",
+   "ecoscore": "b",
+   "additives_n": 9,
+   "additives": [
+    "en:e296",
+    "en:e300",
+    "en:e330",
+    "en:e334",
+    "en:e341",
+    "en:e412",
+    "en:e415",
+    "en:e460",
+    "en:e500",
+    "en:e500ii"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:kosher",
+    "en:vegan",
+    "en:kashrut-division-of-the-london-beth-din"
+   ],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "water, sweet potato flour (13%), potato flour, corn starch, sorghum flour, carrot powder, thickeners (xanthan gum, guar gum),tapioca starch, brown rice flour, cellulose, pea protein, corn flour, white rice flour, inulin, sourdough (fermented from quinoa, corn and rice flour), tomato powder, acids (citric acid, malic acid, tartaric acid) , rapeseed oil, salt, raising agents (sodium bicarbonate,  calcium phosphate), amaranth flour, quinoa flour , millet flour, teff flour, psyllium husk, yeast, flour treatment agent (ascorbic acid),",
+   "sugars_100g": 8.1,
+   "fiber_100g": 21.0,
+   "proteins_100g": 1.8,
+   "salt_100g": 1.3,
+   "energy_kcal_100g": 246.88,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "palm_oil_source": "OFF analysis en:palm-oil-free",
+   "organic": false,
+   "vegan": true,
+   "gluten_free_label": true,
+   "quantity": "6 x 42 g",
+   "stores": null,
+   "recycling": [],
+   "packaging": [
+    "en:pack"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/539/152/169/0494/front_en.29.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5391521690494",
+   "completeness": 0.9,
+   "scans": 18.0,
+   "data_caveat": "OFF additives_n=9 but the additives list has 10 tags (e500/e500ii double-count); additives_n used as given",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.365,
+     "why": [
+      "additives_n=9 (OFF)",
+      "ecoscore=b (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=1.0 (OFF analysis en:palm-oil-free)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.275,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=9 (OFF)",
+      "emulsifiers=none (OFF additives)",
+      "preservatives=none (OFF additives)",
+      "sugars_100g=8.1 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.498,
+     "why": [
+      "fiber_100g=21.0 (OFF)",
+      "proteins_100g=1.8 (OFF)",
+      "energy-kcal_100g=246.88 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.197,
+     "why": [
+      "price_per_kg=£10.91 (price_gbp/252g; price is assumption)",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.272,
+     "why": [
+      "proteins_100g=1.8 (OFF)",
+      "fiber_100g=21.0 (OFF)",
+      "sugars_100g=8.1 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.42,
+     "why": [
+      "claims=['superfood/veg halo'] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=True (OFF ingredients_text)",
+      "additives_n=9 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.046,
+     "why": [
+      "role=challenger",
+      "standard_800g_loaf=False (pack_g=252, OFF quantity '6 x 42 g')",
+      "price_per_kg=£10.91 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.4,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=True (OFF name/categories)",
+      "mainstream=False (role=challenger; OFF stores=None)",
+      "sugars_100g=8.1 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.6,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "category en:products-without-gluten / en:gluten-free-breads (OFF categories; no en:no-gluten label tag)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.56,
+     "why": [
+      "completeness=0.9 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5036034406803",
+   "name": "Protein Plant Powered Wheat Flour Tortilla Wraps",
+   "brand": "Mission",
+   "category": "bakery_bread",
+   "role": "incumbent",
+   "role_source": "assumption: Mission is the leading branded tortilla-wrap brand in UK grocery (wraps sub-type incumbent, like Remedy in soft_drinks)",
+   "row": 3,
+   "price_gbp": 2.0,
+   "price_source": "assumption: typical UK RRP for Mission 6-pack protein wraps (~£2.00), not fetched",
+   "pack_g": 366,
+   "pack_g_source": "assumption: OFF quantity missing; 6 x 61g (= the Aldi protein-wrap equivalent 4088600550572, OFF quantity '6 x 61 g')",
+   "unit_price_gbp_per_kg": 5.46,
+   "pack_copy": "protein plant powered wheat flour tortilla wraps",
+   "pack_copy_source": "OFF name",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "b",
+   "additives_n": 8,
+   "additives": [
+    "en:e202",
+    "en:e282",
+    "en:e330",
+    "en:e422",
+    "en:e450",
+    "en:e450i",
+    "en:e471",
+    "en:e500",
+    "en:e500ii",
+    "en:e920"
+   ],
+   "labels": [],
+   "allergens": [],
+   "analysis": [
+    "en:palm-oil",
+    "en:maybe-vegan",
+    "en:maybe-vegetarian"
+   ],
+   "ingredients_n": null,
+   "ingredients_text": "Wheat Flour [Wheat Flour, Calcium, Folic Acid, Iron, Niacin, Thiamin], Water, Palm Oil, Humectant (Glycerol), Sugar, Raising Agents (Disodium Diphosphate, Sodium Bicarbonate), Acidity Regulator (Citric Acid), Emulsifier (Mono - and Diglycerides of Fatty Acids), Preservatives (Potassium Sorbate, Calcium Propionate), Salt, Wheat Starch, Flour Treatment Agent (L-Cysteine).",
+   "sugars_100g": 2.62,
+   "fiber_100g": 1.8,
+   "proteins_100g": 17.05,
+   "salt_100g": 2.3,
+   "energy_kcal_100g": 278.69,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 1,
+   "palm_oil_source": "OFF ingredients_text mentions palm / analysis en:palm-oil",
+   "organic": false,
+   "vegan": false,
+   "gluten_free_label": false,
+   "quantity": null,
+   "stores": "Tesco",
+   "recycling": [],
+   "packaging": [],
+   "image": "https://images.openfoodfacts.org/images/products/503/603/440/6803/front_en.15.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5036034406803",
+   "completeness": 0.69,
+   "scans": 38.0,
+   "data_caveat": "OFF quantity missing (see pack_g_source); no OFF labels",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.305,
+     "why": [
+      "additives_n=8 (OFF)",
+      "ecoscore=b (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-oil-free=0.0 (OFF ingredients_text mentions palm / analysis en:palm-oil)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.098,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=8 (OFF)",
+      "emulsifiers=['e471'] (OFF additives)",
+      "preservatives=['e202', 'e282'] (OFF additives)",
+      "sugars_100g=2.62 (OFF)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.441,
+     "why": [
+      "fiber_100g=1.8 (OFF)",
+      "proteins_100g=17.05 (OFF)",
+      "energy-kcal_100g=278.69 (OFF)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.546,
+     "why": [
+      "price_per_kg=£5.46 (price_gbp/366g; price is assumption)",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.755,
+     "why": [
+      "proteins_100g=17.05 (OFF)",
+      "fiber_100g=1.8 (OFF)",
+      "sugars_100g=2.62 (OFF)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.44,
+     "why": [
+      "claims=['protein', 'plant powered'] (OFF name/labels/pack_copy)",
+      "protein_isolate_or_added_gluten=False (OFF ingredients_text)",
+      "additives_n=8 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.628,
+     "why": [
+      "role=incumbent",
+      "standard_800g_loaf=False (pack_g=366, assumption: OFF quantity missing; 6 x 61g (= the Aldi protein-wrap equivalent 4088600550572, OFF quantity '6 x 61 g'))",
+      "price_per_kg=£5.46 (assumption)"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.843,
+     "why": [
+      "portable lunch format (wrap/roll/ciabatta)=True (OFF name/categories)",
+      "mainstream=True (role=incumbent; OFF stores='Tesco')",
+      "sugars_100g=2.62 (OFF)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.3,
+     "why": [
+      "vegan_signal=0.5 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten cereal in ingredients (OFF ingredients_text)",
+      "allergens=none declared (OFF)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.576,
+     "why": [
+      "completeness=0.69 (OFF)",
+      "nutriscore=d (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.45,
+     "why": [
+      "role=incumbent",
+      "trend_term(sourdough/protein/sweet potato/chia/quinoa/gluten free/rye/seed)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  }
+ ]
+}

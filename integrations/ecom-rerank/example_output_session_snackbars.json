@@ -1,0 +1,1221 @@
+{
+  "category": "snack_bars",
+  "listing_source": "data/products/catalog.json",
+  "listing_order": "catalog.json order (stand-in for the retailer's current ranking)",
+  "created": "2026-10-03T12:02:45",
+  "archetype_inference": {
+    "archetype": "glp1_small_appetite",
+    "probabilities": {
+      "glp1_small_appetite": 0.68,
+      "upf_avoider_parent": 0.18,
+      "frugal_unit_price": 0.06,
+      "protein_sceptic_gimmick_reactant": 0.04,
+      "ai_delegator": 0.03,
+      "unclear": 0.01,
+      "allergen_coeliac": 0.0,
+      "habit_loyalist_shrinkflation_angry": 0.0,
+      "meal_deal_office": 0.0,
+      "protein_gym": 0.0,
+      "vegan_ethical": 0.0,
+      "novelty_seeker_tiktok": 0.0,
+      "eco_low_chemical": 0.0
+    },
+    "confidence": 0.64,
+    "option_order": [
+      "habit_loyalist_shrinkflation_angry",
+      "protein_gym",
+      "vegan_ethical",
+      "frugal_unit_price",
+      "ai_delegator",
+      "unclear",
+      "allergen_coeliac",
+      "upf_avoider_parent",
+      "glp1_small_appetite",
+      "protein_sceptic_gimmick_reactant",
+      "eco_low_chemical",
+      "meal_deal_office",
+      "novelty_seeker_tiktok"
+    ],
+    "signals": [
+      "searched: high fibre snack",
+      "viewed: Fibre One bar",
+      "removed from cart: chocolate protein bar (sweeteners)",
+      "filter applied: under £2"
+    ],
+    "jev_model": "jev-1.13.0",
+    "input_tokens": 1244,
+    "cached": false,
+    "cost_usd": 5.2248000000000005e-05,
+    "fallback": null
+  },
+  "rerank": {
+    "archetype": "glp1_small_appetite",
+    "persona_file": "data/personas/lens/glp1_small_appetite.json",
+    "weights": {
+      "lens": 0.4,
+      "fit": 0.6,
+      "putoff_penalty": 0.3,
+      "source": "assumption: fit (Jev reading the shopper's own priorities) weighted above the code lens grade because it sees pack copy and claims; put-off penalty 0.3 so a likely deal-breaker drops ~one position band. Tune on real click/purchase data."
+    },
+    "results": [
+      {
+        "code": "20402167",
+        "name": "Deluxe Fruit & Nut protein bars",
+        "brand": "Lidl,Deluxe",
+        "role": "own_label",
+        "original_position": 12,
+        "final_score": 0.5587,
+        "formula": "0.4*lens 0.553 + 0.6*fit 0.642 - 0.3*P(put-off) 0.160 = 0.559",
+        "lens": {
+          "score": 0.553,
+          "why": [
+            "proteins_100g=26.7 (OFF)",
+            "energy-kcal_100g=514.0 (OFF) -> 10x test fail",
+            "fiber_100g=4.2 (OFF)",
+            "sugars_100g=20.3 (OFF)",
+            "unit size=45g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.57,
+          "fit_0_1": 0.6425,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.04,
+            "weak": 0.17,
+            "neutral": 0.05,
+            "good": 0.67,
+            "excellent": 0.07
+          },
+          "confidence": 0.53,
+          "p_putoff": 0.16
+        },
+        "off_url": "https://world.openfoodfacts.org/product/20402167",
+        "new_position": 1,
+        "moved": 11,
+        "explanation": "#1 (up 11 from #12). Jev reads it as a good fit for Sam (P=0.67, confidence 0.53). lens grade 0.55 from proteins_100g=26.7 (OFF); energy-kcal_100g=514.0 (OFF) -> 10x test fail; fiber_100g=4.2 (OFF)."
+      },
+      {
+        "code": "5024121100475",
+        "name": "Raspberry & Apple Soft Oaty Bars",
+        "brand": "Organix",
+        "role": "challenger",
+        "original_position": 3,
+        "final_score": 0.4645,
+        "formula": "0.4*lens 0.535 + 0.6*fit 0.463 - 0.3*P(put-off) 0.090 = 0.465",
+        "lens": {
+          "score": 0.535,
+          "why": [
+            "proteins_100g=7.5 (OFF)",
+            "energy-kcal_100g=411.0 (OFF) -> 10x test fail",
+            "fiber_100g=13.0 (OFF)",
+            "sugars_100g=22.0 (OFF)",
+            "unit size=23g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 1.85,
+          "fit_0_1": 0.4625,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.05,
+            "weak": 0.44,
+            "neutral": 0.14,
+            "good": 0.37,
+            "excellent": 0.0
+          },
+          "confidence": 0.21,
+          "p_putoff": 0.09
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5024121100475",
+        "new_position": 2,
+        "moved": 1,
+        "explanation": "#2 (up 1 from #3). Jev reads it as a weak fit for Sam (P=0.44, confidence 0.21). lens grade 0.54 from proteins_100g=7.5 (OFF); energy-kcal_100g=411.0 (OFF) -> 10x test fail; fiber_100g=13.0 (OFF)."
+      },
+      {
+        "code": "5060411920040",
+        "name": "Sweet & salty almond",
+        "brand": "Bounce",
+        "role": "challenger",
+        "original_position": 11,
+        "final_score": 0.4337,
+        "formula": "0.4*lens 0.473 + 0.6*fit 0.522 - 0.3*P(put-off) 0.230 = 0.434",
+        "lens": {
+          "score": 0.473,
+          "why": [
+            "proteins_100g=22.0 (OFF)",
+            "energy-kcal_100g=440.4 (OFF) -> 10x test fail",
+            "fiber_100g=5.7 (OFF)",
+            "sugars_100g=26.0 (OFF)",
+            "unit size=90g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.09,
+          "fit_0_1": 0.5225,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.17,
+            "weak": 0.23,
+            "neutral": 0.03,
+            "good": 0.49,
+            "excellent": 0.08
+          },
+          "confidence": 0.11,
+          "p_putoff": 0.23
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5060411920040",
+        "new_position": 3,
+        "moved": 8,
+        "explanation": "#3 (up 8 from #11). Jev reads it as a good fit for Sam (P=0.49, confidence 0.11). lens grade 0.47 from proteins_100g=22.0 (OFF); energy-kcal_100g=440.4 (OFF) -> 10x test fail; fiber_100g=5.7 (OFF)."
+      },
+      {
+        "code": "5000159558396",
+        "name": "Chocolate Chip cashew",
+        "brand": "Kind",
+        "role": "challenger",
+        "original_position": 7,
+        "final_score": 0.3241,
+        "formula": "0.4*lens 0.679 + 0.6*fit 0.287 - 0.3*P(put-off) 0.400 = 0.324",
+        "lens": {
+          "score": 0.679,
+          "why": [
+            "proteins_100g=17.0 (OFF)",
+            "energy-kcal_100g=556.0 (OFF) -> 10x test fail",
+            "fiber_100g=12.0 (OFF)",
+            "sugars_100g=9.9 (OFF)",
+            "unit size=30g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 1.15,
+          "fit_0_1": 0.2875,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.28,
+            "weak": 0.48,
+            "neutral": 0.07,
+            "good": 0.17,
+            "excellent": 0.0
+          },
+          "confidence": 0.42,
+          "p_putoff": 0.4
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5000159558396",
+        "new_position": 4,
+        "moved": 3,
+        "explanation": "#4 (up 3 from #7). Jev reads it as a weak fit for Sam (P=0.48, confidence 0.42). lens grade 0.68 from proteins_100g=17.0 (OFF); energy-kcal_100g=556.0 (OFF) -> 10x test fail; fiber_100g=12.0 (OFF)."
+      },
+      {
+        "code": "5060088701478",
+        "name": "cocoa orange",
+        "brand": "nakd.",
+        "role": "incumbent",
+        "original_position": 5,
+        "final_score": 0.2976,
+        "formula": "0.4*lens 0.474 + 0.6*fit 0.250 - 0.3*P(put-off) 0.140 = 0.298",
+        "lens": {
+          "score": 0.474,
+          "why": [
+            "proteins_100g=8.57 (OFF)",
+            "energy-kcal_100g=394.29 (OFF) -> 10x test fail",
+            "fiber_100g=8.57 (OFF)",
+            "sugars_100g=42.86 (OFF)",
+            "unit size=35g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 1.0,
+          "fit_0_1": 0.25,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.33,
+            "weak": 0.49,
+            "neutral": 0.04,
+            "good": 0.14,
+            "excellent": 0.0
+          },
+          "confidence": 0.45,
+          "p_putoff": 0.14
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5060088701478",
+        "new_position": 5,
+        "moved": 0,
+        "explanation": "#5 (unchanged from #5). Jev reads it as a weak fit for Sam (P=0.49, confidence 0.45). lens grade 0.47 from proteins_100g=8.57 (OFF); energy-kcal_100g=394.29 (OFF) -> 10x test fail; fiber_100g=8.57 (OFF)."
+      },
+      {
+        "code": "4056489239918",
+        "name": "Cacao & Orange 5 Raw Fruit & Nut Bars",
+        "brand": "Alesto,Lidl",
+        "role": "own_label",
+        "original_position": 6,
+        "final_score": 0.2883,
+        "formula": "0.4*lens 0.492 + 0.6*fit 0.207 - 0.3*P(put-off) 0.110 = 0.288",
+        "lens": {
+          "score": 0.492,
+          "why": [
+            "proteins_100g=9.14 (OFF)",
+            "energy-kcal_100g=425.71 (OFF) -> 10x test fail",
+            "fiber_100g=8.29 (OFF)",
+            "sugars_100g=33.43 (OFF)",
+            "unit size=35g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.83,
+          "fit_0_1": 0.2075,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.4,
+            "weak": 0.47,
+            "neutral": 0.03,
+            "good": 0.1,
+            "excellent": 0.0
+          },
+          "confidence": 0.47,
+          "p_putoff": 0.11
+        },
+        "off_url": "https://world.openfoodfacts.org/product/4056489239918",
+        "new_position": 6,
+        "moved": 0,
+        "explanation": "#6 (unchanged from #6). Jev reads it as a weak fit for Sam (P=0.47, confidence 0.47). lens grade 0.49 from proteins_100g=9.14 (OFF); energy-kcal_100g=425.71 (OFF) -> 10x test fail; fiber_100g=8.29 (OFF)."
+      },
+      {
+        "code": "5060482840179",
+        "name": "Apple & raisin oat bars",
+        "brand": "Deliciously ella",
+        "role": "challenger",
+        "original_position": 2,
+        "final_score": 0.2257,
+        "formula": "0.4*lens 0.313 + 0.6*fit 0.233 - 0.3*P(put-off) 0.130 = 0.226",
+        "lens": {
+          "score": 0.313,
+          "why": [
+            "proteins_100g=5.6 (OFF)",
+            "energy-kcal_100g=426.0 (OFF) -> 10x test fail",
+            "fiber_100g=4.9 (OFF)",
+            "sugars_100g=29.0 (OFF)",
+            "unit size=50g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.93,
+          "fit_0_1": 0.2325,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.33,
+            "weak": 0.52,
+            "neutral": 0.04,
+            "good": 0.11,
+            "excellent": 0.0
+          },
+          "confidence": 0.51,
+          "p_putoff": 0.13
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5060482840179",
+        "new_position": 7,
+        "moved": -5,
+        "explanation": "#7 (down 5 from #2). Jev reads it as a weak fit for Sam (P=0.52, confidence 0.51). lens grade 0.31 from proteins_100g=5.6 (OFF); energy-kcal_100g=426.0 (OFF) -> 10x test fail; fiber_100g=4.9 (OFF)."
+      },
+      {
+        "code": "8410076600790",
+        "name": "Nature Valley Crunchy Oats & Honey",
+        "brand": "Nature Valley",
+        "role": "incumbent",
+        "original_position": 1,
+        "final_score": 0.16,
+        "formula": "0.4*lens 0.385 + 0.6*fit 0.095 - 0.3*P(put-off) 0.170 = 0.160",
+        "lens": {
+          "score": 0.385,
+          "why": [
+            "proteins_100g=8.7 (OFF)",
+            "energy-kcal_100g=467.0 (OFF) -> 10x test fail",
+            "fiber_100g=6.4 (OFF)",
+            "sugars_100g=26.8 (OFF)",
+            "unit size=42g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.38,
+          "fit_0_1": 0.095,
+          "level": "poor",
+          "probabilities": {
+            "poor": 0.65,
+            "weak": 0.32,
+            "neutral": 0.01,
+            "good": 0.02,
+            "excellent": 0.0
+          },
+          "confidence": 0.68,
+          "p_putoff": 0.17
+        },
+        "off_url": "https://world.openfoodfacts.org/product/8410076600790",
+        "new_position": 8,
+        "moved": -7,
+        "explanation": "#8 (down 7 from #1). Jev reads it as a poor fit for Sam (P=0.65, confidence 0.68). lens grade 0.39 from proteins_100g=8.7 (OFF); energy-kcal_100g=467.0 (OFF) -> 10x test fail; fiber_100g=6.4 (OFF)."
+      },
+      {
+        "code": "8000500417195",
+        "name": "Eat Natural Dark Chocolate With Cranberries And Macadam",
+        "brand": "Eat Natural",
+        "role": "incumbent",
+        "original_position": 8,
+        "final_score": 0.049,
+        "formula": "0.4*lens 0.415 + 0.6*fit 0.050 - 0.3*P(put-off) 0.490 = 0.049",
+        "lens": {
+          "score": 0.415,
+          "why": [
+            "proteins_100g=4.3 (OFF)",
+            "energy-kcal_100g=477.0 (OFF) -> 10x test fail",
+            "fiber_100g=7.6 (OFF)",
+            "sugars_100g=35.5 (OFF)",
+            "unit size=40g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.2,
+          "fit_0_1": 0.05,
+          "level": "poor",
+          "probabilities": {
+            "poor": 0.82,
+            "weak": 0.17,
+            "neutral": 0.0,
+            "good": 0.01,
+            "excellent": 0.0
+          },
+          "confidence": 0.83,
+          "p_putoff": 0.49
+        },
+        "off_url": "https://world.openfoodfacts.org/product/8000500417195",
+        "new_position": 9,
+        "moved": -1,
+        "explanation": "#9 (down 1 from #8). Jev reads it as a poor fit for Sam (P=0.82, confidence 0.83). lens grade 0.41 from proteins_100g=4.3 (OFF); energy-kcal_100g=477.0 (OFF) -> 10x test fail; fiber_100g=7.6 (OFF)."
+      },
+      {
+        "code": "20422684",
+        "name": "Muesli Bars Chocolate",
+        "brand": "Crownfield",
+        "role": "own_label",
+        "original_position": 4,
+        "final_score": -0.0101,
+        "formula": "0.4*lens 0.511 + 0.6*fit 0.087 - 0.3*P(put-off) 0.890 = -0.010",
+        "lens": {
+          "score": 0.511,
+          "why": [
+            "proteins_100g=7.6 (OFF)",
+            "energy-kcal_100g=343.0 (OFF) -> 10x test fail",
+            "fiber_100g=6.2 (OFF)",
+            "sugars_100g=1.5 (OFF)",
+            "unit size=25g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.35,
+          "fit_0_1": 0.0875,
+          "level": "poor",
+          "probabilities": {
+            "poor": 0.72,
+            "weak": 0.24,
+            "neutral": 0.01,
+            "good": 0.03,
+            "excellent": 0.0
+          },
+          "confidence": 0.71,
+          "p_putoff": 0.89
+        },
+        "off_url": "https://world.openfoodfacts.org/product/20422684",
+        "new_position": 10,
+        "moved": -6,
+        "explanation": "#10 (down 6 from #4). Jev reads it as a poor fit for Sam (P=0.72, confidence 0.71). likely shows one of their put-offs (P=0.89). lens grade 0.51 from proteins_100g=7.6 (OFF); energy-kcal_100g=343.0 (OFF) -> 10x test fail; fiber_100g=6.2 (OFF)."
+      },
+      {
+        "code": "5060088709047",
+        "name": "Protein flapjacks salted caramel",
+        "brand": "TREK",
+        "role": "incumbent",
+        "original_position": 10,
+        "final_score": -0.096,
+        "formula": "0.4*lens 0.465 + 0.6*fit 0.010 - 0.3*P(put-off) 0.960 = -0.096",
+        "lens": {
+          "score": 0.465,
+          "why": [
+            "proteins_100g=19.0 (OFF)",
+            "energy-kcal_100g=447.0 (OFF) -> 10x test fail",
+            "fiber_100g=3.7 (OFF)",
+            "sugars_100g=23.0 (OFF)",
+            "unit size=50g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.04,
+          "fit_0_1": 0.01,
+          "level": "poor",
+          "probabilities": {
+            "poor": 0.97,
+            "weak": 0.03,
+            "neutral": 0.0,
+            "good": 0.0,
+            "excellent": 0.0
+          },
+          "confidence": 0.97,
+          "p_putoff": 0.96
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5060088709047",
+        "new_position": 11,
+        "moved": -1,
+        "explanation": "#11 (down 1 from #10). Jev reads it as a poor fit for Sam (P=0.97, confidence 0.97). likely shows one of their put-offs (P=0.96). lens grade 0.47 from proteins_100g=19.0 (OFF); energy-kcal_100g=447.0 (OFF) -> 10x test fail; fiber_100g=3.7 (OFF)."
+      },
+      {
+        "code": "5060811384084",
+        "name": "Grenade High Protein Oreo",
+        "brand": "Grenade",
+        "role": "challenger",
+        "original_position": 9,
+        "final_score": -0.1071,
+        "formula": "0.4*lens 0.456 + 0.6*fit 0.007 - 0.3*P(put-off) 0.980 = -0.107",
+        "lens": {
+          "score": 0.456,
+          "why": [
+            "proteins_100g=34.29 (OFF)",
+            "energy-kcal_100g=388.57 (OFF) -> 10x test fail",
+            "fiber_100g=0 (OFF)",
+            "sugars_100g=1.71 (OFF)",
+            "unit size=60g (OFF quantity)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.03,
+          "fit_0_1": 0.0075,
+          "level": "poor",
+          "probabilities": {
+            "poor": 0.98,
+            "weak": 0.02,
+            "neutral": 0.0,
+            "good": 0.0,
+            "excellent": 0.0
+          },
+          "confidence": 0.98,
+          "p_putoff": 0.98
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5060811384084",
+        "new_position": 12,
+        "moved": -3,
+        "explanation": "#12 (down 3 from #9). Jev reads it as a poor fit for Sam (P=0.98, confidence 0.98). likely shows one of their put-offs (P=0.98). lens grade 0.46 from proteins_100g=34.29 (OFF); energy-kcal_100g=388.57 (OFF) -> 10x test fail; fiber_100g=0 (OFF)."
+      }
+    ],
+    "jev": {
+      "model": "jev-1.13.0",
+      "n_questions": 24,
+      "input_tokens": 5979,
+      "cost_usd": 0.00025111800000000004,
+      "cached": false,
+      "wall_s": 0.32,
+      "state_order_seed": "rerank:0",
+      "state_order": [
+        5,
+        11,
+        8,
+        0,
+        9,
+        6,
+        1,
+        3,
+        4,
+        10,
+        7,
+        2
+      ],
+      "pricing": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)"
+    }
+  },
+  "agent_readiness": {
+    "products": [
+      {
+        "code": "5060811384084",
+        "name": "Grenade High Protein Oreo",
+        "brand": "Grenade",
+        "role": "challenger",
+        "score": 0.581,
+        "band": "gaps that hide it from agents",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "fibre",
+            "weight": 1,
+            "why": "'high fibre' queries and swaps",
+            "source": "OFF fiber_100g; high fibre >= 6 g/100g (Reg. 1924/2006)"
+          },
+          {
+            "field": "nutriscore",
+            "weight": 1,
+            "why": "a compact health signal agents can rank on",
+            "source": "OFF nutriscore_grade"
+          },
+          {
+            "field": "labels",
+            "weight": 1,
+            "why": "vegan / organic / gluten-free filters",
+            "source": "OFF labels_tags"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "ingredients",
+          "allergens",
+          "processing_nova",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5060811384084"
+      },
+      {
+        "code": "8410076600790",
+        "name": "Nature Valley Crunchy Oats & Honey",
+        "brand": "Nature Valley",
+        "role": "incumbent",
+        "score": 0.613,
+        "band": "gaps that hide it from agents",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "labels",
+            "weight": 1,
+            "why": "vegan / organic / gluten-free filters",
+            "source": "OFF labels_tags"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/8410076600790"
+      },
+      {
+        "code": "5000159558396",
+        "name": "Chocolate Chip cashew",
+        "brand": "Kind",
+        "role": "challenger",
+        "score": 0.645,
+        "band": "gaps that hide it from agents",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5000159558396"
+      },
+      {
+        "code": "5060482840179",
+        "name": "Apple & raisin oat bars",
+        "brand": "Deliciously ella",
+        "role": "challenger",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5060482840179"
+      },
+      {
+        "code": "5024121100475",
+        "name": "Raspberry & Apple Soft Oaty Bars",
+        "brand": "Organix",
+        "role": "challenger",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5024121100475"
+      },
+      {
+        "code": "20422684",
+        "name": "Muesli Bars Chocolate",
+        "brand": "Crownfield",
+        "role": "own_label",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/20422684"
+      },
+      {
+        "code": "5060088701478",
+        "name": "cocoa orange",
+        "brand": "nakd.",
+        "role": "incumbent",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5060088701478"
+      },
+      {
+        "code": "4056489239918",
+        "name": "Cacao & Orange 5 Raw Fruit & Nut Bars",
+        "brand": "Alesto,Lidl",
+        "role": "own_label",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/4056489239918"
+      },
+      {
+        "code": "8000500417195",
+        "name": "Eat Natural Dark Chocolate With Cranberries And Macadam",
+        "brand": "Eat Natural",
+        "role": "incumbent",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/8000500417195"
+      },
+      {
+        "code": "5060088709047",
+        "name": "Protein flapjacks salted caramel",
+        "brand": "TREK",
+        "role": "incumbent",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5060088709047"
+      },
+      {
+        "code": "5060411920040",
+        "name": "Sweet & salty almond",
+        "brand": "Bounce",
+        "role": "challenger",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5060411920040"
+      },
+      {
+        "code": "20402167",
+        "name": "Deluxe Fruit & Nut protein bars",
+        "brand": "Lidl,Deluxe",
+        "role": "own_label",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "unit_price",
+            "weight": 2,
+            "why": "value-for-money comparisons ('cheapest per kilo')",
+            "source": "UK Price Marking Order 2004 (unit pricing)"
+          },
+          {
+            "field": "nutrition",
+            "weight": 2,
+            "why": "'high protein', 'low sugar' queries; claim eligibility",
+            "source": "OFF nutriments; Reg. (EC) 1924/2006 claim thresholds"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "pack_size",
+          "ingredients",
+          "allergens",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/20402167"
+      }
+    ],
+    "missing_field_counts": {
+      "gtin": 0,
+      "name": 0,
+      "brand": 0,
+      "price": 0,
+      "price_verified": 12,
+      "unit_price": 12,
+      "pack_size": 1,
+      "ingredients": 0,
+      "allergens": 0,
+      "nutrition": 12,
+      "fibre": 1,
+      "nutriscore": 1,
+      "processing_nova": 0,
+      "labels": 2,
+      "image": 0,
+      "description": 2,
+      "rating_reviews": 12
+    }
+  },
+  "session_cost": {
+    "usd": 0.00030336600000000006,
+    "calls": 2,
+    "cached": 0,
+    "input_tokens": 7223,
+    "output_tokens": 590,
+    "max_usd": 5.0
+  }
+}

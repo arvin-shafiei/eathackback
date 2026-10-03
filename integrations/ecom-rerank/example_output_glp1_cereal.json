@@ -1,0 +1,1092 @@
+{
+  "category": "breakfast_cereal",
+  "listing_source": "data/products/catalog.json",
+  "listing_order": "catalog.json order (stand-in for the retailer's current ranking)",
+  "created": "2026-10-03T12:02:38",
+  "rerank": {
+    "archetype": "glp1_small_appetite",
+    "persona_file": "data/personas/lens/glp1_small_appetite.json",
+    "weights": {
+      "lens": 0.4,
+      "fit": 0.6,
+      "putoff_penalty": 0.3,
+      "source": "assumption: fit (Jev reading the shopper's own priorities) weighted above the code lens grade because it sees pack copy and claims; put-off penalty 0.3 so a likely deal-breaker drops ~one position band. Tune on real click/purchase data."
+    },
+    "results": [
+      {
+        "code": "5000119117342",
+        "name": "Tesco Wheat Biscuits",
+        "brand": "Tesco",
+        "role": "own_label",
+        "original_position": 8,
+        "final_score": 0.7858,
+        "formula": "0.4*lens 0.787 + 0.6*fit 0.820 - 0.3*P(put-off) 0.070 = 0.786",
+        "lens": {
+          "score": 0.787,
+          "why": [
+            "proteins_100g=12.0 (OFF)",
+            "fiber_100g=10.0 (OFF)",
+            "sugars_100g=4.4 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 3.28,
+          "fit_0_1": 0.82,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.0,
+            "weak": 0.03,
+            "neutral": 0.01,
+            "good": 0.6,
+            "excellent": 0.36
+          },
+          "confidence": 0.63,
+          "p_putoff": 0.07
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5000119117342",
+        "new_position": 1,
+        "moved": 7,
+        "explanation": "#1 (up 7 from #8). Jev reads it as a good fit for Sam (P=0.6, confidence 0.63). lens grade 0.79 from proteins_100g=12.0 (OFF); fiber_100g=10.0 (OFF); sugars_100g=4.4 (OFF)."
+      },
+      {
+        "code": "5010029000023",
+        "name": "Weetabix Original",
+        "brand": "Weetabix",
+        "role": "incumbent",
+        "original_position": 5,
+        "final_score": 0.736,
+        "formula": "0.4*lens 0.790 + 0.6*fit 0.745 - 0.3*P(put-off) 0.090 = 0.736",
+        "lens": {
+          "score": 0.79,
+          "why": [
+            "proteins_100g=12.0 (OFF)",
+            "fiber_100g=10.0 (OFF)",
+            "sugars_100g=4.2 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.98,
+          "fit_0_1": 0.745,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.01,
+            "weak": 0.05,
+            "neutral": 0.02,
+            "good": 0.8,
+            "excellent": 0.12
+          },
+          "confidence": 0.78,
+          "p_putoff": 0.09
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5010029000023",
+        "new_position": 2,
+        "moved": 3,
+        "explanation": "#2 (up 3 from #5). Jev reads it as a good fit for Sam (P=0.8, confidence 0.78). lens grade 0.79 from proteins_100g=12.0 (OFF); fiber_100g=10.0 (OFF); sugars_100g=4.2 (OFF)."
+      },
+      {
+        "code": "5060043225353",
+        "name": "Lizi's Low Sugar Granola Nuts & Seeds",
+        "brand": "Lizi's",
+        "role": "challenger",
+        "original_position": 2,
+        "final_score": 0.7268,
+        "formula": "0.4*lens 0.767 + 0.6*fit 0.740 - 0.3*P(put-off) 0.080 = 0.727",
+        "lens": {
+          "score": 0.767,
+          "why": [
+            "proteins_100g=13.4 (OFF)",
+            "fiber_100g=8.0 (OFF)",
+            "sugars_100g=3.4 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.96,
+          "fit_0_1": 0.74,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.01,
+            "weak": 0.04,
+            "neutral": 0.02,
+            "good": 0.83,
+            "excellent": 0.1
+          },
+          "confidence": 0.8,
+          "p_putoff": 0.08
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5060043225353",
+        "new_position": 3,
+        "moved": -1,
+        "explanation": "#3 (down 1 from #2). Jev reads it as a good fit for Sam (P=0.83, confidence 0.80). lens grade 0.77 from proteins_100g=13.4 (OFF); fiber_100g=8.0 (OFF); sugars_100g=3.4 (OFF)."
+      },
+      {
+        "code": "5010029221091",
+        "name": "Weetabix Protein Crunch",
+        "brand": "Weetabix",
+        "role": "incumbent",
+        "original_position": 10,
+        "final_score": 0.6571,
+        "formula": "0.4*lens 0.649 + 0.6*fit 0.762 - 0.3*P(put-off) 0.200 = 0.657",
+        "lens": {
+          "score": 0.649,
+          "why": [
+            "proteins_100g=20.0 (OFF)",
+            "fiber_100g=7.1 (OFF)",
+            "sugars_100g=22.0 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 3.05,
+          "fit_0_1": 0.7625,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.03,
+            "weak": 0.07,
+            "neutral": 0.02,
+            "good": 0.57,
+            "excellent": 0.31
+          },
+          "confidence": 0.53,
+          "p_putoff": 0.2
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5010029221091",
+        "new_position": 4,
+        "moved": 6,
+        "explanation": "#4 (up 6 from #10). Jev reads it as a good fit for Sam (P=0.57, confidence 0.53). lens grade 0.65 from proteins_100g=20.0 (OFF); fiber_100g=7.1 (OFF); sugars_100g=22.0 (OFF)."
+      },
+      {
+        "code": "5070000126579",
+        "name": "Bio&Me Granola Super Nutty",
+        "brand": "Bio&Me",
+        "role": "challenger",
+        "original_position": 1,
+        "final_score": 0.6472,
+        "formula": "0.4*lens 0.703 + 0.6*fit 0.670 - 0.3*P(put-off) 0.120 = 0.647",
+        "lens": {
+          "score": 0.703,
+          "why": [
+            "proteins_100g=10.9 (OFF)",
+            "fiber_100g=14.4 (OFF)",
+            "sugars_100g=9.6 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.68,
+          "fit_0_1": 0.67,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.02,
+            "weak": 0.12,
+            "neutral": 0.06,
+            "good": 0.76,
+            "excellent": 0.04
+          },
+          "confidence": 0.68,
+          "p_putoff": 0.12
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5070000126579",
+        "new_position": 5,
+        "moved": -4,
+        "explanation": "#5 (down 4 from #1). Jev reads it as a good fit for Sam (P=0.76, confidence 0.68). lens grade 0.70 from proteins_100g=10.9 (OFF); fiber_100g=14.4 (OFF); sugars_100g=9.6 (OFF)."
+      },
+      {
+        "code": "5010477348630",
+        "name": "Jordans Organic Muesli",
+        "brand": "Jordans",
+        "role": "incumbent",
+        "original_position": 3,
+        "final_score": 0.5596,
+        "formula": "0.4*lens 0.514 + 0.6*fit 0.625 - 0.3*P(put-off) 0.070 = 0.560",
+        "lens": {
+          "score": 0.514,
+          "why": [
+            "proteins_100g=9.3 (OFF)",
+            "fiber_100g=8.5 (OFF)",
+            "sugars_100g=18.9 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.5,
+          "fit_0_1": 0.625,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.01,
+            "weak": 0.2,
+            "neutral": 0.09,
+            "good": 0.67,
+            "excellent": 0.03
+          },
+          "confidence": 0.52,
+          "p_putoff": 0.07
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5010477348630",
+        "new_position": 6,
+        "moved": -3,
+        "explanation": "#6 (down 3 from #3). Jev reads it as a good fit for Sam (P=0.67, confidence 0.52). lens grade 0.51 from proteins_100g=9.3 (OFF); fiber_100g=8.5 (OFF); sugars_100g=18.9 (OFF)."
+      },
+      {
+        "code": "01835588",
+        "name": "Sainsbury's SO Organic Granola",
+        "brand": "Sainsbury's SO Organic",
+        "role": "own_label",
+        "original_position": 4,
+        "final_score": 0.5295,
+        "formula": "0.4*lens 0.450 + 0.6*fit 0.623 - 0.3*P(put-off) 0.080 = 0.529",
+        "lens": {
+          "score": 0.45,
+          "why": [
+            "proteins_100g=10.1 (OFF)",
+            "fiber_100g=6.3 (OFF)",
+            "sugars_100g=20.1 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 2.49,
+          "fit_0_1": 0.6225,
+          "level": "good",
+          "probabilities": {
+            "poor": 0.01,
+            "weak": 0.18,
+            "neutral": 0.13,
+            "good": 0.67,
+            "excellent": 0.01
+          },
+          "confidence": 0.56,
+          "p_putoff": 0.08
+        },
+        "off_url": "https://world.openfoodfacts.org/product/01835588",
+        "new_position": 7,
+        "moved": -3,
+        "explanation": "#7 (down 3 from #4). Jev reads it as a good fit for Sam (P=0.67, confidence 0.56). lens grade 0.45 from proteins_100g=10.1 (OFF); fiber_100g=6.3 (OFF); sugars_100g=20.1 (OFF)."
+      },
+      {
+        "code": "20425609",
+        "name": "Lidl Crownfield Multigrain Hoops",
+        "brand": "Crownfield, Lidl",
+        "role": "own_label",
+        "original_position": 12,
+        "final_score": 0.4327,
+        "formula": "0.4*lens 0.523 + 0.6*fit 0.427 - 0.3*P(put-off) 0.110 = 0.433",
+        "lens": {
+          "score": 0.523,
+          "why": [
+            "proteins_100g=9.4 (OFF)",
+            "fiber_100g=8.0 (OFF)",
+            "sugars_100g=17.1 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 1.71,
+          "fit_0_1": 0.4275,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.06,
+            "weak": 0.48,
+            "neutral": 0.16,
+            "good": 0.3,
+            "excellent": 0.0
+          },
+          "confidence": 0.32,
+          "p_putoff": 0.11
+        },
+        "off_url": "https://world.openfoodfacts.org/product/20425609",
+        "new_position": 8,
+        "moved": 4,
+        "explanation": "#8 (up 4 from #12). Jev reads it as a weak fit for Sam (P=0.48, confidence 0.32). lens grade 0.52 from proteins_100g=9.4 (OFF); fiber_100g=8.0 (OFF); sugars_100g=17.1 (OFF)."
+      },
+      {
+        "code": "5900020042538",
+        "name": "Nestlé Gluten Free Corn Flakes",
+        "brand": "Nestle",
+        "role": "challenger",
+        "original_position": 7,
+        "final_score": 0.3192,
+        "formula": "0.4*lens 0.468 + 0.6*fit 0.255 - 0.3*P(put-off) 0.070 = 0.319",
+        "lens": {
+          "score": 0.468,
+          "why": [
+            "proteins_100g=7.4 (OFF)",
+            "fiber_100g=4.2 (OFF)",
+            "sugars_100g=8.8 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 1.02,
+          "fit_0_1": 0.255,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.1,
+            "weak": 0.79,
+            "neutral": 0.09,
+            "good": 0.02,
+            "excellent": 0.0
+          },
+          "confidence": 0.81,
+          "p_putoff": 0.07
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5900020042538",
+        "new_position": 9,
+        "moved": -2,
+        "explanation": "#9 (down 2 from #7). Jev reads it as a weak fit for Sam (P=0.79, confidence 0.81). lens grade 0.47 from proteins_100g=7.4 (OFF); fiber_100g=4.2 (OFF); sugars_100g=8.8 (OFF)."
+      },
+      {
+        "code": "5000127014084",
+        "name": "Kellogg's Corn Flakes 1kg",
+        "brand": "Kellogg's",
+        "role": "incumbent",
+        "original_position": 6,
+        "final_score": 0.2816,
+        "formula": "0.4*lens 0.434 + 0.6*fit 0.220 - 0.3*P(put-off) 0.080 = 0.282",
+        "lens": {
+          "score": 0.434,
+          "why": [
+            "proteins_100g=7.0 (OFF)",
+            "fiber_100g=3.0 (OFF)",
+            "sugars_100g=8.0 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.88,
+          "fit_0_1": 0.22,
+          "level": "weak",
+          "probabilities": {
+            "poor": 0.18,
+            "weak": 0.78,
+            "neutral": 0.03,
+            "good": 0.01,
+            "excellent": 0.0
+          },
+          "confidence": 0.8,
+          "p_putoff": 0.08
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5000127014084",
+        "new_position": 10,
+        "moved": -4,
+        "explanation": "#10 (down 4 from #6). Jev reads it as a weak fit for Sam (P=0.78, confidence 0.80). lens grade 0.43 from proteins_100g=7.0 (OFF); fiber_100g=3.0 (OFF); sugars_100g=8.0 (OFF)."
+      },
+      {
+        "code": "5070000313801",
+        "name": "Surreal Chocolate",
+        "brand": "Surreal",
+        "role": "challenger",
+        "original_position": 9,
+        "final_score": 0.0487,
+        "formula": "0.4*lens 0.838 + 0.6*fit 0.013 - 0.3*P(put-off) 0.980 = 0.049",
+        "lens": {
+          "score": 0.838,
+          "why": [
+            "proteins_100g=37.5 (OFF)",
+            "fiber_100g=5.0 (OFF)",
+            "sugars_100g=1.0 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.05,
+          "fit_0_1": 0.0125,
+          "level": "poor",
+          "probabilities": {
+            "poor": 0.97,
+            "weak": 0.02,
+            "neutral": 0.0,
+            "good": 0.01,
+            "excellent": 0.0
+          },
+          "confidence": 0.96,
+          "p_putoff": 0.98
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5070000313801",
+        "new_position": 11,
+        "moved": -2,
+        "explanation": "#11 (down 2 from #9). Jev reads it as a poor fit for Sam (P=0.97, confidence 0.96). likely shows one of their put-offs (P=0.98). lens grade 0.84 from proteins_100g=37.5 (OFF); fiber_100g=5.0 (OFF); sugars_100g=1.0 (OFF)."
+      },
+      {
+        "code": "5059319015279",
+        "name": "Kellogg's Krave Milk Chocolate",
+        "brand": "Kellogg's",
+        "role": "incumbent",
+        "original_position": 11,
+        "final_score": -0.1176,
+        "formula": "0.4*lens 0.261 + 0.6*fit 0.000 - 0.3*P(put-off) 0.740 = -0.118",
+        "lens": {
+          "score": 0.261,
+          "why": [
+            "proteins_100g=7.5 (OFF)",
+            "fiber_100g=3.7 (OFF)",
+            "sugars_100g=25.0 (OFF)"
+          ],
+          "source": "catalog.json lens_grades.glp1_small_appetite"
+        },
+        "jev_fit": {
+          "score_0_4": 0.0,
+          "fit_0_1": 0.0,
+          "level": "poor",
+          "probabilities": {
+            "poor": 1.0,
+            "weak": 0.0,
+            "neutral": 0.0,
+            "good": 0.0,
+            "excellent": 0.0
+          },
+          "confidence": 1.0,
+          "p_putoff": 0.74
+        },
+        "off_url": "https://world.openfoodfacts.org/product/5059319015279",
+        "new_position": 12,
+        "moved": -1,
+        "explanation": "#12 (down 1 from #11). Jev reads it as a poor fit for Sam (P=1.0, confidence 1.00). likely shows one of their put-offs (P=0.74). lens grade 0.26 from proteins_100g=7.5 (OFF); fiber_100g=3.7 (OFF); sugars_100g=25.0 (OFF)."
+      }
+    ],
+    "jev": {
+      "model": "jev-1.13.0",
+      "n_questions": 24,
+      "input_tokens": 5659,
+      "cost_usd": 0.00023767800000000004,
+      "cached": false,
+      "wall_s": 0.73,
+      "state_order_seed": "rerank:0",
+      "state_order": [
+        5,
+        11,
+        8,
+        0,
+        9,
+        6,
+        1,
+        3,
+        4,
+        10,
+        7,
+        2
+      ],
+      "pricing": "TypeSafe pricing: $0.042 per 1M input tokens, output free (provided by the project owner, 2026-10-03)"
+    }
+  },
+  "agent_readiness": {
+    "products": [
+      {
+        "code": "5000119117342",
+        "name": "Tesco Wheat Biscuits",
+        "brand": "Tesco",
+        "role": "own_label",
+        "score": 0.71,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "labels",
+            "weight": 1,
+            "why": "vegan / organic / gluten-free filters",
+            "source": "OFF labels_tags"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5000119117342"
+      },
+      {
+        "code": "5060043225353",
+        "name": "Lizi's Low Sugar Granola Nuts & Seeds",
+        "brand": "Lizi's",
+        "role": "challenger",
+        "score": 0.742,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5060043225353"
+      },
+      {
+        "code": "01835588",
+        "name": "Sainsbury's SO Organic Granola",
+        "brand": "Sainsbury's SO Organic",
+        "role": "own_label",
+        "score": 0.742,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/01835588"
+      },
+      {
+        "code": "5900020042538",
+        "name": "Nestlé Gluten Free Corn Flakes",
+        "brand": "Nestle",
+        "role": "challenger",
+        "score": 0.742,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5900020042538"
+      },
+      {
+        "code": "5010029221091",
+        "name": "Weetabix Protein Crunch",
+        "brand": "Weetabix",
+        "role": "incumbent",
+        "score": 0.742,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5010029221091"
+      },
+      {
+        "code": "20425609",
+        "name": "Lidl Crownfield Multigrain Hoops",
+        "brand": "Crownfield, Lidl",
+        "role": "own_label",
+        "score": 0.742,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "description",
+            "weight": 2,
+            "why": "semantic match to free-text requests",
+            "source": "schema.org/Product description"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/20425609"
+      },
+      {
+        "code": "5070000126579",
+        "name": "Bio&Me Granola Super Nutty",
+        "brand": "Bio&Me",
+        "role": "challenger",
+        "score": 0.806,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5070000126579"
+      },
+      {
+        "code": "5010477348630",
+        "name": "Jordans Organic Muesli",
+        "brand": "Jordans",
+        "role": "incumbent",
+        "score": 0.806,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5010477348630"
+      },
+      {
+        "code": "5010029000023",
+        "name": "Weetabix Original",
+        "brand": "Weetabix",
+        "role": "incumbent",
+        "score": 0.806,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5010029000023"
+      },
+      {
+        "code": "5000127014084",
+        "name": "Kellogg's Corn Flakes 1kg",
+        "brand": "Kellogg's",
+        "role": "incumbent",
+        "score": 0.806,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5000127014084"
+      },
+      {
+        "code": "5070000313801",
+        "name": "Surreal Chocolate",
+        "brand": "Surreal",
+        "role": "challenger",
+        "score": 0.806,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5070000313801"
+      },
+      {
+        "code": "5059319015279",
+        "name": "Kellogg's Krave Milk Chocolate",
+        "brand": "Kellogg's",
+        "role": "incumbent",
+        "score": 0.806,
+        "band": "mostly ready",
+        "missing": [
+          {
+            "field": "price_verified",
+            "weight": 2,
+            "why": "an estimated price misleads the agent's value comparison",
+            "source": "catalog.json price_source"
+          },
+          {
+            "field": "pack_size",
+            "weight": 1,
+            "why": "portion and value reasoning",
+            "source": "OFF quantity"
+          },
+          {
+            "field": "rating_reviews",
+            "weight": 3,
+            "why": "agents weight ratings heavily (ACES rating coef +4.91, ln(reviews) +0.42); missing = invisible",
+            "source": "ACES (arXiv 2508.02630); +0.075 star flips ~50% of choices"
+          }
+        ],
+        "present": [
+          "gtin",
+          "name",
+          "brand",
+          "price",
+          "unit_price",
+          "ingredients",
+          "allergens",
+          "nutrition",
+          "fibre",
+          "nutriscore",
+          "processing_nova",
+          "labels",
+          "image",
+          "description"
+        ],
+        "method": "weighted share of 17 fields present (31 weight points); weights are assumptions ordered by ACES coefficients and safety. Only honest fixes: fill true missing data, never prompt text.",
+        "off_url": "https://world.openfoodfacts.org/product/5059319015279"
+      }
+    ],
+    "missing_field_counts": {
+      "gtin": 0,
+      "name": 0,
+      "brand": 0,
+      "price": 0,
+      "price_verified": 12,
+      "unit_price": 0,
+      "pack_size": 12,
+      "ingredients": 0,
+      "allergens": 0,
+      "nutrition": 0,
+      "fibre": 0,
+      "nutriscore": 0,
+      "processing_nova": 0,
+      "labels": 1,
+      "image": 0,
+      "description": 6,
+      "rating_reviews": 12
+    }
+  },
+  "session_cost": {
+    "usd": 0.00023767800000000004,
+    "calls": 1,
+    "cached": 0,
+    "input_tokens": 5659,
+    "output_tokens": 416,
+    "max_usd": 5.0
+  }
+}

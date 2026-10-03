@@ -1,0 +1,556 @@
+openapi: 3.1.0
+info:
+  title: same shelf, two shoppers — Shelf Insight API
+  version: 0.1.0-hackathon
+  summary: Three surfaces (brand, retailer, shopper) plus shelf simulation and e-commerce re-ranking.
+  description: |
+    One API, three surfaces. Every number in every response traces to a source: a count of logged agent decisions
+    (`data/sim/runs/*.json`), an Open Food Facts field (barcode + field), a Jev probability
+    (TypeSafe System One, model `jev-latest`), a paper, or a labelled `assumption: ...`.
+
+    **Build status (3 Oct 2026, honest):**
+    | endpoint | status | implemented by |
+    |---|---|---|
+    | `POST /v1/brand/funnel` | built | `integrations/api_server.py` → `integrations/common.py::brand_funnel` (counts over run logs) |
+    | `POST /v1/ecom/rerank` | built | `integrations/ecom-rerank/rerank.py` (Jev Choice + Score + Noul, composite in code) |
+    | `POST /v1/ecom/readiness` | built | `integrations/ecom-rerank/rerank.py::agent_readiness` (code only) |
+    | `POST /v1/shelf/simulate` | built (proxy) | forwards to `sim/server.py` `POST /api/run` |
+    | `POST /v1/retailer/layout` | partial (proxy) | forwards per product to `sim/server.py` `POST /api/optimise`; whole-store annealing is designed |
+    | `POST /v1/brand/pack-test` | designed | contract below; served when a pack-test module is present in `sim/` |
+    | `POST /v1/shopper/swaps` | designed | contract below; served when a swaps module is present in `sim/` |
+
+    Response shapes mirror `CONTRACT.md` (run log, per-product stats) so the 3D web app, the widget
+    (`integrations/widget/`) and the Slack digest (`integrations/slack/`) read the same JSON.
+  contact:
+    name: EAT_HACK team
+  license:
+    name: Data from Open Food Facts (ODbL); code MIT
+servers:
+  - url: http://localhost:8788
+    description: integrations/api_server.py (stdlib, local demo)
+  - url: https://api.example.invalid
+    description: placeholder for a hosted deployment (not deployed)
+security:
+  - bearerAuth: []
+tags:
+  - name: brand
+    description: Surface 1 — challenger and incumbent brands. Funnel, put-back reasons, pack tests.
+  - name: retailer
+    description: Surface 2 — shop owner / category manager. Layout what-ifs by mission.
+  - name: shopper
+    description: Surface 3 — the shopper. Place and suggest products they are more likely to want (e.g. true high-fibre swaps).
+  - name: shelf
+    description: The simulation engine all surfaces share.
+  - name: ecom
+    description: Embed in e-commerce — re-rank a listing page per shopper; agent-readiness of listing data.
+
+paths:
+  /v1/brand/funnel:
+    post:
+      tags: [brand]
+      operationId: brandFunnel
+      summary: 4-stage funnel for one product (shown → noticed → picked up → kept) plus top put-back reasons.
+      description: |
+        Pure counting over logged agent decisions, summed across runs, Wilson 95% CI per stage.
+        Offline stages map one-to-one to e-commerce events (impression → PDP view → add-to-cart → purchase;
+        put-back = remove-from-cart). See `docs/data-collection.md`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product]
+              properties:
+                product: {type: string, description: "EAN/GTIN barcode, e.g. 5000168036755"}
+                run_ids:
+                  type: array
+                  items: {type: string}
+                  description: Restrict to these runs. Default = all non-mock human-shopper runs.
+                include_mock: {type: boolean, default: false}
+            example: {product: "5000168036755"}
+      responses:
+        "200":
+          description: Funnel
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/BrandFunnel"}
+        "404": {$ref: "#/components/responses/NotFound"}
+        "401": {$ref: "#/components/responses/Unauthorized"}
+
+  /v1/brand/pack-test:
+    post:
+      tags: [brand]
+      operationId: brandPackTest
+      summary: "Designed: test an honest pack / description edit and report Δpick with CI."
+      description: |
+        Honest edits only (CONTRACT.md / sim/optimise.py): surface a TRUE claim the OFF data supports
+        (Reg. (EC) 1924/2006 thresholds, e.g. high fibre ≥ 6 g/100g), rewrite the description with true facts,
+        change price. Re-runs only agents whose path enters the edited unit, same seed, common random numbers.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product, edits]
+              properties:
+                product: {type: string}
+                edits:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      kind: {type: string, enum: [claim, pack_copy, price, eye, facings]}
+                      value: {description: "claim id (high_fibre|low_sugar|high_protein|low_salt), new pack copy, or price GBP"}
+                agents: {type: integer, default: 30, maximum: 500}
+                seeds: {type: array, items: {type: integer}, default: [1]}
+                engine: {type: string, enum: [jev, mock], default: jev}
+      responses:
+        "200":
+          description: Lift per edit
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/EditResult"}
+        "501": {$ref: "#/components/responses/NotBuilt"}
+
+  /v1/retailer/layout:
+    post:
+      tags: [retailer]
+      operationId: retailerLayout
+      summary: Layout what-if — move / add facings and report the lift per mission.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planogram: {description: "planogram.json dict, or omit for data/store/planogram.json"}
+                products: {type: array, items: {type: string}, description: "products to test (each proxied to /api/optimise)"}
+                edits: {type: array, items: {type: string, enum: [eye, facings, claim]}, default: [eye, facings]}
+                agents: {type: integer, default: 30}
+                seeds: {type: array, items: {type: integer}, default: [1]}
+                respect_hfss: {type: boolean, default: true, description: "UK HFSS placement rules (designed)"}
+      responses:
+        "200":
+          description: Per product, per edit Δpick with CI (sim/optimise.py output shape)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results: {type: array, items: {$ref: "#/components/schemas/EditResult"}}
+                  status: {type: string, example: "partial: per-product edits; whole-store annealing designed"}
+
+  /v1/shopper/swaps:
+    post:
+      tags: [shopper]
+      operationId: shopperSwaps
+      summary: "Served by sim/swaps.py: suggest honest better-fit alternatives for items already in a basket (e.g. true high-fibre swaps)."
+      description: |
+        For each basket item, candidates are same-category products whose OFF data passes the swap rule in code
+        (e.g. fiber_100g ≥ 6 for 'high fibre'). Jev scores fit to the shopper and whether the swap would feel like
+        a gimmick; code ranks and reports the price difference honestly (high-fibre-marketed products are often
+        dearer — the response always shows Δprice and Δunit price).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [basket]
+              properties:
+                basket: {type: array, items: {type: string}, description: barcodes}
+                goal: {type: string, enum: [high_fibre, low_sugar, high_protein, low_salt, lower_upf, cheaper], default: high_fibre}
+                archetype: {$ref: "#/components/schemas/Archetype"}
+                session_signals: {type: array, items: {type: string}}
+      responses:
+        "200":
+          description: Swaps
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  swaps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        from: {$ref: "#/components/schemas/ProductRef"}
+                        to: {$ref: "#/components/schemas/ProductRef"}
+                        rule: {type: string, example: "fiber_100g 7.1 >= 6 (Reg. 1924/2006 high fibre) vs 2.4"}
+                        delta_price_gbp: {type: number}
+                        delta_unit_price_gbp_per_kg: {type: [number, "null"]}
+                        jev: {$ref: "#/components/schemas/JevTrace"}
+                        sources: {type: array, items: {$ref: "#/components/schemas/Source"}}
+        "501": {$ref: "#/components/responses/NotBuilt"}
+
+  /v1/shelf/simulate:
+    post:
+      tags: [shelf]
+      operationId: shelfSimulate
+      summary: Run synthetic shoppers through a planogram (proxy to sim/server.py POST /api/run).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                planogram: {description: "dict or path; default data/store/planogram.json"}
+                agents: {type: integer, default: 10, maximum: 500}
+                seed: {type: integer, default: 1}
+                engine: {type: string, enum: [jev, mock], default: jev}
+      responses:
+        "200":
+          description: Run log (CONTRACT.md shape)
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/RunLog"}
+
+  /v1/ecom/rerank:
+    post:
+      tags: [ecom]
+      operationId: ecomRerank
+      summary: Re-rank a product listing page for a shopper archetype (or anonymous session signals).
+      description: |
+        1. If `session_signals` are given, one Jev **Choice** over the 12 archetypes + `unclear` (options shuffled,
+           order returned). `unclear` → neutral ranking (mean lens grade), no personalisation.
+        2. One Jev request: per product a **Score** of fit (5 levels) and a **Noul** "shows one of the shopper's
+           put-offs". Products are shuffled in the state so list position cannot leak.
+        3. Code: `final = 0.4·lens + 0.6·fit − 0.3·P(put-off)` (weights are labelled assumptions, returned).
+        Cost measured: ~5.7k input tokens per 12-product listing ≈ $0.00024 (jev, $0.042/M input).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [listing]
+              properties:
+                listing:
+                  type: array
+                  description: Products in the retailer's current order. Barcodes resolve against catalog.json; full objects (catalog shape) are used as given.
+                  items:
+                    oneOf:
+                      - {type: string}
+                      - {$ref: "#/components/schemas/Product"}
+                archetype: {$ref: "#/components/schemas/Archetype"}
+                session_signals:
+                  type: array
+                  items: {type: string}
+                  example: ["searched: high fibre snack", "removed from cart: chocolate protein bar (sweeteners)"]
+                seed: {type: integer, default: 0}
+            example: {listing: ["5070000126579", "5060043225353"], archetype: glp1_small_appetite}
+      responses:
+        "200":
+          description: Ranked listing with an explanation per position, plus agent-readiness per product.
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/RerankResponse"}
+
+  /v1/ecom/readiness:
+    post:
+      tags: [ecom]
+      operationId: ecomReadiness
+      summary: Which listing fields AI shopping agents need are missing (code only, no model).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [listing]
+              properties:
+                listing: {type: array, items: {oneOf: [{type: string}, {$ref: "#/components/schemas/Product"}]}}
+      responses:
+        "200":
+          description: Readiness per product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products: {type: array, items: {$ref: "#/components/schemas/Readiness"}}
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: |
+        Per-tenant API key (brand or retailer). Brand keys only see their own products' funnels at
+        k ≥ 10 aggregation (docs/data-collection.md#privacy). The local demo server accepts any token, or none
+        when SHELF_API_TOKEN is unset.
+  responses:
+    NotFound:
+      description: Unknown product or run
+      content: {application/json: {schema: {$ref: "#/components/schemas/Error"}}}
+    Unauthorized:
+      description: Missing or wrong bearer token
+      content: {application/json: {schema: {$ref: "#/components/schemas/Error"}}}
+    NotBuilt:
+      description: Designed but not built in this deployment (honest status, never a fake answer)
+      content: {application/json: {schema: {$ref: "#/components/schemas/Error"}}}
+  schemas:
+    Error:
+      type: object
+      properties:
+        error: {type: string}
+        status: {type: string, enum: [not_found, unauthorized, designed_not_built, bad_request]}
+        see: {type: string}
+    Archetype:
+      type: string
+      enum: [eco_low_chemical, upf_avoider_parent, glp1_small_appetite, frugal_unit_price, protein_gym,
+             protein_sceptic_gimmick_reactant, habit_loyalist_shrinkflation_angry, meal_deal_office,
+             vegan_ethical, allergen_coeliac, ai_delegator, novelty_seeker_tiktok]
+    Source:
+      type: object
+      description: Where a number came from.
+      properties:
+        kind: {type: string, enum: [off_field, run_log, jev, paper, reddit_verbatim, assumption]}
+        ref: {type: string, example: "https://world.openfoodfacts.org/product/5060512671247#fiber_100g"}
+    ProductRef:
+      type: object
+      properties:
+        code: {type: string}
+        name: {type: string}
+        brand: {type: string}
+        role: {type: string, enum: [challenger, incumbent, own_label]}
+        off_url: {type: string}
+    Product:
+      type: object
+      description: catalog.json shape (CONTRACT.md). Only `code` is required; missing fields lower agent-readiness.
+      required: [code]
+      properties:
+        code: {type: string}
+        name: {type: string}
+        brand: {type: string}
+        category: {type: string}
+        role: {type: string, enum: [challenger, incumbent, own_label]}
+        price_gbp: {type: number}
+        price_source: {type: string}
+        price_per_kg_gbp: {type: number}
+        price_per_litre_gbp: {type: number}
+        quantity: {type: string}
+        pack_copy: {type: string}
+        nova: {type: integer, minimum: 1, maximum: 4}
+        nutriscore: {type: string}
+        ecoscore: {type: string}
+        additives_n: {type: integer}
+        additives: {type: array, items: {type: string}}
+        labels: {type: array, items: {type: string}}
+        allergens: {type: array, items: {type: string}}
+        ingredients_text: {type: string}
+        sugars_100g: {type: number}
+        fiber_100g: {type: number}
+        proteins_100g: {type: number}
+        salt_100g: {type: number}
+        energy_kcal_100g: {type: number}
+        sweeteners: {type: integer}
+        image: {type: string}
+        off_url: {type: string}
+        rating: {type: number, description: "not in OFF; retailer/Shopify reviews if available"}
+        reviews_n: {type: integer}
+        lens_grades:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              score: {type: number, minimum: 0, maximum: 1}
+              why: {type: array, items: {type: string}}
+    JevTrace:
+      type: object
+      description: The raw judgment behind a number.
+      properties:
+        model: {type: string, example: jev-1.13.0}
+        probabilities: {type: object, additionalProperties: {type: number}}
+        confidence: {type: number}
+        option_order: {type: array, items: {type: string}}
+        input_tokens: {type: integer}
+        cost_usd: {type: number}
+        cached: {type: boolean}
+    FunnelStage:
+      type: object
+      properties:
+        stage: {type: string, enum: [shown, noticed, considered, picked]}
+        label: {type: string, example: "looked at it"}
+        ecom: {type: string, example: "product-detail view"}
+        count: {type: integer}
+        rate_of_shown: {type: [number, "null"]}
+        ci95: {type: array, items: {type: number}, minItems: 2, maxItems: 2}
+    BrandFunnel:
+      type: object
+      properties:
+        product: {$ref: "#/components/schemas/ProductRef"}
+        funnel: {type: array, items: {$ref: "#/components/schemas/FunnelStage"}}
+        leaks:
+          type: object
+          properties:
+            never_noticed: {type: integer}
+            looked_and_walked_away: {type: integer}
+            picked_up_and_put_back: {type: integer}
+        top_put_back_reasons:
+          type: array
+          items:
+            type: object
+            properties:
+              mechanism: {type: string, example: trust}
+              count: {type: integer}
+              examples:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reason: {type: string}
+                    persona_id: {type: string}
+                    agent_id: {type: string}
+                    run_id: {type: string}
+        by_archetype: {type: object, additionalProperties: {type: object}}
+        small_sample: {type: boolean, description: "true when shown < 30: show the CI, not a headline"}
+        sources:
+          type: object
+          properties:
+            runs: {type: array, items: {type: object}}
+            method: {type: string}
+    EditResult:
+      type: object
+      description: sim/optimise.py output shape, data/sim/optimise/opt_*.json (Δpick with Newcomb hybrid-Wilson 95% CI).
+      properties:
+        product: {type: string}
+        name: {type: string}
+        seeds: {type: array, items: {type: integer}}
+        agents: {type: integer}
+        models: {type: array, items: {type: string}}
+        baseline_runs: {type: array, items: {type: string}}
+        true_claims_available:
+          type: array
+          items:
+            type: object
+            properties:
+              claim: {type: string, example: high fibre}
+              why: {type: string, example: "fiber_100g=6.5 >= 6 (OFF)"}
+              source: {type: string}
+        method: {type: string}
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              edit: {type: string, enum: [eye, facings, claim, price]}
+              what_changed: {type: string}
+              pick_base: {type: number}
+              pick_new: {type: number}
+              delta_pick: {type: number}
+              delta_ci95: {type: array, items: {type: number}}
+              n_base: {type: integer}
+              n_new: {type: integer}
+              affected_agent_runs: {type: integer}
+              cost_usd: {type: number}
+              significant: {type: boolean}
+    RunEvent:
+      type: object
+      description: CONTRACT.md event
+      properties:
+        step: {type: integer}
+        slot: {type: string, example: U3-r2}
+        product: {type: string}
+        p_notice: {type: number}
+        notice_factors: {type: object}
+        noticed: {type: boolean}
+        decision: {type: string, enum: [pick, reject, walk_past, not_noticed]}
+        reason: {type: string}
+        attributes_cited: {type: array, items: {type: string}}
+        feeling: {type: string}
+        sentiment: {type: number}
+        mechanism: {type: string}
+        source_refs: {type: array, items: {type: string}}
+        jev: {type: object, description: "decision probabilities, option order, draw, confidence"}
+    RunLog:
+      type: object
+      properties:
+        run_id: {type: string}
+        created: {type: string}
+        engine: {type: string}
+        agents:
+          type: array
+          items:
+            type: object
+            properties:
+              agent_id: {type: string}
+              persona_id: {type: string}
+              ocean: {type: object}
+              path: {type: array, items: {type: string}}
+              events: {type: array, items: {$ref: "#/components/schemas/RunEvent"}}
+        stats: {type: object}
+        cost: {type: object}
+    RerankRow:
+      type: object
+      properties:
+        code: {type: string}
+        name: {type: string}
+        brand: {type: string}
+        role: {type: string}
+        original_position: {type: integer}
+        new_position: {type: integer}
+        moved: {type: integer}
+        final_score: {type: number}
+        formula: {type: string, example: "0.4*lens 0.787 + 0.6*fit 0.820 - 0.3*P(put-off) 0.070 = 0.786"}
+        lens:
+          type: object
+          properties:
+            score: {type: number}
+            why: {type: array, items: {type: string}}
+            source: {type: string}
+        jev_fit:
+          type: [object, "null"]
+          properties:
+            score_0_4: {type: number}
+            fit_0_1: {type: number}
+            level: {type: string, enum: [poor, weak, neutral, good, excellent]}
+            probabilities: {type: object}
+            confidence: {type: number}
+            p_putoff: {type: number}
+        explanation: {type: string}
+    Readiness:
+      type: object
+      properties:
+        code: {type: string}
+        name: {type: string}
+        score: {type: number}
+        band: {type: string, enum: [agent-ready, mostly ready, gaps that hide it from agents, largely invisible to agents]}
+        missing:
+          type: array
+          items:
+            type: object
+            properties:
+              field: {type: string}
+              weight: {type: integer}
+              why: {type: string}
+              source: {type: string}
+        present: {type: array, items: {type: string}}
+        method: {type: string}
+    RerankResponse:
+      type: object
+      properties:
+        archetype_inference:
+          type: object
+          properties:
+            archetype: {type: string}
+            probabilities: {type: object}
+            confidence: {type: number}
+            option_order: {type: array, items: {type: string}}
+            fallback: {type: [string, "null"]}
+        rerank:
+          type: object
+          properties:
+            archetype: {type: [string, "null"]}
+            weights: {type: object}
+            results: {type: array, items: {$ref: "#/components/schemas/RerankRow"}}
+            jev: {type: object}
+        agent_readiness:
+          type: object
+          properties:
+            products: {type: array, items: {$ref: "#/components/schemas/Readiness"}}

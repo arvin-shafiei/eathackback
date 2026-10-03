@@ -2,7 +2,8 @@
 touches the edited unit (same seed, same agents, same notice draws = common random numbers), and reports
 Δpick with a 95% CI.
 
-python3 sim/optimise.py --product FX0005 --agents 40 --seeds 1,2 [--mock] [--edits eye,facings,claim,price] [--price 1.40]
+python3 sim/optimise.py --product FX0005 --agents 40 --seeds 1,2 [--engine jev|mock|llm] [--edits eye,facings,claim,price] [--price 1.40]
+(default engine: jev. Jev decisions are sampled with the same per-(seed, agent, slot) draw in both arms.)
 
 Edits (only things a brand/buyer can actually do; nothing invents product facts):
   eye      swap the product's slot set with the eye-level slot set of the same unit (a re-merchandise)
@@ -127,7 +128,11 @@ def newcomb_diff_ci(k1, n1, k0, n0):
 
 
 def optimise(product, agents=40, seeds=(1,), models=None, mock=False, edits=("eye", "facings", "claim"),
-             price=None, planogram=None, max_tokens=250, extra_products=None):
+             price=None, planogram=None, max_tokens=250, engine=None, extra_products=None):
+    engine = "mock" if mock else (engine or simrun.DEFAULT_ENGINE)
+    mock = engine == "mock"
+    if engine != "llm":
+        models = None
     base_plan, plan_src = simrun.load_planogram(planogram)
     catalog, _ = simrun.load_catalog(base_plan)
     catalog, _ = uploads.merge(catalog, extra_products, simrun.load_store()[0])
@@ -136,7 +141,7 @@ def optimise(product, agents=40, seeds=(1,), models=None, mock=False, edits=("ey
     base_k = base_n = 0
     base_runs = []
     for seed in seeds:
-        base = simrun.run_simulation(planogram=base_plan, agents=agents, models=models, seed=seed, mock=mock,
+        base = simrun.run_simulation(planogram=base_plan, agents=agents, models=models, seed=seed, engine=engine,
                                      max_tokens=max_tokens, label=f"optimise baseline {product}",
                                      extra_products=extra_products)
         base_runs.append(base["run_id"])
@@ -152,7 +157,7 @@ def optimise(product, agents=40, seeds=(1,), models=None, mock=False, edits=("ey
                         if any(p.split("-r")[0] in e["touched_units"] for p in a["path"])]
             # agents whose path never enters the edited unit are copied unchanged
             rerun = simrun.run_simulation(planogram=e["planogram"], agents=agents, models=models, seed=seed,
-                                          mock=mock, max_tokens=max_tokens, only_agents=affected, save=False,
+                                          engine=engine, max_tokens=max_tokens, only_agents=affected, save=False,
                                           catalog_patch=e["catalog_patch"],
                                           extra_products=extra_products) if affected else {"agents": [], "cost": {"usd": 0}}
             by_id = {a["agent_id"]: a for a in rerun["agents"]}
@@ -179,7 +184,9 @@ def optimise(product, agents=40, seeds=(1,), models=None, mock=False, edits=("ey
                         "cost_usd": round(t["cost"], 5),
                         "significant": ci[0] > 0 or ci[1] < 0})
     out = {"product": product, "name": catalog[product].get("name"), "seeds": list(seeds), "agents": agents,
-           "models": ["mock"] if mock else (models or [simrun.DEFAULT_MODEL]), "baseline_runs": base_runs,
+           "engine": engine,
+           "models": ["mock"] if mock else (models or [simrun.DEFAULT_MODEL]) if engine == "llm" else ["jev-latest"],
+           "baseline_runs": base_runs,
            "true_claims_available": true_claims(catalog[product]),
            "method": "Common random numbers: same seed, agents, OCEAN and notice draws in both arms; only agents "
                      "whose path enters the edited unit are re-simulated. Δ CI: Newcomb hybrid Wilson (independent-arm, conservative).",
@@ -197,15 +204,16 @@ def main():
     ap.add_argument("--product", required=True)
     ap.add_argument("--agents", type=int, default=40)
     ap.add_argument("--seeds", default="1")
-    ap.add_argument("--models", default=simrun.DEFAULT_MODEL)
-    ap.add_argument("--mock", action="store_true")
+    ap.add_argument("--engine", choices=simrun.ENGINES, default=simrun.DEFAULT_ENGINE)
+    ap.add_argument("--models", default=simrun.DEFAULT_MODEL, help="OpenRouter models, only with --engine llm")
+    ap.add_argument("--mock", action="store_true", help="alias for --engine mock")
     ap.add_argument("--edits", default="eye,facings,claim")
     ap.add_argument("--price", type=float, default=None)
     ap.add_argument("--planogram", default=None)
     a = ap.parse_args()
     edits = a.edits.split(",") + (["price"] if a.price is not None and "price" not in a.edits else [])
     out = optimise(a.product, a.agents, [int(s) for s in a.seeds.split(",")], a.models.split(","), a.mock,
-                   edits, a.price, a.planogram)
+                   edits, a.price, a.planogram, engine="mock" if a.mock else a.engine)
     for r in out["results"]:
         print(json.dumps(r))
     print("wrote", out["_path"])

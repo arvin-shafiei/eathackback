@@ -1,0 +1,700 @@
+{
+ "name": "eat_hack XL store (5x)",
+ "aisles": 12,
+ "rows_per_unit": 4,
+ "row_names": {
+  "1": "top",
+  "2": "eye",
+  "3": "lower",
+  "4": "bottom"
+ },
+ "notice_row_map": {
+  "1": "top",
+  "2": "eye",
+  "3": "bottom",
+  "4": "bottom",
+  "source": "assumption: sim/notice.py has alphas for top/eye/bottom only; 'lower' (just below eye) is given the bottom alpha until a sourced lower-shelf ratio is added (conservative)"
+ },
+ "products_per_slot": 5,
+ "units": [
+  {
+   "id": "U1",
+   "aisle": 1,
+   "side": "L",
+   "category": "bakery_bread",
+   "fridge": false,
+   "freezer": false,
+   "x": -28.0,
+   "z": 10.0
+  },
+  {
+   "id": "U2",
+   "aisle": 1,
+   "side": "R",
+   "category": "bakery_bread",
+   "fridge": false,
+   "freezer": false,
+   "x": -27.0,
+   "z": 10.0
+  },
+  {
+   "id": "U3",
+   "aisle": 2,
+   "side": "L",
+   "category": "breakfast_cereal",
+   "fridge": false,
+   "freezer": false,
+   "x": -23.0,
+   "z": 10.0
+  },
+  {
+   "id": "U4",
+   "aisle": 2,
+   "side": "R",
+   "category": "breakfast_cereal",
+   "fridge": false,
+   "freezer": false,
+   "x": -22.0,
+   "z": 10.0
+  },
+  {
+   "id": "U5",
+   "aisle": 3,
+   "side": "L",
+   "category": "hot_drinks",
+   "fridge": false,
+   "freezer": false,
+   "x": -18.0,
+   "z": 10.0
+  },
+  {
+   "id": "U6",
+   "aisle": 3,
+   "side": "R",
+   "category": "hot_drinks",
+   "fridge": false,
+   "freezer": false,
+   "x": -17.0,
+   "z": 10.0
+  },
+  {
+   "id": "U7",
+   "aisle": 4,
+   "side": "L",
+   "category": "soft_drinks",
+   "fridge": false,
+   "freezer": false,
+   "x": -13.0,
+   "z": 10.0
+  },
+  {
+   "id": "U8",
+   "aisle": 4,
+   "side": "R",
+   "category": "soft_drinks",
+   "fridge": false,
+   "freezer": false,
+   "x": -12.0,
+   "z": 10.0
+  },
+  {
+   "id": "U9",
+   "aisle": 5,
+   "side": "L",
+   "category": "crisps_savoury",
+   "fridge": false,
+   "freezer": false,
+   "x": -8.0,
+   "z": 10.0
+  },
+  {
+   "id": "U10",
+   "aisle": 5,
+   "side": "R",
+   "category": "crisps_savoury",
+   "fridge": false,
+   "freezer": false,
+   "x": -7.0,
+   "z": 10.0
+  },
+  {
+   "id": "U11",
+   "aisle": 6,
+   "side": "L",
+   "category": "snack_bars",
+   "fridge": false,
+   "freezer": false,
+   "x": -3.0,
+   "z": 10.0
+  },
+  {
+   "id": "U12",
+   "aisle": 6,
+   "side": "R",
+   "category": "snack_bars",
+   "fridge": false,
+   "freezer": false,
+   "x": -2.0,
+   "z": 10.0
+  },
+  {
+   "id": "U13",
+   "aisle": 7,
+   "side": "L",
+   "category": "biscuits_chocolate",
+   "fridge": false,
+   "freezer": false,
+   "x": 2.0,
+   "z": 10.0
+  },
+  {
+   "id": "U14",
+   "aisle": 7,
+   "side": "R",
+   "category": "biscuits_chocolate",
+   "fridge": false,
+   "freezer": false,
+   "x": 3.0,
+   "z": 10.0
+  },
+  {
+   "id": "U15",
+   "aisle": 8,
+   "side": "L",
+   "category": "confectionery_sweets",
+   "fridge": false,
+   "freezer": false,
+   "x": 7.0,
+   "z": 10.0
+  },
+  {
+   "id": "U16",
+   "aisle": 8,
+   "side": "R",
+   "category": "confectionery_sweets",
+   "fridge": false,
+   "freezer": false,
+   "x": 8.0,
+   "z": 10.0
+  },
+  {
+   "id": "U17",
+   "aisle": 9,
+   "side": "L",
+   "category": "ready_meals_soup",
+   "fridge": true,
+   "freezer": false,
+   "x": 12.0,
+   "z": 10.0
+  },
+  {
+   "id": "U18",
+   "aisle": 9,
+   "side": "R",
+   "category": "ready_meals_soup",
+   "fridge": true,
+   "freezer": false,
+   "x": 13.0,
+   "z": 10.0
+  },
+  {
+   "id": "U19",
+   "aisle": 10,
+   "side": "L",
+   "category": "plant_milk_dairy_alt",
+   "fridge": true,
+   "freezer": false,
+   "x": 17.0,
+   "z": 10.0
+  },
+  {
+   "id": "U20",
+   "aisle": 10,
+   "side": "R",
+   "category": "plant_milk_dairy_alt",
+   "fridge": true,
+   "freezer": false,
+   "x": 18.0,
+   "z": 10.0
+  },
+  {
+   "id": "U21",
+   "aisle": 11,
+   "side": "L",
+   "category": "yoghurt",
+   "fridge": true,
+   "freezer": false,
+   "x": 22.0,
+   "z": 10.0
+  },
+  {
+   "id": "U22",
+   "aisle": 11,
+   "side": "R",
+   "category": "yoghurt",
+   "fridge": true,
+   "freezer": false,
+   "x": 23.0,
+   "z": 10.0
+  },
+  {
+   "id": "U23",
+   "aisle": 12,
+   "side": "L",
+   "category": "frozen_icecream",
+   "fridge": true,
+   "freezer": true,
+   "x": 27.0,
+   "z": 10.0
+  },
+  {
+   "id": "U24",
+   "aisle": 12,
+   "side": "R",
+   "category": "frozen_icecream",
+   "fridge": true,
+   "freezer": true,
+   "x": 28.0,
+   "z": 10.0
+  }
+ ],
+ "entrance": {
+  "x": -15.0,
+  "z": -2.0
+ },
+ "entrances": [
+  {
+   "id": "E1",
+   "x": -15.0,
+   "z": -2.0
+  },
+  {
+   "id": "E2",
+   "x": 15.0,
+   "z": -2.0
+  }
+ ],
+ "checkout": {
+  "x": 0.0,
+  "z": 22.0
+ },
+ "checkouts": [
+  {
+   "id": "T1",
+   "type": "staffed",
+   "bank": "tills",
+   "x": -7.0,
+   "z": 22.0,
+   "lanes": 1
+  },
+  {
+   "id": "T2",
+   "type": "staffed",
+   "bank": "tills",
+   "x": -4.2,
+   "z": 22.0,
+   "lanes": 1
+  },
+  {
+   "id": "T3",
+   "type": "staffed",
+   "bank": "tills",
+   "x": -1.4,
+   "z": 22.0,
+   "lanes": 1
+  },
+  {
+   "id": "T4",
+   "type": "staffed",
+   "bank": "tills",
+   "x": 1.4,
+   "z": 22.0,
+   "lanes": 1
+  },
+  {
+   "id": "T5",
+   "type": "staffed",
+   "bank": "tills",
+   "x": 4.2,
+   "z": 22.0,
+   "lanes": 1
+  },
+  {
+   "id": "T6",
+   "type": "staffed",
+   "bank": "tills",
+   "x": 7.0,
+   "z": 22.0,
+   "lanes": 1
+  },
+  {
+   "id": "SW1",
+   "type": "self",
+   "bank": "self_west",
+   "x": -24.0,
+   "z": 21.0,
+   "lanes": 1
+  },
+  {
+   "id": "SW2",
+   "type": "self",
+   "bank": "self_west",
+   "x": -22.4,
+   "z": 21.0,
+   "lanes": 1
+  },
+  {
+   "id": "SW3",
+   "type": "self",
+   "bank": "self_west",
+   "x": -20.8,
+   "z": 21.0,
+   "lanes": 1
+  },
+  {
+   "id": "SW4",
+   "type": "self",
+   "bank": "self_west",
+   "x": -24.0,
+   "z": 23.0,
+   "lanes": 1
+  },
+  {
+   "id": "SW5",
+   "type": "self",
+   "bank": "self_west",
+   "x": -22.4,
+   "z": 23.0,
+   "lanes": 1
+  },
+  {
+   "id": "SW6",
+   "type": "self",
+   "bank": "self_west",
+   "x": -20.8,
+   "z": 23.0,
+   "lanes": 1
+  },
+  {
+   "id": "SE1",
+   "type": "self",
+   "bank": "self_east",
+   "x": 16.0,
+   "z": 21.0,
+   "lanes": 1
+  },
+  {
+   "id": "SE2",
+   "type": "self",
+   "bank": "self_east",
+   "x": 17.6,
+   "z": 21.0,
+   "lanes": 1
+  },
+  {
+   "id": "SE3",
+   "type": "self",
+   "bank": "self_east",
+   "x": 19.2,
+   "z": 21.0,
+   "lanes": 1
+  },
+  {
+   "id": "SE4",
+   "type": "self",
+   "bank": "self_east",
+   "x": 16.0,
+   "z": 23.0,
+   "lanes": 1
+  },
+  {
+   "id": "SE5",
+   "type": "self",
+   "bank": "self_east",
+   "x": 17.6,
+   "z": 23.0,
+   "lanes": 1
+  },
+  {
+   "id": "SE6",
+   "type": "self",
+   "bank": "self_east",
+   "x": 19.2,
+   "z": 23.0,
+   "lanes": 1
+  }
+ ],
+ "stockroom": {
+  "x": 0.0,
+  "z": 30.0,
+  "door": {
+   "x": 0.0,
+   "z": 26.5
+  },
+  "w": 20.0,
+  "d": 6.0,
+  "source": "assumption: staff-only stockroom behind the checkout line, door on the centre line"
+ },
+ "aisle_widths": {
+  "walkway_m": 4.0,
+  "cross_aisle_m": 2.4,
+  "gondola_depth_m": 1.0,
+  "unit_len_m": 6.4,
+  "source": "assumption: same geometry as web/src/layout.ts (G.spacing 5.0 - depth 1.0 = 4m walkway so two trolleys pass; crossGap 2.4)"
+ },
+ "layout_notes": [
+  "12 aisles x 2 sides = 24 units (one category per aisle, both sides) instead of ~10 aisles x 2: keeps one category per gondola so the web aisle signs and the per-unit category field still hold; 24 units x 4 rows x 5 = 480 product slots.",
+  "chilled categories (yoghurt, plant milk, ready meals/soup) and frozen sit in aisles 9-12 so they are the last aisles before the tills (assumption: UK stores put chilled/frozen late in the route to limit time out of refrigeration).",
+  "two entrances at the front (z=-2), one per half of the store, so arrivals split instead of clumping at one door.",
+  "6 staffed tills in the centre + 12 self-checkout kiosks in 2 banks of 6 (west, east); z=21-23."
+ ],
+ "stock_rules": {
+  "facings": "curated SKUs keep their planogram.json facings (all 1); auto_xl incumbents get 2 facings, others 1 (assumption: category leaders typically hold more facings)",
+  "depth_units_per_facing": "item <=150 g/ml -> 8 deep, <=500 -> 6, <=1000 -> 4, larger or unknown -> 3; freezer x0.75 (assumption: standard 0.45m shelf depth / pack depth)",
+  "capacity": "facings x depth_units_per_facing",
+  "stock": "starts at capacity (store opens fully faced up)"
+ },
+ "derivation": {
+  "scales_from_curated": {
+   "soft_drinks": {
+    "sugar_cap": 10.6,
+    "kcal_cap": 42.0,
+    "protein_cap": 5.0,
+    "fibre_cap": 3.0
+   },
+   "crisps_savoury": {
+    "sugar_cap": 7.3,
+    "kcal_cap": 520.0,
+    "protein_cap": 25.0,
+    "fibre_cap": 6.4
+   },
+   "snack_bars": {
+    "sugar_cap": 42.9,
+    "kcal_cap": 556.0,
+    "protein_cap": 34.3,
+    "fibre_cap": 13.0
+   },
+   "breakfast_cereal": {
+    "sugar_cap": 25.0,
+    "kcal_cap": 470.0,
+    "protein_cap": 37.5,
+    "fibre_cap": 14.4
+   },
+   "yoghurt": {
+    "sugar_cap": 17.0,
+    "kcal_cap": 145.0,
+    "protein_cap": 10.3,
+    "fibre_cap": 3.0
+   },
+   "biscuits_chocolate": {
+    "sugar_cap": 56.0,
+    "kcal_cap": 597.0,
+    "protein_cap": 35.1,
+    "fibre_cap": 10.0
+   },
+   "plant_milk_dairy_alt": {
+    "sugar_cap": 4.8,
+    "kcal_cap": 59.0,
+    "protein_cap": 5.0,
+    "fibre_cap": 3.0
+   },
+   "ready_meals_soup": {
+    "sugar_cap": 4.8,
+    "kcal_cap": 159.0,
+    "protein_cap": 13.5,
+    "fibre_cap": 3.7
+   },
+   "bakery_bread": {
+    "sugar_cap": 8.1,
+    "kcal_cap": 598.0,
+    "protein_cap": 17.1,
+    "fibre_cap": 21.0
+   },
+   "confectionery_sweets": {
+    "sugar_cap": 85.5,
+    "kcal_cap": 398.0,
+    "protein_cap": 6.6,
+    "fibre_cap": 3.0
+   },
+   "frozen_icecream": {
+    "sugar_cap": 33.0,
+    "kcal_cap": 332.0,
+    "protein_cap": 9.8,
+    "fibre_cap": 3.1
+   },
+   "hot_drinks": {
+    "sugar_cap": 54.8,
+    "kcal_cap": 407.0,
+    "protein_cap": 19.4,
+    "fibre_cap": 19.1
+   }
+  },
+  "price_model": {
+   "n_fit": 131,
+   "beta_pack": 0.296,
+   "role_mult": {
+    "incumbent": 1.0,
+    "own_label": 0.573,
+    "challenger": 1.294
+   },
+   "base_incumbent_median_pack": {
+    "bakery_bread": 1.88,
+    "breakfast_cereal": 3.08,
+    "hot_drinks": 3.4,
+    "soft_drinks": 1.11,
+    "crisps_savoury": 1.71,
+    "snack_bars": 2.41,
+    "biscuits_chocolate": 1.97,
+    "confectionery_sweets": 1.55,
+    "ready_meals_soup": 2.72,
+    "plant_milk_dairy_alt": 1.72,
+    "yoghurt": 1.64,
+    "frozen_icecream": 4.4
+   },
+   "median_pack": {
+    "bakery_bread": 535.0,
+    "breakfast_cereal": 440.0,
+    "hot_drinks": 235.0,
+    "soft_drinks": 330.0,
+    "crisps_savoury": 102.0,
+    "snack_bars": 145.0,
+    "biscuits_chocolate": 165.0,
+    "confectionery_sweets": 140.0,
+    "ready_meals_soup": 440.0,
+    "plant_milk_dairy_alt": 1000.0,
+    "yoghurt": 450.0,
+    "frozen_icecream": 400.0
+   },
+   "median_price": {
+    "bakery_bread": 2.1500000000000004,
+    "breakfast_cereal": 3.375,
+    "hot_drinks": 3.395,
+    "soft_drinks": 1.5,
+    "crisps_savoury": 1.675,
+    "snack_bars": 2.45,
+    "biscuits_chocolate": 1.8,
+    "confectionery_sweets": 1.5,
+    "ready_meals_soup": 2.425,
+    "plant_milk_dairy_alt": 1.975,
+    "yoghurt": 1.69,
+    "frozen_icecream": 4.5
+   },
+   "band": {
+    "bakery_bread": [
+     0.59,
+     3.5
+    ],
+    "breakfast_cereal": [
+     1.15,
+     5.5
+    ],
+    "hot_drinks": [
+     0.79,
+     8.5
+    ],
+    "soft_drinks": [
+     0.35,
+     2.2
+    ],
+    "crisps_savoury": [
+     0.99,
+     2.75
+    ],
+    "snack_bars": [
+     1.25,
+     3.0
+    ],
+    "biscuits_chocolate": [
+     0.65,
+     4.0
+    ],
+    "confectionery_sweets": [
+     0.45,
+     2.25
+    ],
+    "ready_meals_soup": [
+     0.55,
+     8.0
+    ],
+    "plant_milk_dairy_alt": [
+     0.69,
+     2.4
+    ],
+    "yoghurt": [
+     0.62,
+     3.75
+    ],
+    "frozen_icecream": [
+     2.0,
+     6.5
+    ]
+   }
+  },
+  "unit_price_band_gbp_per_kg": {
+   "bakery_bread": [
+    0.74,
+    10.91
+   ],
+   "breakfast_cereal": [
+    3.07,
+    22.92
+   ],
+   "hot_drinks": [
+    6.32,
+    108.02
+   ],
+   "soft_drinks": [
+    1.06,
+    8.0
+   ],
+   "crisps_savoury": [
+    9.0,
+    102.27
+   ],
+   "snack_bars": [
+    6.45,
+    33.33
+   ],
+   "biscuits_chocolate": [
+    2.2,
+    35.09
+   ],
+   "confectionery_sweets": [
+    8.57,
+    29.22
+   ],
+   "ready_meals_soup": [
+    1.38,
+    28.91
+   ],
+   "plant_milk_dairy_alt": [
+    0.69,
+    2.4
+   ],
+   "yoghurt": [
+    2.3,
+    8.33
+   ],
+   "frozen_icecream": [
+    1.0,
+    24.74
+   ]
+  },
+  "pool_sizes": {
+   "bakery_bread": 1436,
+   "breakfast_cereal": 1112,
+   "hot_drinks": 165,
+   "soft_drinks": 603,
+   "crisps_savoury": 1446,
+   "snack_bars": 280,
+   "biscuits_chocolate": 2079,
+   "confectionery_sweets": 567,
+   "ready_meals_soup": 1767,
+   "plant_milk_dairy_alt": 253,
+   "yoghurt": 792,
+   "frozen_icecream": 333
+  },
+  "script": "scripts/scale_catalog.py",
+  "rules": "data/products/curated_xl_rules.md"
+ }
+}

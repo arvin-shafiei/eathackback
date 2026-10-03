@@ -1,0 +1,1162 @@
+{
+ "persona_id": "staged_rachel",
+ "name": "Rachel",
+ "archetype": "Retail media sales lead (dunnhumby/Nectar360-style)",
+ "kind": "staged",
+ "source_file": "data/personas/staged_personas_v1.json[9]",
+ "fields": [
+  {
+   "field": "behavioural_drivers[0]",
+   "kind": "lens_weight",
+   "label": "driver: Loss aversion on the rate card: the 'Sponsored' label she ... (w=0.95)",
+   "value": 0.95,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "ACES: a sponsored tag lowered a 10% base selection rate to '8.9% under Claude Sonnet 4, 8.0% under GPT-4.1, and 7.9% under Gemini 2.5 Flash'"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2508.02630",
+     "citation": "agents 'consistently penalize sponsored tags while rewarding platform endorsements'. (https://arxiv.org/html/2508.02630, via research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "agents 'consistently penalize sponsored tags while rewarding platform endorsements'. (https://arxiv.org/html/2508.02630, via research/02-issue-discovery.md)"
+    }
+   ],
+   "principle": "Loss aversion on the rate card: the 'Sponsored' label she sells now measurably lowers agent choice, so the core product depreciates",
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[1]",
+   "kind": "lens_weight",
+   "label": "driver: Anchoring on position pricing breaks: there is no universal top ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2508.02630",
+     "citation": "'For Claude Sonnet 4, moving a product from bottom right to top row/middle columns yields 5-fold increase'. GPT-4.1 and GPT-5.1 prefer opposite positions. (https://arxiv.org/html/2508.02630)"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/abs/2608.22697",
+     "citation": "'For agentic search, the attributes displayed on a results page matter more than placement within it.' Agents' position effect is 4-10x smaller than humans'. (https://arxiv.org/abs/2608.22697)"
+    }
+   ],
+   "principle": "Anchoring on position pricing breaks: there is no universal top slot, and position preference flips between models and versions",
+   "classes": [
+    "paper"
+   ],
+   "class_share": {
+    "paper": 1.0
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[2]",
+   "kind": "lens_weight",
+   "label": "driver: Substitution toward endorsement inventory: badges lift agent share where 'Sponsored' ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2508.02630",
+     "citation": "An 'Overall Pick' endorsement lifts a 10% base selection rate to 24.3% / 19.9% / 42.6% (Claude Sonnet 4 / GPT-4.1 / Gemini 2.5 Flash). (https://arxiv.org/html/2508.02630)"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.amalytix.com/en/knowledge/ai/amazon-rufus-pattern-analysis/",
+     "citation": "'41.8% of Rufus recommendations carried the Amazon's Choice badge.' (https://www.amalytix.com/en/knowledge/ai/amazon-rufus-pattern-analysis/)"
+    }
+   ],
+   "principle": "Substitution toward endorsement inventory: badges lift agent share where 'Sponsored' cuts it, so she is pulled toward selling 'pick' or verified-attribute products",
+   "classes": [
+    "paper",
+    "web_other"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[3]",
+   "kind": "lens_weight",
+   "label": "driver: Social proof from the frontline: shoppers already read assistant recommendations ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1rc3t5x",
+     "thread_id": "1rc3t5x",
+     "subreddit": "amazonemployees",
+     "theme": "rufus_ai_bias",
+     "score": 43,
+     "verbatim": "The shopping assistant feels biased, does not help me it often feels like yet another add, a sponsored recommendation.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 6,
+     "verbatim": "Advertisers and Marketers salivating at the idea of getting ChatGPT to purchase certain brands over others. What a shitshow.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Social proof from the frontline: shoppers already read assistant recommendations as ads, which erodes trust in paid placement inside agents",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[4]",
+   "kind": "lens_weight",
+   "label": "driver: Precedent-seeking: ads are already being placed inside agent conversations, so ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sp38qu",
+     "thread_id": "1sp38qu",
+     "subreddit": "FulfillmentByAmazon",
+     "theme": "rufus_ai_bias",
+     "score": 1,
+     "verbatim": "You are right ads appear under Rufus conversations now. Rufus evaluates which listing gets prime real estate and who gets buried",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Precedent-seeking: ads are already being placed inside agent conversations, so she looks for a model to copy rather than give up paid placement",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[5]",
+   "kind": "lens_weight",
+   "label": "driver: Demand for attributable proof: she has been burned by 'AI ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1u6kouq",
+     "thread_id": "1u6kouq",
+     "subreddit": "AmazonFBA",
+     "theme": "rufus_ai_bias",
+     "score": 8,
+     "verbatim": "Rufus optimization is the most common pitch I get from agencies now. It has no demonstrable effect on anything at all.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sp38qu",
+     "thread_id": "1sp38qu",
+     "subreddit": "FulfillmentByAmazon",
+     "theme": "rufus_ai_bias",
+     "score": 2,
+     "verbatim": "I would love legitimate proof from anyone concerning changes they made that supposedly led to any sort of measurable or attributable impact.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Demand for attributable proof: she has been burned by 'AI optimisation' snake oil and will not resell a claim she cannot attribute",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[6]",
+   "kind": "lens_weight",
+   "label": "driver: Impulse-inventory erosion: online and delegated baskets strip out the browsing ... (w=0.65)",
+   "value": 0.65,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/123vm1c",
+     "thread_id": "123vm1c",
+     "subreddit": "instacart",
+     "theme": "impulse_instore_vs_online",
+     "score": 13,
+     "verbatim": "It saves me money because I don't see the excellent marketing or get suckered into engineered store layouts to pick up things that aren't on ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1m43a3k",
+     "thread_id": "1m43a3k",
+     "subreddit": "Frugal",
+     "theme": "impulse_instore_vs_online",
+     "score": 15,
+     "verbatim": "Online shopping, I have to specifically search the items on my list. There's not really a \"browsing",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "UK survey: 29% make 'far fewer impulse purchases online than in store' vs 7% more. (chainstoreage.com, via 02-issue-discovery.md)"
+    }
+   ],
+   "principle": "Impulse-inventory erosion: online and delegated baskets strip out the browsing moments that in-store and display media monetise",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[7]",
+   "kind": "lens_weight",
+   "label": "driver: Ambiguity and variance aversion: she cannot sell a package whose ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.searchenginejournal.com/chatgpt-shopping-results-lean-hard-on-product-feeds/589000/",
+     "citation": "'450 of 687 customers experienced at least one-third reduction in Shopping visibility' after the GPT-5.6 feed switch (https://www.searchenginejournal.com/chatgpt-shopping-results-lean-hard-on-product-feeds/589000/)"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://sparktoro.com/blog/new-research-ais-are-highly-inconsistent-when-recommending-brands-or-products-marketers-should-take-care-when-tracking-ai-visibility/",
+     "citation": "'There's a <1 in 100 chance that ChatGPT or Google's AI, if asked 100X, will give you the same list of brands in any two responses' (https://sparktoro.com/blog/new-research-ais-are-highly-inconsistent-when-recommending-brands-or-products-marketers-should-take-care-when-tracking-ai-visibility/)"
+    }
+   ],
+   "principle": "Ambiguity and variance aversion: she cannot sell a package whose delivery reshuffles when the model updates",
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "behavioural_drivers[8]",
+   "kind": "lens_weight",
+   "label": "driver: Reframing from persuasion to negotiation: agents weigh total value, so ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026",
+     "citation": "Kantar Retail 2026: 'Retail media moves from persuasion to negotiation… Agents compare total value in real time via price, availability, loyalty, and delivery.' and 'If an agent can't parse you, it can't choose you.' (https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026)"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Kantar Retail 2026: 'Retail media moves from persuasion to negotiation… Agents compare total value in real time via price, availability, loyalty, and delivery.' and 'If an agent can't parse you, it can't choose you.' (https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026)",
+     "url": null
+    },
+    {
+     "class": "web_other",
+     "method": "trade_press:'Kantar'(no figure)",
+     "citation": "Kantar Retail 2026: 'Retail media moves from persuasion to negotiation… Agents compare total value in real time via price, availability, loyalty, and delivery.' and 'If an agent can't parse you, it can't choose you.' (https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026)"
+    }
+   ],
+   "principle": "Reframing from persuasion to negotiation: agents weigh total value, so media that buys attention loses to media that improves parsable value",
+   "classes": [
+    "paper",
+    "web_other"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[9]",
+   "kind": "lens_weight",
+   "label": "driver: Reputational pressure from suppliers: pay-to-play resentment means any evidence that ... (w=0.55)",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Suppliers accuse retailers of 'wrapping listing fees up as media'"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.thegrocer.co.uk/news/startups-and-challenger-brands-facing-exorbitant-media-charges/685416.article",
+     "citation": "'As a supplier, you can say no. If you can't say no to a buyer, you will go bust.' (Ged Futter, https://www.thegrocer.co.uk/news/startups-and-challenger-brands-facing-exorbitant-media-charges/685416.article)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/179akww",
+     "thread_id": "179akww",
+     "subreddit": "smallbusiness",
+     "theme": "small_brand_listing",
+     "score": 1,
+     "verbatim": "...be prepared to provide $$$ for advertising or significant check deductions for promotional allowances.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Reputational pressure from suppliers: pay-to-play resentment means any evidence that media is wasted on agents becomes ammunition against her",
+   "classes": [
+    "reddit",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[10]",
+   "kind": "lens_weight",
+   "label": "driver: Present bias and time-buying: UK delegation is still tiny and ... (w=0.45)",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.grocerygazette.co.uk/2026/07/10/ai-assisted-grocery/",
+     "citation": "IGD: only 3% of UK shoppers currently use AI tools for grocery shopping. dunnhumby: 39% of UK consumers do not trust AI, 'the most sceptical' in Europe. Sandra Stanley (dunnhumby): 'loyalty needing to be earned both from the customer as ..."
+    }
+   ],
+   "principle": "Present bias and time-buying: UK delegation is still tiny and sceptical, which lets her defer repricing while she gathers evidence",
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Any 'AI rank' or single-run result: she has read that 'Any tool ...",
+   "value": "Any 'AI rank' or single-run result: she has read that 'Any tool that gives a ranking position in AI is full of baloney' (SparkToro), so outputs without repeated sampling and CIs are dismissed",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Any 'AI rank' or single-run result: she has read that 'Any tool that gives a ranking position in AI is full of baloney' (SparkToro), so outputs without repeated sampling and ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Single-ASIN or single-anecdote uplift claims with no baseline (the 'impression bump within ...",
+   "value": "Single-ASIN or single-anecdote uplift claims with no baseline (the 'impression bump within a week on one ASIN' pattern that r/FulfillmentByAmazon commenters tore apart)",
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "Single-ASIN or single-anecdote uplift claims with no baseline (the 'impression bump within a week on one ASIN' pattern that r/FulfillmentByAmazon commenters tore apart)",
+     "url": null,
+     "verified_in_corpus": false
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Recommendations to hide, blur or drop the 'Sponsored' disclosure, or any prompt-injection ...",
+   "value": "Recommendations to hide, blur or drop the 'Sponsored' disclosure, or any prompt-injection or adversarial listing text. She cannot sell undisclosed paid influence over a shopper's agent, and the research rules out non-honest edits",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Recommendations to hide, blur or drop the 'Sponsored' disclosure, or any prompt-injection or adversarial listing text. She cannot sell undisclosed paid influence over a shopper's agent, and the research rules ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "A framing that makes retail media the villain in a deck her ...",
+   "value": "A framing that makes retail media the villain in a deck her suppliers will see ('your ads are wasted on robots') with no replacement product offered",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A framing that makes retail media the villain in a deck her suppliers will see ('your ads are wasted on robots') with no replacement product offered"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "US or Amazon-only evidence presented as UK grocery truth, with no UK ...",
+   "value": "US or Amazon-only evidence presented as UK grocery truth, with no UK SKUs, UK retailer context or UK adoption data (IGD 3%, Adyen 44%)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "US or Amazon-only evidence presented as UK grocery truth, with no UK SKUs, UK retailer context or UK adoption data (IGD 3%, Adyen 44%)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "A sim that ignores the human side. If the human shopper agents ...",
+   "value": "A sim that ignores the human side. If the human shopper agents show no impulse or display response, she will assume the model is rigged against media",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "A sim that ignores the human side. If the human shopper agents show no impulse or display response, she will assume the model is rigged against media"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Results that hold for one model only, with no cross-model check, given ...",
+   "value": "Results that hold for one model only, with no cross-model check, given that position preference flips between GPT-4.1 and GPT-5.1",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Results that hold for one model only, with no cross-model check, given that position preference flips between GPT-4.1 and GPT-5.1"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[7]",
+   "kind": "trigger",
+   "label": "Black-box scoring she cannot explain to a supplier's commercial director in one ...",
+   "value": "Black-box scoring she cannot explain to a supplier's commercial director in one sentence",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Black-box scoring she cannot explain to a supplier's commercial director in one sentence"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Per-model coefficients for the sponsored penalty (delta) and position (gamma) from a ...",
+   "value": "Per-model coefficients for the sponsored penalty (delta) and position (gamma) from a conditional logit, with bootstrap 95% CIs and N of at least 50 runs per cell",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Per-model coefficients for the sponsored penalty (delta) and position (gamma) from a conditional logit, with bootstrap 95% CIs and N of at least 50 runs per cell"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "A side-by-side human vs agent result on the same shelf. Human shopper ...",
+   "value": "A side-by-side human vs agent result on the same shelf. Human shopper agents keep a measurable impulse and position response while agent shoppers do not, which shows classic media still has value for humans",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A side-by-side human vs agent result on the same shelf. Human shopper agents keep a measurable impulse and position response while agent shoppers do not, which shows classic media still ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "A live toggle in the 3D store: switch 'Sponsored' on and off, ...",
+   "value": "A live toggle in the 3D store: switch 'Sponsored' on and off, or swap it for an honest endorsement or verified-attribute badge, re-run, and see the share change with CIs",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A live toggle in the 3D store: switch 'Sponsored' on and off, or swap it for an honest endorsement or verified-attribute badge, re-run, and see the share change with CIs"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "A model-update stress test (Kendall tau across model versions) that tells her ...",
+   "value": "A model-update stress test (Kendall tau across model versions) that tells her which packages are robust to a model change",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A model-update stress test (Kendall tau across model versions) that tells her which packages are robust to a model change"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Reproduced numbers from published sources she can cite back to suppliers (ACES ...",
+   "value": "Reproduced numbers from published sources she can cite back to suppliers (ACES 10% to about 8%, Overall Pick to 24-43%, Incumbent Advantage +0.075-star flip)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Reproduced numbers from published sources she can cite back to suppliers (ACES 10% to about 8%, Overall Pick to 24-43%, Incumbent Advantage +0.075-star flip)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "UK grocery SKUs (Shelf challengers plus incumbents plus own-label) with real prices ...",
+   "value": "UK grocery SKUs (Shelf challengers plus incumbents plus own-label) with real prices per 100g and real review counts",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "UK grocery SKUs (Shelf challengers plus incumbents plus own-label) with real prices per 100g and real review counts"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[6]",
+   "kind": "trust_signal",
+   "label": "An output she can turn into a priced product, such as a ...",
+   "value": "An output she can turn into a priced product, such as a per-SKU 'breakthrough threshold' (for example '+31 reviews or a filled fibre claim') that a feed-enrichment or reviews package could be sold against",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "An output she can turn into a priced product, such as a per-SKU 'breakthrough threshold' (for example '+31 reviews or a filled fibre claim') that a feed-enrichment or reviews package ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[7]",
+   "kind": "trust_signal",
+   "label": "Traceability: every number can be traced back to a logged agent session ...",
+   "value": "Traceability: every number can be traced back to a logged agent session or a human-agent choice (RGC's line that an untraceable number is worse than none)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Traceability: every number can be traced back to a logged agent session or a human-agent choice (RGC's line that an untraceable number is worse than none)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[0]",
+   "kind": "habit",
+   "label": "Quantify the 'sponsored tax': how much agent selection share a brand loses ...",
+   "value": "Quantify the 'sponsored tax': how much agent selection share a brand loses when its slot carries a 'Sponsored' label, per model, with CIs, compared with human shoppers on the same shelf",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Quantify the 'sponsored tax': how much agent selection share a brand loses when its slot carries a 'Sponsored' label, per model, with CIs, compared with human shoppers on the same ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[1]",
+   "kind": "habit",
+   "label": "Find out whether position still has a price: measure the position coefficient ...",
+   "value": "Find out whether position still has a price: measure the position coefficient per model (Claude vs GPT vs Gemini) and per mission to see if a 'top slot' exists for agents at all",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Find out whether position still has a price: measure the position coefficient per model (Claude vs GPT vs Gemini) and per mission to see if a 'top slot' exists for ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[2]",
+   "kind": "habit",
+   "label": "Reprice inventory: split the rate card into human-facing slots (impulse, eye-level, screens) ...",
+   "value": "Reprice inventory: split the rate card into human-facing slots (impulse, eye-level, screens) and agent-facing products (feed completeness, verified attributes, endorsement-style badges)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Reprice inventory: split the rate card into human-facing slots (impulse, eye-level, screens) and agent-facing products (feed completeness, verified attributes, endorsement-style badges)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[3]",
+   "kind": "habit",
+   "label": "Defend renewals: answer a supplier's 'is my sponsored spend wasted when Tesco's ...",
+   "value": "Defend renewals: answer a supplier's 'is my sponsored spend wasted when Tesco's assistant builds the basket?' with evidence instead of reassurance",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Defend renewals: answer a supplier's 'is my sponsored spend wasted when Tesco's assistant builds the basket?' with evidence instead of reassurance"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[4]",
+   "kind": "habit",
+   "label": "Design an honest 'agent-ready' media product for challengers (data enrichment, reviews programme, ...",
+   "value": "Design an honest 'agent-ready' media product for challengers (data enrichment, reviews programme, claims verification) priced against the breakthrough threshold, not against position",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Design an honest 'agent-ready' media product for challengers (data enrichment, reviews programme, claims verification) priced against the breakthrough threshold, not against position"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[5]",
+   "kind": "habit",
+   "label": "Stress-test model-update risk: check whether a package sold this quarter still delivers ...",
+   "value": "Stress-test model-update risk: check whether a package sold this quarter still delivers after the agent's underlying model changes",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Stress-test model-update risk: check whether a package sold this quarter still delivers after the agent's underlying model changes"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[6]",
+   "kind": "habit",
+   "label": "Protect the impulse share of budgets: identify which categories and missions keep ...",
+   "value": "Protect the impulse share of budgets: identify which categories and missions keep human impulse behaviour (and so classic media value) and which go agent-mediated first",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Protect the impulse share of budgets: identify which categories and missions keep human impulse behaviour (and so classic media value) and which go agent-mediated first"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "says_vs_does",
+   "kind": "habit",
+   "label": "says vs does",
+   "value": "She SAYS agents are a 2027 problem ('3% of UK shoppers use AI for grocery', '39% don't trust AI') and that sponsored search 'still works because humans still shop'. In ...",
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "She SAYS agents are a 2027 problem ('3% of UK shoppers use AI for grocery', '39% don't trust AI') and that sponsored search 'still works because humans still shop'. In practice she is already quietly hedging. She forwards the ACES ...",
+     "url": null,
+     "verified_in_corpus": false
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.72",
+   "value": 0.72,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.25",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 5",
+   "value": 5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.75",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  }
+ ],
+ "persona_level_evidence": {
+  "realism_score_1_10": 6,
+  "supporting_evidence": [
+   "research/02-issue-discovery.md line 167: ACES, 'A sponsored tag cuts a 10% base selection rate to about 8%, while an Overall Pick badge lifts it to 24-43%'. This confirms the sponsored effect is small (1-2 points), so per-SKU non-overlapping CIs at N=50 ...",
+   "research/02-issue-discovery.md line 169: agents 'never decline to buy'; their position effect is '4-10x weaker than humans''; 'the attributes displayed ... matter more than placement'. This supports her conclusion that there is no agent top slot.",
+   "research/02-issue-discovery.md line 177: IGD, only 3% of UK shoppers use AI for grocery. This undercuts restructuring real revenue now and supports present bias and renew-plus-upsell.",
+   "corpus/rufus_ai_bias.md lines 15-17: 'sponsored ads now includes Rufus'; 'ads appear under Rufus conversations now'; 'I kept badgering my CSM/Advertising counterparts as to how we could participate'. Platforms monetise agent surfaces rather than abandoning sponsored inventory, so a retailer-owned assistant may ...",
+   "corpus/rufus_ai_bias.md line 31: 'The shopping assistant feels biased... feels like yet another add, a sponsored recommendation'. This confirms the trust-erosion driver.",
+   "corpus/rufus_ai_bias.md line 46: 'Rufus optimization is the most common pitch I get from agencies now. It has no demonstrable effect on anything at all.' This confirms her baloney filter and her rejection of single-run or anecdotal uplift.",
+   "corpus/buyer_meeting.md is mostly Tesco shop-floor and supplier-terms chatter (e.g. line 73: 'Beware of anything being called standard terms... co-sales/discounts/advertising'). It weakly supports supplier pay-to-play resentment and gives no direct evidence on how retail media sales staff behave. The persona's sales-side ...",
+   "Shelf literature: shoppers typically spend about 3-10 seconds per category in convenience, eye level and facings dominate noticing, and a single-facing side-shelf SKU has a very low notice probability. This is consistent with the journey's human-arm description of Coke Zero ...",
+   "research/02-issue-discovery.md line 242: Tesco says 80% of shoppers accept substitutions and 9 in 10 keep them. Combined with the Clubcard-history assistant, this supports the 'only the first basket is contestable' insight."
+  ],
+  "unrealistic_claims_flagged_by_skeptic": 11
+ },
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 13.2,
+   "reddit_inferred": 0.0,
+   "paper": 5.3,
+   "off_field": 0.0,
+   "sales_data": 0.0,
+   "staged_persona": 0.0,
+   "web_other": 7.6,
+   "internal_research": 11.0,
+   "assumption": 62.9
+  },
+  "headline": {
+   "reddit": 13.2,
+   "paper": 5.3,
+   "off_field": 0.0,
+   "assumption": 62.9,
+   "other (sales, staged, web, internal)": 18.6
+  },
+  "n_fields": 44,
+  "fields_by_primary_class": {
+   "paper": 4,
+   "reddit": 7,
+   "web_other": 2,
+   "assumption": 22,
+   "internal_research": 9
+  },
+  "pct_fields_with_any": {
+   "reddit": 15.9,
+   "paper": 9.1,
+   "web_other": 11.4,
+   "internal_research": 22.7,
+   "assumption": 77.3
+  },
+  "pct_fields_with_any_assumption": 77.3,
+  "lens_fields_measured_by_off_field": {
+   "n": 0,
+   "of": 0,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}
