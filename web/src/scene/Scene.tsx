@@ -33,7 +33,7 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
   const controls = useThree((s) => s.controls) as unknown as OrbitImpl | null;
   const goal = useRef<{ pos: THREE.Vector3; target: THREE.Vector3; until: number } | null>(null);
   const keys = useRef(new Set<string>());
-  const intro = useRef<{ t0: number; pos: THREE.CatmullRomCurve3; tgt: THREE.CatmullRomCurve3 } | null>(null);
+  const intro = useRef<{ t0: number; el: number; pos: THREE.CatmullRomCurve3; tgt: THREE.CatmullRomCurve3 } | null>(null);
   const shakeOff = useRef(new THREE.Vector3());
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
       const ax = gondolaX(cfg, 0.5 + Math.floor(cfg.aisles / 2));
       const [z0, z1] = zRange();
       intro.current = {
-        t0: performance.now(),
+        t0: performance.now(), el: 0,
         pos: new THREE.CatmullRomCurve3([
           new THREE.Vector3(B.cx + 3, 30, B.zMin - 26),
           new THREE.Vector3(B.cx + 1.2, 3.4, front - 8),
@@ -83,7 +83,8 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
     camera.position.sub(shakeOff.current); shakeOff.current.set(0, 0, 0);
     controls.enabled = mode !== 'intro';
     if (mode === 'intro' && intro.current) {
-      const k = Math.min(1, (performance.now() - intro.current.t0) / (INTRO_SECONDS * 1000));
+      intro.current.el += Math.min(dt, 1 / 30); // frame-accumulated, so a slow first frame can't skip the fly-through
+      const k = Math.min(1, intro.current.el / INTRO_SECONDS);
       const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
       camera.position.copy(intro.current.pos.getPoint(e));
       controls.target.copy(intro.current.tgt.getPoint(e));
@@ -91,10 +92,10 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
       if (k >= 1) { intro.current = null; onIntroDone(); }
     } else if (mode === 'follow' && bus.follow) {
       const f = bus.follow;
-      const tgt = new THREE.Vector3(f.x, 1.1, f.z);
-      const back = new THREE.Vector3(-Math.sin(f.heading), 0, -Math.cos(f.heading)).multiplyScalar(3.6);
-      const pos = tgt.clone().add(back).add(new THREE.Vector3(0, 2.1, 0));
-      camera.position.lerp(pos, 0.06); controls.target.lerp(tgt, 0.12); controls.update();
+      const tgt = new THREE.Vector3(f.x, 0.9, f.z);
+      const back = new THREE.Vector3(-Math.sin(f.heading), 0, -Math.cos(f.heading)).multiplyScalar(3.4);
+      const pos = tgt.clone().add(back).add(new THREE.Vector3(0, 4.6, 0));
+      camera.position.lerp(pos, 1 - Math.exp(-dt * 3.5)); controls.target.lerp(tgt, 1 - Math.exp(-dt * 7)); controls.update();
     } else {
       if (mode === 'walk' && keys.current.size) {
         const fwd = new THREE.Vector3().subVectors(controls.target, camera.position).setY(0).normalize();
@@ -109,7 +110,7 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
       }
       const g = goal.current;
       if (g) {
-        camera.position.lerp(g.pos, 0.08); controls.target.lerp(g.target, 0.1); controls.update();
+        camera.position.lerp(g.pos, 1 - Math.exp(-dt * 5)); controls.target.lerp(g.target, 1 - Math.exp(-dt * 6)); controls.update();
         if (performance.now() > g.until) goal.current = null;
       }
     }

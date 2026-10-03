@@ -98,7 +98,8 @@ SCOPE = {
     "ready_meals_soup": ("not_soup", "Sch.1 cat 13: ready meals; soups not listed (approximation: name contains 'soup' -> out of scope)"),
 }
 LIQUIDS = {"soft_drinks", "plant_milk_dairy_alt"}
-SUGAR_WORDS = ("sugar", "syrup", "dextrose", "glucose", "fructose", "sucrose", "honey", "agave", "molasses", "maltose", "treacle")
+SUGAR_WORDS = ("sugar", "syrup", "dextrose", "glucose", "fructose", "sucrose", "honey", "agave", "molasses", "maltose", "treacle",
+               "sukker", "sucre", "zucker", "azucar", "azúcar", "zucchero", "suiker", "socker")  # OFF text is sometimes non-English
 
 
 def rel(p):
@@ -174,7 +175,15 @@ def hfss(p, nut):
     in_scope = {"yes": True, "no": False, "added_sugar": added_sugar,
                 "not_soup": "soup" not in (p.get("name") or "").lower()}[rule]
     missing = [k for k, v in {"energy": kj, "sat_fat": sat, "sugars": sug, "salt": salt}.items() if v is None]
-    return {"hfss": bool(in_scope and less_healthy), "in_scope": in_scope, "scope_rule": why,
+    doubts = [f"missing {m}" for m in missing]
+    if cat in ("crisps_savoury",) and salt is not None and salt < 0.05:
+        doubts.append(f"implausible OFF salt_100g={salt} for a savoury snack (likely a data-entry error)")
+    if rule == "added_sugar" and not ing.strip():
+        doubts.append("no ingredients text to check for added sugar")
+    # compliance is conservative: an in-scope product whose HFSS status we cannot trust is barred too
+    barred = bool(in_scope and (less_healthy or doubts)) or (rule == "added_sugar" and not ing.strip() and less_healthy)
+    return {"hfss": bool(in_scope and less_healthy), "uncertain": doubts, "barred_from_restricted": barred,
+            "in_scope": in_scope, "scope_rule": why,
             "added_sugar_in_ingredients": added_sugar if rule == "added_sugar" else None,
             "npm_score": score, "threshold": 1 if liquid else 4, "A": A, "C": C,
             "inputs": {"kJ": round(kj, 1) if kj else kj, "sat_fat_g": sat, "sugars_g": sug, "sodium_mg": round(na, 1) if na else na,
@@ -493,7 +502,7 @@ def anneal(model, plan0, temp, *, objective_name, iters, seed, w_ease, w_ch, w_f
     units = [u["id"] for u in model.store["units"]]
     rows = model.rows
     plan = json.loads(json.dumps(plan0))
-    eligible = sorted(c for c in model.catalog if not model.hf[c]["hfss"] and c in model.S[pids[0]])
+    eligible = sorted(c for c in model.catalog if not model.hf[c]["barred_from_restricted"] and c in model.S[pids[0]])
     sites = [s["id"] for s in model.ec_sites][:n_endcaps]
     endcaps = {s: None for s in sites}
 
@@ -795,12 +804,15 @@ def endcap_report(model, plan, ec, pids):
         h = model.hf[c]
         top.append({"code": c, "name": model.catalog[c]["name"], "category": model.catalog[c]["category"],
                     "rev_gain_per_100_shoppers": round(v * 100, 3), "hfss": h["hfss"], "npm_score": h["npm_score"],
-                    "allowed_on_endcap": not h["hfss"],
+                    "allowed_on_endcap": not h["barred_from_restricted"],
                     "why": (f"HFSS (NPM {h['npm_score']} >= {h['threshold']}, {h['scope_rule']}) -> barred from aisle ends by SI 2021/1368"
-                            if h["hfss"] else f"not HFSS (NPM {h['npm_score']} vs threshold {h['threshold']}; in_scope={h['in_scope']})")})
+                            if h["hfss"] else
+                            f"in scope, NPM {h['npm_score']} but data doubtful ({'; '.join(h['uncertain'])}) -> barred conservatively"
+                            if h["barred_from_restricted"] else
+                            f"not HFSS (NPM {h['npm_score']} vs threshold {h['threshold']}; in_scope={h['in_scope']})")})
     return {"chosen": {s: (c and {"code": c, "name": model.catalog[c]["name"], "hfss": model.hf[c]["hfss"]}) for s, c in ec.items()},
             "top_candidates_single_endcap": top,
-            "held_back_by_regs": [t for t in top if t["hfss"]],
+            "held_back_by_regs": [t for t in top if not t["allowed_on_endcap"]],
             "note": "end-caps are secondary feature locations (product also stays in its home slot); not part of the CONTRACT planogram, rendered separately"}
 
 
@@ -868,12 +880,12 @@ def run(args):
         res1_noec = model.evaluate(plan1, {})
         m1 = agg(res1, pids)
         # compliance check on the final layout
-        violations = [{"endcap": s, "code": c, "name": catalog[c]["name"]} for s, c in ec1.items() if c and hf[c]["hfss"]]
+        violations = [{"endcap": s, "code": c, "name": catalog[c]["name"]} for s, c in ec1.items() if c and hf[c]["barred_from_restricted"]]
         rs = restricted_slots(store, plan1)
         for u in rs:
             for sid, s in plan1.items():
                 if sid.startswith(u + "-"):
-                    violations += [{"slot": sid, "code": c} for c in s["products"] if hf[c]["hfss"]]
+                    violations += [{"slot": sid, "code": c} for c in s["products"] if hf[c]["barred_from_restricted"]]
         cat_ok = all(len({catalog[c]["category"] for c in s["products"]}) <= 1 for s in plan1.values())
         unit_ok = all(len(cs) == 1 for cs in model.unit_cats(plan1).values())
         fridge_ok = all((chilled_class(model, catalog[c]["category"]) == temp[sid.split("-")[0]])
@@ -909,6 +921,7 @@ def run(args):
                                                   "slots_within_2m_of_entrance_or_checkout": rs},
                          "violations": violations, "compliant": not violations,
                          "hfss_products_in_catalog": sum(1 for h in hf.values() if h["hfss"]),
+                         "barred_products_in_catalog": sum(1 for h in hf.values() if h["barred_from_restricted"]),
                          "method": NPM}},
             "search": sa | {"wall_s": round(time.time() - t1, 1)},
             "model": {"formula": "E[value] = sum_k w_k sum_i P(visit unit(i) | route_k) * P(look | slot) * P(pick_up) * P(take) * price_i",
@@ -935,7 +948,7 @@ def run(args):
     meta = {"created": dt.datetime.now().isoformat(timespec="seconds"), "summary": summary, "runlog_check": chk,
             "jev_session": sc, "wall_s": round(time.time() - t0, 1),
             "cli": " ".join(sys.argv),
-            "hfss_table": {c: {"name": catalog[c]["name"], **{k: hf[c][k] for k in ("hfss", "in_scope", "npm_score", "threshold", "missing_fields")}}
+            "hfss_table": {c: {"name": catalog[c]["name"], **{k: hf[c][k] for k in ("hfss", "barred_from_restricted", "uncertain", "in_scope", "npm_score", "threshold", "A", "C", "inputs")}}
                            for c in catalog}}
     json.dump(meta, open(os.path.join(OUT_DIR, "summary.json"), "w"), indent=1)
     print(f"\njev session: {json.dumps(sc)}; wall {meta['wall_s']} s")

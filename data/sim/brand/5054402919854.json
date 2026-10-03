@@ -9,88 +9,88 @@
  "off_url": "https://world.openfoodfacts.org/product/5054402919854",
  "pack_copy": "Bourbon Creams · Tesco · 296g · vegan",
  "funnel": {
-  "shown": 237,
-  "looked": 147,
-  "picked_up": 92,
-  "put_back": 35,
-  "taken": 57,
+  "shown": 247,
+  "looked": 152,
+  "picked_up": 95,
+  "put_back": 36,
+  "taken": 59,
   "look": {
-   "k": 147,
-   "n": 237,
-   "rate": 0.6203,
+   "k": 152,
+   "n": 247,
+   "rate": 0.6154,
    "ci95": [
-    0.557,
-    0.6797
+    0.5534,
+    0.6738
    ]
   },
   "pick_up": {
-   "k": 92,
-   "n": 147,
-   "rate": 0.6259,
+   "k": 95,
+   "n": 152,
+   "rate": 0.625,
    "ci95": [
-    0.5454,
-    0.6999
+    0.5458,
+    0.698
    ]
   },
   "keep": {
-   "k": 57,
-   "n": 92,
-   "rate": 0.6196,
+   "k": 59,
+   "n": 95,
+   "rate": 0.6211,
    "ci95": [
-    0.5175,
+    0.5206,
     0.7121
    ]
   },
   "take": {
-   "k": 57,
-   "n": 237,
-   "rate": 0.2405,
+   "k": 59,
+   "n": 247,
+   "rate": 0.2389,
    "ci95": [
-    0.1905,
-    0.2988
+    0.1899,
+    0.2958
    ]
   }
  },
  "category_funnel": {
-  "shown": 2844,
-  "looked": 1664,
-  "picked_up": 672,
-  "put_back": 302,
-  "taken": 370,
+  "shown": 2964,
+  "looked": 1725,
+  "picked_up": 694,
+  "put_back": 309,
+  "taken": 385,
   "look": {
-   "k": 1664,
-   "n": 2844,
-   "rate": 0.5851,
+   "k": 1725,
+   "n": 2964,
+   "rate": 0.582,
    "ci95": [
-    0.5669,
-    0.6031
+    0.5641,
+    0.5996
    ]
   },
   "pick_up": {
-   "k": 672,
-   "n": 1664,
-   "rate": 0.4038,
+   "k": 694,
+   "n": 1725,
+   "rate": 0.4023,
    "ci95": [
-    0.3805,
-    0.4276
+    0.3794,
+    0.4257
    ]
   },
   "keep": {
-   "k": 370,
-   "n": 672,
-   "rate": 0.5506,
+   "k": 385,
+   "n": 694,
+   "rate": 0.5548,
    "ci95": [
-    0.5128,
-    0.5878
+    0.5176,
+    0.5913
    ]
   },
   "take": {
-   "k": 370,
-   "n": 2844,
-   "rate": 0.1301,
+   "k": 385,
+   "n": 2964,
+   "rate": 0.1299,
    "ci95": [
-    0.1182,
-    0.143
+    0.1183,
+    0.1425
    ]
   }
  },
@@ -98,9 +98,9 @@
  "diagnosis": {
   "stage": null,
   "ratios_vs_category": {
-   "look": 1.06,
-   "pick_up": 1.55,
-   "keep": 1.125
+   "look": 1.057,
+   "pick_up": 1.554,
+   "keep": 1.12
   },
   "strength": null,
   "text": "converts at or above the category average at every measurable stage",
@@ -109,41 +109,41 @@
  },
  "evidence": {
   "look": {
-   "mean_p_notice": 0.6169,
-   "category_mean_p_notice": 0.5778,
+   "mean_p_notice": 0.6158,
+   "category_mean_p_notice": 0.5765,
    "shelf_rows_seen": {
-    "top": 237
+    "top": 247
    },
    "mean_facings": 1.0,
    "mean_logit_terms": {
-    "alpha0": 1.0307,
+    "alpha0": 1.0305,
     "row": -0.349,
     "facings": 0.0,
     "centre": -0.096,
-    "mission": -0.1013,
-    "time": 0.0205,
-    "ocean": 0.002
+    "mission": -0.1036,
+    "time": 0.0204,
+    "ocean": 0.0003
    },
    "source": "event.p_notice and notice_factors.logit_terms (sim/notice.py; coefficients + sources in sim/coefficients.json)"
   },
   "pick_up": {
-   "mean_jev_p_pick_up": 0.3261,
-   "category_mean_jev_p_pick_up": 0.2667,
-   "mean_jev_appeal_score_0_4": 1.8869,
-   "category_mean_jev_appeal_score_0_4": 1.5351,
+   "mean_jev_p_pick_up": 0.3276,
+   "category_mean_jev_p_pick_up": 0.2658,
+   "mean_jev_appeal_score_0_4": 1.8834,
+   "category_mean_jev_appeal_score_0_4": 1.536,
    "feeling_of_those_who_walked_on": {
-    "dislikes": 19,
+    "dislikes": 20,
     "would actively avoid": 14,
-    "mildly drawn": 11,
+    "mildly drawn": 12,
     "indifferent": 8,
     "really wants it": 3
    },
    "source": "event.p_pick_up (Jev Noul 'Does shopper pick up products[i] to look at it more closely?') and event.jev.appeal.score (Jev Score, 5 levels), sim/jev.py"
   },
   "put_back": {
-   "n_put_back": 35,
+   "n_put_back": 36,
    "mechanisms": {
-    "health_goal": 9,
+    "health_goal": 10,
     "trust": 9,
     "price_anchor": 7,
     "mission_fit": 5,
@@ -152,7 +152,7 @@
    "top_triggers": [
     {
      "trigger": "palm oil in the ingredients (palm_oil_n > 0): put back, no compensating score",
-     "n_events": 9,
+     "n_events": 10,
      "mean_jev_p": 0.972,
      "personas": [
       "p_eco_low_chemical"
@@ -268,21 +268,21 @@
    "example_reasons": [
     {
      "persona": "p_eco_low_chemical",
+     "reason": "[jev] picked it up, put it back: sees 'palm oil in the ingredients (palm_oil_n > 0): put back, no compensating score' (p=0.97) — like \"I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it taste\"",
+     "run": "run_20261003_120714_s1_jev_6a07",
+     "agent": "a007"
+    },
+    {
+     "persona": "p_eco_low_chemical",
      "reason": "[jev] picked it up, put it back: sees 'palm oil in the ingredients (palm_oil_n > 0): put back, no compensating score' (p=0.98) — like \"I've recently switched to MS chocolate. It's only slightly more expensive than Cadbury these days and it taste\"",
-     "run": "run_20261003_120130_s3_jev_c554",
+     "run": "run_20261003_120819_s3_jev_3b76",
      "agent": "a002"
     },
     {
      "persona": "p_ai_delegator",
      "reason": "[jev] picked it up, put it back: appeal 'mildly drawn', price (p=0.49); P(take)=0.50, took Biscoff",
-     "run": "run_20261003_120130_s3_jev_c554",
+     "run": "run_20261003_120819_s3_jev_3b76",
      "agent": "a005"
-    },
-    {
-     "persona": "p_novelty_seeker_tiktok",
-     "reason": "[jev] picked it up, put it back: P(dislikes or avoids)=0.52, appeal 'dislikes', indifference (p=0.54)",
-     "run": "run_20261003_120130_s3_jev_c554",
-     "agent": "a009"
     }
    ],
    "budget_overrides": 0,
@@ -291,27 +291,27 @@
  },
  "by_archetype": {
   "ai_delegator": {
-   "shown": 26,
-   "looked": 23,
+   "shown": 27,
+   "looked": 24,
    "picked_up": 16,
    "put_back": 5,
    "taken": 11,
    "look": {
-    "k": 23,
-    "n": 26,
-    "rate": 0.8846,
+    "k": 24,
+    "n": 27,
+    "rate": 0.8889,
     "ci95": [
-     0.7102,
-     0.96
+     0.7194,
+     0.9615
     ]
    },
    "pick_up": {
     "k": 16,
-    "n": 23,
-    "rate": 0.6957,
+    "n": 24,
+    "rate": 0.6667,
     "ci95": [
-     0.4913,
-     0.844
+     0.4671,
+     0.8203
     ]
    },
    "keep": {
@@ -325,27 +325,27 @@
    },
    "take": {
     "k": 11,
-    "n": 26,
-    "rate": 0.4231,
+    "n": 27,
+    "rate": 0.4074,
     "ci95": [
-     0.2554,
-     0.6105
+     0.2451,
+     0.5927
     ]
    }
   },
   "allergen_coeliac": {
-   "shown": 26,
+   "shown": 27,
    "looked": 10,
    "picked_up": 3,
    "put_back": 3,
    "taken": 0,
    "look": {
     "k": 10,
-    "n": 26,
-    "rate": 0.3846,
+    "n": 27,
+    "rate": 0.3704,
     "ci95": [
-     0.2243,
-     0.5747
+     0.2153,
+     0.5577
     ]
    },
    "pick_up": {
@@ -368,97 +368,97 @@
    },
    "take": {
     "k": 0,
-    "n": 26,
+    "n": 27,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.1287
+     0.1246
     ]
    }
   },
   "eco_low_chemical": {
-   "shown": 26,
-   "looked": 19,
-   "picked_up": 11,
-   "put_back": 9,
+   "shown": 27,
+   "looked": 20,
+   "picked_up": 12,
+   "put_back": 10,
    "taken": 2,
    "look": {
-    "k": 19,
-    "n": 26,
-    "rate": 0.7308,
+    "k": 20,
+    "n": 27,
+    "rate": 0.7407,
     "ci95": [
-     0.5392,
-     0.863
+     0.5532,
+     0.8683
     ]
    },
    "pick_up": {
-    "k": 11,
-    "n": 19,
-    "rate": 0.5789,
+    "k": 12,
+    "n": 20,
+    "rate": 0.6,
     "ci95": [
-     0.3628,
-     0.7686
+     0.3866,
+     0.7812
     ]
    },
    "keep": {
     "k": 2,
-    "n": 11,
-    "rate": 0.1818,
+    "n": 12,
+    "rate": 0.1667,
     "ci95": [
-     0.0514,
-     0.477
+     0.047,
+     0.448
     ]
    },
    "take": {
     "k": 2,
-    "n": 26,
-    "rate": 0.0769,
+    "n": 27,
+    "rate": 0.0741,
     "ci95": [
-     0.0214,
-     0.2414
+     0.0206,
+     0.2337
     ]
    }
   },
   "frugal_unit_price": {
-   "shown": 25,
-   "looked": 17,
-   "picked_up": 17,
+   "shown": 26,
+   "looked": 18,
+   "picked_up": 18,
    "put_back": 0,
-   "taken": 17,
+   "taken": 18,
    "look": {
-    "k": 17,
-    "n": 25,
-    "rate": 0.68,
+    "k": 18,
+    "n": 26,
+    "rate": 0.6923,
     "ci95": [
-     0.4841,
-     0.828
+     0.5001,
+     0.835
     ]
    },
    "pick_up": {
-    "k": 17,
-    "n": 17,
+    "k": 18,
+    "n": 18,
     "rate": 1.0,
     "ci95": [
-     0.8157,
+     0.8241,
      1.0
     ]
    },
    "keep": {
-    "k": 17,
-    "n": 17,
+    "k": 18,
+    "n": 18,
     "rate": 1.0,
     "ci95": [
-     0.8157,
+     0.8241,
      1.0
     ]
    },
    "take": {
-    "k": 17,
-    "n": 25,
-    "rate": 0.68,
+    "k": 18,
+    "n": 26,
+    "rate": 0.6923,
     "ci95": [
-     0.4841,
-     0.828
+     0.5001,
+     0.835
     ]
    }
   },
@@ -506,18 +506,18 @@
    }
   },
   "habit_loyalist_shrinkflation_angry": {
-   "shown": 26,
+   "shown": 27,
    "looked": 10,
    "picked_up": 7,
    "put_back": 1,
    "taken": 6,
    "look": {
     "k": 10,
-    "n": 26,
-    "rate": 0.3846,
+    "n": 27,
+    "rate": 0.3704,
     "ci95": [
-     0.2243,
-     0.5747
+     0.2153,
+     0.5577
     ]
    },
    "pick_up": {
@@ -540,11 +540,11 @@
    },
    "take": {
     "k": 6,
-    "n": 26,
-    "rate": 0.2308,
+    "n": 27,
+    "rate": 0.2222,
     "ci95": [
-     0.1103,
-     0.4205
+     0.1061,
+     0.4076
     ]
    }
   },
@@ -592,27 +592,27 @@
    }
   },
   "novelty_seeker_tiktok": {
-   "shown": 26,
-   "looked": 19,
+   "shown": 27,
+   "looked": 20,
    "picked_up": 6,
    "put_back": 6,
    "taken": 0,
    "look": {
-    "k": 19,
-    "n": 26,
-    "rate": 0.7308,
+    "k": 20,
+    "n": 27,
+    "rate": 0.7407,
     "ci95": [
-     0.5392,
-     0.863
+     0.5532,
+     0.8683
     ]
    },
    "pick_up": {
     "k": 6,
-    "n": 19,
-    "rate": 0.3158,
+    "n": 20,
+    "rate": 0.3,
     "ci95": [
-     0.1536,
-     0.5399
+     0.1455,
+     0.519
     ]
    },
    "keep": {
@@ -626,27 +626,27 @@
    },
    "take": {
     "k": 0,
-    "n": 26,
+    "n": 27,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.1287
+     0.1246
     ]
    }
   },
   "protein_gym": {
-   "shown": 10,
+   "shown": 11,
    "looked": 8,
    "picked_up": 0,
    "put_back": 0,
    "taken": 0,
    "look": {
     "k": 8,
-    "n": 10,
-    "rate": 0.8,
+    "n": 11,
+    "rate": 0.7273,
     "ci95": [
-     0.4902,
-     0.9433
+     0.4343,
+     0.9025
     ]
    },
    "pick_up": {
@@ -669,27 +669,27 @@
    },
    "take": {
     "k": 0,
-    "n": 10,
+    "n": 11,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.2775
+     0.2588
     ]
    }
   },
   "protein_sceptic_gimmick_reactant": {
-   "shown": 26,
+   "shown": 27,
    "looked": 15,
    "picked_up": 14,
    "put_back": 1,
    "taken": 13,
    "look": {
     "k": 15,
-    "n": 26,
-    "rate": 0.5769,
+    "n": 27,
+    "rate": 0.5556,
     "ci95": [
-     0.3895,
-     0.7446
+     0.3731,
+     0.7241
     ]
    },
    "pick_up": {
@@ -712,27 +712,27 @@
    },
    "take": {
     "k": 13,
-    "n": 26,
-    "rate": 0.5,
+    "n": 27,
+    "rate": 0.4815,
     "ci95": [
-     0.3206,
-     0.6794
+     0.3074,
+     0.6601
     ]
    }
   },
   "upf_avoider_parent": {
-   "shown": 9,
+   "shown": 10,
    "looked": 1,
    "picked_up": 0,
    "put_back": 0,
    "taken": 0,
    "look": {
     "k": 1,
-    "n": 9,
-    "rate": 0.1111,
+    "n": 10,
+    "rate": 0.1,
     "ci95": [
-     0.0199,
-     0.435
+     0.0179,
+     0.4042
     ]
    },
    "pick_up": {
@@ -755,210 +755,210 @@
    },
    "take": {
     "k": 0,
-    "n": 9,
+    "n": 10,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.2992
+     0.2775
     ]
    }
   },
   "vegan_ethical": {
-   "shown": 26,
-   "looked": 19,
-   "picked_up": 17,
+   "shown": 27,
+   "looked": 20,
+   "picked_up": 18,
    "put_back": 9,
-   "taken": 8,
+   "taken": 9,
    "look": {
-    "k": 19,
-    "n": 26,
-    "rate": 0.7308,
+    "k": 20,
+    "n": 27,
+    "rate": 0.7407,
     "ci95": [
-     0.5392,
-     0.863
+     0.5532,
+     0.8683
     ]
    },
    "pick_up": {
-    "k": 17,
-    "n": 19,
-    "rate": 0.8947,
+    "k": 18,
+    "n": 20,
+    "rate": 0.9,
     "ci95": [
-     0.6861,
-     0.9706
+     0.699,
+     0.9721
     ]
    },
    "keep": {
-    "k": 8,
-    "n": 17,
-    "rate": 0.4706,
+    "k": 9,
+    "n": 18,
+    "rate": 0.5,
     "ci95": [
-     0.2616,
-     0.6904
+     0.2903,
+     0.7097
     ]
    },
    "take": {
-    "k": 8,
-    "n": 26,
-    "rate": 0.3077,
+    "k": 9,
+    "n": 27,
+    "rate": 0.3333,
     "ci95": [
-     0.165,
-     0.4999
+     0.1864,
+     0.5218
     ]
    }
   }
  },
  "by_ocean_segment": {
   "A_high": {
-   "shown": 135,
-   "looked": 87,
-   "picked_up": 51,
-   "put_back": 32,
-   "taken": 19,
+   "shown": 141,
+   "looked": 91,
+   "picked_up": 53,
+   "put_back": 33,
+   "taken": 20,
    "look": {
-    "k": 87,
-    "n": 135,
-    "rate": 0.6444,
+    "k": 91,
+    "n": 141,
+    "rate": 0.6454,
     "ci95": [
-     0.5607,
-     0.7202
+     0.5635,
+     0.7195
     ]
    },
    "pick_up": {
-    "k": 51,
-    "n": 87,
-    "rate": 0.5862,
+    "k": 53,
+    "n": 91,
+    "rate": 0.5824,
     "ci95": [
-     0.4812,
-     0.6839
+     0.4798,
+     0.6784
     ]
    },
    "keep": {
-    "k": 19,
-    "n": 51,
-    "rate": 0.3725,
+    "k": 20,
+    "n": 53,
+    "rate": 0.3774,
     "ci95": [
-     0.2532,
-     0.5098
+     0.2594,
+     0.5119
     ]
    },
    "take": {
-    "k": 19,
-    "n": 135,
-    "rate": 0.1407,
+    "k": 20,
+    "n": 141,
+    "rate": 0.1418,
     "ci95": [
-     0.092,
-     0.2094
+     0.0937,
+     0.209
     ]
    }
   },
   "A_low": {
-   "shown": 102,
-   "looked": 60,
-   "picked_up": 41,
+   "shown": 106,
+   "looked": 61,
+   "picked_up": 42,
    "put_back": 3,
-   "taken": 38,
+   "taken": 39,
    "look": {
-    "k": 60,
-    "n": 102,
-    "rate": 0.5882,
+    "k": 61,
+    "n": 106,
+    "rate": 0.5755,
     "ci95": [
-     0.4912,
-     0.6788
+     0.4804,
+     0.6653
     ]
    },
    "pick_up": {
-    "k": 41,
-    "n": 60,
-    "rate": 0.6833,
+    "k": 42,
+    "n": 61,
+    "rate": 0.6885,
     "ci95": [
-     0.5577,
-     0.7869
+     0.5641,
+     0.7906
     ]
    },
    "keep": {
-    "k": 38,
-    "n": 41,
-    "rate": 0.9268,
+    "k": 39,
+    "n": 42,
+    "rate": 0.9286,
     "ci95": [
-     0.8057,
-     0.9748
+     0.8099,
+     0.9754
     ]
    },
    "take": {
-    "k": 38,
-    "n": 102,
-    "rate": 0.3725,
+    "k": 39,
+    "n": 106,
+    "rate": 0.3679,
     "ci95": [
-     0.2849,
-     0.4694
+     0.2822,
+     0.4628
     ]
    }
   },
   "C_high": {
-   "shown": 171,
-   "looked": 93,
-   "picked_up": 63,
-   "put_back": 23,
-   "taken": 40,
+   "shown": 179,
+   "looked": 96,
+   "picked_up": 66,
+   "put_back": 24,
+   "taken": 42,
    "look": {
-    "k": 93,
-    "n": 171,
-    "rate": 0.5439,
+    "k": 96,
+    "n": 179,
+    "rate": 0.5363,
     "ci95": [
-     0.4691,
-     0.6167
+     0.4633,
+     0.6078
     ]
    },
    "pick_up": {
-    "k": 63,
-    "n": 93,
-    "rate": 0.6774,
+    "k": 66,
+    "n": 96,
+    "rate": 0.6875,
     "ci95": [
-     0.577,
-     0.7638
+     0.5891,
+     0.7715
     ]
    },
    "keep": {
-    "k": 40,
-    "n": 63,
-    "rate": 0.6349,
+    "k": 42,
+    "n": 66,
+    "rate": 0.6364,
     "ci95": [
-     0.5115,
-     0.7428
+     0.5158,
+     0.7419
     ]
    },
    "take": {
-    "k": 40,
-    "n": 171,
-    "rate": 0.2339,
+    "k": 42,
+    "n": 179,
+    "rate": 0.2346,
     "ci95": [
-     0.1767,
-     0.3028
+     0.1785,
+     0.3019
     ]
    }
   },
   "C_low": {
-   "shown": 66,
-   "looked": 54,
+   "shown": 68,
+   "looked": 56,
    "picked_up": 29,
    "put_back": 12,
    "taken": 17,
    "look": {
-    "k": 54,
-    "n": 66,
-    "rate": 0.8182,
+    "k": 56,
+    "n": 68,
+    "rate": 0.8235,
     "ci95": [
-     0.7085,
-     0.8928
+     0.7164,
+     0.8961
     ]
    },
    "pick_up": {
     "k": 29,
-    "n": 54,
-    "rate": 0.537,
+    "n": 56,
+    "rate": 0.5179,
     "ci95": [
-     0.4061,
-     0.6631
+     0.3901,
+     0.6433
     ]
    },
    "keep": {
@@ -972,36 +972,36 @@
    },
    "take": {
     "k": 17,
-    "n": 66,
-    "rate": 0.2576,
+    "n": 68,
+    "rate": 0.25,
     "ci95": [
-     0.1675,
-     0.3743
+     0.1623,
+     0.3644
     ]
    }
   },
   "E_high": {
-   "shown": 108,
-   "looked": 71,
+   "shown": 114,
+   "looked": 73,
    "picked_up": 37,
    "put_back": 13,
    "taken": 24,
    "look": {
-    "k": 71,
-    "n": 108,
-    "rate": 0.6574,
+    "k": 73,
+    "n": 114,
+    "rate": 0.6404,
     "ci95": [
-     0.5639,
-     0.7401
+     0.549,
+     0.7225
     ]
    },
    "pick_up": {
     "k": 37,
-    "n": 71,
-    "rate": 0.5211,
+    "n": 73,
+    "rate": 0.5068,
     "ci95": [
-     0.4069,
-     0.6332
+     0.3947,
+     0.6183
     ]
    },
    "keep": {
@@ -1015,232 +1015,232 @@
    },
    "take": {
     "k": 24,
-    "n": 108,
-    "rate": 0.2222,
+    "n": 114,
+    "rate": 0.2105,
     "ci95": [
-     0.1541,
-     0.3094
+     0.1458,
+     0.2942
     ]
    }
   },
   "E_low": {
-   "shown": 129,
-   "looked": 76,
-   "picked_up": 55,
-   "put_back": 22,
-   "taken": 33,
+   "shown": 133,
+   "looked": 79,
+   "picked_up": 58,
+   "put_back": 23,
+   "taken": 35,
    "look": {
-    "k": 76,
-    "n": 129,
-    "rate": 0.5891,
+    "k": 79,
+    "n": 133,
+    "rate": 0.594,
     "ci95": [
-     0.5029,
-     0.6703
+     0.509,
+     0.6737
     ]
    },
    "pick_up": {
-    "k": 55,
-    "n": 76,
-    "rate": 0.7237,
+    "k": 58,
+    "n": 79,
+    "rate": 0.7342,
     "ci95": [
-     0.6142,
-     0.8116
+     0.6276,
+     0.8191
     ]
    },
    "keep": {
-    "k": 33,
-    "n": 55,
-    "rate": 0.6,
+    "k": 35,
+    "n": 58,
+    "rate": 0.6034,
     "ci95": [
-     0.4681,
-     0.7188
+     0.4749,
+     0.7191
     ]
    },
    "take": {
-    "k": 33,
-    "n": 129,
-    "rate": 0.2558,
+    "k": 35,
+    "n": 133,
+    "rate": 0.2632,
     "ci95": [
-     0.1883,
-     0.3374
+     0.1957,
+     0.3439
     ]
    }
   },
   "N_high": {
-   "shown": 139,
-   "looked": 82,
-   "picked_up": 55,
+   "shown": 144,
+   "looked": 84,
+   "picked_up": 57,
    "put_back": 24,
-   "taken": 31,
+   "taken": 33,
    "look": {
-    "k": 82,
-    "n": 139,
-    "rate": 0.5899,
+    "k": 84,
+    "n": 144,
+    "rate": 0.5833,
     "ci95": [
-     0.5068,
-     0.6682
+     0.5017,
+     0.6607
     ]
    },
    "pick_up": {
-    "k": 55,
-    "n": 82,
-    "rate": 0.6707,
+    "k": 57,
+    "n": 84,
+    "rate": 0.6786,
     "ci95": [
-     0.5634,
-     0.7628
+     0.5728,
+     0.7687
     ]
    },
    "keep": {
-    "k": 31,
-    "n": 55,
-    "rate": 0.5636,
+    "k": 33,
+    "n": 57,
+    "rate": 0.5789,
     "ci95": [
-     0.4327,
-     0.6863
+     0.4498,
+     0.6981
     ]
    },
    "take": {
-    "k": 31,
-    "n": 139,
-    "rate": 0.223,
+    "k": 33,
+    "n": 144,
+    "rate": 0.2292,
     "ci95": [
-     0.1618,
-     0.2991
+     0.1681,
+     0.3043
     ]
    }
   },
   "N_low": {
-   "shown": 98,
-   "looked": 65,
-   "picked_up": 37,
-   "put_back": 11,
+   "shown": 103,
+   "looked": 68,
+   "picked_up": 38,
+   "put_back": 12,
    "taken": 26,
    "look": {
-    "k": 65,
-    "n": 98,
-    "rate": 0.6633,
+    "k": 68,
+    "n": 103,
+    "rate": 0.6602,
     "ci95": [
-     0.5651,
-     0.7491
+     0.5644,
+     0.7444
     ]
    },
    "pick_up": {
-    "k": 37,
-    "n": 65,
-    "rate": 0.5692,
+    "k": 38,
+    "n": 68,
+    "rate": 0.5588,
     "ci95": [
-     0.4483,
-     0.6824
+     0.4408,
+     0.6705
     ]
    },
    "keep": {
     "k": 26,
-    "n": 37,
-    "rate": 0.7027,
+    "n": 38,
+    "rate": 0.6842,
     "ci95": [
-     0.5422,
-     0.8251
+     0.5254,
+     0.8092
     ]
    },
    "take": {
     "k": 26,
-    "n": 98,
-    "rate": 0.2653,
+    "n": 103,
+    "rate": 0.2524,
     "ci95": [
-     0.188,
-     0.3604
+     0.1785,
+     0.3442
     ]
    }
   },
   "O_high": {
-   "shown": 127,
-   "looked": 90,
-   "picked_up": 56,
-   "put_back": 29,
-   "taken": 27,
+   "shown": 131,
+   "looked": 94,
+   "picked_up": 58,
+   "put_back": 30,
+   "taken": 28,
    "look": {
-    "k": 90,
-    "n": 127,
-    "rate": 0.7087,
+    "k": 94,
+    "n": 131,
+    "rate": 0.7176,
     "ci95": [
-     0.6244,
-     0.7806
+     0.6351,
+     0.7876
     ]
    },
    "pick_up": {
-    "k": 56,
-    "n": 90,
-    "rate": 0.6222,
+    "k": 58,
+    "n": 94,
+    "rate": 0.617,
     "ci95": [
-     0.519,
-     0.7154
+     0.516,
+     0.7089
     ]
    },
    "keep": {
-    "k": 27,
-    "n": 56,
-    "rate": 0.4821,
+    "k": 28,
+    "n": 58,
+    "rate": 0.4828,
     "ci95": [
-     0.3567,
-     0.6099
+     0.3593,
+     0.6084
     ]
    },
    "take": {
-    "k": 27,
-    "n": 127,
-    "rate": 0.2126,
+    "k": 28,
+    "n": 131,
+    "rate": 0.2137,
     "ci95": [
-     0.1504,
+     0.1522,
      0.2916
     ]
    }
   },
   "O_low": {
-   "shown": 110,
-   "looked": 57,
-   "picked_up": 36,
+   "shown": 116,
+   "looked": 58,
+   "picked_up": 37,
    "put_back": 6,
-   "taken": 30,
+   "taken": 31,
    "look": {
-    "k": 57,
-    "n": 110,
-    "rate": 0.5182,
+    "k": 58,
+    "n": 116,
+    "rate": 0.5,
     "ci95": [
-     0.4258,
-     0.6094
+     0.4105,
+     0.5895
     ]
    },
    "pick_up": {
-    "k": 36,
-    "n": 57,
-    "rate": 0.6316,
+    "k": 37,
+    "n": 58,
+    "rate": 0.6379,
     "ci95": [
-     0.5018,
-     0.7448
+     0.5093,
+     0.7495
     ]
    },
    "keep": {
-    "k": 30,
-    "n": 36,
-    "rate": 0.8333,
+    "k": 31,
+    "n": 37,
+    "rate": 0.8378,
     "ci95": [
-     0.6811,
-     0.9213
+     0.6886,
+     0.9235
     ]
    },
    "take": {
-    "k": 30,
-    "n": 110,
-    "rate": 0.2727,
+    "k": 31,
+    "n": 116,
+    "rate": 0.2672,
     "ci95": [
-     0.1982,
-     0.3626
+     0.1951,
+     0.3543
     ]
    }
   }
  },
  "benchmark": {
-  "sim_take_rank_in_category": 1,
+  "sim_take_rank_in_category": 2,
   "sim_ranked_products": 12,
   "sim_rank_rule": "rank by take rate among category products shown >= 3 times in these runs",
   "nielseniq": [],
@@ -1250,15 +1250,17 @@
  "ai_agent_arm_note": "share of Jev AI-agent feed runs (data/sim/runs/agent_*.json) that picked it; position-shuffled feed",
  "trace": {
   "runs": [
-   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
-   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+   "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+   "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+   "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
   ],
   "all_runs_read": [
-   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
-   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+   "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+   "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+   "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
   ],
   "stage_method": {
-   "stage_reached": 237
+   "stage_reached": 247
   },
   "ci": "Wilson score interval, z=1.96 (Wilson 1927, JASA 22:209)",
   "definitions": {

@@ -78,8 +78,10 @@ function stackLocal(c: Carrier, n: number, h: number, out: THREE.Matrix4) {
 }
 
 interface Flight { body: RigidBody; born: number }
-interface Sticker { key: string; si: number; beat: Beat; x: number; z: number }
+interface Sticker { key: string; si: number; beat: Beat; x: number; z: number; near: boolean }
 interface Bonk { id: number; x: number; y: number; z: number; word: string }
+/** robots are a bit smaller than people so a 240-agent ai arm doesn't bury the humans */
+const AI_SCALE = 0.8;
 const BONK_WORDS = ['bonk!', 'oof!', 'boing!', 'sorry!', 'bump!', 'whoops!'];
 
 export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, products, selectedAgent, onAgent, onEvent, thoughts, speed }: Props) {
@@ -111,7 +113,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       body.setEnabledTranslations(true, false, true, false);
       body.setEnabledRotations(false, true, false, false);
       const col = world.createCollider(
-        (s.ai ? R.ColliderDesc.cuboid(0.31, 0.46, 0.25) : R.ColliderDesc.capsule(0.3, BODY.r)).setDensity(220).setFriction(0.1).setRestitution(0.4),
+        (s.ai ? R.ColliderDesc.cuboid(0.31 * AI_SCALE, 0.46 * AI_SCALE, 0.25 * AI_SCALE) : R.ColliderDesc.capsule(0.3, BODY.r)).setDensity(220).setFriction(0.1).setRestitution(0.4),
         body,
       );
       owner.set(col.handle, s.si);
@@ -394,7 +396,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       // squash & stretch + hop stretch
       const st = s.sq + hop * 0.35;
       tmpE.set(lean, yaw + wiggle * 0.6, roll, 'YXZ'); tmpQ.setFromEuler(tmpE);
-      R.compose(tmpV.set(p.x, hop, p.z), tmpQ, tmpS.set(1 - st * 0.55, 1 + st, 1 - st * 0.55));
+      const sc = s.ai ? AI_SCALE : 1;
+      R.compose(tmpV.set(p.x, hop, p.z), tmpQ, tmpS.set((1 - st * 0.55) * sc, (1 + st) * sc, (1 - st * 0.55) * sc));
       // smooth arms
       const ka = 1 - Math.exp(-dt * 14);
       s.armR[0] += (thR - s.armR[0]) * ka; s.armR[1] += (phR - s.armR[1]) * ka;
@@ -558,7 +561,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           if (s.ai && b.kind !== 'pick') continue;
           if (b.kind === 'pick' && t < b.tLaunch) continue;
           if (b.kind === 'reject' && t < b.tGrab + 0.25 * (b.t1 - b.t0)) continue;
-          out.push({ key: `${s.si}-${b.id}`, si: s.si, beat: b, x: s.pos.x, z: s.pos.z });
+          const near = state.camera.position.distanceTo(tmpV.set(s.pos.x, 1.8, s.pos.z)) < 15 || b.agentId === selectedAgent;
+          out.push({ key: `${s.si}-${b.id}-${near ? 'n' : 'f'}`, si: s.si, beat: b, x: s.pos.x, z: s.pos.z, near });
         }
       }
       const key = out.map((o) => o.key).join('|');
@@ -587,12 +591,12 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         const b = o.beat;
         const d = DECISION[b.kind === 'pick' ? 'pick' : b.kind === 'reject' ? 'reject' : 'walk_past'];
         const s = shoppers[o.si];
-        const showWords = b.reason && (thoughts === 'all' || (thoughts === 'selected' && b.agentId === selectedAgent));
+        const showWords = o.near && b.reason && (thoughts === 'all' || (thoughts === 'selected' && b.agentId === selectedAgent));
         const prod = products[b.code];
         const label = s.ai && b.kind === 'pick' ? 'added to cart' : b.kind === 'pick' ? 'picked!' : b.kind === 'reject' ? 'nope' : 'walked past';
         return (
-          <Html key={o.key} position={[o.x, b.kind === 'pick' ? 2.15 : 1.95, o.z]} center distanceFactor={11} zIndexRange={[20, 0]}>
-            <div className={`float-stack kind-${b.kind}`} onClick={() => onEvent(b.agentId, b.step)}>
+          <Html key={o.key} position={[o.x, b.kind === 'pick' ? 2.0 : 1.85, o.z]} center zIndexRange={[20, 0]} style={{ transform: 'translateY(-50%)' }}>
+            <div className={`float-stack kind-${b.kind} ${o.near ? 'is-near' : 'is-far'}`} onClick={() => onEvent(b.agentId, b.step)}>
               {showWords && b.kind === 'reject' && (
                 <div className={`speech ${b.agentId === selectedAgent ? 'is-sel' : ''}`}>
                   <span className="thought-prod">{prod ? prod.brand : b.code}</span>
@@ -606,14 +610,14 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
                 </div>
               )}
               <div className={`sticker pop ${b.kind === 'pick' ? 'sticker-good' : b.kind === 'reject' ? 'sticker-bad' : 'sticker-small'}`} style={{ ['--stk' as string]: d.color }}>
-                <span aria-hidden>{b.kind === 'glance' ? '👀' : d.emoji}</span> {label}
+                <span aria-hidden>{b.kind === 'glance' ? '👀' : d.emoji}</span>{o.near && <> {label}</>}
               </div>
             </div>
           </Html>
         );
       })}
       {bonks.map((k) => (
-        <Html key={k.id} position={[k.x, k.y, k.z]} center distanceFactor={10} zIndexRange={[30, 20]}>
+        <Html key={k.id} position={[k.x, k.y, k.z]} center zIndexRange={[30, 20]}>
           <div className="bonk" aria-hidden>💥 {k.word}</div>
         </Html>
       ))}

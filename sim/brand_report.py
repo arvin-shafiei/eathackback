@@ -176,7 +176,11 @@ def trigger_evidence(rs):
     agg = {}
     for r in rs:
         e = r["e"]
-        for k, v in ((e.get("jev") or {}).get("nouls") or {}).items():
+        jv = e.get("jev") or {}
+        # older logs: nouls = {key: {text, p, source}}; newer logs: nouls = {key: p} + nouls_fired = {key: {text, p, source}}
+        nouls = {k: v for k, v in (jv.get("nouls") or {}).items() if isinstance(v, dict)}
+        nouls.update({k: v for k, v in (jv.get("nouls_fired") or {}).items() if isinstance(v, dict)})
+        for k, v in nouls.items():
             if not k.startswith("trigger") or float(v.get("p", 0)) <= NOUL_FIRES:
                 continue
             a = agg.setdefault(v["text"], {"trigger": v["text"], "n_events": 0, "ps": [], "personas": set(),

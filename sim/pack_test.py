@@ -58,7 +58,13 @@ PERSONA_WEIGHT_NOTE = ("assumption: equal weight per lens archetype; population_
 ADDED_SUGAR_RE = re.compile(
     r"\b(sugar|cane sugar|brown sugar|syrup|honey|dextrose|glucose|fructose|sucrose|maltose|lactose added|molasses|"
     r"treacle|agave|nectar|maltodextrin|invert|caramelised sugar|juices?|concentrate|"
-    r"date paste|dates?|coconut blossom)\b", re.I)  # conservative: ANY juice or dates excludes the claim
+    r"date paste|dates?|coconut blossom|condensed milk|malt extract|malted|apple extract|fruit extract|pur[eé]e)\b"
+    # stems without a trailing word boundary: catches 'maltodextrine', 'glucose-fructose', and non-English OFF text
+    # (catalog ingredients_text is sometimes Danish/French/German: 'sukker', 'sucre', 'Zucker', 'maltée')
+    r"|maltodextrin|sukker|socker|sokeri|sucre|zucker|az[uú]car|zucchero|suiker|cukier|a[cç][uú]car|sirop|sirup|"
+    r"jarabe|honig|\bmiel\b|malt[ée]e|gerstenmalz|dextrose|glucos|fructos", re.I)  # conservative: ANY hit excludes
+# OCR-garbled OFF ingredient text (nutrition-table fragments leaked in) cannot prove an absence -> no NAS claim.
+GARBLED_RE = re.compile(r"energy\s*\(k|\bkj\b|\bkcal\b", re.I)
 
 
 # ---------------------------------------------------------------- 1. claims (code, never Jev)
@@ -107,7 +113,7 @@ def eligible_claims(p: dict) -> list[dict]:
         elif sug <= lim:
             add("low_sugar", "low sugar", "nutrition", ev, f"LOW SUGARS: <= {lim:g} g/{'100ml' if liquid else '100g'}")
     ing = (p.get("ingredients_text") or "").strip()
-    if ing and not ADDED_SUGAR_RE.search(ing):
+    if ing and not ADDED_SUGAR_RE.search(ing) and not GARBLED_RE.search(ing):
         txt = "no added sugar" + (" (contains naturally occurring sugars)" if (sug or 0) > 0.5 else "")
         add("no_added_sugar", txt, "nutrition", f"OFF ingredients_text has no added sugar/syrup/honey etc.: '{ing[:90]}...'",
             "NO ADDED SUGARS: no mono-/disaccharides or sweetening food added; must add 'contains naturally occurring "

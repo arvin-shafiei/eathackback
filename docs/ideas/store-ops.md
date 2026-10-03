@@ -13,3 +13,8 @@
    - Spawn spacing and route spreading so shoppers don't clump.
 
 Every parameter (scan seconds per item, payment time, footfall by hour, OOS rates, spill frequency, lead times) carries a source or a labelled assumption: rule zero.
+
+## added 3 Oct (team): the ENGINE MUST ALSO model these
+5. **Café zone:** a seating area (N tables × seats from config; add it to `store_xl.config.json` if missing, with a `cafe` object containing a counter and a seats list). A share of shoppers (more mid-morning and afternoon) visit the café, buy a food/drink item from a small café menu (use real OFF products from the pastries, sandwiches and hot-drinks categories, with prices labelled), and sit for a dwell time sourced or labelled as an assumption. Seats are a capacity-limited resource: if none are free, the shopper waits or leaves. Report café occupancy by hour, turnaway and revenue.
+6. **Security / shoplifting:** a small, sourced share of shoppers (BRC Crime Survey 2025/26 / ONS shoplifting stats, or a labelled assumption) attempt theft, either by leaving with unscanned items or by self-checkout skip-scanning (sourced rate if found). EAS gates at the exits detect tagged items with a sourced or assumed detection rate, the alarm fires (event `alarm` with position/time for the 3D "beep beep beep"), and a guard agent responds (response time). Report shrink £, incidents/hour, detection rate, and guard utilisation.
+7. **Checkout theatre events for the 3D replay:** per shopper at checkout, emit `unload` (items onto the belt), `scan` (one event per item with timestamp, at the staffed or self scanner), `bag` and `pay`, so the frontend can animate the conveyor and scanner beeps item by item.

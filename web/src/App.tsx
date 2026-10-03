@@ -51,7 +51,7 @@ export default function App() {
   const [fontsReady, setFontsReady] = useState(false);
 
   const [mode, setMode] = useState<Mode>('replay');
-  const [arm, setArm] = useState<Arm>('both');
+  const [arm, setArm] = useState<Arm>(() => { const a = new URLSearchParams(location.search).get('arm'); return a === 'human' || a === 'ai' ? a : 'both'; });
   const [panel, setPanel] = useState<Panel>(null);
   const [playing, setPlaying] = useState(true);
   const [speed, setSpeed] = useState(2);

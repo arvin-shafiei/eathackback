@@ -9,88 +9,88 @@
  "off_url": "https://world.openfoodfacts.org/product/5059697710001",
  "pack_copy": "Dark milk chocolate · Tesco · 100g · rainforest alliance cocoa",
  "funnel": {
-  "shown": 237,
-  "looked": 170,
-  "picked_up": 86,
+  "shown": 247,
+  "looked": 178,
+  "picked_up": 91,
   "put_back": 30,
-  "taken": 56,
+  "taken": 61,
   "look": {
-   "k": 170,
-   "n": 237,
-   "rate": 0.7173,
+   "k": 178,
+   "n": 247,
+   "rate": 0.7206,
    "ci95": [
-    0.6569,
-    0.7708
+    0.6616,
+    0.7729
    ]
   },
   "pick_up": {
-   "k": 86,
-   "n": 170,
-   "rate": 0.5059,
+   "k": 91,
+   "n": 178,
+   "rate": 0.5112,
    "ci95": [
-    0.4314,
-    0.5801
+    0.4383,
+    0.5837
    ]
   },
   "keep": {
-   "k": 56,
-   "n": 86,
-   "rate": 0.6512,
+   "k": 61,
+   "n": 91,
+   "rate": 0.6703,
    "ci95": [
-    0.5459,
-    0.7435
+    0.5686,
+    0.7583
    ]
   },
   "take": {
-   "k": 56,
-   "n": 237,
-   "rate": 0.2363,
+   "k": 61,
+   "n": 247,
+   "rate": 0.247,
    "ci95": [
-    0.1867,
-    0.2943
+    0.1973,
+    0.3043
    ]
   }
  },
  "category_funnel": {
-  "shown": 2844,
-  "looked": 1664,
-  "picked_up": 672,
-  "put_back": 302,
-  "taken": 370,
+  "shown": 2964,
+  "looked": 1725,
+  "picked_up": 694,
+  "put_back": 309,
+  "taken": 385,
   "look": {
-   "k": 1664,
-   "n": 2844,
-   "rate": 0.5851,
+   "k": 1725,
+   "n": 2964,
+   "rate": 0.582,
    "ci95": [
-    0.5669,
-    0.6031
+    0.5641,
+    0.5996
    ]
   },
   "pick_up": {
-   "k": 672,
-   "n": 1664,
-   "rate": 0.4038,
+   "k": 694,
+   "n": 1725,
+   "rate": 0.4023,
    "ci95": [
-    0.3805,
-    0.4276
+    0.3794,
+    0.4257
    ]
   },
   "keep": {
-   "k": 370,
-   "n": 672,
-   "rate": 0.5506,
+   "k": 385,
+   "n": 694,
+   "rate": 0.5548,
    "ci95": [
-    0.5128,
-    0.5878
+    0.5176,
+    0.5913
    ]
   },
   "take": {
-   "k": 370,
-   "n": 2844,
-   "rate": 0.1301,
+   "k": 385,
+   "n": 2964,
+   "rate": 0.1299,
    "ci95": [
-    0.1182,
-    0.143
+    0.1183,
+    0.1425
    ]
   }
  },
@@ -98,9 +98,9 @@
  "diagnosis": {
   "stage": null,
   "ratios_vs_category": {
-   "look": 1.226,
-   "pick_up": 1.253,
-   "keep": 1.183
+   "look": 1.238,
+   "pick_up": 1.271,
+   "keep": 1.208
   },
   "strength": null,
   "text": "converts at or above the category average at every measurable stage",
@@ -109,33 +109,33 @@
  },
  "evidence": {
   "look": {
-   "mean_p_notice": 0.6841,
-   "category_mean_p_notice": 0.5778,
+   "mean_p_notice": 0.683,
+   "category_mean_p_notice": 0.5765,
    "shelf_rows_seen": {
-    "eye": 237
+    "eye": 247
    },
    "mean_facings": 1.0,
    "mean_logit_terms": {
-    "alpha0": 1.0307,
+    "alpha0": 1.0305,
     "row": 0.0,
     "facings": 0.0,
     "centre": -0.096,
-    "mission": -0.1013,
-    "time": 0.0205,
-    "ocean": -0.0283
+    "mission": -0.1036,
+    "time": 0.0204,
+    "ocean": -0.0302
    },
    "source": "event.p_notice and notice_factors.logit_terms (sim/notice.py; coefficients + sources in sim/coefficients.json)"
   },
   "pick_up": {
-   "mean_jev_p_pick_up": 0.2866,
-   "category_mean_jev_p_pick_up": 0.2667,
-   "mean_jev_appeal_score_0_4": 2.0761,
-   "category_mean_jev_appeal_score_0_4": 1.5351,
+   "mean_jev_p_pick_up": 0.2854,
+   "category_mean_jev_p_pick_up": 0.2658,
+   "mean_jev_appeal_score_0_4": 2.084,
+   "category_mean_jev_appeal_score_0_4": 1.536,
    "feeling_of_those_who_walked_on": {
     "mildly drawn": 24,
     "would actively avoid": 24,
-    "dislikes": 20,
-    "indifferent": 15,
+    "dislikes": 22,
+    "indifferent": 16,
     "really wants it": 1
    },
    "source": "event.p_pick_up (Jev Noul 'Does shopper pick up products[i] to look at it more closely?') and event.jev.appeal.score (Jev Score, 5 levels), sim/jev.py"
@@ -202,8 +202,8 @@
     },
     {
      "trigger": "Incumbent she already knows, with no new flavour or format (nothing to try)",
-     "n_events": 1,
-     "mean_jev_p": 0.51,
+     "n_events": 2,
+     "mean_jev_p": 0.52,
      "personas": [
       "p_novelty_seeker_tiktok"
      ],
@@ -221,19 +221,19 @@
     {
      "persona": "p_vegan_ethical",
      "reason": "[jev] picked it up, put it back: sees 'allergens contains en:milk or en:eggs, or ingredients_text contains whey, gelatine, honey,' (p=0.97) — like \"It's the more subtle substitutions that worry me -- e.g. most non-Heinz ketchup has milk in, as do lots of cri\"",
-     "run": "run_20261003_120130_s3_jev_c554",
+     "run": "run_20261003_120819_s3_jev_3b76",
      "agent": "a003"
     },
     {
      "persona": "p_eco_low_chemical",
      "reason": "[jev] picked it up, put it back: appeal 'mildly drawn', health goal (p=0.41); P(take)=0.53, took Happy Hippy 74% Cocoa Organic Orange & Geranium Dark Chocolate",
-     "run": "run_20261003_120522_s11_jev_e5e0",
+     "run": "run_20261003_120823_s11_jev_4482",
      "agent": "a002"
     },
     {
      "persona": "p_ai_delegator",
      "reason": "[jev] picked it up, put it back: appeal 'mildly drawn', price (p=0.55); P(take)=0.46, took Dairy Milk",
-     "run": "run_20261003_120522_s11_jev_e5e0",
+     "run": "run_20261003_120823_s11_jev_4482",
      "agent": "a022"
     }
    ],
@@ -243,61 +243,61 @@
  },
  "by_archetype": {
   "ai_delegator": {
-   "shown": 26,
-   "looked": 22,
-   "picked_up": 10,
+   "shown": 27,
+   "looked": 23,
+   "picked_up": 12,
    "put_back": 2,
-   "taken": 8,
+   "taken": 10,
    "look": {
-    "k": 22,
-    "n": 26,
-    "rate": 0.8462,
+    "k": 23,
+    "n": 27,
+    "rate": 0.8519,
     "ci95": [
-     0.6647,
-     0.9385
+     0.6752,
+     0.9408
     ]
    },
    "pick_up": {
-    "k": 10,
-    "n": 22,
-    "rate": 0.4545,
+    "k": 12,
+    "n": 23,
+    "rate": 0.5217,
     "ci95": [
-     0.2692,
-     0.6534
+     0.3296,
+     0.7076
     ]
    },
    "keep": {
-    "k": 8,
-    "n": 10,
-    "rate": 0.8,
+    "k": 10,
+    "n": 12,
+    "rate": 0.8333,
     "ci95": [
-     0.4902,
-     0.9433
+     0.552,
+     0.953
     ]
    },
    "take": {
-    "k": 8,
-    "n": 26,
-    "rate": 0.3077,
+    "k": 10,
+    "n": 27,
+    "rate": 0.3704,
     "ci95": [
-     0.165,
-     0.4999
+     0.2153,
+     0.5577
     ]
    }
   },
   "allergen_coeliac": {
-   "shown": 26,
+   "shown": 27,
    "looked": 14,
    "picked_up": 3,
    "put_back": 3,
    "taken": 0,
    "look": {
     "k": 14,
-    "n": 26,
-    "rate": 0.5385,
+    "n": 27,
+    "rate": 0.5185,
     "ci95": [
-     0.3546,
-     0.7124
+     0.3399,
+     0.6926
     ]
    },
    "pick_up": {
@@ -320,97 +320,97 @@
    },
    "take": {
     "k": 0,
-    "n": 26,
+    "n": 27,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.1287
+     0.1246
     ]
    }
   },
   "eco_low_chemical": {
-   "shown": 26,
-   "looked": 22,
-   "picked_up": 18,
+   "shown": 27,
+   "looked": 23,
+   "picked_up": 19,
    "put_back": 5,
-   "taken": 13,
+   "taken": 14,
    "look": {
-    "k": 22,
-    "n": 26,
-    "rate": 0.8462,
+    "k": 23,
+    "n": 27,
+    "rate": 0.8519,
     "ci95": [
-     0.6647,
-     0.9385
+     0.6752,
+     0.9408
     ]
    },
    "pick_up": {
-    "k": 18,
-    "n": 22,
-    "rate": 0.8182,
+    "k": 19,
+    "n": 23,
+    "rate": 0.8261,
     "ci95": [
-     0.6148,
-     0.9269
+     0.6286,
+     0.9302
     ]
    },
    "keep": {
-    "k": 13,
-    "n": 18,
-    "rate": 0.7222,
+    "k": 14,
+    "n": 19,
+    "rate": 0.7368,
     "ci95": [
-     0.4913,
-     0.875
+     0.5121,
+     0.8819
     ]
    },
    "take": {
-    "k": 13,
-    "n": 26,
-    "rate": 0.5,
+    "k": 14,
+    "n": 27,
+    "rate": 0.5185,
     "ci95": [
-     0.3206,
-     0.6794
+     0.3399,
+     0.6926
     ]
    }
   },
   "frugal_unit_price": {
-   "shown": 25,
-   "looked": 15,
-   "picked_up": 15,
+   "shown": 26,
+   "looked": 16,
+   "picked_up": 16,
    "put_back": 1,
-   "taken": 14,
+   "taken": 15,
    "look": {
-    "k": 15,
-    "n": 25,
-    "rate": 0.6,
+    "k": 16,
+    "n": 26,
+    "rate": 0.6154,
     "ci95": [
-     0.4074,
-     0.766
+     0.4253,
+     0.7757
     ]
    },
    "pick_up": {
-    "k": 15,
-    "n": 15,
+    "k": 16,
+    "n": 16,
     "rate": 1.0,
     "ci95": [
-     0.7961,
+     0.8064,
      1.0
     ]
    },
    "keep": {
-    "k": 14,
-    "n": 15,
-    "rate": 0.9333,
+    "k": 15,
+    "n": 16,
+    "rate": 0.9375,
     "ci95": [
-     0.7018,
-     0.9881
+     0.7167,
+     0.9889
     ]
    },
    "take": {
-    "k": 14,
-    "n": 25,
-    "rate": 0.56,
+    "k": 15,
+    "n": 26,
+    "rate": 0.5769,
     "ci95": [
-     0.3707,
-     0.7333
+     0.3895,
+     0.7446
     ]
    }
   },
@@ -458,27 +458,27 @@
    }
   },
   "habit_loyalist_shrinkflation_angry": {
-   "shown": 26,
-   "looked": 18,
+   "shown": 27,
+   "looked": 19,
    "picked_up": 10,
    "put_back": 4,
    "taken": 6,
    "look": {
-    "k": 18,
-    "n": 26,
-    "rate": 0.6923,
+    "k": 19,
+    "n": 27,
+    "rate": 0.7037,
     "ci95": [
-     0.5001,
-     0.835
+     0.5152,
+     0.8415
     ]
    },
    "pick_up": {
     "k": 10,
-    "n": 18,
-    "rate": 0.5556,
+    "n": 19,
+    "rate": 0.5263,
     "ci95": [
-     0.3372,
-     0.7544
+     0.3171,
+     0.7267
     ]
    },
    "keep": {
@@ -492,11 +492,11 @@
    },
    "take": {
     "k": 6,
-    "n": 26,
-    "rate": 0.2308,
+    "n": 27,
+    "rate": 0.2222,
     "ci95": [
-     0.1103,
-     0.4205
+     0.1061,
+     0.4076
     ]
    }
   },
@@ -544,27 +544,27 @@
    }
   },
   "novelty_seeker_tiktok": {
-   "shown": 26,
-   "looked": 23,
+   "shown": 27,
+   "looked": 24,
    "picked_up": 9,
    "put_back": 9,
    "taken": 0,
    "look": {
-    "k": 23,
-    "n": 26,
-    "rate": 0.8846,
+    "k": 24,
+    "n": 27,
+    "rate": 0.8889,
     "ci95": [
-     0.7102,
-     0.96
+     0.7194,
+     0.9615
     ]
    },
    "pick_up": {
     "k": 9,
-    "n": 23,
-    "rate": 0.3913,
+    "n": 24,
+    "rate": 0.375,
     "ci95": [
-     0.2216,
-     0.5921
+     0.2116,
+     0.5729
     ]
    },
    "keep": {
@@ -578,36 +578,122 @@
    },
    "take": {
     "k": 0,
-    "n": 26,
+    "n": 27,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.1287
+     0.1246
     ]
    }
   },
   "protein_gym": {
-   "shown": 10,
-   "looked": 6,
+   "shown": 11,
+   "looked": 7,
    "picked_up": 0,
    "put_back": 0,
    "taken": 0,
    "look": {
-    "k": 6,
-    "n": 10,
-    "rate": 0.6,
+    "k": 7,
+    "n": 11,
+    "rate": 0.6364,
     "ci95": [
-     0.3127,
-     0.8318
+     0.3538,
+     0.8483
     ]
    },
    "pick_up": {
     "k": 0,
-    "n": 6,
+    "n": 7,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.3903
+     0.3543
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 11,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2588
+    ]
+   }
+  },
+  "protein_sceptic_gimmick_reactant": {
+   "shown": 27,
+   "looked": 19,
+   "picked_up": 16,
+   "put_back": 0,
+   "taken": 16,
+   "look": {
+    "k": 19,
+    "n": 27,
+    "rate": 0.7037,
+    "ci95": [
+     0.5152,
+     0.8415
+    ]
+   },
+   "pick_up": {
+    "k": 16,
+    "n": 19,
+    "rate": 0.8421,
+    "ci95": [
+     0.6243,
+     0.9448
+    ]
+   },
+   "keep": {
+    "k": 16,
+    "n": 16,
+    "rate": 1.0,
+    "ci95": [
+     0.8064,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 16,
+    "n": 27,
+    "rate": 0.5926,
+    "ci95": [
+     0.4073,
+     0.7549
+    ]
+   }
+  },
+  "upf_avoider_parent": {
+   "shown": 10,
+   "looked": 5,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 5,
+    "n": 10,
+    "rate": 0.5,
+    "ci95": [
+     0.2366,
+     0.7634
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4345
     ]
    },
    "keep": {
@@ -629,105 +715,19 @@
     ]
    }
   },
-  "protein_sceptic_gimmick_reactant": {
-   "shown": 26,
-   "looked": 18,
-   "picked_up": 15,
-   "put_back": 0,
-   "taken": 15,
-   "look": {
-    "k": 18,
-    "n": 26,
-    "rate": 0.6923,
-    "ci95": [
-     0.5001,
-     0.835
-    ]
-   },
-   "pick_up": {
-    "k": 15,
-    "n": 18,
-    "rate": 0.8333,
-    "ci95": [
-     0.6078,
-     0.9416
-    ]
-   },
-   "keep": {
-    "k": 15,
-    "n": 15,
-    "rate": 1.0,
-    "ci95": [
-     0.7961,
-     1.0
-    ]
-   },
-   "take": {
-    "k": 15,
-    "n": 26,
-    "rate": 0.5769,
-    "ci95": [
-     0.3895,
-     0.7446
-    ]
-   }
-  },
-  "upf_avoider_parent": {
-   "shown": 9,
-   "looked": 4,
-   "picked_up": 0,
-   "put_back": 0,
-   "taken": 0,
-   "look": {
-    "k": 4,
-    "n": 9,
-    "rate": 0.4444,
-    "ci95": [
-     0.1888,
-     0.7334
-    ]
-   },
-   "pick_up": {
-    "k": 0,
-    "n": 4,
-    "rate": 0.0,
-    "ci95": [
-     0.0,
-     0.4899
-    ]
-   },
-   "keep": {
-    "k": 0,
-    "n": 0,
-    "rate": null,
-    "ci95": [
-     0.0,
-     1.0
-    ]
-   },
-   "take": {
-    "k": 0,
-    "n": 9,
-    "rate": 0.0,
-    "ci95": [
-     0.0,
-     0.2992
-    ]
-   }
-  },
   "vegan_ethical": {
-   "shown": 26,
+   "shown": 27,
    "looked": 21,
    "picked_up": 6,
    "put_back": 6,
    "taken": 0,
    "look": {
     "k": 21,
-    "n": 26,
-    "rate": 0.8077,
+    "n": 27,
+    "rate": 0.7778,
     "ci95": [
-     0.6212,
-     0.9149
+     0.5924,
+     0.8939
     ]
    },
    "pick_up": {
@@ -750,449 +750,449 @@
    },
    "take": {
     "k": 0,
-    "n": 26,
+    "n": 27,
     "rate": 0.0,
     "ci95": [
      0.0,
-     0.1287
+     0.1246
     ]
    }
   }
  },
  "by_ocean_segment": {
   "A_high": {
-   "shown": 135,
-   "looked": 101,
-   "picked_up": 38,
+   "shown": 141,
+   "looked": 106,
+   "picked_up": 40,
    "put_back": 22,
-   "taken": 16,
+   "taken": 18,
    "look": {
-    "k": 101,
-    "n": 135,
-    "rate": 0.7481,
+    "k": 106,
+    "n": 141,
+    "rate": 0.7518,
     "ci95": [
-     0.6688,
-     0.8138
+     0.6744,
+     0.8158
     ]
    },
    "pick_up": {
-    "k": 38,
-    "n": 101,
-    "rate": 0.3762,
+    "k": 40,
+    "n": 106,
+    "rate": 0.3774,
     "ci95": [
-     0.2879,
-     0.4736
+     0.2909,
+     0.4724
     ]
    },
    "keep": {
-    "k": 16,
-    "n": 38,
-    "rate": 0.4211,
+    "k": 18,
+    "n": 40,
+    "rate": 0.45,
     "ci95": [
-     0.2785,
-     0.5781
+     0.3071,
+     0.6017
     ]
    },
    "take": {
-    "k": 16,
-    "n": 135,
-    "rate": 0.1185,
+    "k": 18,
+    "n": 141,
+    "rate": 0.1277,
     "ci95": [
-     0.0743,
-     0.1839
+     0.0823,
+     0.1928
     ]
    }
   },
   "A_low": {
-   "shown": 102,
-   "looked": 69,
-   "picked_up": 48,
+   "shown": 106,
+   "looked": 72,
+   "picked_up": 51,
    "put_back": 8,
-   "taken": 40,
+   "taken": 43,
    "look": {
-    "k": 69,
-    "n": 102,
-    "rate": 0.6765,
+    "k": 72,
+    "n": 106,
+    "rate": 0.6792,
     "ci95": [
-     0.5807,
-     0.7594
+     0.5855,
+     0.7605
     ]
    },
    "pick_up": {
-    "k": 48,
-    "n": 69,
-    "rate": 0.6957,
+    "k": 51,
+    "n": 72,
+    "rate": 0.7083,
     "ci95": [
-     0.5792,
-     0.7915
+     0.5949,
+     0.8006
     ]
    },
    "keep": {
-    "k": 40,
-    "n": 48,
-    "rate": 0.8333,
+    "k": 43,
+    "n": 51,
+    "rate": 0.8431,
     "ci95": [
-     0.7042,
-     0.913
+     0.7199,
+     0.9183
     ]
    },
    "take": {
-    "k": 40,
-    "n": 102,
-    "rate": 0.3922,
+    "k": 43,
+    "n": 106,
+    "rate": 0.4057,
     "ci95": [
-     0.303,
-     0.4892
+     0.3171,
+     0.5008
     ]
    }
   },
   "C_high": {
-   "shown": 171,
-   "looked": 116,
-   "picked_up": 64,
+   "shown": 179,
+   "looked": 122,
+   "picked_up": 67,
    "put_back": 19,
-   "taken": 45,
+   "taken": 48,
    "look": {
-    "k": 116,
-    "n": 171,
-    "rate": 0.6784,
+    "k": 122,
+    "n": 179,
+    "rate": 0.6816,
     "ci95": [
-     0.6051,
-     0.7438
+     0.6101,
+     0.7454
     ]
    },
    "pick_up": {
-    "k": 64,
-    "n": 116,
-    "rate": 0.5517,
+    "k": 67,
+    "n": 122,
+    "rate": 0.5492,
     "ci95": [
-     0.461,
-     0.6391
+     0.4607,
+     0.6346
     ]
    },
    "keep": {
-    "k": 45,
-    "n": 64,
-    "rate": 0.7031,
+    "k": 48,
+    "n": 67,
+    "rate": 0.7164,
     "ci95": [
-     0.5823,
-     0.801
+     0.5991,
+     0.8103
     ]
    },
    "take": {
-    "k": 45,
-    "n": 171,
-    "rate": 0.2632,
+    "k": 48,
+    "n": 179,
+    "rate": 0.2682,
     "ci95": [
-     0.2029,
-     0.3338
+     0.2086,
+     0.3374
     ]
    }
   },
   "C_low": {
-   "shown": 66,
-   "looked": 54,
-   "picked_up": 22,
+   "shown": 68,
+   "looked": 56,
+   "picked_up": 24,
    "put_back": 11,
-   "taken": 11,
+   "taken": 13,
    "look": {
-    "k": 54,
-    "n": 66,
-    "rate": 0.8182,
+    "k": 56,
+    "n": 68,
+    "rate": 0.8235,
     "ci95": [
-     0.7085,
-     0.8928
+     0.7164,
+     0.8961
     ]
    },
    "pick_up": {
-    "k": 22,
-    "n": 54,
-    "rate": 0.4074,
+    "k": 24,
+    "n": 56,
+    "rate": 0.4286,
     "ci95": [
-     0.2868,
-     0.5403
+     0.3077,
+     0.5586
     ]
    },
    "keep": {
-    "k": 11,
-    "n": 22,
-    "rate": 0.5,
+    "k": 13,
+    "n": 24,
+    "rate": 0.5417,
     "ci95": [
-     0.3072,
-     0.6928
+     0.3507,
+     0.7211
     ]
    },
    "take": {
-    "k": 11,
-    "n": 66,
-    "rate": 0.1667,
+    "k": 13,
+    "n": 68,
+    "rate": 0.1912,
     "ci95": [
-     0.0957,
-     0.2743
+     0.1153,
+     0.3001
     ]
    }
   },
   "E_high": {
-   "shown": 108,
-   "looked": 84,
-   "picked_up": 36,
+   "shown": 114,
+   "looked": 89,
+   "picked_up": 38,
    "put_back": 16,
-   "taken": 20,
+   "taken": 22,
    "look": {
-    "k": 84,
-    "n": 108,
-    "rate": 0.7778,
+    "k": 89,
+    "n": 114,
+    "rate": 0.7807,
     "ci95": [
-     0.6906,
-     0.8459
+     0.6963,
+     0.8468
     ]
    },
    "pick_up": {
-    "k": 36,
-    "n": 84,
-    "rate": 0.4286,
+    "k": 38,
+    "n": 89,
+    "rate": 0.427,
     "ci95": [
-     0.3282,
-     0.5352
+     0.3293,
+     0.5307
     ]
    },
    "keep": {
-    "k": 20,
-    "n": 36,
-    "rate": 0.5556,
+    "k": 22,
+    "n": 38,
+    "rate": 0.5789,
     "ci95": [
-     0.3958,
-     0.7046
+     0.4219,
+     0.7215
     ]
    },
    "take": {
-    "k": 20,
-    "n": 108,
-    "rate": 0.1852,
+    "k": 22,
+    "n": 114,
+    "rate": 0.193,
     "ci95": [
-     0.1232,
-     0.2688
+     0.131,
+     0.2749
     ]
    }
   },
   "E_low": {
-   "shown": 129,
-   "looked": 86,
-   "picked_up": 50,
+   "shown": 133,
+   "looked": 89,
+   "picked_up": 53,
    "put_back": 14,
-   "taken": 36,
+   "taken": 39,
    "look": {
-    "k": 86,
-    "n": 129,
-    "rate": 0.6667,
+    "k": 89,
+    "n": 133,
+    "rate": 0.6692,
     "ci95": [
-     0.5815,
-     0.7422
+     0.5854,
+     0.7434
     ]
    },
    "pick_up": {
-    "k": 50,
-    "n": 86,
-    "rate": 0.5814,
+    "k": 53,
+    "n": 89,
+    "rate": 0.5955,
     "ci95": [
-     0.4758,
-     0.68
+     0.4916,
+     0.6915
     ]
    },
    "keep": {
-    "k": 36,
-    "n": 50,
-    "rate": 0.72,
+    "k": 39,
+    "n": 53,
+    "rate": 0.7358,
     "ci95": [
-     0.5833,
-     0.8253
+     0.6042,
+     0.8356
     ]
    },
    "take": {
-    "k": 36,
-    "n": 129,
-    "rate": 0.2791,
+    "k": 39,
+    "n": 133,
+    "rate": 0.2932,
     "ci95": [
-     0.2089,
-     0.362
+     0.2225,
+     0.3755
     ]
    }
   },
   "N_high": {
-   "shown": 139,
-   "looked": 95,
-   "picked_up": 52,
+   "shown": 144,
+   "looked": 98,
+   "picked_up": 53,
    "put_back": 21,
-   "taken": 31,
+   "taken": 32,
    "look": {
-    "k": 95,
-    "n": 139,
-    "rate": 0.6835,
+    "k": 98,
+    "n": 144,
+    "rate": 0.6806,
     "ci95": [
-     0.6021,
-     0.755
+     0.6006,
+     0.7512
     ]
    },
    "pick_up": {
-    "k": 52,
-    "n": 95,
-    "rate": 0.5474,
+    "k": 53,
+    "n": 98,
+    "rate": 0.5408,
     "ci95": [
-     0.4474,
-     0.6437
+     0.4425,
+     0.6361
     ]
    },
    "keep": {
-    "k": 31,
-    "n": 52,
-    "rate": 0.5962,
+    "k": 32,
+    "n": 53,
+    "rate": 0.6038,
     "ci95": [
-     0.4607,
-     0.7184
+     0.4694,
+     0.7241
     ]
    },
    "take": {
-    "k": 31,
-    "n": 139,
-    "rate": 0.223,
+    "k": 32,
+    "n": 144,
+    "rate": 0.2222,
     "ci95": [
-     0.1618,
-     0.2991
+     0.162,
+     0.2968
     ]
    }
   },
   "N_low": {
-   "shown": 98,
-   "looked": 75,
-   "picked_up": 34,
+   "shown": 103,
+   "looked": 80,
+   "picked_up": 38,
    "put_back": 9,
-   "taken": 25,
+   "taken": 29,
    "look": {
-    "k": 75,
-    "n": 98,
-    "rate": 0.7653,
+    "k": 80,
+    "n": 103,
+    "rate": 0.7767,
     "ci95": [
-     0.6724,
-     0.8382
+     0.6872,
+     0.8463
     ]
    },
    "pick_up": {
-    "k": 34,
-    "n": 75,
-    "rate": 0.4533,
+    "k": 38,
+    "n": 80,
+    "rate": 0.475,
     "ci95": [
-     0.3457,
-     0.5655
+     0.3692,
+     0.583
     ]
    },
    "keep": {
-    "k": 25,
-    "n": 34,
-    "rate": 0.7353,
+    "k": 29,
+    "n": 38,
+    "rate": 0.7632,
     "ci95": [
-     0.5688,
-     0.854
+     0.6079,
+     0.8701
     ]
    },
    "take": {
-    "k": 25,
-    "n": 98,
-    "rate": 0.2551,
+    "k": 29,
+    "n": 103,
+    "rate": 0.2816,
     "ci95": [
-     0.1792,
-     0.3495
+     0.2038,
+     0.3751
     ]
    }
   },
   "O_high": {
-   "shown": 127,
-   "looked": 100,
-   "picked_up": 52,
+   "shown": 131,
+   "looked": 103,
+   "picked_up": 55,
    "put_back": 22,
-   "taken": 30,
+   "taken": 33,
    "look": {
-    "k": 100,
-    "n": 127,
-    "rate": 0.7874,
+    "k": 103,
+    "n": 131,
+    "rate": 0.7863,
     "ci95": [
      0.7084,
-     0.8496
+     0.8478
     ]
    },
    "pick_up": {
-    "k": 52,
-    "n": 100,
-    "rate": 0.52,
+    "k": 55,
+    "n": 103,
+    "rate": 0.534,
     "ci95": [
-     0.4232,
-     0.6154
+     0.4382,
+     0.6274
     ]
    },
    "keep": {
-    "k": 30,
-    "n": 52,
-    "rate": 0.5769,
+    "k": 33,
+    "n": 55,
+    "rate": 0.6,
     "ci95": [
-     0.4419,
-     0.7013
+     0.4681,
+     0.7188
     ]
    },
    "take": {
-    "k": 30,
-    "n": 127,
-    "rate": 0.2362,
+    "k": 33,
+    "n": 131,
+    "rate": 0.2519,
     "ci95": [
-     0.1708,
-     0.3172
+     0.1854,
+     0.3326
     ]
    }
   },
   "O_low": {
-   "shown": 110,
-   "looked": 70,
-   "picked_up": 34,
+   "shown": 116,
+   "looked": 75,
+   "picked_up": 36,
    "put_back": 8,
-   "taken": 26,
+   "taken": 28,
    "look": {
-    "k": 70,
-    "n": 110,
-    "rate": 0.6364,
+    "k": 75,
+    "n": 116,
+    "rate": 0.6466,
     "ci95": [
-     0.5433,
-     0.7202
+     0.5561,
+     0.7276
     ]
    },
    "pick_up": {
-    "k": 34,
-    "n": 70,
-    "rate": 0.4857,
+    "k": 36,
+    "n": 75,
+    "rate": 0.48,
     "ci95": [
-     0.3725,
-     0.6005
+     0.3707,
+     0.5913
     ]
    },
    "keep": {
-    "k": 26,
-    "n": 34,
-    "rate": 0.7647,
+    "k": 28,
+    "n": 36,
+    "rate": 0.7778,
     "ci95": [
-     0.6,
-     0.8756
+     0.6191,
+     0.8828
     ]
    },
    "take": {
-    "k": 26,
-    "n": 110,
-    "rate": 0.2364,
+    "k": 28,
+    "n": 116,
+    "rate": 0.2414,
     "ci95": [
-     0.1667,
-     0.3238
+     0.1726,
+     0.3267
     ]
    }
   }
  },
  "benchmark": {
-  "sim_take_rank_in_category": 2,
+  "sim_take_rank_in_category": 1,
   "sim_ranked_products": 12,
   "sim_rank_rule": "rank by take rate among category products shown >= 3 times in these runs",
   "nielseniq": [],
@@ -1202,15 +1202,17 @@
  "ai_agent_arm_note": "share of Jev AI-agent feed runs (data/sim/runs/agent_*.json) that picked it; position-shuffled feed",
  "trace": {
   "runs": [
-   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
-   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+   "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+   "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+   "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
   ],
   "all_runs_read": [
-   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
-   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+   "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+   "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+   "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
   ],
   "stage_method": {
-   "stage_reached": 237
+   "stage_reached": 247
   },
   "ci": "Wilson score interval, z=1.96 (Wilson 1927, JASA 22:209)",
   "definitions": {

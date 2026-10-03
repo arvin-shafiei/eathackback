@@ -244,7 +244,7 @@ function AisleSign({ cfg, w }: { cfg: StoreConfig; w: number }) {
   const units = walkwayUnits(cfg, w);
   const tex = useMemo(() => stickerSign([{ text: units.map((u) => `${CAT_EMOJI[u.category] ?? ''} ${catLabel(u.category)}`).join('  ·  ') || 'aisle', size: 64 }], { w: 1400, h: 220, chip: String(w + 1), chipColor: '#FF4079' }), [units]);
   const x = gondolaX(cfg, w + 0.5);
-  const y = 3.25;
+  const y = 3.75;
   return (
     <group position={[x, y, G.zCentre - G.unitLen / 2 + 0.4]}>
       {[-1, 1].map((k) => (

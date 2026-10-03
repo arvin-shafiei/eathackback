@@ -114,6 +114,9 @@ class H(BaseHTTPRequestHandler):
                         arch = None if inf["archetype"] == rr.UNCLEAR else inf["archetype"]
                     out["rerank"] = rr.rerank(listing, arch, personas, int(b.get("seed", 0)))
                 return self._send(200, out)
+            if b.get("engine", "jev") not in ("jev", "mock"):
+                # rule: TypeSafe Jev only. Never forward engine=llm (OpenRouter) from the public API.
+                return self._send(400, {"error": "engine must be 'jev' or 'mock'", "status": "bad_request"})
             if p == "/v1/shelf/simulate":
                 return self._send(200, _sim("/api/run", {k: b[k] for k in ("planogram", "agents", "seed", "engine") if k in b}))
             if p == "/v1/retailer/layout":

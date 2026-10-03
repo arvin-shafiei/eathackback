@@ -28,3 +28,16 @@ Same shoppers over N visits, **with vs without route cards**, after a layout cha
 
 ## no black box
 Every route item carries its reason: "habit: bought 3/3 visits", "new + matches your lens: high fibre (OFF fiber_100g=8.1)", "Jev P(take)=0.62". Persona identification shows its full distribution.
+
+## pressure test results (3 Oct 2026)
+
+Six hostile reviews ran. All six returned **build-with-changes**. Lead decision: **build-with-changes**, reframed as *re-layout insurance* inside the retailer layout surface (no fourth surface). Full spec: [personal-route-spec.md](personal-route-spec.md).
+
+| lens | verdict | key change |
+|---|---|---|
+| RGC judge panel | build-with-changes | Not original as a consumer app ("Tesco app with a map"). Pitch it as the retailer question the sim answers: what a re-layout costs habitual shoppers, and how much an opt-in card wins back. Contrast human vs agent memory. |
+| Behavioural scientist | build-with-changes | Use the habit-discontinuity framing. Card shows at most 1 new item, already on the route. Model reactance and compliance as labelled parameters. Report unplanned £ (Hui et al. 2013), not shortest path. |
+| ML/eval methodologist | build-with-changes | Fix the visit-replay bug (visit salt in every draw key). Persona ID uses a held-out train run, plus mission-only and chance baselines, mixtures, leave-one-out, confusion matrix and calibration. Next-basket prediction must beat most-frequent and repeat-last. Paired bootstrap CIs. One pre-registered primary metric. |
+| UK GDPR / ICO | build-with-changes | Shopper-brought identity with an on-device log. GLP-1, coeliac and vegan are declared only, never inferred. Show the lens, not the label. Retention limit plus forget-me. No personalised prices. DPIA. Fix the ecom-rerank GLP-1 inference. |
+| Build engineer | build-with-changes | Unit category must come from the planogram (72/96 labels go stale after the re-layout). Withhold 1 challenger per category until visit 3. Persona ID in code (Naive Bayes), not Jev. Size the run to about 864 agent-visits (about $2.60). |
+| UK retail director | build-with-changes | Money metric: incremental trial-to-repeat against a holdout (76% NPD year-one failure, Nielsen; keep it separate from the other 76% figures). Payment buys eligibility, not rank. Superstore and pre-trip only. Don't claim baskets grow. |
