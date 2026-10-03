@@ -27,14 +27,7 @@ export function Leaderboard({ run, arm, products, onProduct, engine = null }: { 
     if (mp && mp[1].picked) out.push({ title: 'best seller', emoji: '🏆', code: mp[0], k: mp[1].picked, n: mp[1].shown, big: `${mp[1].picked}`, note: `bought by ${mp[1].picked} of ${mp[1].shown} who passed it`, tone: 'good' });
     const mw = best((v) => v.walk + v.walk / (v.shown + 1));
     if (mw && mw[1].walk) out.push({ title: 'most ignored', emoji: '👻', code: mw[0], k: mw[1].walk, n: mw[1].shown, big: `${mw[1].walk}`, note: `${mw[1].walk} of ${mw[1].shown} walked past it`, tone: 'warn' });
-    // gap only where both arms saw it at least 5 times, so one lucky pick can't top the board
-    const gaps = list.filter(([, v]) => v.hs >= 5 && v.as >= 5).map(([c, v]) => ({ c, v, g: v.ap / v.as - v.hp / v.hs }));
-    const mg = gaps.reduce<(typeof gaps)[number] | null>((b, x) => (!b || Math.abs(x.g) > Math.abs(b.g) ? x : b), null);
-    if (mg) {
-      const hci = wilson(mg.v.hp, mg.v.hs), aci = wilson(mg.v.ap, mg.v.as);
-      const sep = hci[1] < aci[0] || aci[1] < hci[0];
-      out.push({ title: mg.g > 0 ? 'ai buys it, people don\'t' : 'people buy it, ai doesn\'t', emoji: mg.g > 0 ? '🤖' : '🧍', code: mg.c, k: 0, n: 0, big: `${Math.round(Math.abs(mg.g) * 100)}%`, note: `ai ${pct(mg.v.ap / mg.v.as)} of ${mg.v.as} · people ${pct(mg.v.hp / mg.v.hs)} of ${mg.v.hs}${sep ? '' : ' · too few to be sure'}`, tone: 'ai' });
-    } else out.push({ title: 'people vs ai', emoji: '🤖', code: '', k: 0, n: 0, big: '—', note: 'no ai shoppers in this run', tone: 'ai' });
+    // one population: people and ai agents are counted together (no separate gap card)
     return out;
   }, [run, arm]);
 

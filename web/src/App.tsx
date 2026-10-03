@@ -34,7 +34,7 @@ type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange' | '
 const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange', owner: 'your store', customer: 'shoppers' };
 /** the four things a brand does; the rest sit behind "options" */
 const MAIN_MODES: Mode[] = ['replay', 'insights', 'owner', 'customer', 'add', 'rearrange'];
-const ALL_MODES: Mode[] = ['replay', 'compare', 'edit', 'add', 'insights', 'owner', 'customer', 'rearrange'];
+const ALL_MODES: Mode[] = ['replay', 'edit', 'add', 'insights', 'owner', 'customer', 'rearrange'];
 /** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
 const UPLOAD_AGENTS = 150;
 const UPLOAD_AI_RUNS = 3;
@@ -380,15 +380,12 @@ export default function App() {
             ariaLabel="run" prefix="run" searchable value={runId ?? ''} onChange={setRunId}
             options={runs.filter((r) => !isAgentArm(r)).map((r) => ({ value: r.run_id, label: `${r.run_id}${r.fixture ? ' (fixture)' : ''}`, hint: r.agents ? `${r.agents} agents` : undefined }))}
           />
-          {runs.some(isAgentArm) && (
+          {false && runs.some(isAgentArm) && (
             <Select
               ariaLabel="ai arm" prefix="+ ai arm" searchable value={aiRunId} onChange={setAiRunId}
               options={[{ value: '', label: 'none' }, ...runs.filter(isAgentArm).map((r) => ({ value: r.run_id, label: r.run_id, hint: r.agents ? `${r.agents} agents` : undefined }))]}
             />
           )}
-          <div className="seg small" aria-label="who">
-            {(['both', 'human', 'ai'] as Arm[]).map((a) => <button key={a} className={`seg-btn ${arm === a ? 'on' : ''}`} onClick={() => setArm(a)}>{a === 'both' ? 'everyone' : a === 'human' ? 'humans' : 'ai agents'}</button>)}
-          </div>
           <button className={`icon-btn ${soundOn ? 'on' : ''}`} onClick={() => setSoundOn((v) => !v)} aria-pressed={soundOn} aria-label={soundOn ? 'mute sound' : 'turn sound on'} title="cartoon sounds (off by default)">{soundOn ? '🔊' : '🔇'}</button>
         </div>}
       </header>
@@ -424,7 +421,7 @@ export default function App() {
             </div>
             <div className="mini-h">shelf-edge heat</div>
             <div className="seg small">
-              {(['off', 'pick', 'gap'] as Heat[]).map((h) => <button key={h} className={`seg-btn ${heat === h ? 'on' : ''}`} onClick={() => setHeat(h)}>{h === 'pick' ? 'pick rate' : h === 'gap' ? 'ai − human' : 'off'}</button>)}
+              {(['off', 'pick'] as Heat[]).map((h) => <button key={h} className={`seg-btn ${heat === h ? 'on' : ''}`} onClick={() => setHeat(h)}>{h === 'pick' ? 'pick rate' : h === 'gap' ? 'ai − human' : 'off'}</button>)}
             </div>
             {heat === 'gap' && <p className="legend-note"><i style={{ background: '#16a34a' }} /> humans pick more <i style={{ background: AI_COLOR }} /> agents pick more</p>}
             <div className="mini-h">silliness</div>
@@ -442,7 +439,7 @@ export default function App() {
                   onClick={() => first && setPanel({ kind: 'agent', id: first.agent_id })}
                   onKeyDown={(ev) => { if (first && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); setPanel({ kind: 'agent', id: first.agent_id }); } }}>
                   <span className="dot" style={{ background: archColor(a) }} />
-                  <span className="leg-name">{ai ? shopperLabel(a === 'ai_agent' ? 'ai_agent' : a, persona) : archLabel(a)}{ai && <em>ai agent</em>}</span>
+                  <span className="leg-name">{ai ? shopperLabel(a === 'ai_agent' ? 'ai_agent' : a, persona) : archLabel(a)}</span>
                   <span className="leg-carrier" title={`trolley (visual); checkout lane uses the mission carrier: ${c}`}>🛒</span>
                 </div>
               ))}
