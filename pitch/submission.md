@@ -10,11 +10,12 @@ Rule zero applies to this page. Every number below names the file it comes from 
 
 | option | why it works | risk |
 |---|---|---|
-| **same shelf** ✅ | It is already the app's on-screen title (`web/src/App.tsx` header), so the video, repo and form all match. Same shelf, two kinds of shopper (human and AI), and every shopper is traced. | It doesn't say "walk-past" or "put-back" by itself, so the tagline has to carry that. |
+| **simsbury** ✅ (chosen) | Team's pick: a supermarket-sim pun; the app title, video and repo all use it. Tagline "same shelf, two shoppers". | Close to Sainsbury's; avoid their logo/orange. |
+| same shelf | It is already the app's on-screen title (`web/src/App.tsx` header), so the video, repo and form all match. Same shelf, two kinds of shopper (human and AI), and every shopper is traced. | It doesn't say "walk-past" or "put-back" by itself, so the tagline has to carry that. |
 | put back | Names the finding: challengers lose at the put-back, which EPOS can't see. | Sounds like a returns or reverse-logistics product. |
 | walk-past | Echoes David's EPOS blog ("the shoppers who walked past without buying"). | Our strongest result is the put-back, not the walk-past. |
 
-**Recommendation: `same shelf`**. Tagline: **"the shoppers EPOS never sees, traced to source."**
+**Name (team decision): `simsbury`** (same shelf, two shoppers). Tagline: **"the shoppers EPOS never sees, traced to source."**
 
 ## 2. Team members
 
@@ -28,7 +29,7 @@ Rule zero applies to this page. Every number below names the file it comes from 
 
 ## 4. Project description (187 words; paste as is)
 
-> EPOS records the sale. It never sees the shopper who picked a product up and put it back. same shelf is a 3D supermarket stocked with 96 real UK products from Open Food Facts, walked by synthetic shoppers grounded in 10,642 coded Reddit comments, shelf-effect research and Big Five traits. Code decides what each shopper notices (eye level, facings, mission). TypeSafe Jev then returns calibrated probabilities for pick-up, put-back or take, and for which rejection trigger fired. Every number clicks through to its source: a paper, a Reddit thread, an Open Food Facts field, a Jev distribution or a labelled assumption.
+> EPOS records the sale. It never sees the shopper who picked a product up and put it back. simsbury is a 3D supermarket stocked with 96 real UK products from Open Food Facts, walked by synthetic shoppers grounded in 10,642 coded Reddit comments, shelf-effect research and Big Five traits. Code decides what each shopper notices (eye level, facings, mission). TypeSafe Jev then returns calibrated probabilities for pick-up, put-back or take, and for which rejection trigger fired. Every number clicks through to its source: a paper, a Reddit thread, an Open Food Facts field, a Jev distribution or a labelled assumption.
 >
 > The non-obvious finding, from a real 300-shopper Jev run: once noticed, challengers are picked up as often as incumbents (35% vs 34%) but kept less often (48% vs 54%; own-label 67%). Challengers lose in the hand, at the stage EPOS can't see.
 >

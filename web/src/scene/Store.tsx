@@ -675,7 +675,7 @@ export function Store(props: StoreProps) {
           <mesh position={[0, wallH - 0.1, 0]} raycast={noRay}><boxGeometry args={[b - a, 0.2, 0.26]} /><meshBasicMaterial map={band} /></mesh>
         </group>
       ))}
-      {P.entrances.map((e, i) => <Doors key={`in${i}`} x={e.x} z={B.zMax} idx={i} label="same shelf" sub={P.entrances.length > 1 ? `entrance ${i + 1} · two shoppers, one shelf` : 'two shoppers · one shelf'} />)}
+      {P.entrances.map((e, i) => <Doors key={`in${i}`} x={e.x} z={B.zMax} idx={i} label="simsbury" sub={P.entrances.length > 1 ? `entrance ${i + 1} · two shoppers, one shelf` : 'two shoppers · one shelf'} />)}
       {P.exits.map((e, i) => <Doors key={`out${i}`} x={e.x} z={B.zMax} idx={P.entrances.length + i} label="exit" sub="thanks for shopping!" />)}
       {P.gates.map((g) => <Gate key={g.id} id={g.id} x={g.x} z={g.z} />)}
 

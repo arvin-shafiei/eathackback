@@ -355,7 +355,7 @@ export default function App() {
 
       <header className="topbar">
         <div className="brand">
-          <h1 className="sticker-title" data-text="same shelf">same shelf</h1>
+          <h1 className="sticker-title" data-text="simsbury">simsbury</h1>
           <span className="brand-chip" aria-hidden>🛒🤖</span>
         </div>
         <nav className="seg seg-main" aria-label="mode">
@@ -391,7 +391,7 @@ export default function App() {
         <div className="intro" role="dialog" aria-label="intro">
           <div className="intro-card">
             <div className="intro-kicker">eat_hack · track 1 human truth</div>
-            <h2 className="intro-title">same shelf,<br />two shoppers</h2>
+            <h2 className="intro-title">simsbury</h2><p className="intro-tag">same shelf, two shoppers</p>
             <p className="intro-sub">{nShoppers} shoppers · {nProducts} real products · every number traced to its source</p>
             <button className="btn btn-brand" onClick={() => { setCam('overview'); setCamNonce((n) => n + 1); }}>skip intro →</button>
           </div>

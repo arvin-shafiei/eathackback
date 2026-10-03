@@ -1,4 +1,4 @@
-# web: the 3D store ("same shelf, two shoppers")
+# web: the 3D store ("simsbury: same shelf, two shoppers")
 
 Vite + React + TypeScript + three + @react-three/fiber + @react-three/drei.
 It replays sim runs in a low-poly store and makes every number clickable back to its source.
