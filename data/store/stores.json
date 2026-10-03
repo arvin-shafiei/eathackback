@@ -1,0 +1,327 @@
+{
+ "_doc": "Named example stores (fictional names, real-ish UK contexts). Each points to a format config + planogram in data/store/formats/. Every number has a source or 'assumption:'. Built by scripts/scale_superstore.py.",
+ "stores": [
+  {
+   "id": "express_office",
+   "name": "Ludgate Lane Express",
+   "name_note": "fictional store name",
+   "context": "express · office district (City fringe, weekday lunch trade)",
+   "format": "express",
+   "config": "data/store/formats/express.config.json",
+   "planogram": "data/store/formats/planogram_express.json",
+   "customers_per_week": {
+    "value": 4000,
+    "source": "data/ops/params.json store_customers_per_week range low end: Gruen & Corsten (2008) 'smaller format' 4,000 customers/week (US illustrative; medium confidence)"
+   },
+   "footfall_curve": {
+    "hour_shares_ref": "data/ops/params.json#params.weekday_shopping_trip_start_share_by_hour (DfT NTS 2025 NTS0502b, shopping)",
+    "day_shares_ref": "data/ops/params.json#params.shopping_trips_day_multiplier (DfT NTS0504b)",
+    "hour_multipliers": {
+     "07-09": 1.6,
+     "12-14": 2.5,
+     "17-18": 1.4,
+     "19-22": 0.5
+    },
+    "hour_multipliers_source": "assumption: office district: lunch (meal deal) and commute peaks; the NTS commute peak at 17:00 (params commute_trip_start_share_17h) anchors the evening bump",
+    "day_multipliers": {
+     "Sat": 0.35,
+     "Sun": 0.25
+    },
+    "day_multipliers_source": "assumption: offices shut at weekends; weekday NTS day shares otherwise",
+    "formula": "arrivals/h = customers_per_week x day_share x hour_share x hour_multiplier x day_multiplier, renormalised so the week sums to customers_per_week"
+   },
+   "mission_mix": {
+    "weekly_shop": 0.0224,
+    "top_up": 0.3289,
+    "meal_deal": 0.4398,
+    "treat": 0.111,
+    "gym": 0.0979
+   },
+   "mission_mix_source": {
+    "baseline": {
+     "weekly_shop": 0.2855,
+     "top_up": 0.3495,
+     "meal_deal": 0.1402,
+     "treat": 0.1416,
+     "gym": 0.0832
+    },
+    "baseline_source": "derived: params mission_mix_by_daypart (assumption, low confidence) weighted by the NTS hour shares of each daypart window 08-22",
+    "multipliers": {
+     "meal_deal": 4.0,
+     "top_up": 1.2,
+     "weekly_shop": 0.1,
+     "treat": 1.0,
+     "gym": 1.5
+    },
+    "multipliers_source": "assumption: an office-district express is a meal-deal + top-up store; almost no weekly shops",
+    "note": "'treat' covers the family after-school trip (params 15-17 window); missions use the params keys so the ops engine can consume them"
+   },
+   "persona_weights": {
+    "meal_deal_office": 0.4545,
+    "glp1_small_appetite": 0.2209,
+    "novelty_seeker_tiktok": 0.1147,
+    "protein_gym": 0.1012,
+    "upf_avoider_parent": 0.085,
+    "habit_loyalist_shrinkflation_angry": 0.004,
+    "ai_delegator": 0.0033,
+    "allergen_coeliac": 0.0033,
+    "eco_low_chemical": 0.0033,
+    "frugal_unit_price": 0.0033,
+    "protein_sceptic_gimmick_reactant": 0.0033,
+    "vegan_ethical": 0.0033
+   },
+   "persona_weights_source": {
+    "rule": "derived: weight(persona) = mission_mix[persona.mission] / (number of personas with that mission) x multiplier, renormalised. persona.mission from data/personas/lens/<archetype>.json",
+    "multipliers": {
+     "habit_loyalist_shrinkflation_angry": 1.2,
+     "upf_avoider_parent": 0.5,
+     "glp1_small_appetite": 1.3
+    },
+    "multipliers_source": "assumption: office workers are habit-led at lunch; fewer parents shopping for kids; GLP-1 users buy small portions at lunch",
+    "dominant": [
+     "meal_deal_office",
+     "glp1_small_appetite",
+     "novelty_seeker_tiktok"
+    ]
+   }
+  },
+  {
+   "id": "express_campus",
+   "name": "Quad Express",
+   "name_note": "fictional store name",
+   "context": "express · university campus (term time)",
+   "format": "express",
+   "config": "data/store/formats/express.config.json",
+   "planogram": "data/store/formats/planogram_express.json",
+   "customers_per_week": {
+    "value": 4000,
+    "source": "data/ops/params.json store_customers_per_week range low end (Gruen & Corsten 2008 smaller format)"
+   },
+   "footfall_curve": {
+    "hour_shares_ref": "data/ops/params.json#params.weekday_shopping_trip_start_share_by_hour (DfT NTS 2025 NTS0502b, shopping)",
+    "day_shares_ref": "data/ops/params.json#params.shopping_trips_day_multiplier (DfT NTS0504b)",
+    "hour_multipliers": {
+     "07-09": 0.5,
+     "12-14": 1.8,
+     "19-22": 2.0
+    },
+    "hour_multipliers_source": "assumption: students shop late; lunch peak between lectures",
+    "day_multipliers": {},
+    "day_multipliers_source": "NTS day shares (params shopping_trips_day_multiplier) unchanged",
+    "formula": "arrivals/h = customers_per_week x day_share x hour_share x hour_multiplier x day_multiplier, renormalised so the week sums to customers_per_week"
+   },
+   "mission_mix": {
+    "weekly_shop": 0.093,
+    "top_up": 0.3701,
+    "meal_deal": 0.2284,
+    "treat": 0.173,
+    "gym": 0.1355
+   },
+   "mission_mix_source": {
+    "baseline": {
+     "weekly_shop": 0.2855,
+     "top_up": 0.3495,
+     "meal_deal": 0.1402,
+     "treat": 0.1416,
+     "gym": 0.0832
+    },
+    "baseline_source": "derived: params mission_mix_by_daypart (assumption, low confidence) weighted by the NTS hour shares of each daypart window 08-22",
+    "multipliers": {
+     "meal_deal": 2.0,
+     "top_up": 1.3,
+     "weekly_shop": 0.4,
+     "treat": 1.5,
+     "gym": 2.0
+    },
+    "multipliers_source": "assumption: students buy meal deals, top-ups, treats and gym food; few big shops in an express",
+    "note": "'treat' covers the family after-school trip (params 15-17 window); missions use the params keys so the ops engine can consume them"
+   },
+   "persona_weights": {
+    "novelty_seeker_tiktok": 0.2742,
+    "meal_deal_office": 0.2413,
+    "glp1_small_appetite": 0.1955,
+    "protein_gym": 0.1432,
+    "upf_avoider_parent": 0.0391,
+    "frugal_unit_price": 0.0281,
+    "vegan_ethical": 0.0211,
+    "allergen_coeliac": 0.014,
+    "eco_low_chemical": 0.014,
+    "protein_sceptic_gimmick_reactant": 0.014,
+    "habit_loyalist_shrinkflation_angry": 0.0084,
+    "ai_delegator": 0.007
+   },
+   "persona_weights_source": {
+    "rule": "derived: weight(persona) = mission_mix[persona.mission] / (number of personas with that mission) x multiplier, renormalised. persona.mission from data/personas/lens/<archetype>.json",
+    "multipliers": {
+     "frugal_unit_price": 2.0,
+     "novelty_seeker_tiktok": 1.5,
+     "vegan_ethical": 1.5,
+     "upf_avoider_parent": 0.2,
+     "habit_loyalist_shrinkflation_angry": 0.6,
+     "ai_delegator": 0.5
+    },
+    "multipliers_source": "assumption: student budgets (frugal), TikTok-driven trial, higher vegan share; few parents; fewer habit loyalists",
+    "dominant": [
+     "novelty_seeker_tiktok",
+     "meal_deal_office",
+     "glp1_small_appetite"
+    ]
+   }
+  },
+  {
+   "id": "metro_high_street",
+   "name": "Northgate Metro",
+   "name_note": "fictional store name",
+   "context": "metro · high street (mixed office + residential)",
+   "format": "metro",
+   "config": "data/store/formats/metro.config.json",
+   "planogram": "data/store/formats/planogram_metro.json",
+   "customers_per_week": {
+    "value": 10900,
+    "source": "data/ops/params.json store_customers_per_week: Gruen & Corsten (2008) supermarket cost example, 10,900 customers/week (US illustrative; medium confidence)"
+   },
+   "footfall_curve": {
+    "hour_shares_ref": "data/ops/params.json#params.weekday_shopping_trip_start_share_by_hour (DfT NTS 2025 NTS0502b, shopping)",
+    "day_shares_ref": "data/ops/params.json#params.shopping_trips_day_multiplier (DfT NTS0504b)",
+    "hour_multipliers": {
+     "12-14": 1.3,
+     "17-18": 1.2
+    },
+    "hour_multipliers_source": "assumption: high-street lunch and after-work bumps on top of the NTS curve",
+    "day_multipliers": {},
+    "day_multipliers_source": "NTS day shares unchanged",
+    "formula": "arrivals/h = customers_per_week x day_share x hour_share x hour_multiplier x day_multiplier, renormalised so the week sums to customers_per_week"
+   },
+   "mission_mix": {
+    "weekly_shop": 0.1835,
+    "top_up": 0.4171,
+    "meal_deal": 0.1931,
+    "treat": 0.13,
+    "gym": 0.0764
+   },
+   "mission_mix_source": {
+    "baseline": {
+     "weekly_shop": 0.2855,
+     "top_up": 0.3495,
+     "meal_deal": 0.1402,
+     "treat": 0.1416,
+     "gym": 0.0832
+    },
+    "baseline_source": "derived: params mission_mix_by_daypart (assumption, low confidence) weighted by the NTS hour shares of each daypart window 08-22",
+    "multipliers": {
+     "meal_deal": 1.5,
+     "top_up": 1.3,
+     "weekly_shop": 0.7,
+     "treat": 1.0,
+     "gym": 1.0
+    },
+    "multipliers_source": "assumption: high-street metro skews to top-up and lunch vs the params baseline",
+    "note": "'treat' covers the family after-school trip (params 15-17 window); missions use the params keys so the ops engine can consume them"
+   },
+   "persona_weights": {
+    "glp1_small_appetite": 0.2085,
+    "upf_avoider_parent": 0.2085,
+    "meal_deal_office": 0.1931,
+    "novelty_seeker_tiktok": 0.13,
+    "protein_gym": 0.0764,
+    "ai_delegator": 0.0262,
+    "allergen_coeliac": 0.0262,
+    "eco_low_chemical": 0.0262,
+    "frugal_unit_price": 0.0262,
+    "habit_loyalist_shrinkflation_angry": 0.0262,
+    "protein_sceptic_gimmick_reactant": 0.0262,
+    "vegan_ethical": 0.0262
+   },
+   "persona_weights_source": {
+    "rule": "derived: weight(persona) = mission_mix[persona.mission] / (number of personas with that mission) x multiplier, renormalised. persona.mission from data/personas/lens/<archetype>.json",
+    "multipliers": {},
+    "multipliers_source": "no adjustment: params baseline mission mix carries the persona split",
+    "dominant": [
+     "glp1_small_appetite",
+     "upf_avoider_parent",
+     "meal_deal_office"
+    ]
+   }
+  },
+  {
+   "id": "superstore_retail_park",
+   "name": "Kingsmead Superstore",
+   "name_note": "fictional store name",
+   "context": "superstore · retail park (car-borne family big shop)",
+   "format": "superstore",
+   "config": "data/store/formats/superstore.config.json",
+   "planogram": "data/store/formats/planogram_superstore.json",
+   "customers_per_week": {
+    "value": 20000,
+    "source": "assumption: ~2x the Gruen & Corsten (2008) 10,900/week supermarket example for a large retail-park superstore; no UK store-level footfall source fetched (data/ops/evidence.md gaps)"
+   },
+   "footfall_curve": {
+    "hour_shares_ref": "data/ops/params.json#params.weekday_shopping_trip_start_share_by_hour (DfT NTS 2025 NTS0502b, shopping)",
+    "day_shares_ref": "data/ops/params.json#params.shopping_trips_day_multiplier (DfT NTS0504b)",
+    "hour_multipliers": {
+     "15-17": 1.2
+    },
+    "hour_multipliers_source": "assumption: after-school family trips (NTS escort-education peak 15:00, params school_escort_trip_start_share_15h)",
+    "day_multipliers": {
+     "Sat": 1.15
+    },
+    "day_multipliers_source": "assumption: retail-park Saturday skew on top of the NTS Saturday share (1.45x average day)",
+    "formula": "arrivals/h = customers_per_week x day_share x hour_share x hour_multiplier x day_multiplier, renormalised so the week sums to customers_per_week"
+   },
+   "mission_mix": {
+    "weekly_shop": 0.4824,
+    "top_up": 0.2297,
+    "meal_deal": 0.0526,
+    "treat": 0.1728,
+    "gym": 0.0625
+   },
+   "mission_mix_source": {
+    "baseline": {
+     "weekly_shop": 0.2855,
+     "top_up": 0.3495,
+     "meal_deal": 0.1402,
+     "treat": 0.1416,
+     "gym": 0.0832
+    },
+    "baseline_source": "derived: params mission_mix_by_daypart (assumption, low confidence) weighted by the NTS hour shares of each daypart window 08-22",
+    "multipliers": {
+     "meal_deal": 0.4,
+     "top_up": 0.7,
+     "weekly_shop": 1.8,
+     "treat": 1.3,
+     "gym": 0.8
+    },
+    "multipliers_source": "assumption: car-borne big shop; 'treat' includes the family after-school trip (params after_school_treat_uplift)",
+    "note": "'treat' covers the family after-school trip (params 15-17 window); missions use the params keys so the ops engine can consume them"
+   },
+   "persona_weights": {
+    "upf_avoider_parent": 0.174,
+    "novelty_seeker_tiktok": 0.1636,
+    "glp1_small_appetite": 0.1087,
+    "frugal_unit_price": 0.0783,
+    "ai_delegator": 0.0652,
+    "allergen_coeliac": 0.0652,
+    "eco_low_chemical": 0.0652,
+    "habit_loyalist_shrinkflation_angry": 0.0652,
+    "protein_sceptic_gimmick_reactant": 0.0652,
+    "vegan_ethical": 0.0652,
+    "protein_gym": 0.0592,
+    "meal_deal_office": 0.0249
+   },
+   "persona_weights_source": {
+    "rule": "derived: weight(persona) = mission_mix[persona.mission] / (number of personas with that mission) x multiplier, renormalised. persona.mission from data/personas/lens/<archetype>.json",
+    "multipliers": {
+     "upf_avoider_parent": 1.6,
+     "frugal_unit_price": 1.2,
+     "meal_deal_office": 0.5
+    },
+    "multipliers_source": "assumption: families with children dominate retail-park big shops; value-seeking on big baskets",
+    "dominant": [
+     "upf_avoider_parent",
+     "novelty_seeker_tiktok",
+     "glp1_small_appetite"
+    ]
+   }
+  }
+ ]
+}

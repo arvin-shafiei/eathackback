@@ -541,6 +541,9 @@ ROW_NAMES = {"1": "top", "2": "eye", "3": "middle", "4": "lower", "5": "bottom"}
 # challengers top/middle), extended to 5 rows; tables/racks with fewer rows use the same order filtered to their rows.
 ROW_PREF = {"incumbent": [2, 3, 1, 4, 5], "own_label": [4, 5, 3, 2, 1], "challenger": [1, 3, 2, 4, 5]}
 FACING_WEIGHT = {"incumbent": 2.0, "own_label": 1.5, "challenger": 1.0}  # assumption: leaders hold more facings
+# assumption: perimeter (chilled / produce / bakery) fixtures are sized for at most 4 facings per SKU on average; the
+# centre store is fixed by the aisle count and runs higher. Without the cap the chilled racetrack would be ~165 m long.
+F_PERIM = 4.0
 FMAX = 14  # assumption: no SKU gets more than 14 facings on one shelf (avoids one SKU walling a bay)
 
 # Department catalogue (names follow UK superstore signage conventions; assumption, not a cited planogram).
@@ -736,10 +739,13 @@ def build_format(fid, spec, prods):
     perim = [d for d in depts if d["kind"] not in ("centre", "frozen", "bws")]
     N = spec["centre_aisles"]
     cap = lambda d: unit_shape(d["fixture"], spec)["shelf_width_cm"] * FIXTURES[d["fixture"]]["rows"]  # noqa: E731
-    sides = alloc(2 * N, {d["id"]: need[d["id"]] / cap(d) for d in centre})
+    # BWS (alcohol-free range only, ~18 SKUs) gets exactly one side; the rest share the remaining sides by need
+    fixed = {d["id"]: 1 for d in centre if d["kind"] == "bws"}
+    sides = {**fixed, **alloc(2 * N - len(fixed), {d["id"]: need[d["id"]] / cap(d) for d in centre if d["id"] not in fixed})}
     f_centre = sum(sides[d["id"]] * cap(d) for d in centre) / sum(need[d["id"]] for d in centre)
     # perimeter fixtures sized so their average facings match the centre store (same space-to-range ratio)
-    n_perim = {d["id"]: max(math.ceil(len(d["cats"]) / FIXTURES[d["fixture"]]["rows"]), round(need[d["id"]] * f_centre / cap(d))) for d in perim}
+    f_perim = min(f_centre, F_PERIM)
+    n_perim = {d["id"]: max(math.ceil(len(d["cats"]) / FIXTURES[d["fixture"]]["rows"]), round(need[d["id"]] * f_perim / cap(d))) for d in perim}
 
     # ---- units in walk order
     units, seq = [], 0
@@ -779,6 +785,7 @@ def build_format(fid, spec, prods):
             unplaced += [p["code"] for p in ps]
             continue
         target = math.ceil(len(ps) / len(cs))
+        base_n = len(ps) // len(cs)
         order = sorted(ps, key=lambda p: ({"incumbent": 0, "own_label": 1, "challenger": 2}.get(p["role"], 3), -(p.get("scans") or 0), p["code"]))
         for p in order:
             pref = [r for r in ROW_PREF.get(p["role"], ROW_PREF["challenger"])]
@@ -789,7 +796,8 @@ def build_format(fid, spec, prods):
             if not ok:
                 unplaced.append(p["code"])
                 continue
-            s = min(ok, key=lambda s: (pref.index(s["row"]) if s["row"] in pref else 9, len(s["products"]), s["unit"]["id"]))
+            # balance first (every row gets at least floor(n/rows) SKUs so no shelf is left empty), then role row preference
+            s = min(ok, key=lambda s: (len(s["products"]) >= base_n, pref.index(s["row"]) if s["row"] in pref else 9, len(s["products"]), s["unit"]["id"]))
             s["products"].append(p)
             s["used"] += p["width_cm"]
     # ---- facings fill + stock
@@ -846,7 +854,7 @@ def place(fid, spec, units, depts, sides, n_perim):
     if run_len > back_avail + right_avail(D0):
         D = D0 + (run_len - back_avail - right_avail(D0)) + 0.5
     D = round(D, 1)
-    promo_floor = round(D - D0, 1)
+    promo_floor = max(0.0, round(D - D0, 1))
 
     # centre aisles: numbered back bank first (1..C, left->right), front bank last, so the highest numbers (frozen,
     # BWS) sit at the front-right next to the tills
@@ -901,10 +909,6 @@ def place(fid, spec, units, depts, sides, n_perim):
             extra += 1
             u.update({"aisle": extra, "aisle_number": None, "side": "L", "bay": 0, "perimeter": True})
         u.setdefault("facing", "-x")
-    # express-style perimeter freezer (no aisle): park it on the right wall nearest the tills
-    for u in units:
-        if u["zone"] == "perimeter" and u["fixture"] == "freezer_doors" and u.get("wall") == "right":
-            pass
     return {"W": W, "D": D, "D0": round(D0, 1), "promo_floor_m": promo_floor, "left": left, "xc0": xc0, "pitch": pitch, "C": C,
             "bank_z": bank_z, "aisle_xy": aisle_xy, "produce_z1": round(produce_z1, 2), "bakery_z1": round(bakery_z1, 2), "x_e1": x_e1,
             "chilled_run_m": round(run_len, 1)}
@@ -1132,7 +1136,7 @@ def norm_log_scans(ps):
 def range_for(fid, cat):
     """assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens
     (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or
-    own-label). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy)."""
+    own-label) -> now: 40% of each role per category by popularity (keeps the role mix). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy)."""
     if fid == "superstore":
         return list(cat)
     out = []
@@ -1144,9 +1148,11 @@ def range_for(fid, cat):
         if fid == "express":
             n = EXPRESS_QUOTA.get(c, 0)
             key = lambda p: -(0.5 * pop[p["code"]] + 0.5 * p["lens_grades"]["meal_deal_office"]["score"])  # noqa: E731
-        else:
-            n = max(6, math.ceil(METRO_SHARE * len(ps)))
-            key = lambda p: -(0.6 * pop[p["code"]] + 0.4 * (p["role"] in ("incumbent", "own_label")))  # noqa: E731
+        else:  # metro: 40% of each role within the category (keeps the challenger/incumbent/own-label mix), by popularity
+            for role in ("incumbent", "own_label", "challenger"):
+                rp = [p for p in ps if p["role"] == role]
+                out += sorted(rp, key=lambda p: (-pop[p["code"]], p["code"]))[:max(1 if rp else 0, round(METRO_SHARE * len(rp)))]
+            continue
         out += sorted(ps, key=lambda p: (key(p), p["code"]))[:n]
     return out
 

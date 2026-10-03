@@ -62,7 +62,7 @@ export function resolveAt(cfg: StoreConfig, at: At | undefined, spills?: OpsMinu
   if (typeof at === 'object') return at;
   const P = storePlan(cfg);
   if (at === 'stockroom') return { x: P.stockroom.door.x + 1.4, z: P.stockroom.door.z + (role === 'cleaner' ? 1 : 0) };
-  if (at === 'office') return { x: P.stockroom.door.x - 1.6, z: P.stockroom.door.z - 1.5 };
+  if (at === 'office') return { x: P.stockroom.door.x - 1.6, z: P.stockroom.door.z + 1.5 };
   if (at === 'cafe') return { x: P.cafe.counter.x + 1.9, z: P.cafe.counter.z + 0.4 };
   if (at.startsWith('spill:')) { const sp = spills?.find((s) => s.id === at.slice(6)); const p = sp ? spillPos(cfg, sp.at) : null; return p ? { x: p.x + 0.7, z: p.z } : null; }
   const lane = P.lanes.find((l) => l.id === at);

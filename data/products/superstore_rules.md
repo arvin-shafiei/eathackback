@@ -145,7 +145,11 @@ The walk order is:
 - Each aisle has two sides (`L`, `R`) and each side is one unit.
 - Sides are shared out among the centre departments (ambient, frozen, BWS) by largest remainder, in proportion to `Σ single-facing width / side capacity`, with at least 1 side each. A department may therefore share an aisle with its neighbour, and the aisle sign lists both.
 
-**Perimeter fixtures** (produce tables, bakery, food to go, chilled wall) are sized so their average facings match the centre store. The rule is `units = need_cm × space_to_range_ratio / unit_capacity`, with at least enough rows for one per category. They are then laid along the walls in walk order.
+**Perimeter fixtures** (produce tables, bakery, food to go, chilled wall) are sized by the rule `units = need_cm × min(space_to_range_ratio, F_PERIM = 4) / unit_capacity`, with at least enough rows for one per category. They are then laid along the walls in walk order.
+
+The ratio is set by the centre store, and the cap of 4 is an *assumption*: without it the chilled racetrack would be about 165 m long. As a result, perimeter facings average about 4 and centre facings about 7.
+
+BWS gets exactly **1 side**, because 18 alcohol-free SKUs cannot fill more.
 
 If the chilled run is longer than the back wall plus the right wall, the store is made deeper. The extra depth becomes **promo/seasonal floor** (`footprint_m.promo_seasonal_floor_depth_m`), as in real Extra-format stores.
 
@@ -173,7 +177,7 @@ If the chilled run is longer than the back wall plus the right wall, the store i
 | `produce_tables` | 3 tiers | 120 cm (2 crates) | 40 cm | tables and crates, **not shelves** |
 | `bakery_counter` | 4 | 100 cm | 40 cm | bread racks + counter |
 
-**Why the aisles are short (honest).** A real superstore ranges about 25–40k SKUs (*assumption*) on aisles of about 20 m. Ours ranges about 2.6k, so a centre side is 3 bays (3 m). With longer aisles, every SKU would need roughly 7× the facings. `FORMATS[...]["bays_per_side"]` lengthens the aisles, and facings scale with it.
+**Why the aisles are short (honest).** A real superstore ranges about 25–40k SKUs (*assumption*) on aisles of about 20 m. Ours ranges 2,638, so a centre side is 3 bays (3 m), and the mean is still 5.7 facings per SKU in the superstore. Longer aisles would multiply facings proportionally. `FORMATS[...]["bays_per_side"]` lengthens the aisles, and facings scale with it.
 
 ### New config keys (`store_xl.config.json` schema, extended)
 
@@ -207,17 +211,37 @@ If the chilled run is longer than the back wall plus the right wall, the store i
 ### Ranges per format
 
 - **superstore:** the whole catalog.
-- **metro:** *assumption:* the top 40% per category (at least 6) by `0.6·popularity + 0.4·[incumbent or own label]`.
+- **metro:** *assumption:* 40% of each role (incumbent, own label, challenger) within each category, by popularity, which keeps the role mix.
 - **express:** the `EXPRESS_QUOTA` count per category. *Assumption:* the author's convenience-range estimate of about 330 lines; IGD/Kantar range data was not reachable. Lines are ranked by `0.5·popularity + 0.5·meal_deal_office lens score`.
 
 In both cases, popularity = `log1p(OFF scans)` normalised within the category, with OFF scans used as a popularity proxy.
 
 Express merges departments onto fewer fixtures (`EXPRESS_DEPTS`): one chilled drinks wall, one dairy-cheese-deli wall, one ready-meals-and-desserts wall, two grocery aisles (snacks; food cupboard) and a wall freezer by the tills. *Assumption: UK convenience layout.* Metro puts the 8 alcohol-free SKUs in the drinks aisle, because 8 lines cannot fill a BWS bay.
 
+## Results (last run)
+
+**Catalog:** 2,638 SKUs across 36 categories.
+
+| split | counts |
+|---|---|
+| curation | 144 curated + 336 auto_xl (the XL base, unchanged) + 2,158 auto_superstore |
+| role | 1,057 challenger / 884 incumbent / 697 own label |
+| per category | XL categories 65 each; new categories 80 each, except `low_no_alcohol` at 18 (the whole clean pool) |
+
+**Formats:**
+
+| format | units | slots | SKUs placed | facings (mean) | fill ratio mean / min / p5 | footprint |
+|---|---|---|---|---|---|---|
+| express | 12 | 57 | 343 / 343 | 3.7 | 0.983 / 0.935 / 0.957 | 22 × 26 m |
+| metro | 25 | 120 | 1,053 / 1,053 | 3.5 | 0.988 / 0.942 / 0.968 | 40 × 27 m |
+| superstore | 107 (72 centre sides + 35 perimeter) | 519 | 2,638 / 2,638 | 5.7 | 0.986 / 0.932 / 0.957 | 91 × 44 m, incl. 9.3 m promo floor |
+
+`python scripts/scale_superstore.py` prints the full summary.
+
 ## 8. Planogram: shelves fully filled
 
 1. **Rows to categories.** Within a department, in walk order, each category gets rows in proportion to its total single-facing width (largest remainder, at least 1). Rows are filled sequentially unit by unit, top to bottom (sequential blocking).
-2. **Products to rows.** The rows a category gets have a balanced target count of `ceil(n / rows)`. Each product goes to the first row that fits it, by role preference:
+2. **Products to rows.** The rows a category gets are balanced first: every row gets at least `floor(n / rows)` SKUs, so no shelf is left empty, and none gets more than `ceil(n / rows)`. Within that, each product goes to the first row that fits it, by role preference:
 
    | role | row order |
    |---|---|

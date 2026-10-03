@@ -28,7 +28,8 @@ const storeDir = path.join(ROOT, 'data', 'store');
 for (const f of ['store.config.json', 'planogram.json']) {
   copy(path.join(storeDir, f), path.join(OUT, f)) || copy(path.join(SIMFX, f), path.join(OUT, f));
 }
-if (fs.existsSync(storeDir)) for (const f of fs.readdirSync(storeDir)) if (f.endsWith('.json') && !['store.config.json', 'planogram.json'].includes(f)) copy(path.join(storeDir, f), path.join(OUT, f));
+// (stores.json is the generator's named-store list: it feeds the picker below, never overwrites public/data/stores.json)
+if (fs.existsSync(storeDir)) for (const f of fs.readdirSync(storeDir)) if (f.endsWith('.json') && !['store.config.json', 'planogram.json', 'stores.json'].includes(f)) copy(path.join(storeDir, f), path.join(OUT, f));
 copy(path.join(ROOT, 'data', 'products', 'catalog.json'), path.join(OUT, 'catalog.json')) || copy(path.join(SIMFX, 'catalog.json'), path.join(OUT, 'catalog.json'));
 if (!copy(path.join(ROOT, 'data', 'personas', 'personas.json'), path.join(OUT, 'personas.json'))) {
   const dir = path.join(SIMFX, 'personas');
@@ -61,19 +62,62 @@ const fixtures = realRuns.length ? [] : existing.filter((r) => r.fixture && fs.e
 realRuns.sort((a, b) => String(b.created).localeCompare(String(a.created)));
 fs.writeFileSync(idxPath, JSON.stringify([...realRuns, ...fixtures], null, 1));
 
-// ---- XL store (data/store/store_xl.config.json + planogram_xl.json + data/products/catalog_xl.json) → public/data/xl/
-const xlCfg = path.join(storeDir, 'store_xl.config.json');
+// ---- store picker (public/data/stores.json): standard, xl, every format in data/store/formats, named stores, fixtures
+//   data/store/store_xl.config.json + planogram_xl.json + data/products/catalog_xl.json      → public/data/xl/
+//   data/store/formats/<f>.config.json + planogram_<f>.json + catalog_<f>|superstore.json  → public/data/<f>/
+//   data/store/stores.json (named example stores: {id, name|label, format}) → extra picker rows pointing at <format>/
 const storesPath = path.join(OUT, 'stores.json');
-let stores = []; try { stores = JSON.parse(fs.readFileSync(storesPath, 'utf8')); } catch { stores = []; }
-if (!stores.some((s) => s.id === 'standard')) stores.unshift({ id: 'standard', dir: '', label: 'standard store', fixture: false });
+let prev = []; try { prev = JSON.parse(fs.readFileSync(storesPath, 'utf8')); } catch { prev = []; }
+if (!Array.isArray(prev)) prev = [];
+const real = [{ id: 'standard', dir: '', label: 'standard store', fixture: false }];
+const xlCfg = path.join(storeDir, 'store_xl.config.json');
 if (fs.existsSync(xlCfg)) {
   fs.mkdirSync(path.join(OUT, 'xl'), { recursive: true });
   const ok = copy(xlCfg, path.join(OUT, 'xl', 'store.config.json'));
   copy(path.join(storeDir, 'planogram_xl.json'), path.join(OUT, 'xl', 'planogram.json'));
   copy(path.join(ROOT, 'data', 'products', 'catalog_xl.json'), path.join(OUT, 'xl', 'catalog_extra.json'));
-  if (ok && fs.existsSync(path.join(OUT, 'xl', 'planogram.json'))) { stores = stores.filter((s) => s.id !== 'xl'); stores.splice(1, 0, { id: 'xl', dir: 'xl', label: 'xl store', fixture: false }); }
+  if (ok && fs.existsSync(path.join(OUT, 'xl', 'planogram.json'))) real.push({ id: 'xl', dir: 'xl', label: 'xl store', fixture: false });
 }
+const fmtDir = path.join(storeDir, 'formats');
+const FORMAT_ORDER = ['express', 'metro', 'superstore'];
+const formats = [];
+if (fs.existsSync(fmtDir)) {
+  const found = fs.readdirSync(fmtDir).map((f) => /^(.+)\.config\.json$/.exec(f)?.[1]).filter(Boolean);
+  found.sort((a, b) => ((FORMAT_ORDER.indexOf(a) + 1) || 99) - ((FORMAT_ORDER.indexOf(b) + 1) || 99) || a.localeCompare(b));
+  for (const f of found) {
+    const id = f.replace(/[^\w-]/g, '_');
+    const dst = path.join(OUT, id);
+    fs.mkdirSync(dst, { recursive: true });
+    const ok = copy(path.join(fmtDir, `${f}.config.json`), path.join(dst, 'store.config.json'));
+    const plan = copy(path.join(fmtDir, `planogram_${f}.json`), path.join(dst, 'planogram.json')) || copy(path.join(storeDir, `planogram_${f}.json`), path.join(dst, 'planogram.json'));
+    const prodDir = path.join(ROOT, 'data', 'products');
+    copy(path.join(prodDir, `catalog_${f}.json`), path.join(dst, 'catalog_extra.json')) || copy(path.join(prodDir, 'catalog_superstore.json'), path.join(dst, 'catalog_extra.json'));
+    if (!ok || !plan) { console.warn(`skip format ${f}: missing config or planogram`); continue; }
+    let label = `${f} store`;
+    try { const c = JSON.parse(fs.readFileSync(path.join(dst, 'store.config.json'), 'utf8')); if (typeof c.label === 'string') label = c.label; } catch { /* validated by copy */ }
+    formats.push(id);
+    real.push({ id, dir: id, label, fixture: false, format: f });
+  }
+}
+// named example stores from the generator, each rendered with its format's layout
+try {
+  const named = JSON.parse(fs.readFileSync(path.join(storeDir, 'stores.json'), 'utf8'));
+  const list = Array.isArray(named) ? named : Array.isArray(named?.stores) ? named.stores : [];
+  for (const s of list) {
+    const fmt = String(s?.format ?? '').replace(/[^\w-]/g, '_');
+    const id = String(s?.id ?? '').replace(/[^\w-]/g, '_');
+    if (!id || !formats.includes(fmt) || real.some((r) => r.id === id)) continue;
+    real.push({ id, dir: fmt, label: String(s.label ?? s.name ?? id).toLowerCase(), fixture: false, format: fmt });
+  }
+} catch { /* no named stores yet */ }
+// fixture layouts already on disk (npm run fixtures*, scripts/make_super_fixture.py)
+const FIXTURES = [['fixtures6', '6 aisles (fixture)'], ['fixturesxl', 'xl store (fixture)'], ['fixturessuper', 'superstore (fixture)']];
+const fixtureRows = [];
+for (const [id, label] of FIXTURES) if (fs.existsSync(path.join(OUT, id, 'store.config.json'))) fixtureRows.push({ id, dir: id, label: prev.find((p) => p.id === id)?.label ?? label, fixture: true });
+for (const p of prev) if (p.fixture && !fixtureRows.some((f) => f.id === p.id) && fs.existsSync(path.join(OUT, p.dir, 'store.config.json'))) fixtureRows.push(p);
+const stores = [...real, ...fixtureRows];
 fs.writeFileSync(storesPath, JSON.stringify(stores, null, 1));
+console.log(`stores.json: ${stores.map((s) => s.id).join(', ')}`);
 
 // ---- dashboards + ops: copy whole folders of json and write an index.json per folder
 const syncDir = (src, dst, filter = (f) => f.endsWith('.json') && f !== 'index.json') => {

@@ -82,10 +82,15 @@ export function Checkout({ cfg, live, products }: Props) {
     if (e.type === 'pay') replayBusy.current[e.lane] = performance.now() / 1000 + 2;
   }), []);
 
-  const exitPath = (from: XZ, k: number): XZ[] => {
-    const ex = P.exits.reduce((b, e) => (Math.abs(e.x - from.x) < Math.abs(b.x - from.x) ? e : b), P.exits[0] ?? { x: 0, z: P.bounds.zMax });
+  const selfMaxX = selfLanes.length ? Math.max(...selfLanes.map((l) => l.x)) : 0;
+  const exitPath = (from: XZ, k: number, self: boolean): XZ[] => {
     const j = ((k % 3) - 1) * 0.35;
-    return [from, { x: from.x, z: P.checkoutZ + 2.6 + j }, { x: ex.x + j, z: ex.z - 1.6 }, { x: ex.x + j, z: ex.z + 2.5 }];
+    // self-checkout: out along the corridor between the two kiosk rows, then round the end of the pod
+    const lead: XZ[] = self ? [from, { x: from.x, z: P.checkoutZ }, { x: selfMaxX + 1.0, z: P.checkoutZ }] : [from];
+    const last = lead[lead.length - 1];
+    const ex = P.exits.reduce((b, e) => (Math.abs(e.x - last.x) < Math.abs(b.x - last.x) ? e : b), P.exits[0] ?? { x: 0, z: P.bounds.zMax });
+    const outZ = Math.max(P.checkoutZ + 2.6, (P.bank?.z1 ?? P.checkoutZ + 1.75) + 0.9) + j;
+    return [...lead, { x: last.x, z: outZ }, { x: ex.x + j, z: ex.z - 1.6 }, { x: ex.x + j, z: ex.z + 2.5 }];
   };
 
   function spawn(s: LaneSim, t: number, k: number) {
@@ -105,7 +110,7 @@ export function Checkout({ cfg, live, products }: Props) {
     const tPay0 = scans[n - 1] + 0.5;
     const tPayEnd = tPay0 + PAY;
     const payAt = self ? L.stand : { x: L.stand.x, z: L.bag.z - 0.35 };
-    const c: Cust = { t0: t, n, mats, color: Math.floor(hash(`${L.id}${k}c`) * PALETTE.length), from, scans, unload, tWalk, tPay0, tPayEnd, tLeaveEnd: tPayEnd + LEAVE, approved: false, beeped: 0, exitPath: exitPath(payAt, k) };
+    const c: Cust = { t0: t, n, mats, color: Math.floor(hash(`${L.id}${k}c`) * PALETTE.length), from, scans, unload, tWalk, tPay0, tPayEnd, tLeaveEnd: tPayEnd + LEAVE, approved: false, beeped: 0, exitPath: exitPath(payAt, k, self) };
     s.custs.push(c);
   }
 

@@ -45,11 +45,11 @@ export function insideCarrier(c: Carrier, lp: THREE.Vector3) {
 export function createCarrier(world: World, R: Rapier, owner: RigidBody, carrier: Carrier, parkY: number, own: (c: Collider) => void): RigidBody | null {
   if (carrier === 'none') return null;
   const tr = carrier === 'trolley';
-  const cb = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, parkY, 1).setGravityScale(0).setLinearDamping(0.6).setAngularDamping(3).setCanSleep(false).setEnabled(false));
+  const cb = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, parkY, 1).setGravityScale(0).setLinearDamping(0.6).setAngularDamping(3).setCanSleep(false));
   cb.setEnabledTranslations(true, false, true, false);
   cb.setEnabledRotations(false, true, false, false);
   const add = (hx: number, hy: number, hz: number, x: number, y: number, z: number) => {
-    own(world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setDensity(tr ? 30 : 15).setFriction(0.7).setRestitution(0.25).setCollisionGroups(GROUP.carrier), cb));
+    own(world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setDensity(tr ? 30 : 15).setFriction(0.7).setRestitution(0.25).setCollisionGroups(0), cb));
   };
   if (tr) {
     const { hx, hz, floorY, wallH } = TROLLEY;
@@ -67,6 +67,14 @@ export function createCarrier(world: World, R: Rapier, owner: RigidBody, carrier
   const j = world.createImpulseJoint(R.JointData.fixed({ x: anchor[0], y: anchor[1], z: anchor[2] }, { w: 1, x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { w: 1, x: 0, y: 0, z: 0 }), owner, cb, true);
   j.setContactsEnabled(false);
   return cb;
+}
+
+/** collisions on/off for every collider of a body (instead of rapier's setEnabled, which panics the 0.14 solver when
+ *  toggled on jointed bodies near kinematic ones). Off = collision groups 0: touches nothing. */
+export function setSolid(rb: RigidBody | null, group: number | null) {
+  if (!rb) return;
+  const n = rb.numColliders();
+  for (let i = 0; i < n; i++) rb.collider(i).setCollisionGroups(group ?? 0);
 }
 
 /** settled packs welded into carriers, keyed by beat id */

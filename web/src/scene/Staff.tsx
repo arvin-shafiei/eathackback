@@ -10,7 +10,7 @@ import { useFrame } from '@react-three/fiber';
 import { useBeforePhysicsStep, useRapier } from '@react-three/rapier';
 import type { RigidBody } from '@dimforge/rapier3d-compat';
 import type { Planogram, StoreConfig } from '../types';
-import { G, gondolaX, storePlan } from '../layout';
+import { productWorld, routeBetween, storePlan } from '../layout';
 import { resolveAt, spillPos, type OpsMinute, type OpsStaff } from '../ops';
 import { inkHull } from './parts';
 import { canvasTex } from './textures';
@@ -44,31 +44,19 @@ export const INKM = new THREE.MeshBasicMaterial({ color: INK });
 export interface Walker { pos: THREE.Vector3; yaw: number; path: { x: number; z: number }[]; goal: string; body: RigidBody | null; moving: boolean; task: string; work: number }
 
 type XZ = { x: number; z: number };
-/** gondola-aware waypoints: leave an aisle by the nearest cross-aisle, go round the tills by the side corridor,
- *  use the stockroom door. presentation only */
-export function routeStaff(cfg: StoreConfig, a: XZ, b: XZ) {
+/** staff paths: the layout's fixture-aware router (around gondolas, tills, café, wall runs), plus the stockroom door
+ *  (the stockroom sits outside the sales floor). presentation only */
+export function routeStaff(cfg: StoreConfig, a: XZ, b: XZ): XZ[] {
   const P = storePlan(cfg);
-  const pts: XZ[] = [];
-  const inStock = (p: XZ) => p.x > P.bounds.xMax + 0.1;
-  const inAisle = (p: XZ) => p.z > P.z0 - 0.3 && p.z < P.z1 + 0.3 && Math.abs(p.x) < Math.abs(gondolaX(cfg, cfg.aisles)) + G.spacing;
-  const walkway = (x: number) => { let w = 0; for (let k = 1; k <= cfg.aisles; k++) if (x > gondolaX(cfg, k)) w = k; return w; };
-  const behindTills = (p: XZ) => p.z > P.checkoutZ - 2.2;
   const door = P.stockroom.door;
-  let cur = a;
-  const push = (p: XZ) => { pts.push(p); cur = p; };
-  const cross = (p: XZ, q: XZ) => (Math.abs(p.z - P.crossFront) + Math.abs(q.z - P.crossFront) < Math.abs(p.z - P.crossBack) + Math.abs(q.z - P.crossBack) ? P.crossFront : P.crossBack);
-  if (inStock(cur)) { push({ x: door.x + 0.9, z: door.z }); push({ x: door.x - 1, z: door.z }); }
-  const target = inStock(b) ? { x: door.x - 1, z: door.z } : b;
-  if (inAisle(cur) && !(inAisle(target) && walkway(cur.x) === walkway(target.x))) push({ x: cur.x, z: cross(cur, target) });
-  if (behindTills(target) !== behindTills(cur)) {
-    const side = P.bounds.xMax - 1.1;
-    push({ x: side, z: cur.z > P.checkoutZ - 2.2 ? cur.z : Math.min(cur.z, P.crossBack) });
-    push({ x: side, z: target.z });
-  } else if (inAisle(target) && !(inAisle(cur) && walkway(cur.x) === walkway(target.x))) {
-    push({ x: target.x, z: cross(cur, target) });
-  }
-  push(target);
-  if (inStock(b)) { push({ x: door.x + 0.9, z: door.z }); push(b); }
+  const inStock = (p: XZ) => p.x > P.bounds.xMax + 0.1;
+  const inside = { x: door.x - 1, z: door.z }, outside = { x: door.x + 0.9, z: door.z };
+  const pts: XZ[] = [];
+  let from = a;
+  if (inStock(a)) { pts.push(outside, inside); from = inside; }
+  const to = inStock(b) ? inside : b;
+  try { pts.push(...routeBetween(cfg, from, to, 0.3)); } catch { pts.push(to); }
+  if (inStock(b)) pts.push(outside, b);
   return pts;
 }
 
@@ -292,8 +280,8 @@ export function StaffCrew({ cfg, roster, live, planogram, walkersOut }: CrewProp
       // face the work
       if (at.startsWith('spill:')) { const look = resolveAt(cfg, at, spills); if (look) w.yaw = Math.atan2(look.x - 0.7 - w.pos.x, look.z - w.pos.z); }
       else if (planogram[at]) {
-        const shelf = resolveAt(cfg, at, spills, s.role); // stand point; shelf face is toward the gondola
-        if (shelf) { const gx = gondolaX(cfg, cfg.units.find((u) => at.startsWith(`${u.id}-`))?.aisle ?? 1); w.yaw = Math.atan2(gx - w.pos.x, 0); }
+        const shelf = productWorld(cfg, planogram, at, null);
+        if (shelf) w.yaw = Math.atan2(shelf.x - w.pos.x, shelf.z - w.pos.z);
       }
       // restockers refill the slot pack by pack while the cage empties
       if (s.role === 'restocker' && w.task === 'restock' && planogram[at]) {

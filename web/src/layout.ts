@@ -830,6 +830,7 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       const c = sp.cafe;
       const door = { x: c.x + c.w / 2 + 0.9, z: lobby, walkway: null };
       go(door);
+      go({ x: c.x + c.w / 2 - 0.6, z: lobby, walkway: null });
       go({ x: c.x + c.w / 2 - 0.6, z: c.counter.z + 1.0, walkway: null });
       go({ x: c.counter.x, z: c.counter.z + 0.8, walkway: null });
       hold(1.2, 'cafe', Math.PI, 'counter');
@@ -839,6 +840,7 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       seatFree[si] = t;
       tl.cafeSeat = si;
       go({ x: c.x + c.w / 2 - 0.6, z: Math.min(sp.bounds.zMax - 1.2, seat.z + 1), walkway: null }, 'exit');
+      go({ x: c.x + c.w / 2 - 0.6, z: lobby, walkway: null }, 'exit');
       go({ ...door }, 'exit');
     }
     const ex = sp.exits.reduce((b, e) => (Math.abs(e.x - cur.x) < Math.abs(b.x - cur.x) ? e : b), sp.exits[0]);
