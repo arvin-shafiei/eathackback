@@ -1,26 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Planogram, Product, RearrangeCheck, RearrangeMove, RearrangePlan, RearrangeUnit, StoreConfig, Unit } from '../types';
+import type { Planogram, RearrangeCheck, RearrangeMove, RearrangePlan, SpotRef, StoreConfig, Unit } from '../types';
 import { productWorld, unitLocalToWorld } from '../layout';
 import { moveFx, type MoveArrow } from '../scene/MoveFx';
 import { api } from '../api';
-import { catColor, catLabel, prodLabel } from '../theme';
+import { prodLabel } from '../theme';
 import type { RearrangeProps } from './featureProps';
-import { Src, Sticker } from './bits';
+import { Src } from './bits';
 import './rearrange.css';
 
 // assumption: sample size picked for a hackathon demo, not from a power calculation
 const TEST_AGENTS = 150;
 /** shoppers the plan has not seen: two seeds away from the run it learned from */
 const testSeeds = (learned: number | undefined) => [(learned ?? 1) + 100, (learned ?? 1) + 101];
-const MOVES_SHOWN = 4;
+const MOVES_SHOWN = 5;
 
 type Objective = RearrangePlan['objective'];
 const GOALS: { id: Objective; label: string }[] = [{ id: 'picks', label: 'more buys' }, { id: 'revenue', label: 'more revenue' }];
-const AMOUNTS: { id: string; label: string; max: number | null; title: string }[] = [
-  { id: 'light', label: 'light', max: 1, title: 'one swap per unit' },
-  { id: 'medium', label: 'medium', max: 3, title: 'up to three swaps per unit' },
-  { id: 'full', label: 'full', max: null, title: 'every swap that helps' },
-];
 
 interface Fail { msg: string; down: boolean }
 interface Job<T> { busy: boolean; data: T | null; err: Fail | null }
@@ -35,65 +30,48 @@ const lift = (x: number) => `${sign(x)}${pct(Math.abs(x))}`;
 // a store-wide change in buy rate is often under one point, so small values keep a second decimal
 const pts = (x: number) => { const v = Math.abs(x * 100); return `${sign(x)}${v < 1 ? v.toFixed(2) : v.toFixed(1)} pts`; };
 const plural = (n: number, one: string, many = `${one}s`) => `${n.toLocaleString()} ${n === 1 ? one : many}`;
-const unitOf = (slot: string) => slot.replace(/-r\d+$/, '');
-const spot = (s: RearrangeMove['from']) => `${s.row_name}, position ${s.pos + 1}`;
 
 export function RearrangePanel(props: RearrangeProps) {
   const { run, planogram, extraProducts, useLLM, busy, cfg } = props;
   const [objective, setObjective] = useState<Objective>('picks');
-  const [amount, setAmount] = useState('medium');
   const [plan, setPlan] = useState<Job<RearrangePlan>>(loading);
   const [check, setCheck] = useState<Job<RearrangeCheck>>(idle);
-  // before / after on the 3d shelves; every flip animates (ShelfFill flies the packs that change place)
-  const [view, setView] = useState<'before' | 'after'>('before');
-  const [seen, setSeen] = useState(false);
   const [sel, setSel] = useState<string | null>(null);
-  const [allArrows, setAllArrows] = useState(false);
+  const [shownN, setShownN] = useState(MOVES_SHOWN);
   const [collapsed, setCollapsed] = useState(false);
-  const [moving, setMoving] = useState(0);
   const gen = useRef(0);
   // extraProducts and the callbacks are fresh on every render; the effects read the latest without re-running for them
   const live = useRef({ planogram, extraProducts, onPreview: props.onPreview });
   live.current = { planogram, extraProducts, onPreview: props.onPreview };
   const scope = useMemo(() => JSON.stringify(planogram), [planogram]);
-  const maxSwaps = AMOUNTS.find((a) => a.id === amount)?.max ?? null;
 
   useEffect(() => {
     const id = ++gen.current;
     setPlan(loading);
     setCheck(idle);
-    setView('before'); setSeen(false); setSel(null);
-    api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps: maxSwaps })
+    setSel(null); setShownN(MOVES_SHOWN);
+    api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps: MAX_SWAPS })
       .then((data) => { if (gen.current === id) setPlan({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setPlan({ busy: false, data: null, err: fail(e) }); });
     return () => { gen.current++; };
-  }, [run.run_id, scope, objective, maxSwaps]);
+  }, [run.run_id, scope, objective]);
 
   const proposed = plan.data?.planogram ?? null;
-  useEffect(() => { live.current.onPreview(view === 'after' ? proposed : null); }, [view, proposed]);
+  // the shelves always show the store as it is now; the arrow points at where a product would go
+  useEffect(() => { live.current.onPreview(null); }, []);
   useEffect(() => () => { live.current.onPreview(null); moveFx.setArrows([]); }, []);
-  // "moving N products" chip while packs are in the air
-  useEffect(() => moveFx.on(() => {
-    setMoving(moveFx.last.moved);
-    const t = setTimeout(() => setMoving(0), 2600);
-    return () => clearTimeout(t);
-  }), []);
 
-  // top moves, biggest-lift units first; within a unit keep the planner's order
+  // biggest-lift units first; within a unit keep the planner's order
   const moves = useMemo(() => plan.data ? [...plan.data.units].sort((a, b) => b.lift_pct - a.lift_pct).flatMap((u) => u.moves) : [], [plan.data]);
-  const shown = moves.slice(0, allArrows ? ARROWS_ALL : TOP_MOVES);
+  const shown = moves.slice(0, shownN);
 
-  // 3d arrows: the selected move big (ring at its spot now, ghost where it goes), 'show all' adds small ones
+  // one arrow: the tapped move (ring where it is now, ghost box where it goes)
   useEffect(() => {
-    if (!proposed) { moveFx.setArrows([]); return; }
-    const list: MoveArrow[] = [];
-    for (const m of allArrows ? shown : shown.filter((x) => x.code === sel)) {
-      const a = arrowFor(cfg, planogram, proposed, m, m.code === sel);
-      if (a) list.push(a);
-    }
-    moveFx.setArrows(list);
+    const m = sel && proposed ? moves.find((x) => x.code === sel) : null;
+    const a = m && proposed ? arrowFor(cfg, planogram, proposed, m, true) : null;
+    moveFx.setArrows(a ? [a] : []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sel, allArrows, proposed, scope, cfg]);
+  }, [sel, proposed, scope, cfg]);
 
   const pick = (m: RearrangeMove) => {
     if (sel === m.code) { setSel(null); return; }
@@ -104,16 +82,6 @@ export function RearrangePanel(props: RearrangeProps) {
       moveFx.flyTo({ x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2, z: (a.from.z + a.to.z) / 2, fx: a.fx, fz: a.fz, dist: 3.4 + span * 0.9 });
     }
   };
-  const showWhere = () => {
-    if (!plan.data) return;
-    const u = [...plan.data.units].sort((a, b) => b.moves.length - a.moves.length)[0];
-    const m = u?.moves[0];
-    const w = m && productWorld(cfg, planogram, m.from.slot, null);
-    if (!w) return;
-    const f = frontOf(cfg, w.unit);
-    moveFx.flyTo({ x: w.x, y: 1, z: w.z, fx: f.x, fz: f.z, dist: 6 });
-  };
-  const show = (v: 'before' | 'after') => { setView(v); if (v === 'after') setSeen(true); };
 
   const runCheck = () => {
     if (!proposed) return;
@@ -123,14 +91,12 @@ export function RearrangePanel(props: RearrangeProps) {
       .then((data) => { if (gen.current === id) setCheck({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setCheck({ busy: false, data: null, err: fail(e) }); });
   };
-  // the preview stays on while the store re-runs, so the shelves don't fly back and forth; the new plan resets it
-  const apply = () => { if (proposed && seen) props.onApplyPlanogram(proposed, 'rearranged shelves'); };
+  const apply = () => { if (proposed) { setSel(null); props.onApplyPlanogram(proposed, 'rearranged shelves'); } };
 
-  void amount; void setAmount; // amount stays 'medium' (≤3 swaps per unit); the toggle was cut to keep the panel simple
   if (collapsed) {
     return (
       <button className="card rearrange ra-tab" onClick={() => setCollapsed(false)} aria-label="open rearrange panel">
-        <span>rearrange</span>{view === 'after' && <i className="ra-tab-dot" aria-hidden />}
+        <span>rearrange</span>
       </button>
     );
   }
@@ -142,38 +108,28 @@ export function RearrangePanel(props: RearrangeProps) {
         {plan.err && <ErrorNote err={plan.err} />}
         {!plan.busy && !plan.err && !plan.data && <p className="ra-tile ra-wait muted" role="status">no plan yet.</p>}
         {plan.data && <Summary plan={plan.data} />}
-        {plan.data && plan.data.moves > 0 && (
+        {plan.data && proposed && plan.data.moves > 0 && (
           <>
-            <section className="ra-stage">
-              {!seen ? (
-                <button className="btn btn-brand ra-showme" onClick={() => show('after')}>show me the new layout</button>
-              ) : (
-                <>
-                  <div className="seg ra-ba" role="group" aria-label="before or after">
-                    <button className={`seg-btn ${view === 'before' ? 'on' : ''}`} aria-pressed={view === 'before'} onClick={() => show('before')}>before</button>
-                    <button className={`seg-btn ${view === 'after' ? 'on' : ''}`} aria-pressed={view === 'after'} onClick={() => show('after')}>after</button>
-                  </div>
-                  <div className="ra-mini">
-                    <button className="link-btn" onClick={() => moveFx.replay()}>↻ replay</button>
-                    <button className="link-btn" onClick={showWhere}>show me where</button>
-                  </div>
-                </>
-              )}
-              {moving > 0 && <p className="ra-moving" role="status">shuffling {plural(moving, 'shelf spot')}…</p>}
-            </section>
-            <TopMoves moves={shown} total={moves.length} sel={sel} all={allArrows} onAll={setAllArrows} onPick={pick} onAnalytics={props.onPickProduct} />
+            <p className="ra-tm-h muted">tap a move to see an arrow in the store</p>
+            <ol className="ra-cards">
+              {shown.map((m, i) => (
+                <MoveCard key={m.code} n={i + 1} m={m} on={m.code === sel} cfg={cfg} before={planogram} after={proposed}
+                  onPick={() => pick(m)} onAnalytics={() => props.onPickProduct(m.code)} />
+              ))}
+            </ol>
+            {moves.length > shownN && (
+              <button className="link-btn ra-more" onClick={() => setShownN(shownN + MOVES_SHOWN)}>
+                show {Math.min(MOVES_SHOWN, moves.length - shownN)} more ({moves.length - shownN} left)
+              </button>
+            )}
             <div className="ra-btns">
-              <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy || !seen} title={seen ? 're-run the store on the new layout' : 'look at it first'}>
-                {busy ? 're-running…' : seen ? 'apply' : 'preview first'}
+              <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy} title="re-run the store on the new layout">
+                {busy ? 're-running…' : `do all ${plural(moves.length, 'move')}`}
               </button>
             </div>
             <details className="ra-how">
               <summary>test it with new shoppers</summary>
               <Actions check={check} useLLM={useLLM} busy={busy} seeds={testSeeds(run.seed)} onCheck={runCheck} />
-            </details>
-            <details className="ra-how">
-              <summary>see every shelf</summary>
-              <Units plan={plan.data} planogram={planogram} cfg={props.cfg} products={props.products} focus={props.focus} onPickProduct={props.onPickProduct} />
             </details>
           </>
         )}
@@ -183,8 +139,8 @@ export function RearrangePanel(props: RearrangeProps) {
   );
 }
 
-const TOP_MOVES = 5;
-const ARROWS_ALL = 12;
+// assumption: 'medium' plan size (up to three swaps per shelf unit) keeps the list short enough to act on
+const MAX_SWAPS = 3;
 
 /** the aisle-facing direction of a unit (local +z), world xz */
 function frontOf(cfg: StoreConfig, u: Unit) {
@@ -198,35 +154,56 @@ function arrowFor(cfg: StoreConfig, before: Planogram, after: Planogram, m: Rear
   return { from: { x: a.x, y: a.y, z: a.z }, to: { x: b.x, y: b.y, z: b.z }, fx: f.x, fz: f.z, main };
 }
 
-interface TopMovesProps {
-  moves: RearrangeMove[]; total: number; sel: string | null; all: boolean;
-  onAll: (v: boolean) => void; onPick: (m: RearrangeMove) => void; onAnalytics: (code: string) => void;
+/** a spot in words: aisle, side, shelf, height off the floor (metres, from the 3d layout), spot along the shelf, floor x/z */
+function placeOf(cfg: StoreConfig, plan: Planogram, s: SpotRef, code: string) {
+  const w = productWorld(cfg, plan, s.slot, code);
+  if (!w) return null;
+  return {
+    aisle: w.unit.aisle, side: w.unit.side === 'L' ? 'left' : 'right', unit: w.unit.id,
+    shelf: s.row, of: cfg.rows_per_unit, name: s.row_name, h: w.y - w.h / 2, spot: s.pos + 1, x: w.x, z: w.z,
+  };
+}
+type Place = NonNullable<ReturnType<typeof placeOf>>;
+
+function PlaceLine({ label, p }: { label: string; p: Place }) {
+  return (
+    <div className="ra-place">
+      <span className="ra-place-l">{label}</span>
+      <span>
+        <b>aisle {p.aisle}</b>, {p.side} side · <b>{p.name} shelf</b> ({p.shelf} of {p.of} from the top) · <b>{p.h.toFixed(2)} m</b> off the floor · spot {p.spot}
+        <small className="muted ra-xyz"> {p.unit} · x {p.x.toFixed(1)} m, z {p.z.toFixed(1)} m</small>
+      </span>
+    </div>
+  );
 }
 
-function TopMoves({ moves, total, sel, all, onAll, onPick, onAnalytics }: TopMovesProps) {
+interface MoveCardProps {
+  n: number; m: RearrangeMove; on: boolean; cfg: StoreConfig; before: Planogram; after: Planogram;
+  onPick: () => void; onAnalytics: () => void;
+}
+
+function MoveCard({ n, m, on, cfg, before, after, onPick, onAnalytics }: MoveCardProps) {
+  const from = placeOf(cfg, before, m.from, m.code), to = placeOf(cfg, after, m.to, m.code);
+  const dh = from && to ? to.h - from.h : 0;
   return (
-    <section className="ra-top-moves">
-      <p className="ra-tm-h muted">tap a move to see it in the store</p>
-      <ol>
-        {moves.map((m) => (
-          <li key={m.code} className={m.code === sel ? 'on' : ''}>
-            <button className="ra-tm-row" aria-pressed={m.code === sel} onClick={() => onPick(m)}>
-              <b>{prodLabel(m, m.code)}</b>
-              <span className="muted">{m.from.row_name === m.to.row_name ? `${m.from.row_name}, spot ${m.from.pos + 1} → ${m.to.pos + 1}` : `${m.from.row_name} → ${m.to.row_name}`}</span>
-            </button>
-            {m.code === sel && (
-              <p className="why">noticed {pct(m.notice_before)} → {pct(m.notice_after)}. {m.why}.{' '}
-                <button className="link-btn" onClick={() => onAnalytics(m.code)}>analytics</button></p>
-            )}
-          </li>
-        ))}
-      </ol>
-      {total > TOP_MOVES && (
-        <button className="link-btn ra-more" aria-pressed={all} onClick={() => onAll(!all)}>
-          {all ? 'fewer' : `show all arrows (top ${Math.min(ARROWS_ALL, total)})`}
-        </button>
+    <li className={`ra-card ${on ? 'on' : ''}`}>
+      <button className="ra-card-btn" aria-pressed={on} onClick={onPick}>
+        <span className="ra-card-n">{n}</span>
+        <span className="ra-card-body">
+          <b className="ra-card-name">{prodLabel(m, m.code)}</b>
+          {from && <PlaceLine label="now" p={from} />}
+          {to && <PlaceLine label="move to" p={to} />}
+          <span className="ra-card-sum">
+            {Math.abs(dh) >= 0.05 ? (dh > 0 ? `⬆ up ${dh.toFixed(2)} m` : `⬇ down ${(-dh).toFixed(2)} m`) : '↔ same height'}
+            {from && to && from.aisle !== to.aisle ? ` · from aisle ${from.aisle} to aisle ${to.aisle}` : ''}
+            {' · '}seen by {pct(m.notice_before)} → <b>{pct(m.notice_after)}</b> of shoppers who pass
+          </span>
+        </span>
+      </button>
+      {on && (
+        <p className="why">{m.why}. <button className="link-btn" onClick={onAnalytics}>analytics</button></p>
       )}
-    </section>
+    </li>
   );
 }
 
@@ -343,130 +320,6 @@ function CheckResult({ check }: { check: RearrangeCheck }) {
       <p>{check.method}</p>
       </details>
     </div>
-  );
-}
-
-interface UnitsProps {
-  plan: RearrangePlan; planogram: Planogram; cfg: StoreConfig; products: Record<string, Product>;
-  focus?: string; onPickProduct: (code: string) => void;
-}
-
-function Units({ plan, planogram, cfg, products, focus, onPickProduct }: UnitsProps) {
-  const focusUnit = useMemo(() => {
-    if (!focus) return null;
-    const slot = Object.keys(planogram).find((s) => planogram[s]?.products.includes(focus));
-    return slot ? unitOf(slot) : null;
-  }, [focus, planogram]);
-  const moved = plan.units.filter((u) => u.moves.length);
-  const ordered = [...moved.filter((u) => u.unit === focusUnit), ...moved.filter((u) => u.unit !== focusUnit)];
-  const alone = plan.units.length - moved.length;
-  return (
-    <>
-      {ordered.map((u) => (
-        <UnitTile key={u.unit} unit={u} before={planogram} after={plan.planogram} cfg={cfg} products={products}
-          open={u.unit === (focusUnit ?? ordered[0]?.unit)} focus={u.unit === focusUnit ? focus : undefined} onPickProduct={onPickProduct} />
-      ))}
-      {(alone > 0 || !!plan.no_data_units?.length) && (
-        <p className="ra-alone muted">
-          {alone > 0 && <>{plural(alone, 'unit')} left as they are. </>}
-          {!!plan.no_data_units?.length && <>{plural(plan.no_data_units.length, 'unit')} had no shoppers in this run.</>}
-        </p>
-      )}
-    </>
-  );
-}
-
-interface UnitTileProps {
-  unit: RearrangeUnit; before: Planogram; after: Planogram; cfg: StoreConfig; products: Record<string, Product>;
-  focus?: string; open: boolean; onPickProduct: (code: string) => void;
-}
-
-function UnitTile({ unit, before, after, cfg, products, focus, open, onPickProduct }: UnitTileProps) {
-  const [all, setAll] = useState(false);
-  const moved = useMemo(() => new Set(unit.moves.map((m) => m.code)), [unit.moves]);
-  const shown = all ? unit.moves : unit.moves.slice(0, MOVES_SHOWN);
-  return (
-    <details className="ra-tile ra-unit" open={open}>
-      <summary className="ra-unit-h"
-        title={`${unit.before} → ${unit.after} ${unit.value_unit}, predicted · ${pct(unit.reach)} of shoppers pass · learned from ${unit.picked} buys in ${unit.noticed} notices`}>
-        <h3>
-          <i className="dot" style={{ background: catColor(unit.category) }} aria-hidden />
-          {catLabel(unit.category)} <span className="muted">{unit.unit}</span>
-        </h3>
-        <div className="ra-unit-n">
-          <span className="muted">{plural(unit.moves.length, 'move')}</span>
-          <b className="ra-unit-lift">{lift(unit.lift_pct)}</b>
-        </div>
-      </summary>
-      <ShelfDiff unit={unit.unit} cfg={cfg} before={before} after={after} products={products} moved={moved} focus={focus} />
-      <ul className="ra-moves">
-        {shown.map((m) => <MoveRow key={m.code} move={m} isFocus={m.code === focus} onPick={onPickProduct} />)}
-      </ul>
-      {unit.moves.length > MOVES_SHOWN && (
-        <button className="link-btn ra-more" aria-expanded={all} onClick={() => setAll(!all)}>
-          {all ? `show first ${MOVES_SHOWN}` : `show all ${unit.moves.length}`}
-        </button>
-      )}
-    </details>
-  );
-}
-
-interface ShelfDiffProps {
-  unit: string; cfg: StoreConfig; before: Planogram; after: Planogram; products: Record<string, Product>;
-  moved: Set<string>; focus?: string;
-}
-
-function ShelfDiff({ unit, cfg, before, after, products, moved, focus }: ShelfDiffProps) {
-  const rows = Array.from({ length: cfg.rows_per_unit }, (_, i) => i + 1);
-  const hasFocus = !!focus && rows.some((r) => before[`${unit}-r${r}`]?.products.includes(focus));
-  const side = (title: string, plan: Planogram) => (
-    <figure className="ra-shelfset">
-      <figcaption>{title}</figcaption>
-      <div className="ra-gondola">
-        {rows.map((r) => {
-          const codes = plan[`${unit}-r${r}`]?.products ?? [];
-          return (
-            <div key={r} className="ra-shelf">
-              <span className="ra-rowname">{cfg.row_names[String(r)] ?? `row ${r}`}</span>
-              <span className="ra-prods">
-                {codes.map((c) => {
-                  const p = products[c];
-                  const cls = `ra-prod ${moved.has(c) ? 'is-moved' : ''} ${c === focus ? 'is-focus' : ''}`;
-                  return <span key={c} className={cls} title={`${prodLabel(p, c)}${moved.has(c) ? ' (moves)' : ''}`}>{p?.brand || p?.name || c}</span>;
-                })}
-                {!codes.length && <span className="ra-empty muted">empty shelf</span>}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </figure>
-  );
-  return (
-    <>
-      <div className="ra-diff">{side('now', before)}{side('proposed', after)}</div>
-      <p className="ra-key muted">
-        <span className="ra-prod is-moved">moves</span>
-        {hasFocus && <span className="ra-prod is-focus">your product</span>}
-      </p>
-    </>
-  );
-}
-
-function MoveRow({ move, isFocus, onPick }: { move: RearrangeMove; isFocus: boolean; onPick: (code: string) => void }) {
-  return (
-    <li className={`ra-move ${isFocus ? 'is-focus' : ''}`}>
-      <details>
-        <summary className="ra-move-line" title={`${spot(move.from)} → ${spot(move.to)}`}>
-          <b>{prodLabel(move, move.code)}</b>
-          <span>{move.from.row_name === move.to.row_name ? `${move.from.row_name}, spot ${move.from.pos + 1} → ${move.to.pos + 1}` : <>{move.from.row_name} → <b>{move.to.row_name}</b></>}</span>
-          {move.thin && <Sticker tone="white" title={`noticed ${move.noticed} times in the runs learned from, so its conversion leans on the unit average`}>few shoppers</Sticker>}
-        </summary>
-        <p className="why">noticed {pct(move.notice_before)} → {pct(move.notice_after)}. {move.why}.{' '}
-          <button className="link-btn" onClick={() => onPick(move.code)}>open its analytics</button>
-        </p>
-      </details>
-    </li>
   );
 }
 

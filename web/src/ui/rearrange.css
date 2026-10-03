@@ -184,3 +184,18 @@
 }
 .ra-tab span { writing-mode: vertical-rl; transform: rotate(180deg); }
 .ra-tab-dot { position: absolute; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--hot); }
+
+/* simple move cards: where it is now, where it goes, in aisle / shelf / height words */
+.ra-cards { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.ra-card { border: 2px solid var(--line, #e6dfd6); border-radius: 12px; background: var(--card, #fff); }
+.ra-card.on { border-color: #ff4f8b; box-shadow: 0 0 0 3px rgba(255, 79, 139, .18); }
+.ra-card-btn { all: unset; box-sizing: border-box; cursor: pointer; display: flex; gap: 10px; width: 100%; padding: 10px; }
+.ra-card-n { flex: none; width: 26px; height: 26px; border-radius: 50%; background: #ff4f8b; color: #fff; font-weight: 800; display: grid; place-items: center; font-size: 14px; }
+.ra-card-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 13px; line-height: 1.35; }
+.ra-card-name { font-size: 14px; }
+.ra-place { display: grid; grid-template-columns: 58px 1fr; gap: 6px; }
+.ra-place-l { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: #8a7f75; padding-top: 1px; }
+.ra-place + .ra-place .ra-place-l { color: #ff4f8b; }
+.ra-xyz { display: block; font-size: 11px; }
+.ra-card-sum { font-size: 12px; color: #5c534b; }
+.ra-card .why { margin: 0 10px 10px 46px; font-size: 12px; }
