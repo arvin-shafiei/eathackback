@@ -4,12 +4,12 @@
  "coordinate_system": "metres; origin = front-left outside corner; x to the right, z towards the back wall; front wall z=0 holds entrances, exits and the checkout bank (real UK layout, NOT the web/store_xl grid where the tills are behind the aisles). Each unit has x,z (centre of its shelf face run), facing and length_m.",
  "footprint_m": {
   "w": 90.8,
-  "d": 115.0,
+  "d": 43.7,
   "back_of_house_d": 12.0,
-  "sales_floor_m2": 10442,
-  "promo_seasonal_floor_depth_m": 80.6
+  "sales_floor_m2": 3968,
+  "promo_seasonal_floor_depth_m": 9.3
  },
- "aisles": 99,
+ "aisles": 71,
  "centre_aisles": 36,
  "aisles_note": "'aisle' on every unit keeps the store_xl schema (perimeter units get pseudo-aisle numbers after the centre aisles, aisle_number=null); renderers should place units by x/z/facing",
  "rows_per_unit": 5,
@@ -28,7 +28,7 @@
   "5": "bottom",
   "source": "assumption: sim/notice.py has alphas for top/eye/bottom only; rows below eye level get the bottom alpha (same conservative rule as store_xl)"
  },
- "products_per_slot": 4.1,
+ "products_per_slot": 5.1,
  "products_per_slot_note": "variable per slot (shelves are filled by width); this is the mean",
  "units": [
   {
@@ -229,26 +229,26 @@
   },
   {
    "id": "S8",
-   "department": "fruit_veg",
-   "zone": "produce",
-   "fixture": "produce_tables",
-   "fixture_type": "produce_tables",
-   "rows": 3,
-   "bays": 2,
-   "bay_width_cm": 120,
-   "shelf_width_cm": 240,
+   "department": "bakery",
+   "zone": "bakery",
+   "fixture": "bakery_counter",
+   "fixture_type": "bakery_counter",
+   "rows": 4,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
    "shelf_depth_cm": 40,
-   "row_clear_cm": 25,
+   "row_clear_cm": 40,
    "fridge": false,
    "freezer": false,
    "categories": [
-    "fresh_produce"
+    "bakery_bread"
    ],
-   "category": "fresh_produce",
-   "x": 11.0,
-   "z": 19.5,
-   "facing": "-z",
-   "length_m": 2.4,
+   "category": "bakery_bread",
+   "x": 0.85,
+   "z": 26.0,
+   "facing": "+x",
+   "length_m": 3.0,
    "aisle": 44,
    "aisle_number": null,
    "side": "L",
@@ -257,146 +257,6 @@
   },
   {
    "id": "S9",
-   "department": "fruit_veg",
-   "zone": "produce",
-   "fixture": "produce_tables",
-   "fixture_type": "produce_tables",
-   "rows": 3,
-   "bays": 2,
-   "bay_width_cm": 120,
-   "shelf_width_cm": 240,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 25,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "fresh_produce"
-   ],
-   "category": "fresh_produce",
-   "x": 15.0,
-   "z": 19.5,
-   "facing": "-z",
-   "length_m": 2.4,
-   "aisle": 45,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S10",
-   "department": "fruit_veg",
-   "zone": "produce",
-   "fixture": "produce_tables",
-   "fixture_type": "produce_tables",
-   "rows": 3,
-   "bays": 2,
-   "bay_width_cm": 120,
-   "shelf_width_cm": 240,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 25,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "fresh_produce"
-   ],
-   "category": "fresh_produce",
-   "x": 19.0,
-   "z": 19.5,
-   "facing": "-z",
-   "length_m": 2.4,
-   "aisle": 46,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S11",
-   "department": "fruit_veg",
-   "zone": "produce",
-   "fixture": "produce_tables",
-   "fixture_type": "produce_tables",
-   "rows": 3,
-   "bays": 2,
-   "bay_width_cm": 120,
-   "shelf_width_cm": 240,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 25,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "fresh_produce"
-   ],
-   "category": "fresh_produce",
-   "x": 3.0,
-   "z": 22.5,
-   "facing": "-z",
-   "length_m": 2.4,
-   "aisle": 47,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S12",
-   "department": "fruit_veg",
-   "zone": "produce",
-   "fixture": "produce_tables",
-   "fixture_type": "produce_tables",
-   "rows": 3,
-   "bays": 2,
-   "bay_width_cm": 120,
-   "shelf_width_cm": 240,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 25,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "fresh_produce"
-   ],
-   "category": "fresh_produce",
-   "x": 7.0,
-   "z": 22.5,
-   "facing": "-z",
-   "length_m": 2.4,
-   "aisle": 48,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S13",
-   "department": "fruit_veg",
-   "zone": "produce",
-   "fixture": "produce_tables",
-   "fixture_type": "produce_tables",
-   "rows": 3,
-   "bays": 2,
-   "bay_width_cm": 120,
-   "shelf_width_cm": 240,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 25,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "fresh_produce"
-   ],
-   "category": "fresh_produce",
-   "x": 11.0,
-   "z": 22.5,
-   "facing": "-z",
-   "length_m": 2.4,
-   "aisle": 49,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S14",
    "department": "bakery",
    "zone": "bakery",
    "fixture": "bakery_counter",
@@ -417,98 +277,14 @@
    "z": 29.0,
    "facing": "+x",
    "length_m": 3.0,
-   "aisle": 50,
+   "aisle": 45,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S15",
-   "department": "bakery",
-   "zone": "bakery",
-   "fixture": "bakery_counter",
-   "fixture_type": "bakery_counter",
-   "rows": 4,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 40,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "bakery_bread"
-   ],
-   "category": "bakery_bread",
-   "x": 0.85,
-   "z": 32.0,
-   "facing": "+x",
-   "length_m": 3.0,
-   "aisle": 51,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S16",
-   "department": "bakery",
-   "zone": "bakery",
-   "fixture": "bakery_counter",
-   "fixture_type": "bakery_counter",
-   "rows": 4,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 40,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "bakery_bread"
-   ],
-   "category": "bakery_bread",
-   "x": 0.85,
-   "z": 35.0,
-   "facing": "+x",
-   "length_m": 3.0,
-   "aisle": 52,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S17",
-   "department": "bakery",
-   "zone": "bakery",
-   "fixture": "bakery_counter",
-   "fixture_type": "bakery_counter",
-   "rows": 4,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 40,
-   "row_clear_cm": 40,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "bakery_bread"
-   ],
-   "category": "bakery_bread",
-   "x": 0.85,
-   "z": 38.0,
-   "facing": "+x",
-   "length_m": 3.0,
-   "aisle": 53,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S18",
+   "id": "S10",
    "department": "food_to_go",
    "zone": "food_to_go",
    "fixture": "wall_chiller",
@@ -529,42 +305,14 @@
    "z": 13.45,
    "facing": "+z",
    "length_m": 3.75,
-   "aisle": 54,
+   "aisle": 46,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S19",
-   "department": "food_to_go",
-   "zone": "food_to_go",
-   "fixture": "wall_chiller",
-   "fixture_type": "wall_chiller",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "food_to_go"
-   ],
-   "category": "food_to_go",
-   "x": 29.62,
-   "z": 13.45,
-   "facing": "+z",
-   "length_m": 3.75,
-   "aisle": 55,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S20",
+   "id": "S11",
    "department": "meat",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -582,18 +330,18 @@
    ],
    "category": "meat_poultry",
    "x": 21.88,
-   "z": 114.15,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 56,
+   "aisle": 47,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S21",
+   "id": "S12",
    "department": "meat",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -611,19 +359,19 @@
    ],
    "category": "meat_poultry",
    "x": 25.62,
-   "z": 114.15,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 57,
+   "aisle": 48,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S22",
-   "department": "meat",
+   "id": "S13",
+   "department": "fish",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
    "fixture_type": "multideck_fridge",
@@ -636,23 +384,23 @@
    "fridge": true,
    "freezer": false,
    "categories": [
-    "meat_poultry"
+    "fish_seafood"
    ],
-   "category": "meat_poultry",
+   "category": "fish_seafood",
    "x": 29.38,
-   "z": 114.15,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 58,
+   "aisle": 49,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S23",
-   "department": "meat",
+   "id": "S14",
+   "department": "fish",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
    "fixture_type": "multideck_fridge",
@@ -665,23 +413,23 @@
    "fridge": true,
    "freezer": false,
    "categories": [
-    "meat_poultry"
+    "fish_seafood"
    ],
-   "category": "meat_poultry",
+   "category": "fish_seafood",
    "x": 33.12,
-   "z": 114.15,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 59,
+   "aisle": 50,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S24",
-   "department": "fish",
+   "id": "S15",
+   "department": "cheese_deli",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
    "fixture_type": "multideck_fridge",
@@ -694,167 +442,22 @@
    "fridge": true,
    "freezer": false,
    "categories": [
-    "fish_seafood"
+    "cheese"
    ],
-   "category": "fish_seafood",
+   "category": "cheese",
    "x": 36.88,
-   "z": 114.15,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 60,
+   "aisle": 51,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S25",
-   "department": "fish",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "fish_seafood"
-   ],
-   "category": "fish_seafood",
-   "x": 40.62,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 61,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S26",
-   "department": "fish",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "fish_seafood"
-   ],
-   "category": "fish_seafood",
-   "x": 44.38,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 62,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S27",
-   "department": "fish",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "fish_seafood"
-   ],
-   "category": "fish_seafood",
-   "x": 48.12,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 63,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S28",
-   "department": "cheese_deli",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "cheese"
-   ],
-   "category": "cheese",
-   "x": 51.88,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 64,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S29",
-   "department": "cheese_deli",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "cheese"
-   ],
-   "category": "cheese",
-   "x": 55.62,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 65,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S30",
+   "id": "S16",
    "department": "cheese_deli",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -872,19 +475,19 @@
     "cooked_meats_deli"
    ],
    "category": "cheese",
-   "x": 59.38,
-   "z": 114.15,
+   "x": 40.62,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 66,
+   "aisle": 52,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S31",
+   "id": "S17",
    "department": "cheese_deli",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -901,19 +504,19 @@
     "cooked_meats_deli"
    ],
    "category": "cooked_meats_deli",
-   "x": 63.12,
-   "z": 114.15,
+   "x": 44.38,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 67,
+   "aisle": 53,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S32",
+   "id": "S18",
    "department": "cheese_deli",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -930,48 +533,19 @@
     "cooked_meats_deli"
    ],
    "category": "cooked_meats_deli",
-   "x": 66.88,
-   "z": 114.15,
+   "x": 48.12,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 68,
+   "aisle": 54,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S33",
-   "department": "cheese_deli",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "cooked_meats_deli"
-   ],
-   "category": "cooked_meats_deli",
-   "x": 70.62,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 69,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S34",
+   "id": "S19",
    "department": "cheese_deli",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -988,20 +562,20 @@
     "cooked_meats_deli",
     "dips_salads_deli"
    ],
-   "category": "cooked_meats_deli",
-   "x": 74.38,
-   "z": 114.15,
+   "category": "dips_salads_deli",
+   "x": 51.88,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 70,
+   "aisle": 55,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S35",
+   "id": "S20",
    "department": "cheese_deli",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1018,77 +592,19 @@
     "dips_salads_deli"
    ],
    "category": "dips_salads_deli",
-   "x": 78.12,
-   "z": 114.15,
+   "x": 55.62,
+   "z": 42.85,
    "facing": "-z",
    "wall": "back",
    "length_m": 3.75,
-   "aisle": 71,
+   "aisle": 56,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S36",
-   "department": "cheese_deli",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "dips_salads_deli"
-   ],
-   "category": "dips_salads_deli",
-   "x": 81.88,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 72,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S37",
-   "department": "cheese_deli",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "dips_salads_deli"
-   ],
-   "category": "dips_salads_deli",
-   "x": 85.62,
-   "z": 114.15,
-   "facing": "-z",
-   "wall": "back",
-   "length_m": 3.75,
-   "aisle": 73,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S38",
+   "id": "S21",
    "department": "dairy",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1105,19 +621,19 @@
     "milk_butter_eggs"
    ],
    "category": "milk_butter_eggs",
-   "x": 89.95,
-   "z": 111.73,
-   "facing": "-x",
-   "wall": "right",
+   "x": 59.38,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 74,
+   "aisle": 57,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S39",
+   "id": "S22",
    "department": "dairy",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1134,78 +650,19 @@
     "milk_butter_eggs"
    ],
    "category": "milk_butter_eggs",
-   "x": 89.95,
-   "z": 107.98,
-   "facing": "-x",
-   "wall": "right",
+   "x": 63.12,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 75,
+   "aisle": 58,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S40",
-   "department": "dairy",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "milk_butter_eggs"
-   ],
-   "category": "milk_butter_eggs",
-   "x": 89.95,
-   "z": 104.23,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 76,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S41",
-   "department": "dairy",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "milk_butter_eggs",
-    "yoghurt"
-   ],
-   "category": "yoghurt",
-   "x": 89.95,
-   "z": 100.48,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 77,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S42",
+   "id": "S23",
    "department": "dairy",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1222,19 +679,19 @@
     "yoghurt"
    ],
    "category": "yoghurt",
-   "x": 89.95,
-   "z": 96.73,
-   "facing": "-x",
-   "wall": "right",
+   "x": 66.88,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 78,
+   "aisle": 59,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S43",
+   "id": "S24",
    "department": "dairy",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1251,49 +708,20 @@
     "yoghurt",
     "plant_milk_dairy_alt"
    ],
-   "category": "yoghurt",
-   "x": 89.95,
-   "z": 92.98,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 79,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S44",
-   "department": "dairy",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "plant_milk_dairy_alt"
-   ],
    "category": "plant_milk_dairy_alt",
-   "x": 89.95,
-   "z": 89.23,
-   "facing": "-x",
-   "wall": "right",
+   "x": 70.62,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 80,
+   "aisle": 60,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S45",
+   "id": "S25",
    "department": "dairy",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1311,19 +739,19 @@
     "juice_smoothies"
    ],
    "category": "juice_smoothies",
-   "x": 89.95,
-   "z": 85.48,
-   "facing": "-x",
-   "wall": "right",
+   "x": 74.38,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 81,
+   "aisle": 61,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S46",
+   "id": "S26",
    "department": "dairy",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1340,48 +768,19 @@
     "juice_smoothies"
    ],
    "category": "juice_smoothies",
-   "x": 89.95,
-   "z": 81.73,
-   "facing": "-x",
-   "wall": "right",
+   "x": 78.12,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 82,
+   "aisle": 62,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S47",
-   "department": "dairy",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "juice_smoothies"
-   ],
-   "category": "juice_smoothies",
-   "x": 89.95,
-   "z": 77.98,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 83,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S48",
+   "id": "S27",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1398,48 +797,19 @@
     "ready_meals_soup"
    ],
    "category": "ready_meals_soup",
-   "x": 89.95,
-   "z": 74.23,
-   "facing": "-x",
-   "wall": "right",
+   "x": 81.88,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 84,
+   "aisle": 63,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S49",
-   "department": "ready_meals",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "ready_meals_soup"
-   ],
-   "category": "ready_meals_soup",
-   "x": 89.95,
-   "z": 70.48,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 85,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S50",
+   "id": "S28",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1457,19 +827,19 @@
     "chilled_pizza_pasta_pies"
    ],
    "category": "ready_meals_soup",
-   "x": 89.95,
-   "z": 66.73,
-   "facing": "-x",
-   "wall": "right",
+   "x": 85.62,
+   "z": 42.85,
+   "facing": "-z",
+   "wall": "back",
    "length_m": 3.75,
-   "aisle": 86,
+   "aisle": 64,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S51",
+   "id": "S29",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1487,18 +857,18 @@
    ],
    "category": "chilled_pizza_pasta_pies",
    "x": 89.95,
-   "z": 62.98,
+   "z": 40.43,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 87,
+   "aisle": 65,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S52",
+   "id": "S30",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1516,105 +886,18 @@
    ],
    "category": "chilled_pizza_pasta_pies",
    "x": 89.95,
-   "z": 59.23,
+   "z": 36.68,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 88,
+   "aisle": 66,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S53",
-   "department": "ready_meals",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "chilled_pizza_pasta_pies"
-   ],
-   "category": "chilled_pizza_pasta_pies",
-   "x": 89.95,
-   "z": 55.48,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 89,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S54",
-   "department": "ready_meals",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "chilled_pizza_pasta_pies"
-   ],
-   "category": "chilled_pizza_pasta_pies",
-   "x": 89.95,
-   "z": 51.73,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 90,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S55",
-   "department": "ready_meals",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "chilled_pizza_pasta_pies"
-   ],
-   "category": "chilled_pizza_pasta_pies",
-   "x": 89.95,
-   "z": 47.98,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 91,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S56",
+   "id": "S31",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1631,20 +914,20 @@
     "chilled_pizza_pasta_pies",
     "meat_free"
    ],
-   "category": "meat_free",
+   "category": "chilled_pizza_pasta_pies",
    "x": 89.95,
-   "z": 44.23,
+   "z": 32.93,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 92,
+   "aisle": 67,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S57",
+   "id": "S32",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1662,18 +945,18 @@
    ],
    "category": "meat_free",
    "x": 89.95,
-   "z": 40.48,
+   "z": 29.18,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 93,
+   "aisle": 68,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S58",
+   "id": "S33",
    "department": "ready_meals",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1691,47 +974,18 @@
    ],
    "category": "meat_free",
    "x": 89.95,
-   "z": 36.73,
+   "z": 25.43,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 94,
+   "aisle": 69,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S59",
-   "department": "ready_meals",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "meat_free"
-   ],
-   "category": "meat_free",
-   "x": 89.95,
-   "z": 32.98,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 95,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S60",
+   "id": "S34",
    "department": "desserts",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1749,18 +1003,18 @@
    ],
    "category": "chilled_desserts",
    "x": 89.95,
-   "z": 29.23,
+   "z": 21.68,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 96,
+   "aisle": 70,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S61",
+   "id": "S35",
    "department": "desserts",
    "zone": "perimeter",
    "fixture": "multideck_fridge",
@@ -1778,76 +1032,18 @@
    ],
    "category": "chilled_desserts",
    "x": 89.95,
-   "z": 25.48,
+   "z": 17.93,
    "facing": "-x",
    "wall": "right",
    "length_m": 3.75,
-   "aisle": 97,
+   "aisle": 71,
    "aisle_number": null,
    "side": "L",
    "bay": 0,
    "perimeter": true
   },
   {
-   "id": "S62",
-   "department": "desserts",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "chilled_desserts"
-   ],
-   "category": "chilled_desserts",
-   "x": 89.95,
-   "z": 21.73,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 98,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S63",
-   "department": "desserts",
-   "zone": "perimeter",
-   "fixture": "multideck_fridge",
-   "fixture_type": "multideck_fridge",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 125,
-   "shelf_width_cm": 375,
-   "shelf_depth_cm": 50,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": false,
-   "categories": [
-    "chilled_desserts"
-   ],
-   "category": "chilled_desserts",
-   "x": 89.95,
-   "z": 17.98,
-   "facing": "-x",
-   "wall": "right",
-   "length_m": 3.75,
-   "aisle": 99,
-   "aisle_number": null,
-   "side": "L",
-   "bay": 0,
-   "perimeter": true
-  },
-  {
-   "id": "S64",
+   "id": "S36",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -1875,7 +1071,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S65",
+   "id": "S37",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -1903,7 +1099,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S66",
+   "id": "S38",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -1931,7 +1127,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S67",
+   "id": "S39",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -1959,7 +1155,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S68",
+   "id": "S40",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -1987,7 +1183,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S69",
+   "id": "S41",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -2016,7 +1212,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S70",
+   "id": "S42",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -2044,7 +1240,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S71",
+   "id": "S43",
    "department": "breakfast",
    "zone": "centre",
    "fixture": "gondola",
@@ -2072,7 +1268,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S72",
+   "id": "S44",
    "department": "hot_drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2100,7 +1296,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S73",
+   "id": "S45",
    "department": "hot_drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2128,7 +1324,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S74",
+   "id": "S46",
    "department": "hot_drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2156,7 +1352,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S75",
+   "id": "S47",
    "department": "hot_drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2184,7 +1380,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S76",
+   "id": "S48",
    "department": "baking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2212,7 +1408,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S77",
+   "id": "S49",
    "department": "baking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2240,7 +1436,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S78",
+   "id": "S50",
    "department": "baking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2268,7 +1464,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S79",
+   "id": "S51",
    "department": "baking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2296,7 +1492,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S80",
+   "id": "S52",
    "department": "pasta_tins",
    "zone": "centre",
    "fixture": "gondola",
@@ -2324,7 +1520,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S81",
+   "id": "S53",
    "department": "pasta_tins",
    "zone": "centre",
    "fixture": "gondola",
@@ -2352,7 +1548,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S82",
+   "id": "S54",
    "department": "pasta_tins",
    "zone": "centre",
    "fixture": "gondola",
@@ -2380,7 +1576,35 @@
    "length_m": 3.0
   },
   {
-   "id": "S83",
+   "id": "S55",
+   "department": "pasta_tins",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "pasta_rice_grains"
+   ],
+   "category": "pasta_rice_grains",
+   "aisle": 10,
+   "aisle_number": 10,
+   "side": "R",
+   "bay": 0,
+   "perimeter": false,
+   "x": 57.8,
+   "z": 26.8,
+   "facing": "-x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S56",
    "department": "pasta_tins",
    "zone": "centre",
    "fixture": "gondola",
@@ -2397,34 +1621,6 @@
     "pasta_rice_grains",
     "tinned_jars"
    ],
-   "category": "pasta_rice_grains",
-   "aisle": 10,
-   "aisle_number": 10,
-   "side": "R",
-   "bay": 0,
-   "perimeter": false,
-   "x": 57.8,
-   "z": 26.8,
-   "facing": "-x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S84",
-   "department": "pasta_tins",
-   "zone": "centre",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "tinned_jars"
-   ],
    "category": "tinned_jars",
    "aisle": 11,
    "aisle_number": 11,
@@ -2437,7 +1633,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S85",
+   "id": "S57",
    "department": "pasta_tins",
    "zone": "centre",
    "fixture": "gondola",
@@ -2465,8 +1661,8 @@
    "length_m": 3.0
   },
   {
-   "id": "S86",
-   "department": "cooking",
+   "id": "S58",
+   "department": "pasta_tins",
    "zone": "centre",
    "fixture": "gondola",
    "fixture_type": "gondola",
@@ -2479,9 +1675,9 @@
    "fridge": false,
    "freezer": false,
    "categories": [
-    "sauces_condiments"
+    "tinned_jars"
    ],
-   "category": "sauces_condiments",
+   "category": "tinned_jars",
    "aisle": 12,
    "aisle_number": 12,
    "side": "L",
@@ -2493,7 +1689,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S87",
+   "id": "S59",
    "department": "cooking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2521,7 +1717,35 @@
    "length_m": 3.0
   },
   {
-   "id": "S88",
+   "id": "S60",
+   "department": "cooking",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "sauces_condiments"
+   ],
+   "category": "sauces_condiments",
+   "aisle": 13,
+   "aisle_number": 13,
+   "side": "L",
+   "bay": 0,
+   "perimeter": false,
+   "x": 65.2,
+   "z": 26.8,
+   "facing": "+x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S61",
    "department": "cooking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2541,34 +1765,6 @@
    "category": "sauces_condiments",
    "aisle": 13,
    "aisle_number": 13,
-   "side": "L",
-   "bay": 0,
-   "perimeter": false,
-   "x": 65.2,
-   "z": 26.8,
-   "facing": "+x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S89",
-   "department": "cooking",
-   "zone": "centre",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "oils_vinegar_spices"
-   ],
-   "category": "oils_vinegar_spices",
-   "aisle": 13,
-   "aisle_number": 13,
    "side": "R",
    "bay": 0,
    "perimeter": false,
@@ -2578,7 +1774,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S90",
+   "id": "S62",
    "department": "cooking",
    "zone": "centre",
    "fixture": "gondola",
@@ -2606,8 +1802,8 @@
    "length_m": 3.0
   },
   {
-   "id": "S91",
-   "department": "world",
+   "id": "S63",
+   "department": "cooking",
    "zone": "centre",
    "fixture": "gondola",
    "fixture_type": "gondola",
@@ -2620,9 +1816,9 @@
    "fridge": false,
    "freezer": false,
    "categories": [
-    "world_foods"
+    "oils_vinegar_spices"
    ],
-   "category": "world_foods",
+   "category": "oils_vinegar_spices",
    "aisle": 14,
    "aisle_number": 14,
    "side": "R",
@@ -2634,7 +1830,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S92",
+   "id": "S64",
    "department": "world",
    "zone": "centre",
    "fixture": "gondola",
@@ -2662,7 +1858,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S93",
+   "id": "S65",
    "department": "world",
    "zone": "centre",
    "fixture": "gondola",
@@ -2690,8 +1886,8 @@
    "length_m": 3.0
   },
   {
-   "id": "S94",
-   "department": "free_from",
+   "id": "S66",
+   "department": "world",
    "zone": "centre",
    "fixture": "gondola",
    "fixture_type": "gondola",
@@ -2704,9 +1900,9 @@
    "fridge": false,
    "freezer": false,
    "categories": [
-    "free_from"
+    "world_foods"
    ],
-   "category": "free_from",
+   "category": "world_foods",
    "aisle": 16,
    "aisle_number": 16,
    "side": "L",
@@ -2718,7 +1914,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S95",
+   "id": "S67",
    "department": "free_from",
    "zone": "centre",
    "fixture": "gondola",
@@ -2746,7 +1942,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S96",
+   "id": "S68",
    "department": "free_from",
    "zone": "centre",
    "fixture": "gondola",
@@ -2774,7 +1970,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S97",
+   "id": "S69",
    "department": "free_from",
    "zone": "centre",
    "fixture": "gondola",
@@ -2802,7 +1998,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S98",
+   "id": "S70",
    "department": "free_from",
    "zone": "centre",
    "fixture": "gondola",
@@ -2830,8 +2026,8 @@
    "length_m": 3.0
   },
   {
-   "id": "S99",
-   "department": "snacks",
+   "id": "S71",
+   "department": "free_from",
    "zone": "centre",
    "fixture": "gondola",
    "fixture_type": "gondola",
@@ -2844,9 +2040,9 @@
    "fridge": false,
    "freezer": false,
    "categories": [
-    "crisps_savoury"
+    "free_from"
    ],
-   "category": "crisps_savoury",
+   "category": "free_from",
    "aisle": 18,
    "aisle_number": 18,
    "side": "R",
@@ -2858,7 +2054,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S100",
+   "id": "S72",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2886,7 +2082,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S101",
+   "id": "S73",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2914,7 +2110,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S102",
+   "id": "S74",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2942,7 +2138,35 @@
    "length_m": 3.0
   },
   {
-   "id": "S103",
+   "id": "S75",
+   "department": "snacks",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "crisps_savoury"
+   ],
+   "category": "crisps_savoury",
+   "aisle": 20,
+   "aisle_number": 20,
+   "side": "R",
+   "bay": 0,
+   "perimeter": false,
+   "x": 30.6,
+   "z": 19.6,
+   "facing": "-x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S76",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -2960,34 +2184,6 @@
     "nuts_dried_fruit"
    ],
    "category": "nuts_dried_fruit",
-   "aisle": 20,
-   "aisle_number": 20,
-   "side": "R",
-   "bay": 0,
-   "perimeter": false,
-   "x": 30.6,
-   "z": 19.6,
-   "facing": "-x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S104",
-   "department": "snacks",
-   "zone": "centre",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "nuts_dried_fruit"
-   ],
-   "category": "nuts_dried_fruit",
    "aisle": 21,
    "aisle_number": 21,
    "side": "L",
@@ -2999,7 +2195,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S105",
+   "id": "S77",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3027,7 +2223,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S106",
+   "id": "S78",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3055,7 +2251,35 @@
    "length_m": 3.0
   },
   {
-   "id": "S107",
+   "id": "S79",
+   "department": "snacks",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "nuts_dried_fruit"
+   ],
+   "category": "nuts_dried_fruit",
+   "aisle": 22,
+   "aisle_number": 22,
+   "side": "R",
+   "bay": 0,
+   "perimeter": false,
+   "x": 37.4,
+   "z": 19.6,
+   "facing": "-x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S80",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3073,34 +2297,6 @@
     "snack_bars"
    ],
    "category": "nuts_dried_fruit",
-   "aisle": 22,
-   "aisle_number": 22,
-   "side": "R",
-   "bay": 0,
-   "perimeter": false,
-   "x": 37.4,
-   "z": 19.6,
-   "facing": "-x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S108",
-   "department": "snacks",
-   "zone": "centre",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "snack_bars"
-   ],
-   "category": "snack_bars",
    "aisle": 23,
    "aisle_number": 23,
    "side": "L",
@@ -3112,7 +2308,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S109",
+   "id": "S81",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3140,7 +2336,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S110",
+   "id": "S82",
    "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3168,8 +2364,8 @@
    "length_m": 3.0
   },
   {
-   "id": "S111",
-   "department": "biscuits",
+   "id": "S83",
+   "department": "snacks",
    "zone": "centre",
    "fixture": "gondola",
    "fixture_type": "gondola",
@@ -3182,9 +2378,9 @@
    "fridge": false,
    "freezer": false,
    "categories": [
-    "biscuits_chocolate"
+    "snack_bars"
    ],
-   "category": "biscuits_chocolate",
+   "category": "snack_bars",
    "aisle": 24,
    "aisle_number": 24,
    "side": "R",
@@ -3196,7 +2392,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S112",
+   "id": "S84",
    "department": "biscuits",
    "zone": "centre",
    "fixture": "gondola",
@@ -3224,7 +2420,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S113",
+   "id": "S85",
    "department": "biscuits",
    "zone": "centre",
    "fixture": "gondola",
@@ -3252,7 +2448,35 @@
    "length_m": 3.0
   },
   {
-   "id": "S114",
+   "id": "S86",
+   "department": "biscuits",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "biscuits_chocolate"
+   ],
+   "category": "biscuits_chocolate",
+   "aisle": 26,
+   "aisle_number": 26,
+   "side": "L",
+   "bay": 0,
+   "perimeter": false,
+   "x": 48.2,
+   "z": 19.6,
+   "facing": "+x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S87",
    "department": "biscuits",
    "zone": "centre",
    "fixture": "gondola",
@@ -3272,34 +2496,6 @@
    "category": "confectionery_sweets",
    "aisle": 26,
    "aisle_number": 26,
-   "side": "L",
-   "bay": 0,
-   "perimeter": false,
-   "x": 48.2,
-   "z": 19.6,
-   "facing": "+x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S115",
-   "department": "biscuits",
-   "zone": "centre",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "confectionery_sweets"
-   ],
-   "category": "confectionery_sweets",
-   "aisle": 26,
-   "aisle_number": 26,
    "side": "R",
    "bay": 0,
    "perimeter": false,
@@ -3309,7 +2505,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S116",
+   "id": "S88",
    "department": "biscuits",
    "zone": "centre",
    "fixture": "gondola",
@@ -3337,7 +2533,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S117",
+   "id": "S89",
    "department": "biscuits",
    "zone": "centre",
    "fixture": "gondola",
@@ -3365,8 +2561,8 @@
    "length_m": 3.0
   },
   {
-   "id": "S118",
-   "department": "drinks",
+   "id": "S90",
+   "department": "biscuits",
    "zone": "centre",
    "fixture": "gondola",
    "fixture_type": "gondola",
@@ -3379,9 +2575,9 @@
    "fridge": false,
    "freezer": false,
    "categories": [
-    "soft_drinks"
+    "confectionery_sweets"
    ],
-   "category": "soft_drinks",
+   "category": "confectionery_sweets",
    "aisle": 28,
    "aisle_number": 28,
    "side": "L",
@@ -3393,7 +2589,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S119",
+   "id": "S91",
    "department": "drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3421,7 +2617,35 @@
    "length_m": 3.0
   },
   {
-   "id": "S120",
+   "id": "S92",
+   "department": "drinks",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
+   "rows": 5,
+   "bays": 3,
+   "bay_width_cm": 100,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
+   "categories": [
+    "soft_drinks"
+   ],
+   "category": "soft_drinks",
+   "aisle": 29,
+   "aisle_number": 29,
+   "side": "L",
+   "bay": 0,
+   "perimeter": false,
+   "x": 58.4,
+   "z": 19.6,
+   "facing": "+x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S93",
    "department": "drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3441,34 +2665,6 @@
    "category": "water",
    "aisle": 29,
    "aisle_number": 29,
-   "side": "L",
-   "bay": 0,
-   "perimeter": false,
-   "x": 58.4,
-   "z": 19.6,
-   "facing": "+x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S121",
-   "department": "drinks",
-   "zone": "centre",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
-   "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
-   "categories": [
-    "water"
-   ],
-   "category": "water",
-   "aisle": 29,
-   "aisle_number": 29,
    "side": "R",
    "bay": 0,
    "perimeter": false,
@@ -3478,7 +2674,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S122",
+   "id": "S94",
    "department": "drinks",
    "zone": "centre",
    "fixture": "gondola",
@@ -3506,24 +2702,23 @@
    "length_m": 3.0
   },
   {
-   "id": "S123",
-   "department": "frozen",
-   "zone": "frozen",
-   "fixture": "freezer_doors",
-   "fixture_type": "freezer_doors",
+   "id": "S95",
+   "department": "drinks",
+   "zone": "centre",
+   "fixture": "gondola",
+   "fixture_type": "gondola",
    "rows": 5,
-   "bays": 4,
-   "bay_width_cm": 75,
+   "bays": 3,
+   "bay_width_cm": 100,
    "shelf_width_cm": 300,
-   "shelf_depth_cm": 60,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": true,
-   "doors": 4,
+   "shelf_depth_cm": 45,
+   "row_clear_cm": 35,
+   "fridge": false,
+   "freezer": false,
    "categories": [
-    "frozen_meals_veg"
+    "water"
    ],
-   "category": "frozen_meals_veg",
+   "category": "water",
    "aisle": 30,
    "aisle_number": 30,
    "side": "R",
@@ -3535,7 +2730,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S124",
+   "id": "S96",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3564,7 +2759,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S125",
+   "id": "S97",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3593,7 +2788,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S126",
+   "id": "S98",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3622,7 +2817,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S127",
+   "id": "S99",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3651,7 +2846,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S128",
+   "id": "S100",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3680,7 +2875,36 @@
    "length_m": 3.0
   },
   {
-   "id": "S129",
+   "id": "S101",
+   "department": "frozen",
+   "zone": "frozen",
+   "fixture": "freezer_doors",
+   "fixture_type": "freezer_doors",
+   "rows": 5,
+   "bays": 4,
+   "bay_width_cm": 75,
+   "shelf_width_cm": 300,
+   "shelf_depth_cm": 60,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": true,
+   "doors": 4,
+   "categories": [
+    "frozen_meals_veg"
+   ],
+   "category": "frozen_meals_veg",
+   "aisle": 33,
+   "aisle_number": 33,
+   "side": "R",
+   "bay": 0,
+   "perimeter": false,
+   "x": 74.8,
+   "z": 19.6,
+   "facing": "-x",
+   "length_m": 3.0
+  },
+  {
+   "id": "S102",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3699,35 +2923,6 @@
     "frozen_icecream"
    ],
    "category": "frozen_icecream",
-   "aisle": 33,
-   "aisle_number": 33,
-   "side": "R",
-   "bay": 0,
-   "perimeter": false,
-   "x": 74.8,
-   "z": 19.6,
-   "facing": "-x",
-   "length_m": 3.0
-  },
-  {
-   "id": "S130",
-   "department": "frozen",
-   "zone": "frozen",
-   "fixture": "freezer_doors",
-   "fixture_type": "freezer_doors",
-   "rows": 5,
-   "bays": 4,
-   "bay_width_cm": 75,
-   "shelf_width_cm": 300,
-   "shelf_depth_cm": 60,
-   "row_clear_cm": 30,
-   "fridge": true,
-   "freezer": true,
-   "doors": 4,
-   "categories": [
-    "frozen_icecream"
-   ],
-   "category": "frozen_icecream",
    "aisle": 34,
    "aisle_number": 34,
    "side": "L",
@@ -3739,7 +2934,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S131",
+   "id": "S103",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3768,7 +2963,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S132",
+   "id": "S104",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3797,7 +2992,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S133",
+   "id": "S105",
    "department": "frozen",
    "zone": "frozen",
    "fixture": "freezer_doors",
@@ -3826,23 +3021,24 @@
    "length_m": 3.0
   },
   {
-   "id": "S134",
-   "department": "bws",
-   "zone": "bws",
-   "fixture": "gondola",
-   "fixture_type": "gondola",
+   "id": "S106",
+   "department": "frozen",
+   "zone": "frozen",
+   "fixture": "freezer_doors",
+   "fixture_type": "freezer_doors",
    "rows": 5,
-   "bays": 3,
-   "bay_width_cm": 100,
+   "bays": 4,
+   "bay_width_cm": 75,
    "shelf_width_cm": 300,
-   "shelf_depth_cm": 45,
-   "row_clear_cm": 35,
-   "fridge": false,
-   "freezer": false,
+   "shelf_depth_cm": 60,
+   "row_clear_cm": 30,
+   "fridge": true,
+   "freezer": true,
+   "doors": 4,
    "categories": [
-    "low_no_alcohol"
+    "frozen_icecream"
    ],
-   "category": "low_no_alcohol",
+   "category": "frozen_icecream",
    "aisle": 36,
    "aisle_number": 36,
    "side": "L",
@@ -3854,7 +3050,7 @@
    "length_m": 3.0
   },
   {
-   "id": "S135",
+   "id": "S107",
    "department": "bws",
    "zone": "bws",
    "fixture": "gondola",
@@ -3890,7 +3086,7 @@
     "x0": 0.3,
     "z0": 14.0,
     "x1": 20.0,
-    "z1": 26.5
+    "z1": 23.5
    },
    "zone_kind": "produce",
    "floor_color": "#5f9e4a",
@@ -3907,13 +3103,7 @@
     "S4",
     "S5",
     "S6",
-    "S7",
-    "S8",
-    "S9",
-    "S10",
-    "S11",
-    "S12",
-    "S13"
+    "S7"
    ],
    "sub_zones": [
     {
@@ -3934,9 +3124,9 @@
    "name": "bakery",
    "zone": {
     "x0": 0.3,
-    "z0": 26.5,
+    "z0": 23.5,
     "x1": 20.0,
-    "z1": 40.5
+    "z1": 31.5
    },
    "zone_kind": "bakery",
    "floor_color": "#c8955a",
@@ -3947,10 +3137,8 @@
     "bakery_bread"
    ],
    "units": [
-    "S14",
-    "S15",
-    "S16",
-    "S17"
+    "S8",
+    "S9"
    ]
   },
   {
@@ -3959,7 +3147,7 @@
    "zone": {
     "x0": 24.0,
     "z0": 11.62,
-    "x1": 31.5,
+    "x1": 27.75,
     "z1": 13.77
    },
    "zone_kind": "food_to_go",
@@ -3971,8 +3159,7 @@
     "food_to_go"
    ],
    "units": [
-    "S18",
-    "S19"
+    "S10"
    ]
   },
   {
@@ -3980,9 +3167,9 @@
    "name": "meat & poultry",
    "zone": {
     "x0": 20.0,
-    "z0": 110.33,
-    "x1": 34.99,
-    "z1": 114.48
+    "z0": 39.02,
+    "x1": 27.5,
+    "z1": 43.18
    },
    "zone_kind": "perimeter",
    "floor_color": "#b5544c",
@@ -3993,20 +3180,18 @@
     "meat_poultry"
    ],
    "units": [
-    "S20",
-    "S21",
-    "S22",
-    "S23"
+    "S11",
+    "S12"
    ]
   },
   {
    "id": "fish",
    "name": "fish",
    "zone": {
-    "x0": 35.01,
-    "z0": 110.33,
-    "x1": 49.99,
-    "z1": 114.48
+    "x0": 27.5,
+    "z0": 39.02,
+    "x1": 34.99,
+    "z1": 43.18
    },
    "zone_kind": "perimeter",
    "floor_color": "#4a7fb5",
@@ -4017,20 +3202,18 @@
     "fish_seafood"
    ],
    "units": [
-    "S24",
-    "S25",
-    "S26",
-    "S27"
+    "S13",
+    "S14"
    ]
   },
   {
    "id": "cheese_deli",
    "name": "cheese & deli",
    "zone": {
-    "x0": 50.01,
-    "z0": 110.33,
-    "x1": 87.5,
-    "z1": 114.48
+    "x0": 35.01,
+    "z0": 39.02,
+    "x1": 57.49,
+    "z1": 43.18
    },
    "zone_kind": "perimeter",
    "floor_color": "#e0c060",
@@ -4043,26 +3226,22 @@
     "dips_salads_deli"
    ],
    "units": [
-    "S28",
-    "S29",
-    "S30",
-    "S31",
-    "S32",
-    "S33",
-    "S34",
-    "S35",
-    "S36",
-    "S37"
+    "S15",
+    "S16",
+    "S17",
+    "S18",
+    "S19",
+    "S20"
    ]
   },
   {
    "id": "dairy",
    "name": "dairy & eggs",
    "zone": {
-    "x0": 86.12,
-    "z0": 76.11,
-    "x1": 90.28,
-    "z1": 113.61
+    "x0": 57.51,
+    "z0": 39.02,
+    "x1": 80.0,
+    "z1": 43.18
    },
    "zone_kind": "perimeter",
    "floor_color": "#f2f2e6",
@@ -4076,26 +3255,22 @@
     "juice_smoothies"
    ],
    "units": [
-    "S38",
-    "S39",
-    "S40",
-    "S41",
-    "S42",
-    "S43",
-    "S44",
-    "S45",
-    "S46",
-    "S47"
+    "S21",
+    "S22",
+    "S23",
+    "S24",
+    "S25",
+    "S26"
    ]
   },
   {
    "id": "ready_meals",
    "name": "ready meals",
    "zone": {
-    "x0": 86.12,
-    "z0": 31.1,
+    "x0": 80.0,
+    "z0": 23.55,
     "x1": 90.28,
-    "z1": 76.11
+    "z1": 43.18
    },
    "zone_kind": "perimeter",
    "floor_color": "#9a6fb0",
@@ -4108,18 +3283,13 @@
     "meat_free"
    ],
    "units": [
-    "S48",
-    "S49",
-    "S50",
-    "S51",
-    "S52",
-    "S53",
-    "S54",
-    "S55",
-    "S56",
-    "S57",
-    "S58",
-    "S59"
+    "S27",
+    "S28",
+    "S29",
+    "S30",
+    "S31",
+    "S32",
+    "S33"
    ]
   },
   {
@@ -4127,9 +3297,9 @@
    "name": "chilled desserts",
    "zone": {
     "x0": 86.12,
-    "z0": 16.11,
+    "z0": 16.05,
     "x1": 90.28,
-    "z1": 31.11
+    "z1": 23.55
    },
    "zone_kind": "perimeter",
    "floor_color": "#e89bb0",
@@ -4140,10 +3310,8 @@
     "chilled_desserts"
    ],
    "units": [
-    "S60",
-    "S61",
-    "S62",
-    "S63"
+    "S34",
+    "S35"
    ]
   },
   {
@@ -4170,14 +3338,14 @@
     "spreads_honey_jam"
    ],
    "units": [
-    "S64",
-    "S65",
-    "S66",
-    "S67",
-    "S68",
-    "S69",
-    "S70",
-    "S71"
+    "S36",
+    "S37",
+    "S38",
+    "S39",
+    "S40",
+    "S41",
+    "S42",
+    "S43"
    ]
   },
   {
@@ -4201,10 +3369,10 @@
     "hot_drinks"
    ],
    "units": [
-    "S72",
-    "S73",
-    "S74",
-    "S75"
+    "S44",
+    "S45",
+    "S46",
+    "S47"
    ]
   },
   {
@@ -4228,10 +3396,10 @@
     "baking_home_cooking"
    ],
    "units": [
-    "S76",
-    "S77",
-    "S78",
-    "S79"
+    "S48",
+    "S49",
+    "S50",
+    "S51"
    ]
   },
   {
@@ -4240,7 +3408,7 @@
    "zone": {
     "x0": 51.1,
     "z0": 24.5,
-    "x1": 61.7,
+    "x1": 62.3,
     "z1": 29.1
    },
    "zone_kind": "centre",
@@ -4249,7 +3417,8 @@
    "aisle_numbers": [
     9,
     10,
-    11
+    11,
+    12
    ],
    "fixture_type": "gondola",
    "categories": [
@@ -4257,21 +3426,22 @@
     "tinned_jars"
    ],
    "units": [
-    "S80",
-    "S81",
-    "S82",
-    "S83",
-    "S84",
-    "S85"
+    "S52",
+    "S53",
+    "S54",
+    "S55",
+    "S56",
+    "S57",
+    "S58"
    ]
   },
   {
    "id": "cooking",
    "name": "cooking sauces & condiments",
    "zone": {
-    "x0": 61.3,
+    "x0": 64.1,
     "z0": 24.5,
-    "x1": 69.1,
+    "x1": 71.9,
     "z1": 29.1
    },
    "zone_kind": "centre",
@@ -4288,46 +3458,46 @@
     "oils_vinegar_spices"
    ],
    "units": [
-    "S86",
-    "S87",
-    "S88",
-    "S89",
-    "S90"
+    "S59",
+    "S60",
+    "S61",
+    "S62",
+    "S63"
    ]
   },
   {
    "id": "world",
    "name": "world foods",
    "zone": {
-    "x0": 70.9,
+    "x0": 71.5,
     "z0": 24.5,
-    "x1": 75.3,
+    "x1": 75.9,
     "z1": 29.1
    },
    "zone_kind": "centre",
    "floor_color": "#e07b39",
    "sign_text": "World Foods",
    "aisle_numbers": [
-    14,
-    15
+    15,
+    16
    ],
    "fixture_type": "gondola",
    "categories": [
     "world_foods"
    ],
    "units": [
-    "S91",
-    "S92",
-    "S93"
+    "S64",
+    "S65",
+    "S66"
    ]
   },
   {
    "id": "free_from",
    "name": "free from",
    "zone": {
-    "x0": 74.9,
+    "x0": 77.7,
     "z0": 24.5,
-    "x1": 82.7,
+    "x1": 85.5,
     "z1": 29.1
    },
    "zone_kind": "centre",
@@ -4343,11 +3513,11 @@
     "free_from"
    ],
    "units": [
-    "S94",
-    "S95",
-    "S96",
-    "S97",
-    "S98"
+    "S67",
+    "S68",
+    "S69",
+    "S70",
+    "S71"
    ]
   },
   {
@@ -4356,14 +3526,13 @@
    "zone": {
     "x0": 23.9,
     "z0": 17.3,
-    "x1": 85.5,
-    "z1": 29.1
+    "x1": 44.7,
+    "z1": 21.9
    },
    "zone_kind": "centre",
    "floor_color": "#f0c419",
    "sign_text": "Crisps · Nuts · Snack Bars",
    "aisle_numbers": [
-    18,
     19,
     20,
     21,
@@ -4378,37 +3547,37 @@
     "snack_bars"
    ],
    "units": [
-    "S99",
-    "S100",
-    "S101",
-    "S102",
-    "S103",
-    "S104",
-    "S105",
-    "S106",
-    "S107",
-    "S108",
-    "S109",
-    "S110"
+    "S72",
+    "S73",
+    "S74",
+    "S75",
+    "S76",
+    "S77",
+    "S78",
+    "S79",
+    "S80",
+    "S81",
+    "S82",
+    "S83"
    ]
   },
   {
    "id": "biscuits",
    "name": "biscuits & chocolate",
    "zone": {
-    "x0": 43.7,
+    "x0": 44.3,
     "z0": 17.3,
-    "x1": 54.9,
+    "x1": 55.5,
     "z1": 21.9
    },
    "zone_kind": "centre",
    "floor_color": "#8b4513",
    "sign_text": "Biscuits · Chocolate · Sweets",
    "aisle_numbers": [
-    24,
     25,
     26,
-    27
+    27,
+    28
    ],
    "fixture_type": "gondola",
    "categories": [
@@ -4416,22 +3585,22 @@
     "confectionery_sweets"
    ],
    "units": [
-    "S111",
-    "S112",
-    "S113",
-    "S114",
-    "S115",
-    "S116",
-    "S117"
+    "S84",
+    "S85",
+    "S86",
+    "S87",
+    "S88",
+    "S89",
+    "S90"
    ]
   },
   {
    "id": "drinks",
    "name": "soft drinks & water",
    "zone": {
-    "x0": 54.5,
+    "x0": 57.3,
     "z0": 17.3,
-    "x1": 62.3,
+    "x1": 65.1,
     "z1": 21.9
    },
    "zone_kind": "centre",
@@ -4448,32 +3617,32 @@
     "water"
    ],
    "units": [
-    "S118",
-    "S119",
-    "S120",
-    "S121",
-    "S122"
+    "S91",
+    "S92",
+    "S93",
+    "S94",
+    "S95"
    ]
   },
   {
    "id": "frozen",
    "name": "frozen",
    "zone": {
-    "x0": 64.02,
+    "x0": 64.63,
     "z0": 17.3,
-    "x1": 82.17,
+    "x1": 82.78,
     "z1": 21.9
    },
    "zone_kind": "frozen",
    "floor_color": "#a8d8f0",
    "sign_text": "Frozen · Ice Cream",
    "aisle_numbers": [
-    30,
     31,
     32,
     33,
     34,
-    35
+    35,
+    36
    ],
    "fixture_type": "freezer_doors",
    "categories": [
@@ -4481,24 +3650,24 @@
     "frozen_icecream"
    ],
    "units": [
-    "S123",
-    "S124",
-    "S125",
-    "S126",
-    "S127",
-    "S128",
-    "S129",
-    "S130",
-    "S131",
-    "S132",
-    "S133"
+    "S96",
+    "S97",
+    "S98",
+    "S99",
+    "S100",
+    "S101",
+    "S102",
+    "S103",
+    "S104",
+    "S105",
+    "S106"
    ]
   },
   {
    "id": "bws",
    "name": "beer, wine & spirits",
    "zone": {
-    "x0": 81.7,
+    "x0": 84.5,
     "z0": 17.3,
     "x1": 85.5,
     "z1": 21.9
@@ -4514,8 +3683,7 @@
     "low_no_alcohol"
    ],
    "units": [
-    "S134",
-    "S135"
+    "S107"
    ]
   }
  ],
@@ -4651,8 +3819,7 @@
    "aisle_number": 10,
    "sign_text": "10 · pasta, rice & tins",
    "categories": [
-    "pasta_rice_grains",
-    "tinned_jars"
+    "pasta_rice_grains"
    ],
    "departments": [
     "pasta_tins"
@@ -4666,6 +3833,7 @@
    "aisle_number": 11,
    "sign_text": "11 · pasta, rice & tins",
    "categories": [
+    "pasta_rice_grains",
     "tinned_jars"
    ],
    "departments": [
@@ -4678,11 +3846,13 @@
   },
   {
    "aisle_number": 12,
-   "sign_text": "12 · cooking sauces & condiments",
+   "sign_text": "12 · pasta, rice & tins · cooking sauces & condiments",
    "categories": [
+    "tinned_jars",
     "sauces_condiments"
    ],
    "departments": [
+    "pasta_tins",
     "cooking"
    ],
    "bank": "back",
@@ -4707,14 +3877,12 @@
   },
   {
    "aisle_number": 14,
-   "sign_text": "14 · cooking sauces & condiments · world foods",
+   "sign_text": "14 · cooking sauces & condiments",
    "categories": [
-    "oils_vinegar_spices",
-    "world_foods"
+    "oils_vinegar_spices"
    ],
    "departments": [
-    "cooking",
-    "world"
+    "cooking"
    ],
    "bank": "back",
    "x": 70.0,
@@ -4737,11 +3905,13 @@
   },
   {
    "aisle_number": 16,
-   "sign_text": "16 · free from",
+   "sign_text": "16 · world foods · free from",
    "categories": [
+    "world_foods",
     "free_from"
    ],
    "departments": [
+    "world",
     "free_from"
    ],
    "bank": "back",
@@ -4765,14 +3935,12 @@
   },
   {
    "aisle_number": 18,
-   "sign_text": "18 · free from · crisps & snacks",
+   "sign_text": "18 · free from",
    "categories": [
-    "free_from",
-    "crisps_savoury"
+    "free_from"
    ],
    "departments": [
-    "free_from",
-    "snacks"
+    "free_from"
    ],
    "bank": "back",
    "x": 83.6,
@@ -4797,8 +3965,7 @@
    "aisle_number": 20,
    "sign_text": "20 · crisps & snacks",
    "categories": [
-    "crisps_savoury",
-    "nuts_dried_fruit"
+    "crisps_savoury"
    ],
    "departments": [
     "snacks"
@@ -4812,6 +3979,7 @@
    "aisle_number": 21,
    "sign_text": "21 · crisps & snacks",
    "categories": [
+    "crisps_savoury",
     "nuts_dried_fruit"
    ],
    "departments": [
@@ -4826,8 +3994,7 @@
    "aisle_number": 22,
    "sign_text": "22 · crisps & snacks",
    "categories": [
-    "nuts_dried_fruit",
-    "snack_bars"
+    "nuts_dried_fruit"
    ],
    "departments": [
     "snacks"
@@ -4841,6 +4008,7 @@
    "aisle_number": 23,
    "sign_text": "23 · crisps & snacks",
    "categories": [
+    "nuts_dried_fruit",
     "snack_bars"
    ],
    "departments": [
@@ -4853,14 +4021,12 @@
   },
   {
    "aisle_number": 24,
-   "sign_text": "24 · crisps & snacks · biscuits & chocolate",
+   "sign_text": "24 · crisps & snacks",
    "categories": [
-    "snack_bars",
-    "biscuits_chocolate"
+    "snack_bars"
    ],
    "departments": [
-    "snacks",
-    "biscuits"
+    "snacks"
    ],
    "bank": "front",
    "x": 42.8,
@@ -4912,11 +4078,13 @@
   },
   {
    "aisle_number": 28,
-   "sign_text": "28 · soft drinks & water",
+   "sign_text": "28 · biscuits & chocolate · soft drinks & water",
    "categories": [
+    "confectionery_sweets",
     "soft_drinks"
    ],
    "departments": [
+    "biscuits",
     "drinks"
    ],
    "bank": "front",
@@ -4941,14 +4109,12 @@
   },
   {
    "aisle_number": 30,
-   "sign_text": "30 · soft drinks & water · frozen",
+   "sign_text": "30 · soft drinks & water",
    "categories": [
-    "water",
-    "frozen_meals_veg"
+    "water"
    ],
    "departments": [
-    "drinks",
-    "frozen"
+    "drinks"
    ],
    "bank": "front",
    "x": 63.2,
@@ -4987,8 +4153,7 @@
    "aisle_number": 33,
    "sign_text": "33 · frozen",
    "categories": [
-    "frozen_meals_veg",
-    "frozen_icecream"
+    "frozen_meals_veg"
    ],
    "departments": [
     "frozen"
@@ -5002,6 +4167,7 @@
    "aisle_number": 34,
    "sign_text": "34 · frozen",
    "categories": [
+    "frozen_meals_veg",
     "frozen_icecream"
    ],
    "departments": [
@@ -5028,11 +4194,13 @@
   },
   {
    "aisle_number": 36,
-   "sign_text": "36 · beer, wine & spirits",
+   "sign_text": "36 · frozen · beer, wine & spirits",
    "categories": [
+    "frozen_icecream",
     "low_no_alcohol"
    ],
    "departments": [
+    "frozen",
     "bws"
    ],
    "bank": "front",
@@ -5695,15 +4863,15 @@
     "products": [
      "8076809523547",
      "5000157024671",
-     "50457243"
+     "5000184321064"
     ],
     "facings": {
      "8076809523547": 6,
      "5000157024671": 6,
-     "50457243": 6
+     "5000184321064": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 1.0,
+    "fill_ratio_per_row": 0.975,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5724,15 +4892,15 @@
     "products": [
      "8076809523547",
      "5000157024671",
-     "50457243"
+     "5000184321064"
     ],
     "facings": {
      "8076809523547": 6,
      "5000157024671": 6,
-     "50457243": 6
+     "5000184321064": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 1.0,
+    "fill_ratio_per_row": 0.975,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5809,17 +4977,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "8715035110106",
+     "50457243",
      "50457250",
-     "8720182592446"
+     "5000111046244"
     ],
     "facings": {
-     "8715035110106": 6,
-     "50457250": 6,
-     "8720182592446": 5
+     "50457243": 5,
+     "50457250": 5,
+     "5000111046244": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.963,
+    "fill_ratio_per_row": 0.975,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5838,17 +5006,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "8715035110106",
+     "50457243",
      "50457250",
-     "8720182592446"
+     "5000111046244"
     ],
     "facings": {
-     "8715035110106": 6,
-     "50457250": 6,
-     "8720182592446": 5
+     "50457243": 5,
+     "50457250": 5,
+     "5000111046244": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.963,
+    "fill_ratio_per_row": 0.975,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5869,15 +5037,15 @@
     "products": [
      "8715035110106",
      "8715035110502",
-     "8715035210301"
+     "4056489135524"
     ],
     "facings": {
-     "8715035110106": 7,
+     "8715035110106": 6,
      "8715035110502": 6,
-     "8715035210301": 6
+     "4056489135524": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.967,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5898,15 +5066,15 @@
     "products": [
      "8715035110106",
      "8715035110502",
-     "8715035210301"
+     "4056489135524"
     ],
     "facings": {
-     "8715035110106": 7,
+     "8715035110106": 6,
      "8715035110502": 6,
-     "8715035210301": 6
+     "4056489135524": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.967,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5925,17 +5093,17 @@
    "promo": true,
    "planogram": {
     "products": [
+     "8715035110106",
      "8076809545440",
-     "8715035110502",
-     "8715035210301"
+     "8715035110502"
     ],
     "facings": {
-     "8076809545440": 4,
-     "8715035110502": 5,
-     "8715035210301": 4
+     "8715035110106": 4,
+     "8076809545440": 5,
+     "8715035110502": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.979,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5954,17 +5122,17 @@
    "promo": true,
    "planogram": {
     "products": [
+     "8715035110106",
      "8076809545440",
-     "8715035110502",
-     "8715035210301"
+     "8715035110502"
     ],
     "facings": {
-     "8076809545440": 4,
-     "8715035110502": 5,
-     "8715035210301": 4
+     "8715035110106": 4,
+     "8076809545440": 5,
+     "8715035110502": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.979,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -5984,16 +5152,16 @@
    "planogram": {
     "products": [
      "8076809545440",
-     "8008698007303",
-     "0612322030018"
+     "8715035210301",
+     "8008698007303"
     ],
     "facings": {
-     "8076809545440": 3,
-     "8008698007303": 3,
-     "0612322030018": 4
+     "8076809545440": 4,
+     "8715035210301": 4,
+     "8008698007303": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.95,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6013,16 +5181,16 @@
    "planogram": {
     "products": [
      "8076809545440",
-     "8008698007303",
-     "0612322030018"
+     "8715035210301",
+     "8008698007303"
     ],
     "facings": {
-     "8076809545440": 3,
-     "8008698007303": 3,
-     "0612322030018": 4
+     "8076809545440": 4,
+     "8715035210301": 4,
+     "8008698007303": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.95,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6041,17 +5209,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "5053990127740",
-     "5000328192871",
-     "5060283760812"
+     "8008698007303",
+     "0612322030018",
+     "8008698011294"
     ],
     "facings": {
-     "5053990127740": 2,
-     "5000328192871": 3,
-     "5060283760812": 2
+     "8008698007303": 4,
+     "0612322030018": 4,
+     "8008698011294": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.95,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6070,17 +5238,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "5053990127740",
-     "5000328192871",
-     "5060283760812"
+     "8008698007303",
+     "0612322030018",
+     "8008698011294"
     ],
     "facings": {
-     "5053990127740": 2,
-     "5000328192871": 3,
-     "5060283760812": 2
+     "8008698007303": 4,
+     "0612322030018": 4,
+     "8008698011294": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.95,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6098,17 +5266,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "5053990127740",
-     "5000328192871",
-     "5060283760812"
+     "8008698011294",
+     "0612322030209",
+     "5013803001087"
     ],
     "facings": {
-     "5053990127740": 2,
-     "5000328192871": 3,
-     "5060283760812": 2
+     "8008698011294": 3,
+     "0612322030209": 4,
+     "5013803001087": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.95,
+    "fill_ratio_per_row": 0.963,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6126,17 +5294,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "5053990127740",
-     "5000328192871",
-     "5060283760812"
+     "8008698011294",
+     "0612322030209",
+     "5013803001087"
     ],
     "facings": {
-     "5053990127740": 2,
-     "5000328192871": 3,
-     "5060283760812": 2
+     "8008698011294": 3,
+     "0612322030209": 4,
+     "5013803001087": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.95,
+    "fill_ratio_per_row": 0.963,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6270,16 +5438,16 @@
    "planogram": {
     "products": [
      "5053990107384",
-     "5060042641413",
-     "5055958706288"
+     "5053990127740",
+     "5060042641413"
     ],
     "facings": {
-     "5053990107384": 4,
-     "5060042641413": 3,
-     "5055958706288": 3
+     "5053990107384": 3,
+     "5053990127740": 3,
+     "5060042641413": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.992,
+    "fill_ratio_per_row": 0.963,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6299,16 +5467,16 @@
    "planogram": {
     "products": [
      "5053990107384",
-     "5060042641413",
-     "5055958706288"
+     "5053990127740",
+     "5060042641413"
     ],
     "facings": {
-     "5053990107384": 4,
-     "5060042641413": 3,
-     "5055958706288": 3
+     "5053990107384": 3,
+     "5053990127740": 3,
+     "5060042641413": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.992,
+    "fill_ratio_per_row": 0.963,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6327,14 +5495,14 @@
    "promo": true,
    "planogram": {
     "products": [
+     "5055958704161",
      "5000237127261",
-     "5060139430364",
-     "5022374046663"
+     "5060139430364"
     ],
     "facings": {
+     "5055958704161": 3,
      "5000237127261": 4,
-     "5060139430364": 3,
-     "5022374046663": 3
+     "5060139430364": 3
     },
     "rows_used": "all 5 rows (block display)",
     "fill_ratio_per_row": 0.992,
@@ -6356,14 +5524,14 @@
    "promo": true,
    "planogram": {
     "products": [
+     "5055958704161",
      "5000237127261",
-     "5060139430364",
-     "5022374046663"
+     "5060139430364"
     ],
     "facings": {
+     "5055958704161": 3,
      "5000237127261": 4,
-     "5060139430364": 3,
-     "5022374046663": 3
+     "5060139430364": 3
     },
     "rows_used": "all 5 rows (block display)",
     "fill_ratio_per_row": 0.992,
@@ -6386,16 +5554,16 @@
    "planogram": {
     "products": [
      "8410076801197",
-     "8410076600790",
-     "7622201824334"
+     "7622201824334",
+     "5056315500891"
     ],
     "facings": {
      "8410076801197": 3,
-     "8410076600790": 3,
-     "7622201824334": 3
+     "7622201824334": 3,
+     "5056315500891": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.963,
+    "fill_ratio_per_row": 0.975,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6415,16 +5583,16 @@
    "planogram": {
     "products": [
      "8410076801197",
-     "8410076600790",
-     "7622201824334"
+     "7622201824334",
+     "5056315500891"
     ],
     "facings": {
      "8410076801197": 3,
-     "8410076600790": 3,
-     "7622201824334": 3
+     "7622201824334": 3,
+     "5056315500891": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.963,
+    "fill_ratio_per_row": 0.975,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6443,17 +5611,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "3046920029759",
-     "3046920028721",
-     "8410076801197"
+     "8410076801197",
+     "8410076600790",
+     "5060088701478"
     ],
     "facings": {
-     "3046920029759": 4,
-     "3046920028721": 6,
-     "8410076801197": 4
+     "8410076801197": 3,
+     "8410076600790": 3,
+     "5060088701478": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.992,
+    "fill_ratio_per_row": 0.95,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6472,17 +5640,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "3046920029759",
-     "3046920028721",
-     "8410076801197"
+     "8410076801197",
+     "8410076600790",
+     "5060088701478"
     ],
     "facings": {
-     "3046920029759": 4,
-     "3046920028721": 6,
-     "8410076801197": 4
+     "8410076801197": 3,
+     "8410076600790": 3,
+     "5060088701478": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.992,
+    "fill_ratio_per_row": 0.95,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6503,6 +5671,64 @@
     "products": [
      "3046920029759",
      "3046920028363",
+     "3046920028721"
+    ],
+    "facings": {
+     "3046920029759": 4,
+     "3046920028363": 5,
+     "3046920028721": 4
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.963,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC52",
+   "bank": "front",
+   "end": "back",
+   "adjacent_aisles": [
+    24,
+    25
+   ],
+   "x": 44.5,
+   "z": 21.4,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "3046920029759",
+     "3046920028363",
+     "3046920028721"
+    ],
+    "facings": {
+     "3046920029759": 4,
+     "3046920028363": 5,
+     "3046920028721": 4
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.963,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC53",
+   "bank": "front",
+   "end": "front",
+   "adjacent_aisles": [
+    25,
+    26
+   ],
+   "x": 47.9,
+   "z": 17.8,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "3046920029759",
+     "3046920028363",
      "3046920028004"
     ],
     "facings": {
@@ -6516,14 +5742,14 @@
    }
   },
   {
-   "id": "EC52",
+   "id": "EC54",
    "bank": "front",
    "end": "back",
    "adjacent_aisles": [
-    24,
-    25
+    25,
+    26
    ],
-   "x": 44.5,
+   "x": 47.9,
    "z": 21.4,
    "width_cm": 120,
    "rows": 5,
@@ -6545,64 +5771,6 @@
    }
   },
   {
-   "id": "EC53",
-   "bank": "front",
-   "end": "front",
-   "adjacent_aisles": [
-    25,
-    26
-   ],
-   "x": 47.9,
-   "z": 17.8,
-   "width_cm": 120,
-   "rows": 5,
-   "promo": true,
-   "planogram": {
-    "products": [
-     "3046920028363",
-     "3046920028004",
-     "5410126716016"
-    ],
-    "facings": {
-     "3046920028363": 4,
-     "3046920028004": 4,
-     "5410126716016": 3
-    },
-    "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.933,
-    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
-   }
-  },
-  {
-   "id": "EC54",
-   "bank": "front",
-   "end": "back",
-   "adjacent_aisles": [
-    25,
-    26
-   ],
-   "x": 47.9,
-   "z": 21.4,
-   "width_cm": 120,
-   "rows": 5,
-   "promo": true,
-   "planogram": {
-    "products": [
-     "3046920028363",
-     "3046920028004",
-     "5410126716016"
-    ],
-    "facings": {
-     "3046920028363": 4,
-     "3046920028004": 4,
-     "5410126716016": 3
-    },
-    "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.933,
-    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
-   }
-  },
-  {
    "id": "EC55",
    "bank": "front",
    "end": "front",
@@ -6617,17 +5785,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "4009900546089",
-     "4001686522424",
-     "5012035927608"
+     "3046920028004",
+     "8000500359488",
+     "8000500359556"
     ],
     "facings": {
-     "4009900546089": 3,
-     "4001686522424": 3,
-     "5012035927608": 2
+     "3046920028004": 5,
+     "8000500359488": 4,
+     "8000500359556": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.954,
+    "fill_ratio_per_row": 0.996,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6646,17 +5814,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "4009900546089",
-     "4001686522424",
-     "5012035927608"
+     "3046920028004",
+     "8000500359488",
+     "8000500359556"
     ],
     "facings": {
-     "4009900546089": 3,
-     "4001686522424": 3,
-     "5012035927608": 2
+     "3046920028004": 5,
+     "8000500359488": 4,
+     "8000500359556": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.954,
+    "fill_ratio_per_row": 0.996,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6676,16 +5844,16 @@
    "planogram": {
     "products": [
      "5449000000439",
-     "90162602",
-     "3502110009357"
+     "3502110009357",
+     "40822938"
     ],
     "facings": {
-     "5449000000439": 5,
-     "90162602": 5,
-     "3502110009357": 5
+     "5449000000439": 4,
+     "3502110009357": 5,
+     "40822938": 5
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 1.0,
+    "fill_ratio_per_row": 0.983,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6705,16 +5873,16 @@
    "planogram": {
     "products": [
      "5449000000439",
-     "90162602",
-     "3502110009357"
+     "3502110009357",
+     "40822938"
     ],
     "facings": {
-     "5449000000439": 5,
-     "90162602": 5,
-     "3502110009357": 5
+     "5449000000439": 4,
+     "3502110009357": 5,
+     "40822938": 5
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 1.0,
+    "fill_ratio_per_row": 0.983,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6791,17 +5959,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "0898999010007",
-     "3068320014067",
-     "10086988"
+     "90162602",
+     "5449000011527",
+     "5449000004840"
     ],
     "facings": {
-     "0898999010007": 5,
-     "3068320014067": 5,
-     "10086988": 4
+     "90162602": 5,
+     "5449000011527": 5,
+     "5449000004840": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.983,
+    "fill_ratio_per_row": 0.963,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6820,17 +5988,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "0898999010007",
-     "3068320014067",
-     "10086988"
+     "90162602",
+     "5449000011527",
+     "5449000004840"
     ],
     "facings": {
-     "0898999010007": 5,
-     "3068320014067": 5,
-     "10086988": 4
+     "90162602": 5,
+     "5449000011527": 5,
+     "5449000004840": 6
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.983,
+    "fill_ratio_per_row": 0.963,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6849,17 +6017,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "10086988",
-     "4001724042105",
-     "5014008002237"
+     "3068320014067",
+     "5014008002237",
+     "5060139430241"
     ],
     "facings": {
-     "10086988": 3,
-     "4001724042105": 3,
-     "5014008002237": 2
+     "3068320014067": 4,
+     "5014008002237": 4,
+     "5060139430241": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.954,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6878,17 +6046,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "10086988",
-     "4001724042105",
-     "5014008002237"
+     "3068320014067",
+     "5014008002237",
+     "5060139430241"
     ],
     "facings": {
-     "10086988": 3,
-     "4001724042105": 3,
-     "5014008002237": 2
+     "3068320014067": 4,
+     "5014008002237": 4,
+     "5060139430241": 4
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.954,
+    "fill_ratio_per_row": 1.0,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6907,17 +6075,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "4001724042105",
      "5014008002237",
-     "5060139430241"
+     "5060139430241",
+     "5060198646034"
     ],
     "facings": {
-     "4001724042105": 3,
      "5014008002237": 3,
-     "5060139430241": 3
+     "5060139430241": 4,
+     "5060198646034": 2
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.963,
+    "fill_ratio_per_row": 0.992,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6936,17 +6104,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "4001724042105",
      "5014008002237",
-     "5060139430241"
+     "5060139430241",
+     "5060198646034"
     ],
     "facings": {
-     "4001724042105": 3,
      "5014008002237": 3,
-     "5060139430241": 3
+     "5060139430241": 4,
+     "5060198646034": 2
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.963,
+    "fill_ratio_per_row": 0.992,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6965,17 +6133,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "8711327373105",
-     "8711327609082",
-     "5060139430241"
+     "10086988",
+     "4001724042105",
+     "5060198646034"
     ],
     "facings": {
-     "8711327373105": 3,
-     "8711327609082": 3,
-     "5060139430241": 3
+     "10086988": 3,
+     "4001724042105": 2,
+     "5060198646034": 2
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 1.0,
+    "fill_ratio_per_row": 0.929,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -6994,17 +6162,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "8711327373105",
-     "8711327609082",
-     "5060139430241"
+     "10086988",
+     "4001724042105",
+     "5060198646034"
     ],
     "facings": {
-     "8711327373105": 3,
-     "8711327609082": 3,
-     "5060139430241": 3
+     "10086988": 3,
+     "4001724042105": 2,
+     "5060198646034": 2
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 1.0,
+    "fill_ratio_per_row": 0.929,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -7025,6 +6193,64 @@
     "products": [
      "8711327373105",
      "3415581101928",
+     "8711327609082"
+    ],
+    "facings": {
+     "8711327373105": 2,
+     "3415581101928": 3,
+     "8711327609082": 2
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.904,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC70",
+   "bank": "front",
+   "end": "back",
+   "adjacent_aisles": [
+    33,
+    34
+   ],
+   "x": 75.1,
+   "z": 21.4,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "8711327373105",
+     "3415581101928",
+     "8711327609082"
+    ],
+    "facings": {
+     "8711327373105": 2,
+     "3415581101928": 3,
+     "8711327609082": 2
+    },
+    "rows_used": "all 5 rows (block display)",
+    "fill_ratio_per_row": 0.904,
+    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
+   }
+  },
+  {
+   "id": "EC71",
+   "bank": "front",
+   "end": "front",
+   "adjacent_aisles": [
+    34,
+    35
+   ],
+   "x": 78.5,
+   "z": 17.8,
+   "width_cm": 120,
+   "rows": 5,
+   "promo": true,
+   "planogram": {
+    "products": [
+     "8711327373105",
+     "3415581101928",
      "8711327370708"
     ],
     "facings": {
@@ -7038,14 +6264,14 @@
    }
   },
   {
-   "id": "EC70",
+   "id": "EC72",
    "bank": "front",
    "end": "back",
    "adjacent_aisles": [
-    33,
-    34
+    34,
+    35
    ],
-   "x": 75.1,
+   "x": 78.5,
    "z": 21.4,
    "width_cm": 120,
    "rows": 5,
@@ -7067,64 +6293,6 @@
    }
   },
   {
-   "id": "EC71",
-   "bank": "front",
-   "end": "front",
-   "adjacent_aisles": [
-    34,
-    35
-   ],
-   "x": 78.5,
-   "z": 17.8,
-   "width_cm": 120,
-   "rows": 5,
-   "promo": true,
-   "planogram": {
-    "products": [
-     "3415581101928",
-     "8711327370708",
-     "5012262004011"
-    ],
-    "facings": {
-     "3415581101928": 2,
-     "8711327370708": 2,
-     "5012262004011": 2
-    },
-    "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.9,
-    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
-   }
-  },
-  {
-   "id": "EC72",
-   "bank": "front",
-   "end": "back",
-   "adjacent_aisles": [
-    34,
-    35
-   ],
-   "x": 78.5,
-   "z": 21.4,
-   "width_cm": 120,
-   "rows": 5,
-   "promo": true,
-   "planogram": {
-    "products": [
-     "3415581101928",
-     "8711327370708",
-     "5012262004011"
-    ],
-    "facings": {
-     "3415581101928": 2,
-     "8711327370708": 2,
-     "5012262004011": 2
-    },
-    "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.9,
-    "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
-   }
-  },
-  {
    "id": "EC73",
    "bank": "front",
    "end": "front",
@@ -7139,17 +6307,17 @@
    "promo": true,
    "planogram": {
     "products": [
+     "8711327370708",
      "5012262004011",
-     "5000159541374",
-     "8711327529793"
+     "5000159541374"
     ],
     "facings": {
+     "8711327370708": 2,
      "5012262004011": 2,
-     "5000159541374": 2,
-     "8711327529793": 2
+     "5000159541374": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.942,
+    "fill_ratio_per_row": 0.988,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -7168,17 +6336,17 @@
    "promo": true,
    "planogram": {
     "products": [
+     "8711327370708",
      "5012262004011",
-     "5000159541374",
-     "8711327529793"
+     "5000159541374"
     ],
     "facings": {
+     "8711327370708": 2,
      "5012262004011": 2,
-     "5000159541374": 2,
-     "8711327529793": 2
+     "5000159541374": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.942,
+    "fill_ratio_per_row": 0.988,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -7196,17 +6364,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "5000213024959",
-     "5000213027356",
-     "5011348022871"
+     "5000159541374",
+     "8714100590430",
+     "5000213024959"
     ],
     "facings": {
-     "5000213024959": 5,
-     "5000213027356": 4,
-     "5011348022871": 4
+     "5000159541374": 3,
+     "8714100590430": 2,
+     "5000213024959": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.979,
+    "fill_ratio_per_row": 0.908,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   },
@@ -7224,17 +6392,17 @@
    "promo": true,
    "planogram": {
     "products": [
-     "5000213024959",
-     "5000213027356",
-     "5011348022871"
+     "5000159541374",
+     "8714100590430",
+     "5000213024959"
     ],
     "facings": {
-     "5000213024959": 5,
-     "5000213027356": 4,
-     "5011348022871": 4
+     "5000159541374": 3,
+     "8714100590430": 2,
+     "5000213024959": 3
     },
     "rows_used": "all 5 rows (block display)",
-    "fill_ratio_per_row": 0.979,
+    "fill_ratio_per_row": 0.908,
     "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"
    }
   }
@@ -7265,7 +6433,7 @@
   },
   {
    "id": "X1",
-   "x": 83.0,
+   "x": 79.25,
    "z": 0.0
   }
  ],
@@ -7287,20 +6455,20 @@
   {
    "id": "GX1a",
    "exit": "X1",
-   "x": 82.0,
+   "x": 78.25,
    "z": 1.2,
    "type": "EAS pedestal"
   },
   {
    "id": "GX1b",
    "exit": "X1",
-   "x": 84.0,
+   "x": 80.25,
    "z": 1.2,
    "type": "EAS pedestal"
   }
  ],
  "checkout": {
-  "x": 57.25,
+  "x": 53.5,
   "z": 8.0
  },
  "checkouts": [
@@ -7308,7 +6476,7 @@
    "id": "T1",
    "type": "staffed",
    "bank": "tills",
-   "x": 35.95,
+   "x": 32.2,
    "z": 8.0,
    "lanes": 1
   },
@@ -7316,7 +6484,7 @@
    "id": "T2",
    "type": "staffed",
    "bank": "tills",
-   "x": 38.85,
+   "x": 35.1,
    "z": 8.0,
    "lanes": 1
   },
@@ -7324,7 +6492,7 @@
    "id": "T3",
    "type": "staffed",
    "bank": "tills",
-   "x": 41.75,
+   "x": 38.0,
    "z": 8.0,
    "lanes": 1
   },
@@ -7332,7 +6500,7 @@
    "id": "T4",
    "type": "staffed",
    "bank": "tills",
-   "x": 44.65,
+   "x": 40.91,
    "z": 8.0,
    "lanes": 1
   },
@@ -7340,7 +6508,7 @@
    "id": "T5",
    "type": "staffed",
    "bank": "tills",
-   "x": 47.55,
+   "x": 43.8,
    "z": 8.0,
    "lanes": 1
   },
@@ -7348,7 +6516,7 @@
    "id": "T6",
    "type": "staffed",
    "bank": "tills",
-   "x": 50.45,
+   "x": 46.7,
    "z": 8.0,
    "lanes": 1
   },
@@ -7356,7 +6524,7 @@
    "id": "T7",
    "type": "staffed",
    "bank": "tills",
-   "x": 53.34,
+   "x": 49.6,
    "z": 8.0,
    "lanes": 1
   },
@@ -7364,7 +6532,7 @@
    "id": "T8",
    "type": "staffed",
    "bank": "tills",
-   "x": 56.25,
+   "x": 52.5,
    "z": 8.0,
    "lanes": 1
   },
@@ -7372,7 +6540,7 @@
    "id": "T9",
    "type": "staffed",
    "bank": "tills",
-   "x": 59.15,
+   "x": 55.41,
    "z": 8.0,
    "lanes": 1
   },
@@ -7380,7 +6548,7 @@
    "id": "T10",
    "type": "staffed",
    "bank": "tills",
-   "x": 62.05,
+   "x": 58.3,
    "z": 8.0,
    "lanes": 1
   },
@@ -7388,7 +6556,7 @@
    "id": "S1",
    "type": "self",
    "bank": "self",
-   "x": 66.22,
+   "x": 62.48,
    "z": 6.65,
    "lanes": 1
   },
@@ -7396,7 +6564,7 @@
    "id": "S2",
    "type": "self",
    "bank": "self",
-   "x": 67.67,
+   "x": 63.93,
    "z": 6.65,
    "lanes": 1
   },
@@ -7404,7 +6572,7 @@
    "id": "S3",
    "type": "self",
    "bank": "self",
-   "x": 69.12,
+   "x": 65.38,
    "z": 6.65,
    "lanes": 1
   },
@@ -7412,7 +6580,7 @@
    "id": "S4",
    "type": "self",
    "bank": "self",
-   "x": 70.57,
+   "x": 66.83,
    "z": 6.65,
    "lanes": 1
   },
@@ -7420,7 +6588,7 @@
    "id": "S5",
    "type": "self",
    "bank": "self",
-   "x": 72.02,
+   "x": 68.28,
    "z": 6.65,
    "lanes": 1
   },
@@ -7428,7 +6596,7 @@
    "id": "S6",
    "type": "self",
    "bank": "self",
-   "x": 73.47,
+   "x": 69.73,
    "z": 6.65,
    "lanes": 1
   },
@@ -7436,7 +6604,7 @@
    "id": "S7",
    "type": "self",
    "bank": "self",
-   "x": 74.92,
+   "x": 71.18,
    "z": 6.65,
    "lanes": 1
   },
@@ -7444,7 +6612,7 @@
    "id": "S8",
    "type": "self",
    "bank": "self",
-   "x": 76.37,
+   "x": 72.63,
    "z": 6.65,
    "lanes": 1
   },
@@ -7452,7 +6620,7 @@
    "id": "S9",
    "type": "self",
    "bank": "self",
-   "x": 77.82,
+   "x": 74.08,
    "z": 6.65,
    "lanes": 1
   },
@@ -7460,7 +6628,7 @@
    "id": "S10",
    "type": "self",
    "bank": "self",
-   "x": 79.27,
+   "x": 75.53,
    "z": 6.65,
    "lanes": 1
   },
@@ -7468,7 +6636,7 @@
    "id": "S11",
    "type": "self",
    "bank": "self",
-   "x": 66.22,
+   "x": 62.48,
    "z": 9.35,
    "lanes": 1
   },
@@ -7476,7 +6644,7 @@
    "id": "S12",
    "type": "self",
    "bank": "self",
-   "x": 67.67,
+   "x": 63.93,
    "z": 9.35,
    "lanes": 1
   },
@@ -7484,7 +6652,7 @@
    "id": "S13",
    "type": "self",
    "bank": "self",
-   "x": 69.12,
+   "x": 65.38,
    "z": 9.35,
    "lanes": 1
   },
@@ -7492,7 +6660,7 @@
    "id": "S14",
    "type": "self",
    "bank": "self",
-   "x": 70.57,
+   "x": 66.83,
    "z": 9.35,
    "lanes": 1
   },
@@ -7500,7 +6668,7 @@
    "id": "S15",
    "type": "self",
    "bank": "self",
-   "x": 72.02,
+   "x": 68.28,
    "z": 9.35,
    "lanes": 1
   },
@@ -7508,7 +6676,7 @@
    "id": "S16",
    "type": "self",
    "bank": "self",
-   "x": 73.47,
+   "x": 69.73,
    "z": 9.35,
    "lanes": 1
   },
@@ -7516,7 +6684,7 @@
    "id": "S17",
    "type": "self",
    "bank": "self",
-   "x": 74.92,
+   "x": 71.18,
    "z": 9.35,
    "lanes": 1
   },
@@ -7524,7 +6692,7 @@
    "id": "S18",
    "type": "self",
    "bank": "self",
-   "x": 76.37,
+   "x": 72.63,
    "z": 9.35,
    "lanes": 1
   },
@@ -7532,7 +6700,7 @@
    "id": "S19",
    "type": "self",
    "bank": "self",
-   "x": 77.82,
+   "x": 74.08,
    "z": 9.35,
    "lanes": 1
   },
@@ -7540,7 +6708,7 @@
    "id": "S20",
    "type": "self",
    "bank": "self",
-   "x": 79.27,
+   "x": 75.53,
    "z": 9.35,
    "lanes": 1
   }
@@ -7814,36 +6982,36 @@
  },
  "stockroom": {
   "x": 45.4,
-  "z": 121.0,
+  "z": 49.7,
   "w": 90.2,
   "d": 12.0,
   "zone": {
    "x0": 0,
-   "z0": 115.0,
+   "z0": 43.7,
    "x1": 90.8,
-   "z1": 127.0
+   "z1": 55.7
   },
   "doors": [
    {
     "x": 31.78,
-    "z": 115.0
+    "z": 43.7
    },
    {
     "x": 63.56,
-    "z": 115.0
+    "z": 43.7
    }
   ],
   "source": "assumption: back-of-house stockroom behind the back-wall chillers, two staff doors through the chilled run"
  },
  "goods_in": {
   "x": 84.8,
-  "z": 127.0,
+  "z": 55.7,
   "dock_doors": 2,
   "zone": {
    "x0": 78.8,
-   "z0": 123.0,
+   "z0": 51.7,
    "x1": 90.8,
-   "z1": 127.0
+   "z1": 55.7
   },
   "source": "assumption: rear service yard with dock leveller(s); daily chilled delivery (data/ops/params.json lead_time_days_chilled=1)"
  },
@@ -7858,12 +7026,12 @@
   {
    "x0": 24.5,
    "z0": 0.0,
-   "x1": 81.5,
+   "x1": 77.75,
    "z1": 0.0,
    "kind": "exterior_front"
   },
   {
-   "x0": 84.5,
+   "x0": 80.75,
    "z0": 0.0,
    "x1": 85.3,
    "z1": 0.0,
@@ -7880,37 +7048,37 @@
    "x0": 90.8,
    "z0": 0.0,
    "x1": 90.8,
-   "z1": 127.0,
+   "z1": 55.7,
    "kind": "exterior_side"
   },
   {
    "x0": 0.0,
    "z0": 0.0,
    "x1": 0.0,
-   "z1": 127.0,
+   "z1": 55.7,
    "kind": "exterior_side"
   },
   {
    "x0": 0.0,
-   "z0": 127.0,
+   "z0": 55.7,
    "x1": 90.8,
-   "z1": 127.0,
+   "z1": 55.7,
    "kind": "exterior_back"
   },
   {
    "x0": 0.0,
-   "z0": 115.0,
+   "z0": 43.7,
    "x1": 90.8,
-   "z1": 115.0,
+   "z1": 43.7,
    "kind": "stockroom_partition",
    "doors": [
     {
      "x": 31.78,
-     "z": 115.0
+     "z": 43.7
     },
     {
      "x": 63.56,
-     "z": 115.0
+     "z": 43.7
     }
    ]
   }
@@ -7921,8 +7089,8 @@
     "food_to_go",
     "meat"
    ],
-   "x": 25.75,
-   "z": 63.8,
+   "x": 23.88,
+   "z": 28.15,
    "kind": "end_panel"
   },
   {
@@ -7930,8 +7098,8 @@
     "meat",
     "fish"
    ],
-   "x": 35.0,
-   "z": 114.15,
+   "x": 27.5,
+   "z": 42.85,
    "kind": "end_panel"
   },
   {
@@ -7939,8 +7107,8 @@
     "fish",
     "cheese_deli"
    ],
-   "x": 50.0,
-   "z": 114.15,
+   "x": 35.0,
+   "z": 42.85,
    "kind": "end_panel"
   },
   {
@@ -7948,8 +7116,8 @@
     "cheese_deli",
     "dairy"
    ],
-   "x": 87.78,
-   "z": 112.94,
+   "x": 57.5,
+   "z": 42.85,
    "kind": "end_panel"
   },
   {
@@ -7957,8 +7125,8 @@
     "dairy",
     "ready_meals"
    ],
-   "x": 89.95,
-   "z": 76.11,
+   "x": 80.0,
+   "z": 42.85,
    "kind": "end_panel"
   },
   {
@@ -7967,7 +7135,7 @@
     "desserts"
    ],
    "x": 89.95,
-   "z": 31.1,
+   "z": 23.55,
    "kind": "end_panel"
   },
   {
@@ -7975,16 +7143,15 @@
     "shop_floor",
     "checkouts"
    ],
-   "x0": 33.5,
-   "x1": 81.0,
+   "x0": 29.75,
+   "x1": 77.25,
    "z": 13.7,
    "kind": "checkout_rail"
   }
  ],
  "meal_deal": {
   "stand_units": [
-   "S18",
-   "S19"
+   "S10"
   ],
   "eligible": {
    "main": [
@@ -8450,10 +7617,10 @@
   "source": "assumption (standard UK grocery layout, as used by the large multiples; not a cited planogram): entrance -> fruit & veg + flowers (Underhill's 'decompression zone' idea: fresh, colourful, low-decision products first) -> in-store bakery -> chilled perimeter 'racetrack' along the back and side walls (meat, fish, cheese & deli, dairy, ready meals, desserts) -> numbered centre-store ambient aisles -> frozen towards the end (limits time out of the freezer; same rule as store_xl layout_notes) -> beer, wine & spirits next to the tills (age checks at the till) -> checkout bank across the front (staffed + self) -> exits with EAS security gates; café by the entrance; stockroom + goods-in at the back."
  },
  "layout_notes": [
-  "135 units: 72 centre-aisle sides (36 numbered aisles x 2) + 63 perimeter fixtures (produce tables, bakery, food-to-go, chilled racetrack).",
+  "107 units: 72 centre-aisle sides (36 numbered aisles x 2) + 35 perimeter fixtures (produce tables, bakery, food-to-go, chilled racetrack).",
   "centre store space is fixed by the aisle count; perimeter fixtures are sized so their mean facings match the centre (space-to-range ratio 7.04 shelf-cm per single-facing-cm).",
   "rows are assigned to categories within each department in walk order, proportional to the category's total single-facing width (sequential blocking); products go to rows by role preference (incumbent eye, own-label low, challenger top/middle).",
-  "the range is ~10% of a real superstore's (~25-40k SKUs, assumption), so aisles are short (3 m runs) to keep facings plausible; set FORMATS[...]['bays_per_side'] to lengthen them (facings scale up proportionally). Extra 80.6 m of depth was added so the chilled racetrack fits on the back + right walls; it becomes promo/seasonal floor between the aisles and the back wall."
+  "the range is ~10% of a real superstore's (~25-40k SKUs, assumption), so aisles are short (3 m runs) to keep facings plausible; set FORMATS[...]['bays_per_side'] to lengthen them (facings scale up proportionally). Extra 9.3 m of depth was added so the chilled racetrack fits on the back + right walls; it becomes promo/seasonal floor between the aisles and the back wall."
  ],
  "stock_rules": {
   "facings": "fill each shelf: start every SKU at 1 facing, then repeatedly add a facing to the SKU with the lowest facings/weight (weight incumbent 2.0, own_label 1.5, challenger 1.0; assumption: leaders hold more facings) while it still fits the remaining width; max 14 facings (assumption)",
@@ -8466,16 +7633,16 @@
   "script": "scripts/scale_superstore.py",
   "rules": "data/products/superstore_rules.md",
   "catalog": "data/products/catalog_superstore.json",
-  "range_rule": "assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens\n    (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or\n    own-label). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy).",
+  "range_rule": "assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens\n    (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or\n    own-label) -> now: 40% of each role per category by popularity (keeps the role mix). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy).",
   "skus_in_range": 2638,
   "skus_placed": 2638,
   "unplaced": [],
   "space_to_range_ratio": 7.045,
   "geometry": {
    "W": 90.8,
-   "D": 115.0,
+   "D": 43.7,
    "D0": 34.4,
-   "promo_floor_m": 80.6,
+   "promo_floor_m": 9.3,
    "left": 20.0,
    "xc0": 23.5,
    "pitch": 3.4000000000000004,
@@ -8490,10 +7657,10 @@
      28.3
     ]
    ],
-   "produce_z1": 26.5,
-   "bakery_z1": 40.5,
+   "produce_z1": 23.5,
+   "bakery_z1": 31.5,
    "x_e1": 20.0,
-   "chilled_run_m": 165.0
+   "chilled_run_m": 93.8
   },
   "catalog_derivation": {
    "pool_sizes": {

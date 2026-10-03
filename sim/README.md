@@ -168,7 +168,7 @@ python3 sim/ops.py --no-jev ...                                                 
 **Time in store.** Walking uses the aisle graph: walkways between gondolas plus the front and back cross-aisles at 1.3 m/s. Dwell is rows × the persona's `seconds_at_shelf`.
 
 **Stock and out-of-stocks.**
-- **Out of stock:** when a wanted SKU has an empty shelf, a Gruen 2002 reaction is drawn (store switch / other brand / same brand / delay / don't buy). A substitute is the in-stock product in the same category with the highest surrogate score. Lost £ is counted net of what the substitute recovers.
+- **Out of stock:** when a wanted SKU has an empty shelf, a Gruen 2002 reaction is drawn (store switch / other brand / same brand / delay / don't buy). A substitute is the in-stock product in the same category with the highest surrogate score. `lost_sales_gbp` counts each lost sale net of a cheaper substitute but clips trade-ups at 0 (gross); `lost_sales_net_gbp` also nets trade-ups to a pricier substitute (`substitution_trade_up_gbp`).
 - **Cause:** each OOS records whether the back room had stock (a shelf-restocking failure) or not (an ordering failure), to compare with Gruen & Corsten's root causes.
 - **Staff queries:** 10% of OOS-hit shoppers ask staff, which costs a restocker 6 min.
 - **Restockers** (N agents, `fifo` | `priority` | `priority_bay`) walk to the stockroom door and then the bay. Cases are worked at 45 cases/h, and other SKUs in the bay under 50% full come along.

@@ -70,7 +70,7 @@ SKU-minutes OOS by day, arm A, seed 1:
 |---|---|---|
 | 16% | **65%** | 8% |
 
-- **Sunday is an ordering failure.** On Sunday 92% of OOS encounters happen with an empty back room (22,679 "store ordering" against 2,024 "shelf restocking").
+- **Sunday is an ordering failure.** Over the 3 days, 92% of OOS encounters happen with an empty back room (22,679 "store ordering" against 2,024 "shelf restocking"; this count is not split by day, but Sunday holds most of the OOS-minutes).
 - **The cause is the setup, not the formula.** The store starts with an assumed 0.3–1.5 days of back-room cover and nothing on order. Ambient lead time is 2 days, so orders the manager places on Saturday (about 780 orders over the 3 days) don't arrive until Monday. Monday drops to 8%, close to Gruen's 8.3%.
 - **The model is too clean.** Gruen & Corsten 2008 put 47% of real OOS down to store ordering and forecasting, 25% to shelf restocking and 28% upstream. We have no upstream failures, and the cold start inflates the ordering share.
 - **Not yet done:** a run that starts from a warm pipeline (orders already in transit), so steady-state ordering can be measured.
@@ -95,3 +95,58 @@ SKU-minutes OOS by day, arm A, seed 1:
 - **TypeSafe Jev:** $0. Every call returned 402.
 - **OpenRouter:** about $0.004 through the router fallback, as described at the top; answers discarded.
 - **Compute:** about 10 min of CPU for the full comparison and about 6 s per Saturday.
+
+## 7. Adversarial verification (3 Oct, separate agent)
+
+**Reproduced.** Re-running both replay commands with `--no-jev` gives byte-identical KPIs to the two day files (the fallback table is the same either way). Every number in sections 1–4 matches `RESULTS.json`.
+
+**KPIs recomputed from the raw day JSON with an independent script** (Saturday, seed 1, smart / JSQ):
+
+| KPI | recomputed from | smart | JSQ | match |
+|---|---|---|---|---|
+| mean wait | `theatre.unload − t_join`, paid shoppers | 19.51 s | 37.21 s | yes |
+| abandon rate | `abandon` events ÷ shoppers who joined a queue | 13/2,285 | 59/2,285 | yes |
+| SKU-minutes OOS | `timeline.frames[].empty`, trading hours | 0.1518 | 0.1469 | yes |
+| shoppers hitting OOS | distinct shoppers in `oos` events | 0.4543 | 0.4468 | yes |
+| lost sales £ | `shoppers[].oos` | **£5,313 net** | **£5,189 net** | **no: the KPI showed £6,290 / £6,145** |
+
+- **Lost sales was overstated by about 18%.** `lost_sales_gbp` clips each substitution at 0, so a shopper who trades up to a pricier substitute recovers nothing in the KPI (£977 of trade-ups on the smart Saturday). It is kept for comparability, and the day files now also carry `lost_sales_net_gbp` and `substitution_trade_up_gbp`. The £ figures in section 2 are gross. The A-vs-C verdicts do not change, because both arms are gross.
+
+**Queue sanity check against Erlang C (M/M/c), hour by hour, using the simulated arrival rate and mean service time per lane type:**
+- **Staffed tills (c = 6) are in the same ballpark at moderate load.** With smart routing at 13:00–17:00 (ρ 0.6–0.76), Erlang C gives 8–37 s and the sim 2–11 s. The sim comes in *lower* because the router sends overflow to self-checkout, so staffed arrivals are not Poisson.
+- **At the 10:00–12:00 peak (ρ ≈ 0.97–1.09), Erlang C diverges to ∞, while the sim stays finite (100–150 s).** That is expected for a one-hour overload with reneging (Erlang A) and diversion to self-checkout.
+- **The self-checkout bank under JSQ is the real gap.** It runs at ρ 0.3–0.5 with 12 terminals, where pooled Erlang C gives about 0 s; the sim gives 20–56 s. The cause is the baseline, not a bug:
+  - each terminal has its own queue;
+  - JSQ breaks ties by nearest lane and can't see shoppers already walking over;
+  - so shoppers herd. On the Saturday JSQ run, terminal SE3 served 293 shoppers and SW5 served 0.
+  - **Implication:** much of A's win over B on the self-checkout side is a win over a *blind, un-pooled* JSQ. Real UK self-checkout banks usually run one shared queue, which would already be close to Erlang C. A fairer baseline is a pooled self-checkout queue, and it is not modelled yet.
+
+**Rule zero fixes in `sim/ops.py`.**
+- **13 hard-coded numbers moved to `params_extra.json`, each with a labelled assumption:**
+  - `margin_proxy_default`
+  - `restock_task_s_prior`
+  - `restock_lookahead_s`
+  - `restock_bay_shortfall_units`
+  - `default_capacity_units`
+  - `default_seconds_at_shelf`
+  - `staff_idle_poll_s`
+  - `cleaner_poll_s` (up to 15 s of the 28 s mean spill response is this polling latency)
+  - `post_close_drain_h`
+  - `ocean_phrase_thresholds`
+  - `theatre_bag_pay_offsets`
+  - `surrogate_min_pair_n`
+  - `dayparts`
+- **Surrogate params now reach `params_used`.** `surrogate_shrinkage_m` and the new `surrogate_min_pair_n` were read through the shared `Params()` and never appeared there; they do now.
+- **Same outputs.** Frames, events and KPIs are identical before and after the change.
+
+**`catalog_xl` checks.**
+- **Pack copy:** 20 sampled auto SKUs. Every claim in `pack_copy` is the OFF name plus OFF label tags; 0 of 336 auto SKUs carry a claim missing from their own labels.
+- **Nutrients:** they equal the OFF parquet values to 2 dp.
+- **Curated pack copy:** the 36 curated SKUs without `pack_copy_source` were checked against their own protein, kcal, organic, vegan, no-added-sugar and additive fields: no contradictions.
+- **Two own-label errors fixed.** Both SKUs were rebuilt with the script's own `build_product`, so their price and lens grades follow the new role; selection and planogram are unchanged:
+  - `Lipton, Waitrose` was own_label because OFF lists the stockist. It is now a challenger.
+  - `Marks & Spencers` (misspelt) was a challenger. It is now own_label.
+- **`scripts/scale_catalog.py` `role_for`:**
+  - a retailer named only *after* a non-retailer first brand no longer makes a product own-label;
+  - `marks & spencers` and `taste the difference` were added to the lists.
+- **Effect on results:** on the Saturday seed-1 runs it changes OOS share by <0.1 pp and lost £ by <1%. The tables above predate it.

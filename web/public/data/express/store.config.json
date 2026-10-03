@@ -7,7 +7,7 @@
   "d": 26.2,
   "back_of_house_d": 12.0,
   "sales_floor_m2": 587,
-  "promo_seasonal_floor_depth_m": -0.0
+  "promo_seasonal_floor_depth_m": 0.0
  },
  "aisles": 10,
  "centre_aisles": 2,
@@ -1326,7 +1326,7 @@
   "script": "scripts/scale_superstore.py",
   "rules": "data/products/superstore_rules.md",
   "catalog": "data/products/catalog_superstore.json",
-  "range_rule": "assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens\n    (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or\n    own-label). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy).",
+  "range_rule": "assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens\n    (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or\n    own-label) -> now: 40% of each role per category by popularity (keeps the role mix). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy).",
   "skus_in_range": 343,
   "skus_placed": 343,
   "unplaced": [],
@@ -1335,7 +1335,7 @@
    "W": 22.4,
    "D": 26.2,
    "D0": 26.2,
-   "promo_floor_m": -0.0,
+   "promo_floor_m": 0.0,
    "left": 6.0,
    "xc0": 9.5,
    "pitch": 3.4000000000000004,
