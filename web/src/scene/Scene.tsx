@@ -1,7 +1,7 @@
-import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from 'react';
+import { Suspense, memo, useEffect, useMemo, useRef, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, PerformanceMonitor } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import type { OrbitControls as OrbitImpl } from 'three-stdlib';
 import type { Agent, Persona, Planogram, Product, StoreConfig } from '../types';
@@ -137,6 +137,28 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
   return null;
 }
 
+/** perf: real-time shadows double every draw call (each caster is drawn again into the shadow map) and the crowd
+ *  already has blob shadows, so they are off unless ?shadows=1. */
+const SHADOWS = (() => { try { return new URLSearchParams(location.search).get('shadows') === '1'; } catch { return false; } })();
+
+/** perf: while paused the canvas renders on demand (orbit/camera moves invalidate) plus a slow 4 fps tick so
+ *  streamed-in pack images and late state still show up. Playing = continuous loop. */
+function PausedTicker({ on }: { on: boolean }) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    if (!on) return;
+    const id = setInterval(() => invalidate(), 250);
+    return () => clearInterval(id);
+  }, [on, invalidate]);
+  return null;
+}
+
+/** perf: PerformanceMonitor drives the pixel ratio between 0.75 and 1.5 (slow frames → fewer pixels) */
+function AutoDpr() {
+  const setDpr = useThree((s) => s.setDpr);
+  return <PerformanceMonitor bounds={() => [40, 58]} flipflops={6} onChange={({ factor }) => setDpr(Math.round((0.75 + 0.75 * factor) * 4) / 4)} />;
+}
+
 function Sun({ cx, cz, zMin, r }: { cx: number; cz: number; zMin: number; r: number }) {
   const ref = useRef<THREE.DirectionalLight>(null);
   const scene = useThree((s) => s.scene);
@@ -147,10 +169,17 @@ function Sun({ cx, cz, zMin, r }: { cx: number; cz: number; zMin: number; r: num
   }, [cx, cz, scene]);
   return (
     <directionalLight
-      ref={ref} position={[cx + 12, 26, zMin - 2]} intensity={1.55} castShadow
+      ref={ref} position={[cx + 12, 26, zMin - 2]} intensity={1.55} castShadow={SHADOWS}
       shadow-mapSize={[2048, 2048]} shadow-camera-left={-r} shadow-camera-right={r} shadow-camera-top={r} shadow-camera-bottom={-r} shadow-camera-far={120} shadow-bias={-0.0004}
     />
   );
+}
+
+/** perf/debug hook: window.__gl (renderer) and window.__scene for headless probes (renderer.info etc.) */
+function PerfHook() {
+  const gl = useThree((s) => s.gl), scene = useThree((s) => s.scene);
+  useEffect(() => { const w = window as unknown as Record<string, unknown>; w.__gl = gl; w.__scene = scene; }, [gl, scene]);
+  return null;
 }
 
 export interface SceneProps {
@@ -166,21 +195,43 @@ export interface SceneProps {
   ops?: OpsDay | null; clockStart?: number;
 }
 
+/** perf: App re-renders ~8x/s (clock readout, bonk counter) with fresh inline callbacks. The 3D tree must not
+ *  reconcile on each of those, so callbacks go through a ref (always the latest) and the canvas is memoised. */
 export function Scene(p: SceneProps) {
+  const ref = useRef(p); ref.current = p;
+  const cb = useMemo(() => ({
+    onProduct: (code: string) => ref.current.onProduct(code),
+    onAgent: (id: string) => ref.current.onAgent(id),
+    onEvent: (agentId: string, step: number) => ref.current.onEvent(agentId, step),
+    onSlot: (slot: string) => ref.current.onSlot(slot),
+    onBackground: () => ref.current.onBackground(),
+    onIntroDone: () => ref.current.onIntroDone(),
+    onUserCamera: () => ref.current.onUserCamera(),
+  }), []);
+  return <SceneCanvas {...p} {...cb} />;
+}
+
+const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
   const B = storeBounds(p.cfg);
   const ov = overviewPose(p.cfg);
   const beats = useMemo(() => buildBeats(p.cfg, p.replayPlan, p.agents, p.timelines), [p.cfg, p.replayPlan, p.agents, p.timelines]);
   const shadowR = Math.max(B.w, B.d) * 0.62;
+  // demand-render while paused, except during the intro fly-through (it animates on its own clock)
+  const demand = !p.playing && p.cam !== 'intro';
   return (
     <Canvas
-      flat shadows dpr={[1, 2]} camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: Math.max(400, ov.dist * 4) }}
+      flat shadows={SHADOWS} dpr={[1, 1.5]} frameloop={demand ? 'demand' : 'always'}
+      camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: Math.max(400, ov.dist * 4) }}
       onPointerMissed={p.onBackground} onPointerDown={p.onUserCamera} onWheel={p.onUserCamera}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      gl={{ antialias: true, alpha: true, stencil: false, powerPreference: 'high-performance' }}
     >
+      <AutoDpr />
+      <PausedTicker on={demand} />
       <fog attach="fog" args={['#ffe6dc', Math.max(70, ov.dist * 0.95), Math.max(170, ov.dist * 2.3)]} />
       <hemisphereLight args={['#fff4ec', '#f3c9d6', 1.15]} />
       <Sun cx={B.cx} cz={B.cz} zMin={B.zMin} r={shadowR} />
       <ambientLight intensity={0.45} />
+      <PerfHook />
       <Clock timeRef={p.timeRef} playing={p.playing} speed={p.speed} duration={p.duration} />
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>
@@ -197,4 +248,4 @@ export function Scene(p: SceneProps) {
       <CameraRig mode={p.cam} nonce={p.camNonce} cfg={p.cfg} onIntroDone={p.onIntroDone} />
     </Canvas>
   );
-}
+});

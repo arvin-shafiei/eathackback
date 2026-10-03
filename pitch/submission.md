@@ -1,91 +1,90 @@
-# Submission (Tally form: https://tally.so/r/obJp2P, due 17:30 to the minute)
+# Submission: paste-ready answers
 
-## Project name options
+Tally form: https://tally.so/r/obJp2P. **Due 17:30, to the minute.** Every link must open without signing in.
 
-1. **same shelf, two shoppers**: the current working name (README). It says the whole idea: humans vs AI agents on the same shelf.
-2. **walk-past**: names the data EPOS never has (David's blog: EPOS "says nothing about… the shoppers who walked past without buying").
-3. **the 8th shopper**: points straight at RGC's seven dimensions. Risky if it sounds presumptuous.
-4. **traceshelf**: leads with "every number traces to a source".
-5. **passed over**: punchy and human, but less clear about the agent arm.
+Rule zero applies to this page. Every number below names the file it comes from or is labelled an assumption. **REAL** means a TypeSafe Jev run log. **MOCK** means the rule-based demo engine, which is not evidence.
 
-**Recommendation:** *same shelf, two shoppers*, with the tagline **"walk-pasts, traced to source."**
+---
 
-## Track: **Human Truth**
+## 1. Project name
 
-Reasoning:
-- The Human Truth brief literally lists our two cores: *"What someone nearly chose or rejected"* and *"How AI shopping agents choose differently from humans, and what that means for brands."* Its fit test, *"uses human behaviour to explain or predict a choice and enables a useful action"*, describes the trace plus the honest-edit optimiser.
-- Our behavioural layer is the differentiator: coded Reddit mechanisms (habit, trust, loss aversion, reactance), OCEAN modifiers with citations, and a literature notice gate. That is Track 1's vocabulary ("habit, trust, loss aversion, social proof").
-- Track 2 (Retail Futures) would fit the optimiser output ("tells a buyer what to do next"), but the optimiser *depends on* the human-truth model. Leading with it would make us look like a planogram tool.
-- Finalists are the top 3 *per track*, so track choice is also a bet on the competition. We can't observe it; the brief fit is the stronger reason.
+| option | why it works | risk |
+|---|---|---|
+| **same shelf** ✅ | It is already the app's on-screen title (`web/src/App.tsx` header), so the video, repo and form all match. Same shelf, two kinds of shopper (human and AI), and every shopper is traced. | It doesn't say "walk-past" or "put-back" by itself, so the tagline has to carry that. |
+| put back | Names the finding: challengers lose at the put-back, which EPOS can't see. | Sounds like a returns or reverse-logistics product. |
+| walk-past | Echoes David's EPOS blog ("the shoppers who walked past without buying"). | Our strongest result is the put-back, not the walk-past. |
 
-## Project description (target 100–200 words; this is ~170)
+**Recommendation: `same shelf`**. Tagline: **"the shoppers EPOS never sees, traced to source."**
 
-> EPOS never sees the shopper who walked past. We built a 3D supermarket, 24 shelf slots stocked with real UK products from Open Food Facts, and let synthetic shoppers walk it. Each shopper is grounded in 10,642 coded Reddit comments and given Big Five traits, a mission and a budget. Before any LLM reads a pack, a literature-calibrated shelf model decides whether the product is even noticed (eye level, facings, centrality). Noticed products are read and picked, rejected or walked past, with a first-person reason tagged to a behavioural mechanism. Every number traces to a source: a paper, a Reddit thread, or an OFF field. An optimiser tests only honest edits (slot, facings, a true claim, price) and reports lift with confidence intervals. A second arm runs real AI shopping agents through OpenRouter on the same products, exposing where agents and humans diverge. We calibrated the sim against today's Shelf votes and report rank agreement, per-segment error and positivity bias openly. The result is a candidate eighth RGC dimension: the shopper that isn't human.
+## 2. Team members
 
-Before pasting:
-1. Update the calibration sentence with the real ρ and n, or delete it if the votes didn't come in.
-2. **Pre-existing work, to declare** (the brief asks for this). The research, Reddit corpus, persona staging and contract were committed between 11:05 and 11:17 on 3 Oct (`f85b13c` → `9f9e745`). The build period opened at 11:00, so anything prepared before then should be listed. Suggested line: *"Before the build period we gathered the research corpus and evidence notes; the store, sim, agents, optimiser, calibration and UI were built during EAT_HACK."* The team needs to confirm this is accurate.
+`[FILL: full names]`. Git authors in this repo are Arvin, Anson and chocoliticekreem (`git log --format=%an`).
 
-## Beyond the demo
+## 3. Track
 
-### Scale
-- The notice gate and choice-model maths are cheap, deterministic Python/JS (CONTRACT `sim/notice.py`, no LLM). Only **noticed** products cost an LLM call, so cost scales with attention, not catalogue size.
-- The store comes from a config file (`store.config.json`, CONTRACT). Going from 24 slots to a full 300-SKU category or a full store is a config change plus more OFF pulls. OFF has 4M+ products, and RGC's Product Graph claims 4M+ too (research/00).
-- Runs are logged as replayable JSON and responses are cached (`data/sim/cache/`), so a re-run with one edit only pays for the agents whose noticed set changed.
+**Recommend Human Truth.** The Track 1 brief lists both of our cores word for word: *"what someone nearly chose or rejected"* and *"how AI shopping agents choose differently from humans"*.
 
-### Cost: OpenRouter spend per 1,000 shoppers
+(Retail Futures would also fit the layout optimiser and the store-ops sim. But both are built on the human-choice model, so leading with them would make us look like a planogram tool.)
 
-Prices are live from `https://openrouter.ai/api/v1/models`, fetched 3 Oct 2026, in USD per token.
+## 4. Project description (187 words; paste as is)
 
-Assumptions:
-- **~9 LLM calls per shopper.** This is the number of products noticed per walk. Assumption: 24 slots × ~2.5 products shown × mean p_notice ~0.15. **Replace with the real mean from the run log.**
-- **~1,200 input tokens per call** (persona dossier + product card). Assumption.
-- **~150 output tokens per call.** CONTRACT caps `max_tokens` at ≤300.
+> EPOS records the sale. It never sees the shopper who picked a product up and put it back. same shelf is a 3D supermarket stocked with 96 real UK products from Open Food Facts, walked by synthetic shoppers grounded in 10,642 coded Reddit comments, shelf-effect research and Big Five traits. Code decides what each shopper notices (eye level, facings, mission). TypeSafe Jev then returns calibrated probabilities for pick-up, put-back or take, and for which rejection trigger fired. Every number clicks through to its source: a paper, a Reddit thread, an Open Food Facts field, a Jev distribution or a labelled assumption.
+>
+> The non-obvious finding, from a real 300-shopper Jev run: once noticed, challengers are picked up as often as incumbents (35% vs 34%) but kept less often (48% vs 54%; own-label 67%). Challengers lose in the hand, at the stage EPOS can't see.
+>
+> Brands get a funnel diagnosis and legal pack-claim tests. Retailers get an HFSS-aware layout optimiser. An AI-agent arm measures position bias. It is all simulated and not yet validated against real shoppers, and the busy superstore replay is a labelled mock. Built during EAT_HACK.
 
-| model | $/M in | $/M out | per shopper | **per 1k shoppers** |
-|---|---|---|---|---|
-| meta-llama/llama-3.3-70b-instruct | 0.10 | 0.32 | $0.0015 | **≈ $1.5** |
-| openai/gpt-4.1-mini | 0.40 | 1.60 | $0.0065 | **≈ $6.5** |
-| google/gemini-2.5-flash | 0.30 | 2.50 | $0.0066 | **≈ $6.6** |
-| anthropic/claude-haiku-4.5 | 1.00 | 5.00 | $0.0176 | **≈ $17.6** |
-| equal 4-model mix | | | | **≈ $8** |
+### Where each number in the description comes from
 
-- The AI-agent arm costs one call per agent session over the whole feed, roughly 8k tokens in (assumption): about **$2–10 per 1k sessions** at the same prices.
-- The hackathon budget cap is $50 (CONTRACT), which is about 6k mixed-model shoppers.
-- At RGC scale, prompt-prefix caching of the persona dossier would cut input cost further. This is unmeasured, so we don't claim a number.
-- Compare traditional virtual-store tests at £20–60k each, taking weeks (README "who pays").
+| claim | source |
+|---|---|
+| 96 real UK products | `data/products/catalog.json` (96 entries: 40 challenger, 35 incumbent, 21 own-label) |
+| 10,642 coded Reddit comments | `data/reddit/comments.csv` (10,642 rows, 133 threads in `threads_index.csv`); coding in `research/03-reddit-coded.json` |
+| 300-shopper Jev run | `data/sim/runs/run_20261003_120823_s11_jev_4482.json` (`engine: "jev"`, `mock: false`, `models: ["jev-1.13.0"]`, 300 agents, 19,992 product passes, `cost.errors: 0`) |
+| picked up 35% vs 34% (of products looked at) | same file, re-derived from `agents[].events[].stage_reached`: challenger 1,539 of 4,448 looks = 34.6% [33.2, 36.0]; incumbent 1,492 of 4,398 = 33.9% [32.5, 35.3] (Wilson 95%) |
+| kept 48% vs 54%; own-label 67% | same file: taken ÷ picked up = challenger 739/1,539 = 48.0% [45.5, 50.5]; incumbent 809/1,492 = 54.2% [51.7, 56.7]; own-label 874/1,298 = 67.3% [64.7, 69.8] |
 
-### Privacy
-- **No personal shopper data is needed.** Personas come from public Reddit comments (Arctic Shift archive) that are coded into mechanisms. We quote verbatims with thread URLs but store no usernames (`data/reddit/comments.csv` has no author column).
-- The Shelf calibration form collects **no name, email or phone number**. It only takes an optional nickname and is reported in aggregate, with segments under n=8 suppressed (`calibration/README.md`).
-- TIPI personality scores are compared only as room means, never shown per person.
-- In production with RGC's Watch Humans voice memos, the grounding would sit in RGC's environment. The sim only needs coded mechanisms and parameters, not raw recordings.
+Honest qualifier, not in the paste text: challengers are also *noticed* less often (53.8% vs 59.8% of passes). That gap comes from the notice model in code plus where challengers sit in the planogram, not from Jev.
 
-### Security
-- API keys stay in `.env` (gitignored).
-- Agents receive the product feed as data. **Honest edits only:** the optimiser can't write free text into the feed, which closes off prompt-injection "optimisation" against AI shoppers.
+## 5. Pre-existing work (paste as is)
 
-### Data ownership
-- Product data comes from Open Food Facts under the ODbL, with attribution and share-alike on the product database. Images are under their own CC licences, linked per product.
-- Reddit excerpts are used as research quotes with links. We don't redistribute a model trained on them.
-- No retailer scraping (README pressure test).
-- A brand's own planogram, prices and claims stay the brand's. The run log is theirs to keep.
-- RGC's proprietary data (EPOS partners, voice memos) would replace our public grounding inside their walls. Nothing leaves.
+> No substantial pre-existing work. The store, simulation engine, Jev integration, AI-agent arm, optimisers, dashboard and 3D app were built during EAT_HACK on 3 Oct 2026. We used only open datasets, public APIs and open-source libraries: Open Food Facts (ODbL) for products; Reddit comments via the Arctic Shift public archive; published NielsenIQ bestseller tables as reported by The Grocer and Talking Retail (`data/sales/uk_bestsellers.csv`); the TypeSafe Jev API for shopper judgments; plus React, three.js / react-three-fiber, Vite and Python's standard library. The research notes and Reddit corpus were collected on the day (first commit 11:05).
 
-### Limitations (say these before the judges do)
-1. **Simulated personas are hypotheses.** Skeptic agents scored the staged journeys 5–6.5/10 for realism, citing over-noticing, over-articulate reasons and acting on what personas *say* rather than what they *do* (research/05 §6).
-2. **LLM shoppers are positivity-biased and variance-compressed** (arXiv 2609.13148: subgroup error 10–30pp). Our mitigations:
-   - a notice gate before the LLM;
-   - a forced walk-past option;
-   - several models;
-   - a Shelf calibration with an AIPW correction.
-3. **The Shelf is ~50 builders tasting free samples.** It is a topline check, not a UK shopper panel, and gives no willingness to pay or repeat data.
-4. **Reddit skews toward label-readers and complainers**, so mechanism counts are directional.
-5. **Shelf-effect coefficients come from non-UK and older studies.** Several primary papers were paywalled and are cited through secondary summaries, tagged in research/04. The ACES agent coefficients come from non-food categories.
-6. **No claim legality check** (HFSS placement, claim wording) beyond using true OFF values.
+⚠️ **Team must confirm this before pasting.** The first commits (`f85b13c` → `a13afd7`, 11:05–11:17) already hold a lot of research: the RGC intel, the 10.6k-comment corpus and the coded human truths. If any of that was prepared before the 11:00 start, replace the last sentence with: *"Before the build period we gathered the research notes and Reddit corpus; everything else was built during EAT_HACK."*
 
-## Team / links checklist
-- [ ] team member names
-- [ ] public repo URL (README has run instructions)
-- [ ] public video URL, ≤ 2:00
-- [ ] Best Brand vote: our 3 favourites from The Shelf (and note this is the same shape as our calibration form)
+## 6. Links
+
+- **Repository:** https://github.com/arvin-shafiei/eathackback (check that it is **public**; README has run instructions)
+- **Video (≤ 2:00):** `[FILL: unlisted YouTube / Loom URL, opens without login]`. Script: `pitch/demo_script.md`
+- **Live URL:** optional, and it earns no extra points. Skip it.
+
+## 7. Best Brand vote (three brands from The Shelf)
+
+1. `[FILL]`
+2. `[FILL]`
+3. `[FILL]`
+
+(This vote is separate from judging and doesn't affect our score.)
+
+---
+
+## Pre-submit checklist (14:20 → 17:30)
+
+- [ ] Repo is public, and `README.md` opens with the judge summary.
+- [ ] Video ≤ 2:00, unlisted but public, with captions. It shows the **"mock engine: layout & traffic demo, not evidence"** badge on the superstore shots.
+- [ ] **Jev credits:** TypeSafe started returning HTTP 402 (out of credits) partway through the 12:36 visits run (`data/sim/visits/RESULTS.md`, `data/sim/ops/RESULTS.md`). Since then, any new run is either mock or the `jev-router` OpenRouter fallback, which is an uncalibrated LLM. `run_20261003_125423_s909_jev_5c63.json` is one of these despite "jev" in its filename (`models: ["openrouter:typesafe/jev-router"]`). Top up credits before recording a live Jev run. Otherwise, quote only the cached REAL runs.
+- [ ] The superstore replay file is gitignored (`.gitignore`: `run_20261003_133908_s21_mock_bffd.json`). The README tells judges how to regenerate it.
+- [ ] Team names, the three Best Brand picks and the pre-existing-work sentence are confirmed.
+
+## Beyond the demo (for the form's free text, or for the live final)
+
+- **Cost (measured):** the 300-shopper Jev run cost $0.87 actual, or $0.95 if uncached, for 6,187 requests and 22.7M input tokens. That is about **$3.20 per 1,000 shoppers** (`sim/README.md` "Tested"; `run_…4482.json → cost.usd_if_uncached = 0.954`). All Jev spend today was $2.69 over 19,580 calls (`data/sim/cost_log.jsonl`, `model == "jev"`).
+- **Scale:** the store is a config file (`data/store/formats/*.config.json`: express, metro, superstore). Only *noticed* products cost a Jev call. Identical states are served from cache for $0.
+- **Privacy:** no personal shopper data. Reddit is used as coded mechanisms plus quoted verbatims with thread URLs, and no usernames are stored (`data/reddit/comments.csv` has no author column).
+- **Security:** keys live in `.env` (gitignored). Optimisers only make honest edits (slot, facings, a true Reg 1924/2006 claim, price) and never write free text into the feed. Brand-uploaded products are stamped `brand-supplied, unverified` (`sim/uploads.py`).
+- **Data ownership:** Open Food Facts is ODbL with attribution. A Tesco link is read once for a single product page and is not crawled (`sim/tesco.py`). A production version would need a licensed feed.
+- **Limitations (say them first):**
+  - There is no real-shopper calibration yet. The Shelf-vote harness exists (`calibration/`), but only `DEMO_*` (fake) outputs exist.
+  - 85 of 96 prices are labelled curator assumptions (`data/sim/swaps/claim_premium.md`).
+  - Lens personas are on average 28% assumption by field (`data/provenance/personas/index.json`).
+  - Our personal-route experiment found **no** claimable lift (`data/sim/visits/RESULTS.md`).

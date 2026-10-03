@@ -18,8 +18,14 @@ const anyUncalibrated = (run: Run) => {
   return false;
 };
 
+/** perf: App asks every render (~8x/s); a run object never changes, so cache per run */
+const engineCache = new WeakMap<Run, EngineInfo | null>();
 export function engineOf(run: Run | null | undefined): EngineInfo | null {
   if (!run) return null;
+  if (engineCache.has(run)) return engineCache.get(run)!;
+  const info = engineOfUncached(run); engineCache.set(run, info); return info;
+}
+function engineOfUncached(run: Run): EngineInfo | null {
   const r = run as Loose;
   const models = (run.models ?? []).map(String);
   const eng = typeof r.engine === 'string' ? r.engine : '';
