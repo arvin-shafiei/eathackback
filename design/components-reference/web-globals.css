@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+/* Mirrors mobile/src/design/tokens.ts so web and app look like one product. */
+@theme {
+  --color-pink: #ed1980;
+  --color-hot-pink: #ff4079;
+  --color-orange: #fe831b;
+  --color-magenta: #9e0f52;
+  --color-peach: #ffd3b8;
+  --color-blush: #ffe4ee;
+  --color-cream: #fff6f0;
+  --color-ink: #141014;
+  --color-ink-soft: #2b2228;
+  --color-muted: #6e5f69;
+  --color-line: #f3d3e0;
+  --color-surface-dim: #fff1f5;
+  --color-green: #18b65b;
+  --color-red: #e0222f;
+
+  --font-display: var(--font-baloo), ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}
+
+.bg-brand {
+  background-image: linear-gradient(180deg, var(--color-hot-pink) 0%, var(--color-pink) 45%, var(--color-orange) 100%);
+}
+
+.bg-soft {
+  background-image: linear-gradient(180deg, #ffe6ef 0%, #fff1e6 55%, #fff8f2 100%);
+}
+
+/* White display text with a thick black sticker outline and a solid ledge (the ngl logo look). */
+.sticker {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: #fff;
+  -webkit-text-stroke: 0.14em var(--color-ink);
+  paint-order: stroke fill;
+  text-shadow: 0 0.09em 0 var(--color-ink);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+/* Chunky 3D surfaces: ink outline + solid ledge. Press sinks the face onto the ledge. */
+.chunky {
+  --ledge: 6px;
+  --ledge-color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  box-shadow: 0 var(--ledge) 0 var(--ledge-color), 0 calc(var(--ledge) + 10px) 24px -8px rgb(158 15 82 / 0.35);
+}
+
+.press {
+  transition: transform 90ms ease-out, box-shadow 90ms ease-out;
+}
+.press:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 calc(var(--ledge) + 1px) 0 var(--ledge-color), 0 calc(var(--ledge) + 12px) 26px -8px rgb(158 15 82 / 0.4);
+}
+.press:active:not(:disabled) {
+  transform: translateY(var(--ledge));
+  box-shadow: 0 0 0 var(--ledge-color);
+}
+
+/* Floating 3D clay objects. */
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--tilt, 0deg));
+  }
+  50% {
+    transform: translateY(-14px) rotate(calc(var(--tilt, 0deg) + 4deg));
+  }
+}
+.floaty {
+  animation: bob var(--dur, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floaty {
+    animation: none;
+    transform: rotate(var(--tilt, 0deg));
+  }
+  .press,
+  .press:hover:not(:disabled),
+  .press:active:not(:disabled) {
+    transition: none;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+/* Long-form text (privacy, terms, support) inside a white card. */
+.legal {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+.legal h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1.05;
+  color: var(--color-ink);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  scroll-margin-top: 1.5rem;
+}
+.legal h2:first-child {
+  margin-top: 0;
+}
+.legal h3 {
+  font-weight: 800;
+  color: var(--color-ink);
+  margin-top: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+.legal p + p,
+.legal p + ul,
+.legal ul + p,
+.legal table + p,
+.legal p + table {
+  margin-top: 0.75rem;
+}
+.legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.legal ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.legal li + li {
+  margin-top: 0.35rem;
+}
+.legal a {
+  color: var(--color-pink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal strong {
+  color: var(--color-ink);
+}
+.legal .table-wrap {
+  overflow-x: auto;
+  margin-top: 0.75rem;
+  border: 2px solid var(--color-line);
+  border-radius: 16px;
+}
+.legal table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.925rem;
+  line-height: 1.5;
+}
+.legal th,
+.legal td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--color-line);
+}
+.legal tr:last-child td {
+  border-bottom: 0;
+}
+.legal th {
+  background: var(--color-surface-dim);
+  color: var(--color-ink);
+  font-weight: 800;
+}
+
+/* FAQ accordions on the support page. */
+.legal .faq {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.6rem;
+}
+.legal details {
+  border: 2px solid var(--color-line);
+  border-radius: 16px;
+  padding: 0.75rem 1rem;
+  background: var(--color-cream);
+}
+.legal details[open] {
+  border-color: var(--color-pink);
+  background: #fff;
+}
+.legal summary {
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--color-ink);
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.legal summary::-webkit-details-marker {
+  display: none;
+}
+.legal summary::after {
+  content: "+";
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-pink);
+}
+.legal details[open] summary::after {
+  content: "–";
+}
+.legal details > p {
+  margin-top: 0.5rem;
+}
+.legal ol + p,
+.legal p + ol {
+  margin-top: 0.75rem;
+}
