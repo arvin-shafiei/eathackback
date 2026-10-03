@@ -137,8 +137,24 @@ class H(BaseHTTPRequestHandler):
                                                               "agents": b.get("agents", 30), "seeds": b.get("seeds", [1]),
                                                               "engine": b.get("engine", "jev")}))
             if p == "/v1/shopper/swaps":
-                return self._send(501, {"error": "shopper swaps are specified in integrations/openapi.yaml but not served here yet",
-                                        "status": "designed_not_built", "see": "docs/surfaces/README.md#3-shopper"})
+                # served by sim/swaps.py (code finds + measures candidates, Jev judges accept/benefit/triggers/price)
+                sys.path.insert(0, os.path.join(os.path.dirname(HERE), "sim"))
+                import swaps as sw  # noqa: E402
+                import rerank as rr  # noqa: E402
+                personas = load_personas()
+                arch, inf = b.get("archetype"), None
+                if not arch and b.get("session_signals"):
+                    inf = rr.infer_archetype(b["session_signals"], personas, int(b.get("seed", 0)))
+                    arch = None if inf["archetype"] == rr.UNCLEAR else inf["archetype"]
+                if not arch or arch not in personas:
+                    return self._send(400, {"error": "need a known archetype (or session_signals that resolve to one)",
+                                            "archetype_inference": inf, "status": "bad_request"})
+                res = sw.run_swaps(arch, list(b["basket"]), top=int(b.get("top", 3)), out_name="api")
+                res.pop("_path", None)
+                res["archetype_inference"] = inf
+                res["goal_note"] = ("'goal' is not a filter yet: candidates must raise the persona's lens grade AND improve "
+                                    "at least one OFF health field (fibre, sugar, protein, salt, additives, NOVA, ...)")
+                return self._send(200, res)
             self._send(404, {"error": "not found", "status": "not_found"})
         except KeyError as e:
             self._send(400, {"error": f"bad request: {e}", "status": "bad_request"})
