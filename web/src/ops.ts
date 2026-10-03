@@ -5,6 +5,7 @@ import type { StoreConfig } from './types';
 import { slotStand, storePlan } from './layout';
 import { useEffect, useMemo, useState } from 'react';
 import { bus } from './scene/fx';
+import { getData } from './data';
 
 export type At = string | { x: number; z: number };
 export interface OpsStaff { id: string; role: 'restocker' | 'cleaner' | 'manager' | 'guard' | 'cashier' | string; lane?: string; name?: string }
@@ -185,4 +186,39 @@ export function useOpsKpis(time?: number, day?: OpsDay | null): OpsKpis | null {
   const d = day === undefined ? activeDay : day;
   const t = time ?? clock;
   return useMemo(() => opsKpisAt(d, t), [d, t]);
+}
+
+// ---------------------------------------------------------------- loading (so <Ops> works even when nobody passes `ops`)
+/** fetch the newest real ops day (data/sim/ops/day_*.json synced into public/data/ops), else the fixture */
+export async function loadOpsDay(file?: string): Promise<OpsDay | null> {
+  const idx = (await getData<OpsIndexEntry[]>('ops/index.json')) ?? [];
+  const pickEntry = file ? idx.find((e) => e.file === file) ?? { file } : idx.find((e) => !e.fixture) ?? idx[0];
+  if (!pickEntry) return null;
+  const raw = await getData<unknown>(`ops/${pickEntry.file}`);
+  const d = normaliseOps(raw);
+  if (d && pickEntry.fixture && !d._fixture) d._fixture = 'fixture ops day (public/data/ops/day_fixture.json)';
+  return d;
+}
+const dayCache = new Map<string, Promise<OpsDay | null>>();
+/** React hook around loadOpsDay; `enabled=false` skips the fetch (when the caller already has a day) */
+export function useOpsDay(enabled = true, file?: string): OpsDay | null {
+  const [d, setD] = useState<OpsDay | null>(null);
+  useEffect(() => {
+    if (!enabled) return;
+    let live = true;
+    const k = file ?? '';
+    if (!dayCache.has(k)) dayCache.set(k, loadOpsDay(file).catch(() => null));
+    void dayCache.get(k)!.then((x) => { if (live) setD(x); });
+    return () => { live = false; };
+  }, [enabled, file]);
+  return d;
+}
+/** where the time-of-day clock starts when the app doesn't say: ?clock=HH:MM, else 12:00 (lunch rush) */
+export function defaultClockStart(): number {
+  try {
+    const v = new URLSearchParams(location.search).get('clock');
+    const m = v ? parseT(v) : NaN;
+    if (Number.isFinite(m)) return m;
+  } catch { /* no location */ }
+  return 12 * 60;
 }

@@ -205,7 +205,8 @@ export default function Provenance() {
                 <g>
                   {lay.nodes.map((n) => {
                     const on = !lit || lit.has(n.id);
-                    const showLabel = n.h >= 9 || n.id === active || (lit && lit.has(n.id) && n.layer >= 2);
+                    const showLabel = n.h >= (n.layer === 1 ? 12 : 9) || n.id === active || (lit && lit.has(n.id) && n.layer >= 2 && n.h >= 4);
+                    const maxCh = n.layer === 5 ? 26 : Math.max(8, Math.floor((lay.step - lay.nw - 14) / 5.4));
                     const color = n.layer === 3 && n.source_class ? classColor(n.source_class) : n.layer === 5 && n.primary_class ? classColor(n.primary_class) : '#141014';
                     return (
                       <g key={n.id} className={`d-snode ${on ? '' : 'is-dim'} ${sel === n.id ? 'is-sel' : ''}`}
@@ -215,7 +216,7 @@ export default function Provenance() {
                         <rect x={n.x - 3} y={n.y - 2} width={lay.nw + 6} height={Math.max(5, n.h + 4)} fill="transparent" />
                         {showLabel ? (
                           <text x={n.x + lay.nw + 5} y={n.y + n.h / 2} dominantBaseline="central" className="d-snode-label">
-                            {n.label.length > 34 ? n.label.slice(0, 32) + '…' : n.label}
+                            {n.label.length > maxCh ? n.label.slice(0, maxCh - 1) + '…' : n.label}
                           </text>
                         ) : null}
                         <title>{`${n.layer_name}: ${n.label}`}</title>

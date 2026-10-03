@@ -597,7 +597,9 @@ FORMATS = {
     "express": {"name": "eat_hack Express (convenience, ~10 units)", "centre_aisles": 2, "banks": 1, "bays_per_side": 2,
                 "staffed": 2, "self": 4, "entrances": 1, "cafe": None, "depts": EXPRESS_DEPTS, "left_zone_m": 6.0},
     "metro": {"name": "eat_hack Metro (high street, ~24 units)", "centre_aisles": 6, "banks": 1, "bays_per_side": 3,
-              "staffed": 4, "self": 8, "entrances": 1, "cafe": None, "depts": [(d, {}) for d in DEPTS if d != "grocery"], "left_zone_m": 10.0},
+              "staffed": 4, "self": 8, "entrances": 1, "cafe": None, "left_zone_m": 10.0,
+              # metro: the alcohol-free range sits in the drinks aisle (too few SKUs for its own BWS bay)
+              "depts": [(d, {"cats": ["soft_drinks", "water", "low_no_alcohol"]} if d == "drinks" else {}) for d in DEPTS if d not in ("grocery", "bws")]},
     "superstore": {"name": "eat_hack Superstore (retail park)", "centre_aisles": 36, "banks": 2, "bays_per_side": 3,
                    "staffed": 10, "self": 20, "entrances": 2, "cafe": {"tables": 10, "seats_per_table": 4},
                    "depts": [(d, {}) for d in DEPTS if d != "grocery"], "left_zone_m": 20.0},
@@ -615,3 +617,716 @@ LAYOUT_SOURCE = ("assumption (standard UK grocery layout, as used by the large m
                  "freezer; same rule as store_xl layout_notes) -> beer, wine & spirits next to the tills (age checks at the till) "
                  "-> checkout bank across the front (staffed + self) -> exits with EAS security gates; café by the entrance; "
                  "stockroom + goods-in at the back.")
+
+
+# ================================================================ 1. catalog
+XLD = json.load(open(P("data/store/store_xl.config.json")))["derivation"]
+SC = {c: dict(v) for c, v in XLD["scales_from_curated"].items()}
+
+
+def build_catalog():
+    df = pd.read_parquet(P("data/products/uk_products.parquet")).drop_duplicates("code")
+    offidx = {r["code"]: r for r in df.to_dict("records")}
+    xl = json.load(open(P("data/products/catalog_xl.json")))
+    have = {p["code"] for p in xl}
+    bestsellers = X.load_bestseller_brands()
+    curated_inc = sorted({X.norm(p["brand"]) for p in xl if p.get("curation") == "curated" and p["role"] == "incumbent"})
+    cand = candidates(df, have)
+    pool_sizes = {c: len(cand.get(c, [])) for c in XL_CATS + PRE_XL + POST_XL}
+    dropped = {c: n for c, n in pool_sizes.items() if c not in XL_CATS and n < MIN_KEEP}
+    new_cats = [c for c in PRE_XL + POST_XL if c not in dropped]
+    for c in new_cats:
+        SC[c] = pool_scales(cand[c])
+
+    added, picks_by = [], {}
+    for c in XL_CATS + new_cats:
+        existing = [p for p in xl if p["category"] == c]
+        target = XL_TOPUP_TARGET if c in XL_CATS else NEW_TARGET
+        need = max(0, target - len(existing))
+        picks_by[c] = pick(c, cand.get(c, []), need, existing, offidx, bestsellers, curated_inc) if need else []
+
+    xl_upb = {c: tuple(v) for c, v in XLD["unit_price_band_gbp_per_kg"].items()}
+    med_pack = {}
+    for c in new_cats:
+        packs = [t for t in (X.parse_qty(r.get("quantity"))[0] for r in picks_by[c]) if t]
+        med_pack[c] = round(float(np.median(packs)), 0) if packs else DIMS[c][3]
+    upb_new = {}
+    for c in XL_CATS + new_cats:
+        for r in picks_by[c]:
+            if c in XL_CATS:
+                p = X.build_product(r, c, XLD["price_model"], SC, xl_upb)  # XL rule set + XL price model, unchanged
+                p["_cats"] = sorted(r["_tags"])
+            else:
+                p = build_new(r, c, med_pack)
+            p["curation"] = CURATION
+            p["_sub"] = r["_sub"]
+            added.append(p)
+        if c in new_cats:
+            ups = [p["unit_price_gbp_per_kg"] for p in added if p["category"] == c and p.get("unit_price_gbp_per_kg")]
+            # unit-price band for the frugal lens = 5th-95th percentile of this category's (assumed) £/kg
+            upb_new[c] = (round(float(np.percentile(ups, 5)), 2), round(float(np.percentile(ups, 95)), 2)) if ups else (1.0, 10.0)
+    upb = {**xl_upb, **upb_new}
+    for p in added:
+        if p["category"] in new_cats:
+            regrade(p, p["category"], upb)
+        p.pop("_cats", None)
+
+    cat = []
+    for p in xl + added:  # XL products: every original field unchanged; only shelf-dims fields are appended
+        q = dict(p)
+        sub = q.pop("_sub", None)
+        if sub is None:
+            sub = subtype(q["category"], set(X.split(offidx.get(q["code"], {}).get("categories"))))
+        total = q.get("pack_total_g_or_ml") or X.parse_qty(q.get("quantity"))[0]
+        q.update(pack_dims(q["category"], sub, total))
+        q["subtype"] = sub
+        cat.append(q)
+    deriv = {"pool_sizes": pool_sizes, "dropped_categories": dropped, "scales": SC, "unit_price_band_gbp_per_kg": upb,
+             "median_pack_new": med_pack, "beta_new": BETA_NEW, "unit_price_assumed": UNIT_PRICE_ASSUMED,
+             "unit_price_sub": {f"{a}/{b}": v for (a, b), v in UNIT_PRICE_SUB.items()}, "categories": XL_CATS + new_cats}
+    return cat, deriv
+
+
+# ================================================================ 2. formats
+def resolve_depts(spec, cats_present):
+    out = []
+    for did, ov in spec["depts"]:
+        name, kind, fixture, cats, color, sign = DEPTS[did]
+        d = {"id": did, "name": ov.get("name", name), "kind": ov.get("kind", kind), "fixture": ov.get("fixture", fixture),
+             "cats": [c for c in ov.get("cats", cats) if c in cats_present], "color": color, "sign": ov.get("sign", sign)}
+        if d["cats"]:
+            out.append(d)
+    return out
+
+
+def alloc(total, weights, minimum=1):
+    """Largest-remainder allocation of `total` integer units to weights, each >= minimum."""
+    keys = list(weights)
+    base = {k: minimum for k in keys}
+    rest = total - minimum * len(keys)
+    assert rest >= 0, (total, weights)
+    w = sum(weights.values()) or 1
+    raw = {k: rest * weights[k] / w for k in keys}
+    for k in keys:
+        base[k] += int(raw[k])
+    left = total - sum(base.values())
+    for k in sorted(keys, key=lambda k: -(raw[k] - int(raw[k])))[:left]:
+        base[k] += 1
+    return base
+
+
+def unit_shape(fixture, spec):
+    f = FIXTURES[fixture]
+    if fixture == "produce_tables":
+        bays = 2
+    elif fixture == "freezer_doors":
+        bays = max(2, int(spec["bays_per_side"] * 100 // f["bay_cm"]))  # doors that fit the same run length as a gondola side
+    else:
+        bays = spec["bays_per_side"]
+    return {"bays": bays, "rows": f["rows"], "shelf_width_cm": bays * f["bay_cm"]}
+
+
+def build_format(fid, spec, prods):
+    by_cat = defaultdict(list)
+    for p in prods:
+        by_cat[p["category"]].append(p)
+    depts = resolve_depts(spec, set(by_cat))
+    need = {d["id"]: sum(p["width_cm"] for c in d["cats"] for p in by_cat[c]) for d in depts}
+    centre = [d for d in depts if d["kind"] in ("centre", "frozen", "bws")]
+    perim = [d for d in depts if d["kind"] not in ("centre", "frozen", "bws")]
+    N = spec["centre_aisles"]
+    cap = lambda d: unit_shape(d["fixture"], spec)["shelf_width_cm"] * FIXTURES[d["fixture"]]["rows"]  # noqa: E731
+    sides = alloc(2 * N, {d["id"]: need[d["id"]] / cap(d) for d in centre})
+    f_centre = sum(sides[d["id"]] * cap(d) for d in centre) / sum(need[d["id"]] for d in centre)
+    # perimeter fixtures sized so their average facings match the centre store (same space-to-range ratio)
+    n_perim = {d["id"]: max(math.ceil(len(d["cats"]) / FIXTURES[d["fixture"]]["rows"]), round(need[d["id"]] * f_centre / cap(d))) for d in perim}
+
+    # ---- units in walk order
+    units, seq = [], 0
+    for d in perim + centre:
+        n = n_perim.get(d["id"]) or sides[d["id"]]
+        for k in range(n):
+            seq += 1
+            sh = unit_shape(d["fixture"], spec)
+            fx = FIXTURES[d["fixture"]]
+            units.append({"id": f"{fid[0].upper()}{seq}", "department": d["id"], "zone": d["kind"], "fixture": d["fixture"],
+                          "fixture_type": d["fixture"], "rows": fx["rows"], "bays": sh["bays"], "bay_width_cm": fx["bay_cm"],
+                          "shelf_width_cm": sh["shelf_width_cm"], "shelf_depth_cm": fx["shelf_depth_cm"], "row_clear_cm": fx["row_clear_cm"],
+                          "fridge": fx["fridge"], "freezer": fx["freezer"], **({"doors": sh["bays"]} if d["fixture"] == "freezer_doors" else {})})
+    # ---- rows -> categories (sequential within a department, proportional to shelf need)
+    slots = {}
+    for d in depts:
+        du = [u for u in units if u["department"] == d["id"]]
+        rows = [(u, r) for u in du for r in range(1, u["rows"] + 1)]
+        cw = {c: sum(p["width_cm"] for p in by_cat[c]) for c in d["cats"]}
+        if len(rows) < len(cw):  # more categories than rows: keep the biggest (should not happen with the specs above)
+            raise SystemExit(f"{fid}/{d['id']}: {len(rows)} rows < {len(cw)} categories")
+        n_rows = alloc(len(rows), cw)
+        i = 0
+        for c in d["cats"]:
+            for u, r in rows[i:i + n_rows[c]]:
+                slots[f"{u['id']}-r{r}"] = {"unit": u, "row": r, "category": c, "products": [], "used": 0.0}
+            i += n_rows[c]
+        for u in du:
+            cs = [slots[f"{u['id']}-r{r}"]["category"] for r in range(1, u["rows"] + 1)]
+            u["categories"] = list(dict.fromkeys(cs))
+            u["category"] = Counter(cs).most_common(1)[0][0]
+    # ---- products -> slots (role row preference, balanced count, width check at 1 facing)
+    unplaced = []
+    for c, ps in by_cat.items():
+        cs = [s for s in slots.values() if s["category"] == c]
+        if not cs:
+            unplaced += [p["code"] for p in ps]
+            continue
+        target = math.ceil(len(ps) / len(cs))
+        order = sorted(ps, key=lambda p: ({"incumbent": 0, "own_label": 1, "challenger": 2}.get(p["role"], 3), -(p.get("scans") or 0), p["code"]))
+        for p in order:
+            pref = [r for r in ROW_PREF.get(p["role"], ROW_PREF["challenger"])]
+            W = lambda s: s["unit"]["shelf_width_cm"]  # noqa: E731
+            ok = [s for s in cs if len(s["products"]) < target and s["used"] + p["width_cm"] <= W(s)]
+            if not ok:
+                ok = [s for s in cs if s["used"] + p["width_cm"] <= W(s)]
+            if not ok:
+                unplaced.append(p["code"])
+                continue
+            s = min(ok, key=lambda s: (pref.index(s["row"]) if s["row"] in pref else 9, len(s["products"]), s["unit"]["id"]))
+            s["products"].append(p)
+            s["used"] += p["width_cm"]
+    # ---- facings fill + stock
+    plano, fills = {}, []
+    for sid, s in slots.items():
+        u, ps = s["unit"], s["products"]
+        W = u["shelf_width_cm"]
+        fac = {p["code"]: 1 for p in ps}
+        rem = W - sum(p["width_cm"] for p in ps)
+        while True:
+            cand = [p for p in ps if p["width_cm"] <= rem + 1e-9 and fac[p["code"]] < FMAX]
+            if not cand:
+                break
+            p = min(cand, key=lambda p: (fac[p["code"]] / FACING_WEIGHT.get(p["role"], 1.0), -(p.get("scans") or 0), p["code"]))
+            fac[p["code"]] += 1
+            rem -= p["width_cm"]
+        used = sum(fac[p["code"]] * p["width_cm"] for p in ps)
+        depth_units = {p["code"]: max(1, int(u["shelf_depth_cm"] // p["depth_cm"])) for p in ps}
+        capd = {p["code"]: fac[p["code"]] * depth_units[p["code"]] for p in ps}
+        fills.append(used / W)
+        plano[sid] = {"category": s["category"], "products": [p["code"] for p in ps], "facings": fac, "stock": dict(capd),
+                      "capacity": capd, "width_cm": W, "filled_cm": round(used, 1), "fill_ratio": round(used / W, 3)}
+    geo = place(fid, spec, units, depts, sides, n_perim)
+    return units, depts, plano, fills, unplaced, f_centre, geo
+
+
+def place(fid, spec, units, depts, sides, n_perim):
+    """Floor coordinates (metres). Origin = front-left outside corner; x to the right, z towards the back wall; the
+    front wall (z=0) holds entrances, exits and the checkout bank. Racetrack: entrance (front-left) -> fruit & veg (left
+    side) -> bakery (back-left) -> chilled along the back wall (left->right) then down the right wall -> centre aisles
+    -> frozen + BWS aisles at the front-right, next to the tills."""
+    g = GEO
+    N, banks, L = spec["centre_aisles"], spec["banks"], spec["bays_per_side"] * 1.0
+    C = math.ceil(N / banks)
+    pitch = 2 * g["gondola_side_depth_m"] + g["walkway_m"]
+    left = spec["left_zone_m"]
+    xc0 = left + g["racetrack_m"]
+    centre_w = C * pitch + 2 * g["gondola_side_depth_m"]
+    W = round(xc0 + centre_w + g["racetrack_m"] + g["wall_fixture_depth_m"] + g["wall_m"], 1)
+    zf0 = g["front_band_m"] + g["racetrack_m"] + g["endcap_depth_m"]
+    bank_z = []  # (z0, z1) per bank, bank 0 = front
+    z = zf0
+    for b in range(banks):
+        bank_z.append((round(z, 2), round(z + L, 2)))
+        z += L + 2 * g["endcap_depth_m"] + g["cross_aisle_m"]
+    z_centre_end = z - g["cross_aisle_m"] - g["endcap_depth_m"]
+    D0 = z_centre_end + g["endcap_depth_m"] + g["racetrack_m"] + g["wall_fixture_depth_m"] + g["wall_m"]
+    # perimeter chilled run length needed vs available on back + right walls; extra depth becomes promo/seasonal floor
+    chilled = [u for u in units if u["zone"] == "perimeter"]
+    run_len = sum(u["bays"] * u["bay_width_cm"] / 100 for u in chilled)
+    back_avail = W - left - g["wall_fixture_depth_m"] - g["wall_m"]
+    right_avail = lambda D: D - g["wall_m"] - g["wall_fixture_depth_m"] - g["front_band_m"] - g["racetrack_m"]  # noqa: E731
+    D = D0
+    if run_len > back_avail + right_avail(D0):
+        D = D0 + (run_len - back_avail - right_avail(D0)) + 0.5
+    D = round(D, 1)
+    promo_floor = round(D - D0, 1)
+
+    # centre aisles: numbered back bank first (1..C, left->right), front bank last, so the highest numbers (frozen,
+    # BWS) sit at the front-right next to the tills
+    order_banks = list(range(banks - 1, -1, -1))
+    aisle_xy = {}
+    for k in range(1, N + 1):
+        b = order_banks[(k - 1) // C]
+        j = (k - 1) % C
+        x_aisle = xc0 + j * pitch + 2 * g["gondola_side_depth_m"] + g["walkway_m"] / 2
+        z0, z1 = bank_z[b]
+        aisle_xy[k] = {"x": round(x_aisle, 2), "z0": z0, "z1": z1, "bank": "back" if (banks > 1 and b == banks - 1) else "front", "column": j + 1}
+    side_i = 0
+    for u in units:
+        if u["zone"] in ("centre", "frozen", "bws"):
+            k, side = side_i // 2 + 1, "LR"[side_i % 2]
+            side_i += 1
+            a = aisle_xy[k]
+            dx = g["walkway_m"] / 2 + g["gondola_side_depth_m"] / 2
+            u.update({"aisle": k, "aisle_number": k, "side": side, "bay": 0, "perimeter": False,
+                      "x": round(a["x"] + (-dx if side == "L" else dx), 2), "z": round((a["z0"] + a["z1"]) / 2, 2),
+                      "facing": "+x" if side == "L" else "-x", "length_m": L})
+    # perimeter: produce tables grid (left zone, front), bakery (left zone, back), food to go along the front band by
+    # the entrance, chilled along back wall then right wall, express wall freezer at the right-front by the tills
+    extra = N
+    pt = [u for u in units if u["zone"] == "produce"]
+    cols = max(1, int(left // 4.0))
+    for i, u in enumerate(pt):
+        u.update({"x": round(1.0 + 2.0 + (i % cols) * 4.0, 2), "z": round(g["front_band_m"] + 2.5 + (i // cols) * 3.0, 2), "facing": "-z", "length_m": 2.4})
+    produce_z1 = g["front_band_m"] + 2.5 + math.ceil(len(pt) / cols) * 3.0 + 1.0 if pt else g["front_band_m"]
+    bk = [u for u in units if u["zone"] == "bakery"]
+    for i, u in enumerate(bk):
+        L_u = u["bays"] * u["bay_width_cm"] / 100
+        u.update({"x": round(g["wall_m"] + g["wall_fixture_depth_m"] / 2, 2), "z": round(produce_z1 + 1.0 + i * L_u + L_u / 2, 2), "facing": "+x", "length_m": L_u})
+    bakery_z1 = produce_z1 + 1.0 + sum(u["bays"] * u["bay_width_cm"] / 100 for u in bk) + 1.0
+    ftg = [u for u in units if u["zone"] == "food_to_go"]
+    x_e1 = 2.0 + (spec["cafe"] and 16.0 or 0.0) + 2.0  # entrance E1 just right of the café (front-left)
+    for i, u in enumerate(ftg):
+        L_u = u["bays"] * u["bay_width_cm"] / 100
+        u.update({"x": round(x_e1 + 4.0 + i * L_u + L_u / 2, 2), "z": round(g["front_band_m"] - g["wall_fixture_depth_m"] / 2, 2), "facing": "+z", "length_m": L_u})
+    xb = left
+    zr = D - g["wall_m"] - g["wall_fixture_depth_m"]
+    for u in chilled:
+        L_u = u["bays"] * u["bay_width_cm"] / 100
+        if xb + L_u <= W - g["wall_m"] - g["wall_fixture_depth_m"] + 1e-6:
+            u.update({"x": round(xb + L_u / 2, 2), "z": round(D - g["wall_m"] - g["wall_fixture_depth_m"] / 2, 2), "facing": "-z", "wall": "back", "length_m": L_u})
+            xb += L_u
+        else:
+            u.update({"x": round(W - g["wall_m"] - g["wall_fixture_depth_m"] / 2, 2), "z": round(zr - L_u / 2, 2), "facing": "-x", "wall": "right", "length_m": L_u})
+            zr -= L_u
+    for u in units:
+        if "aisle" not in u:
+            extra += 1
+            u.update({"aisle": extra, "aisle_number": None, "side": "L", "bay": 0, "perimeter": True})
+        u.setdefault("facing", "-x")
+    # express-style perimeter freezer (no aisle): park it on the right wall nearest the tills
+    for u in units:
+        if u["zone"] == "perimeter" and u["fixture"] == "freezer_doors" and u.get("wall") == "right":
+            pass
+    return {"W": W, "D": D, "D0": round(D0, 1), "promo_floor_m": promo_floor, "left": left, "xc0": xc0, "pitch": pitch, "C": C,
+            "bank_z": bank_z, "aisle_xy": aisle_xy, "produce_z1": round(produce_z1, 2), "bakery_z1": round(bakery_z1, 2), "x_e1": x_e1,
+            "chilled_run_m": round(run_len, 1)}
+
+
+# ================================================================ 3. config assembly
+def rect(x0, z0, x1, z1):
+    return {"x0": round(min(x0, x1), 2), "z0": round(min(z0, z1), 2), "x1": round(max(x0, x1), 2), "z1": round(max(z0, z1), 2)}
+
+
+def unit_rect(u):
+    L, dpt = u.get("length_m", 3.0), FIXTURES[u["fixture"]]["shelf_depth_cm"] / 100 + 0.15
+    if u["facing"] in ("+x", "-x"):
+        return rect(u["x"] - dpt / 2, u["z"] - L / 2, u["x"] + dpt / 2, u["z"] + L / 2)
+    return rect(u["x"] - L / 2, u["z"] - dpt / 2, u["x"] + L / 2, u["z"] + dpt / 2)
+
+
+def bbox(rs, pad=0.0):
+    return rect(min(r["x0"] for r in rs) - pad, min(r["z0"] for r in rs) - pad, max(r["x1"] for r in rs) + pad, max(r["z1"] for r in rs) + pad)
+
+
+def build_config(fid, spec, units, depts, plano, geo, prods_by_code, f_centre):
+    g = GEO
+    W, D = geo["W"], geo["D"]
+    # ---- departments (floor rectangles)
+    dep_out = []
+    for d in depts:
+        du = [u for u in units if u["department"] == d["id"]]
+        rs = [unit_rect(u) for u in du]
+        if d["kind"] == "produce":
+            zone = rect(0.3, g["front_band_m"], geo["left"], geo["produce_z1"])
+        elif d["kind"] == "bakery":
+            zone = rect(0.3, geo["produce_z1"], geo["left"], max(geo["bakery_z1"], max(r["z1"] for r in rs)))
+        elif d["kind"] in ("centre", "frozen", "bws"):
+            zone = bbox(rs, 0.2)
+            zone = rect(zone["x0"], zone["z0"] - g["endcap_depth_m"], zone["x1"], zone["z1"] + g["endcap_depth_m"])
+        else:  # wall fixtures: include the racetrack strip in front of them
+            zone = bbox(rs, 0.0)
+            if all(u.get("wall") == "back" for u in du):
+                zone = rect(zone["x0"], zone["z0"] - g["racetrack_m"], zone["x1"], zone["z1"])
+            elif all(u.get("wall") == "right" for u in du):
+                zone = rect(zone["x0"] - g["racetrack_m"], zone["z0"], zone["x1"], zone["z1"])
+            elif d["kind"] == "food_to_go":
+                zone = rect(zone["x0"], zone["z0"] - 1.5, zone["x1"], zone["z1"])
+        dep_out.append({"id": d["id"], "name": d["name"], "zone": zone, "zone_kind": d["kind"], "floor_color": d["color"],
+                        "sign_text": d["sign"], "aisle_numbers": sorted({u["aisle_number"] for u in du if u.get("aisle_number")}),
+                        "fixture_type": d["fixture"], "categories": d["cats"], "units": [u["id"] for u in du]})
+    # flowers: a sub-zone of fruit & veg by the entrance (no OFF products; cut flowers are not food)
+    fv = next((x for x in dep_out if x["id"] == "fruit_veg"), None)
+    if fv:
+        fv["sub_zones"] = [{"id": "flowers", "name": "flowers", "zone": rect(fv["zone"]["x0"], fv["zone"]["z0"], fv["zone"]["x0"] + min(4.0, geo["left"] - 0.6), fv["zone"]["z0"] + 2.0),
+                            "note": "cut flowers / plants stand at the entrance; no OFF products (not food), shown as a fixture only"}]
+    # ---- aisle signage + end caps (centre aisles only)
+    signage, end_caps = [], []
+    for k, a in geo["aisle_xy"].items():
+        au = [u for u in units if u.get("aisle_number") == k]
+        cats = list(dict.fromkeys(c for u in au for c in u["categories"]))
+        dnames = list(dict.fromkeys(next(d["name"] for d in depts if d["id"] == u["department"]) for u in au))
+        signage.append({"aisle_number": k, "sign_text": f"{k} · " + " · ".join(dnames), "categories": cats,
+                        "departments": list(dict.fromkeys(u["department"] for u in au)), "bank": a["bank"],
+                        "x": a["x"], "z": round(a["z0"] - g["endcap_depth_m"] - 0.4, 2), "hang_height_m": 2.8})
+    # gondola runs: one double-sided run between neighbouring aisles; each run end facing a racetrack/cross aisle is an
+    # end cap (promo bay). Planogram for end caps = secondary placement of the adjacent aisle's lead lines.
+    runs = {}
+    for k, a in geo["aisle_xy"].items():
+        for side, dxr in (("L", -1), ("R", 1)):
+            run_x = round(a["x"] + dxr * (g["walkway_m"] / 2 + g["gondola_side_depth_m"]), 2)
+            runs.setdefault((a["bank"], run_x), set()).add(k)
+    ec_w = 120  # assumption: end-cap promo bay 1.2 m wide, 5 shelves
+    ec_i = 0
+    for (bank, run_x), aisles in sorted(runs.items(), key=lambda t: (t[0][0], t[0][1])):
+        a0 = geo["aisle_xy"][min(aisles)]
+        for end in ("front", "back"):
+            ec_i += 1
+            z = a0["z0"] - g["endcap_depth_m"] / 2 if end == "front" else a0["z1"] + g["endcap_depth_m"] / 2
+            src_units = [u for u in units if u.get("aisle_number") in aisles]
+            leads = sorted({c for u in src_units for c in plano.get(f"{u['id']}-r2", {}).get("products", [])},
+                           key=lambda c: (-(prods_by_code[c].get("scans") or 0), c))
+            ps, rem, fac = [], ec_w, {}
+            for c in leads:
+                w = prods_by_code[c]["width_cm"]
+                if len(ps) >= 3 or w > rem:
+                    continue
+                ps.append(c)
+                fac[c] = 1
+                rem -= w
+            while ps:
+                c = min((c for c in ps if prods_by_code[c]["width_cm"] <= rem and fac[c] < FMAX), key=lambda c: (fac[c], c), default=None)
+                if c is None:
+                    break
+                fac[c] += 1
+                rem -= prods_by_code[c]["width_cm"]
+            filled = sum(fac[c] * prods_by_code[c]["width_cm"] for c in ps)
+            end_caps.append({"id": f"EC{ec_i}", "bank": bank, "end": end, "adjacent_aisles": sorted(aisles), "x": run_x, "z": round(z, 2),
+                             "width_cm": ec_w, "rows": 5, "promo": True,
+                             "planogram": {"products": ps, "facings": fac, "rows_used": "all 5 rows (block display)",
+                                           "fill_ratio_per_row": round(filled / ec_w, 3),
+                                           "rule": "assumption: end cap = secondary placement of the top-3 (OFF scans) eye-row lines of the adjacent aisle(s); stock not separately counted"}})
+    # ---- checkouts across the front, entrances/exits, gates, café, stockroom, goods-in, walls
+    nS, nK = spec["staffed"], spec["self"]
+    pitch_t, kp = 2.9, 1.45
+    ftg_x1 = max([u["x"] + u["length_m"] / 2 for u in units if u["zone"] == "food_to_go"] or [geo["x_e1"] + 4])
+    x0 = ftg_x1 + 3.0
+    zc = round(g["front_band_m"] / 2 + 1.0, 2)
+    checkouts = [{"id": f"T{i + 1}", "type": "staffed", "bank": "tills", "x": round(x0 + (i + 0.5) * pitch_t, 2), "z": zc, "lanes": 1} for i in range(nS)]
+    xs0 = x0 + nS * pitch_t + 2.0
+    cols = math.ceil(nK / 2)
+    checkouts += [{"id": f"S{i + 1}", "type": "self", "bank": "self", "x": round(xs0 + (i % cols + 0.5) * kp, 2),
+                   "z": round(zc + (-1.35 if i // cols == 0 else 1.35), 2), "lanes": 1} for i in range(nK)]
+    x_till_end = xs0 + cols * kp
+    ents = [{"id": "E1", "x": round(geo["x_e1"], 2), "z": 0.0, "note": "main entrance, front-left, into fruit & veg"}]
+    exits = [{"id": "X1", "x": round(min(W - 3.0, x_till_end + 3.0), 2), "z": 0.0}]
+    if spec["entrances"] > 1:
+        ents.append({"id": "E2", "x": round(W - 4.0, 2), "z": 0.0, "note": "second entrance, front-right (car park side), by BWS/frozen"})
+        exits.insert(0, {"id": "X0", "x": round(geo["x_e1"] + 3.0, 2), "z": 0.0})
+    gates = [{"id": f"G{e['id']}{s}", "exit": e["id"], "x": round(e["x"] + dx, 2), "z": 1.2, "type": "EAS pedestal"} for e in exits for s, dx in (("a", -1.0), ("b", 1.0))]
+    cafe = None
+    if spec["cafe"]:
+        cw, cd = 16.0, g["front_band_m"] - 1.0
+        tables = [{"x": round(1.5 + (i % 5) * 3.0 + 1.0, 2), "z": round(2.0 + (i // 5) * 4.0 + 2.0, 2)} for i in range(spec["cafe"]["tables"])]
+        seats = [{"x": round(t["x"] + dx, 2), "z": round(t["z"] + dz, 2), "table": ti} for ti, t in enumerate(tables)
+                 for dx, dz in ((-0.6, 0), (0.6, 0), (0, -0.6), (0, 0.6))][: spec["cafe"]["tables"] * spec["cafe"]["seats_per_table"]]
+        cafe = {"x": round(0.3 + cw / 2, 2), "z": round(0.3 + cd / 2, 2), "w": cw, "d": cd, "zone": rect(0.3, 0.3, 0.3 + cw, 0.3 + cd),
+                "tables": len(tables), "table_positions": tables, "seats": seats, "counter": {"x": round(0.3 + cw / 2, 2), "z": round(cd - 0.8, 2)},
+                "source": "assumption: in-store café by the main entrance (common in UK superstores); 10 tables x 4 seats"}
+    stock = {"x": round(W / 2, 2), "z": round(D + g["back_of_house_m"] / 2, 2), "w": round(W - 2 * g["wall_m"], 2), "d": g["back_of_house_m"],
+             "zone": rect(0, D, W, D + g["back_of_house_m"]),
+             "doors": [{"x": round(W * 0.35, 2), "z": D}, {"x": round(W * 0.7, 2), "z": D}],
+             "source": "assumption: back-of-house stockroom behind the back-wall chillers, two staff doors through the chilled run"}
+    goods_in = {"x": round(W - 6.0, 2), "z": round(D + g["back_of_house_m"], 2), "dock_doors": 2 if fid == "superstore" else 1,
+                "zone": rect(W - 12.0, D + g["back_of_house_m"] - 4.0, W, D + g["back_of_house_m"]),
+                "source": "assumption: rear service yard with dock leveller(s); daily chilled delivery (data/ops/params.json lead_time_days_chilled=1)"}
+    door_gaps = [(e["x"] - 1.5, e["x"] + 1.5) for e in ents + exits]
+    walls, x = [], 0.0
+    for a, b in sorted(door_gaps):
+        if a > x:
+            walls.append({"x0": round(x, 2), "z0": 0.0, "x1": round(a, 2), "z1": 0.0, "kind": "exterior_front"})
+        x = max(x, b)
+    walls.append({"x0": round(x, 2), "z0": 0.0, "x1": W, "z1": 0.0, "kind": "exterior_front"})
+    walls += [{"x0": W, "z0": 0.0, "x1": W, "z1": round(D + g["back_of_house_m"], 2), "kind": "exterior_side"},
+              {"x0": 0.0, "z0": 0.0, "x1": 0.0, "z1": round(D + g["back_of_house_m"], 2), "kind": "exterior_side"},
+              {"x0": 0.0, "z0": round(D + g["back_of_house_m"], 2), "x1": W, "z1": round(D + g["back_of_house_m"], 2), "kind": "exterior_back"},
+              {"x0": 0.0, "z0": D, "x1": W, "z1": D, "kind": "stockroom_partition", "doors": stock["doors"]}]
+    # department divisions: an end panel between neighbouring wall departments + the checkout line rail
+    dividers = []
+    prev = None
+    for u in [u for u in units if u["zone"] in ("perimeter", "food_to_go")]:
+        if prev and prev["department"] != u["department"]:
+            dividers.append({"between": [prev["department"], u["department"]], "x": round((prev["x"] + u["x"]) / 2, 2), "z": round((prev["z"] + u["z"]) / 2, 2), "kind": "end_panel"})
+        prev = u
+    dividers.append({"between": ["shop_floor", "checkouts"], "x0": round(x0 - 1.0, 2), "x1": round(x_till_end + 1.0, 2), "z": round(g["front_band_m"] - 0.3, 2), "kind": "checkout_rail"})
+    # meal deal
+    md = meal_deal(units, plano, prods_by_code)
+    # summary numbers
+    centre_u = [u for u in units if u.get("aisle_number")]
+    return {
+        "name": spec["name"], "format": fid,
+        "coordinate_system": "metres; origin = front-left outside corner; x to the right, z towards the back wall; front wall z=0 holds entrances, exits and the checkout bank (real UK layout, NOT the web/store_xl grid where the tills are behind the aisles). Each unit has x,z (centre of its shelf face run), facing and length_m.",
+        "footprint_m": {"w": W, "d": D, "back_of_house_d": g["back_of_house_m"], "sales_floor_m2": round(W * D), "promo_seasonal_floor_depth_m": geo["promo_floor_m"]},
+        "aisles": max(u["aisle"] for u in units), "centre_aisles": spec["centre_aisles"],
+        "aisles_note": "'aisle' on every unit keeps the store_xl schema (perimeter units get pseudo-aisle numbers after the centre aisles, aisle_number=null); renderers should place units by x/z/facing",
+        "rows_per_unit": 5, "row_names": ROW_NAMES,
+        "notice_row_map": {"1": "top", "2": "eye", "3": "bottom", "4": "bottom", "5": "bottom",
+                           "source": "assumption: sim/notice.py has alphas for top/eye/bottom only; rows below eye level get the bottom alpha (same conservative rule as store_xl)"},
+        "products_per_slot": round(np.mean([len(s["products"]) for s in plano.values()]), 1),
+        "products_per_slot_note": "variable per slot (shelves are filled by width); this is the mean",
+        "units": units, "departments": dep_out, "aisle_signage": signage, "end_caps": end_caps,
+        "entrance": {"x": ents[0]["x"], "z": ents[0]["z"]}, "entrances": ents, "exits": exits, "security_gates": gates,
+        "checkout": {"x": round((x0 + x_till_end) / 2, 2), "z": zc}, "checkouts": checkouts,
+        "checkout_counts": {"staffed": nS, "self": nK,
+                            "source": ("data/ops/params.json checkout_lanes_needed_example: ~10 staffed-lane equivalents at the Saturday 11:00 peak (294 arrivals/h, derived from Gruen & Corsten 2008 + DfT NTS); self-checkout count is an assumption (2 per staffed lane; one attendant per ~5 kiosks, params sco_terminals_per_attendant)"
+                                       if fid == "superstore" else "assumption: format convention (express 2+4, metro 4+8); scaled down from the superstore's params-derived 10 staffed lanes")},
+        "cafe": cafe, "stockroom": stock, "goods_in": goods_in, "walls": walls, "dividers": dividers, "meal_deal": md,
+        "fixtures": FIXTURES, "geometry": GEO,
+        "aisle_widths": {"walkway_m": GEO["walkway_m"], "cross_aisle_m": GEO["cross_aisle_m"], "racetrack_m": GEO["racetrack_m"],
+                         "gondola_depth_m": 2 * GEO["gondola_side_depth_m"], "unit_len_m": spec["bays_per_side"] * 1.0, "source": GEO["source"]},
+        "adjacency": {"walk_order": [d["id"] for d in depts], "source": LAYOUT_SOURCE},
+        "layout_notes": [
+            f"{len(units)} units: {len(centre_u)} centre-aisle sides ({spec['centre_aisles']} numbered aisles x 2) + {len(units) - len(centre_u)} perimeter fixtures (produce tables, bakery, food-to-go, chilled racetrack{', wall freezer' if fid == 'express' else ''}).",
+            f"centre store space is fixed by the aisle count; perimeter fixtures are sized so their mean facings match the centre (space-to-range ratio {f_centre:.2f} shelf-cm per single-facing-cm).",
+            "rows are assigned to categories within each department in walk order, proportional to the category's total single-facing width (sequential blocking); products go to rows by role preference (incumbent eye, own-label low, challenger top/middle).",
+            "the range is ~10% of a real superstore's (~25-40k SKUs, assumption), so aisles are short (3 m runs) to keep facings plausible; set FORMATS[...]['bays_per_side'] to lengthen them (facings scale up proportionally)."
+            + (f" Extra {geo['promo_floor_m']} m of depth was added so the chilled racetrack fits on the back + right walls; it becomes promo/seasonal floor between the aisles and the back wall." if geo["promo_floor_m"] > 0 else ""),
+        ],
+        "stock_rules": {"facings": f"fill each shelf: start every SKU at 1 facing, then repeatedly add a facing to the SKU with the lowest facings/weight (weight incumbent {FACING_WEIGHT['incumbent']}, own_label {FACING_WEIGHT['own_label']}, challenger {FACING_WEIGHT['challenger']}; assumption: leaders hold more facings) while it still fits the remaining width; max {FMAX} facings (assumption)",
+                        "depth_units_per_facing": "floor(shelf_depth_cm / pack depth_cm), min 1 (pack dims are labelled assumptions in the catalog)",
+                        "capacity": "facings x depth_units_per_facing", "stock": "starts at capacity (store opens fully faced up)",
+                        "fill_ratio": "per slot sum(facings x width_cm) / shelf width_cm"},
+    }
+
+
+MD_SNACK = {"crisps_savoury": 55, "snack_bars": 60, "confectionery_sweets": 60, "biscuits_chocolate": 60, "nuts_dried_fruit": 60,
+            "yoghurt": 200, "chilled_desserts": 150, "fresh_produce": 200, "dips_salads_deli": 150, "cheese": 50, "cooked_meats_deli": 100}
+MD_DRINK = {"soft_drinks": 500, "water": 750, "juice_smoothies": 400, "plant_milk_dairy_alt": 330, "milk_butter_eggs": 500}
+
+
+def meal_deal(units, plano, prods_by_code):
+    """assumption: UK meal deal = main + snack + drink (data/sales/uk_bestsellers.csv meal_deal rows: Tesco Clubcard
+    Unpacked #1 main/snack/drink; r/CasualUK 1bc79kh). Eligibility by category + single-item size (OFF quantity)."""
+    codes = {c for s in plano.values() for c in s["products"]}
+    out = {"main": [], "snack": [], "drink": []}
+    for c in sorted(codes):
+        p = prods_by_code[c]
+        _, item = X.parse_qty(p.get("quantity"))
+        if p["category"] == "food_to_go":
+            out["main"].append(c)
+        elif p["category"] in MD_SNACK and item and item <= MD_SNACK[p["category"]]:
+            out["snack"].append(c)
+        elif p["category"] in MD_DRINK and item and item <= MD_DRINK[p["category"]] and p["category"] != "milk_butter_eggs" or (
+                p["category"] == "milk_butter_eggs" and p.get("subtype") == "milk" and item and item <= 500):
+            out["drink"].append(c)
+    return {"stand_units": [u["id"] for u in units if u["department"] == "food_to_go"], "eligible": out,
+            "counts": {k: len(v) for k, v in out.items()}, "price_gbp": 3.85,
+            "price_source": "data/personas/lens/meal_deal_office.json budget_source (Reddit corpus: '£3.75 in Sainsburys ... £3.80 in Tesco')",
+            "rule": "assumption: main = any food_to_go SKU; snack = single item <= the size cap of its category " + json.dumps(MD_SNACK)
+                    + "; drink = single item <= " + json.dumps(MD_DRINK) + " (flavoured milk only for milk_butter_eggs). Sizes from OFF quantity; items with unknown size are not eligible."}
+
+
+# ================================================================ 4. format ranges
+def norm_log_scans(ps):
+    m = max([math.log1p(p.get("scans") or 0) for p in ps] or [1]) or 1
+    return {p["code"]: math.log1p(p.get("scans") or 0) / m for p in ps}
+
+
+def range_for(fid, cat):
+    """assumption (labelled): express = top EXPRESS_QUOTA[c] per category by 0.5*popularity + 0.5*meal_deal_office lens
+    (convenience = meal-deal + top-up missions); metro = top 40% per category by 0.6*popularity + 0.4*(incumbent or
+    own-label). popularity = log1p(OFF scans) normalised within the category (OFF scans as a popularity proxy)."""
+    if fid == "superstore":
+        return list(cat)
+    out = []
+    by = defaultdict(list)
+    for p in cat:
+        by[p["category"]].append(p)
+    for c, ps in by.items():
+        pop = norm_log_scans(ps)
+        if fid == "express":
+            n = EXPRESS_QUOTA.get(c, 0)
+            key = lambda p: -(0.5 * pop[p["code"]] + 0.5 * p["lens_grades"]["meal_deal_office"]["score"])  # noqa: E731
+        else:
+            n = max(6, math.ceil(METRO_SHARE * len(ps)))
+            key = lambda p: -(0.6 * pop[p["code"]] + 0.4 * (p["role"] in ("incumbent", "own_label")))  # noqa: E731
+        out += sorted(ps, key=lambda p: (key(p), p["code"]))[:n]
+    return out
+
+
+# ================================================================ 5. stores.json
+def build_stores():
+    params = json.load(open(P("data/ops/params.json")))["params"]
+    hours = params["weekday_shopping_trip_start_share_by_hour"]["value"]
+    mix = params["mission_mix_by_daypart"]["value"]
+    acc, tot = Counter(), 0.0
+    for key, m in mix.items():
+        a, b = (int(x) for x in key.split("-"))
+        sh = sum(hours[a:b])
+        tot += sh
+        for k, v in m.items():
+            acc[k] += sh * v
+    base = {k: round(v / tot, 4) for k, v in acc.items()}
+    personas = {}
+    import glob
+    for f in sorted(glob.glob(P("data/personas/lens/*.json"))):
+        d = json.load(open(f))
+        personas[d["archetype"]] = d["mission"]
+    STORES = [
+        {"id": "express_office", "name": "Ludgate Lane Express", "context": "express · office district (City fringe, weekday lunch trade)", "format": "express",
+         "customers_per_week": (4000, "data/ops/params.json store_customers_per_week range low end: Gruen & Corsten (2008) 'smaller format' 4,000 customers/week (US illustrative; medium confidence)"),
+         "hour_multipliers": ({"07-09": 1.6, "12-14": 2.5, "17-18": 1.4, "19-22": 0.5}, "assumption: office district: lunch (meal deal) and commute peaks; the NTS commute peak at 17:00 (params commute_trip_start_share_17h) anchors the evening bump"),
+         "day_multipliers": ({"Sat": 0.35, "Sun": 0.25}, "assumption: offices shut at weekends; weekday NTS day shares otherwise"),
+         "mission_mult": ({"meal_deal": 4.0, "top_up": 1.2, "weekly_shop": 0.1, "treat": 1.0, "gym": 1.5}, "assumption: an office-district express is a meal-deal + top-up store; almost no weekly shops"),
+         "persona_mult": ({"habit_loyalist_shrinkflation_angry": 1.2, "upf_avoider_parent": 0.5, "glp1_small_appetite": 1.3}, "assumption: office workers are habit-led at lunch; fewer parents shopping for kids; GLP-1 users buy small portions at lunch")},
+        {"id": "express_campus", "name": "Quad Express", "context": "express · university campus (term time)", "format": "express",
+         "customers_per_week": (4000, "data/ops/params.json store_customers_per_week range low end (Gruen & Corsten 2008 smaller format)"),
+         "hour_multipliers": ({"07-09": 0.5, "12-14": 1.8, "19-22": 2.0}, "assumption: students shop late; lunch peak between lectures"),
+         "day_multipliers": ({}, "NTS day shares (params shopping_trips_day_multiplier) unchanged"),
+         "mission_mult": ({"meal_deal": 2.0, "top_up": 1.3, "weekly_shop": 0.4, "treat": 1.5, "gym": 2.0}, "assumption: students buy meal deals, top-ups, treats and gym food; few big shops in an express"),
+         "persona_mult": ({"frugal_unit_price": 2.0, "novelty_seeker_tiktok": 1.5, "vegan_ethical": 1.5, "upf_avoider_parent": 0.2, "habit_loyalist_shrinkflation_angry": 0.6, "ai_delegator": 0.5},
+                          "assumption: student budgets (frugal), TikTok-driven trial, higher vegan share; few parents; fewer habit loyalists")},
+        {"id": "metro_high_street", "name": "Northgate Metro", "context": "metro · high street (mixed office + residential)", "format": "metro",
+         "customers_per_week": (10900, "data/ops/params.json store_customers_per_week: Gruen & Corsten (2008) supermarket cost example, 10,900 customers/week (US illustrative; medium confidence)"),
+         "hour_multipliers": ({"12-14": 1.3, "17-18": 1.2}, "assumption: high-street lunch and after-work bumps on top of the NTS curve"),
+         "day_multipliers": ({}, "NTS day shares unchanged"),
+         "mission_mult": ({"meal_deal": 1.5, "top_up": 1.3, "weekly_shop": 0.7, "treat": 1.0, "gym": 1.0}, "assumption: high-street metro skews to top-up and lunch vs the params baseline"),
+         "persona_mult": ({}, "no adjustment: params baseline mission mix carries the persona split")},
+        {"id": "superstore_retail_park", "name": "Kingsmead Superstore", "context": "superstore · retail park (car-borne family big shop)", "format": "superstore",
+         "customers_per_week": (20000, "assumption: ~2x the Gruen & Corsten (2008) 10,900/week supermarket example for a large retail-park superstore; no UK store-level footfall source fetched (data/ops/evidence.md gaps)"),
+         "hour_multipliers": ({"15-17": 1.2}, "assumption: after-school family trips (NTS escort-education peak 15:00, params school_escort_trip_start_share_15h)"),
+         "day_multipliers": ({"Sat": 1.15}, "assumption: retail-park Saturday skew on top of the NTS Saturday share (1.45x average day)"),
+         "mission_mult": ({"meal_deal": 0.4, "top_up": 0.7, "weekly_shop": 1.8, "treat": 1.3, "gym": 0.8}, "assumption: car-borne big shop; 'treat' includes the family after-school trip (params after_school_treat_uplift)"),
+         "persona_mult": ({"upf_avoider_parent": 1.6, "frugal_unit_price": 1.2, "meal_deal_office": 0.5}, "assumption: families with children dominate retail-park big shops; value-seeking on big baskets")},
+    ]
+    out = []
+    for s in STORES:
+        mm, mm_src = s["mission_mult"]
+        raw = {k: base.get(k, 0) * mm.get(k, 1.0) for k in base}
+        t = sum(raw.values())
+        mission = {k: round(v / t, 4) for k, v in raw.items()}
+        n_by_mission = Counter(personas.values())
+        pm, pm_src = s["persona_mult"]
+        pw = {a: mission.get(m, 0) / n_by_mission[m] * pm.get(a, 1.0) for a, m in personas.items()}
+        t = sum(pw.values())
+        pw = {a: round(v / t, 4) for a, v in sorted(pw.items(), key=lambda kv: -kv[1])}
+        cpw, cpw_src = s["customers_per_week"]
+        hm, hm_src = s["hour_multipliers"]
+        dm, dm_src = s["day_multipliers"]
+        out.append({
+            "id": s["id"], "name": s["name"], "name_note": "fictional store name", "context": s["context"], "format": s["format"],
+            "config": f"data/store/formats/{s['format']}.config.json", "planogram": f"data/store/formats/planogram_{s['format']}.json",
+            "customers_per_week": {"value": cpw, "source": cpw_src},
+            "footfall_curve": {"hour_shares_ref": "data/ops/params.json#params.weekday_shopping_trip_start_share_by_hour (DfT NTS 2025 NTS0502b, shopping)",
+                               "day_shares_ref": "data/ops/params.json#params.shopping_trips_day_multiplier (DfT NTS0504b)",
+                               "hour_multipliers": hm, "hour_multipliers_source": hm_src, "day_multipliers": dm, "day_multipliers_source": dm_src,
+                               "formula": "arrivals/h = customers_per_week x day_share x hour_share x hour_multiplier x day_multiplier, renormalised so the week sums to customers_per_week"},
+            "mission_mix": mission,
+            "mission_mix_source": {"baseline": base, "baseline_source": "derived: params mission_mix_by_daypart (assumption, low confidence) weighted by the NTS hour shares of each daypart window 08-22",
+                                   "multipliers": mm, "multipliers_source": mm_src,
+                                   "note": "'treat' covers the family after-school trip (params 15-17 window); missions use the params keys so the ops engine can consume them"},
+            "persona_weights": pw,
+            "persona_weights_source": {"rule": "derived: weight(persona) = mission_mix[persona.mission] / (number of personas with that mission) x multiplier, renormalised. persona.mission from data/personas/lens/<archetype>.json",
+                                       "multipliers": pm, "multipliers_source": pm_src,
+                                       "dominant": list(pw)[:3]},
+        })
+    return {"_doc": "Named example stores (fictional names, real-ish UK contexts). Each points to a format config + planogram in data/store/formats/. Every number has a source or 'assumption:'. Built by scripts/scale_superstore.py.",
+            "stores": out}
+
+
+# ================================================================ 6. main + validate
+def dump(obj, path, compact=False):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        if compact:
+            json.dump(obj, f, ensure_ascii=False, separators=(",", ":"))
+        else:
+            json.dump(obj, f, ensure_ascii=False, indent=1)
+
+
+CACHE = os.environ.get("SUPERSTORE_DERIV_CACHE", "/tmp/scale_superstore_deriv.json")
+
+
+def main():
+    if "--layout-only" in sys.argv and os.path.exists(CACHE):  # dev: reuse the built catalog, rebuild formats only
+        cat, deriv = json.load(open(P("data/products/catalog_superstore.json"))), json.load(open(CACHE))
+    else:
+        cat, deriv = build_catalog()
+        dump(cat, P("data/products/catalog_superstore.json"), compact=True)
+        json.dump(deriv, open(CACHE, "w"))
+    by_code = {p["code"]: p for p in cat}
+    summary = {"catalog": {"products": len(cat), "categories": len({p['category'] for p in cat}),
+                           "by_curation": dict(Counter(p["curation"] for p in cat)), "by_role": dict(Counter(p["role"] for p in cat)),
+                           "by_category": dict(sorted(Counter(p["category"] for p in cat).items())),
+                           "pool_sizes": deriv["pool_sizes"], "dropped_categories": deriv["dropped_categories"]}, "formats": {}}
+    for fid, spec in FORMATS.items():
+        prods = range_for(fid, cat)
+        units, depts, plano, fills, unplaced, f_centre, geo = build_format(fid, spec, prods)
+        cfg = build_config(fid, spec, units, depts, plano, geo, by_code, f_centre)
+        cfg["derivation"] = {"script": "scripts/scale_superstore.py", "rules": "data/products/superstore_rules.md",
+                             "catalog": "data/products/catalog_superstore.json", "range_rule": range_for.__doc__.strip(),
+                             "skus_in_range": len(prods), "skus_placed": len(prods) - len(unplaced), "unplaced": unplaced,
+                             "space_to_range_ratio": round(f_centre, 3), "geometry": {k: v for k, v in geo.items() if k not in ("aisle_xy",)},
+                             **({"catalog_derivation": deriv} if fid == "superstore" else {})}
+        dump(cfg, P(f"data/store/formats/{fid}.config.json"))
+        dump(plano, P(f"data/store/formats/planogram_{fid}.json"))
+        f = np.array(fills)
+        summary["formats"][fid] = {"units": len(units), "centre_aisles": spec["centre_aisles"], "slots": len(plano), "skus": len(prods),
+                                   "placed": len(prods) - len(unplaced), "unplaced": len(unplaced),
+                                   "fill_ratio": {"mean": round(f.mean(), 3), "min": round(f.min(), 3), "p5": round(float(np.percentile(f, 5)), 3), "median": round(float(np.median(f)), 3)},
+                                   "facings_mean": round(np.mean([v for s in plano.values() for v in s["facings"].values()]), 2),
+                                   "footprint_m": cfg["footprint_m"], "departments": len(cfg["departments"]), "end_caps": len(cfg["end_caps"]),
+                                   "by_role": dict(Counter(by_code[c]["role"] for s in plano.values() for c in s["products"])),
+                                   "fixtures": dict(Counter(u["fixture"] for u in units)), "checkouts": cfg["checkout_counts"]["staffed"], "self": cfg["checkout_counts"]["self"],
+                                   "meal_deal": cfg["meal_deal"]["counts"]}
+    dump(build_stores(), P("data/store/stores.json"))
+    validate(summary)
+
+
+def validate(summary):
+    cat = json.load(open(P("data/products/catalog_superstore.json")))
+    codes = [p["code"] for p in cat]
+    assert len(codes) == len(set(codes)), "duplicate codes in catalog"
+    cs = set(codes)
+    xl = json.load(open(P("data/products/catalog_xl.json")))
+    by = {p["code"]: p for p in cat}
+    for p in xl:  # the 480 XL products are kept with every original field unchanged
+        q = by[p["code"]]
+        assert all(q[k] == v for k, v in p.items()), p["code"]
+    for p in cat:
+        assert len(p["lens_grades"]) == 12 and all(0 <= g["score"] <= 1 and g["why"] for g in p["lens_grades"].values()), p["code"]
+        assert p["image"] and p["name"] and p["brand"] and p["width_cm"] > 0 and p["price_gbp"] > 0, p["code"]
+    for fid in FORMATS:
+        cfg = json.load(open(P(f"data/store/formats/{fid}.config.json")))
+        pl = json.load(open(P(f"data/store/formats/planogram_{fid}.json")))
+        uid = {u["id"]: u for u in cfg["units"]}
+        placed = [c for s in pl.values() for c in s["products"]]
+        assert not [c for c in placed if c not in cs], "planogram code missing from catalog"
+        assert len(placed) == len(set(placed)), f"{fid}: code placed twice"
+        for sid, s in pl.items():
+            u, r = sid.rsplit("-r", 1)
+            assert u in uid and 1 <= int(r) <= uid[u]["rows"], sid
+            assert set(s["facings"]) == set(s["products"]) == set(s["stock"]) == set(s["capacity"]), sid
+            assert s["filled_cm"] <= s["width_cm"] + 1e-6, sid
+        for d in cfg["departments"]:
+            assert all(k in d for k in ("id", "name", "zone", "floor_color", "sign_text", "aisle_numbers", "fixture_type")), d["id"]
+        assert all(u.get("department") and "aisle_number" in u for u in cfg["units"])
+        for ec in cfg["end_caps"]:
+            assert all(c in cs for c in ec["planogram"]["products"])
+    st = json.load(open(P("data/store/stores.json")))
+    for s in st["stores"]:
+        assert abs(sum(s["mission_mix"].values()) - 1) < 1e-3 and abs(sum(s["persona_weights"].values()) - 1) < 1e-3, s["id"]
+        assert os.path.exists(P(s["config"])) and os.path.exists(P(s["planogram"]))
+    summary["stores"] = [{"id": s["id"], "format": s["format"], "dominant_personas": s["persona_weights_source"]["dominant"],
+                          "mission_mix": s["mission_mix"]} for s in st["stores"]]
+    summary["file_sizes_kb"] = {f: round(os.path.getsize(P(f)) / 1024) for f in
+                                ["data/products/catalog_superstore.json", "data/store/stores.json"] +
+                                [f"data/store/formats/{a}{fid}.{b}" for fid in FORMATS for a, b in (("", "config.json"), ("planogram_", "json"))]}
+    print(json.dumps(summary, indent=1))
+
+
+if __name__ == "__main__":
+    if "--pools" in sys.argv:
+        df = pd.read_parquet(P("data/products/uk_products.parquet")).drop_duplicates("code")
+        cand = candidates(df, {p["code"] for p in json.load(open(P("data/products/catalog_xl.json")))})
+        for c in XL_CATS + PRE_XL + POST_XL:
+            print(f"{c:28s} {len(cand.get(c, [])):5d}")
+    else:
+        main()

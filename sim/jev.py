@@ -113,9 +113,80 @@ def cost_of(input_tokens: int) -> float:
     return (input_tokens or 0) * USD_PER_M_INPUT / 1e6
 
 
+# ---------------------------------------------------------------- backend: TypeSafe API, or Jev Router on OpenRouter
+# JEV_BACKEND=typesafe | router | auto (default). "auto" uses the TypeSafe System One API and switches to the
+# OpenRouter "typesafe/jev-router" model for the rest of the session when TypeSafe answers HTTP 402 (no credits).
+# Router answers are NOT Jev's calibrated typed output: Jev routes the request to a generative LLM, which
+# self-reports probabilities as JSON. Every router answer is stamped calibrated=False + the routed model id.
+ROUTER_MODEL = "typesafe/jev-router"
+_backend = {"active": os.environ.get("JEV_BACKEND", "auto"), "switched_reason": None}
+
+
+def backend() -> dict:
+    return dict(_backend)
+
+
+def _router_ask(state, questions: dict, *, tag: str) -> dict:
+    import llm  # OpenRouter plumbing: .env key, capped-key spend guard, disk cache, cost log
+    spec = {}
+    for qid, q in questions.items():
+        t = q.get("type")
+        if t == "choice":
+            fmt = {"choice": "<one option key>", "probabilities": {k: "<0..1>" for k in q["criteria"]}}
+        elif t == "score":
+            fmt = {"probabilities": {str(i): "<0..1>" for i in range(len(q["criteria"]))}}
+        else:
+            fmt = {"noul": "<probability 0..1 that the answer is yes>"}
+        spec[qid] = {"type": t, "instructions": q.get("instructions"), "criteria": q.get("criteria"), "answer_format": fmt}
+    system = ("You answer typed questions about a JSON `state`, the way TypeSafe's System One API does. "
+              "Answer every question id. choice: pick one option key and give a probability for every option "
+              "(sum 1). score: give a probability for every level index (sum 1). noul: probability the answer is yes. "
+              "Judge only from the state; be realistic, not optimistic. Return ONLY JSON: {\"answers\": {<id>: {...}}}.")
+    user = json.dumps({"state": state, "questions": spec}, ensure_ascii=False)
+    r = llm.chat_json(ROUTER_MODEL, system, user, max_tokens=min(6000, 300 + 90 * len(questions)),
+                      temperature=0.2, tag=f"jev-router:{tag}")
+    raw = (r["data"] or {}).get("answers", r["data"] or {})
+    answers = {}
+    for qid, q in questions.items():
+        a = raw.get(qid) or {}
+        t = q.get("type")
+        if t == "choice":
+            keys = list(q["criteria"])
+            p = {k: max(0.0, float((a.get("probabilities") or {}).get(k, 0) or 0)) for k in keys}
+            if sum(p.values()) <= 0:
+                p = {k: (1.0 if k == a.get("choice") else 0.0) for k in keys}
+            if sum(p.values()) <= 0:
+                p = {k: 1.0 / len(keys) for k in keys}
+            s = sum(p.values()); p = {k: v / s for k, v in p.items()}
+            top = max(p, key=p.get)
+            answers[qid] = {"type": "choice", "choice": top, "probabilities": p, "confidence": p[top], "calibrated": False}
+        elif t == "score":
+            n = len(q["criteria"])
+            p = {str(i): max(0.0, float((a.get("probabilities") or {}).get(str(i), 0) or 0)) for i in range(n)}
+            s = sum(p.values()) or 1.0
+            p = {k: v / s for k, v in p.items()} if sum(p.values()) > 0 else {str(i): 1.0 / n for i in range(n)}
+            answers[qid] = {"type": "score", "score": sum(int(k) * v for k, v in p.items()), "probabilities": p,
+                            "legend": {str(i): c if isinstance(c, str) else json.dumps(c) for i, c in enumerate(q["criteria"])},
+                            "confidence": max(p.values()), "calibrated": False}
+        else:
+            v = a.get("noul", 0.5) if isinstance(a, dict) else a
+            try:
+                v = min(1.0, max(0.0, float(v)))
+            except Exception:
+                v = 0.5
+            answers[qid] = {"type": "noul", "noul": v, "calibrated": False}
+    u = r.get("usage") or {}
+    routed = (u.get("model") or "")  # OpenRouter puts the routed model in the response, cached in llm cache raw
+    return {"model": f"openrouter:{ROUTER_MODEL}", "routed_model": routed or None, "backend": "jev-router",
+            "calibrated": False, "answers": answers,
+            "usage": {"input_tokens": u.get("prompt_tokens"), "output_tokens": u.get("completion_tokens")},
+            "_cost": float(r.get("cost") or 0.0), "_cached": bool(r.get("cached"))}
+
+
 def ask(state, questions: dict, *, tag: str = "") -> dict:
     """One System One request. Returns the raw API JSON ({model, answers, usage}) plus
-    {"cached", "cost", "cache_key"}. Disk-cached on sha256(model, state, questions)."""
+    {"cached", "cost", "cache_key"}. Disk-cached on sha256(model, state, questions).
+    Cached real-Jev answers are always served first; uncached requests go to the active backend."""
     blob = json.dumps({"model": MODEL, "state": state, "questions": questions}, sort_keys=True, ensure_ascii=False)
     key = hashlib.sha256(blob.encode()).hexdigest()
     os.makedirs(CACHE_DIR, exist_ok=True)
@@ -132,8 +203,22 @@ def ask(state, questions: dict, *, tag: str = "") -> dict:
     with _lock:
         if _session["usd"] >= _session["max_usd"]:
             raise JevSpendGuard(f"jev session spend ${_session['usd']:.4f} >= cap ${_session['max_usd']}")
+    if _backend["active"] == "router":
+        rr = _router_ask(state, questions, tag=tag)
+        with _lock:
+            _session["usd"] += rr["_cost"]
+            _session["calls"] += 1
+        return {**{k: v for k, v in rr.items() if not k.startswith("_")}, "cached": rr["_cached"],
+                "cost": rr["_cost"], "cache_key": "router:" + key}
     _bucket.take(int(len(blob) / 3.2))
-    res = client().system_one(state, questions)
+    try:
+        res = client().system_one(state, questions)
+    except Exception as e:
+        if _backend["active"] == "auto" and ("402" in repr(e) or "credits" in repr(e).lower()):
+            _backend.update(active="router", switched_reason=f"TypeSafe API: {repr(e)[:160]}")
+            print(f"[jev] TypeSafe API out of credits -> switching to OpenRouter {ROUTER_MODEL} (calibrated=False)", flush=True)
+            return ask(state, questions, tag=tag)
+        raise
     j = res.raw_http_response.json()
     usage = j.get("usage") or {}
     itok, otok = int(usage.get("input_tokens") or 0), int(usage.get("output_tokens") or 0)
@@ -531,7 +616,8 @@ def _req_summary(res, questions, n_products, purpose):
     usage = res.get("usage", {}) or {}
     return {"purpose": purpose, "jev_model": res.get("model", MODEL), "cache_key": res["cache_key"],
             "cached": res["cached"], "input_tokens": usage.get("input_tokens"), "output_tokens": usage.get("output_tokens"),
-            "cost_usd": round(res["cost"], 8), "cost_if_uncached_usd": round(cost_of(usage.get("input_tokens")), 8),
+            "cost_usd": round(res["cost"], 8), "cost_if_uncached_usd": round(res["cost"] if res.get("backend") == "jev-router" else cost_of(usage.get("input_tokens")), 8),
+            "backend": res.get("backend", "typesafe"), "calibrated": res.get("calibrated", True), "routed_model": res.get("routed_model"),
             "n_questions": len(questions)}
 
 

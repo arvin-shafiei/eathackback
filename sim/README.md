@@ -143,3 +143,65 @@ Tested 2026-10-03:
 - **Baseline note:** `most_frequent` and `repeat_last` in `eval_next_basket` break ties with the persona posterior, so they are not the plain baselines the spec describes.
 - **Where the lift comes from:** the whole v3 lift comes from routing (0 judgment differences on shared slots).
 - **Not run (no credits):** the sweep, mixtures, OCEAN jitter, the detour variant, the `server.py` endpoint and the UI panel.
+
+## store ops (`ops.py`)
+
+Discrete-event simulation of whole trading days in the XL store (`data/store/store_xl.config.json` + `planogram_xl.json` + `catalog_xl.json`; falls back to the small store with labelled synthetic geometry). Spec: `docs/ideas/store-ops.md`. It uses a heapq event loop because simpy is not installed. Every parameter comes from `data/ops/params.json` (research, sourced) or `data/sim/ops/params_extra.json` (the extra knobs ops needs, almost all labelled `assumption: <why>`). Every day file carries `params_used` with each value, unit, source and confidence, and each KPI block lists the params and event counts behind it.
+
+```bash
+python3 sim/ops.py --day Sat --compress 1 --staff restock=6,clean=2,guard=1 --routing smart --seed 1   # one day -> data/sim/ops/day_<id>.json
+python3 sim/ops.py --routing jsq --restock fifo --seed 1                                              # baselines
+python3 sim/ops.py --compare --seeds 1,2,3 --days 3 --sweep-restock 4,6,8                             # arms A-G (CRN) -> RESULTS.json + RESULTS.auto.md
+python3 sim/ops.py --set shelf_capacity_multiplier=1 ...                                              # sensitivity on any param
+python3 sim/ops.py --no-jev ...                                                                        # $0: labelled fallback acceptance table
+```
+
+**Arrivals.** Each minute draws a Poisson count with rate = `store_customers_per_week` × `shopping_trips_by_day_share[dow]` × NTS hour share at (t − 15 min lag) / 60. A Saturday comes to about 2,280 shoppers. The mission is drawn from `mission_mix_by_daypart`: lunch is meal deals, 15–17 (after school) is 2× treats/desserts, and the evening is top-ups. The persona is then sampled from the lens personas (plus custom ones) that have that mission.
+
+**Basket (fast surrogate, no model calls).**
+- **Route:** the mission's units plus browsed units (p = 0.25), visited nearest-neighbour from whichever of the two entrances gives the shorter walk.
+- **Taking an item:** each product on a visited row is noticed with `notice.p_notice` (rows 3–4 map to "bottom", see the store config's `notice_row_map`). A noticed product is taken with P(take | noticed) per (archetype, product). That probability comes from the Jev run logs (`data/sim/runs/run_*jev*.json`, 12,234 noticed events, 1,115 pairs), shrunk toward the archetype mean with m = 5, and Wilson CIs are kept.
+- **Products the runs never showed** (all `auto_xl` products and the 4 new curated categories): a lens-grade logit fitted on the seen pairs, labelled `lens_logit`, β ≈ 1.97 on 778 pairs.
+- **Basket size:** taking stops at round(NB(mission mean) × `in_range_share_of_basket`). The rest of the mission basket is off-range items (fresh, household and so on) that are scanned but don't touch our shelves.
+- **Common random numbers:** every draw is hashed on (seed, shopper, purpose), so all policies see the same shoppers wanting the same things.
+
+**Time in store.** Walking uses the aisle graph: walkways between gondolas plus the front and back cross-aisles at 1.3 m/s. Dwell is rows × the persona's `seconds_at_shelf`.
+
+**Stock and out-of-stocks.**
+- **Out of stock:** when a wanted SKU has an empty shelf, a Gruen 2002 reaction is drawn (store switch / other brand / same brand / delay / don't buy). A substitute is the in-stock product in the same category with the highest surrogate score. Lost £ is counted net of what the substitute recovers.
+- **Cause:** each OOS records whether the back room had stock (a shelf-restocking failure) or not (an ordering failure), to compare with Gruen & Corsten's root causes.
+- **Staff queries:** 10% of OOS-hit shoppers ask staff, which costs a restocker 6 min.
+- **Restockers** (N agents, `fifo` | `priority` | `priority_bay`) walk to the stockroom door and then the bay. Cases are worked at 45 cases/h, and other SKUs in the bay under 50% full come along.
+  - `priority_bay` scores each bay by Σ E[(D − s)+] × price × margin proxy ÷ the trip's labour seconds, where D ~ Poisson(forecast rate × time until the next round).
+  - `priority` is the spec-literal per-SKU P(OOS before next round) × demand × margin.
+- **Night fill** at 07:00 refills shelves from the back room, an assumption.
+
+**Manager.** Reviews hourly. ROP = L·E(D) + z·√(L·σ_D² + E(D)²σ_L²) with σ_D² = E(D) (Poisson) and z = 1.65. Lead time is 1 day for chilled and 2 for ambient, with SD 0.25 d, and deliveries land at 06:00. When inventory position ≤ ROP, the manager orders up to ROP + one review period of demand. E(D) is the manager's "history": a Monte Carlo of the same shopper model (200 shoppers per mission, seed namespace `forecast`) × the arrival curve. The manager also raises `going_out_alert` when shelf + back room is less than the rest of today's forecast.
+
+**Spills and cleaners.** Each unit visit has P(spill) = 2/1,000 ÷ the number of route units, ×5 if the shopper just bumped someone. P(bump) = 1 − exp(−0.04 × others in the same walkway). The dropped item is waste. The nearest free cleaner walks over and mops for 3 min, and the walkway is blocked until then. Shoppers detour (+12.8 m) and retry the bay once, otherwise they skip it.
+
+**Checkout.**
+- **Service time** follows `service_time_formula` (Klee 2006 staffed; WPI 2004 self-checkout, including 34% interventions held by a bank attendant, one per 5 terminals) × lognormal noise (CV 0.3).
+- **Routing:**
+  - `smart`: a router picks the lane with the lowest walk + predicted work ahead + own predicted service. The work ahead counts shoppers it has already sent and who are still walking.
+  - `smart_wait` ignores own service time.
+  - `smart_blind` does not count inbound shoppers (ablation).
+  - Baselines: `jsq` (fewest people visible, nearest on ties) and `nearest`.
+- **Abandonment:** a shopper leaves the queue after gamma-distributed patience (mean by mission, shape 3). The abandoned trolley goes back to the back room.
+- **Self-checkout acceptance is the one Jev judgment:** a Noul, "Would `shopper` choose the self-checkout for `basket` if both had the same wait?". It is asked once per (persona, mission, basket-size bucket, needs weighing, age-restricted), cached, and capped by `--jev-max-calls`. The fallback table `sco_accept_fallback` is labelled and used only when Jev is off or fails; a 402 halts further calls.
+
+**Café, security and checkout theatre.**
+- **Café:** 24 seats (capacity resource). The visit share depends on daypart, with dwell ~20 min. A shopper waits ≤3 min for a seat or is turned away. The menu is real OFF products with labelled prices.
+- **Theft:** 0.4% of trips (assumption, BRC/ONS not fetched), either walking out unscanned or skip-scanning at self-checkout. EAS gates fire an `alarm` event (gate, x, z, t) with an assumed tag share and detection rate. A guard runs over; stock is recovered if the guard arrives within 25 s. KPIs: shrink £, incidents per hour, detection rate, guard utilisation.
+- **Checkout theatre:** each paid shopper carries `theatre {unload, scans[t...], skipped[], bag, pay, done}`. Scan i is item i of `basket`, then the off-range items.
+
+**Output: `data/sim/ops/day_<id>.json`.**
+- `kpis`: traffic, checkout, stock, manager, spills, café, security and revenue, each with `trace` and `params`.
+- `timeline.frames`: one per minute (or per `--compress` minutes). Each frame has shoppers per aisle segment, people per lane, fill per slot, empty SKUs, staff x/z and task, active spills, café occupancy, orders and back-room units.
+- `events`: oos, spill, spill_cleared, restocked, orders, going_out_alert, abandon, alarm, café.
+- `orders` (with ROP/IP/SS), `spills`, `shoppers` (waypoints `[t, x, z, unit|lane|cafe|exit]`, basket, OOS records, lane, wait, theatre).
+- `geometry` (unit/lane/entrance/door positions), `surrogate` summary, `jev` (question, table, calls, cost) and `params_used`.
+
+A Saturday file is about 5–6 MB and takes about 5–7 s to run.
+
+**Results.** See `data/sim/ops/RESULTS.md`.

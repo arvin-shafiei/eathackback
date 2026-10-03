@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useJSON } from '../lib/data';
 import { S, urlsIn } from '../lib/src';
-import { gbp, human, num, pct, signed } from '../lib/stats';
+import { gbp, human, num, pct, signed, signedPct } from '../lib/stats';
 import { Card, ErrorBox, Ext, FootSrc, Loading, Seg, Sticker } from '../ui/bits';
 
 type SwapIdx = { file: string; src: string; persona: string; name: string; n_top: number; basket_source: { source?: string; run_id?: string; agent_id?: string } }[];
@@ -25,6 +25,7 @@ export default function Shopper() {
   const [file, setFile] = useState<string | null>(null);
   useEffect(() => { if (!file && idx.data?.length) setFile((idx.data.find((x) => /demo/.test(x.file)) || idx.data[0]).file); }, [idx.data, file]);
   const sw = useJSON<SwapFile>(file ? `swaps/${file}` : null);
+  const cat = useJSON<{ products: Record<string, { image?: string }> }>('catalog_min.json');
   const visits = useJSON<{ file: string; src: string; mock: boolean }[]>('visits/index.json');
   if (idx.loading) return <Loading what="basket swaps" />;
   if (idx.error) return <ErrorBox error={idx.error} />;
@@ -35,7 +36,7 @@ export default function Shopper() {
         <Seg label="whose basket" value={file || ''} onChange={setFile} options={idx.data.map((x) => ({ id: x.file, label: <>{x.name} <small>{x.basket_source?.run_id ? 'from a sim run' : 'demo basket'}</small></> }))} />
       ) : null}
         foot={<FootSrc items={[[`data/sim/swaps/${file}`, 'top[]'], ['sim/swaps.py', 'ranking']]} />}>
-        {sw.loading ? <Loading what="swaps" /> : sw.error ? <ErrorBox error={sw.error} /> : sw.data ? <Swaps s={sw.data} F={`data/sim/swaps/${file}`} /> : null}
+        {sw.loading ? <Loading what="swaps" /> : sw.error ? <ErrorBox error={sw.error} /> : sw.data ? <Swaps s={sw.data} F={`data/sim/swaps/${file}`} img={(c) => cat.data?.products[c]?.image} /> : null}
       </Card>
       <ClaimPremium />
       {visits.data && visits.data.length ? <RouteCards v={visits.data[visits.data.length - 1]} /> : null}
@@ -43,7 +44,7 @@ export default function Shopper() {
   );
 }
 
-function Swaps({ s, F }: { s: SwapFile; F: string }) {
+function Swaps({ s, F, img }: { s: SwapFile; F: string; img: (code: string) => string | undefined }) {
   return (
     <>
       <p className="d-note">
@@ -57,7 +58,7 @@ function Swaps({ s, F }: { s: SwapFile; F: string }) {
           return (
             <li key={i} className="d-card d-swap">
               <div className="d-swap-pair">
-                <ProdTile p={t.basket_item} label="in the basket" />
+                <ProdTile p={{ ...t.basket_item, image: t.basket_item.image || img(t.basket_item.code) }} label="in the basket" />
                 <span className="d-swap-arrow" aria-hidden>→</span>
                 <ProdTile p={t.alternative} label="swap to" />
               </div>
@@ -137,8 +138,8 @@ function ClaimPremium() {
                 <tr className="d-row-click" onClick={() => setOpen(open === k ? null : k)}>
                   <th>{k.replace(/_/g, ' ')} <span className="d-caret">{open === k ? '−' : '+'}</span></th>
                   <td><S src={{ file: CPF, field: `catalog.${k}.n_claim_products`, note: `${v.n_categories} categories; ${v.n_unit} with a unit price` }}>{v.n_claim_products}</S></td>
-                  <td><S src={{ file: CPF, field: `catalog.${k}.unit_price_premium_ci95_bootstrap`, note: `${v.method}; bootstrap 95% CI` }}><b>+{num(v.unit_price_premium_median_pct, 1)}%</b> <small>{num(v.unit_price_premium_ci95_bootstrap[0], 0)} to {num(v.unit_price_premium_ci95_bootstrap[1], 0)}%</small></S></td>
-                  <td><S src={{ file: CPF, field: `catalog.${k}.shelf_price_premium_ci95_bootstrap`, note: v.method }}>+{num(v.shelf_price_premium_median_pct, 1)}% <small>{num(v.shelf_price_premium_ci95_bootstrap[0], 0)} to {num(v.shelf_price_premium_ci95_bootstrap[1], 0)}%</small></S></td>
+                  <td><S src={{ file: CPF, field: `catalog.${k}.unit_price_premium_ci95_bootstrap`, note: `${v.method}; bootstrap 95% CI` }}><b>{signedPct(v.unit_price_premium_median_pct / 100, 1)}</b> <small>{num(v.unit_price_premium_ci95_bootstrap[0], 0)} to {num(v.unit_price_premium_ci95_bootstrap[1], 0)}%</small></S></td>
+                  <td><S src={{ file: CPF, field: `catalog.${k}.shelf_price_premium_ci95_bootstrap`, note: v.method }}>{signedPct(v.shelf_price_premium_median_pct / 100, 1)} <small>{num(v.shelf_price_premium_ci95_bootstrap[0], 0)} to {num(v.shelf_price_premium_ci95_bootstrap[1], 0)}%</small></S></td>
                   <td><S src={{ file: CPF, field: `catalog.${k}.share_claim_products_dearer_per_100` }}>{pct(v.share_claim_products_dearer_per_100)}</S></td>
                   <td>{ps && ps[1] !== undefined ? <S src={{ file: CPF, field: `off_uk_pool.${ps[0]}`, note: `${ps[2]}. ${pool.source}` }}>{pct(ps[1])}</S> : v.reg_1924_reality ? <S src={{ file: CPF, field: `catalog.${k}.reg_1924_reality` }}>{Object.entries(v.reg_1924_reality).map(([a, b]) => `${b} ${a}`).join(', ')}</S> : <span className="d-muted">no nutrient threshold</span>}</td>
                 </tr>

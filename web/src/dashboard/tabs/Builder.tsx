@@ -40,6 +40,7 @@ export default function Builder() {
   const cat = useJSON<Cat>('catalog_min.json');
   const [form, setForm] = useState<Form>(BLANK);
   const [openTrait, setOpenTrait] = useState<string | null>('O');
+  const [allFx, setAllFx] = useState(false);
   const [health, setHealth] = useState<Health | null>(null);
   const [saved, setSaved] = useState<SavedPersona | null>(null);
   const [run, setRun] = useState<RunResp | null>(null);
@@ -151,13 +152,14 @@ export default function Builder() {
                     </div>
                     {open && f ? (
                       <ul className="d-effects">
-                        {f.effects.map((e, i) => (
+                        {[...f.effects].map((e, i) => ({ e, i })).sort((a, b) => Math.abs(b.e.coef ?? 0) - Math.abs(a.e.coef ?? 0)).slice(0, allFx ? 99 : 3).map(({ e, i }) => (
                           <li key={i}>
                             <p className="d-effect-b">{e.effect || e.behaviour}</p>
                             <p className="d-effect-d">{e.direction}{e.coef !== undefined ? <> · <S src={{ file: f._file, field: `effects[${i}].coef`, note: `${e.effect_size || ''} ${e.sim_mapping ? '· mapping: ' + e.sim_mapping : ''}`, url: urlsIn(e.source) }}>coef <b>{e.coef}</b></S></> : null}{e.confidence ? <> · confidence {e.confidence}</> : null}</p>
                             <p className="d-effect-s">{e.source.slice(0, 220)}{e.source.length > 220 ? '…' : ''}</p>
                           </li>
                         ))}
+                        {f.effects.length > 3 ? <li className="d-effects-more"><button className="d-btn d-btn-white d-btn-sm" onClick={() => setAllFx(!allFx)}>{allFx ? 'strongest 3 only' : `all ${f.effects.length} links for ${TRAIT_NAME[t]}`}</button></li> : null}
                       </ul>
                     ) : null}
                   </div>
@@ -207,7 +209,7 @@ export default function Builder() {
         </Card>
 
         <div className="d-actions">
-          <ServerStatus health={health} onRetry={check} />
+          {health?.ok ? <ServerStatus health={health} onRetry={check} /> : null}
           {problems.length ? <p className="d-note">to save, add {problems.join(', ')}.</p> : null}
           <div className="d-action-btns">
             <button className="d-btn d-btn-white" disabled={!health?.ok || !!problems.length || !!busy} onClick={save}>{busy === 'save' ? 'saving…' : 'save'}</button>
@@ -219,6 +221,7 @@ export default function Builder() {
       </div>
 
       <div className="d-builder-out">
+        {!health?.ok ? <ServerStatus health={health} onRetry={check} /> : null}
         {saved ? <SavedCard p={saved} /> : <Card title="results land here" sub="save the persona, then test it: 10 agents walk the store with your persona and jev answers every pick-up, put-back and take."><ol className="d-steps"><li>fill the form (or start from an existing persona)</li><li><b>save</b> → <code>POST /api/personas</code></li><li><b>test in store</b> → <code>POST /api/run</code> with 10 agents, engine jev</li></ol></Card>}
         {busy === 'run' ? <Loading what="the store run (10 shoppers, usually under a minute)" /> : null}
         {run ? <RunResults run={run} cat={cat.data} /> : null}
@@ -303,7 +306,7 @@ type Ev = {
   verbatim?: { quote: string; url?: string } | null;
   jev?: { mechanism?: { choice?: string; probabilities?: Record<string, number> }; nouls_fired?: Record<string, { text: string; p: number; source?: string }>; appeal?: { level?: number } };
 };
-type RunResp = { run_id: string; engine?: string; models?: string[]; agents: { agent_id: string; persona_id: string; events: Ev[] }[]; cost?: Record<string, number> };
+type RunResp = { run_id: string; engine?: string; models?: string[]; agents: { agent_id: string; persona_id: string; events: Ev[]; calls?: { errors?: string[] } }[]; cost?: Record<string, number> };
 
 function stageOf(e: Ev) {
   if (e.stage_reached) return e.stage_reached;
@@ -351,8 +354,17 @@ function RunResults({ run, cat }: { run: RunResp; cat?: Cat }) {
   const quotes = Array.from(new Map(backs.filter((e) => e.verbatim?.quote).map((e) => [e.verbatim!.quote, e.verbatim!])).values()).slice(0, 4);
   const mean = (xs: number[]) => (xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : NaN);
 
+  const nErr = run.cost?.errors ?? 0;
+  const firstErr = run.agents.flatMap((a) => a.calls?.errors || [])[0] || '';
   return (
     <>
+      {nErr > 0 ? (
+        <div className="d-server is-down" role="alert">
+          <p><b>jev failed on {nErr} request{nErr === 1 ? '' : 's'}</b>, so these shoppers fell back to code-only rules and the numbers below are <b>not jev judgments</b>.</p>
+          <S src={{ file: runFile, field: 'agents[].calls.errors', note: firstErr }}><code>{firstErr.slice(0, 180)}{firstErr.length > 180 ? '…' : ''}</code></S>
+          {/402|credit/i.test(firstErr) ? <p>the TypeSafe account is out of credits: top up at console.typesafe.ai, then test again.</p> : null}
+        </div>
+      ) : null}
       <Card title="funnel by category" sub={<>👀 look → 🤚 pick up → ↩️ put back / 🧺 take, from {run.agents.length} shoppers · run <code>{run.run_id}</code>{run.engine && run.engine !== 'jev' ? <> · <Sticker tone="bad">{run.engine}</Sticker></> : null}</>}
         foot={<FootSrc items={[[runFile, 'agents[].events[].stage_reached'], ['catalog.json', 'category per product']]} />}>
         <table className="d-table d-funnel-table">

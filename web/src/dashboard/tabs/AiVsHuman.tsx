@@ -33,7 +33,7 @@ export default function AiVsHuman() {
       <p className="d-lede">the same range, shopped by an <b>AI agent</b> reading a product feed and by <b>human-like shoppers</b> walking the shelf. agents can't see eye level and never walk away; do they pick differently? agent run <code>{a.agent_run.run_id}</code> ({a.agent_run.n} feeds), human run <code>{a.human_run.run_id}</code> ({a.human_run.n} shoppers).</p>
       <div className="d-two-wide">
         <Card title="position bias: is slot 1 over-picked?" sub="share of agent picks that landed on the first item of a shuffled feed, vs what chance predicts. 95% Wilson CI."
-          foot={<FootSrc items={[[a.agent_file, 'position_bias.<model>'], ...a.position_bias_llm_earlier.map((p) => [p.file, `position_bias.${p.model}`] as [string, string])]} />}>
+          foot={<FootSrc items={[[a.agent_file, 'position_bias.<model>'], ...a.position_bias_llm_earlier.filter((p) => p.picks >= 20).map((p) => [p.file, `position_bias.${p.model}`] as [string, string])]} />}>
           <ul className="d-pbias">
             {all.map((p) => {
               const x = (v: number) => `${(v / ciMax) * 100}%`;
@@ -84,13 +84,14 @@ function CatPanel({ c, a }: { c: Cat; a: AIVH }) {
   const max = Math.max(0.2, ...c.products.map((p) => Math.max(p.human.share, p.agent.share)));
   const x = (v: number) => `${(v / max) * 100}%`;
   return (
-    <div className="d-cat">
+    <div className={`d-cat ${c.agent_picks < 10 ? 'is-thin' : ''}`}>
       <div className="d-cat-head">
         <h4 className="d-h4">{human(c.category)}</h4>
         <S src={{ file: 'web/public/data/dashboard/aivh.json', field: `categories[${c.category}].jsd_bits`, note: `${a.method.jsd}. picks: human ${c.human_picks}, agent ${c.agent_picks}` }}>
           <small>JSD <b>{num(c.jsd_bits ?? NaN, 2)}</b> · n {c.human_picks} / {c.agent_picks}</small>
         </S>
       </div>
+      {c.agent_picks < 10 ? <p className="d-thin">only {c.agent_picks} agent pick{c.agent_picks === 1 ? '' : 's'} here: too few to compare shares.</p> : null}
       <ul className="d-dumb">
         {ps.map((p) => {
           const [hl, hh] = wilson(p.human.picked, c.human_picks);
