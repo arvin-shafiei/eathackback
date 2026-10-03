@@ -61,5 +61,46 @@ const fixtures = realRuns.length ? [] : existing.filter((r) => r.fixture && fs.e
 realRuns.sort((a, b) => String(b.created).localeCompare(String(a.created)));
 fs.writeFileSync(idxPath, JSON.stringify([...realRuns, ...fixtures], null, 1));
 
+// ---- XL store (data/store/store_xl.config.json + planogram_xl.json + data/products/catalog_xl.json) → public/data/xl/
+const xlCfg = path.join(storeDir, 'store_xl.config.json');
+const storesPath = path.join(OUT, 'stores.json');
+let stores = []; try { stores = JSON.parse(fs.readFileSync(storesPath, 'utf8')); } catch { stores = []; }
+if (!stores.some((s) => s.id === 'standard')) stores.unshift({ id: 'standard', dir: '', label: 'standard store', fixture: false });
+if (fs.existsSync(xlCfg)) {
+  fs.mkdirSync(path.join(OUT, 'xl'), { recursive: true });
+  const ok = copy(xlCfg, path.join(OUT, 'xl', 'store.config.json'));
+  copy(path.join(storeDir, 'planogram_xl.json'), path.join(OUT, 'xl', 'planogram.json'));
+  copy(path.join(ROOT, 'data', 'products', 'catalog_xl.json'), path.join(OUT, 'xl', 'catalog_extra.json'));
+  if (ok && fs.existsSync(path.join(OUT, 'xl', 'planogram.json'))) { stores = stores.filter((s) => s.id !== 'xl'); stores.splice(1, 0, { id: 'xl', dir: 'xl', label: 'xl store', fixture: false }); }
+}
+fs.writeFileSync(storesPath, JSON.stringify(stores, null, 1));
+
+// ---- dashboards + ops: copy whole folders of json and write an index.json per folder
+const syncDir = (src, dst, filter = (f) => f.endsWith('.json') && f !== 'index.json') => {
+  if (!fs.existsSync(src)) return [];
+  fs.mkdirSync(dst, { recursive: true });
+  const files = [];
+  for (const f of fs.readdirSync(src).filter(filter)) if (copy(path.join(src, f), path.join(dst, f))) files.push(f);
+  return files;
+};
+const SIM = path.join(ROOT, 'data', 'sim');
+for (const d of ['layout', 'brand', 'swaps', 'visits']) {
+  const files = syncDir(path.join(SIM, d), path.join(OUT, 'sim', d));
+  if (files.length) fs.writeFileSync(path.join(OUT, 'sim', d, 'index.json'), JSON.stringify(files.sort(), null, 1));
+}
+const opsFiles = syncDir(path.join(SIM, 'ops'), path.join(OUT, 'ops'), (f) => /^day_.*\.json$/.test(f));
+if (opsFiles.length || fs.existsSync(path.join(OUT, 'ops'))) {
+  fs.mkdirSync(path.join(OUT, 'ops'), { recursive: true });
+  const fx = fs.existsSync(path.join(OUT, 'ops', 'day_fixture.json')) ? [{ file: 'day_fixture.json', day: 'fixture', fixture: true }] : [];
+  fs.writeFileSync(path.join(OUT, 'ops', 'index.json'), JSON.stringify([...opsFiles.filter((f) => f !== 'day_fixture.json').sort().reverse().map((f) => ({ file: f, day: f.replace(/^day_|\.json$/g, ''), fixture: false })), ...fx], null, 1));
+}
+const PROV = path.join(ROOT, 'data', 'provenance');
+if (fs.existsSync(PROV)) {
+  fs.mkdirSync(path.join(OUT, 'provenance', 'personas'), { recursive: true });
+  copy(path.join(PROV, 'graph.json'), path.join(OUT, 'provenance', 'graph.json'));
+  copy(path.join(PROV, 'corpus_stats.json'), path.join(OUT, 'provenance', 'corpus_stats.json'));
+  syncDir(path.join(PROV, 'personas'), path.join(OUT, 'provenance', 'personas'), (f) => f.endsWith('.json'));
+}
+
 console.log(copied.length ? `synced ${copied.length} files:\n  ${copied.join('\n  ')}` : 'nothing to sync yet (fixtures kept)');
 console.log(`runs/index.json: ${realRuns.length} real run(s), ${fixtures.length} fixture run(s)`);

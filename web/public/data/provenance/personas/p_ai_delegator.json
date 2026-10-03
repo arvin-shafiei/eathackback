@@ -1,0 +1,1542 @@
+{
+ "persona_id": "p_ai_delegator",
+ "name": "Jordan",
+ "archetype": "ai_delegator",
+ "kind": "lens",
+ "source_file": "data/personas/lens/ai_delegator.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 40,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) dossier.profile: 'weekly delegated shop is an assumption of about £35-50 for one person, given to ChatGPT as a hard ceiling' (midpoint £40, assumption-flagged). Meal deal £3.50-£3.85 Clubcard, corpus meal_deal.md"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[1] (Jordan) dossier.profile: 'weekly delegated shop is an assumption of about £35-50 for one person, given to ChatGPT as a hard ceiling' (midpoint £40, assumption-flagged). Meal deal £3.50-£3.85 Clubcard, corpus meal_deal.md"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "agent",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections: two-stage delegated channel. Stage 1 ChatGPT outputs a list (mostly generic categories + 1-2 named big brands)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Stage 2 Jordan types each line into Tesco app search, where ranking, sponsored tiles and Favourites pick the SKU. There is no native ChatGPT-to-Tesco checkout in the UK (verdict)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "weekly_shop",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/ai_delegator.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.data_completeness",
+   "kind": "lens_weight",
+   "label": "lens: data_completeness (w=0.22)",
+   "value": 0.22,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026",
+     "citation": "Kantar 2026: 'If an agent can't parse you, it can't choose you.' https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Kantar 2026: 'If an agent can't parse you, it can't choose you.' https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026",
+     "url": null
+    },
+    {
+     "class": "web_other",
+     "method": "trade_press:'Kantar'(no figure)",
+     "citation": "Kantar 2026: 'If an agent can't parse you, it can't choose you.' https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.igd.com/about-us/press-centre/articles/igd-warns-industry-prepare-now-before-agentic-ai-transforms-shopping/72390",
+     "citation": "IGD: 'machine visibility, not shelf visibility, shapes choice' https://www.igd.com/about-us/press-centre/articles/igd-warns-industry-prepare-now-before-agentic-ai-transforms-shopping/72390"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 2. Weight = assumption (largest because it gates the other fields)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 2. Weight = assumption (largest because it gates the other fields)"
+    }
+   ],
+   "measured_by_off_field": "derived: share of non-null [price_gbp, product_quantity, nutriscore, nutriments (sugars_100g, proteins_100g, fiber_100g, salt_100g), ingredients_text, labels] in OFF + catalog",
+   "direction": "higher_better",
+   "why": "The agent filters out items whose price, nutrition or pack size it cannot read, because it cannot prove they meet the budget or 'healthy' constraint. A thin record means the item is invisible, not rejected.",
+   "classes": [
+    "paper",
+    "web_other",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "web_other": 0.25,
+    "staged_persona": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.claim_match_to_prompt",
+   "kind": "lens_weight",
+   "label": "lens: claim_match_to_prompt (w=0.19)",
+   "value": 0.19,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections: add a 'parametric semantic prior' for claims matching the prompt. Weight = assumption"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections: add a 'parametric semantic prior' for claims matching the prompt. Weight = assumption"
+    }
+   ],
+   "measured_by_off_field": "catalog pack_copy (+ OFF labels) matched to prompt terms, e.g. 'high protein', 'no added sugar', 'prebiotic', 'high fibre'",
+   "direction": "match_better",
+   "why": "Jordan's prompts are loose constraints ('prioritise health', 'high protein', 'cheap'). The agent treats front-of-pack claim text as evidence and matches it semantically, with no gimmick detector.",
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_gbp",
+   "kind": "lens_weight",
+   "label": "lens: price_gbp (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "keep it under $150",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1ui9o6z",
+     "thread_id": "1ui9o6z",
+     "subreddit": "MiddleClassFinance",
+     "theme": "buy_it_again_repeat",
+     "score": 0,
+     "verbatim": "I started plugging my groceries list into chat gpt and asking for price comparisons between each local grocery store",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier BUDGET 'read as a filter, not a trade-off'"
+    }
+   ],
+   "measured_by_off_field": "catalog price_gbp (and derived price per 100g)",
+   "direction": "lower_better (hard cap filter, then mild preference)",
+   "why": "Budget is given to the agent as a ceiling and used as a filter, not a trade-off. Jordan sometimes asks for price comparisons.",
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.role",
+   "kind": "lens_weight",
+   "label": "lens: role (w=0.14)",
+   "value": 0.14,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2606.17443v1:",
+     "citation": "Incumbent Advantage https://arxiv.org/html/2606.17443v1: 'at identical specs, incumbents are recommended 100% of the time'"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections Stage 1 'mostly generic categories plus 1-2 named big brands (high incumbent bias, near-zero chance of naming' challengers)"
+    }
+   ],
+   "measured_by_off_field": "catalog role (incumbent | own_label | challenger)",
+   "direction": "incumbent > own_label > challenger",
+   "why": "ChatGPT tends to name 1-2 big brands from training-data familiarity, and at equal specs recommends the incumbent. Own-label comes in as the 'budget swap'. Challengers are almost never named.",
+   "classes": [
+    "paper",
+    "staged_persona"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.nutriscore",
+   "kind": "lens_weight",
+   "label": "lens: nutriscore (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "off_field",
+     "method": "keyword:'OFF'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier: 'parses healthy-ish literally into machine-checkable claims and nutrition fields'. Weight = assumption: Nutri-Score is not printed on UK packs, so it reaches the agent only via feeds/OFF, which caps its weight"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier: 'parses healthy-ish literally into machine-checkable claims and nutrition fields'. Weight = assumption: Nutri-Score is not printed on UK packs, so it reaches the agent only via feeds/OFF, which caps its weight"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier: 'parses healthy-ish literally into machine-checkable claims and nutrition fields'. Weight = assumption: Nutri-Score is not printed on UK packs, so it reaches the agent only via feeds/OFF, which caps its weight"
+    }
+   ],
+   "measured_by_off_field": "nutriscore (a-e)",
+   "direction": "a_best",
+   "why": "The single most legible 'healthy' field for an agent decoding 'healthy-ish'. Jordan never looks at it himself.",
+   "classes": [
+    "off_field",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "off_field": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "off_field"
+  },
+  {
+   "field": "lens.proteins_100g",
+   "kind": "lens_weight",
+   "label": "lens: proteins_100g (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1hyqe97",
+     "thread_id": "1hyqe97",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 151,
+     "verbatim": "My wife gave it the specific macros she's trying to hit, it gave her meal options",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1vobhlt",
+     "thread_id": "1vobhlt",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "Told them to track my calories, budget...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) missions 'cheap high-protein meals'"
+    }
+   ],
+   "measured_by_off_field": "proteins_100g",
+   "direction": "higher_better",
+   "why": "'High protein' is Jordan's most common prompt constraint (macros, gym-curious).",
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.sugars_100g",
+   "kind": "lens_weight",
+   "label": "lens: sugars_100g (w=0.07)",
+   "value": 0.07,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier mission decode: 'zero/low sugar' as the drink-slot health signal. Weight = assumption"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier mission decode: 'zero/low sugar' as the drink-slot health signal. Weight = assumption"
+    }
+   ],
+   "measured_by_off_field": "sugars_100g",
+   "direction": "lower_better",
+   "why": "'Healthy-ish' drink and snack prompts get read by the agent as '0g sugar / no added sugar'.",
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "lens.nova",
+   "kind": "lens_weight",
+   "label": "lens: nova (w=0.04)",
+   "value": 0.04,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.unrealistic_claims: 'in chat (not checkout) mode it often adds health caveats (\"protein bars can be highly processed\")'. Weight = assumption (low)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.unrealistic_claims: 'in chat (not checkout) mode it often adds health caveats (\"protein bars can be highly processed\")'. Weight = assumption (low)"
+    }
+   ],
+   "measured_by_off_field": "nova (1-4)",
+   "direction": "lower_better",
+   "why": "Weak: in chat mode the LLM sometimes adds a UPF caveat ('protein bars can be highly processed'), but NOVA is rarely in retailer feeds and Jordan never asks for it.",
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.62",
+   "value": 0.62,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Early adopter of agent tools and TikTok food trends, but cares little about food novelty in itself: novelty arrives through the prompt ('mirror trendy meals'), not through the shelf."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: ai_delegator +0.5 (Angrisani 2026 openness predicts LLM use)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.62 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1vobhlt",
+     "thread_id": "1vobhlt",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "to mirror trendy meals I've been seeing on social media",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (food-neophobia avoidance negatively related to Openness). Behaviour: 'to mirror trendy meals I've been seeing on social media' https://www.reddit.com/comments/1vobhlt. coef = assumption",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (food-neophobia avoidance negatively related to Openness). Behaviour: 'to mirror trendy meals I've been seeing on social media' https://www.reddit.com/comments/1vobhlt. coef = assumption"
+    }
+   ],
+   "effect": "O → +willingness to try what the agent names, including unfamiliar items; no extra in-person noticing of unfamiliar packs, because Jordan does not browse",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Low-effort shopper by design. Outsources list-making and comparison, does one light check ('swap out a couple of items'), never reads ingredients or nutrition panels."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: ai_delegator 0 (no evidence either way)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.35 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=-0.3)",
+   "value": -0.3,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 15,
+     "verbatim": "I had to swap out a couple of items at the end before checking out",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (N=951): conscientiousness acts through restrained eating, i.e. deliberate food control. Behaviour: 'I had to swap out a couple of items at the end before checking out' https://www.reddit.com/comments/1m9u7e6. coef = assumption",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (N=951): conscientiousness acts through restrained eating, i.e. deliberate food control. Behaviour: 'I had to swap out a couple of items at the end before checking out' https://www.reddit.com/comments/1m9u7e6. coef = assumption"
+    }
+   ],
+   "effect": "low C → own reading of nutrition/ingredient fields close to zero. All structured-data reading is done by the agent (reads_structured_data applies to the agent, not to Jordan)",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Socially fed food choices (creators, colleagues' meal-deal combos). Moderate."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015 doi:10.1016/j.appet.2014.10.003: extraversion promotes external (cue-driven) eating. data/personas/staged_personas_v1.json[1] (Jordan) behavioural_drivers 'social-proof and creator-driven demand' (weight 0.6). coef = assumption",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003:"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Keller & Siegrist 2015 doi:10.1016/j.appet.2014.10.003: extraversion promotes external (cue-driven) eating. data/personas/staged_personas_v1.json[1] (Jordan) behavioural_drivers 'social-proof and creator-driven demand' (weight 0.6). coef = assumption"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Keller & Siegrist 2015 doi:10.1016/j.appet.2014.10.003: extraversion promotes external (cue-driven) eating. data/personas/staged_personas_v1.json[1] (Jordan) behavioural_drivers 'social-proof and creator-driven demand' (weight 0.6). coef = assumption"
+    }
+   ],
+   "effect": "E → +weight on social proof (creator trends, review counts surfaced by the agent)",
+   "classes": [
+    "paper",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Trusting toward the AI's answer: accepts the first basket after one sanity check, rarely argues with it."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.6 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.2)",
+   "value": 0.2,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Stein, Messingschlager, Gnambs, Hutmacher & Appel 2024, Scientific Reports, doi:10.1038/s41598-024-53335-2: 'agreeableness and younger age predict a more positive view towards artificially intelligent technology'. coef = assumption",
+     "url": "https://doi.org/10.1038/s41598-024-53335-2:"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Stein, Messingschlager, Gnambs, Hutmacher & Appel 2024, Scientific Reports, doi:10.1038/s41598-024-53335-2: 'agreeableness and younger age predict a more positive view towards artificially intelligent technology'. coef = assumption"
+    }
+   ],
+   "effect": "A → +acceptance of the agent's first-named item (default effect), -tendency to second-guess",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Mild decision fatigue and time stress, partly what delegation relieves. Not anxious about food safety or labels."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.45 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: no direct study found linking N to AI-shopping delegation"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015 doi:10.1016/j.appet.2014.10.003 links N to emotional/external eating (craving-led meal-deal picks)",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    }
+   ],
+   "effect": "N → small push toward delegation to avoid choice effort; little effect on label scrutiny",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Not named by the agent at all: thin structured data (missing price, ...",
+   "value": "Not named by the agent at all: thin structured data (missing price, nutrition or pack size) means rejection by omission, the dominant way challengers lose this shopper",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 2"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026",
+     "citation": "Kantar 2026 https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Kantar 2026 https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026",
+     "url": null
+    },
+    {
+     "class": "web_other",
+     "method": "trade_press:'Kantar'(no figure)",
+     "citation": "Kantar 2026 https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026"
+    }
+   ],
+   "classes": [
+    "paper",
+    "web_other",
+    "staged_persona"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "web_other": 0.3333,
+    "staged_persona": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Over the budget ceiling given in the prompt (hard filter, no stretch ...",
+   "value": "Over the budget ceiling given in the prompt (hard filter, no stretch to £4.20 on a £4 cap)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "keep it under $150",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier BUDGET"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Visible 'Sponsored' tag on the search tile in the retailer app (Stage ...",
+   "value": "Visible 'Sponsored' tag on the search tile in the retailer app (Stage 2) and on agent surfaces that pass it through: odds x~0.8",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ln69mo",
+     "thread_id": "1ln69mo",
+     "subreddit": "unitedkingdom",
+     "theme": "say_do_healthy",
+     "score": 3,
+     "verbatim": "Tesco have sold off the top of their search results to sponsored listings so it's junk food even when you search for healthy items. Fucking ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/abs/2508.02630",
+     "citation": "ACES 10%->8% https://arxiv.org/abs/2508.02630"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Item the agent names but Jordan cannot find in Tesco app search ...",
+   "value": "Item the agent names but Jordan cannot find in Tesco app search (US-centric or hallucinated product): line silently resolved to whatever search returns first",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.unrealistic_claims ('can hallucinate products or out-of-date prices')"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1hyqe97",
+     "thread_id": "1hyqe97",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "The prices are way off.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Obviously absurd basket (e.g. '70 hotdogs', 'ice cream for breakfast and dinner') ...",
+   "value": "Obviously absurd basket (e.g. '70 hotdogs', 'ice cream for breakfast and dinner') triggers the one sanity-check edit",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1hyqe97",
+     "thread_id": "1hyqe97",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "I genuinely use it to meal plan and then make a shopping list. It knows my families preferences and I've told it the order of ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1j9pozm",
+     "thread_id": "1j9pozm",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 13,
+     "verbatim": "Told me to eat ice cream for breakfast and dinner.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Bad texture or sweetener aftertaste on first try: one strike and Jordan ...",
+   "value": "Bad texture or sweetener aftertaste on first try: one strike and Jordan re-prompts 'not that one'",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) dossier.rejection_triggers"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Named first by ChatGPT, or badged 'top pick' / 'best for' (endorsement ...",
+   "value": "Named first by ChatGPT, or badged 'top pick' / 'best for' (endorsement lifts selection from ~10% to 24-43%)",
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/abs/2508.02630",
+     "citation": "ACES, 'What Is Your AI Agent Buying?' https://arxiv.org/abs/2508.02630"
+    }
+   ],
+   "classes": [
+    "paper"
+   ],
+   "class_share": {
+    "paper": 1.0
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "High rating plus high review count in the feed the agent reads ...",
+   "value": "High rating plus high review count in the feed the agent reads (a +0.075-star edge flips 50% of choices)",
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2606.17443v1",
+     "citation": "Incumbent Advantage https://arxiv.org/html/2606.17443v1"
+    }
+   ],
+   "classes": [
+    "paper"
+   ],
+   "class_share": {
+    "paper": 1.0
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Already in Tesco Favourites / 'Buy it again', so it ranks first ...",
+   "value": "Already in Tesco Favourites / 'Buy it again', so it ranks first when Jordan types the generic line into app search",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections ('Credit week-2+ repeats to Favourites lock-in, not ChatGPT')"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "A true, specific, verifiable claim the agent can quote back ('only brand ...",
+   "value": "A true, specific, verifiable claim the agent can quote back ('only brand that submits to yearly purity tests')",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 4,
+     "verbatim": "I once took a picture of the olive oil aisle at Sam's and asked ChatGPT to select the best oil for me. It picked the ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Seen in a TikTok/creator 'what I eat' video and then named in ...",
+   "value": "Seen in a TikTok/creator 'what I eat' video and then named in the prompt",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1vobhlt",
+     "thread_id": "1vobhlt",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "Told them to track my calories, budget, and to mirror trendy meals I've been seeing on social media. It got everything in the cart, and ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) trust_signals"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "Weekly: one loose prompt (budget + 'healthy' + 'high protein'), accepts the ...",
+   "value": "Weekly: one loose prompt (budget + 'healthy' + 'high protein'), accepts the list, edits 1-3 lines, checks out. About 5-10 minutes of human effort",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 15,
+     "verbatim": "I had to swap out a couple of items at the end before checking out but other than that, it did a great job and ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "Resolves generic list lines ('protein yoghurt', 'oat milk') by typing them into ...",
+   "value": "Resolves generic list lines ('protein yoghurt', 'oat milk') by typing them into the retailer app and taking the first sensible tile",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections Stage 2"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1hyqe97",
+     "thread_id": "1hyqe97",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "You do need to check it though",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "Repeats drift into Favourites/'Buy it again' after week 1: re-asking ChatGPT every ...",
+   "value": "Repeats drift into Favourites/'Buy it again' after week 1: re-asking ChatGPT every week fades",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "I just reorder much of the same stuff every week",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "Lunch is not delegated: same Tesco Express meal-deal combo most office days, ...",
+   "value": "Lunch is not delegated: same Tesco Express meal-deal combo most office days, grabbed in about 4 s",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 104,
+     "verbatim": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan) verdict.sim_parameters seconds_at_shelf=4"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.9",
+   "value": 0.9,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: blend of the agent arm (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters p_notice_eye_level=0.97: the agent reads every feed row) and Jordan's Stage-2 app search, where the top tile is almost always seen. Rounded down to 0.9 for lines Jordan deletes without resolving"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: blend of the agent arm (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters p_notice_eye_level=0.97: the agent reads every feed row) and Jordan's Stage-2 app search, where the top tile is almost always seen. Rounded down to 0.9 for lines Jordan deletes without resolving"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: the agent sees low-ranked items (Agent-GPT 0.9"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/abs/2608.22697",
+     "citation": "agents' position effect is 4-10x weaker than humans', Agents vs humans, 5,000 sessions https://arxiv.org/abs/2608.22697) but Jordan resolves SKUs by taking the first sensible tile, so low-ranked items are seen only when the agent names them. 0.35 sits between Jordan in-store ..."
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: between a cold agent (Agent-GPT 0.08) and Jordan in-store (0.8). Week-2+ repeats are credited to Favourites/'Buy it again' (data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: between a cold agent (Agent-GPT 0.08) and Jordan in-store (0.8). Week-2+ repeats are credited to Favourites/'Buy it again' (data/personas/staged_personas_v1.json[1] (Jordan) verdict.corrections"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "I just reorder much of the same stuff every week",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ui9o6z",
+     "thread_id": "1ui9o6z",
+     "subreddit": "MiddleClassFinance",
+     "theme": "buy_it_again_repeat",
+     "score": 0,
+     "verbatim": "I started plugging my groceries list into chat gpt and asking for price comparisons between each local grocery store.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: budget acts as a hard cap filter (Agent-GPT 0.35, Jordan 0.45) plus explicit price-comparison prompts (https://www.reddit.com/comments/1ui9o6z)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "nudged to 0.5"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.2",
+   "value": 0.2,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2606.17443v1",
+     "citation": "Jordan verdict value 0.2 (data/personas/staged_personas_v1.json[1] (Jordan) verdict.sim_parameters) and Agent-GPT 0.4 (data/personas/staged_personas_v1.json[10] (Agent-GPT)), pulled down by incumbent advantage at parity (Incumbent Advantage https://arxiv.org/html/2606.17443v1)"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Jordan verdict value 0.2 (data/personas/staged_personas_v1.json[1] (Jordan) verdict.sim_parameters) and Agent-GPT 0.4 (data/personas/staged_personas_v1.json[10] (Agent-GPT)), pulled down by incumbent advantage at parity (Incumbent Advantage https://arxiv.org/html/2606.17443v1)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "a challenger reaches Jordan only if named"
+    }
+   ],
+   "classes": [
+    "paper",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.15",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Agent-GPT verdict 0.15 (treats claims as evidence, occasional UPF caveat). Jordan himself 0.25 but never reads the claim, so the agent's value dominates (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters)"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1j9pozm",
+     "thread_id": "1j9pozm",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 231,
+     "score_is": "post_score(thread)",
+     "thread_title": "Grocery shopping hack",
+     "verbatim": "it just returned generic grocery list",
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only; quote not located)",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "The agent reads fields (Agent-GPT 0.95) but Stage 1 ChatGPT often outputs generic lines without live feed data ('it just returned generic grocery list' https://www.reddit.com/comments/1j9pozm). Jordan himself 0.08. Effective blend 0.85 = assumption"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 2",
+   "value": 2,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 15,
+     "verbatim": "saved me about 20 minutes",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Human seconds per list line in the app: assumption from 'saved me about 20 minutes' and '5 minutes on my phone ... reorder much of the same stuff' (https://www.reddit.com/comments/1m9u7e6) over ~15-25 lines, about 2 s per line"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.2",
+   "value": 0.2,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Agent surfaces the meal deal in about 10-20% of chat-mode runs (data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "0.2 for the delegated channel. In-store lunch uses 0.88 (sim_params_instore)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "I did the same. I had to swap out a couple of items at the end before checking out but other than that, it did a great job and saved me about 20 minutes which I used to doom scroll ...",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "I didn't tell it what I wanted specifically but just told it that I wanted some dinner and lunch and snacks for the weekend and it worked out the rest.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "Told them to track my calories, budget, and to mirror trendy meals I've been seeing on social media. It got everything in the cart, and confirmed with me before ordering.",
+   "url": "https://www.reddit.com/comments/1vobhlt"
+  },
+  {
+   "quote": "I genuinely use it to meal plan and then make a shopping list. It knows my families preferences and I've told it the order of aisle at my supermarket so it puts everything in headings. You do need to check ...",
+   "url": "https://www.reddit.com/comments/1hyqe97"
+  },
+  {
+   "quote": "I started plugging my groceries list into chat gpt and asking for price comparisons between each local grocery store.",
+   "url": "https://www.reddit.com/comments/1ui9o6z"
+  },
+  {
+   "quote": "Advertisers and Marketers salivating at the idea of getting ChatGPT to purchase certain brands over others. What a shitshow.",
+   "url": "https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "quote": "Tesco have sold off the top of their search results to 'sponsored' listings so it's junk food even when you search for healthy items. Fucking grim.",
+   "url": "https://www.reddit.com/comments/1ln69mo"
+  }
+ ],
+ "built_from": null,
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 23.7,
+   "reddit_inferred": 0.0,
+   "paper": 14.3,
+   "off_field": 0.7,
+   "sales_data": 0.0,
+   "staged_persona": 28.0,
+   "web_other": 1.3,
+   "internal_research": 2.2,
+   "assumption": 29.8
+  },
+  "headline": {
+   "reddit": 23.7,
+   "paper": 14.3,
+   "off_field": 0.7,
+   "assumption": 29.8,
+   "other (sales, staged, web, internal)": 31.5
+  },
+  "n_fields": 45,
+  "fields_by_primary_class": {
+   "staged_persona": 8,
+   "reddit": 20,
+   "assumption": 4,
+   "paper": 10,
+   "off_field": 1,
+   "internal_research": 2
+  },
+  "pct_fields_with_any": {
+   "reddit": 44.4,
+   "paper": 28.9,
+   "off_field": 2.2,
+   "staged_persona": 55.6,
+   "web_other": 4.4,
+   "internal_research": 4.4,
+   "assumption": 57.8
+  },
+  "pct_fields_with_any_assumption": 57.8,
+  "lens_fields_measured_by_off_field": {
+   "n": 8,
+   "of": 8,
+   "note": "OFF defines WHAT a lens attribute measures on the product; it is not evidence for WHY the weight is what it is, so it is reported here and not counted in the mix unless the source text cites OFF"
+  }
+ }
+}
