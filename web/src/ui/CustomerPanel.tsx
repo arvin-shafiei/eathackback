@@ -3,6 +3,7 @@ import type { Agent, Planogram, Product, StoreConfig } from '../types';
 import { SIM_SERVER, STORE_VARIANT } from '../data';
 import { catColor, prodLabel } from '../theme';
 import './customer.css';
+import { TrolleyImport } from './TrolleyPanel';
 
 /* ---- shapes returned by sim/customer.py (POST /api/customer/profile | route) */
 interface Guess {
@@ -40,6 +41,8 @@ export interface CustomerPanelProps {
   onClose: () => void;
   /** highlight these slots (route order) in the 3D store */
   onShowRoute?: (slots: string[]) => void;
+  /** run whose smart-trolley sessions 'import from smart trolley' reads (default: newest run on the sim server) */
+  runId?: string;
 }
 
 async function post<T>(path: string, body: unknown): Promise<T> {
@@ -64,7 +67,7 @@ const pct = (x: number) => `${Math.round(x * 100)}%`;
 const words = (a: string) => a.replace(/_/g, ' ');
 const taken = (a: Agent) => [...new Set(a.events.filter((e) => e.decision === 'pick').map((e) => e.product))];
 
-export function CustomerPanel({ planogram, products, runAgents, onClose, onShowRoute }: CustomerPanelProps) {
+export function CustomerPanel({ planogram, products, runAgents, onClose, onShowRoute, runId }: CustomerPanelProps) {
   const [basket, setBasket] = useState<string[]>([]);
   const [visits, setVisits] = useState<string[][]>([]);
   const [q, setQ] = useState('');
@@ -74,6 +77,7 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
   const [busy, setBusy] = useState<'' | 'profile' | 'route' | 'save'>('');
   const [err, setErr] = useState('');
   const [saved, setSaved] = useState('');
+  const [trolley, setTrolley] = useState(''); // provenance line when the profile came from smart-trolley sessions
 
   const onShelf = useMemo(() => new Set(Object.values(planogram).flatMap((s) => s.products)), [planogram]);
   const hits = useMemo(() => {
@@ -84,7 +88,7 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
   }, [q, products, onShelf, basket]);
   const shoppers = useMemo(() => (runAgents ?? []).filter((a) => a.kind !== 'ai_agent' && taken(a).length > 0), [runAgents]);
 
-  const reset = () => { setProf(null); setCard(null); setSaved(''); };
+  const reset = () => { setProf(null); setCard(null); setSaved(''); setTrolley(''); };
   const add = (c: string) => { setBasket((b) => (b.includes(c) ? b : [...b, c])); setQ(''); reset(); };
   const pickAgent = (id: string) => {
     const a = shoppers.find((x) => x.agent_id === id);
@@ -113,6 +117,17 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
       setErr(e instanceof TypeError ? "can't reach the sim server. start it with python3 sim/server.py" : String((e as Error).message));
     } finally { setBusy(''); }
   };
+  // 'import from smart trolley': the profile is built server-side from the loyalty id's trolley sessions, then the
+  // usual next-visit flow continues
+  const fromTrolley = async (p: CustomerProfile) => {
+    const pv = p.provenance as { source: string; link: string; simulated: string; from_trolley_signals: { put_backs: unknown[] } } | undefined;
+    setBasket(p.basket); setVisits(p.visits.slice(0, -1)); setCard(null); setSaved(''); setErr('');
+    setTrolley(pv ? `${pv.source}: ${pv.link}. ${pv.from_trolley_signals.put_backs.length} put-backs seen by the trolley (EPOS never sees these). ${pv.simulated}` : '');
+    setProf(p); firstPlan.current = planogram;
+    setBusy('route');
+    try { setCard(await post<RouteCard>('/api/customer/route', { profile: p, planogram })); }
+    catch (e) { setErr(String((e as Error).message)); } finally { setBusy(''); }
+  };
   // the shelves changed after the profile was built (a re-layout): re-plan against the new planogram, so items
   // show 'moved from aisle X to Y' (the profile remembers where each item was when it was bought)
   useEffect(() => {
@@ -136,7 +151,7 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
       </header>
       <div className="cu-board">
         <section className="cu-tile">
-          <h3>what they bought <span className="muted">{basket.length} item{basket.length === 1 ? '' : 's'}{visits.length ? ` · plus 1 earlier visit (another simulated shopper of the same type)` : ''}</span></h3>
+          <h3>what they bought <span className="muted">{basket.length} item{basket.length === 1 ? '' : 's'}{visits.length ? (trolley ? ` · plus ${visits.length} earlier trolley trip${visits.length === 1 ? '' : 's'}` : ` · plus 1 earlier visit (another simulated shopper of the same type)`) : ''}</span></h3>
           <input className="cu-search" placeholder="search by name or brand…" value={q} onChange={(e) => setQ(e.target.value)} />
           {hits.length > 0 && (
             <ul className="cu-hits">
@@ -154,6 +169,8 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
               </select>
             </label>
           )}
+          <TrolleyImport<CustomerProfile> runId={runId} planogram={planogram} declared={declared} onProfile={(p) => void fromTrolley(p)} onError={setErr} />
+          {trolley && <p className="cu-small muted">{trolley}</p>}
           {basket.length > 0 && (
             <div className="chips">
               {basket.map((c) => (

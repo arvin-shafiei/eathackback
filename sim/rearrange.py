@@ -85,15 +85,31 @@ def observed(run_ids) -> tuple[dict, dict]:
     return per, meta
 
 
+_SHOPPER_CACHE: dict = {}
+
+
 def _shoppers(category: str, agents: int, seed: int):
+    """Shopper groups for one category: (weight, on_mission, ocean, sim_params).
+    speed: the `agents` synthetic shoppers are grouped by persona and evaluated at the group's MEAN OCEAN with the
+    group's summed weight (assumption: the per-shopper OCEAN jitter is sd 0.08, so p_notice at the mean is within a
+    fraction of a point of the mean p_notice; this makes the superstore plan ~25x faster). Cached per (category, n, seed)."""
+    key = (category, int(agents), seed)
+    if key in _SHOPPER_CACHE:
+        return _SHOPPER_CACHE[key]
     personas, _ = simrun.load_personas()
     browse_p = notice.coefficients()["browse_prob"]["value"]
-    out = []
+    groups = {}
     for a in simrun.spawn_agents(personas, int(agents), [simrun.DEFAULT_MODEL], seed):
         per = a["persona"]
         mcats = per.get("mission_categories") or simrun.MISSION_CATEGORIES.get(per.get("mission", "weekly_shop"), [])
         on = category in mcats
-        out.append((1.0 if on else browse_p, on, a["ocean"], per.get("sim_parameters", {}) or {}))
+        g = groups.setdefault(per["id"], {"w": 0.0, "n": 0, "on": on, "ocean": {}, "sp": per.get("sim_parameters", {}) or {}})
+        g["w"] += 1.0 if on else browse_p
+        g["n"] += 1
+        for t, v in (a["ocean"] or {}).items():
+            g["ocean"][t] = g["ocean"].get(t, 0.0) + float(v)
+    out = [(g["w"], g["on"], {t: v / g["n"] for t, v in g["ocean"].items()}, g["sp"]) for g in groups.values()]
+    _SHOPPER_CACHE[key] = out
     return out
 
 
