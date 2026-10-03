@@ -1,0 +1,1475 @@
+{
+ "persona_id": "p_novelty_seeker_tiktok",
+ "name": "Maya",
+ "archetype": "novelty_seeker_tiktok",
+ "kind": "lens",
+ "source_file": "data/personas/lens/novelty_seeker_tiktok.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 8,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "You see how long that Dubai chocolate trend lasted? Very few people wanted to spend the ridiculous amount they charged on chocolate so it died ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322",
+     "citation": "assumption: discretionary 'treat/try' spend per top-up trip for a 20-something renter, about £6-10. No measured sample. The price anchor is the Lidl Dubai-style bar at £3.99 (https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322) against Lindt at £10, where the hype 'died a death' on price (https://www.reddit.com/comments/1tbf6zw)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: discretionary 'treat/try' spend per top-up trip for a 20-something renter, about £6-10. No measured sample. The price anchor is the Lidl Dubai-style bar at £3.99 (https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322) against Lindt at £10, where the hype 'died a death' on price (https://www.reddit.com/comments/1tbf6zw)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m43ahw",
+     "thread_id": "1m43ahw",
+     "subreddit": "budget",
+     "theme": "impulse_instore_vs_online",
+     "score": 4,
+     "verbatim": "About every three to six months I go in person to see if there's any new things I may not be aware of, try them ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1616,
+     "thread_title": "You’ve figured out the supermarket. You know exactly where everything is, you can get in and out in 5 to 10 minutes. But then the supermarket gets bored of that layout and change it entirely. Now you’re walking around looking for the salt.",
+     "verbatim": "About every three to six months I go in person to see if there's any new things I may not be aware of, try them ...",
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only; quote not located)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "treat",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/novelty_seeker_tiktok.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.challenger_role",
+   "kind": "lens_weight",
+   "label": "lens: challenger_role (w=0.24)",
+   "value": 0.24,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.thegrocer.co.uk/news/lidl-sells-72-bars-of-dubai-style-chocolate-a-minute-on-tiktok-shop/702452.article",
+     "citation": "Van Trijp & Steenkamp 1992, European Review of Agricultural Economics 19(2):181-195 (variety-seeking tendency in food). Lidl own-label Dubai bar sold 72 a minute on TikTok Shop https://www.thegrocer.co.uk/news/lidl-sells-72-bars-of-dubai-style-chocolate-a-minute-on-tiktok-shop/702452.article"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Van Trijp & Steenkamp 1992, European Review of Agricultural Economics 19(2):181-195 (variety-seeking tendency in food). Lidl own-label Dubai bar sold 72 a minute on TikTok Shop https://www.thegrocer.co.uk/news/lidl-sells-72-bars-of-dubai-style-chocolate-a-minute-on-tiktok-shop/702452.article",
+     "url": null
+    }
+   ],
+   "measured_by_off_field": "catalog.role (challenger|incumbent|own_label)",
+   "direction": "challenger > own_label > incumbent",
+   "why": "Unfamiliarity is the reward: an incumbent she already knows offers nothing new. Own-label 'dupes' of a viral item still count as the trend, as with Lidl's Dubai bar.",
+   "classes": [
+    "paper",
+    "web_other"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.novelty_claim_in_pack_copy",
+   "kind": "lens_weight",
+   "label": "lens: novelty_claim_in_pack_copy (w=0.22)",
+   "value": 0.22,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1e8k6o1",
+     "thread_id": "1e8k6o1",
+     "subreddit": "AskUK",
+     "theme": "delisted",
+     "score": 1,
+     "verbatim": "Also Magnum did a limited edition Champagne flavour, which was amazing.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 6,
+     "verbatim": "I was curious as it was sooo orange",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "catalog.pack_copy (regex: new|limited edition|flavour|dubai|pistachio|mochi|'as seen')",
+   "direction": "higher_better",
+   "why": "'New' or limited-edition flavour copy is the thing she notices first. It is also what she remembers fondly when it disappears.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_gbp",
+   "kind": "lens_weight",
+   "label": "lens: price_gbp (w=0.18)",
+   "value": 0.18,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "Very few people wanted to spend the ridiculous amount they charged on chocolate so it died a death within 6 months.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "Lidl Dubai bar £3.99 vs Lindt £10 (research/02-issue-discovery.md). Ceiling = assumption"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Lidl Dubai bar £3.99 vs Lindt £10 (research/02-issue-discovery.md). Ceiling = assumption"
+    }
+   ],
+   "measured_by_off_field": "catalog.price_gbp (absolute shelf price, not per 100g)",
+   "direction": "lower_better (soft ceiling ≈ £4 for a trial)",
+   "why": "She trials on headline price, not unit price. Under about £4 is an easy 'why not', and £10 kills the hype.",
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.trend_ingredient",
+   "kind": "lens_weight",
+   "label": "lens: trend_ingredient (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "The dubai pistachio stuff on absolutely everything",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "ingredient list per Open Food Facts field ingredients_text. Ingredient list = assumption, drawn from the 2025 trends named in research/02-issue-discovery.md"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "ingredient list per Open Food Facts field ingredients_text. Ingredient list = assumption, drawn from the 2025 trends named in research/02-issue-discovery.md"
+    }
+   ],
+   "measured_by_off_field": "ingredients_text (contains pistachio|matcha|gochujang|ube|kimchi|mochi|tahini)",
+   "direction": "higher_better",
+   "why": "Trend formats travel by ingredient name on TikTok, for example 'Dubai pistachio'. Matching one is a recognition hit.",
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.proteins_100g",
+   "kind": "lens_weight",
+   "label": "lens: proteins_100g (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "all these protein things seems to be trending with the younger generation via tiktok ect..",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "proteins_100g",
+   "direction": "higher_better",
+   "why": "Protein-everything is a live TikTok trend, so a big protein number reads as 'the new thing'. It works as a trend cue, not as nutrition maths.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.additives_n",
+   "kind": "lens_weight",
+   "label": "lens: additives_n (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "'I looked on the ingredients and there was vegetable oil… in a drink"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "additives_n",
+   "direction": "lower_better (weak, only for odd-sounding ingredients)",
+   "why": "She rarely reads labels, but a weird ingredient spotted on a quick flip can stop the trial.",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.sweeteners",
+   "kind": "lens_weight",
+   "label": "lens: sweeteners (w=0.06)",
+   "value": 0.06,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "I had protein water... I had crazy diarrhoea after that... I just won't have protein water again",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "'I had protein water... I had crazy diarrhoea after that... I just won't have protein water again' https://www.reddit.com/comments/1wqczct. Mapping to sweeteners = assumption"
+    }
+   ],
+   "measured_by_off_field": "sweeteners (count, OFF)",
+   "direction": "lower_better",
+   "why": "A weak penalty. Failed trials of protein or functional drinks are remembered by taste and side effects, so it lowers repeat more than first trial.",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.82",
+   "value": 0.82,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Seeks out unfamiliar flavours and formats. Food neophobia is low and the 'approach' tendency is high."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/O.json archetype prior: novelty_seeker_tiktok +1.0 (neophilia; Knaapila 2011 r=-.23 neophobia with O)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.82 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=0.35)",
+   "value": 0.35,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (n=716): the food-neophobia 'approach' factor is positively related to Openness. Hirschman 1980, J. Consumer Research 7(3):283-295, doi:10.1086/208816: novelty seeking drives consumer innovativeness. Verbatim: 'I want to say I won't let ...",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Nezlek & Forestell 2019, Food Quality and Preference 73:210-214, doi:10.1016/j.foodqual.2018.11.007 (n=716): the food-neophobia 'approach' factor is positively related to Openness. Hirschman 1980, J. Consumer Research 7(3):283-295, doi:10.1086/208816: novelty seeking drives consumer innovativeness. Verbatim: 'I want to say I won't let ..."
+    }
+   ],
+   "effect": "high O → +p_notice for unfamiliar/challenger brands and +trial probability once noticed",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Buys on impulse and almost never reads the back of pack. The front, the colour and 'I saw this' do the work."
+    },
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: novelty_seeker_tiktok -0.6 (impulse buying, C1: Portuguese r=-.18 C vs impulsive buying, and the cognitive 'no planning' facet in Verplanken & Herabadi 2001)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.35 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=-0.25)",
+   "value": -0.25,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Verplanken & Herabadi 2001, European Journal of Personality 15(S1):S71-S83, doi:10.1002/per.423: impulse-buying tendency correlates negatively with Conscientiousness. coef = assumption",
+     "url": "https://doi.org/10.1002/per.423:"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Verplanken & Herabadi 2001, European Journal of Personality 15(S1):S71-S83, doi:10.1002/per.423: impulse-buying tendency correlates negatively with Conscientiousness. coef = assumption"
+    }
+   ],
+   "effect": "low C → lower reads_structured_data and fewer nutrition-panel fixations. Impulse trial is not filtered by deliberation",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Social, posts and shares finds. Trying the thing is partly about having something to talk about."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.7 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.3)",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article.",
+     "citation": "Verplanken & Herabadi 2001 (doi:10.1002/per.423): impulse-buying tendency correlates positively with Extraversion. Little Moons #LittleMoons hashtag → +700% Tesco sales https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. coef = assumption"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Verplanken & Herabadi 2001 (doi:10.1002/per.423): impulse-buying tendency correlates positively with Extraversion. Little Moons #LittleMoons hashtag → +700% Tesco sales https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. coef = assumption",
+     "url": "https://doi.org/10.1002/per.423"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Verplanken & Herabadi 2001 (doi:10.1002/per.423): impulse-buying tendency correlates positively with Extraversion. Little Moons #LittleMoons hashtag → +700% Tesco sales https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. coef = assumption"
+    }
+   ],
+   "effect": "high E → social proof (seen on TikTok, friends have it) acts as the main trust signal and replaces label reading",
+   "classes": [
+    "paper",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "About average. Not cynical about marketing, and gives a hyped product the benefit of the doubt once."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=-0.1)",
+   "value": -0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 0,
+     "verbatim": "it is the latest gimmick it seems driven by the TikTwat influencers",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: no direct Big Five study found for gimmick reactance. Contrast with the gimmick-reactant verbatim 'it is the latest gimmick it seems driven by the TikTwat influencers' https://www.reddit.com/comments/1oqtnv1, the opposite pole to this persona"
+    }
+   ],
+   "effect": "lower gimmick reactance than the sceptic personas, so new-flavour and protein claims are not punished on sight",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Average. Some FOMO about missing a drop, plus regret after a bad trial, but neither dominates."
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.5 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 11,
+     "verbatim": "I fell for the Starbucks protein cold foam. Wowza giant waste of money and calories. Never again!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://kadence.com/en-us/knowledge/tiktok-made-me-buy-it-but-did-i-keep-it/.",
+     "citation": "Coresight 2023 via Kadence: '35% of Gen Z consumers regretted at least one purchase they made via TikTok or Instagram... because the product didn't live up to the hype' https://kadence.com/en-us/knowledge/tiktok-made-me-buy-it-but-did-i-keep-it/. Verbatim: 'I fell for the Starbucks protein cold foam. Wowza ..."
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Coresight 2023 via Kadence: '35% of Gen Z consumers regretted at least one purchase they made via TikTok or Instagram... because the product didn't live up to the hype' https://kadence.com/en-us/knowledge/tiktok-made-me-buy-it-but-did-i-keep-it/. Verbatim: 'I fell for the Starbucks protein cold foam. Wowza ...",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Coresight 2023 via Kadence: '35% of Gen Z consumers regretted at least one purchase they made via TikTok or Instagram... because the product didn't live up to the hype' https://kadence.com/en-us/knowledge/tiktok-made-me-buy-it-but-did-i-keep-it/. Verbatim: 'I fell for the Starbucks protein cold foam. Wowza ..."
+    }
+   ],
+   "effect": "after a bad trial, N amplifies the 'never again' memory, which drives a fast exit after one purchase",
+   "classes": [
+    "reddit",
+    "paper",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "web_other": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Incumbent she already knows, with no new flavour or format (nothing to ...",
+   "value": "Incumbent she already knows, with no new flavour or format (nothing to try)",
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Variety-seeking construct, Van Trijp & Steenkamp 1992 ERAE 19(2):181-195. Weight = assumption",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Variety-seeking construct, Van Trijp & Steenkamp 1992 ERAE 19(2):181-195. Weight = assumption"
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Trial price above about £4-5 for a single unit/bar",
+   "value": "Trial price above about £4-5 for a single unit/bar",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "ridiculous amount they charged... died a death within 6 months",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "A creator she follows said it tastes bad (negative TikTok review overrides ...",
+   "value": "A creator she follows said it tastes bad (negative TikTok review overrides the hype)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing like orange chicken and both flavours were vile",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Repeat purchase after a disappointing first trial (one-and-done)",
+   "value": "Repeat purchase after a disappointing first trial (one-and-done)",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.thegrocer.co.uk/analysis-and-features/whats-gone-wrong-for-prime-and-what-next-for-the-viral-soft-drinks-sensation/690067.article",
+     "citation": "Prime: 'only 12% of buyers repurchased' (research/02-issue-discovery.md, The Grocer https://www.thegrocer.co.uk/analysis-and-features/whats-gone-wrong-for-prime-and-what-next-for-the-viral-soft-drinks-sensation/690067.article)"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'The Grocer'",
+     "citation": "Prime: 'only 12% of buyers repurchased' (research/02-issue-discovery.md, The Grocer https://www.thegrocer.co.uk/analysis-and-features/whats-gone-wrong-for-prime-and-what-next-for-the-viral-soft-drinks-sensation/690067.article)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "Prime: 'only 12% of buyers repurchased' (research/02-issue-discovery.md, The Grocer https://www.thegrocer.co.uk/analysis-and-features/whats-gone-wrong-for-prime-and-what-next-for-the-viral-soft-drinks-sensation/690067.article)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 11,
+     "verbatim": "Not gonna lie, I fell for the Starbucks protein cold foam. Wowza giant waste of money and calories. Never again!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "sales_data",
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "sales_data": 0.25,
+    "web_other": 0.25,
+    "internal_research": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Odd ingredient seen on a quick flip (e.g. oil in a drink)",
+   "value": "Odd ingredient seen on a quick flip (e.g. oil in a drink)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Recognition from TikTok: she has seen the pack in a creator's video ...",
+   "value": "Recognition from TikTok: she has seen the pack in a creator's video (memory-based, so it works in store without reviews)",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article.",
+     "citation": "#LittleMoons → +700% Tesco https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. Skeptic correction in data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict: review counts are not visible in store, so recognition must come from memory"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "#LittleMoons → +700% Tesco https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. Skeptic correction in data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict: review counts are not visible in store, so recognition must come from memory"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'Skeptic'",
+     "citation": "#LittleMoons → +700% Tesco https://www.thegrocer.co.uk/news/mochi-tiktok-craze-sees-little-moons-sales-rocket-700-at-tesco/652665.article. Skeptic correction in data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict: review counts are not visible in store, so recognition must come from memory"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "web_other": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "'New' / 'limited edition' flag and an unusual colour or flavour on ...",
+   "value": "'New' / 'limited edition' flag and an unusual colour or flavour on the front of pack",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1e8k6o1",
+     "thread_id": "1e8k6o1",
+     "subreddit": "AskUK",
+     "theme": "delisted",
+     "score": 1,
+     "verbatim": "Also Magnum did a limited edition Champagne flavour, which was amazing.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Scarcity: sold out elsewhere, or a per-customer limit",
+   "value": "Scarcity: sold out elsewhere, or a per-customer limit",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322",
+     "citation": "Waitrose two-per-customer limit on the Lindt Dubai bar https://www.esmmagazine.com/retail/lidl-brings-dubai-style-chocolate-to-uk-stores-following-tiktok-success-285322"
+    }
+   ],
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Inside a meal deal, which makes the trial feel free",
+   "value": "Inside a meal deal, which makes the trial feel free",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict missions: protein items bought 'because inside the deal it feels free'"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "Walks the whole top-up loop and scans eye-level and end-caps for anything ...",
+   "value": "Walks the whole top-up loop and scans eye-level and end-caps for anything she hasn't seen, instead of going straight to her items",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 144,
+     "verbatim": "you're more likely to impulse buy stuff you wouldn't see because you don't normally go down that aisle",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "Buys one unit to try and almost never a multipack on first ...",
+   "value": "Buys one unit to try and almost never a multipack on first purchase",
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "assumption: one-unit trial is consistent with low repeat (NIQ 2026: only 17% of UK launches combine trial with repeat, research/02-issue-discovery.md)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: one-unit trial is consistent with low repeat (NIQ 2026: only 17% of UK launches combine trial with repeat, research/02-issue-discovery.md)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "Rotates quickly. A find stays in the basket for a few weeks, ...",
+   "value": "Rotates quickly. A find stays in the basket for a few weeks, then the next trend displaces it",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "it died a death within 6 months",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'The Grocer'",
+     "citation": "Prime 12% repurchase (The Grocer)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "sales_data"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "sales_data": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "Keeps a small set of hero staples (the usual meal-deal main) even ...",
+   "value": "Keeps a small set of hero staples (the usual meal-deal main) even while trialling snacks and drinks",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict correction: 'Keep the default snack... D should win the slot on about 15-25% of visits, driven by... a recent TikTok exposure, not by a free-floating urge for novelty'"
+    }
+   ],
+   "classes": [
+    "staged_persona"
+   ],
+   "class_share": {
+    "staged_persona": 1.0
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.82",
+   "value": 0.82,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Starts from data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict.sim_parameters p_notice_eye_level=0.8 (skeptic-calibrated). +0.02 for high O, scanning for unfamiliar packs (Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007). The size of the bump = assumption",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Starts from data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict.sim_parameters p_notice_eye_level=0.8 (skeptic-calibrated). +0.02 for high O, scanning for unfamiliar packs (Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007). The size of the bump = assumption"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "Starts from data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict.sim_parameters p_notice_eye_level=0.8 (skeptic-calibrated). +0.02 for high O, scanning for unfamiliar packs (Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007). The size of the bump = assumption"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Starts from data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict.sim_parameters p_notice_eye_level=0.8 (skeptic-calibrated). +0.02 for high O, scanning for unfamiliar packs (Nezlek & Forestell 2019 doi:10.1016/j.foodqual.2018.11.007). The size of the bump = assumption"
+    }
+   ],
+   "classes": [
+    "paper",
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1616,
+     "thread_title": "You’ve figured out the supermarket. You know exactly where everything is, you can get in and out in 5 to 10 minutes. But then the supermarket gets bored of that layout and change it entirely. Now you’re walking around looking for the salt.",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Jordan staged value 0.07. Raised to 0.12 because she walks the whole loop and checks end-caps (https://www.reddit.com/comments/1uosc29), but kept low: she does not bend down unless primed by a video. Kept below Chandon 2009 top-vs-bottom deltas via research/04-3d-sim-evidence-and-tech.md. Value = ...",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "Jordan staged value 0.07. Raised to 0.12 because she walks the whole loop and checks end-caps (https://www.reddit.com/comments/1uosc29), but kept low: she does not bend down unless primed by a video. Kept below Chandon 2009 top-vs-bottom deltas via research/04-3d-sim-evidence-and-tech.md. Value = ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan staged value 0.07. Raised to 0.12 because she walks the whole loop and checks end-caps (https://www.reddit.com/comments/1uosc29), but kept low: she does not bend down unless primed by a video. Kept below Chandon 2009 top-vs-bottom deltas via research/04-3d-sim-evidence-and-tech.md. Value = ..."
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "died a death within 6 months",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Prime 12% repurchase). Not zero, because the meal-deal main stays habitual per the Jordan verdict. 0.3 = assumption"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Mid. Headline-price ceiling around £4 for a trial"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "You see how long that Dubai chocolate trend lasted? Very few people wanted to spend the ridiculous amount they charged on chocolate so it died ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "she is insensitive to unit price. Jordan staged 0.45 (+0.05 for the explicit hype-dies-on-price verbatim https://www.reddit.com/comments/1tbf6zw). Value = assumption"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "High relative to the panel (Jordan 0.2, Dev 0.15). High O (Nezlek & Forestell 2019) and variety seeking (Van Trijp & Steenkamp 1992). Capped at 0.6 because the skeptic correction says trial needs a TikTok exposure or promo trigger, not ...",
+     "url": null
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "High relative to the panel (Jordan 0.2, Dev 0.15). High O (Nezlek & Forestell 2019) and variety seeking (Van Trijp & Steenkamp 1992). Capped at 0.6 because the skeptic correction says trial needs a TikTok exposure or promo trigger, not ..."
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "High relative to the panel (Jordan 0.2, Dev 0.15). High O (Nezlek & Forestell 2019) and variety seeking (Van Trijp & Steenkamp 1992). Capped at 0.6 because the skeptic correction says trial needs a TikTok exposure or promo trigger, not ..."
+    }
+   ],
+   "classes": [
+    "paper",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.15",
+   "value": 0.15,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 11,
+     "verbatim": "I fell for the Starbucks protein cold foam",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 0,
+     "verbatim": "TikTwat influencers",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "she is the pole opposite the 'TikTwat influencers' reactant (https://www.reddit.com/comments/1oqtnv1). Jordan 0.25 → 0.15. Value = assumption"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.1",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Very low: front-of-pack only, with an occasional flip when something looks odd (https://www.reddit.com/comments/1wqczct). Low C → less deliberation (Verplanken & Herabadi 2001 doi:10.1002/per.423). Jordan 0.08 → 0.10. Value = assumption",
+     "url": "https://doi.org/10.1002/per.423"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Very low: front-of-pack only, with an occasional flip when something looks odd (https://www.reddit.com/comments/1wqczct). Low C → less deliberation (Verplanken & Herabadi 2001 doi:10.1002/per.423). Jordan 0.08 → 0.10. Value = assumption"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 7",
+   "value": 7,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Jordan staged 4 s (habitual). Novel-item evaluation takes longer, so 7 s is a blend of about 4 s for walk-past and habitual picks and about 10 s for a new-pack pick-up. Mix = assumption"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Moderate. The snack slot is used as a free trial (data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict mission 'inside the deal it feels free'), but the trend items she hunts (Dubai-style bars, mochi, limited-edition flavours) are mostly ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Moderate. The snack slot is used as a free trial (data/personas/staged_personas_v1.json[1] (Jordan, nearest staged persona: 'TikTok-influenced', 'Trend trial' mission) verdict mission 'inside the deal it feels free'), but the trend items she hunts (Dubai-style bars, mochi, limited-edition flavours) are mostly ..."
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "I want to say I won't let curiousity get the best of me again, but who am I kidding! I just won't have protein water again",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "I remember when that came out, and to be honest I was curious as it was sooo orange and I didn't understand what they were marketing it as. I looked on the ingredients and there was vegetable oil… in a ...",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "I thought this too but I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing like orange chicken and both flavours were vile",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "Not gonna lie, I fell for the Starbucks protein cold foam. Wowza giant waste of money and calories. Never again!",
+   "url": "https://www.reddit.com/comments/1sit7ev"
+  },
+  {
+   "quote": "About every three to six months I go in person to see if there's any new things I may not be aware of, try them out and decide if they should get added in to the regular rotation.",
+   "url": "https://www.reddit.com/comments/1m43ahw"
+  },
+  {
+   "quote": "Also Magnum did a limited edition Champagne flavour, which was amazing.",
+   "url": "https://www.reddit.com/comments/1e8k6o1"
+  },
+  {
+   "quote": "You see how long that Dubai chocolate trend lasted? Very few people wanted to spend the ridiculous amount they charged on chocolate so it died a death within 6 months.",
+   "url": "https://www.reddit.com/comments/1tbf6zw"
+  },
+  {
+   "quote": "all these protein things seems to be trending with the younger generation via tiktok ect..",
+   "url": "https://www.reddit.com/comments/191icpc"
+  }
+ ],
+ "built_from": null,
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 33.1,
+   "reddit_inferred": 0.0,
+   "paper": 8.5,
+   "off_field": 0.0,
+   "sales_data": 1.8,
+   "staged_persona": 8.1,
+   "web_other": 7.2,
+   "internal_research": 8.5,
+   "assumption": 32.8
+  },
+  "headline": {
+   "reddit": 33.1,
+   "paper": 8.5,
+   "off_field": 0.0,
+   "assumption": 32.8,
+   "other (sales, staged, web, internal)": 25.6
+  },
+  "n_fields": 42,
+  "fields_by_primary_class": {
+   "reddit": 23,
+   "assumption": 5,
+   "paper": 6,
+   "internal_research": 3,
+   "web_other": 2,
+   "staged_persona": 3
+  },
+  "pct_fields_with_any": {
+   "reddit": 54.8,
+   "paper": 23.8,
+   "sales_data": 4.8,
+   "staged_persona": 14.3,
+   "web_other": 16.7,
+   "internal_research": 23.8,
+   "assumption": 61.9
+  },
+  "pct_fields_with_any_assumption": 61.9
+ }
+}

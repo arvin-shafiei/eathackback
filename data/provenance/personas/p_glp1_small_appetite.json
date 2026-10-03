@@ -1,0 +1,1748 @@
+{
+ "persona_id": "p_glp1_small_appetite",
+ "name": "Sam",
+ "archetype": "glp1_small_appetite",
+ "kind": "lens",
+ "source_file": "data/personas/lens/glp1_small_appetite.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 6.0,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: Express lunchtime/afternoon top-up of 2-3 items"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article",
+     "citation": "household grocery spend down ~£418/yr on GLP-1 (Worldpanel by Numerator via https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article), so small baskets, not big ones"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Worldpanel'",
+     "citation": "household grocery spend down ~£418/yr on GLP-1 (Worldpanel by Numerator via https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article), so small baskets, not big ones"
+    }
+   ],
+   "classes": [
+    "sales_data",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "sales_data": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "sales_data"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no channel_source in data/personas/lens/glp1_small_appetite.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "top_up",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/glp1_small_appetite.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.sweeteners",
+   "kind": "lens_weight",
+   "label": "lens: sweeteners (w=0.22)",
+   "value": 0.22,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite",
+     "citation": "Mumsnet weight-loss-injections board: 'They all have sweeteners in them though, don't they?' https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 12,
+     "verbatim": "Sadly some of them aren't quark they just have added protein powder and sweeteners.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "sweeteners (count of en:e950/e951/e955/e960/e965 maltitol/e968 etc. in additives_tags)",
+   "direction": "lower_better",
+   "why": "The single strongest rejection reason for protein yoghurts/bars among jab users; also gut risk (polyols).",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.protein_density",
+   "kind": "lens_weight",
+   "label": "lens: protein_density (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wmfkpi",
+     "thread_id": "1wmfkpi",
+     "subreddit": "foodquestions",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "On a GLP, people eat significantly less-- as much as half as what they used to... need to prioritize getting all their protein in half ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "if its above 10 i put it back",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "protein priority in Mozaffarian et al. 2025 joint advisory (Am J Clin Nutr, PMID 40450457)",
+     "url": null
+    }
+   ],
+   "measured_by_off_field": "proteins_100g / energy-kcal_100g (pass if kcal ≤ 10 × protein g)",
+   "direction": "higher_better",
+   "why": "Eats about half as much, so every bite must carry protein; uses the 'kcal per g protein ≤10' rule, not the front claim.",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.fiber_100g",
+   "kind": "lens_weight",
+   "label": "lens: fiber_100g (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 37,
+     "verbatim": "Seriously would prefer the pivot to fiber... trying to do it on a calorie deficit is also a proper struggle",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 7,
+     "verbatim": "the fiber they put in soda isn't the same as eating fibrous foods",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://ocadoretail.com/media-centre/press-releases/functional-drinks-boom-as-gen-z-swaps-out-coffee-and-alcohol-for-healthier-alternatives/",
+     "citation": "Ocado fibre-rich meals +187% YoY https://ocadoretail.com/media-centre/press-releases/functional-drinks-boom-as-gen-z-swaps-out-coffee-and-alcohol-for-healthier-alternatives/"
+    }
+   ],
+   "measured_by_off_field": "fiber_100g",
+   "direction": "higher_better",
+   "why": "Quiet second goal: too little food to hit fibre naturally; fibre from the food itself (oats, pulses, seeds) preferred over fibre added to fizzy drinks.",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.sugars_100g",
+   "kind": "lens_weight",
+   "label": "lens: sugars_100g (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article",
+     "citation": "Worldpanel: '75% cut chocolate', '11% no longer enjoy usual favorites' https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Worldpanel'",
+     "citation": "Worldpanel: '75% cut chocolate', '11% no longer enjoy usual favorites' https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "half of them were like 300 calories with 15g of sugar",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "sugars_100g",
+   "direction": "lower_better",
+   "why": "Sweet tastes stopped appealing; chocolate and crisps left the basket. Rejects dessert/confectionery-flavoured 'protein' formats.",
+   "classes": [
+    "reddit",
+    "sales_data",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "sales_data": 0.3333,
+    "web_other": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.portion_size",
+   "kind": "lens_weight",
+   "label": "lens: portion_size (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 6,
+     "verbatim": "I didn't want to buy a big tub, just a nice single serving one. And I couldn't find one that didn't have added protein",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 33,
+     "verbatim": "The portion size is small, but for me it's the right size",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "serving_size / quantity (OFF) + pack_copy 'single serve'",
+   "direction": "smaller_better (target ≤150 kcal per pack)",
+   "why": "Share bags and big tubs mean waste; a small single-serve is 'the right size'. Shrinkflation is not a negative for this persona.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.nova",
+   "kind": "lens_weight",
+   "label": "lens: nova (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food for my protein intake",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Mumsnet'",
+     "citation": "Mumsnet jab users pick 'Lidl plain Greek (NOVA 1, 4% sugar)' (research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "Mumsnet jab users pick 'Lidl plain Greek (NOVA 1, 4% sugar)' (research/02-issue-discovery.md)"
+    }
+   ],
+   "measured_by_off_field": "nova_group",
+   "direction": "lower_better",
+   "why": "Whole-food default: eggs, plain Greek yoghurt, tinned fish, oats. Bars and shakes read as 'UPF crap'.",
+   "classes": [
+    "reddit",
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "web_other": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_per_100g_vs_regular",
+   "kind": "lens_weight",
+   "label": "lens: price_per_100g_vs_regular (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 15,
+     "verbatim": "advertising Protein Yogurt because it has 10g of protein per 100g, when normal Greek yogurt or Skyr has that anyway, you're paying for branding",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wmfkpi",
+     "thread_id": "1wmfkpi",
+     "subreddit": "foodquestions",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "You're paying the novelty tax",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "price_gbp / quantity (catalog price_gbp + OFF quantity), compared with the non-'protein' sibling SKU",
+   "direction": "lower_better",
+   "why": "Will pay for fit, but resents a premium for a protein label with a trivial uplift. Low weight: price is not the binding constraint (price_sensitivity 0.30).",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.ingredients_n",
+   "kind": "lens_weight",
+   "label": "lens: ingredients_n (w=0.06)",
+   "value": 0.06,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 2,
+     "verbatim": "The worst one I've seen is the egg pot in the tesco meal deal - egg protein pot. It's just 2 eggs.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: weight kept small because ingredients_n overlaps with nova"
+    }
+   ],
+   "measured_by_off_field": "ingredients_n",
+   "direction": "lower_better",
+   "why": "A short, recognisable list is the fastest way to confirm 'no powder, no sweetener'. The egg pot wins because there is nothing to check.",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens._weights",
+   "kind": "lens_weight",
+   "label": "lens weight magnitudes (rank/scale)",
+   "value": 1.0,
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "assumption: ordering follows staged_personas_v1.json Sam behavioural_drivers weights (sweetener/texture rejection 0.80, nutrient density 0.75, fibre 0.65, portion 0.60, whole-food 0.55), normalised to sum to 1 across OFF-observable fields",
+     "url": null,
+     "verified_in_corpus": false
+    },
+    {
+     "class": "off_field",
+     "method": "keyword:'OFF'",
+     "citation": "assumption: ordering follows staged_personas_v1.json Sam behavioural_drivers weights (sweetener/texture rejection 0.80, nutrient density 0.75, fibre 0.65, portion 0.60, whole-food 0.55), normalised to sum to 1 across OFF-observable fields"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: ordering follows staged_personas_v1.json Sam behavioural_drivers weights (sweetener/texture rejection 0.80, nutrient density 0.75, fibre 0.65, portion 0.60, whole-food 0.55), normalised to sum to 1 across OFF-observable fields"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: ordering follows staged_personas_v1.json Sam behavioural_drivers weights (sweetener/texture rejection 0.80, nutrient density 0.75, fibre 0.65, portion 0.60, whole-food 0.55), normalised to sum to 1 across OFF-observable fields"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "off_field",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "off_field": 0.25,
+    "staged_persona": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.45 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=-0.1)",
+   "value": -0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Food neophobia correlates negatively with Openness: Pliner & Hobden 1992, Appetite 19:105-120. Verbatim: 'Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food' https://www.reddit.com/comments/1tbf6zw",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small negative shift on p_notice for unfamiliar brands, consistent with trust_new_brand 0.25"
+    }
+   ],
+   "effect": "Middling openness: will try a new challenger once, but one bad (chalky/sweet) trial ends it. Mild food-neophobia lowers noticing of unfamiliar brands.",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.7 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.3)",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Conscientiousness predicts health-related behaviour (Bogg & Roberts 2004, Psychol Bull 130(6):887-919) and healthier food choice/eating style (Keller & Siegrist 2015, Appetite 84:128-138",
+     "url": null
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "now i just do the quick math of calories per gram of protein and if its above 10 i put it back",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Mõttus et al. 2012, Health Psychology 31(6):806-814). Verbatim: 'now i just do the quick math of calories per gram of protein and if its above 10 i put it back' https://www.reddit.com/comments/1sit7ev",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "assumption: maps onto reads_structured_data 0.45 vs human mean 0.18 (05-personas.md §4c)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: maps onto reads_structured_data 0.45 vs human mean 0.18 (05-personas.md §4c)"
+    }
+   ],
+   "effect": "Reads the back of the pack and does label maths (kcal per gram of protein) → more attention to sweeteners, fibre_100g, proteins_100g",
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.4",
+   "value": 0.4,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.4 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=-0.05)",
+   "value": -0.05,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: GLP-1 users report fewer cravings (54%) and reduced shopping drive"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article",
+     "citation": "Worldpanel via https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Worldpanel'",
+     "citation": "Worldpanel via https://www.conveniencestore.co.uk/news/weight-loss-drugs-revealed-to-have-wiped-170m-off-britains-grocery-bills/720055.article"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1iryyg2",
+     "thread_id": "1iryyg2",
+     "subreddit": "minimalism",
+     "theme": "online_favourites_lockin",
+     "score": 5,
+     "verbatim": "people who take GLP1 weight loss drugs report a decrease in the desire to shop online",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "impulse suppression comes mostly from the drug, not the trait"
+    }
+   ],
+   "effect": "Eats less socially since the jab; low reward from novelty/impulse treats → lower impulse pick probability",
+   "classes": [
+    "reddit",
+    "sales_data",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "sales_data": 0.25,
+    "web_other": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: average agreeableness"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 15,
+     "verbatim": "it's heavily pushed by the NHS and weight loss companies which provide GLP-1's",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: boosts trust_signal 'clinic/peer framing'"
+    }
+   ],
+   "effect": "Follows clinic/NHS advice ('prioritise protein') rather than gym-bro marketing; trusts peer tips from other jab users",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Neuroticism links to emotional eating (Keller & Siegrist 2015, Appetite 84:128-138)",
+     "url": null
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "I have to avoid everything that says \"added protein",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "GI side effects (nausea, bloating) are the most common GLP-1 adverse events (Mozaffarian et al. 2025 joint advisory, Am J Clin Nutr, PMID 40450457). Verbatim: 'I have to avoid everything that says \"added protein\" because I always end up a ...",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: raises rejection probability on gut-risk cues"
+    }
+   ],
+   "effect": "Weight/body worry and gut anxiety on 'bad jab days' → loss-averse about anything that might bloat (sweeteners, polyols, added protein powder, fizz)",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Any sweetener or polyol in ingredients (sucralose, acesulfame-K, aspartame, maltitol); polyol 'laxative ...",
+   "value": "Any sweetener or polyol in ingredients (sucralose, acesulfame-K, aspartame, maltitol); polyol 'laxative effects' warning",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite",
+     "citation": "https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 259,
+     "thread_title": "Sudden influx of \"High Protein\" products",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "off_check": "additives_tags contains en:e950|e951|e955|e965",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Confectionery/dessert-flavoured 'protein' format (cookie dough, salted caramel, chocolate)",
+   "value": "Confectionery/dessert-flavoured 'protein' format (cookie dough, salted caramel, chocolate)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q6qho0",
+     "thread_id": "1q6qho0",
+     "subreddit": "UKfood",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "I fell for a protein cookie once and it tasted like literal chalk",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "off_check": "pack_copy / product_name flavour words + sugars_100g",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "kcal more than 10x protein grams, or a 'protein' claim with a ...",
+   "value": "kcal more than 10x protein grams, or a 'protein' claim with a trivial uplift over the regular SKU next to it",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 231,
+     "verbatim": "Babybel Protein. They're 48 calories, with 5.2 grams of protein. Whereas Babybel Light is 5 grams of protein and 42 calories.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 226,
+     "verbatim": "a protein chicken sandwich in Asda... had less protein than the regular",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "off_check": "energy-kcal_100g > 10 × proteins_100g",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "'Added protein' powder/isolate (gas, bloating) or quark texture sold as yoghurt",
+   "value": "'Added protein' powder/isolate (gas, bloating) or quark texture sold as yoghurt",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "big sloppy farting mess",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Mumsnet'",
+     "citation": "Mumsnet 'actually quark rather than yoghurt and I am not keen on the texture' (URL above)"
+    }
+   ],
+   "off_check": "ingredients_text contains 'protein isolate|milk protein concentrate|quark'",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Carbonated drinks (fizz sits badly on GLP-1); residual 0.10-0.15 for a habitual ...",
+   "value": "Carbonated drinks (fizz sits badly on GLP-1); residual 0.10-0.15 for a habitual diet cola on non-jab days",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "skeptic calibration, staged_personas_v1.json Sam verdict.corrections"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "skeptic calibration, staged_personas_v1.json Sam verdict.corrections"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "GI tolerability focus in Mozaffarian et al. 2025 (PMID 40450457)",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: carbonation-specific discomfort is clinic folk guidance, not a trial finding"
+    }
+   ],
+   "off_check": "categories_tags contains en:carbonated-drinks",
+   "classes": [
+    "paper",
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Share-size packs or per-100g figures on odd pack sizes that hide per-portion ...",
+   "value": "Share-size packs or per-100g figures on odd pack sizes that hide per-portion values",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 6,
+     "verbatim": "I didn't want to buy a big tub",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "off_check": "quantity large / no serving_size",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Vague 'source of protein' claim",
+   "value": "Vague 'source of protein' claim",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 2,
+     "verbatim": "'Source of protein",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "off_check": "pack_copy contains 'source of protein'",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Protein and fibre printed per portion, honest small portion (≤150 kcal, ≥10g ...",
+   "value": "Protein and fibre printed per portion, honest small portion (≤150 kcal, ≥10g protein or ≥3g fibre)",
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "assumption: thresholds from the 'Appetite-Shift White-Space Finder' empty cell, research/02-issue-discovery.md L591"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: thresholds from the 'Appetite-Shift White-Space Finder' empty cell, research/02-issue-discovery.md L591"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "now i just do the quick math of calories per gram of protein and if its above 10 i put it back lol",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "'No sweeteners' / 'no added sugar' confirmed by a short ingredient list",
+   "value": "'No sweeteners' / 'no added sugar' confirmed by a short ingredient list",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite",
+     "citation": "https://www.mumsnet.com/talk/weight-loss-injections/5332138-does-anyone-else-love-protein-yogurts-which-is-your-favourite"
+    }
+   ],
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Naturally protein-rich whole food (eggs, plain Greek/skyr, chicken, tinned fish, beans)",
+   "value": "Naturally protein-rich whole food (eggs, plain Greek/skyr, chicken, tinned fish, beans)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q6qho0",
+     "thread_id": "1q6qho0",
+     "subreddit": "UKfood",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "As a bariatric surgery patient, we have to focus on protein same as GLP patients... I do try and get that from food not supplements",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Fibre from oats, seeds, pulses; live cultures/kefir",
+   "value": "Fibre from oats, seeds, pulses; live cultures/kefir",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "now i just do the quick math of calories per gram of protein and if its above 10 i put it back lol",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://ocadoretail.com/media-centre/press-releases/functional-drinks-boom-as-gen-z-swaps-out-coffee-and-alcohol-for-healthier-alternatives/",
+     "citation": "Ocado kefir +42% https://ocadoretail.com/media-centre/press-releases/functional-drinks-boom-as-gen-z-swaps-out-coffee-and-alcohol-for-healthier-alternatives/"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Peer recommendation from other jab users (Mumsnet board, GLP-1 subreddits)",
+   "value": "Peer recommendation from other jab users (Mumsnet board, GLP-1 subreddits)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 5,
+     "verbatim": "All the GLP1 subs constantly reinforce the need for protein. Never thought I'd be a person who drank protein shakes!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "Meal deal at Express but only eats half; snack slot moved from ...",
+   "value": "Meal deal at Express but only eats half; snack slot moved from crisps to the Egg Protein Pot; drink slot defaults to still water",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food for my protein intake",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 0,
+     "verbatim": "Meal deals are pointless when you don't consume liquid sugars or sweeteners",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "Mostly pre-attentive rejection: ~60% of rejections happen without picking the pack up; ...",
+   "value": "Mostly pre-attentive rejection: ~60% of rejections happen without picking the pack up; back-of-pack check in ~30-40% of encounters, 8-20 s",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "skeptic calibration, staged_personas_v1.json Sam verdict.corrections"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "skeptic calibration, staged_personas_v1.json Sam verdict.corrections"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "'people see high protein and call it a day' (protein_gimmick corpus L371)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "Pruned online favourites to whole foods; fewer impulse buys and less browsing",
+   "value": "Pruned online favourites to whole foods; fewer impulse buys and less browsing",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1iryyg2",
+     "thread_id": "1iryyg2",
+     "subreddit": "minimalism",
+     "theme": "online_favourites_lockin",
+     "score": 103,
+     "thread_title": "What has helped reduce the urge to shop online?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Worldpanel'",
+     "citation": "Worldpanel -£418/household (URL above)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "sales_data"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "sales_data": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "Still buys into the protein frame occasionally (protein yoghurt or shake as ...",
+   "value": "Still buys into the protein frame occasionally (protein yoghurt or shake as a top-up when the shortfall feels urgent), so protein SKUs keep a non-zero pick rate (~0.05-0.12)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q6qho0",
+     "thread_id": "1q6qho0",
+     "subreddit": "UKfood",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "I became one of those people who buy Greek yogurt, protein powder and protein bagels while I was on it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 5,
+     "verbatim": "As a vegetarian who's on Mounjaro it's fantastic for me",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "probabilities from staged_personas_v1.json Sam verdict.corrections"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam verdict.sim_parameters (skeptic-calibrated)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "staged_personas_v1.json Sam verdict.sim_parameters (skeptic-calibrated)"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Worldpanel'",
+     "citation": "below the human mean of 0.70 (05-personas.md §4c) because whole categories (crisps, chocolate, drinks) are no longer scanned. Worldpanel: 75% cut chocolate, 72% cut crisps"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "below the human mean of 0.70 (05-personas.md §4c) because whole categories (crisps, chocolate, drinks) are no longer scanned. Worldpanel: 75% cut chocolate, 72% cut crisps"
+    }
+   ],
+   "classes": [
+    "sales_data",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "sales_data": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "sales_data"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.1",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Wikipedia'",
+     "citation": "eye level vs bottom ~5.5x, matching the 'humans ~7.5x' pattern (05-personas.md §4c) and +39% sales eye vs floor (research/04-3d-sim-evidence-and-tech.md, Wikipedia Planogram)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'05-personas'",
+     "citation": "eye level vs bottom ~5.5x, matching the 'humans ~7.5x' pattern (05-personas.md §4c) and +39% sales eye vs floor (research/04-3d-sim-evidence-and-tech.md, Wikipedia Planogram)"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "web_other": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1iryyg2",
+     "thread_id": "1iryyg2",
+     "subreddit": "minimalism",
+     "theme": "online_favourites_lockin",
+     "score": 103,
+     "thread_title": "What has helped reduce the urge to shop online?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food for my protein intake",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wmfkpi",
+     "thread_id": "1wmfkpi",
+     "subreddit": "foodquestions",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "On a GLP, people eat significantly less-- as much as half as what they used to. The \"protein fad\" is aimed at those people, who ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.25",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "Tried a protein bar once, tasted like chalk",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "~60% of rejections are pre-attentive (verdict.corrections)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1wqczct",
+     "thread_id": "1wqczct",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 29,
+     "verbatim": "When you're on weight loss drugs like mounjaro everything you read is about eating enough protein or you will lose muscle mass and your hair ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "now i just do the quick math of calories per gram of protein and if its above 10 i put it back lol",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "well above the human mean of 0.18 (05-personas.md §4c) because of the ratio rule (https://www.reddit.com/comments/1sit7ev), but skeptic-capped because 'people see high protein and call it a day' (protein_gimmick corpus L371)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 12",
+   "value": 12,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam = 12 s (vs human mean 6.6)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "staged_personas_v1.json Sam = 12 s (vs human mean 6.6)"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "back-of-pack checks of 8-20 s in only 30-40% of encounters (verdict.corrections)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.75",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json Sam"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'05-personas'",
+     "citation": "the meal deal is the cheapest route to main plus egg pot even when half-eaten (05-personas.md journey stage 1"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 4,
+     "verbatim": "Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food for my protein intake",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "When you're on weight loss drugs like mounjaro everything you read is about eating enough protein or you will lose muscle mass and your hair will fall out.",
+   "url": "https://www.reddit.com/comments/1wqczct"
+  },
+  {
+   "quote": "I have to avoid everything that says \"added protein\" because I always end up a big sloppy farting mess for hours.",
+   "url": "https://www.reddit.com/comments/1oqtnv1"
+  },
+  {
+   "quote": "I didn't want to buy a big tub, just a nice single serving one. And I couldn't find one that didn't have 'added protein'",
+   "url": "https://www.reddit.com/comments/1oqtnv1"
+  },
+  {
+   "quote": "Seriously would prefer the pivot to fiber... trying to do it on a calorie deficit is also a proper struggle",
+   "url": "https://www.reddit.com/comments/1oqtnv1"
+  },
+  {
+   "quote": "now i just do the quick math of calories per gram of protein and if its above 10 i put it back lol",
+   "url": "https://www.reddit.com/comments/1sit7ev"
+  },
+  {
+   "quote": "On a GLP, people eat significantly less-- as much as half as what they used to. The \"protein fad\" is aimed at those people, who need to prioritize getting all their protein in half the calories",
+   "url": "https://www.reddit.com/comments/1wmfkpi"
+  },
+  {
+   "quote": "The portion size is small, but for me it's the right size. It's almost helpful so that I can enjoy the treat and keep it somewhat sensible at the same time.",
+   "url": "https://www.reddit.com/comments/1qgcwyr"
+  },
+  {
+   "quote": "Tried a protein bar once, tasted like chalk. I realised I'd rather just eat real food for my protein intake",
+   "url": "https://www.reddit.com/comments/1tbf6zw"
+  }
+ ],
+ "built_from": null,
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 40.3,
+   "reddit_inferred": 0.0,
+   "paper": 3.6,
+   "off_field": 0.5,
+   "sales_data": 3.7,
+   "staged_persona": 10.3,
+   "web_other": 10.8,
+   "internal_research": 6.7,
+   "assumption": 24.1
+  },
+  "headline": {
+   "reddit": 40.3,
+   "paper": 3.6,
+   "off_field": 0.5,
+   "assumption": 24.1,
+   "other (sales, staged, web, internal)": 31.5
+  },
+  "n_fields": 47,
+  "fields_by_primary_class": {
+   "sales_data": 2,
+   "assumption": 7,
+   "reddit": 33,
+   "paper": 1,
+   "web_other": 2,
+   "staged_persona": 2
+  },
+  "pct_fields_with_any": {
+   "reddit": 70.2,
+   "paper": 10.6,
+   "off_field": 2.1,
+   "sales_data": 10.6,
+   "staged_persona": 27.7,
+   "web_other": 23.4,
+   "internal_research": 21.3,
+   "assumption": 42.6
+  },
+  "pct_fields_with_any_assumption": 42.6
+ }
+}

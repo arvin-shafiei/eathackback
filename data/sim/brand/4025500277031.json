@@ -1,0 +1,1308 @@
+{
+ "code": "4025500277031",
+ "name": "Vanilla Chocolate Balls",
+ "brand": "müller corner",
+ "category": "yoghurt",
+ "role": "incumbent",
+ "price_gbp": 0.62,
+ "price_source": "https://www.trolley.co.uk/product/muller-corner-vanilla-yogurt-with-chocolate-balls/RWH321 (trolley.co.uk, fetched 2026-10-03)",
+ "off_url": "https://world.openfoodfacts.org/product/4025500277031",
+ "pack_copy": "Müller Corner · vanilla yogurt with chocolate balls · flip-the-corner treat pot",
+ "funnel": {
+  "shown": 271,
+  "looked": 174,
+  "picked_up": 45,
+  "put_back": 29,
+  "taken": 16,
+  "look": {
+   "k": 174,
+   "n": 271,
+   "rate": 0.6421,
+   "ci95": [
+    0.5834,
+    0.6968
+   ]
+  },
+  "pick_up": {
+   "k": 45,
+   "n": 174,
+   "rate": 0.2586,
+   "ci95": [
+    0.1993,
+    0.3284
+   ]
+  },
+  "keep": {
+   "k": 16,
+   "n": 45,
+   "rate": 0.3556,
+   "ci95": [
+    0.2322,
+    0.5016
+   ]
+  },
+  "take": {
+   "k": 16,
+   "n": 271,
+   "rate": 0.059,
+   "ci95": [
+    0.0367,
+    0.0937
+   ]
+  }
+ },
+ "category_funnel": {
+  "shown": 3252,
+  "looked": 1875,
+  "picked_up": 745,
+  "put_back": 292,
+  "taken": 453,
+  "look": {
+   "k": 1875,
+   "n": 3252,
+   "rate": 0.5766,
+   "ci95": [
+    0.5595,
+    0.5935
+   ]
+  },
+  "pick_up": {
+   "k": 745,
+   "n": 1875,
+   "rate": 0.3973,
+   "ci95": [
+    0.3754,
+    0.4197
+   ]
+  },
+  "keep": {
+   "k": 453,
+   "n": 745,
+   "rate": 0.6081,
+   "ci95": [
+    0.5725,
+    0.6425
+   ]
+  },
+  "take": {
+   "k": 453,
+   "n": 3252,
+   "rate": 0.1393,
+   "ci95": [
+    0.1278,
+    0.1516
+   ]
+  }
+ },
+ "n_products_in_category": 12,
+ "diagnosis": {
+  "stage": "keep",
+  "ratios_vs_category": {
+   "look": 1.114,
+   "pick_up": 0.651,
+   "keep": 0.585
+  },
+  "strength": "clear (product 95% CI upper bound below the category rate)",
+  "text": "loses people at PUT-BACK: label / price / a trigger kills it once they hold it.",
+  "next_test": "fix what the back of pack / price shows: see the put-off triggers below; test price (sim/optimise.py --price)",
+  "rule": "lowest product/category conversion ratio among stages with n >= 3 (assumption: MIN_N=3)"
+ },
+ "evidence": {
+  "look": {
+   "mean_p_notice": 0.6441,
+   "category_mean_p_notice": 0.5641,
+   "shelf_rows_seen": {
+    "eye": 271
+   },
+   "mean_facings": 1.0,
+   "mean_logit_terms": {
+    "alpha0": 0.9226,
+    "row": 0.0,
+    "facings": 0.0,
+    "centre": -0.288,
+    "mission": -0.0384,
+    "time": 0.0273,
+    "ocean": -0.0039
+   },
+   "source": "event.p_notice and notice_factors.logit_terms (sim/notice.py; coefficients + sources in sim/coefficients.json)"
+  },
+  "pick_up": {
+   "mean_jev_p_pick_up": 0.1879,
+   "category_mean_jev_p_pick_up": 0.2616,
+   "mean_jev_appeal_score_0_4": 1.056,
+   "category_mean_jev_appeal_score_0_4": 1.6987,
+   "feeling_of_those_who_walked_on": {
+    "dislikes": 57,
+    "would actively avoid": 43,
+    "indifferent": 16,
+    "mildly drawn": 13
+   },
+   "source": "event.p_pick_up (Jev Noul 'Does shopper pick up products[i] to look at it more closely?') and event.jev.appeal.score (Jev Score, 5 levels), sim/jev.py"
+  },
+  "put_back": {
+   "n_put_back": 29,
+   "mechanisms": {
+    "health_goal": 18,
+    "mission_fit": 6,
+    "trust": 2,
+    "price_anchor": 2,
+    "habit": 1
+   },
+   "top_triggers": [
+    {
+     "trigger": "allergens contains en:gluten, or wheat/barley/rye/spelt/malt in ingredients_text: instant put-back, no compensating score",
+     "n_events": 7,
+     "mean_jev_p": 0.979,
+     "personas": [
+      "p_allergen_coeliac"
+     ],
+     "source": "Coeliac UK labelling guidance https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/",
+     "verbatims": [
+      {
+       "quote": "If I am used to a product by a brand, I know the taste, texture, sometimes even the allergens in it ... If I ask my husband to buy the thing, and he comes home with another brand, it truly does add a 'task' while cooking ... or I don't pois",
+       "url": "https://www.reddit.com/comments/1essgh0",
+       "method": "persona verbatim with most word overlap (2 shared words)"
+      }
+     ]
+    },
+    {
+     "trigger": "allergens contains en:milk or en:eggs, or ingredients_text contains whey, gelatine, honey, carmine (e120) or shellac (e904): hard reject, regardless of other scores",
+     "n_events": 4,
+     "mean_jev_p": 0.98,
+     "personas": [
+      "p_vegan_ethical"
+     ],
+     "source": "https://www.reddit.com/comments/iz6kv ('most non-Heinz ketchup has milk in, as do lots of crisps'); https://www.reddit.com/comments/1tsbmt5",
+     "verbatims": [
+      {
+       "quote": "It's the more subtle substitutions that worry me -- e.g. most non-Heinz ketchup has milk in, as do lots of crisps and random things like that.",
+       "url": "https://www.reddit.com/comments/iz6kv",
+       "method": "persona verbatim from the trigger's cited thread"
+      }
+     ]
+    },
+    {
+     "trigger": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+     "n_events": 2,
+     "mean_jev_p": 0.64,
+     "personas": [
+      "p_upf_avoider_parent"
+     ],
+     "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+     "verbatims": [
+      {
+       "quote": "Rather than brands I'm trying to cut down on how much ultra-processed food I eat so it really depends which version is less processed. ... a lot of branded stuff tends to have filler ingredients to give a better texture (e.g emulsifiers)",
+       "url": "https://www.reddit.com/comments/1ow5fne",
+       "method": "persona verbatim from the trigger's cited thread"
+      }
+     ]
+    },
+    {
+     "trigger": "'protein' on the front, but less than 20% of energy from protein (fails the legal 'high protein' bar), e.g. a protein cereal bar with 5 g protein and 200 kcal",
+     "n_events": 2,
+     "mean_jev_p": 0.56,
+     "personas": [
+      "p_protein_gym"
+     ],
+     "source": "verbatim 'cereal bars that advertise high protein but have something like 5g of protein and 200kcal' https://www.reddit.com/comments/191icpc ; Regulation (EC) No 1924/2006 Annex (retained in UK law): 'HIGH PROTEIN' only if at least 20% of energy comes from protein; 'SOURCE OF PROTEIN' at least 12%. https://www.legislation.gov.uk/eur/2006/1924/annex",
+     "verbatims": [
+      {
+       "quote": "Most serious gym goers know what a good protein to calorie ratio is so they won't be fooled.",
+       "url": "https://www.reddit.com/comments/191icpc",
+       "method": "persona verbatim from the trigger's cited thread"
+      }
+     ]
+    }
+   ],
+   "glance_triggers_on_lookers": [
+    {
+     "trigger": "Confectionery/dessert-flavoured 'protein' format (cookie dough, salted caramel, chocolate)",
+     "n_events": 13,
+     "mean_jev_p": 0.795,
+     "personas": [
+      "p_glp1_small_appetite"
+     ],
+     "source": "'I fell for a protein cookie once and it tasted like literal chalk' https://www.reddit.com/comments/1q6qho0",
+     "verbatims": [
+      {
+       "quote": "I fell for a protein cookie once and it tasted like literal chalk",
+       "url": "https://www.reddit.com/comments/1q6qho0",
+       "method": "quoted in the trigger's own source"
+      }
+     ]
+    },
+    {
+     "trigger": "allergens contains en:gluten, or wheat/barley/rye/spelt/malt in ingredients_text: instant put-back, no compensating score",
+     "n_events": 9,
+     "mean_jev_p": 0.98,
+     "personas": [
+      "p_allergen_coeliac"
+     ],
+     "source": "Coeliac UK labelling guidance https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/",
+     "verbatims": [
+      {
+       "quote": "If I am used to a product by a brand, I know the taste, texture, sometimes even the allergens in it ... If I ask my husband to buy the thing, and he comes home with another brand, it truly does add a 'task' while cooking ... or I don't pois",
+       "url": "https://www.reddit.com/comments/1essgh0",
+       "method": "persona verbatim with most word overlap (2 shared words)"
+      }
+     ]
+    },
+    {
+     "trigger": "kcal more than 10x protein grams, or a 'protein' claim with a trivial uplift over the regular SKU next to it",
+     "n_events": 6,
+     "mean_jev_p": 0.708,
+     "personas": [
+      "p_glp1_small_appetite"
+     ],
+     "source": "'Babybel Protein. They're 48 calories, with 5.2 grams of protein. Whereas Babybel Light is 5 grams of protein and 42 calories.' (231 upvotes) https://www.reddit.com/comments/1wqczct ; 'a protein chicken sandwich in Asda... had less protein than the regular' (226 upvotes) https://www.reddit.com/comments/1tbf6zw",
+     "verbatims": [
+      {
+       "quote": "I fell for a protein cookie once and it tasted like literal chalk",
+       "url": "https://www.reddit.com/comments/1q6qho0",
+       "method": "quoted in the trigger's own source"
+      }
+     ]
+    }
+   ],
+   "example_reasons": [
+    {
+     "persona": "p_eco_low_chemical",
+     "reason": "[jev] picked it up, put it back: P(dislikes or avoids)=0.99, appeal 'would actively avoid', health goal (p=0.85)",
+     "run": "run_20261003_120130_s3_jev_c554",
+     "agent": "a002"
+    },
+    {
+     "persona": "p_allergen_coeliac",
+     "reason": "[jev] picked it up, put it back: sees 'allergens contains en:gluten, or wheat/barley/rye/spelt/malt in ingredients_text: instant ' (p=0.98) — like \"If I am used to a product by a brand, I know the taste, texture, sometimes even the allergens in it ... If I a\"",
+     "run": "run_20261003_120522_s11_jev_e5e0",
+     "agent": "a003"
+    },
+    {
+     "persona": "p_eco_low_chemical",
+     "reason": "[jev] picked it up, put it back: P(dislikes or avoids)=0.99, appeal 'would actively avoid', health goal (p=0.94)",
+     "run": "run_20261003_120522_s11_jev_e5e0",
+     "agent": "a040"
+    }
+   ],
+   "budget_overrides": 0,
+   "source": "event.jev.nouls (Jev Noul per persona put-off, each with its own source), event.verbatim (persona Reddit quote + URL, sim/jev.py verbatim_for), event.mechanism (Jev Choice)"
+  }
+ },
+ "by_archetype": {
+  "ai_delegator": {
+   "shown": 26,
+   "looked": 20,
+   "picked_up": 3,
+   "put_back": 3,
+   "taken": 0,
+   "look": {
+    "k": 20,
+    "n": 26,
+    "rate": 0.7692,
+    "ci95": [
+     0.5795,
+     0.8897
+    ]
+   },
+   "pick_up": {
+    "k": 3,
+    "n": 20,
+    "rate": 0.15,
+    "ci95": [
+     0.0524,
+     0.3604
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  },
+  "allergen_coeliac": {
+   "shown": 26,
+   "looked": 19,
+   "picked_up": 7,
+   "put_back": 7,
+   "taken": 0,
+   "look": {
+    "k": 19,
+    "n": 26,
+    "rate": 0.7308,
+    "ci95": [
+     0.5392,
+     0.863
+    ]
+   },
+   "pick_up": {
+    "k": 7,
+    "n": 19,
+    "rate": 0.3684,
+    "ci95": [
+     0.1915,
+     0.5896
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 7,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3543
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  },
+  "eco_low_chemical": {
+   "shown": 26,
+   "looked": 13,
+   "picked_up": 9,
+   "put_back": 8,
+   "taken": 1,
+   "look": {
+    "k": 13,
+    "n": 26,
+    "rate": 0.5,
+    "ci95": [
+     0.3206,
+     0.6794
+    ]
+   },
+   "pick_up": {
+    "k": 9,
+    "n": 13,
+    "rate": 0.6923,
+    "ci95": [
+     0.4237,
+     0.8732
+    ]
+   },
+   "keep": {
+    "k": 1,
+    "n": 9,
+    "rate": 0.1111,
+    "ci95": [
+     0.0199,
+     0.435
+    ]
+   },
+   "take": {
+    "k": 1,
+    "n": 26,
+    "rate": 0.0385,
+    "ci95": [
+     0.0068,
+     0.1889
+    ]
+   }
+  },
+  "frugal_unit_price": {
+   "shown": 25,
+   "looked": 18,
+   "picked_up": 10,
+   "put_back": 2,
+   "taken": 8,
+   "look": {
+    "k": 18,
+    "n": 25,
+    "rate": 0.72,
+    "ci95": [
+     0.5242,
+     0.8572
+    ]
+   },
+   "pick_up": {
+    "k": 10,
+    "n": 18,
+    "rate": 0.5556,
+    "ci95": [
+     0.3372,
+     0.7544
+    ]
+   },
+   "keep": {
+    "k": 8,
+    "n": 10,
+    "rate": 0.8,
+    "ci95": [
+     0.4902,
+     0.9433
+    ]
+   },
+   "take": {
+    "k": 8,
+    "n": 25,
+    "rate": 0.32,
+    "ci95": [
+     0.172,
+     0.5159
+    ]
+   }
+  },
+  "glp1_small_appetite": {
+   "shown": 25,
+   "looked": 13,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 13,
+    "n": 25,
+    "rate": 0.52,
+    "ci95": [
+     0.335,
+     0.6997
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 13,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2281
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 25,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1332
+    ]
+   }
+  },
+  "habit_loyalist_shrinkflation_angry": {
+   "shown": 26,
+   "looked": 16,
+   "picked_up": 5,
+   "put_back": 1,
+   "taken": 4,
+   "look": {
+    "k": 16,
+    "n": 26,
+    "rate": 0.6154,
+    "ci95": [
+     0.4253,
+     0.7757
+    ]
+   },
+   "pick_up": {
+    "k": 5,
+    "n": 16,
+    "rate": 0.3125,
+    "ci95": [
+     0.1416,
+     0.556
+    ]
+   },
+   "keep": {
+    "k": 4,
+    "n": 5,
+    "rate": 0.8,
+    "ci95": [
+     0.3755,
+     0.9638
+    ]
+   },
+   "take": {
+    "k": 4,
+    "n": 26,
+    "rate": 0.1538,
+    "ci95": [
+     0.0615,
+     0.3353
+    ]
+   }
+  },
+  "meal_deal_office": {
+   "shown": 8,
+   "looked": 7,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 7,
+    "n": 8,
+    "rate": 0.875,
+    "ci95": [
+     0.5291,
+     0.9776
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 7,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3543
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 8,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3244
+    ]
+   }
+  },
+  "novelty_seeker_tiktok": {
+   "shown": 5,
+   "looked": 4,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 4,
+    "n": 5,
+    "rate": 0.8,
+    "ci95": [
+     0.3755,
+     0.9638
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 4,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4899
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4345
+    ]
+   }
+  },
+  "protein_gym": {
+   "shown": 26,
+   "looked": 18,
+   "picked_up": 2,
+   "put_back": 2,
+   "taken": 0,
+   "look": {
+    "k": 18,
+    "n": 26,
+    "rate": 0.6923,
+    "ci95": [
+     0.5001,
+     0.835
+    ]
+   },
+   "pick_up": {
+    "k": 2,
+    "n": 18,
+    "rate": 0.1111,
+    "ci95": [
+     0.031,
+     0.328
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  },
+  "protein_sceptic_gimmick_reactant": {
+   "shown": 26,
+   "looked": 15,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 15,
+    "n": 26,
+    "rate": 0.5769,
+    "ci95": [
+     0.3895,
+     0.7446
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 15,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2039
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  },
+  "upf_avoider_parent": {
+   "shown": 26,
+   "looked": 15,
+   "picked_up": 5,
+   "put_back": 2,
+   "taken": 3,
+   "look": {
+    "k": 15,
+    "n": 26,
+    "rate": 0.5769,
+    "ci95": [
+     0.3895,
+     0.7446
+    ]
+   },
+   "pick_up": {
+    "k": 5,
+    "n": 15,
+    "rate": 0.3333,
+    "ci95": [
+     0.1518,
+     0.5829
+    ]
+   },
+   "keep": {
+    "k": 3,
+    "n": 5,
+    "rate": 0.6,
+    "ci95": [
+     0.2307,
+     0.8824
+    ]
+   },
+   "take": {
+    "k": 3,
+    "n": 26,
+    "rate": 0.1154,
+    "ci95": [
+     0.04,
+     0.2898
+    ]
+   }
+  },
+  "vegan_ethical": {
+   "shown": 26,
+   "looked": 16,
+   "picked_up": 4,
+   "put_back": 4,
+   "taken": 0,
+   "look": {
+    "k": 16,
+    "n": 26,
+    "rate": 0.6154,
+    "ci95": [
+     0.4253,
+     0.7757
+    ]
+   },
+   "pick_up": {
+    "k": 4,
+    "n": 16,
+    "rate": 0.25,
+    "ci95": [
+     0.1018,
+     0.495
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 4,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4899
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  }
+ },
+ "by_ocean_segment": {
+  "A_high": {
+   "shown": 155,
+   "looked": 100,
+   "picked_up": 27,
+   "put_back": 23,
+   "taken": 4,
+   "look": {
+    "k": 100,
+    "n": 155,
+    "rate": 0.6452,
+    "ci95": [
+     0.5672,
+     0.7161
+    ]
+   },
+   "pick_up": {
+    "k": 27,
+    "n": 100,
+    "rate": 0.27,
+    "ci95": [
+     0.1927,
+     0.3643
+    ]
+   },
+   "keep": {
+    "k": 4,
+    "n": 27,
+    "rate": 0.1481,
+    "ci95": [
+     0.0592,
+     0.3248
+    ]
+   },
+   "take": {
+    "k": 4,
+    "n": 155,
+    "rate": 0.0258,
+    "ci95": [
+     0.0101,
+     0.0645
+    ]
+   }
+  },
+  "A_low": {
+   "shown": 116,
+   "looked": 74,
+   "picked_up": 18,
+   "put_back": 6,
+   "taken": 12,
+   "look": {
+    "k": 74,
+    "n": 116,
+    "rate": 0.6379,
+    "ci95": [
+     0.5473,
+     0.7197
+    ]
+   },
+   "pick_up": {
+    "k": 18,
+    "n": 74,
+    "rate": 0.2432,
+    "ci95": [
+     0.1598,
+     0.3521
+    ]
+   },
+   "keep": {
+    "k": 12,
+    "n": 18,
+    "rate": 0.6667,
+    "ci95": [
+     0.4375,
+     0.8372
+    ]
+   },
+   "take": {
+    "k": 12,
+    "n": 116,
+    "rate": 0.1034,
+    "ci95": [
+     0.0602,
+     0.1721
+    ]
+   }
+  },
+  "C_high": {
+   "shown": 224,
+   "looked": 139,
+   "picked_up": 40,
+   "put_back": 25,
+   "taken": 15,
+   "look": {
+    "k": 139,
+    "n": 224,
+    "rate": 0.6205,
+    "ci95": [
+     0.5555,
+     0.6815
+    ]
+   },
+   "pick_up": {
+    "k": 40,
+    "n": 139,
+    "rate": 0.2878,
+    "ci95": [
+     0.219,
+     0.3679
+    ]
+   },
+   "keep": {
+    "k": 15,
+    "n": 40,
+    "rate": 0.375,
+    "ci95": [
+     0.2422,
+     0.5297
+    ]
+   },
+   "take": {
+    "k": 15,
+    "n": 224,
+    "rate": 0.067,
+    "ci95": [
+     0.041,
+     0.1075
+    ]
+   }
+  },
+  "C_low": {
+   "shown": 47,
+   "looked": 35,
+   "picked_up": 5,
+   "put_back": 4,
+   "taken": 1,
+   "look": {
+    "k": 35,
+    "n": 47,
+    "rate": 0.7447,
+    "ci95": [
+     0.6049,
+     0.8475
+    ]
+   },
+   "pick_up": {
+    "k": 5,
+    "n": 35,
+    "rate": 0.1429,
+    "ci95": [
+     0.0626,
+     0.2938
+    ]
+   },
+   "keep": {
+    "k": 1,
+    "n": 5,
+    "rate": 0.2,
+    "ci95": [
+     0.0362,
+     0.6245
+    ]
+   },
+   "take": {
+    "k": 1,
+    "n": 47,
+    "rate": 0.0213,
+    "ci95": [
+     0.0038,
+     0.1111
+    ]
+   }
+  },
+  "E_high": {
+   "shown": 116,
+   "looked": 84,
+   "picked_up": 14,
+   "put_back": 11,
+   "taken": 3,
+   "look": {
+    "k": 84,
+    "n": 116,
+    "rate": 0.7241,
+    "ci95": [
+     0.6366,
+     0.7973
+    ]
+   },
+   "pick_up": {
+    "k": 14,
+    "n": 84,
+    "rate": 0.1667,
+    "ci95": [
+     0.102,
+     0.2605
+    ]
+   },
+   "keep": {
+    "k": 3,
+    "n": 14,
+    "rate": 0.2143,
+    "ci95": [
+     0.0757,
+     0.4759
+    ]
+   },
+   "take": {
+    "k": 3,
+    "n": 116,
+    "rate": 0.0259,
+    "ci95": [
+     0.0088,
+     0.0733
+    ]
+   }
+  },
+  "E_low": {
+   "shown": 155,
+   "looked": 90,
+   "picked_up": 31,
+   "put_back": 18,
+   "taken": 13,
+   "look": {
+    "k": 90,
+    "n": 155,
+    "rate": 0.5806,
+    "ci95": [
+     0.5019,
+     0.6555
+    ]
+   },
+   "pick_up": {
+    "k": 31,
+    "n": 90,
+    "rate": 0.3444,
+    "ci95": [
+     0.2545,
+     0.4472
+    ]
+   },
+   "keep": {
+    "k": 13,
+    "n": 31,
+    "rate": 0.4194,
+    "ci95": [
+     0.2642,
+     0.5923
+    ]
+   },
+   "take": {
+    "k": 13,
+    "n": 155,
+    "rate": 0.0839,
+    "ci95": [
+     0.0497,
+     0.1382
+    ]
+   }
+  },
+  "N_high": {
+   "shown": 164,
+   "looked": 104,
+   "picked_up": 36,
+   "put_back": 21,
+   "taken": 15,
+   "look": {
+    "k": 104,
+    "n": 164,
+    "rate": 0.6341,
+    "ci95": [
+     0.5581,
+     0.704
+    ]
+   },
+   "pick_up": {
+    "k": 36,
+    "n": 104,
+    "rate": 0.3462,
+    "ci95": [
+     0.2617,
+     0.4416
+    ]
+   },
+   "keep": {
+    "k": 15,
+    "n": 36,
+    "rate": 0.4167,
+    "ci95": [
+     0.2714,
+     0.578
+    ]
+   },
+   "take": {
+    "k": 15,
+    "n": 164,
+    "rate": 0.0915,
+    "ci95": [
+     0.0562,
+     0.1454
+    ]
+   }
+  },
+  "N_low": {
+   "shown": 107,
+   "looked": 70,
+   "picked_up": 9,
+   "put_back": 8,
+   "taken": 1,
+   "look": {
+    "k": 70,
+    "n": 107,
+    "rate": 0.6542,
+    "ci95": [
+     0.5602,
+     0.7376
+    ]
+   },
+   "pick_up": {
+    "k": 9,
+    "n": 70,
+    "rate": 0.1286,
+    "ci95": [
+     0.0691,
+     0.2266
+    ]
+   },
+   "keep": {
+    "k": 1,
+    "n": 9,
+    "rate": 0.1111,
+    "ci95": [
+     0.0199,
+     0.435
+    ]
+   },
+   "take": {
+    "k": 1,
+    "n": 107,
+    "rate": 0.0093,
+    "ci95": [
+     0.0017,
+     0.0511
+    ]
+   }
+  },
+  "O_high": {
+   "shown": 120,
+   "looked": 72,
+   "picked_up": 17,
+   "put_back": 16,
+   "taken": 1,
+   "look": {
+    "k": 72,
+    "n": 120,
+    "rate": 0.6,
+    "ci95": [
+     0.5106,
+     0.6832
+    ]
+   },
+   "pick_up": {
+    "k": 17,
+    "n": 72,
+    "rate": 0.2361,
+    "ci95": [
+     0.153,
+     0.346
+    ]
+   },
+   "keep": {
+    "k": 1,
+    "n": 17,
+    "rate": 0.0588,
+    "ci95": [
+     0.0105,
+     0.2698
+    ]
+   },
+   "take": {
+    "k": 1,
+    "n": 120,
+    "rate": 0.0083,
+    "ci95": [
+     0.0015,
+     0.0457
+    ]
+   }
+  },
+  "O_low": {
+   "shown": 151,
+   "looked": 102,
+   "picked_up": 28,
+   "put_back": 13,
+   "taken": 15,
+   "look": {
+    "k": 102,
+    "n": 151,
+    "rate": 0.6755,
+    "ci95": [
+     0.5973,
+     0.745
+    ]
+   },
+   "pick_up": {
+    "k": 28,
+    "n": 102,
+    "rate": 0.2745,
+    "ci95": [
+     0.1973,
+     0.3681
+    ]
+   },
+   "keep": {
+    "k": 15,
+    "n": 28,
+    "rate": 0.5357,
+    "ci95": [
+     0.3581,
+     0.7047
+    ]
+   },
+   "take": {
+    "k": 15,
+    "n": 151,
+    "rate": 0.0993,
+    "ci95": [
+     0.0611,
+     0.1574
+    ]
+   }
+  }
+ },
+ "benchmark": {
+  "sim_take_rank_in_category": 11,
+  "sim_ranked_products": 12,
+  "sim_rank_rule": "rank by take rate among category products shown >= 3 times in these runs",
+  "nielseniq": [
+   {
+    "category": "yoghurt",
+    "rank": 1,
+    "brand": "Müller Corner",
+    "product_or_range": "Müller Corner (owner: Müller)",
+    "sales_value_gbp_m": "186.7",
+    "yoy_change": "-0.2% (£-0.4m)",
+    "period": "52 w/e 6 Sep 2025",
+    "channel": "total grocery",
+    "table": "top_products_yoghurt",
+    "source_name": "The Grocer Top Products 2025 (NIQ)",
+    "source_url": "https://www.thegrocer.co.uk/rankings/dairy-yoghurt-2025-brits-turn-to-natural-full-fat-yoghurts/713032.article",
+    "same_category": true,
+    "match_level": "brand only",
+    "table_size": 21
+   }
+  ],
+  "nielseniq_note": null
+ },
+ "ai_agent_arm": {
+  "all": {
+   "k": 0,
+   "n": 60,
+   "rate": 0.0,
+   "ci95": [
+    0.0,
+    0.0602
+   ]
+  },
+  "jev-1.13.0": {
+   "k": 0,
+   "n": 60,
+   "rate": 0.0,
+   "ci95": [
+    0.0,
+    0.0602
+   ]
+  }
+ },
+ "ai_agent_arm_note": "share of Jev AI-agent feed runs (data/sim/runs/agent_*.json) that picked it; position-shuffled feed",
+ "trace": {
+  "runs": [
+   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
+   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+  ],
+  "all_runs_read": [
+   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
+   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+  ],
+  "stage_method": {
+   "stage_reached": 271
+  },
+  "ci": "Wilson score interval, z=1.96 (Wilson 1927, JASA 22:209)",
+  "definitions": {
+   "look": "looked / shown (notice gate, sim/notice.py)",
+   "pick_up": "picked_up / looked (Jev pick-up Noul sampled with a CRN draw)",
+   "keep": "taken / picked_up (1 - put-back rate)",
+   "take": "taken / shown",
+   "ocean_segment": "trait >= 0.5 = high (sim/README.md convention)"
+  },
+  "category_average": "pooled events of every product in the same category in the same runs"
+ }
+}

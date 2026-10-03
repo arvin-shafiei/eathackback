@@ -1,0 +1,1312 @@
+{
+ "persona_id": "staged_ege",
+ "name": "Ege",
+ "archetype": "RGC AI engineer / insight lead (internal customer)",
+ "kind": "staged",
+ "source_file": "data/personas/staged_personas_v1.json[12]",
+ "fields": [
+  {
+   "field": "behavioural_drivers[0]",
+   "kind": "lens_weight",
+   "label": "driver: Grounding over simulation: a synthetic shopper is only worth the ... (w=0.95)",
+   "value": 0.95,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://reallygoodculture.com/blog/synthetic-shoppers",
+     "citation": "\"Synthetic shoppers are downstream of real ones, and they are only as credible as the behavioural data underneath them, which is why the grounding matters more than the simulation.\" (Ege, RGC blog, https://reallygoodculture.com/blog/synthetic-shoppers)"
+    }
+   ],
+   "principle": "Grounding over simulation: a synthetic shopper is only worth the behavioural data beneath it",
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "behavioural_drivers[1]",
+   "kind": "lens_weight",
+   "label": "driver: Traceability as a hard requirement: untraceable numbers are actively harmful (w=0.9)",
+   "value": 0.9,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://reallygoodculture.com/careers",
+     "citation": "\"A number that cannot be traced back to its source is worse than no number at all\" and the most urgent vacancy: \"Define evaluation methodology and baselines, and measure every model or score change against them.\" (RGC careers page, https://reallygoodculture.com/careers)"
+    }
+   ],
+   "principle": "Traceability as a hard requirement: untraceable numbers are actively harmful",
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "behavioural_drivers[2]",
+   "kind": "lens_weight",
+   "label": "driver: Fear of segment-level error hidden behind topline accuracy: range and ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Subgroup error \"balloons to 10–30 percentage points despite ~4pp topline accuracy\""
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2609.13148",
+     "citation": "a doubly robust correction with n=50–300 real responses gives \"83–94% bias reduction on pricing tasks\" (arXiv 2609.13148, https://arxiv.org/html/2609.13148). Synthetic respondents \"inflate between-segment gaps two to fourfold... and manufacture segment splits that do not exist.\" (arXiv 2607.26348)"
+    }
+   ],
+   "principle": "Fear of segment-level error hidden behind topline accuracy: range and listing decisions are made at segment level",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[3]",
+   "kind": "lens_weight",
+   "label": "driver: LLM shoppers are people-pleasers that do not reject, so the ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 71,
+     "verbatim": "Joke is on them. I'm not even going to buy the things I went in for if they're going to be like that.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.nngroup.com/articles/synthetic-users/",
+     "citation": "NN/g: \"AI chatbots have a tendency to want to please\" ... \"Synthetic research cannot produce behavioral data.\" (https://www.nngroup.com/articles/synthetic-users/). Agents vs humans, 5,000 sessions: agents \"never decline to buy\" (arXiv 2608.22697). Contrast with real humans: \"Joke is on them. I'm not ..."
+    }
+   ],
+   "principle": "LLM shoppers are people-pleasers that do not reject, so the rejection/walk-past signal must be modelled explicitly",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[4]",
+   "kind": "lens_weight",
+   "label": "driver: Revealed beats stated: EPOS and stated reviews miss the counterfactual ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/onllmx",
+     "thread_id": "onllmx",
+     "subreddit": "unpopularopinion",
+     "theme": "say_do_healthy",
+     "score": 63,
+     "verbatim": "It's not just that it's expensive, it's *time consuming* to prepare and spoils more quickly",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://reallygoodculture.com/blog/epos",
+     "citation": "RGC co-founder David: EPOS \"says nothing about the ranges you did not run, the prices you did not test, or the shoppers who walked past without buying.\" (https://reallygoodculture.com/blog/epos). Say-do on Reddit: \"It's not just that it's expensive, it's *time consuming* ..."
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'EPOS'",
+     "citation": "RGC co-founder David: EPOS \"says nothing about the ranges you did not run, the prices you did not test, or the shoppers who walked past without buying.\" (https://reallygoodculture.com/blog/epos). Say-do on Reddit: \"It's not just that it's expensive, it's *time consuming* ..."
+    },
+    {
+     "url": "https://www.reddit.com/comments/141ixms",
+     "thread_id": "141ixms",
+     "subreddit": "rant",
+     "theme": "say_do_healthy",
+     "score": 49,
+     "verbatim": "Looked at the apples...$4 for a single apple. So I bought a $4 box of cheezits instead",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Revealed beats stated: EPOS and stated reviews miss the counterfactual and the say-do gap",
+   "classes": [
+    "reddit",
+    "sales_data",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "sales_data": 0.3333,
+    "web_other": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[5]",
+   "kind": "lens_weight",
+   "label": "driver: Agent shoppers are a distinct, measurable bias profile: position bias, ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "ACES: agents show \"choice homogeneity, often concentrating demand on a few modal products while ignoring others entirely\""
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "\"strong position biases ... persisting even in text-only headless interfaces\""
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "they \"consistently penalize sponsored tags while rewarding platform endorsements\""
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/abs/2508.02630",
+     "citation": "\"Model updates can drastically reshuffle market shares.\" (arXiv 2508.02630, https://arxiv.org/abs/2508.02630)"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'market share'",
+     "citation": "\"Model updates can drastically reshuffle market shares.\" (arXiv 2508.02630, https://arxiv.org/abs/2508.02630)"
+    }
+   ],
+   "principle": "Agent shoppers are a distinct, measurable bias profile: position bias, sponsored penalty, endorsement lift, concentration, version drift",
+   "classes": [
+    "paper",
+    "sales_data",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "sales_data": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[6]",
+   "kind": "lens_weight",
+   "label": "driver: Agent choice runs on structured attributes, not brand or taste, ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Incumbent Advantage: at identical specs incumbents are recommended 100% of the time"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "a +0.075-star edge flips 50%"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "\"Product parameters explain 82.4% of ranking variance"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2606.17443v1",
+     "citation": "brand identity accounts for only 1.2%.\" (https://arxiv.org/html/2606.17443v1)"
+    }
+   ],
+   "principle": "Agent choice runs on structured attributes, not brand or taste, which makes the gap explainable and fixable through data",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[7]",
+   "kind": "lens_weight",
+   "label": "driver: Single-run agent outputs are noise: visibility must be a probability ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1j9pozm",
+     "thread_id": "1j9pozm",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 7,
+     "verbatim": "I was only getting responses that said it can't find real time sales or prices no matter what my prompt was. That was on o1. ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://sparktoro.com/blog/new-research-ais-are-highly-inconsistent-when-recommending-brands-or-products-marketers-should-take-care-when-tracking-ai-visibility/",
+     "citation": "SparkToro: \"<1 in 100 chance\" that any two of 100 responses give the same brand list (https://sparktoro.com/blog/new-research-ais-are-highly-inconsistent-when-recommending-brands-or-products-marketers-should-take-care-when-tracking-ai-visibility/). Real user on version dependence: \"I was only getting responses that said it can't find real time sales or prices no matter what ..."
+    }
+   ],
+   "principle": "Single-run agent outputs are noise: visibility must be a probability with CIs, robust across model versions",
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[8]",
+   "kind": "lens_weight",
+   "label": "driver: Scepticism of unproven 'AI-optimisation' claims: demands causal evidence over one-off ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sp38qu",
+     "thread_id": "1sp38qu",
+     "subreddit": "FulfillmentByAmazon",
+     "theme": "rufus_ai_bias",
+     "score": 2,
+     "verbatim": "An impression bump within a week on one ASIN doesn't tell you Rufus rewired anything.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1u6kouq",
+     "thread_id": "1u6kouq",
+     "subreddit": "AmazonFBA",
+     "theme": "rufus_ai_bias",
+     "score": 8,
+     "verbatim": "Rufus optimization is the most common pitch I get from agencies now. It has no demonstrable effect on anything at all. I would love for ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Scepticism of unproven 'AI-optimisation' claims: demands causal evidence over one-off bumps",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[9]",
+   "kind": "lens_weight",
+   "label": "driver: Agents are black boxes even to their makers, so an ... (w=0.65)",
+   "value": 0.65,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1u6kouq",
+     "thread_id": "1u6kouq",
+     "subreddit": "AmazonFBA",
+     "theme": "rufus_ai_bias",
+     "score": 1,
+     "verbatim": "I can tell you with confidence right now that even Amazon engineers who made RUFUS don't have 100% clarity of how Rufus chooses listing (unless ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Agents are black boxes even to their makers, so an outside-in measurement harness is the only credible view",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[10]",
+   "kind": "lens_weight",
+   "label": "driver: Segment heterogeneity in response to the same intervention: one stimulus, ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1dayfk7",
+     "thread_id": "1dayfk7",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 160,
+     "verbatim": "It's a way to get people to buy more somehow I've personally found it makes me buy less can't find shit But for some people ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 507,
+     "verbatim": "Tesco are awful for moving stuff around. It's supposed to make you spend more as you see other stuff. It makes me spend less as ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Segment heterogeneity in response to the same intervention: one stimulus, opposite effects",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[11]",
+   "kind": "lens_weight",
+   "label": "driver: Data contamination and feedback loops: LLM-written product copy feeds the ... (w=0.45)",
+   "value": 0.45,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/11q147q",
+     "thread_id": "11q147q",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 102,
+     "verbatim": "The best part is, these outputs will become inputs for the next generation of language models!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Data contamination and feedback loops: LLM-written product copy feeds the next models and the agents reading it",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[12]",
+   "kind": "lens_weight",
+   "label": "driver: Human override layer on agent baskets: delegation is partial and ... (w=0.45)",
+   "value": 0.45,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 15,
+     "verbatim": "I had to swap out a couple of items at the end before checking out but other than that, it did a great job",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Human override layer on agent baskets: delegation is partial and humans still edit, so agent share is not final share",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Numbers that cannot be traced to a source: a divergence score with ...",
+   "value": "Numbers that cannot be traced to a source: a divergence score with no verbatim, attribute or run log behind it ('worse than no number at all')",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Numbers that cannot be traced to a source: a divergence score with no verbatim, attribute or run log behind it ('worse than no number at all')"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Ranks instead of probabilities: a single agent run or single-prompt result presented ...",
+   "value": "Ranks instead of probabilities: a single agent run or single-prompt result presented as 'the agent's pick' with no bootstrap CIs or N>=50 runs per cell",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Ranks instead of probabilities: a single agent run or single-prompt result presented as 'the agent's pick' with no bootstrap CIs or N>=50 runs per cell"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Validation against stated/survey answers only, or against LLM self-consistency, rather than revealed ...",
+   "value": "Validation against stated/survey answers only, or against LLM self-consistency, rather than revealed human behaviour",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Validation against stated/survey answers only, or against LLM self-consistency, rather than revealed human behaviour"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Synthetic or agent shoppers that never reject or walk past: a sim ...",
+   "value": "Synthetic or agent shoppers that never reject or walk past: a sim where every agent buys something reads as the known LLM positivity failure",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Synthetic or agent shoppers that never reject or walk past: a sim where every agent buys something reads as the known LLM positivity failure"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Topline-only accuracy claims that hide 10–30pp segment misses",
+   "value": "Topline-only accuracy claims that hide 10–30pp segment misses",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Topline-only accuracy claims that hide 10–30pp segment misses"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "'Agent optimisation' framed as prompt injection or adversarial copy rather than honest ...",
+   "value": "'Agent optimisation' framed as prompt injection or adversarial copy rather than honest data completion (an ethics and buyer-trust risk)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['framed', 'rather', 'trust'])",
+     "theme": "trust_unknown_brand",
+     "coded_section": "surprising",
+     "coded_text": "Blatant lookalike packaging is celebrated rather than resented in UK subs ('shamelessly blatant brand rip-offs'). Mimicry works as a trust shortcut, not a negative, and only one US poster framed it as unethical."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "A pitch that rebuilds Breakthrough, the Query Agent or a dashboard RGC ...",
+   "value": "A pitch that rebuilds Breakthrough, the Query Agent or a dashboard RGC already has, rather than adding a layer underneath",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A pitch that rebuilds Breakthrough, the Query Agent or a dashboard RGC already has, rather than adding a layer underneath"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[7]",
+   "kind": "trigger",
+   "label": "A framing that publicly trashes RGC's own Synthetic layer without offering a ...",
+   "value": "A framing that publicly trashes RGC's own Synthetic layer without offering a correction or trust score Ege can ship",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['framin', 'own', 'trust'])",
+     "theme": "own_brand_vs_branded",
+     "coded_section": "surprising",
+     "coded_text": "Discount own label is praised as a dupe of named brands with specific matched pairs (Aldi beers vs Punk IPA, Moretti, Peroni; Racer and Jive vs Snickers and Twix). The dupe framing itself works as a trust signal."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[8]",
+   "kind": "trigger",
+   "label": "Claims that 50 hackathon builders are representative of UK shoppers",
+   "value": "Claims that 50 hackathon builders are representative of UK shoppers",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Claims that 50 hackathon builders are representative of UK shoppers"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[9]",
+   "kind": "trigger",
+   "label": "Results that only hold for one model version, with no cross-model or ...",
+   "value": "Results that only hold for one model version, with no cross-model or cross-version stability check (Kendall tau)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Results that only hold for one model version, with no cross-model or cross-version stability check (Kendall tau)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[10]",
+   "kind": "trigger",
+   "label": "Black-box 3D visuals with no exportable decision log: pretty walk-pasts with no ...",
+   "value": "Black-box 3D visuals with no exportable decision log: pretty walk-pasts with no auditable why",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Black-box 3D visuals with no exportable decision log: pretty walk-pasts with no auditable why"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Held-out validation: a 20% holdout of human pairwise votes, with predicted vs ...",
+   "value": "Held-out validation: a 20% holdout of human pairwise votes, with predicted vs observed share shown",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Held-out validation: a 20% holdout of human pairwise votes, with predicted vs observed share shown"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "Bootstrap 95% CIs on every agent and human share; brands flagged only ...",
+   "value": "Bootstrap 95% CIs on every agent and human share; brands flagged only when CIs separate",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Bootstrap 95% CIs on every agent and human share; brands flagged only when CIs separate"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Explainable econometrics: Bradley-Terry for humans, conditional logit per agent model with readable ...",
+   "value": "Explainable econometrics: Bradley-Terry for humans, conditional logit per agent model with readable coefficients (position, sponsored, badge, reviews, price per 100g)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Explainable econometrics: Bradley-Terry for humans, conditional logit per agent model with readable coefficients (position, sponsored, badge, reviews, price per 100g)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "A doubly robust (AIPW) correction showing how much of the synthetic-persona gap ...",
+   "value": "A doubly robust (AIPW) correction showing how much of the synthetic-persona gap closes with n=50–300 real responses",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A doubly robust (AIPW) correction showing how much of the synthetic-persona gap closes with n=50–300 real responses"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Cross-model and cross-version stability: Kendall tau between Claude/GPT/Gemini rankings and across successive ...",
+   "value": "Cross-model and cross-version stability: Kendall tau between Claude/GPT/Gemini rankings and across successive releases",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Cross-model and cross-version stability: Kendall tau between Claude/GPT/Gemini rankings and across successive releases"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "Every simulated choice logged with the attribute that drove it AND the ...",
+   "value": "Every simulated choice logged with the attribute that drove it AND the real Reddit/Mumsnet verbatim behind the human agent's rule",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "keyword:'Mumsnet'",
+     "citation": "Every simulated choice logged with the attribute that drove it AND the real Reddit/Mumsnet verbatim behind the human agent's rule"
+    }
+   ],
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "trust_signals[6]",
+   "kind": "trust_signal",
+   "label": "Uses RGC's own vocabulary and assets: 28 behavioural principles, 400+ shopper missions, ...",
+   "value": "Uses RGC's own vocabulary and assets: 28 behavioural principles, 400+ shopper missions, product-graph attributes, Watch Humans as calibration data",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['behavi', 'data', 'own'])",
+     "theme": "chatgpt_shopping",
+     "coded_section": "surprising",
+     "coded_text": "Data quality: of ~255 comments, about 90 are on-topic about AI shopping behaviour. About 60 are a UK own-label thread unrelated to AI, and about 70 are memes, bot or moderator boilerplate, or AI-philosophy arguments. Counts are small, so treat ..."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[7]",
+   "kind": "trust_signal",
+   "label": "Honest-edit 'breakthrough threshold': the smallest true data fix that closes the gap, ...",
+   "value": "Honest-edit 'breakthrough threshold': the smallest true data fix that closes the gap, re-run live, with predicted vs observed change",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Honest-edit 'breakthrough threshold': the smallest true data fix that closes the gap, re-run live, with predicted vs observed change"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[8]",
+   "kind": "trust_signal",
+   "label": "Cites the literature Ege already reads: ACES (2508.02630), Incumbent Advantage (2606.17443), agents-vs-humans ...",
+   "value": "Cites the literature Ege already reads: ACES (2508.02630), Incumbent Advantage (2606.17443), agents-vs-humans (2608.22697), synthetic-respondent bias (2609.13148, 2607.26348)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Cites the literature Ege already reads: ACES (2508.02630), Incumbent Advantage (2606.17443), agents-vs-humans (2608.22697), synthetic-respondent bias (2609.13148, 2607.26348)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[9]",
+   "kind": "trust_signal",
+   "label": "Positioned as an eighth dimension and evaluation harness that differentiates RGC from ...",
+   "value": "Positioned as an eighth dimension and evaluation harness that differentiates RGC from Aaru/Simile/Electric Twin, not as a replacement",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Positioned as an eighth dimension and evaluation harness that differentiates RGC from Aaru/Simile/Electric Twin, not as a replacement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[0]",
+   "kind": "habit",
+   "label": "Define evaluation methodology and baselines for the Synthetic layer: measure synthetic shopper ...",
+   "value": "Define evaluation methodology and baselines for the Synthetic layer: measure synthetic shopper predictions against REVEALED human behaviour (not survey answers), per segment, with a trust score per output",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['agains', 'human', 'shoppe'])",
+     "theme": "chatgpt_shopping",
+     "coded_section": "surprising",
+     "coded_text": "A user described the AI as better than a spouse at shopping ('didnt call you 53 times asking stupid questions'). People benchmark the agent against human proxy shoppers, not against themselves."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[1]",
+   "kind": "habit",
+   "label": "Decide whether and how to add an 'Agent shopper' dimension (eighth dimension) ...",
+   "value": "Decide whether and how to add an 'Agent shopper' dimension (eighth dimension) to Breakthrough/Blueprint without undermining buyer trust in the existing seven",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Decide whether and how to add an 'Agent shopper' dimension (eighth dimension) to Breakthrough/Blueprint without undermining buyer trust in the existing seven"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[2]",
+   "kind": "habit",
+   "label": "Defend every Breakthrough/Buzz number in buyer meetings (Tesco, Ocado, Iceland, dunnhumby): every ...",
+   "value": "Defend every Breakthrough/Buzz number in buyer meetings (Tesco, Ocado, Iceland, dunnhumby): every figure must trace back to a source",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Defend every Breakthrough/Buzz number in buyer meetings (Tesco, Ocado, Iceland, dunnhumby): every figure must trace back to a source"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[3]",
+   "kind": "habit",
+   "label": "Turn data RGC already owns (Watch Humans reviews mapped to 400+ missions) ...",
+   "value": "Turn data RGC already owns (Watch Humans reviews mapped to 400+ missions) into a calibration set, e.g. a doubly robust correction needing only 50–300 real responses",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Turn data RGC already owns (Watch Humans reviews mapped to 400+ missions) into a calibration set, e.g. a doubly robust correction needing only 50–300 real responses"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[4]",
+   "kind": "habit",
+   "label": "Monitor model-update drift: know when a new LLM version (for personas or ...",
+   "value": "Monitor model-update drift: know when a new LLM version (for personas or for agents) reshuffles predicted shares, and by how much",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Monitor model-update drift: know when a new LLM version (for personas or for agents) reshuffles predicted shares, and by how much"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[5]",
+   "kind": "habit",
+   "label": "Make synthetic shoppers REJECT and walk past like real ones, recovering the ...",
+   "value": "Make synthetic shoppers REJECT and walk past like real ones, recovering the 'shoppers who walked past without buying' signal that EPOS cannot see",
+   "sources": [
+    {
+     "class": "sales_data",
+     "method": "keyword:'EPOS'",
+     "citation": "Make synthetic shoppers REJECT and walk past like real ones, recovering the 'shoppers who walked past without buying' signal that EPOS cannot see"
+    }
+   ],
+   "classes": [
+    "sales_data"
+   ],
+   "class_share": {
+    "sales_data": 1.0
+   },
+   "primary_class": "sales_data"
+  },
+  {
+   "field": "says_vs_does",
+   "kind": "habit",
+   "label": "says vs does",
+   "value": "SAYS: grounding matters more than simulation; every number must trace to a source; evaluation methodology is the most urgent need. DOES (inferred from public evidence): the Synthetic layer is grounded ...",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "SAYS: grounding matters more than simulation; every number must trace to a source; evaluation methodology is the most urgent need. DOES (inferred from public evidence): the Synthetic layer is grounded ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.72",
+   "value": 0.72,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.65",
+   "value": 0.65,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 6",
+   "value": 6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  }
+ ],
+ "persona_level_evidence": {
+  "realism_score_1_10": 5,
+  "supporting_evidence": [
+   "/Users/arvin/orca/eathackback/research/02-issue-discovery.md §4 to §6: the human arm is 'pairwise forced choices after tasting' (no 'neither' option); agents 'never decline to buy' (arXiv 2608.22697); ACES sponsored penalty 10%→8%; Incumbent Advantage +0.075★ flips 50%. These back the journey's agent-side mechanisms but show ...",
+   "/Users/arvin/orca/eathackback/research/corpus/chatgpt_shopping.md (r/OpenAI 1m9u7e6): 'I had to swap out a couple of items at the end before checking out'. This supports the human-override layer, so agent share is not final share.",
+   "/Users/arvin/orca/eathackback/research/corpus/chatgpt_shopping.md: 'I tried CartHappy and it built my grocery list from my purchase history'. This supports the stage 5 point that history-conditioned agents behave like favourites lock-in.",
+   "/Users/arvin/orca/eathackback/research/corpus/rufus_ai_bias.md (r/AmazonFBA 1u6kouq, r/FulfillmentByAmazon 1sp38qu): 'Rufus optimization ... has no demonstrable effect' and 'An impression bump within a week on one ASIN doesn't tell you Rufus rewired anything'. This supports Ege's demand for causal, CI-bounded evidence and rejection of AI-SEO.",
+   "/Users/arvin/orca/eathackback/research/00-rgc-intel.md: the seven dimensions all model humans; Ege's blog says synthetic shoppers are 'only as credible as the behavioural data underneath them'; open problem #2 is calibrating personas against revealed behaviour. The dossier's grounding is accurate.",
+   "02-issue-discovery.md: IGD says only 3% use AI agents for grocery today. This undercuts the claim that the sponsored slot has negative ROI.",
+   "Shelf literature: in-store dwell at a category is usually a few seconds, noticing is driven by eye level and facings, and most purchases are unplanned or habitual. None of this appears in Ege's own shopper behaviour, so it has to ..."
+  ],
+  "unrealistic_claims_flagged_by_skeptic": 12
+ },
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 12.7,
+   "reddit_inferred": 8.0,
+   "paper": 2.7,
+   "off_field": 0.0,
+   "sales_data": 3.3,
+   "staged_persona": 0.0,
+   "web_other": 8.7,
+   "internal_research": 9.0,
+   "assumption": 55.6
+  },
+  "headline": {
+   "reddit": 20.7,
+   "paper": 2.7,
+   "off_field": 0.0,
+   "assumption": 55.6,
+   "other (sales, staged, web, internal)": 21.0
+  },
+  "n_fields": 50,
+  "fields_by_primary_class": {
+   "web_other": 3,
+   "paper": 3,
+   "reddit": 8,
+   "assumption": 22,
+   "reddit_inferred": 4,
+   "sales_data": 1,
+   "internal_research": 9
+  },
+  "pct_fields_with_any": {
+   "reddit": 16.0,
+   "reddit_inferred": 8.0,
+   "paper": 6.0,
+   "sales_data": 6.0,
+   "web_other": 12.0,
+   "internal_research": 18.0,
+   "assumption": 68.0
+  },
+  "pct_fields_with_any_assumption": 68.0
+ }
+}

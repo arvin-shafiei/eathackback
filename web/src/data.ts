@@ -21,15 +21,22 @@ export interface Loaded {
   runIndex: RunIndexEntry[];
 }
 
+/** `?store=fixtures6` swaps in an alternative store layout from public/data/<name>/ (used to prove the layout scales) */
+export const STORE_VARIANT = (() => { try { const v = new URLSearchParams(location.search).get('store'); return v && /^[\w-]+$/.test(v) ? v : null; } catch { return null; } })();
+
 export async function loadAll(): Promise<Loaded> {
-  const [config, planogram, catalogRaw, personasRaw, idxRaw] = await Promise.all([
-    getJSON<StoreConfig>('store.config.json'),
-    getJSON<Planogram>('planogram.json'),
+  const sv = STORE_VARIANT ? `${STORE_VARIANT}/` : '';
+  const [config, planogram, catalogRaw, personasRaw, idxRaw, extra] = await Promise.all([
+    getJSON<StoreConfig>(`${sv}store.config.json`),
+    getJSON<Planogram>(`${sv}planogram.json`),
     getJSON<Product[] | { products: Product[] }>('catalog.json', []),
     getJSON<Persona[] | { personas: Persona[] }>('personas.json', []),
     getJSON<unknown[]>('runs/index.json', []),
+    sv ? getJSON<Product[]>(`${sv}catalog_extra.json`, []) : Promise.resolve([] as Product[]),
   ]);
-  const catalog = Array.isArray(catalogRaw) ? catalogRaw : catalogRaw.products ?? [];
+  const base = Array.isArray(catalogRaw) ? catalogRaw : catalogRaw.products ?? [];
+  const have = new Set(base.map((p) => p.code));
+  const catalog = [...base, ...extra.filter((p) => !have.has(p.code))];
   const personas = Array.isArray(personasRaw) ? personasRaw : personasRaw.personas ?? [];
   const runIndex: RunIndexEntry[] = (Array.isArray(idxRaw) ? idxRaw : []).map((r) =>
     typeof r === 'string' ? { run_id: r.replace(/\.json$/, ''), file: r.endsWith('.json') ? r : `${r}.json` } : (r as RunIndexEntry),

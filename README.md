@@ -187,3 +187,31 @@ Results: [`research/05-personas.md`](research/05-personas.md)
 ## stack (planned)
 
 react-three-fiber + drei (3D store), Kenney Mini Market / Food Kit (CC0) assets, Open Food Facts product data and images (UK), grid A* pathing, a fast utility model in JS for thousands of shoppers, and the Claude API for real agent shoppers and "thought bubbles".
+
+## engine: typesafe jev
+
+The shopper decisions in `sim/` are made by **TypeSafe Jev** (System One, `jev-1.13.0`), the default engine (`python3 sim/run.py --engine jev`). Code owns the walk, the notice model, every price and nutrition comparison, and the budget. Jev only answers narrow, typed questions about one shelf at a time. Full design: [`sim/README.md`](sim/README.md#engine-typesafe-jev-simjevpy).
+
+**What we ask.** One request per (shopper, slot) carries every question for every product the shopper noticed ([speculative fan-out](https://docs.typesafe.ai/patterns/fan-out.md)):
+
+- **Choice `decision`**: which noticed product the shopper takes, or `none` (walks past). Option order is shuffled and recorded, because Jev 1.13 can lean to the first option ([jaggedness #8](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)).
+- **Noul `pickup_i`**: does the shopper pick this product up to look closer? This is the 👀 look → 🤚 pick-up step of the funnel. If a shopper who doesn't usually read labels picks something up, a second request re-judges with the back of pack revealed.
+- **Score `appeal_i`** (5 levels, from "would actively avoid" to "really wants it"), mapped to sentiment −1..1 in code.
+- **Noul per rejection trigger and trust signal** (the persona's top 3 + top 2): "Does `products[i]` show what `shopper.put_offs[k]` describes?". This is the *why*.
+- **Choice `mechanism_i`**: habit, betrayal/loss aversion, price anchor, trust, gimmick reactance, social proof, health goal, mission fit, novelty, effort or indifference.
+
+Jev never sees a raw number it would have to do maths on. Prices arrive as "about 2x the cheapest here", nutrition as UK traffic lights ("sugar: red (high)"), additives as "one or two additives" and processing as "ultra-processed (NOVA 4)" ([keep arithmetic in code](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)).
+
+**Why calibrated probabilities make it traceable.** Every answer is a distribution, not prose: P(take) for each option, P(pick up), P(the card shows this put-off), and the appeal-level probabilities with a [confidence](https://docs.typesafe.ai/confidence.md) score. Code samples the take/put-back outcome from that distribution with a seeded, recorded draw. So any single decision can be replayed exactly, and the aggregate pick rate *is* the model's probability mass, not one verbose sample. The "why" is assembled from the evidence that fired, for example *"picked it up, put it back: sees 'Protein/new recipe claim carrying a price premium' (p=0.53)"*, followed by the persona's Reddit verbatim and URL. Each event stores the cache key of the exact state + questions + raw answer (`data/sim/cache/jev/`), so a judge can click from a stat to the question Jev was asked and the full distribution it returned.
+
+**Cost at scale** ($0.042 per 1M input tokens, output free; limits 80 req/s and 100k tok/s):
+
+| run | requests | input tokens | cost | wall |
+|---|---|---|---|---|
+| 300 shoppers (seed 11, 96 SKUs, 24 slots) | 6,187 | 22.7M | $0.95 uncached ($0.87 actual) | 223 s |
+| **per 1,000 shoppers** | ~20.6k | ~76M | **~$3.20** | ~13 min (limited by 100k tok/s) |
+| AI-agent arm, per 1,000 feed sessions (24–36 items each) | 1,000 | ~8M | ~$0.34 | ~1 min |
+
+That is about **$0.003 per shopper** for ~20 requests holding ~415 typed judgments, versus ~$0.006 per shopper for one free-text LLM call per slot. Re-runs with unchanged inputs are served from cache for $0.
+
+**Result from the 300-shopper run:** 57% of product passes are noticed. Of noticed products, 38% are picked up, and 56% of pick-ups are taken. Take rate is 20.0% for own-label, 11.0% for incumbents and 8.9% for challengers. In the AI-agent arm, Jev shows **no first-position bias** (2.5% of picks at position 1 vs 3.5% expected by chance). The Gemini Flash and GPT-4.1-mini agents earlier showed a 4–5x bias.

@@ -1,6 +1,8 @@
 # sim: the shelf simulation engine
 
-Python 3 (stdlib + `requests`). Everything is traceable: each coefficient has a `source`, each event records the logit terms behind its `p_notice`, and each LLM decision records the model and prompt that produced it.
+Python 3 (stdlib + `requests` + `typesafe-sdk`). Everything is traceable: each coefficient has a `source`, each event records the logit terms behind its `p_notice`, and each decision records the engine, the exact Jev question set (by cache key) and the full answer distributions behind it.
+
+**Default engine: TypeSafe Jev** (`sim/jev.py`, see [engine: jev](#engine-typesafe-jev-simjevpy)). OpenRouter LLMs are only called with an explicit `--engine llm`; no code path falls back to them.
 
 ## Pipeline (one shopper)
 
@@ -15,26 +17,55 @@ Python 3 (stdlib + `requests`). Everything is traceable: each coefficient has a 
    - OCEAN terms are read from `data/personas/ocean/*.json`. Only effects whose `sim_mapping` targets the notice or label-read stage are used, z-scored with each file's own UK norm convention (Rentfrow et al. 2015). If those files are missing, the labelled defaults in `coefficients.json` apply.
    - Label reading: p_read = σ(logit(0.27) + C/E/N label terms), with the 27% base from Grunert et al. 2010 via C.json. This is blended 50/50 with the persona's `reads_structured_data_0_1`. If the shopper reads labels, the card shows ingredients and nutrition.
    - The uniform draws are hashed on (seed, agent, product), so the optimiser compares like with like (common random numbers).
-4. **LLM (only for noticed products).** There is one call per slot covering the products noticed in it. The persona system prompt is built in `prompts.py` from the dossier, OCEAN with behavioural meaning, lens, rejection triggers, trust signals, habits, Reddit verbatims, mission, seconds at shelf and remaining budget. It explicitly says that walking past is normal. The output is JSON: `{decision, product, reason, attributes_cited, feeling, sentiment, mechanism, others}`. The card shows only what is on the pack; shelf position is not shown, because the notice model already accounts for it.
-5. **Budget.** If the LLM picks something over the remaining budget, the pick becomes `reject` and is flagged `budget_override: true, llm_decision: "pick"`.
+4. **Decision (only for noticed products): the 4-stage funnel.** LOOK = noticed (step 3) → PICK_UP → PUT_BACK or TAKE. With `--engine jev` (default) there is one Jev fan-out request per slot covering every noticed product (details below). Each event gets `stage_reached` ∈ {not_noticed, looked, picked_up, put_back, taken} and `p_pick_up`; `decision` stays for back-compat (taken→pick, put_back→reject, looked→walk_past). `--engine llm` keeps the original persona-prompt LLM path (`prompts.py`, JSON `{decision, product, reason, …}`); `--engine mock` is a deterministic heuristic. For those two, stage is mapped from decision.
+5. **Budget.** If the engine picks something over the remaining budget, the pick becomes `reject` / `put_back` and is flagged `budget_override: true, llm_decision: "pick", engine_decision: "pick"`.
 
-The run log is written to `data/sim/runs/<run_id>.json` in the CONTRACT shape. Extra fields: `notice_model` (all coefficients and sources), `inputs`, `cost`, and per event `notice_factors.logit_terms` and `trait_terms`. Stats include `pick_rate` (picked/shown) with a Wilson 95% CI, `notice_rate`, `pick_rate_given_noticed` with its CI, `by_archetype`, `by_ocean_segment` (trait ≥ 0.5 counts as high), `top_reject_reasons` grouped by mechanism with verbatim examples, and `mean_sentiment`. Secondary products (seen but not the focus of the decision) count as walk_past or reject and are flagged `secondary: true`.
+The run log is written to `data/sim/runs/<run_id>.json` in the CONTRACT shape. Extra fields: `notice_model` (all coefficients and sources), `inputs`, `cost`, and per event `notice_factors.logit_terms` and `trait_terms`. Stats include a per-product `funnel` (looked, picked_up, put_back, taken counts and rates per shown, each with a Wilson 95% CI, plus conversions look→pickup and pickup→take with CIs) and `funnel_by_archetype`, `pick_rate` (picked/shown) with a Wilson 95% CI, `notice_rate`, `pick_rate_given_noticed` with its CI, `by_archetype`, `by_ocean_segment` (trait ≥ 0.5 counts as high), `top_reject_reasons` grouped by mechanism with verbatim examples, and `mean_sentiment`. Secondary products (seen but not the focus of the decision) count as walk_past or reject and are flagged `secondary: true`.
 
 ## CLI
 
 ```bash
-python3 sim/run.py --agents 30 --mock                       # dry run, no API, deterministic heuristic (reasons prefixed [mock])
-python3 sim/run.py --agents 30 --models google/gemini-2.5-flash,openai/gpt-4.1-mini --seed 1 --planogram data/store/planogram.json
-python3 sim/agent_shopper.py --models google/gemini-2.5-flash,openai/gpt-4.1-mini --runs 5      # AI-agent arm
-python3 sim/optimise.py --product <code> --agents 40 --seeds 1,2 --edits eye,facings,claim [--price 1.40]
-python3 sim/server.py            # :8787  POST /api/run /api/agent_run /api/optimise, GET /api/runs /api/runs/<id> /api/coefficients
+python3 sim/run.py --agents 30 --seed 1                    # Jev (default): TypeSafe System One
+python3 sim/run.py --agents 30 --engine mock                # dry run, no API, deterministic heuristic (reasons prefixed [mock])
+python3 sim/run.py --agents 30 --engine llm --models google/gemini-2.5-flash   # OpenRouter, only when explicitly asked
+python3 sim/agent_shopper.py --runs 20                      # AI-agent arm, Jev Choice over the shuffled feed
+python3 sim/optimise.py --product <code> --agents 40 --seeds 1,2 --edits eye,facings,claim [--price 1.40]   # Jev by default
+python3 sim/server.py            # :8787, see "Server" below
 python3 sim/notice.py            # print the coefficient table + p_notice grid
-python3 sim/llm.py               # print OpenRouter limit_remaining
 ```
+
+`run.py` flags: `--engine jev|llm|mock` (default jev; `--mock` = `--engine mock`), `--workers` (default 40 agents in flight for jev), `--jev-max-usd` (session stop, default $5).
+
+## engine: TypeSafe Jev (`sim/jev.py`)
+
+Code stays in control; Jev answers narrow typed judgments ([building guide](https://docs.typesafe.ai/concepts/how-to-build-with-system-one.md)). All arithmetic is done in code and handed over as words ([jaggedness #2, math and numbers](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)):
+
+- **price** → "£1.80, about 2x the cheapest here"; unit price → "lowest price per litre in this set"; budget → "fits easily in the budget left"
+- **nutrition** (only on cards whose back of pack is seen) → UK FoP traffic lights per 100 g/ml ("sugar: red (high)", DHSC/FSA 2016 thresholds; drink thresholds for liquids), protein/fibre claim bands (Reg. 1924/2006), additives bucket ("one or two additives"), NOVA words, sweeteners, palm oil, allergens, first 180 chars of ingredients
+- **shopper** → 3 dossier sentences, mission, budget in words, OCEAN as behaviour phrases (only traits ≥ 0.65 or ≤ 0.35, e.g. "high conscientiousness: sticks to the list and budget, reads labels, plans"), top 3 lens priorities, top 3 rejection triggers (`put_offs`), top 2 trust signals, 2 habits, basket so far. Kept small on purpose ([jaggedness #5, large state](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)).
+
+**Questions, all in one request per (agent, slot)** ([speculative fan-out](https://docs.typesafe.ai/patterns/fan-out.md)); state is counted once per request, so each extra question costs ~15 input tokens:
+
+| id | primitive | asks |
+|---|---|---|
+| `decision` | Choice | options `p0..pN` "takes `products[i]` (name) and puts it in the basket" + `none` "walks past without taking anything". Option order shuffled with a seeded RNG and recorded ([jaggedness #8](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md)) |
+| `pickup_i` | Noul | "Does `shopper` pick up `products[i]` to look at it more closely?" |
+| `appeal_i` | Score, 5 levels | would actively avoid / dislikes / indifferent / mildly drawn / really wants it → sentiment = score/2 − 1 |
+| `trig_i_k` | Noul ×3 | "Does `products[i]` show what `shopper.put_offs[k]` describes?" (the traceable WHY) |
+| `trust_i_k` | Noul ×2 | "Does `products[i]` show what `shopper.trusts[k]` describes?" |
+| `mechanism_i` | Choice | habit, loss_aversion (betrayal), price_anchor, trust, gimmick_reactance, social_proof, health_goal, mission_fit, novelty, effort, indifference (order shuffled + recorded) |
+
+**Composition in code.** Pick-up is sampled per product with `u = sha256(seed, agent, "pickup", product)` < `p_pick_up`. If the shopper doesn't read labels (C draw) but picked something up, a **second request (B)** re-asks every judgment with the back of pack revealed for the picked-up items (a follow-up is warranted when an answer changes the state); otherwise request A is final. The decision is **sampled** from the Choice distribution with `u = sha256(seed, agent, "jev_decide", slot)` walking the shuffled option order; the event stores the full distribution, `confidence` ([confidence](https://docs.typesafe.ai/confidence.md)), the sampled option and whether it equals the argmax. Stage: sampled product → `taken`; else picked up → `put_back`; else `looked`. Deterministic draws = common random numbers, so the optimiser compares like with like.
+
+**Reasons are built from evidence, not generated**: e.g. `[jev] picked it up, put it back: sees 'Protein/'new recipe' claim carrying a price premium…' (p=0.53) — like "Aldi briefly sold "protein" chicken sausages…"`. The matching persona verbatim (quote + URL) is attached in `verbatim`, found by (1) a persona verbatim from a thread the trigger cites, (2) a quote inside the trigger's source, (3) the persona verbatim with the most word overlap; the method is recorded.
+
+**Per event** (`jev` block): `decision` {probabilities, options, option_order, confidence, argmax, sampled, sampled_is_argmax, draw_u}, `self`, `pick_up` {p, draw_u, examined}, `appeal` {score, level, probabilities, confidence, p_dislike_or_avoid}, `nouls` (all p), `nouls_fired` (text, p, source), `mechanism` {choice, probabilities, confidence, option_order}, `requests` [{purpose A/B, jev_model e.g. `jev-1.13.0`, cache_key, input/output tokens, cost_usd}]. Static text (rules, level labels, pricing, docs) is in the run-level `jev_legend`. `data/sim/cache/jev/<cache_key>.json` holds the exact state, questions and raw answer for every request.
+
+**Plumbing.** `jev.ask(state: dict, questions: dict, *, tag: str) -> dict` is the reusable entry point (also for `swaps.py`, `pack_test.py`, `layout_optimise.py`): returns the raw API JSON (`model`, `answers`, `usage`) plus `cached`, `cost`, `cache_key`. Disk cache on sha256(model, state, questions); every uncached call is appended to `data/sim/cost_log.jsonl` with `model: "jev"`. Key from `.env` (`TYPESAFE_API_KEY`) first. A shared token bucket keeps under 70 req/s and 90k tok/s (limits 80 req/s, 100k tok/s); the SDK retries 429/5xx with backoff (`max_retries=6`). Cost = input tokens × $0.042/M (output free).
 
 ## AI-agent arm (`agent_shopper.py`)
 
-The same catalogue is rendered as a JSON feed of structured OFF fields, shuffled with a seed on each run, under 4 missions that each carry a source. The run log uses the same event shape, with `persona_id: "ai_agent"` and the feed `position` on every event. `position_bias` reports, per model, the share of picks at position 1 against the 1/n expected if order did not matter (with a CI).
+The same catalogue is rendered as a feed, shuffled with a seed on each run, under 4 missions that each carry a source. Default model is **Jev**: one Choice whose options are the feed items **in feed order** (`f0` = position 1) plus `none`, so the first-option lean is measured rather than hidden; feeds over 254 items go hierarchical (per-category Choice, then a final Choice over category winners). Numbers are bucketed to words like the shopper engine. The pick is sampled from the distribution with a seeded draw. The run log uses the same event shape, with `persona_id: "ai_agent"` and the feed `position` on every event. `position_bias` reports, per model, the share of picks at position 1 against the 1/n expected (with a CI), and for Jev also `mean_prob_at_1` vs `uniform_prob_at_1` and `argmax_at_1`. OpenRouter models are only used if named in `--models`.
 
 ## Optimiser (`optimise.py`)
 
@@ -46,7 +77,14 @@ It makes honest edits only:
 
 Only agents whose path enters the edited unit are re-run, with the same seed and the same notice draws. The output is Δpick with a Newcomb hybrid-Wilson 95% CI, which is conservative because it treats the two arms as independent. Results go to `data/sim/optimise/`.
 
-## LLM plumbing (`llm.py`)
+## Server (`server.py`, :8787, CORS on every response)
+
+- `POST /api/run` `{planogram, agents, seed, engine: "jev"|"mock"|"llm", persona_ids?: [...], agents_per_persona?: N}`: runs the store (Jev by default; the UI's `mock: false` means Jev) and returns the run JSON. `persona_ids` + `agents_per_persona` test only those personas.
+- `POST /api/agent_run` `{models: ["jev"], runs, seed}` · `POST /api/optimise` `{product, agents, seeds, edits, engine}` · `GET /api/runs`, `/api/runs/<id>`, `/api/coefficients`, `/api/health`.
+- `GET /api/personas`: every persona from `data/personas/lens/*.json` and `data/personas/custom/*.json`, each with `custom: true|false`.
+- `POST /api/personas` (persona builder): body in CONTRACT shape; required `name, archetype, mission, budget_gbp, ocean{O,C,E,A,N}, lens[{attribute, off_field, direction, weight, why}], rejection_triggers[], trust_signals[]`. Validation: mission must be a known mission; OCEAN clamped to 0–1 (clamps recorded); every `off_field` must be a real catalogue field (400 with the valid list otherwise); lens weights normalised to sum to 1 (the typed value is kept as `weight_input`). Missing `sim_params` are borrowed from the nearest existing persona by 0.5·cosine(OCEAN centred at 0.5) + 0.5·cosine(lens weights by off_field), recorded in `sim_params_borrowed_from` and per key in `sim_params_sources`. Every user-set value has source `"user-defined (dashboard)"`. Saved to `data/personas/custom/<slug>.json` (id `p_custom_<slug>`), which `run.py` loads automatically.
+
+## LLM plumbing (`llm.py`, only for `--engine llm` or explicit OpenRouter models)
 
 - Calls OpenRouter `/chat/completions` with `response_format: json_object`, `usage.include` (to get the real cost per call) and `reasoning.enabled=false`. It retries with backoff on 429/5xx or bad JSON.
 - Responses are cached on disk at `data/sim/cache/<sha256(model, messages, max_tokens, temperature)>.json`.
@@ -56,13 +94,18 @@ Only agents whose path enters the edited unit are re-run, with the same seed and
 
 ## Tested (2026-10-03)
 
-- Mock end to end: `run.py --mock` with 40 agents, `agent_shopper.py --mock`, `optimise.py --mock` (2 seeds × 3 edits), and the server endpoints.
-- Real: `run.py --agents 2 --models google/gemini-2.5-flash --max-tokens 250` made 15 LLM calls, 0 errors, for **$0.0126**. That is about 2.1k prompt tokens and 95 completion tokens per call, or roughly $0.006 per shopper, so 100 shoppers cost about $0.65.
-- Real: `agent_shopper.py`, 1 run, cost under $0.001.
+- Mock end to end: `run.py --engine mock`, `agent_shopper.py --mock`, `optimise.py --mock`, server endpoints.
+- **Jev, 10 agents** (`run.py --agents 10 --engine jev --seed 3`): 204 requests (160 slots + 44 follow-ups), 786k input tokens, **$0.033**, 10.2 s wall, 0 errors. Funnel: 406 looked → 143 picked up (35%) → 76 taken (53% of pick-ups).
+- **Jev, 300 agents** (`--agents 300 --engine jev --seed 11`, real 96-SKU catalogue + 24-slot planogram): 6,187 requests (461 served from cache: identical state + option order), 22.7M input tokens, **$0.87** spent ($0.95 if uncached), **222.6 s** wall (throttled by the 100k tok/s limit), 0 errors, 0 budget overrides. 19,992 product-passes: notice 57.0%, take 12.1% [11.7, 12.6], look→pickup 38.0%, pickup→take 55.9%; 8.1 items per shopper. By role, take rate: own-label 20.0%, incumbent 11.0%, challenger 8.9%. Sampled = argmax on 69% of takes; mean decision confidence 0.60. Re-running is fully cached ($0, 3.6 s).
+- **Jev AI-agent arm** (`agent_shopper.py --runs 20`): 80 shuffled feeds of 24–36 items, $0.027, 5.4 s. No first-position bias: 2.5% of picks at position 1 vs 3.5% expected (CI [0.7, 8.7]%); mean P(position 1) 0.039 vs uniform 0.035.
+- Jev optimiser smoke test (`optimise.py --product 5060088709047 --agents 12`): works; arms re-use the cache when the state is unchanged.
+- Server persona builder: GET/POST `/api/personas` and a persona-filtered Jev `POST /api/run` (3 agents, $0.005).
+- Earlier OpenRouter LLM test: about $0.006 per shopper with Gemini 2.5 Flash (2.1k prompt + 95 completion tokens per call).
 
 ## Caveats (say these out loud)
 
 - Fixtures (`sim/fixtures/`) are placeholders marked `fixture: true`. They are used only until `data/store/*.json` and `data/products/catalog.json` exist.
 - Several magnitudes are labelled assumptions in `coefficients.json`: the off-mission penalty, the seconds-at-shelf slope, browse probability and OCEAN jitter.
-- Choice-stage OCEAN effects (as opposed to notice-stage ones) reach the LLM only through the persona prompt, not as numbers.
+- Choice-stage OCEAN effects (as opposed to notice-stage ones) reach the decision engine only as behaviour phrases in the shopper state (Jev) or the persona prompt (LLM), not as numbers.
+- Jev thresholds are labelled choices, not calibrated to real shoppers: a Noul "fires" at p > 0.5; P(appeal ≤ dislikes) > 0.5 is quoted in put-back reasons. Items taken per shopper (300-agent run): 3.5 meal-deal office, 2.9 gym, 4.5 GLP-1, up to 12.4 for weekly-shop personas. Every on-mission slot gets its own decision and there is no per-trip basket cap (adding one would be a further assumption).
 - Turning a sales lift into a noticing lift assumes the whole shelf effect runs through attention (Chandon 2009).

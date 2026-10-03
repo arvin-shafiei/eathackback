@@ -4,21 +4,46 @@
 import type { StoreConfig, Planogram, Unit, Agent, SimEvent } from './types';
 
 export const G = {
-  spacing: 4.4, // gondola centre-to-centre (assumption: ~2.4m UK aisle walkway + 2x shelf depth)
+  spacing: 5.0, // gondola centre-to-centre (assumption: visual only, ~4m walkway so trolleys can pass + 1m gondola)
   depth: 1.0, // gondola depth, both sides
-  height: 2.0,
-  unitLen: 5.6,
+  height: 2.1,
+  unitLen: 6.4,
   zCentre: 10,
-  standOff: 1.25, // how far in front of the shelf face a shopper stands
+  standOff: 1.3, // how far in front of the shelf face a shopper stands
   walkSpeed: 1.3, // m/s. assumption: typical in-store walking speed is slower than the ~1.4 m/s street pace
+  aiWalkSpeed: 2.2, // m/s. assumption: visual only. ai agents read a feed, so their "walk" is just a way to show which slot they read
+  crossGap: 2.4, // cross-aisle distance from the gondola ends (room for end caps + trolleys)
+  endcapDepth: 0.7,
 };
+
+/** dwell (replay seconds) per decision. visual pacing only, never feeds a stat. */
+export const DWELL = { pick: 2.4, reject: 2.8, walk_past: 1.1, not_noticed: 0.3, ai_walk_past: 0.45, ai_pick: 1.6 } as const;
+/** within a dwell, as fractions: when the hand grabs the product, when a pick is thrown, when a reject goes back */
+export const BEAT = { grab: 0.28, launch: 0.46, putBack: 0.66, backOnShelf: 0.84 } as const;
 
 export function gondolaX(cfg: StoreConfig, aisle: number) {
   return (aisle - (cfg.aisles + 1) / 2) * G.spacing;
 }
 export const zRange = () => [G.zCentre - G.unitLen / 2, G.zCentre + G.unitLen / 2] as const;
-export const crossFront = () => zRange()[0] - 1.6;
-export const crossBack = () => zRange()[1] + 1.6;
+export const crossFront = () => zRange()[0] - G.crossGap;
+export const crossBack = () => zRange()[1] + G.crossGap;
+
+/** checkout counters + the lane next to each one; count grows with the store */
+export function checkoutLayout(cfg: StoreConfig) {
+  const n = Math.max(3, Math.min(8, cfg.aisles));
+  const pitch = 2.8;
+  const counters = Array.from({ length: n }, (_, k) => cfg.checkout.x + (k - (n - 1) / 2) * pitch);
+  return { counters, lanes: counters.map((x) => x - pitch / 2), z: cfg.checkout.z, len: 2.4 };
+}
+/** outer walls of the store, derived from the config so any aisle count fits */
+export function storeBounds(cfg: StoreConfig) {
+  const gx = Math.abs(gondolaX(cfg, cfg.aisles)) + G.depth / 2;
+  const co = checkoutLayout(cfg);
+  const halfX = Math.max(gx + G.spacing * 0.9, Math.abs(co.counters[0] - cfg.checkout.x) + 3, 10);
+  const zMin = Math.min(cfg.entrance.z - 1.4, crossFront() - 5);
+  const zMax = Math.max(cfg.checkout.z + 3.6, crossBack() + 4);
+  return { xMin: cfg.entrance.x - halfX, xMax: cfg.entrance.x + halfX, zMin, zMax, cx: cfg.entrance.x, cz: (zMin + zMax) / 2, w: halfX * 2, d: zMax - zMin };
+}
 
 export function unitFrame(cfg: StoreConfig, u: Unit) {
   const gx = gondolaX(cfg, u.aisle);
@@ -52,7 +77,7 @@ export function slotPlacements(slot: string, set: { products: string[]; facings:
   if (!set) return [];
   const total = set.products.reduce((s, c) => s + Math.max(1, set.facings?.[c] ?? 1), 0);
   const usable = G.unitLen - 0.4;
-  const fw = Math.min(0.46, usable / Math.max(total, 1));
+  const fw = Math.min(0.62, usable / Math.max(total, 1)); // facing width: fills more of the bigger shelf, still proportional to facings
   let x = -(total * fw) / 2;
   return set.products.map((code, index) => {
     const f = Math.max(1, set.facings?.[code] ?? 1);
@@ -60,6 +85,26 @@ export function slotPlacements(slot: string, set: { products: string[]; facings:
     x += f * fw;
     return p;
   });
+}
+
+export function categoryHeight(cat: string) {
+  return CAT_H[cat] ?? 0.3;
+}
+const CAT_H: Record<string, number> = {
+  soft_drinks: 0.36, crisps_savoury: 0.34, snack_bars: 0.22, breakfast_cereal: 0.44, yoghurt: 0.2, biscuits_chocolate: 0.24,
+  plant_milk_dairy_alt: 0.4, ready_meals_soup: 0.3, bakery_bread: 0.3, frozen_icecream: 0.26, hot_drinks: 0.32, confectionery_sweets: 0.2,
+};
+/** world centre of the front facing of `code` in `slot` (falls back to slot centre) */
+export function productWorld(cfg: StoreConfig, plan: Planogram, rawSlot: string, code: string | null) {
+  const slot = shelfSlotFor(plan, rawSlot, code);
+  const { unit, row } = parseSlot(slot);
+  const u = cfg.units.find((x) => x.id === unit);
+  if (!u) return null;
+  const pl = slotPlacements(slot, plan[slot]);
+  const p = code ? pl.find((q) => q.code === code) : null;
+  const w = unitLocalToWorld(cfg, u, p ? p.lx : 0, -0.2);
+  const h = Math.min(categoryHeight(plan[slot]?.category ?? u.category), rowGap(cfg) - 0.1);
+  return { x: w.x, y: rowY(cfg, row) + h / 2, z: w.z, slot, unit: u, h };
 }
 
 // ---------------- shopper routing & timeline ----------------
@@ -103,34 +148,44 @@ function route(a: WP, b: WP): WP[] {
   return out;
 }
 
-export function buildTimeline(cfg: StoreConfig, plan: Planogram, agent: Agent, startAt: number, seedIdx: number): Timeline {
+export function buildTimeline(cfg: StoreConfig, plan: Planogram, agent: Agent, startAt: number, seedIdx: number, ai = false): Timeline {
   const units = Object.fromEntries(cfg.units.map((u) => [u.id, u]));
   const jitter = ((seedIdx * 37) % 7) / 7 * 0.5 - 0.25;
+  const speed = ai ? G.aiWalkSpeed : G.walkSpeed;
   const segs: Seg[] = [];
   let t = startAt;
-  let cur: WP = { x: cfg.entrance.x + jitter, z: cfg.entrance.z, walkway: null };
+  // spawn outside the sliding doors and walk in
+  let cur: WP = { x: cfg.entrance.x + jitter * 3, z: cfg.entrance.z - 4.2, walkway: null };
   const moveTo = (b: WP) => {
     for (const w of route(cur, b)) {
       const d = Math.hypot(w.x - cur.x, w.z - cur.z);
       if (d < 1e-3) { cur = w; continue; }
-      const dt = d / G.walkSpeed;
+      const dt = d / speed;
       segs.push({ t0: t, t1: t + dt, a: cur, b: w, kind: 'move' });
       t += dt; cur = w;
     }
   };
+  moveTo({ x: cfg.entrance.x + jitter * 2, z: cfg.entrance.z + 0.6, walkway: null });
   // events grouped in order; if events are empty fall back to path
   const evs = agent.events.length ? agent.events : agent.path.map((slot, i) => ({ step: i, slot, product: '', p_notice: 0, noticed: false, decision: 'not_noticed' as const }));
   for (const e of evs) {
     const sp = standPoint(cfg, units, plan, e.slot, e.product || null, jitter);
     if (!sp) continue;
     moveTo(sp);
-    const dwell = e.decision === 'not_noticed' ? 0.25 : e.decision === 'walk_past' ? 1.1 : 2.2;
+    const dwell = ai
+      ? (e.decision === 'pick' ? DWELL.ai_pick : DWELL.ai_walk_past)
+      : DWELL[e.decision] ?? DWELL.walk_past;
     const u = units[parseSlot(shelfSlotFor(plan, e.slot, e.product || null)).unit];
     const face = u ? Math.atan2(-unitFrame(cfg, u).dir, 0) : 0;
     segs.push({ t0: t, t1: t + dwell, a: cur, b: cur, kind: 'dwell', event: e, slot: e.slot, face });
     t += dwell;
   }
-  moveTo({ x: cfg.checkout.x + jitter, z: cfg.checkout.z, walkway: null });
+  // to a checkout lane: leave the aisles by the back cross-aisle, queue, pay
+  const co = checkoutLayout(cfg);
+  const laneX = co.lanes[seedIdx % co.lanes.length] + jitter * 0.6;
+  if (cur.walkway !== null) moveTo({ x: cur.x, z: crossBack(), walkway: null });
+  moveTo({ x: laneX, z: co.z - co.len / 2 - 1.2, walkway: null });
+  moveTo({ x: laneX, z: co.z + co.len / 2 + 0.9, walkway: null });
   return { segs, start: startAt, end: t };
 }
 

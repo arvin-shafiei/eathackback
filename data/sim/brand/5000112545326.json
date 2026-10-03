@@ -1,0 +1,1290 @@
+{
+ "code": "5000112545326",
+ "name": "Coca-Cola Original Taste",
+ "brand": "Coca-Cola",
+ "category": "soft_drinks",
+ "role": "incumbent",
+ "price_gbp": 1.15,
+ "price_source": "assumption: typical UK single-unit shelf price, Oct 2026, estimated by curator; no retailer page fetched (bot-blocked); single 330ml can",
+ "off_url": "https://world.openfoodfacts.org/product/5000112545326",
+ "pack_copy": "coca-cola original taste 330ml can",
+ "funnel": {
+  "shown": 133,
+  "looked": 78,
+  "picked_up": 19,
+  "put_back": 4,
+  "taken": 15,
+  "look": {
+   "k": 78,
+   "n": 133,
+   "rate": 0.5865,
+   "ci95": [
+    0.5015,
+    0.6666
+   ]
+  },
+  "pick_up": {
+   "k": 19,
+   "n": 78,
+   "rate": 0.2436,
+   "ci95": [
+    0.1619,
+    0.3494
+   ]
+  },
+  "keep": {
+   "k": 15,
+   "n": 19,
+   "rate": 0.7895,
+   "ci95": [
+    0.5667,
+    0.9149
+   ]
+  },
+  "take": {
+   "k": 15,
+   "n": 133,
+   "rate": 0.1128,
+   "ci95": [
+    0.0695,
+    0.1778
+   ]
+  }
+ },
+ "category_funnel": {
+  "shown": 1596,
+  "looked": 880,
+  "picked_up": 249,
+  "put_back": 150,
+  "taken": 99,
+  "look": {
+   "k": 880,
+   "n": 1596,
+   "rate": 0.5514,
+   "ci95": [
+    0.5269,
+    0.5756
+   ]
+  },
+  "pick_up": {
+   "k": 249,
+   "n": 880,
+   "rate": 0.283,
+   "ci95": [
+    0.2542,
+    0.3136
+   ]
+  },
+  "keep": {
+   "k": 99,
+   "n": 249,
+   "rate": 0.3976,
+   "ci95": [
+    0.3388,
+    0.4595
+   ]
+  },
+  "take": {
+   "k": 99,
+   "n": 1596,
+   "rate": 0.062,
+   "ci95": [
+    0.0512,
+    0.0749
+   ]
+  }
+ },
+ "n_products_in_category": 12,
+ "diagnosis": {
+  "stage": "pick_up",
+  "ratios_vs_category": {
+   "look": 1.064,
+   "pick_up": 0.861,
+   "keep": 1.986
+  },
+  "strength": "directional (product 95% CI overlaps the category rate; run more agents to confirm)",
+  "text": "loses people at PICK-UP: the pack doesn't earn a closer look. They see it and keep walking. (directional)",
+  "next_test": "test pack copy: lead with a true claim it qualifies for (sim/pack_test.py)",
+  "rule": "lowest product/category conversion ratio among stages with n >= 3 (assumption: MIN_N=3)"
+ },
+ "evidence": {
+  "look": {
+   "mean_p_notice": 0.6258,
+   "category_mean_p_notice": 0.5523,
+   "shelf_rows_seen": {
+    "eye": 133
+   },
+   "mean_facings": 1.0,
+   "mean_logit_terms": {
+    "alpha0": 1.1597,
+    "row": 0.0,
+    "facings": 0.0,
+    "centre": -0.288,
+    "mission": -0.3308,
+    "time": 0.0009,
+    "ocean": 0.0262
+   },
+   "source": "event.p_notice and notice_factors.logit_terms (sim/notice.py; coefficients + sources in sim/coefficients.json)"
+  },
+  "pick_up": {
+   "mean_jev_p_pick_up": 0.1795,
+   "category_mean_jev_p_pick_up": 0.2032,
+   "mean_jev_appeal_score_0_4": 1.5781,
+   "category_mean_jev_appeal_score_0_4": 1.6563,
+   "feeling_of_those_who_walked_on": {
+    "dislikes": 24,
+    "would actively avoid": 21,
+    "indifferent": 12,
+    "really wants it": 2
+   },
+   "source": "event.p_pick_up (Jev Noul 'Does shopper pick up products[i] to look at it more closely?') and event.jev.appeal.score (Jev Score, 5 levels), sim/jev.py"
+  },
+  "put_back": {
+   "n_put_back": 4,
+   "mechanisms": {
+    "price_anchor": 2,
+    "habit": 1,
+    "indifference": 1
+   },
+   "top_triggers": [
+    {
+     "trigger": "Incumbent she already knows, with no new flavour or format (nothing to try)",
+     "n_events": 1,
+     "mean_jev_p": 0.88,
+     "personas": [
+      "p_novelty_seeker_tiktok"
+     ],
+     "source": "Variety-seeking construct, Van Trijp & Steenkamp 1992 ERAE 19(2):181-195. Weight = assumption",
+     "verbatims": [
+      {
+       "quote": "I thought this too but I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing like orange chicken and both flavours were vile",
+       "url": "https://www.reddit.com/comments/1wqczct",
+       "method": "persona verbatim with most word overlap (2 shared words)"
+      }
+     ]
+    }
+   ],
+   "glance_triggers_on_lookers": [
+    {
+     "trigger": "Incumbent she already knows, with no new flavour or format (nothing to try)",
+     "n_events": 19,
+     "mean_jev_p": 0.866,
+     "personas": [
+      "p_novelty_seeker_tiktok"
+     ],
+     "source": "Variety-seeking construct, Van Trijp & Steenkamp 1992 ERAE 19(2):181-195. Weight = assumption",
+     "verbatims": [
+      {
+       "quote": "I thought this too but I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing like orange chicken and both flavours were vile",
+       "url": "https://www.reddit.com/comments/1wqczct",
+       "method": "persona verbatim with most word overlap (2 shared words)"
+      }
+     ]
+    },
+    {
+     "trigger": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+     "n_events": 1,
+     "mean_jev_p": 0.94,
+     "personas": [
+      "p_upf_avoider_parent"
+     ],
+     "source": "https://www.reddit.com/comments/1ow5fne ; https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF; only 13% identify all five UPFs)",
+     "verbatims": [
+      {
+       "quote": "Rather than brands I'm trying to cut down on how much ultra-processed food I eat so it really depends which version is less processed. ... a lot of branded stuff tends to have filler ingredients to give a better texture (e.g emulsifiers)",
+       "url": "https://www.reddit.com/comments/1ow5fne",
+       "method": "persona verbatim from the trigger's cited thread"
+      }
+     ]
+    },
+    {
+     "trigger": "Brand or challenger price_per_100g ≥ ~2-3x the own-label equivalent on the same shelf",
+     "n_events": 1,
+     "mean_jev_p": 0.79,
+     "personas": [
+      "p_frugal_unit_price"
+     ],
+     "source": "https://www.reddit.com/comments/1b4i3rn ('more than three times the price?! It's just tomatoes and sugar!')",
+     "verbatims": [
+      {
+       "quote": "Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times the price?! It's just tomatoes and sugar!",
+       "url": "https://www.reddit.com/comments/1b4i3rn",
+       "method": "persona verbatim from the trigger's cited thread"
+      }
+     ]
+    }
+   ],
+   "example_reasons": [
+    {
+     "persona": "p_meal_deal_office",
+     "reason": "[jev] picked it up, put it back: appeal 'really wants it', habit (p=0.96); P(take)=0.85, took Coke Zero",
+     "run": "run_20261003_120522_s11_jev_e5e0",
+     "agent": "a109"
+    },
+    {
+     "persona": "p_protein_gym",
+     "reason": "[jev] picked it up, put it back: P(dislikes or avoids)=0.86, appeal 'dislikes', price (p=0.57)",
+     "run": "run_20261003_120522_s11_jev_e5e0",
+     "agent": "a148"
+    },
+    {
+     "persona": "p_novelty_seeker_tiktok",
+     "reason": "[jev] picked it up, put it back: sees 'Incumbent she already knows, with no new flavour or format (nothing to try)' (p=0.88) — like \"I thought this too but I saw someone on Tik Tok give them a go and she said they tasted absolutely nothing lik\"",
+     "run": "run_20261003_120522_s11_jev_e5e0",
+     "agent": "a172"
+    }
+   ],
+   "budget_overrides": 0,
+   "source": "event.jev.nouls (Jev Noul per persona put-off, each with its own source), event.verbatim (persona Reddit quote + URL, sim/jev.py verbatim_for), event.mechanism (Jev Choice)"
+  }
+ },
+ "by_archetype": {
+  "ai_delegator": {
+   "shown": 8,
+   "looked": 6,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 6,
+    "n": 8,
+    "rate": 0.75,
+    "ci95": [
+     0.4093,
+     0.9285
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 6,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3903
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 8,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3244
+    ]
+   }
+  },
+  "allergen_coeliac": {
+   "shown": 9,
+   "looked": 3,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 3,
+    "n": 9,
+    "rate": 0.3333,
+    "ci95": [
+     0.1206,
+     0.6458
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 9,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2992
+    ]
+   }
+  },
+  "eco_low_chemical": {
+   "shown": 5,
+   "looked": 2,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 2,
+    "n": 5,
+    "rate": 0.4,
+    "ci95": [
+     0.1176,
+     0.7693
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 5,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4345
+    ]
+   }
+  },
+  "frugal_unit_price": {
+   "shown": 7,
+   "looked": 4,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 4,
+    "n": 7,
+    "rate": 0.5714,
+    "ci95": [
+     0.2505,
+     0.8418
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 4,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4899
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 7,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3543
+    ]
+   }
+  },
+  "glp1_small_appetite": {
+   "shown": 4,
+   "looked": 1,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 1,
+    "n": 4,
+    "rate": 0.25,
+    "ci95": [
+     0.0456,
+     0.6994
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 1,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 4,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.4899
+    ]
+   }
+  },
+  "habit_loyalist_shrinkflation_angry": {
+   "shown": 6,
+   "looked": 2,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 2,
+    "n": 6,
+    "rate": 0.3333,
+    "ci95": [
+     0.0968,
+     0.7
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 6,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.3903
+    ]
+   }
+  },
+  "meal_deal_office": {
+   "shown": 26,
+   "looked": 18,
+   "picked_up": 16,
+   "put_back": 1,
+   "taken": 15,
+   "look": {
+    "k": 18,
+    "n": 26,
+    "rate": 0.6923,
+    "ci95": [
+     0.5001,
+     0.835
+    ]
+   },
+   "pick_up": {
+    "k": 16,
+    "n": 18,
+    "rate": 0.8889,
+    "ci95": [
+     0.672,
+     0.969
+    ]
+   },
+   "keep": {
+    "k": 15,
+    "n": 16,
+    "rate": 0.9375,
+    "ci95": [
+     0.7167,
+     0.9889
+    ]
+   },
+   "take": {
+    "k": 15,
+    "n": 26,
+    "rate": 0.5769,
+    "ci95": [
+     0.3895,
+     0.7446
+    ]
+   }
+  },
+  "novelty_seeker_tiktok": {
+   "shown": 26,
+   "looked": 20,
+   "picked_up": 1,
+   "put_back": 1,
+   "taken": 0,
+   "look": {
+    "k": 20,
+    "n": 26,
+    "rate": 0.7692,
+    "ci95": [
+     0.5795,
+     0.8897
+    ]
+   },
+   "pick_up": {
+    "k": 1,
+    "n": 20,
+    "rate": 0.05,
+    "ci95": [
+     0.0089,
+     0.2361
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 1,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  },
+  "protein_gym": {
+   "shown": 26,
+   "looked": 18,
+   "picked_up": 2,
+   "put_back": 2,
+   "taken": 0,
+   "look": {
+    "k": 18,
+    "n": 26,
+    "rate": 0.6923,
+    "ci95": [
+     0.5001,
+     0.835
+    ]
+   },
+   "pick_up": {
+    "k": 2,
+    "n": 18,
+    "rate": 0.1111,
+    "ci95": [
+     0.031,
+     0.328
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 26,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.1287
+    ]
+   }
+  },
+  "protein_sceptic_gimmick_reactant": {
+   "shown": 3,
+   "looked": 0,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.5615
+    ]
+   }
+  },
+  "upf_avoider_parent": {
+   "shown": 10,
+   "looked": 3,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 3,
+    "n": 10,
+    "rate": 0.3,
+    "ci95": [
+     0.1078,
+     0.6032
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.5615
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 10,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.2775
+    ]
+   }
+  },
+  "vegan_ethical": {
+   "shown": 3,
+   "looked": 1,
+   "picked_up": 0,
+   "put_back": 0,
+   "taken": 0,
+   "look": {
+    "k": 1,
+    "n": 3,
+    "rate": 0.3333,
+    "ci95": [
+     0.0615,
+     0.7923
+    ]
+   },
+   "pick_up": {
+    "k": 0,
+    "n": 1,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.7935
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 0,
+    "rate": null,
+    "ci95": [
+     0.0,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 3,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.5615
+    ]
+   }
+  }
+ },
+ "by_ocean_segment": {
+  "A_high": {
+   "shown": 85,
+   "looked": 51,
+   "picked_up": 17,
+   "put_back": 3,
+   "taken": 14,
+   "look": {
+    "k": 51,
+    "n": 85,
+    "rate": 0.6,
+    "ci95": [
+     0.4937,
+     0.6976
+    ]
+   },
+   "pick_up": {
+    "k": 17,
+    "n": 51,
+    "rate": 0.3333,
+    "ci95": [
+     0.2197,
+     0.4703
+    ]
+   },
+   "keep": {
+    "k": 14,
+    "n": 17,
+    "rate": 0.8235,
+    "ci95": [
+     0.5897,
+     0.9381
+    ]
+   },
+   "take": {
+    "k": 14,
+    "n": 85,
+    "rate": 0.1647,
+    "ci95": [
+     0.1007,
+     0.2577
+    ]
+   }
+  },
+  "A_low": {
+   "shown": 48,
+   "looked": 27,
+   "picked_up": 2,
+   "put_back": 1,
+   "taken": 1,
+   "look": {
+    "k": 27,
+    "n": 48,
+    "rate": 0.5625,
+    "ci95": [
+     0.4227,
+     0.693
+    ]
+   },
+   "pick_up": {
+    "k": 2,
+    "n": 27,
+    "rate": 0.0741,
+    "ci95": [
+     0.0206,
+     0.2337
+    ]
+   },
+   "keep": {
+    "k": 1,
+    "n": 2,
+    "rate": 0.5,
+    "ci95": [
+     0.0945,
+     0.9055
+    ]
+   },
+   "take": {
+    "k": 1,
+    "n": 48,
+    "rate": 0.0208,
+    "ci95": [
+     0.0037,
+     0.109
+    ]
+   }
+  },
+  "C_high": {
+   "shown": 80,
+   "looked": 39,
+   "picked_up": 7,
+   "put_back": 3,
+   "taken": 4,
+   "look": {
+    "k": 39,
+    "n": 80,
+    "rate": 0.4875,
+    "ci95": [
+     0.3811,
+     0.5951
+    ]
+   },
+   "pick_up": {
+    "k": 7,
+    "n": 39,
+    "rate": 0.1795,
+    "ci95": [
+     0.0898,
+     0.3267
+    ]
+   },
+   "keep": {
+    "k": 4,
+    "n": 7,
+    "rate": 0.5714,
+    "ci95": [
+     0.2505,
+     0.8418
+    ]
+   },
+   "take": {
+    "k": 4,
+    "n": 80,
+    "rate": 0.05,
+    "ci95": [
+     0.0196,
+     0.1216
+    ]
+   }
+  },
+  "C_low": {
+   "shown": 53,
+   "looked": 39,
+   "picked_up": 12,
+   "put_back": 1,
+   "taken": 11,
+   "look": {
+    "k": 39,
+    "n": 53,
+    "rate": 0.7358,
+    "ci95": [
+     0.6042,
+     0.8356
+    ]
+   },
+   "pick_up": {
+    "k": 12,
+    "n": 39,
+    "rate": 0.3077,
+    "ci95": [
+     0.1857,
+     0.4642
+    ]
+   },
+   "keep": {
+    "k": 11,
+    "n": 12,
+    "rate": 0.9167,
+    "ci95": [
+     0.6461,
+     0.9851
+    ]
+   },
+   "take": {
+    "k": 11,
+    "n": 53,
+    "rate": 0.2075,
+    "ci95": [
+     0.12,
+     0.3346
+    ]
+   }
+  },
+  "E_high": {
+   "shown": 98,
+   "looked": 64,
+   "picked_up": 16,
+   "put_back": 4,
+   "taken": 12,
+   "look": {
+    "k": 64,
+    "n": 98,
+    "rate": 0.6531,
+    "ci95": [
+     0.5547,
+     0.7399
+    ]
+   },
+   "pick_up": {
+    "k": 16,
+    "n": 64,
+    "rate": 0.25,
+    "ci95": [
+     0.1601,
+     0.3682
+    ]
+   },
+   "keep": {
+    "k": 12,
+    "n": 16,
+    "rate": 0.75,
+    "ci95": [
+     0.505,
+     0.8982
+    ]
+   },
+   "take": {
+    "k": 12,
+    "n": 98,
+    "rate": 0.1224,
+    "ci95": [
+     0.0715,
+     0.2019
+    ]
+   }
+  },
+  "E_low": {
+   "shown": 35,
+   "looked": 14,
+   "picked_up": 3,
+   "put_back": 0,
+   "taken": 3,
+   "look": {
+    "k": 14,
+    "n": 35,
+    "rate": 0.4,
+    "ci95": [
+     0.2555,
+     0.5643
+    ]
+   },
+   "pick_up": {
+    "k": 3,
+    "n": 14,
+    "rate": 0.2143,
+    "ci95": [
+     0.0757,
+     0.4759
+    ]
+   },
+   "keep": {
+    "k": 3,
+    "n": 3,
+    "rate": 1.0,
+    "ci95": [
+     0.4385,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 3,
+    "n": 35,
+    "rate": 0.0857,
+    "ci95": [
+     0.0296,
+     0.2238
+    ]
+   }
+  },
+  "N_high": {
+   "shown": 56,
+   "looked": 27,
+   "picked_up": 7,
+   "put_back": 0,
+   "taken": 7,
+   "look": {
+    "k": 27,
+    "n": 56,
+    "rate": 0.4821,
+    "ci95": [
+     0.3567,
+     0.6099
+    ]
+   },
+   "pick_up": {
+    "k": 7,
+    "n": 27,
+    "rate": 0.2593,
+    "ci95": [
+     0.1317,
+     0.4468
+    ]
+   },
+   "keep": {
+    "k": 7,
+    "n": 7,
+    "rate": 1.0,
+    "ci95": [
+     0.6457,
+     1.0
+    ]
+   },
+   "take": {
+    "k": 7,
+    "n": 56,
+    "rate": 0.125,
+    "ci95": [
+     0.0619,
+     0.2363
+    ]
+   }
+  },
+  "N_low": {
+   "shown": 77,
+   "looked": 51,
+   "picked_up": 12,
+   "put_back": 4,
+   "taken": 8,
+   "look": {
+    "k": 51,
+    "n": 77,
+    "rate": 0.6623,
+    "ci95": [
+     0.5512,
+     0.758
+    ]
+   },
+   "pick_up": {
+    "k": 12,
+    "n": 51,
+    "rate": 0.2353,
+    "ci95": [
+     0.14,
+     0.3676
+    ]
+   },
+   "keep": {
+    "k": 8,
+    "n": 12,
+    "rate": 0.6667,
+    "ci95": [
+     0.3906,
+     0.8619
+    ]
+   },
+   "take": {
+    "k": 8,
+    "n": 77,
+    "rate": 0.1039,
+    "ci95": [
+     0.0536,
+     0.1918
+    ]
+   }
+  },
+  "O_high": {
+   "shown": 58,
+   "looked": 36,
+   "picked_up": 2,
+   "put_back": 2,
+   "taken": 0,
+   "look": {
+    "k": 36,
+    "n": 58,
+    "rate": 0.6207,
+    "ci95": [
+     0.492,
+     0.7344
+    ]
+   },
+   "pick_up": {
+    "k": 2,
+    "n": 36,
+    "rate": 0.0556,
+    "ci95": [
+     0.0154,
+     0.1814
+    ]
+   },
+   "keep": {
+    "k": 0,
+    "n": 2,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.6576
+    ]
+   },
+   "take": {
+    "k": 0,
+    "n": 58,
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0621
+    ]
+   }
+  },
+  "O_low": {
+   "shown": 75,
+   "looked": 42,
+   "picked_up": 17,
+   "put_back": 2,
+   "taken": 15,
+   "look": {
+    "k": 42,
+    "n": 75,
+    "rate": 0.56,
+    "ci95": [
+     0.4475,
+     0.6667
+    ]
+   },
+   "pick_up": {
+    "k": 17,
+    "n": 42,
+    "rate": 0.4048,
+    "ci95": [
+     0.2704,
+     0.5551
+    ]
+   },
+   "keep": {
+    "k": 15,
+    "n": 17,
+    "rate": 0.8824,
+    "ci95": [
+     0.6566,
+     0.9671
+    ]
+   },
+   "take": {
+    "k": 15,
+    "n": 75,
+    "rate": 0.2,
+    "ci95": [
+     0.1251,
+     0.3041
+    ]
+   }
+  }
+ },
+ "benchmark": {
+  "sim_take_rank_in_category": 1,
+  "sim_ranked_products": 12,
+  "sim_rank_rule": "rank by take rate among category products shown >= 3 times in these runs",
+  "nielseniq": [
+   {
+    "category": "soft_drinks",
+    "rank": 1,
+    "brand": "Coca-Cola",
+    "product_or_range": "Coca-Cola Original Taste",
+    "sales_value_gbp_m": "894",
+    "yoy_change": "+1.3%",
+    "period": "52w to 24 May 2025",
+    "channel": "total grocery",
+    "table": "nielsen_top25_softdrink_skus_may2025",
+    "source_name": "Talking Retail / Independent Retail News (NIQ total grocery)",
+    "source_url": "https://www.talkingretail.com/advice/category-management/masters-of-pop-in-focus-top-25-soft-drinks-18-09-2025/",
+    "same_category": true,
+    "match_level": "product (shares: taste)",
+    "table_size": 25
+   },
+   {
+    "category": "soft_drinks",
+    "rank": 1,
+    "brand": "Coca-Cola",
+    "product_or_range": "Coca-Cola (all variants, carbonates) - supplier CCEP GB",
+    "sales_value_gbp_m": "1892.4",
+    "yoy_change": "+2.5% (+45.7£m)",
+    "period": "52w to 6 Sep 2025",
+    "channel": "total grocery",
+    "table": "top_products_carbonates",
+    "source_name": "The Grocer Top Products Survey 2025 / NIQ",
+    "source_url": "https://www.thegrocer.co.uk/rankings/soft-drinks-carbonates-and-energy-drinks-2025-sales-fizz-for-functional-soda-brands/713072.article",
+    "same_category": true,
+    "match_level": "brand only",
+    "table_size": 10
+   },
+   {
+    "category": "soft_drinks",
+    "rank": 2,
+    "brand": "Coca-Cola",
+    "product_or_range": "Coca-Cola total brand (all grocery categories)",
+    "sales_value_gbp_m": "1889.3",
+    "yoy_change": "+1.8%",
+    "period": "52w to 31 Dec 2025",
+    "channel": "total grocery",
+    "table": "bbb2026_brand_umbrella",
+    "source_name": "The Grocer Britain's Biggest Brands 2026 / NIQ",
+    "source_url": "https://www.thegrocer.co.uk/rankings/britains-biggest-brands-2026-the-top-100/716575.article",
+    "same_category": true,
+    "match_level": "brand only",
+    "table_size": 13
+   }
+  ],
+  "nielseniq_note": null
+ },
+ "ai_agent_arm": {
+  "all": {
+   "k": 0,
+   "n": 20,
+   "rate": 0.0,
+   "ci95": [
+    0.0,
+    0.1611
+   ]
+  },
+  "jev-1.13.0": {
+   "k": 0,
+   "n": 20,
+   "rate": 0.0,
+   "ci95": [
+    0.0,
+    0.1611
+   ]
+  }
+ },
+ "ai_agent_arm_note": "share of Jev AI-agent feed runs (data/sim/runs/agent_*.json) that picked it; position-shuffled feed",
+ "trace": {
+  "runs": [
+   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
+   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+  ],
+  "all_runs_read": [
+   "data/sim/runs/run_20261003_120130_s3_jev_c554.json",
+   "data/sim/runs/run_20261003_120522_s11_jev_e5e0.json"
+  ],
+  "stage_method": {
+   "stage_reached": 133
+  },
+  "ci": "Wilson score interval, z=1.96 (Wilson 1927, JASA 22:209)",
+  "definitions": {
+   "look": "looked / shown (notice gate, sim/notice.py)",
+   "pick_up": "picked_up / looked (Jev pick-up Noul sampled with a CRN draw)",
+   "keep": "taken / picked_up (1 - put-back rate)",
+   "take": "taken / shown",
+   "ocean_segment": "trait >= 0.5 = high (sim/README.md convention)"
+  },
+  "category_average": "pooled events of every product in the same category in the same runs"
+ }
+}

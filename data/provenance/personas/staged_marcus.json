@@ -1,0 +1,1222 @@
+{
+ "persona_id": "staged_marcus",
+ "name": "Marcus",
+ "archetype": "Founder: viral challenger drinks brand (Gutsy Pop)",
+ "kind": "staged",
+ "source_file": "data/personas/staged_personas_v1.json[6]",
+ "fields": [
+  {
+   "field": "behavioural_drivers[0]",
+   "kind": "lens_weight",
+   "label": "driver: Proof-it-moves anxiety: velocity per store, not buzz, decides survival, and ... (w=0.9)",
+   "value": 0.9,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q82o9c",
+     "thread_id": "1q82o9c",
+     "subreddit": "Entrepreneur",
+     "theme": "small_brand_listing",
+     "score": 1,
+     "verbatim": "Proof it moves. Sales and revenue per facing/inch are the most important factor for me - I want products that my customers are buying because ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Proof-it-moves anxiety: velocity per store, not buzz, decides survival, and Marcus knows it",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[1]",
+   "kind": "lens_weight",
+   "label": "driver: The rate-of-sale cliff: a short, unforgiving trial window, so every ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "sales_data",
+     "method": "keyword:'IRI'",
+     "citation": "IRI, 3,000+ UK launches: '10% of all new products were pulled in their first year, lasting an average of 32 weeks'"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'rate of sale'",
+     "citation": "'Products with SRI below 40 begin delisting after 36 weeks'. Also: Little Dish 'started as a trial in twenty Waitrose stores, and the challenge was whether a short shelf-life product could meet the rate of sale and wastage targets needed ..."
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "'Products with SRI below 40 begin delisting after 36 weeks'. Also: Little Dish 'started as a trial in twenty Waitrose stores, and the challenge was whether a short shelf-life product could meet the rate of sale and wastage targets needed ..."
+    }
+   ],
+   "principle": "The rate-of-sale cliff: a short, unforgiving trial window, so every week of the 40-store test feels existential",
+   "classes": [
+    "sales_data",
+    "internal_research"
+   ],
+   "class_share": {
+    "sales_data": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "sales_data"
+  },
+  {
+   "field": "behavioural_drivers[2]",
+   "kind": "lens_weight",
+   "label": "driver: Cold-start circularity: social and DTC traction is discounted by buyers ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/00'",
+     "citation": "RGC co-founder Adam, 'Winning listings without a sales history': \"you need the listing to generate the data, and you need the data to win the listing.\" (research/00-rgc-intel.md, reallygoodculture.com blog)"
+    }
+   ],
+   "principle": "Cold-start circularity: social and DTC traction is discounted by buyers because it does not predict their shelf",
+   "classes": [
+    "internal_research"
+   ],
+   "class_share": {
+    "internal_research": 1.0
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "behavioural_drivers[3]",
+   "kind": "lens_weight",
+   "label": "driver: Agent invisibility: taste wins mean nothing to an agent reading ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Kantar 2026: \"If an agent can't parse you, it can't choose you.\" Incumbent Advantage paper: at identical specs incumbents are recommended 100% of the time",
+     "url": null
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Kantar'",
+     "citation": "Kantar 2026: \"If an agent can't parse you, it can't choose you.\" Incumbent Advantage paper: at identical specs incumbents are recommended 100% of the time"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "a +0.075-star edge flips 50% of choices"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "'Product parameters explain 82.4% of ranking variance"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "brand identity accounts for only 1.2%.' (research/02-issue-discovery.md, kantarretailiq.com, arxiv.org/html/2606.17443v1)",
+     "url": null
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'kantar'",
+     "citation": "brand identity accounts for only 1.2%.' (research/02-issue-discovery.md, kantarretailiq.com, arxiv.org/html/2606.17443v1)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "brand identity accounts for only 1.2%.' (research/02-issue-discovery.md, kantarretailiq.com, arxiv.org/html/2606.17443v1)"
+    }
+   ],
+   "principle": "Agent invisibility: taste wins mean nothing to an agent reading thin structured data, and incumbents win at parity",
+   "classes": [
+    "paper",
+    "sales_data",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "sales_data": 0.25,
+    "internal_research": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[4]",
+   "kind": "lens_weight",
+   "label": "driver: Model-update volatility and black-box ranking: visibility can drop overnight for ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1u6kouq",
+     "thread_id": "1u6kouq",
+     "subreddit": "AmazonFBA",
+     "theme": "rufus_ai_bias",
+     "score": 1,
+     "verbatim": "I can tell you with confidence right now that even Amazon engineers who made RUFUS don't have 100% clarity of how Rufus chooses listing (unless ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "Profound, 1.76M ChatGPT runs: '450 of 687 brands lost at least a third of their visibility in one model release.' (searchenginejournal.com, via research/02-issue-discovery.md) and \"I can tell you with confidence right now that even Amazon engineers who made RUFUS don't ..."
+    }
+   ],
+   "principle": "Model-update volatility and black-box ranking: visibility can drop overnight for reasons he can't see, which makes him anxious and suspicious",
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[5]",
+   "kind": "lens_weight",
+   "label": "driver: Pay-to-play pressure: media and promo asks feel mandatory, and he ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "WH Smith founders: 'Unless you agree to buy this media space, there's no deal'"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "rate cards: social posts at Waitrose £20,000"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "'If you can't say no to a buyer, you will go bust.' (Ged Futter) (research/02-issue-discovery.md, thegrocer.co.uk 708901 and 685684)"
+    }
+   ],
+   "principle": "Pay-to-play pressure: media and promo asks feel mandatory, and he fears that refusing kills the listing",
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "behavioural_drivers[6]",
+   "kind": "lens_weight",
+   "label": "driver: Delisting cash shock: MOQ-sized stock against a listing that can ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/14yoh96",
+     "thread_id": "14yoh96",
+     "subreddit": "smallbusiness",
+     "theme": "buyer_meeting",
+     "score": 3,
+     "verbatim": "That's very common. I worked in wholesale grocery. The two worst things we could do to a new product were take it on and sell ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Delisting cash shock: MOQ-sized stock against a listing that can vanish; big-retailer wins can kill small brands",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[7]",
+   "kind": "lens_weight",
+   "label": "driver: Founder overconfidence in pack and taste as the winning lever ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/koeowj",
+     "thread_id": "koeowj",
+     "subreddit": "smallbusiness",
+     "theme": "small_brand_listing",
+     "score": 1,
+     "verbatim": "Either way, I feel pretty confident our packaging will be more eyecatching than any of our product competitors",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tuh8fe",
+     "thread_id": "1tuh8fe",
+     "subreddit": null,
+     "theme": null,
+     "score": null,
+     "verbatim": "Either way, I feel pretty confident our packaging will be more eyecatching than any of our product competitors",
+     "verified_in_corpus": false,
+     "method": "reddit_url_not_in_corpus",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Founder overconfidence in pack and taste as the winning lever (the human-shelf mental model)",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[8]",
+   "kind": "lens_weight",
+   "label": "driver: Fan mobilisation as the go-to defence when the listing is ... (w=0.55)",
+   "value": 0.55,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 259,
+     "verbatim": "if there's a brand or product that you love and can afford to buy even every other week, remember to add to your basket otherwise ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Fan mobilisation as the go-to defence when the listing is threatened (asks the community to 'add to basket')",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[9]",
+   "kind": "lens_weight",
+   "label": "driver: Fear of being copied or displaced by own-label once he ... (w=0.5)",
+   "value": 0.5,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 2,
+     "verbatim": "Sad to say my local M&S has stopped stocking it now - they've replaced it with their own brand strawberry and plain yoghurts (no more ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/14yoh96",
+     "thread_id": "14yoh96",
+     "subreddit": "smallbusiness",
+     "theme": "buyer_meeting",
+     "score": 135,
+     "verbatim": "A few weeks later was told that the retailer would pass, and 6 months later it launched its own brand of shape wear.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Fear of being copied or displaced by own-label once he has proven the need-state",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[10]",
+   "kind": "lens_weight",
+   "label": "driver: Ops fragility: one supply hiccup (out-of-stock in trial stores) can ... (w=0.55)",
+   "value": 0.55,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 5,
+     "verbatim": "Our pot supplier let us down for months! We were out of stock because we couldn't pack it!!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1q82o9c",
+     "thread_id": "1q82o9c",
+     "subreddit": "Entrepreneur",
+     "theme": "small_brand_listing",
+     "score": 2,
+     "verbatim": "The hard part is not getting the first yes, it's proving you can restock reliably and handle the boring ops without becoming a headache.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Ops fragility: one supply hiccup (out-of-stock in trial stores) can tank ROS regardless of demand",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[11]",
+   "kind": "lens_weight",
+   "label": "driver: Scepticism of AI-optimisation snake oil: he wants causal proof, not ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sp38qu",
+     "thread_id": "1sp38qu",
+     "subreddit": "FulfillmentByAmazon",
+     "theme": "rufus_ai_bias",
+     "score": 2,
+     "verbatim": "I keep seeing a million things about Rufus but I have yet to see proof that any changes in listing copy impact Rufus itself.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1u6kouq",
+     "thread_id": "1u6kouq",
+     "subreddit": "AmazonFBA",
+     "theme": "rufus_ai_bias",
+     "score": 8,
+     "verbatim": "Rufus optimization is the most common pitch I get from agencies now. It has no demonstrable effect on anything at all.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Scepticism of AI-optimisation snake oil: he wants causal proof, not an audit score",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Black-box 'agent visibility scores' with no traceable source or controlled experiment behind ...",
+   "value": "Black-box 'agent visibility scores' with no traceable source or controlled experiment behind them (RGC: 'A number that cannot be traced back to its source is worse than no number at all')",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['agent', 'box', 'number'])",
+     "theme": "tried_new_went_back",
+     "coded_section": "channel_differences",
+     "coded_text": "No AI-agent or AI-shopping-assistant discussion appears in this corpus. The closest equivalent is the search or locator box in the app ('a simple search box that returns an isle number')."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Vendor or agency pitches for 'Rufus/ChatGPT optimisation' that read like an ad ...",
+   "value": "Vendor or agency pitches for 'Rufus/ChatGPT optimisation' that read like an ad and show no before/after proof",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['optimi', 'read', 'rufus'])",
+     "theme": "rufus_ai_bias",
+     "coded_section": "surprising",
+     "coded_text": "Seller subreddits read most 'Rufus insight' posts as thinly disguised SaaS marketing. The AI-optimisation advice market itself is a trust problem."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Any recommendation that amounts to gaming or prompt-injecting agents rather than filling ...",
+   "value": "Any recommendation that amounts to gaming or prompt-injecting agents rather than filling true missing facts (brand-safety and buyer-trust risk)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['brand', 'rather', 'trust'])",
+     "theme": "trust_unknown_brand",
+     "coded_section": "surprising",
+     "coded_text": "Blatant lookalike packaging is celebrated rather than resented in UK subs ('shamelessly blatant brand rip-offs'). Mimicry works as a trust shortcut, not a negative, and only one US poster framed it as unethical."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Advice whose answer is 'spend more on media/promo' without a payback-before-range-review calculation",
+   "value": "Advice whose answer is 'spend more on media/promo' without a payback-before-range-review calculation",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Advice whose answer is 'spend more on media/promo' without a payback-before-range-review calculation"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Tools priced like syndicated data (£10-50k/yr): above his margin, so he dismisses ...",
+   "value": "Tools priced like syndicated data (£10-50k/yr): above his margin, so he dismisses them on sight",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Tools priced like syndicated data (£10-50k/yr): above his margin, so he dismisses them on sight"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "National aggregates or total-revenue framing when the buyer wants per-store base ROS",
+   "value": "National aggregates or total-revenue framing when the buyer wants per-store base ROS",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "National aggregates or total-revenue framing when the buyer wants per-store base ROS"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Output that tells him his TikTok buzz is meaningless without telling him ...",
+   "value": "Output that tells him his TikTok buzz is meaningless without telling him how to convert it into evidence the buyer accepts",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Output that tells him his TikTok buzz is meaningless without telling him how to convert it into evidence the buyer accepts"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[7]",
+   "kind": "trigger",
+   "label": "Single-run agent rankings ('you're #7 in ChatGPT'); he has seen rankings reshuffle ...",
+   "value": "Single-run agent rankings ('you're #7 in ChatGPT'); he has seen rankings reshuffle and won't trust a point estimate",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['agent', 'point', 'seen'])",
+     "theme": "rufus_ai_bias",
+     "coded_section": "mechanism",
+     "coded_text": "Perceived self-interest of the agent: a conflicted adviser, seen as an ad in disguise. People read Rufus as working for Amazon and its advertisers, not for the shopper. They point to sponsored placements inside Rufus answers. One person built an ...",
+     "url": "https://www.reddit.com/comments/1rc3t5x",
+     "subreddit": "amazonemployees",
+     "score": 43,
+     "verbatim": "does not help me it often feels like yet another add, a sponsored recommendation"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[8]",
+   "kind": "trigger",
+   "label": "Anything that requires more operational load or cash commitment during the 12-14 ...",
+   "value": "Anything that requires more operational load or cash commitment during the 12-14 week trial",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Anything that requires more operational load or cash commitment during the 12-14 week trial"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Live, repeatable before/after: fill one true attribute (fibre claim, price per litre, ...",
+   "value": "Live, repeatable before/after: fill one true attribute (fibre claim, price per litre, ingredients) and re-run agents to see share move, with confidence intervals",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Live, repeatable before/after: fill one true attribute (fibre claim, price per litre, ingredients) and re-run agents to see share move, with confidence intervals"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "Side-by-side human (taste-test) vs agent leaderboards on the SAME shelf, including Tesco ...",
+   "value": "Side-by-side human (taste-test) vs agent leaderboards on the SAME shelf, including Tesco own-label and incumbents, so he can see his specific gap",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.18; shared=['gap', 'label', 'own', 'taste'])",
+     "theme": "chatgpt_shopping",
+     "coded_section": "trust_builders",
+     "coded_text": "Own label that matches or beats a named brand on taste, at a clear price gap"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "A closed-form 'breakthrough threshold' expressed in things he can actually do this ...",
+   "value": "A closed-form 'breakthrough threshold' expressed in things he can actually do this month ('+31 reviews OR add high-fibre claim OR -£0.18/litre')",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "A closed-form 'breakthrough threshold' expressed in things he can actually do this month ('+31 reviews OR add high-fibre claim OR -£0.18/litre')"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Per-store, per-week ROS framing and source-of-volume language that mirrors what Tesco buyers ...",
+   "value": "Per-store, per-week ROS framing and source-of-volume language that mirrors what Tesco buyers ask for",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Per-store, per-week ROS framing and source-of-volume language that mirrors what Tesco buyers ask for"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Peer founder evidence and named UK cases (Penrhos 85% on promo, Nush ...",
+   "value": "Peer founder evidence and named UK cases (Penrhos 85% on promo, Nush delisting, Invest NI £111k/SKU safeguarded)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['delist', 'founde', 'nush'])",
+     "theme": "delisted",
+     "coded_section": "trust_builders",
+     "coded_text": "A founder or employee telling the delisting story honestly and personally (Nush OP): the community responded with stockist lists, trial purchases and wholesaler leads."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "Probabilities across multiple models and model versions, which explains why a model ...",
+   "value": "Probabilities across multiple models and model versions, which explains why a model update moved him rather than hiding it",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Probabilities across multiple models and model versions, which explains why a model update moved him rather than hiding it"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[6]",
+   "kind": "trust_signal",
+   "label": "Honest-only fixes, explicitly framed as data completion, which he can show the ...",
+   "value": "Honest-only fixes, explicitly framed as data completion, which he can show the buyer without embarrassment",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Honest-only fixes, explicitly framed as data completion, which he can show the buyer without embarrassment"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[7]",
+   "kind": "trust_signal",
+   "label": "Cheap entry point (around the £999 Retail Report add-on), not an annual ...",
+   "value": "Cheap entry point (around the £999 Retail Report add-on), not an annual platform contract",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Cheap entry point (around the £999 Retail Report add-on), not an annual platform contract"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[0]",
+   "kind": "habit",
+   "label": "Clear the Tesco 40-store rate-of-sale bar before the week 12-14 review, and ...",
+   "value": "Clear the Tesco 40-store rate-of-sale bar before the week 12-14 review, and know store by store, early, whether he is on track or heading for the cut",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['before', 'clear', 'store'])",
+     "theme": "online_favourites_lockin",
+     "coded_section": "trust_builders",
+     "coded_text": "Clear fibre and composition labelling, plus filters to sort by cotton, linen or wool on local shops' websites, used before a store visit."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[1]",
+   "kind": "habit",
+   "label": "Turn a TikTok trial spike into a repeat-purchase staircase, and prove to ...",
+   "value": "Turn a TikTok trial spike into a repeat-purchase staircase, and prove to the buyer that the volume is real and repeatable, not hype",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Turn a TikTok trial spike into a repeat-purchase staircase, and prove to the buyer that the volume is real and repeatable, not hype"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[2]",
+   "kind": "habit",
+   "label": "Get Gutsy Pop picked by AI shopping agents (Tesco in-app assistant, ChatGPT ...",
+   "value": "Get Gutsy Pop picked by AI shopping agents (Tesco in-app assistant, ChatGPT Shopping) for the missions it wins with humans ('healthy lunchbox drink', 'gut-friendly soda under £2'), using honest data fixes only",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['app', 'assist', 'shoppi'])",
+     "theme": "tried_new_went_back",
+     "coded_section": "channel_differences",
+     "coded_text": "No AI-agent or AI-shopping-assistant discussion appears in this corpus. The closest equivalent is the search or locator box in the app ('a simple search box that returns an isle number')."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[3]",
+   "kind": "habit",
+   "label": "Decide whether to accept the Clubcard Price and media ask, or counter-offer, ...",
+   "value": "Decide whether to accept the Clubcard Price and media ask, or counter-offer, with a payback case he can defend to the buyer and his investors",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['buyer', 'case', 'price'])",
+     "theme": "small_brand_listing",
+     "coded_section": "trust_builders",
+     "coded_text": "A tight buyer pitch: retail price, cost, the retailer's margin, shelf life, case pack and current weekly sales."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[4]",
+   "kind": "habit",
+   "label": "Size the next co-packer run (MOQ 60k/flavour) against the real chance of ...",
+   "value": "Size the next co-packer run (MOQ 60k/flavour) against the real chance of being delisted, so one bad review doesn't wipe out the company",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Size the next co-packer run (MOQ 60k/flavour) against the real chance of being delisted, so one bad review doesn't wipe out the company"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[5]",
+   "kind": "habit",
+   "label": "Build a buyer-grade data pack (per-store ROS, source of volume, incrementality vs ...",
+   "value": "Build a buyer-grade data pack (per-store ROS, source of volume, incrementality vs incumbents and own-label) to win national rollout instead of quoting TikTok views",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['data', 'label', 'own', 'store'])",
+     "theme": "trust_unknown_brand",
+     "coded_section": "channel_differences",
+     "coded_text": "The data is thin. Nearly all of it is in-store grocery own-label discussion, and there is no AI-agent shopping content in this corpus."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "says_vs_does",
+   "kind": "habit",
+   "label": "says vs does",
+   "value": "SAYS: 'We win every taste test and TikTok loves us, so demand is proven. The brand is the moat. AI shopping agents are a 2028 problem, since only 3% of ...",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "SAYS: 'We win every taste test and TikTok loves us, so demand is proven. The brand is the moat. AI shopping agents are a 2028 problem, since only 3% of ..."
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.25",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.75",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 20",
+   "value": 20,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.35",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  }
+ ],
+ "persona_level_evidence": {
+  "realism_score_1_10": 6,
+  "supporting_evidence": [
+   "corpus/small_brand_listing.md: 'Getting into grocery without a distributor is hard for one reason: velocity. Buyers care about proof it moves and whether your margins work for *them*' and 'do you want proof it moves, or proof it could move?' These support ...",
+   "corpus/delisted.md: a Nush staffer announces the Sainsbury's delist, and fans respond with 'nush is the tastiest of the vegan yoghurts'. Fan loyalty is visible but did not save the listing, which supports the 'fan mobilisation is not a repeat staircase' ...",
+   "corpus/delisted.md (Tesco worker): 'When I worked for Tesco we were told to try and get the branded stuff stocked first' and 'Branded items often pay for shelf space'. These support pay-to-play pressure and the media ask.",
+   "02-issue-discovery.md: Incumbent Advantage paper, incumbents recommended 100% of the time at parity, and 'Product parameters explain 82.4% of ranking variance; brand identity accounts for only 1.2%'. Agents 'never decline to buy' and 'attributes displayed matter more than placement'. These support ...",
+   "02-issue-discovery.md: SparkToro '<1 in 100 chance' that two responses give the same brand list, which supports his distrust of single-run rankings and the need for CIs.",
+   "02-issue-discovery.md: IGD says only 3% use AI for grocery today, which supports his 'it's a 2028 problem' scepticism and argues against an instant conversion in stage 5.",
+   "02-issue-discovery.md: Penrhos '85% of sales on promotion', which supports the point that promo ROS is not base ROS.",
+   "02-issue-discovery.md: 71% of new UK launches are outside the top 100 search results, which supports the claim that challengers are already invisible online."
+  ],
+  "unrealistic_claims_flagged_by_skeptic": 12
+ },
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 16.7,
+   "reddit_inferred": 22.2,
+   "paper": 0.5,
+   "off_field": 0.0,
+   "sales_data": 1.7,
+   "staged_persona": 0.0,
+   "web_other": 0.0,
+   "internal_research": 16.1,
+   "assumption": 42.8
+  },
+  "headline": {
+   "reddit": 38.9,
+   "paper": 0.5,
+   "off_field": 0.0,
+   "assumption": 42.8,
+   "other (sales, staged, web, internal)": 17.8
+  },
+  "n_fields": 45,
+  "fields_by_primary_class": {
+   "reddit": 8,
+   "sales_data": 1,
+   "internal_research": 11,
+   "paper": 1,
+   "reddit_inferred": 10,
+   "assumption": 14
+  },
+  "pct_fields_with_any": {
+   "reddit": 17.8,
+   "reddit_inferred": 22.2,
+   "paper": 2.2,
+   "sales_data": 4.4,
+   "internal_research": 31.1,
+   "assumption": 55.6
+  },
+  "pct_fields_with_any_assumption": 55.6
+ }
+}

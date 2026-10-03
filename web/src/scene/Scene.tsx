@@ -1,14 +1,19 @@
-import { useEffect, useRef, type MutableRefObject } from 'react';
+import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Html, OrbitControls } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
+import { Physics } from '@react-three/rapier';
 import type { OrbitControls as OrbitImpl } from 'three-stdlib';
 import type { Agent, Persona, Planogram, Product, StoreConfig } from '../types';
-import { G, gondolaX, sampleTimeline, type Timeline } from '../layout';
+import { G, gondolaX, storeBounds, zRange, type Timeline } from '../layout';
 import { Store } from './Store';
-import { Shoppers, type ThoughtMode } from './Shoppers';
+import { Shelves } from './Shelves';
+import { Crowd, type ThoughtMode } from './Crowd';
+import { buildBeats } from './beats';
+import { bus } from './fx';
 
-export type CamMode = 'overview' | 'walk' | 'follow';
+export type CamMode = 'intro' | 'overview' | 'walk' | 'follow';
+export const INTRO_SECONDS = 9;
 
 function Clock({ timeRef, playing, speed, duration }: { timeRef: MutableRefObject<number>; playing: boolean; speed: number; duration: number }) {
   useFrame((_, dt) => {
@@ -18,19 +23,51 @@ function Clock({ timeRef, playing, speed, duration }: { timeRef: MutableRefObjec
   return null;
 }
 
-function CameraRig({ mode, nonce, cfg, follow, timeRef }: { mode: CamMode; nonce: number; cfg: StoreConfig; follow: Timeline | null; timeRef: MutableRefObject<number> }) {
+function overviewPose(cfg: StoreConfig) {
+  const B = storeBounds(cfg);
+  return { pos: new THREE.Vector3(B.cx + B.w * 0.5, Math.max(B.w, B.d) * 0.68, B.zMin - B.d * 0.32), target: new THREE.Vector3(B.cx, 0, B.cz - 1) };
+}
+
+function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: number; cfg: StoreConfig; onIntroDone: () => void }) {
   const { camera } = useThree();
   const controls = useThree((s) => s.controls) as unknown as OrbitImpl | null;
   const goal = useRef<{ pos: THREE.Vector3; target: THREE.Vector3; until: number } | null>(null);
   const keys = useRef(new Set<string>());
+  const intro = useRef<{ t0: number; pos: THREE.CatmullRomCurve3; tgt: THREE.CatmullRomCurve3 } | null>(null);
+  const shakeOff = useRef(new THREE.Vector3());
 
   useEffect(() => {
-    const zMid = G.zCentre;
-    if (mode === 'overview') goal.current = { pos: new THREE.Vector3(13.5, 13, -5), target: new THREE.Vector3(0, 0.4, zMid + 0.5), until: performance.now() + 1200 };
+    const ov = overviewPose(cfg);
+    if (mode === 'overview') goal.current = { ...ov, until: performance.now() + 1400 };
     if (mode === 'walk') {
       const x = gondolaX(cfg, 0.5 + Math.floor(cfg.aisles / 2));
-      goal.current = { pos: new THREE.Vector3(x, 1.6, cfg.entrance.z + 3), target: new THREE.Vector3(x, 1.25, cfg.entrance.z + 9), until: performance.now() + 1200 };
+      goal.current = { pos: new THREE.Vector3(x, 1.6, zRange()[0] - 1.8), target: new THREE.Vector3(x, 1.25, zRange()[0] + 4), until: performance.now() + 1400 };
     }
+    if (mode === 'intro') {
+      const B = storeBounds(cfg);
+      const front = cfg.entrance.z - 1.4;
+      const ax = gondolaX(cfg, 0.5 + Math.floor(cfg.aisles / 2));
+      const [z0, z1] = zRange();
+      intro.current = {
+        t0: performance.now(),
+        pos: new THREE.CatmullRomCurve3([
+          new THREE.Vector3(B.cx + 3, 30, B.zMin - 26),
+          new THREE.Vector3(B.cx + 1.2, 3.4, front - 8),
+          new THREE.Vector3(B.cx + 0.2, 1.9, front + 2.4),
+          new THREE.Vector3(ax, 2.4, z0 - 1.2),
+          new THREE.Vector3(ax + 1.2, 6, z1 + 2),
+          ov.pos,
+        ], false, 'centripetal'),
+        tgt: new THREE.CatmullRomCurve3([
+          new THREE.Vector3(B.cx, 0, B.cz),
+          new THREE.Vector3(B.cx, 2.4, front),
+          new THREE.Vector3(B.cx, 1.4, z0),
+          new THREE.Vector3(ax, 1.2, z1),
+          new THREE.Vector3(B.cx, 0.6, G.zCentre),
+          ov.target,
+        ], false, 'centripetal'),
+      };
+    } else intro.current = null;
   }, [mode, nonce, cfg]);
 
   useEffect(() => {
@@ -43,62 +80,105 @@ function CameraRig({ mode, nonce, cfg, follow, timeRef }: { mode: CamMode; nonce
 
   useFrame((_, dt) => {
     if (!controls) return;
-    if (mode === 'follow' && follow) {
-      const s = sampleTimeline(follow, timeRef.current);
-      if (s.visible) {
-        const tgt = new THREE.Vector3(s.x, 1.2, s.z);
-        const back = new THREE.Vector3(-Math.sin(s.heading), 0, -Math.cos(s.heading)).multiplyScalar(3.2);
-        const pos = tgt.clone().add(back).add(new THREE.Vector3(0, 1.6, 0));
-        camera.position.lerp(pos, 0.06); controls.target.lerp(tgt, 0.12); controls.update();
+    camera.position.sub(shakeOff.current); shakeOff.current.set(0, 0, 0);
+    controls.enabled = mode !== 'intro';
+    if (mode === 'intro' && intro.current) {
+      const k = Math.min(1, (performance.now() - intro.current.t0) / (INTRO_SECONDS * 1000));
+      const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      camera.position.copy(intro.current.pos.getPoint(e));
+      controls.target.copy(intro.current.tgt.getPoint(e));
+      controls.update();
+      if (k >= 1) { intro.current = null; onIntroDone(); }
+    } else if (mode === 'follow' && bus.follow) {
+      const f = bus.follow;
+      const tgt = new THREE.Vector3(f.x, 1.1, f.z);
+      const back = new THREE.Vector3(-Math.sin(f.heading), 0, -Math.cos(f.heading)).multiplyScalar(3.6);
+      const pos = tgt.clone().add(back).add(new THREE.Vector3(0, 2.1, 0));
+      camera.position.lerp(pos, 0.06); controls.target.lerp(tgt, 0.12); controls.update();
+    } else {
+      if (mode === 'walk' && keys.current.size) {
+        const fwd = new THREE.Vector3().subVectors(controls.target, camera.position).setY(0).normalize();
+        const right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0));
+        const mv = new THREE.Vector3();
+        const k = keys.current;
+        if (k.has('w') || k.has('arrowup')) mv.add(fwd);
+        if (k.has('s') || k.has('arrowdown')) mv.sub(fwd);
+        if (k.has('d') || k.has('arrowright')) mv.add(right);
+        if (k.has('a') || k.has('arrowleft')) mv.sub(right);
+        if (mv.lengthSq()) { mv.normalize().multiplyScalar(dt * 3.4); camera.position.add(mv); controls.target.add(mv); controls.update(); }
       }
-      return;
+      const g = goal.current;
+      if (g) {
+        camera.position.lerp(g.pos, 0.08); controls.target.lerp(g.target, 0.1); controls.update();
+        if (performance.now() > g.until) goal.current = null;
+      }
     }
-    if (mode === 'walk' && keys.current.size) {
-      const fwd = new THREE.Vector3().subVectors(controls.target, camera.position).setY(0).normalize();
-      const right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0));
-      const mv = new THREE.Vector3();
-      const k = keys.current;
-      if (k.has('w') || k.has('arrowup')) mv.add(fwd);
-      if (k.has('s') || k.has('arrowdown')) mv.sub(fwd);
-      if (k.has('d') || k.has('arrowright')) mv.add(right);
-      if (k.has('a') || k.has('arrowleft')) mv.sub(right);
-      if (mv.lengthSq()) { mv.normalize().multiplyScalar(dt * 3.2); camera.position.add(mv); controls.target.add(mv); controls.update(); }
-    }
-    const g = goal.current;
-    if (g) {
-      camera.position.lerp(g.pos, 0.08); controls.target.lerp(g.target, 0.1); controls.update();
-      if (performance.now() > g.until) goal.current = null;
+    // cartoon screen shake on bonks (opt-in)
+    bus.shake *= Math.exp(-dt * 6);
+    if (bus.shakeOn && bus.shake > 0.02) {
+      const a = bus.shake * 0.12;
+      shakeOff.current.set((Math.random() - 0.5) * a, (Math.random() - 0.5) * a, (Math.random() - 0.5) * a);
+      camera.position.add(shakeOff.current);
     }
   });
   return null;
 }
 
+function Sun({ cx, cz, zMin, r }: { cx: number; cz: number; zMin: number; r: number }) {
+  const ref = useRef<THREE.DirectionalLight>(null);
+  const scene = useThree((s) => s.scene);
+  useEffect(() => {
+    const l = ref.current; if (!l) return;
+    l.target.position.set(cx, 0, cz); scene.add(l.target);
+    return () => { scene.remove(l.target); };
+  }, [cx, cz, scene]);
+  return (
+    <directionalLight
+      ref={ref} position={[cx + 12, 26, zMin - 2]} intensity={1.55} castShadow
+      shadow-mapSize={[2048, 2048]} shadow-camera-left={-r} shadow-camera-right={r} shadow-camera-top={r} shadow-camera-bottom={-r} shadow-camera-far={120} shadow-bias={-0.0004}
+    />
+  );
+}
+
 export interface SceneProps {
-  cfg: StoreConfig; planogram: Planogram; products: Record<string, Product>; personas: Record<string, Persona>;
+  cfg: StoreConfig; planogram: Planogram; replayPlan: Planogram; products: Record<string, Product>; personas: Record<string, Persona>;
   agents: Agent[]; timelines: Record<string, Timeline>; timeRef: MutableRefObject<number>;
   playing: boolean; speed: number; duration: number;
   selectedProduct: string | null; onProduct: (code: string) => void;
   selectedAgent: string | null; onAgent: (id: string) => void; onEvent: (agentId: string, step: number) => void;
   editMode: boolean; editSel: string | null; onSlot: (slot: string) => void; changed: Set<string>;
   heat: Record<string, string> | null; thoughts: ThoughtMode;
-  cam: CamMode; camNonce: number; onBackground: () => void;
+  cam: CamMode; camNonce: number; onBackground: () => void; onIntroDone: () => void; onUserCamera: () => void;
 }
 
 export function Scene(p: SceneProps) {
+  const B = storeBounds(p.cfg);
+  const ov = overviewPose(p.cfg);
+  const beats = useMemo(() => buildBeats(p.cfg, p.replayPlan, p.agents, p.timelines), [p.cfg, p.replayPlan, p.agents, p.timelines]);
+  const shadowR = Math.max(B.w, B.d) * 0.62;
   return (
-    <Canvas flat shadows dpr={[1, 2]} camera={{ position: [13.5, 13, -5], fov: 42, near: 0.1, far: 200 }} onPointerMissed={p.onBackground} gl={{ antialias: true, alpha: true }}>
-      <hemisphereLight args={['#fff4ec', '#f3c9d6', 1.1]} />
-      <directionalLight position={[8, 18, -6]} intensity={1.6} castShadow shadow-mapSize={[2048, 2048]} shadow-camera-left={-20} shadow-camera-right={20} shadow-camera-top={20} shadow-camera-bottom={-20} />
-      <ambientLight intensity={0.5} />
+    <Canvas
+      flat shadows dpr={[1, 2]} camera={{ position: ov.pos.toArray(), fov: 42, near: 0.1, far: 400 }}
+      onPointerMissed={p.onBackground} onPointerDown={p.onUserCamera} onWheel={p.onUserCamera}
+      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+    >
+      <fog attach="fog" args={['#ffe6dc', 70, 170]} />
+      <hemisphereLight args={['#fff4ec', '#f3c9d6', 1.15]} />
+      <Sun cx={B.cx} cz={B.cz} zMin={B.zMin} r={shadowR} />
+      <ambientLight intensity={0.45} />
       <Clock timeRef={p.timeRef} playing={p.playing} speed={p.speed} duration={p.duration} />
-      <Store cfg={p.cfg} planogram={p.planogram} products={p.products} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
-      {!p.editMode && (
-        <Shoppers agents={p.agents} timelines={p.timelines} timeRef={p.timeRef} personas={p.personas} products={p.products} selectedAgent={p.selectedAgent} onAgent={p.onAgent} onEvent={p.onEvent} thoughts={p.thoughts} />
-      )}
-      <Html position={[p.cfg.entrance.x, 0.4, p.cfg.entrance.z]} center distanceFactor={14} zIndexRange={[5, 0]}><div className="sticker sticker-brand">in</div></Html>
-      <Html position={[p.cfg.checkout.x, 1.4, p.cfg.checkout.z + 1.2]} center distanceFactor={14} zIndexRange={[5, 0]}><div className="sticker">checkout</div></Html>
-      <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.04} minDistance={1.5} maxDistance={60} target={[0, 0, G.zCentre]} />
-      <CameraRig mode={p.cam} nonce={p.camNonce} cfg={p.cfg} follow={p.selectedAgent ? p.timelines[p.selectedAgent] ?? null : null} timeRef={p.timeRef} />
+      <Suspense fallback={null}>
+        <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>
+          <Store cfg={p.cfg} planogram={p.planogram} products={p.products} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
+          <Shelves cfg={p.cfg} planogram={p.planogram} products={p.products} gaps={beats.gaps} timeRef={p.timeRef} live={!p.editMode} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} onSlot={p.onSlot} />
+          {!p.editMode && (
+            <Crowd cfg={p.cfg} agents={p.agents} timelines={p.timelines} beats={beats} timeRef={p.timeRef} personas={p.personas} products={p.products}
+              selectedAgent={p.selectedAgent} onAgent={p.onAgent} onEvent={p.onEvent} thoughts={p.thoughts} speed={p.speed} />
+          )}
+        </Physics>
+      </Suspense>
+      <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.04} minDistance={1.5} maxDistance={90} target={ov.target.toArray()} />
+      <CameraRig mode={p.cam} nonce={p.camNonce} cfg={p.cfg} onIntroDone={p.onIntroDone} />
     </Canvas>
   );
 }

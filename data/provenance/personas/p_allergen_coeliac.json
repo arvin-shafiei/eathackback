@@ -1,0 +1,1627 @@
+{
+ "persona_id": "p_allergen_coeliac",
+ "name": "Hannah",
+ "archetype": "allergen_coeliac",
+ "kind": "lens",
+ "source_file": "data/personas/lens/allergen_coeliac.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 70,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1136/postgradmedj-2015-133395",
+     "citation": "assumption: one-adult-plus-partner weekly shop inflated for gluten-free (GF) staples, which cost at least 4x their non-GF equivalents (Burden et al. 2015, Postgrad Med J 91(1081):622-626, PMID 26310267, https://doi.org/10.1136/postgradmedj-2015-133395)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: one-adult-plus-partner weekly shop inflated for gluten-free (GF) staples, which cost at least 4x their non-GF equivalents (Burden et al. 2015, Postgrad Med J 91(1081):622-626, PMID 26310267, https://doi.org/10.1136/postgradmedj-2015-133395)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'data/personas/lens'",
+     "citation": "kept in line with Freya's GBP75 two-adult shop (data/personas/lens/eco_low_chemical.json)"
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "it's nearly impossible to get all that I want from one shop in one go",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1,
+     "verbatim": "Pray to god that you're not vegan/gluten intolerant, because they move those sections around every fucking week and I have to go through a maze ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: mixed channel in reality. She does a big online shop because 'it's nearly impossible to get all that I want from one shop in one go' (https://www.reddit.com/comments/18jsjo5), but the sim runs her as an in-store walker on a top-up/weekly ...",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: mixed channel in reality. She does a big online shop because 'it's nearly impossible to get all that I want from one shop in one go' (https://www.reddit.com/comments/18jsjo5), but the sim runs her as an in-store walker on a top-up/weekly ..."
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "weekly_shop",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/allergen_coeliac.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.household",
+   "kind": "profile",
+   "label": "household",
+   "value": "lives with her partner in Leeds; biopsy-confirmed coeliac for 9 years; her partner eats gluten, so the kitchen is split; works as a school business manager",
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: illustrative demographic, not used by the sim. '>5 years on the diet' is chosen because Zarkadas et al. 2013 find difficulties ease after 5 years but labelling stays 'very problematic' (PMID 23157646)",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic, not used by the sim. '>5 years on the diet' is chosen because Zarkadas et al. 2013 find difficulties ease after 5 years but labelling stays 'very problematic' (PMID 23157646)"
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "profile.age",
+   "kind": "profile",
+   "label": "age",
+   "value": 38,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: illustrative demographic, not used by the sim. '>5 years on the diet' is chosen because Zarkadas et al. 2013 find difficulties ease after 5 years but labelling stays 'very problematic' (PMID 23157646)",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: illustrative demographic, not used by the sim. '>5 years on the diet' is chosen because Zarkadas et al. 2013 find difficulties ease after 5 years but labelling stays 'very problematic' (PMID 23157646)"
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "lens.gluten_free_label",
+   "kind": "lens_weight",
+   "label": "lens: gluten_free_label (w=0.3)",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://eur-lex.europa.eu/eli/reg_impl/2014/828/oj",
+     "citation": "Commission Implementing Regulation (EU) No 828/2014 (retained in UK law): 'gluten-free' only if <=20 mg/kg, https://eur-lex.europa.eu/eli/reg_impl/2014/828/oj"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'uk_products.csv'",
+     "citation": "OFF tag counts in our UK pull: en:no-gluten 686, en:crossed-grain-trademark 8 (data/products/uk_products.csv.tmp)"
+    },
+    {
+     "class": "off_field",
+     "method": "keyword:'OFF'",
+     "citation": "OFF tag counts in our UK pull: en:no-gluten 686, en:crossed-grain-trademark 8 (data/products/uk_products.csv.tmp)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sit7ev",
+     "thread_id": "1sit7ev",
+     "subreddit": "1200isplenty",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "a few of the allergens (gluten free, soy free, dairy free, etc)",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "labels",
+   "direction": "presence_required",
+   "why": "The front-of-pack 'gluten free' claim is legally restricted to <=20 mg/kg gluten, so it is the one cue she can trust in a 2-second scan. Without it she has to read the full ingredients",
+   "classes": [
+    "reddit",
+    "sales_data",
+    "off_field",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "sales_data": 0.25,
+    "off_field": 0.25,
+    "web_other": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.contains_gluten_allergen",
+   "kind": "lens_weight",
+   "label": "lens: contains_gluten_allergen (w=0.22)",
+   "value": 0.22,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/",
+     "citation": "Coeliac UK 'How to read food labels' (cereals containing gluten must be named and emphasised): https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/"
+    },
+    {
+     "class": "off_field",
+     "method": "keyword:'OFF'",
+     "citation": "OFF allergens field (en:gluten appears 1,279 times in our UK pull)"
+    }
+   ],
+   "measured_by_off_field": "allergens",
+   "direction": "absence_required",
+   "why": "This is a medical gate, not a preference: any declared gluten is an instant put-back",
+   "classes": [
+    "off_field",
+    "web_other"
+   ],
+   "class_share": {
+    "off_field": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "off_field"
+  },
+  {
+   "field": "lens.may_contain_traces",
+   "kind": "lens_weight",
+   "label": "lens: may_contain_traces (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/",
+     "citation": "Coeliac UK: 'May contain wheat. Made on a line handling wheat.' ... 'an unavoidable risk of cross contamination with gluten' https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Barnett et al. 2011 BMC Public Health 11:734, PMID 21943285 ('many ignored it whilst some ... avoided products with all such labelling')",
+     "url": null
+    },
+    {
+     "url": "https://www.reddit.com/comments/1q1ffjm",
+     "thread_id": "1q1ffjm",
+     "subreddit": "CasualUK",
+     "theme": "trust_unknown_brand",
+     "score": 1,
+     "verbatim": "Distrust, mostly due to cross contamination and with the handling of allergens",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "ingredients_text (+ pack_copy); OFF traces_tags not in our pull",
+   "direction": "absence_better",
+   "why": "Precautionary labels mean 'the manufacturer has decided there is an unavoidable risk of cross contamination'. Allergic shoppers vary (some ignore them) but cautious ones avoid them all",
+   "classes": [
+    "reddit",
+    "paper",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "web_other": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.known_safe_sku",
+   "kind": "lens_weight",
+   "label": "lens: known_safe_sku (w=0.12)",
+   "value": 0.12,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "Certain intolerances and allergies mean some things have to be branded unfortunately ... i don't want us to be sick more",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1essgh0",
+     "thread_id": "1essgh0",
+     "subreddit": "adhdwomen",
+     "theme": "tried_new_went_back",
+     "score": 3,
+     "verbatim": "If I am used to a product by a brand, I know ... the allergens in it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Barnett et al. 2011 (decisions based on 'perceived trustworthiness of the producer and on the previous experience')",
+     "url": null
+    }
+   ],
+   "measured_by_off_field": "role + code (persona habit list)",
+   "direction": "higher_better",
+   "why": "A product she has already eaten safely is worth more than any claim. Switching brand adds a checking task and a risk of getting ill, so she buys branded where it matters",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.price_per_100g",
+   "kind": "lens_weight",
+   "label": "lens: price_per_100g (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Burden et al. 2015 (GF foods >=4x the cost of non-GF",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "budget supermarkets stocked none) PMID 26310267"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 5,
+     "verbatim": "GF items become more and more expensive whilst vegan stiff becomes on offer",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 5,
+     "verbatim": "What I hate is that during January the Gluten Free section becomes smaller and smaller and replaced by vegan items. I'm coeliac and can't eat ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "price_gbp / quantity",
+   "direction": "lower_better",
+   "why": "She has accepted the GF premium, so price only ranks between safe options. She does resent GF prices creeping up while vegan products go on offer",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.oats_or_barley_malt",
+   "kind": "lens_weight",
+   "label": "lens: oats_or_barley_malt (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "keyword:'Coeliac UK'",
+     "citation": "Coeliac UK: oats among cereals that must be named"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/the-gluten-free-diet/what-is-the-gluten-free-diet/",
+     "citation": "'Some people can't tolerate oats as they contain a protein similar to gluten, called avenin.' https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/the-gluten-free-diet/what-is-the-gluten-free-diet/"
+    }
+   ],
+   "measured_by_off_field": "ingredients_text",
+   "direction": "absence_better",
+   "why": "These are the hidden-gluten traps in cereals, bars and crisps (malt flavouring, standard oats). They are the reason she reads the back even of 'safe-looking' packs",
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "lens.gf_claim_findability",
+   "kind": "lens_weight",
+   "label": "lens: gf_claim_findability (w=0.06)",
+   "value": 0.06,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1,
+     "verbatim": "Pray to god that you're not vegan/gluten intolerant, because they move those sections around every ... week",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: inferred from the label-is-the-shortcut behaviour in Zarkadas et al. 2013 ('food labelling ... remained very problematic') and the verbatim 'Pray to god that you're not vegan/gluten intolerant, because they move those sections around every ... week' https://www.reddit.com/comments/1uosc29",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: inferred from the label-is-the-shortcut behaviour in Zarkadas et al. 2013 ('food labelling ... remained very problematic') and the verbatim 'Pray to god that you're not vegan/gluten intolerant, because they move those sections around every ... week' https://www.reddit.com/comments/1uosc29"
+    }
+   ],
+   "measured_by_off_field": "pack_copy",
+   "direction": "higher_better",
+   "why": "A naturally gluten-free product that doesn't say so gets walked past: she won't spend 15 seconds proving a pack is safe when the next one tells her. This is an honest optimiser lever (surface the true claim)",
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens._weights",
+   "kind": "lens_weight",
+   "label": "lens weight magnitudes (rank/scale)",
+   "value": 1.0,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: weights hand-set to rank the medical gates (label + declared allergen = 0.52) above everything else, in line with 'Two-thirds never intentionally consumed gluten' (Zarkadas et al. 2013). The gates also act as hard filters before utility, so the ...",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: weights hand-set to rank the medical gates (label + declared allergen = 0.52) above everything else, in line with 'Two-thirds never intentionally consumed gluten' (Zarkadas et al. 2013). The gates also act as hard filters before utility, so the ..."
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.38",
+   "value": 0.38,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.38 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=-0.15)",
+   "value": -0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1016/j.foodqual.2018.11.007",
+     "citation": "Nezlek & Forestell 2019, 'Food neophobia and the Five Factor Model of personality', Food Quality and Preference 73:210-214, https://doi.org/10.1016/j.foodqual.2018.11.007"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1186/1471-2458-11-734",
+     "citation": "Barnett et al. 2011 (allergic shoppers stick with products they have previous experience of), BMC Public Health 11:734, https://doi.org/10.1186/1471-2458-11-734"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: small negative logit term on role=challenger without a GF label"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "the direction comes from the paper and the magnitude is set by hand"
+    }
+   ],
+   "effect": "low-to-mid Openness: food neophobia is negatively related to O, and for her a new product is also a medical risk, so unfamiliar challenger packs get a lower notice/trial prior unless they carry a GF certification",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: allergen_coeliac +0.5 (assumption: must read every label, so selection rather than trait drives it, kept modest)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.8 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.35)",
+   "value": 0.35,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1037/a0027041",
+     "citation": "Mõttus et al. 2012, Health Psychology 31(6):806-814, https://doi.org/10.1037/a0027041 (C linked with more deliberate eating)"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/",
+     "citation": "Coeliac UK, 'How to read food labels': 'The cereal must be emphasised in the ingredients list, for example in bold lettering' https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: carried through sim_params.reads_structured_data_0_1 (0.75) and seconds_at_shelf (14), not double-counted in utility"
+    }
+   ],
+   "effect": "high Conscientiousness: she reads every new pack's ingredients for the bolded cereal and the 'may contain' line, so reads_structured_data and seconds_at_shelf are well above the human mean",
+   "classes": [
+    "paper",
+    "web_other",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "web_other": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.45 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.0)",
+   "value": 0.0,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1111/j.1365-277X.2012.01288.x",
+     "citation": "Zarkadas et al. 2013, J Hum Nutr Diet 26(1):10-23, PMID 23157646, https://doi.org/10.1111/j.1365-277X.2012.01288.x ('eating away from home remained very problematic')"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: neutral, no effect in the sim"
+    }
+   ],
+   "effect": "mid Extraversion: no special social or impulse pull. She avoids eating out (the hard part of the diet), so food-to-go and meal-deal pull stay low",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.55 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 5,
+     "verbatim": "Why do my items have to be removed to make way for more vegan items. Have both.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: sentiment amplifier only (out-of-stock or delisted sacred SKU gives sentiment -0.8 rather than -0.5)"
+    }
+   ],
+   "effect": "mid Agreeableness: loyal to brands that 'look after' coeliacs, and takes a delisting personally as a breach of that relationship; amplifies negative sentiment when a sacred SKU is missing",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.62",
+   "value": 0.62,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.62 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.25)",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://doi.org/10.1111/j.1600-0447.2011.01795.x",
+     "citation": "Smith & Gerdes 2012, 'Meta-analysis on anxiety and depression in adult celiac disease', Acta Psychiatr Scand 125(3):189-193, PMID 22128768, https://doi.org/10.1111/j.1600-0447.2011.01795.x (depression reliably higher, effect size 0.97"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "anxiety NOT reliably different, so N is set only modestly above the mean)"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Zarkadas et al. 2013 ('frustration and isolation' the most common negative emotions)",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: raises the reject probability on ambiguous allergen info (trace or unlabelled oats) from 0.6 to 0.85"
+    }
+   ],
+   "effect": "above-mean Neuroticism (anxiety and vigilance about contamination): she rejects on any doubt, including an unclear 'may contain', a damaged pack or a missing GF label, so the cost of a false negative is high",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "allergens contains en:gluten, or wheat/barley/rye/spelt/malt in ingredients_text: instant put-back, no compensating score",
+   "value": "allergens contains en:gluten, or wheat/barley/rye/spelt/malt in ingredients_text: instant put-back, no compensating score",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/",
+     "citation": "Coeliac UK labelling guidance https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/how-to-read-food-labels/"
+    }
+   ],
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "'may contain wheat/gluten' or 'made on a line handling wheat' without a ...",
+   "value": "'may contain wheat/gluten' or 'made on a line handling wheat' without a gluten-free claim",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "keyword:'Coeliac UK'",
+     "citation": "Coeliac UK (same page)"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Barnett et al. 2011, PMID 21943285",
+     "url": null
+    }
+   ],
+   "classes": [
+    "paper",
+    "web_other"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "processed cereal product (biscuit, bar, cereal, ready meal) with no GF label: ...",
+   "value": "processed cereal product (biscuit, bar, cereal, ready meal) with no GF label: assumed unsafe without checking further",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: time-saving rule"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "EU 828/2014 makes the label the only legally backed shortcut"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "visible hygiene or cross-contamination cues (repacked, damaged, loose or unlabelled product)",
+   "value": "visible hygiene or cross-contamination cues (repacked, damaged, loose or unlabelled product)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1q1ffjm",
+     "thread_id": "1q1ffjm",
+     "subreddit": "CasualUK",
+     "theme": "trust_unknown_brand",
+     "score": 5900,
+     "verbatim": "Tells me they're pretty lax on hygiene and potential allergies",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "'gluten free' used as a marketing badge on an obviously naturally GF ...",
+   "value": "'gluten free' used as a marketing badge on an obviously naturally GF product at a premium (fad framing): mild eye-roll, not a hard reject",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "Fat free, then sugar free, then gluten free, now extra protein. You need some kind of basic justification for why your product is randomly significantly ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "sacred SKU missing or delisted: walks away from the bay frustrated rather ...",
+   "value": "sacred SKU missing or delisted: walks away from the bay frustrated rather than trialling an unknown substitute",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "What I need is either out of stock constantly or they just don't sell",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 1,
+     "verbatim": "the diminishing choice ... is getting REALLY scary",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Crossed Grain symbol (labels en:crossed-grain-trademark): Coeliac UK-licensed, audited",
+   "value": "Crossed Grain symbol (labels en:crossed-grain-trademark): Coeliac UK-licensed, audited",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/food-safety-scheme/",
+     "citation": "Coeliac UK food safety scheme https://www.coeliac.org.uk/living-with-coeliac-disease/food-and-drink/food-and-drink-information/food-safety-scheme/"
+    },
+    {
+     "class": "off_field",
+     "method": "keyword:'OFF'",
+     "citation": "OFF tag present in UK pull (8 products)"
+    }
+   ],
+   "classes": [
+    "off_field",
+    "web_other"
+   ],
+   "class_share": {
+    "off_field": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "off_field"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "a legal 'gluten free' claim (labels en:no-gluten / en:certified-gluten-free)",
+   "value": "a legal 'gluten free' claim (labels en:no-gluten / en:certified-gluten-free)",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://eur-lex.europa.eu/eli/reg_impl/2014/828/oj",
+     "citation": "Regulation (EU) 828/2014, <=20 mg/kg https://eur-lex.europa.eu/eli/reg_impl/2014/828/oj"
+    }
+   ],
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "brand she has eaten safely before (incumbent free-from specialist)",
+   "value": "brand she has eaten safely before (incumbent free-from specialist)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "Certain intolerances and allergies mean some things have to be branded unfortunately, id much rather buy the nonbranded cheaper stuff but i don't want us ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Barnett et al. 2011 (previous experience drives interpretation)",
+     "url": null
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "product placed in the dedicated free-from bay (curation implies screening)",
+   "value": "product placed in the dedicated free-from bay (curation implies screening)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1,
+     "verbatim": "Pray to god that you're not vegan/gluten intolerant, because they move those sections around every fucking week and I have to go through a maze ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: inferred from https://www.reddit.com/comments/1uosc29 (she navigates by the free-from section)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "goes straight to the free-from bay first, then only scans mainstream bays ...",
+   "value": "goes straight to the free-from bay first, then only scans mainstream bays for naturally GF items she already knows (crisps, yoghurt, drinks)",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1uosc29",
+     "thread_id": "1uosc29",
+     "subreddit": "britishproblems",
+     "theme": "tried_new_went_back",
+     "score": 1,
+     "verbatim": "Pray to god that you're not vegan/gluten intolerant, because they move those sections around every fucking week and I have to go through a maze ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "reads the full back of pack for any product she hasn't bought ...",
+   "value": "reads the full back of pack for any product she hasn't bought in the last ~3 months (recipes change), skips reading on proven SKUs",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1jns9wh",
+     "thread_id": "1jns9wh",
+     "subreddit": "AskReddit",
+     "theme": "trust_unknown_brand",
+     "score": 13,
+     "verbatim": "manufacturer changes the recipe",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: 3-month re-check window"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "bulk-buys or stockpiles a sacred SKU when she sees it in stock, ...",
+   "value": "bulk-buys or stockpiles a sacred SKU when she sees it in stock, because availability is unreliable",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "I do, but that's purely because I have coeliac disease and it's nearly impossible to get all that I want from one shop in one ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: stockpiling is inferred, not stated"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "uses online orders to cover what local stores don't range; in store ...",
+   "value": "uses online orders to cover what local stores don't range; in store she fills gaps",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 1,
+     "verbatim": "I do, but that's purely because I have coeliac disease and it's nearly impossible to get all that I want from one shop in one ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 1,
+     "verbatim": "very pricey, niche, online shops",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[4]",
+   "kind": "habit",
+   "label": "skips the meal deal almost always; at most picks a crisp/drink component ...",
+   "value": "skips the meal deal almost always; at most picks a crisp/drink component she knows is safe",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: few meal-deal mains are GF"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Zarkadas et al. 2013 ('eating away from home remained very problematic')",
+     "url": null
+    }
+   ],
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.55",
+   "value": 0.55,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "Below the skeptic-calibrated human mean of 0.70 (research/05-personas.md section 4c). assumption: outside the free-from bay she filters mainstream packs out by a GF-claim scan, so eye level helps less. Multiply by 1.6 (capped at 0.95) for products with a GF ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Below the skeptic-calibrated human mean of 0.70 (research/05-personas.md section 4c). assumption: outside the free-from bay she filters mainstream packs out by a GF-claim scan, so eye level helps less. Multiply by 1.6 (capped at 0.95) for products with a GF ..."
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.1",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Close to the human mean of 0.094 (research/05-personas.md section 4c)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "eye-level vs floor gap from research/04-3d-sim-evidence-and-tech.md (+39% sales). assumption: a GF label on a bottom shelf still lifts notice to ~0.25 because she actively searches for GF"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "eye-level vs floor gap from research/04-3d-sim-evidence-and-tech.md (+39% sales). assumption: a GF label on a bottom shelf still lifts notice to ~0.25 because she actively searches for GF"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.92",
+   "value": 0.92,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "some things have to be branded ... i don't want us to be sick",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Above the human mean of 0.83 and Margaret's 0.90 (research/05-personas.md section 4c). Sacred-SKU loyalty: 'some things have to be branded ... i don't want us to be sick' https://www.reddit.com/comments/1ow5fne"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Barnett et al. 2011 (previous experience drives choice)",
+     "url": null
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.4",
+   "value": 0.4,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 5,
+     "verbatim": "What I hate is that during January the Gluten Free section becomes smaller and smaller and replaced by vegan items. I'm coeliac and can't eat ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Below the human mean of 0.57 (research/05-personas.md section 4c). The GF premium is forced (>=4x, Burden et al. 2015, PMID 26310267), so price only ranks among safe options. Not lower, because of resentment at rising GF prices https://www.reddit.com/comments/191icpc",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Below the human mean of 0.57 (research/05-personas.md section 4c). The GF premium is forced (>=4x, Burden et al. 2015, PMID 26310267), so price only ranks among safe options. Not lower, because of resentment at rising GF prices https://www.reddit.com/comments/191icpc"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Below the human mean of 0.20 (research/05-personas.md section 4c), above Margaret's 0.10. A new brand is a medical risk (Barnett et al. 2011",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Below the human mean of 0.20 (research/05-personas.md section 4c), above Margaret's 0.10. A new brand is a medical risk (Barnett et al. 2011"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "low O from Nezlek & Forestell 2019). assumption: rises to ~0.40 if the label contains en:crossed-grain-trademark",
+     "url": null
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "low O from Nezlek & Forestell 2019). assumption: rises to ~0.40 if the label contains en:crossed-grain-trademark"
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "Fat free, then sugar free, then gluten free, now extra protein",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "Slightly below the human mean of 0.53 (research/05-personas.md section 4c). She values the GF claim itself, but rolls her eyes at fad-premium copy: 'Fat free, then sugar free, then gluten free, now extra protein' https://www.reddit.com/comments/1oqtnv1"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "protein in question is just more gluten",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.75",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "keyword:'Coeliac UK'",
+     "citation": "About 4x the human mean of 0.18, above Sam's 0.45, below the agents' 0.95 (research/05-personas.md section 4c). Reading for bolded cereals and 'may contain' is how the diet works (Coeliac UK label guidance"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "About 4x the human mean of 0.18, above Sam's 0.45, below the agents' 0.95 (research/05-personas.md section 4c). Reading for bolded cereals and 'may contain' is how the diet works (Coeliac UK label guidance"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Zarkadas et al. 2013, PMID 23157646). C=0.80",
+     "url": null
+    }
+   ],
+   "classes": [
+    "paper",
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "web_other": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 14",
+   "value": 14,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "keyword:'human mean'",
+     "citation": "About twice the human mean of 6.6 s and close to Sam's 12 s (research/05-personas.md section 4c). assumption: 14 s = a short scan plus one back-of-pack read of a new SKU"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "About twice the human mean of 6.6 s and close to Sam's 12 s (research/05-personas.md section 4c). assumption: 14 s = a short scan plus one back-of-pack read of a new SKU"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Far below the office default of 0.70-0.75 (research/05-personas.md section 4c), above Margaret's 0.05. assumption: few meal-deal mains are GF, and eating away from home is the hardest part of the diet (Zarkadas et al. 2013)",
+     "url": null
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "Far below the office default of 0.70-0.75 (research/05-personas.md section 4c), above Margaret's 0.05. assumption: few meal-deal mains are GF, and eating away from home is the hardest part of the diet (Zarkadas et al. 2013)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Far below the office default of 0.70-0.75 (research/05-personas.md section 4c), above Margaret's 0.05. assumption: few meal-deal mains are GF, and eating away from home is the hardest part of the diet (Zarkadas et al. 2013)"
+    }
+   ],
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "What I hate is that during January the Gluten Free section becomes smaller and smaller and replaced by vegan items. I'm coeliac and can't eat gluten. Why do my items have to be removed to make way for more vegan ...",
+   "url": "https://www.reddit.com/comments/191icpc"
+  },
+  {
+   "quote": "I do, but that's purely because I have coeliac disease and it's nearly impossible to get all that I want from one shop in one go. What I need is either out of stock constantly or they just don't sell ...",
+   "url": "https://www.reddit.com/comments/18jsjo5"
+  },
+  {
+   "quote": "Pray to god that you're not vegan/gluten intolerant, because they move those sections around every fucking week and I have to go through a maze just to find out where the flora plant is every time",
+   "url": "https://www.reddit.com/comments/1uosc29"
+  },
+  {
+   "quote": "Certain intolerances and allergies mean some things have to be branded unfortunately, id much rather buy the nonbranded cheaper stuff but i don't want us to be sick more",
+   "url": "https://www.reddit.com/comments/1ow5fne"
+  },
+  {
+   "quote": "As someone who cooks, with multiple allergies; the diminishing choice from so many of the larger supermarkets is getting REALLY scary, and I've had to resort to very pricey, niche,online shops, for so many products that I previously, was able ...",
+   "url": "https://www.reddit.com/comments/1o3q3ez"
+  },
+  {
+   "quote": "If I am used to a product by a brand, I know the taste, texture, sometimes even the allergens in it ... If I ask my husband to buy the thing, and he comes home with another brand, it truly ...",
+   "url": "https://www.reddit.com/comments/1essgh0"
+  },
+  {
+   "quote": "Yeah but all gluten free stuff is premium. A 'cheap' gluten free pizza is £3 and tastes like cardboard while being half the size of any meat or vegan pizza",
+   "url": "https://www.reddit.com/comments/191icpc"
+  }
+ ],
+ "built_from": [
+  "data/reddit/comments.csv (grep coeliac|celiac|gluten|allerg|may contain; 52 hits, 7 used verbatim)",
+  "research/corpus/protein_gimmick.md, research/corpus/impulse_instore_vs_online.md, research/corpus/delisted.md (via comments.csv threads 191icpc, 18jsjo5, 1o3q3ez)",
+  "research/05-personas.md section 4c (skeptic-calibrated human means)",
+  "data/products/uk_products.csv.tmp (OFF label tag counts for en:no-gluten, en:crossed-grain-trademark, en:gluten)",
+  "PubMed abstracts verified via eutils: PMIDs 26310267, 22128768, 21943285, 23157646",
+  "Coeliac UK pages fetched: how-to-read-food-labels, what-is-the-gluten-free-diet"
+ ],
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 22.9,
+   "reddit_inferred": 0.0,
+   "paper": 18.4,
+   "off_field": 2.7,
+   "sales_data": 0.5,
+   "staged_persona": 0.0,
+   "web_other": 12.2,
+   "internal_research": 9.6,
+   "assumption": 33.7
+  },
+  "headline": {
+   "reddit": 22.9,
+   "paper": 18.4,
+   "off_field": 2.7,
+   "assumption": 33.7,
+   "other (sales, staged, web, internal)": 22.3
+  },
+  "n_fields": 47,
+  "fields_by_primary_class": {
+   "paper": 13,
+   "reddit": 19,
+   "assumption": 6,
+   "off_field": 2,
+   "web_other": 3,
+   "internal_research": 4
+  },
+  "pct_fields_with_any": {
+   "reddit": 40.4,
+   "paper": 44.7,
+   "off_field": 6.4,
+   "sales_data": 2.1,
+   "web_other": 21.3,
+   "internal_research": 23.4,
+   "assumption": 59.6
+  },
+  "pct_fields_with_any_assumption": 59.6
+ }
+}

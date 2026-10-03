@@ -1,11 +1,12 @@
 """Shopper simulation CLI.
 
-python3 sim/run.py --agents 20 --models google/gemini-2.5-flash --planogram data/store/planogram.json --seed 1
-python3 sim/run.py --agents 20 --mock          # no API, deterministic heuristic decisions
+python3 sim/run.py --agents 20 --seed 1                      # default engine: TypeSafe Jev (sim/jev.py)
+python3 sim/run.py --agents 20 --engine mock                 # no API, deterministic heuristic decisions
+python3 sim/run.py --agents 20 --engine llm --models google/gemini-2.5-flash   # OpenRouter, only if asked for
 
 Each agent: sampled persona (+ OCEAN jitter) -> path through units relevant to its mission plus random
-browsing -> per product a notice gate (sim/notice.py, no LLM) -> one LLM call per slot for the products
-it noticed -> events in CONTRACT shape. Stats carry Wilson 95% CIs.
+browsing -> per product a notice gate (sim/notice.py, no model) -> one decision request per slot for the
+products it noticed (Jev: one System One fan-out request) -> events in CONTRACT shape. Stats carry Wilson 95% CIs.
 """
 from __future__ import annotations
 
@@ -18,6 +19,7 @@ import math
 import os
 import random
 import sys
+import time
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +31,10 @@ import prompts  # noqa: E402
 
 FIX = os.path.join(HERE, "fixtures")
 RUNS_DIR = os.path.join(ROOT, "data", "sim", "runs")
-DEFAULT_MODEL = "google/gemini-2.5-flash"
+CUSTOM_PERSONAS_DIR = os.path.join(ROOT, "data", "personas", "custom")  # dashboard persona builder (server.py)
+DEFAULT_MODEL = "google/gemini-2.5-flash"  # only used by the explicit --engine llm path
+DEFAULT_ENGINE = "jev"
+ENGINES = ("jev", "llm", "mock")
 
 MISSION_CATEGORIES = {
     "_source": "assumption: which store units each mission sends a shopper to; built from the mission descriptions in data/personas/staged_personas_v1.json (e.g. meal deal = main+snack+drink). A persona can override with mission_categories.",
@@ -94,12 +99,17 @@ def load_personas():
     if not files:
         files = sorted(glob.glob(os.path.join(FIX, "personas/*.json")))
         src = "sim/fixtures/personas/*.json"
-    for fp in files:
+    custom = sorted(glob.glob(os.path.join(CUSTOM_PERSONAS_DIR, "*.json")))
+    if custom:
+        src += " + data/personas/custom/*.json"
+    for fp in files + custom:
         d = load_json(fp)
         items = d if isinstance(d, list) else d.get("personas", [d]) if isinstance(d, dict) else []
         for p in items:
             if isinstance(p, dict) and p.get("id"):
-                out.append(normalise_persona(p, fp))
+                q = normalise_persona(p, fp)
+                q["custom"] = fp in custom
+                out.append(q)
     return out, src
 
 
@@ -214,7 +224,9 @@ def simulate_agent(a, ctx):
     browse_p = notice.coefficients()["browse_prob"]["value"]
     plan, catalog, store = ctx["planogram"], ctx["catalog"], ctx["store"]
     path, events, basket = [], [], []
-    calls = {"llm": 0, "cached": 0, "cost": 0.0, "errors": []}
+    engine = ctx["engine"]
+    calls = {"llm": 0, "cached": 0, "cost": 0.0, "errors": [], "input_tokens": 0, "cost_if_uncached": 0.0}
+    jev_model = None
     step = 0
     for u in unit_order(store):
         on_mission = u["category"] in mcats
@@ -244,15 +256,44 @@ def simulate_agent(a, ctx):
                 step += 1
                 if is_noticed:
                     noticed.append((code, prod, fac))
-            if noticed:
+            if noticed and engine == "jev":
+                import jev
+                try:
+                    res = jev.decide_slot(persona=persona, ocean=ocean, mission=mission, budget_left=budget_left,
+                                          category=u["category"], on_mission=on_mission, basket=basket,
+                                          noticed=noticed, reads_labels=reads_labels,
+                                          draw_u=hu(seed, aid, "jev_decide", sid),
+                                          pickup_draws=[hu(seed, aid, "pickup", c) for c, _, _ in noticed],
+                                          rng_key=f"jev-order-{seed}-{aid}-{sid}", tag=f"{pid}:{sid}")
+                    for rq in res["requests"]:
+                        jev_model = rq["jev_model"]
+                        calls["llm"] += 1
+                        calls["cached"] += int(rq["cached"])
+                        calls["cost"] += rq["cost_usd"]
+                        calls["input_tokens"] += int(rq["input_tokens"] or 0)
+                        calls["cost_if_uncached"] += rq["cost_if_uncached_usd"]
+                    for code, upd in res["per_product"].items():
+                        ev = slot_events[code]
+                        refs = ev["source_refs"] + upd.pop("source_refs")
+                        ev.update(upd)
+                        ev["source_refs"] = refs
+                        ev["label_read"] = reads_labels
+                except jev.JevSpendGuard:
+                    raise
+                except Exception as e:  # no fallback to another model: record the error and move on
+                    calls["errors"].append(f"jev: {e!r}"[:200])
+                    for code, _, _ in noticed:
+                        slot_events[code].update(decision="walk_past", stage_reached="looked", reason="(jev error)",
+                                                 mechanism="error", engine="jev", label_read=reads_labels)
+            elif noticed:
                 cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES[r],
                                               facings=fac) for code, prod, fac in noticed]
-                if ctx["mock"]:
+                if engine == "mock":
                     for c, (_, prod, _) in zip(cards, noticed):
                         c["_role"] = prod.get("role", "")
                     out = mock_decide(persona, ocean, cards, budget_left, f"{seed}-{aid}-{sid}")
                     src = "mock heuristic (sim/run.py mock_decide), not an LLM"
-                else:
+                elif engine == "llm":
                     import llm
                     sysp = prompts.system_prompt(persona, ocean, budget_left)
                     userp = prompts.user_prompt(cards, u["category"], reads_labels, basket, on_mission)
@@ -270,6 +311,8 @@ def simulate_agent(a, ctx):
                         out = {"decision": "walk_past", "product": noticed[0][0], "reason": "(llm error)",
                                "mechanism": "error", "others": {}}
                         src = "llm error"
+                else:
+                    raise ValueError(f"unknown engine {engine!r}")
                 apply_decision(out, noticed, slot_events, catalog, src, reads_labels)
                 # budget enforcement (honest override, flagged)
                 for code, ev in slot_events.items():
@@ -277,16 +320,25 @@ def simulate_agent(a, ctx):
                         price = float(catalog[code].get("price_gbp") or 0)
                         if budget_left is not None and price > budget_left + 1e-9:
                             ev["decision"] = "reject"
-                            ev["llm_decision"] = "pick"
+                            ev["llm_decision"] = "pick"  # name kept for the web app; holds the engine's decision
+                            ev["engine_decision"] = "pick"
+                            ev["stage_reached"] = "put_back"
+                            ev["picked_up"] = True
+                            ev["reason"] = (ev.get("reason") or "") + f" -> over budget (£{price:.2f} > £{budget_left:.2f} left), put back"
                             ev["budget_override"] = True
                             ev["mechanism"] = "budget"
                         else:
                             if budget_left is not None:
                                 budget_left -= price
                             basket.append(catalog[code].get("name", code))
+            for c in prods:
+                ev = slot_events[c]
+                ev.setdefault("stage_reached", stage_of(ev))
+                ev.setdefault("p_pick_up", None)
             events.extend(slot_events[c] for c in prods)
     return {"agent_id": aid, "persona_id": pid, "archetype": persona.get("archetype"),
-            "model": "mock" if ctx["mock"] else model, "ocean": ocean, "mission": mission,
+            "model": "mock" if engine == "mock" else (jev_model or "jev-latest") if engine == "jev" else model,
+            "engine": engine, "ocean": ocean, "mission": mission,
             "reads_labels": reads_labels, "budget_gbp": budget,
             "budget_left": round(budget_left, 2) if budget_left is not None else None,
             "path": path, "events": events, "calls": calls}
@@ -336,6 +388,47 @@ def apply_decision(out, noticed, slot_events, catalog, src, reads_labels):
 
 
 # ---------------------------------------------------------------- stats
+STAGES = ("not_noticed", "looked", "picked_up", "put_back", "taken")
+DECISION_TO_STAGE = {"pick": "taken", "reject": "put_back", "walk_past": "looked", "not_noticed": "not_noticed"}
+
+
+def stage_of(ev) -> str:
+    """Funnel stage. Jev events carry stage_reached; mock/llm events map from decision (reject = looked
+    closely and decided against = put_back)."""
+    st = ev.get("stage_reached")
+    if st in STAGES:
+        return st
+    return DECISION_TO_STAGE.get(ev.get("decision"), "looked" if ev.get("noticed") else "not_noticed")
+
+
+def _funnel_counts():
+    return {"shown": 0, "looked": 0, "picked_up": 0, "put_back": 0, "taken": 0}
+
+
+def _funnel_add(f, st):
+    f["shown"] += 1
+    if st != "not_noticed":
+        f["looked"] += 1
+    if st in ("put_back", "taken"):
+        f["picked_up"] += 1
+    if st == "put_back":
+        f["put_back"] += 1
+    if st == "taken":
+        f["taken"] += 1
+
+
+def _funnel_finish(f):
+    n = f["shown"]
+    for k in ("looked", "picked_up", "put_back", "taken"):
+        f[f"{k}_rate"] = round(f[k] / n, 4) if n else 0
+        f[f"{k}_ci95"] = wilson(f[k], n)
+    f["look_to_pickup"] = round(f["picked_up"] / f["looked"], 4) if f["looked"] else None
+    f["look_to_pickup_ci95"] = wilson(f["picked_up"], f["looked"])
+    f["pickup_to_take"] = round(f["taken"] / f["picked_up"], 4) if f["picked_up"] else None
+    f["pickup_to_take_ci95"] = wilson(f["taken"], f["picked_up"])
+    return f
+
+
 def compute_stats(agents, catalog):
     per = {}
     for a in agents:
@@ -344,7 +437,11 @@ def compute_stats(agents, catalog):
         for ev in a["events"]:
             s = per.setdefault(ev["product"], {"shown": 0, "noticed": 0, "considered": 0, "picked": 0, "rejected": 0,
                                                "walk_past": 0, "_sent": [], "_rej": [], "by_archetype": {},
-                                               "by_ocean_segment": {}})
+                                               "by_ocean_segment": {}, "funnel": _funnel_counts(),
+                                               "funnel_by_archetype": {}})
+            st = stage_of(ev)
+            _funnel_add(s["funnel"], st)
+            _funnel_add(s["funnel_by_archetype"].setdefault(a.get("archetype") or a["persona_id"], _funnel_counts()), st)
             s["shown"] += 1
             d = ev["decision"]
             if ev["noticed"]:
@@ -387,19 +484,34 @@ def compute_stats(agents, catalog):
                 g["examples"].append(r)
         s["top_reject_reasons"] = sorted(groups.values(), key=lambda g: -g["count"])[:5]
         s["mean_sentiment"] = round(sum(s["_sent"]) / len(s["_sent"]), 3) if s["_sent"] else None
+        _funnel_finish(s["funnel"])
+        for f in s["funnel_by_archetype"].values():
+            _funnel_finish(f)
         s["name"] = catalog.get(code, {}).get("name", "")
         s["role"] = catalog.get(code, {}).get("role", "")
         del s["_sent"], s["_rej"]
     return {"per_product": per,
             "method": {"pick_rate": "picked / shown (shown = agent passed the slot)",
                        "ci95": "Wilson score interval, z=1.96",
-                       "by_ocean_segment": "trait >= 0.5 is high, else low (agent's jittered OCEAN)"}}
+                       "by_ocean_segment": "trait >= 0.5 is high, else low (agent's jittered OCEAN)",
+                       "funnel": "per shown: looked = noticed; picked_up = put_back + taken; rates and conversions "
+                                 "(look->pickup = picked_up/looked, pickup->take = taken/picked_up) with Wilson 95% CIs. "
+                                 "Non-jev engines map decision -> stage (reject = put_back)."}}
 
 
 # ---------------------------------------------------------------- driver
 def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False, max_tokens=250,
-                   workers=8, only_agents=None, save=True, run_id=None, label="", catalog_patch=None):
-    models = models or [DEFAULT_MODEL]
+                   workers=None, only_agents=None, save=True, run_id=None, label="", catalog_patch=None,
+                   engine=None, persona_ids=None, agents_per_persona=None):
+    engine = "mock" if mock else (engine or DEFAULT_ENGINE)
+    if engine not in ENGINES:
+        raise ValueError(f"engine must be one of {ENGINES}")
+    mock = engine == "mock"
+    if engine == "llm":
+        models = models or [DEFAULT_MODEL]
+    else:  # jev / mock never touch OpenRouter; the model list is just a label
+        models = ["jev-latest"] if engine == "jev" else ["mock"]
+    workers = workers or (40 if engine == "jev" else 8)
     store, store_src = load_store()
     plan, plan_src = load_planogram(planogram)
     catalog, cat_src = load_catalog(plan)
@@ -408,39 +520,65 @@ def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False
         for code, upd in catalog_patch.items():
             catalog[code] = {**catalog[code], **upd}
     personas, pers_src = load_personas()
+    if persona_ids:
+        want = list(dict.fromkeys(persona_ids))
+        by_id = {p["id"]: p for p in personas}
+        missing = [i for i in want if i not in by_id]
+        if missing:
+            raise ValueError(f"unknown persona_ids: {missing}")
+        personas = [by_id[i] for i in want]
+        pers_src += f" (filtered to {want})"
+        if agents_per_persona:
+            agents = int(agents_per_persona) * len(personas)
     if not personas:
         raise RuntimeError("no personas found")
     specs = spawn_agents(personas, int(agents), models, seed)
     if only_agents is not None:
         specs = [s for s in specs if s["agent_id"] in set(only_agents)]
-    ctx = {"seed": seed, "mock": mock, "max_tokens": max_tokens, "planogram": plan, "catalog": catalog, "store": store}
+    ctx = {"seed": seed, "mock": mock, "engine": engine, "max_tokens": max_tokens, "planogram": plan, "catalog": catalog, "store": store}
+    t0 = time.time()
     with ThreadPoolExecutor(max_workers=workers) as ex:
         results = list(ex.map(lambda a: simulate_agent(a, ctx), specs))
     cost = sum(a["calls"]["cost"] for a in results)
-    run_id = run_id or f"run_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}_s{seed}{'_mock' if mock else ''}_{os.urandom(2).hex()}"
+    t_wall = time.time() - t0
+    run_id = run_id or f"run_{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}_s{seed}{'_mock' if mock else '_jev' if engine == 'jev' else ''}_{os.urandom(2).hex()}"
+    if engine == "jev":
+        models = sorted({a["model"] for a in results}) or models
     run = {"run_id": run_id, "created": dt.datetime.now().isoformat(timespec="seconds"), "label": label,
            "planogram": plan_src, "models": ["mock"] if mock else models, "seed": seed, "mock": mock,
+           "engine": engine,
            "inputs": {"store": store_src, "catalog": cat_src, "personas": pers_src,
+                      "persona_ids": persona_ids, "agents_per_persona": agents_per_persona,
                       "coefficients": "sim/coefficients.json", "max_tokens": max_tokens},
            "agents": results,
            "stats": compute_stats(results, catalog),
            "notice_model": notice.explain(),
            "mission_categories": MISSION_CATEGORIES,
+           **({"jev_legend": __import__("jev").LEGEND} if engine == "jev" else {}),
            "cost": {"usd": round(cost, 5), "llm_calls": sum(a["calls"]["llm"] for a in results),
                     "cached": sum(a["calls"]["cached"] for a in results),
-                    "errors": sum(len(a["calls"]["errors"]) for a in results)}}
+                    "errors": sum(len(a["calls"]["errors"]) for a in results),
+                    "engine": engine, "wall_s": round(t_wall, 2),
+                    "input_tokens": sum(a["calls"].get("input_tokens", 0) for a in results),
+                    "usd_if_uncached": round(sum(a["calls"].get("cost_if_uncached", 0.0) for a in results), 6),
+                    **({"pricing": "TypeSafe Jev: $0.042 per 1M input tokens, output free"} if engine == "jev" else {})}}
     if isinstance(planogram, dict):
         run["planogram_inline"] = plan
     if save:
         os.makedirs(RUNS_DIR, exist_ok=True)
         with open(os.path.join(RUNS_DIR, run_id + ".json"), "w") as f:
-            json.dump(run, f, indent=1, ensure_ascii=False)
+            if len(results) > 50:  # big runs: compact JSON keeps the web replay light
+                json.dump(run, f, ensure_ascii=False, separators=(",", ":"))
+            else:
+                json.dump(run, f, indent=1, ensure_ascii=False)
     return run
 
 
 def summarise(run, top=8):
-    lines = [f"run {run['run_id']}  agents={len(run['agents'])}  models={run['models']}  cost=${run['cost']['usd']}"
-             f"  calls={run['cost']['llm_calls']} cached={run['cost']['cached']} errors={run['cost']['errors']}"]
+    c = run["cost"]
+    lines = [f"run {run['run_id']}  engine={run.get('engine')} agents={len(run['agents'])}  models={run['models']}  cost=${c['usd']}"
+             f"  calls={c['llm_calls']} cached={c['cached']} errors={c['errors']}"
+             f"  input_tokens={c.get('input_tokens')} wall={c.get('wall_s')}s"]
     pp = sorted(run["stats"]["per_product"].items(), key=lambda kv: -kv[1]["pick_rate"])
     for code, s in pp[:top]:
         lines.append(f"  {code:>14} {s['name'][:34]:34} shown={s['shown']:3} noticed={s['noticed']:3} "
@@ -451,16 +589,24 @@ def summarise(run, top=8):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--agents", type=int, default=10)
-    ap.add_argument("--models", default=DEFAULT_MODEL)
+    ap.add_argument("--engine", choices=ENGINES, default=DEFAULT_ENGINE,
+                    help="jev (default, TypeSafe System One) | mock | llm (OpenRouter, only when asked for)")
+    ap.add_argument("--models", default=DEFAULT_MODEL, help="OpenRouter models, used only with --engine llm")
     ap.add_argument("--planogram", default=None)
     ap.add_argument("--seed", type=int, default=1)
-    ap.add_argument("--mock", action="store_true")
+    ap.add_argument("--mock", action="store_true", help="alias for --engine mock")
     ap.add_argument("--max-tokens", type=int, default=250)
-    ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--workers", type=int, default=None, help="agents in flight (default 40 for jev, 8 otherwise)")
+    ap.add_argument("--jev-max-usd", type=float, default=5.0, help="session spend stop for Jev")
     ap.add_argument("--label", default="")
     a = ap.parse_args()
-    run = run_simulation(planogram=a.planogram, agents=a.agents, models=a.models.split(","), seed=a.seed,
-                         mock=a.mock, max_tokens=min(a.max_tokens, 300), workers=a.workers, label=a.label)
+    engine = "mock" if a.mock else a.engine
+    if engine == "jev":
+        import jev
+        jev.set_max_usd(a.jev_max_usd)
+    run = run_simulation(planogram=a.planogram, agents=a.agents,
+                         models=a.models.split(",") if engine == "llm" else None, seed=a.seed,
+                         engine=engine, max_tokens=min(a.max_tokens, 300), workers=a.workers, label=a.label)
     print(summarise(run))
     print("wrote", os.path.join("data/sim/runs", run["run_id"] + ".json"))
 

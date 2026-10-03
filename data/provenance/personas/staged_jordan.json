@@ -1,0 +1,1181 @@
+{
+ "persona_id": "staged_jordan",
+ "name": "Jordan",
+ "archetype": "Shopper: 24yo Gen Z renter who delegates shopping to ChatGPT",
+ "kind": "staged",
+ "source_file": "data/personas/staged_personas_v1.json[1]",
+ "fields": [
+  {
+   "field": "behavioural_drivers[0]",
+   "kind": "lens_weight",
+   "label": "driver: Delegation and cognitive offloading. Jordan gives an AI agent loose ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 3,
+     "verbatim": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Delegation and cognitive offloading. Jordan gives an AI agent loose constraints (budget, health, diet) and lets it pick the specific products and brands. Brand choice moves from Jordan to the agent.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[1]",
+   "kind": "lens_weight",
+   "label": "driver: Satisficing acceptance of the agent's output. Jordan does one light ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 15,
+     "verbatim": "I did the same. I had to swap out a couple of items at the end before checking out but other than that, it did ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "\"I did the same. I had to swap out a couple of items at the end before checking out but other than that, it did a great job and saved me about 20 minutes which I used to doom scroll ..."
+    }
+   ],
+   "principle": "Satisficing acceptance of the agent's output. Jordan does one light sanity-check and edit pass, then checks out. Alternatives are never compared, so whatever the agent names first wins (default effect).",
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[2]",
+   "kind": "lens_weight",
+   "label": "driver: Inherited agent biases. Because Jordan buys the agent's pick, Jordan's ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "ACES audit: agents show \"choice homogeneity, often concentrating demand on a few modal products while ignoring others entirely\" and \"consistently penalize sponsored tags while rewarding platform endorsements\""
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/abs/2508.02630",
+     "citation": "a sponsored tag cuts a 10% base selection rate to ~8% while an 'Overall Pick' badge lifts it to 24-43% (https://arxiv.org/abs/2508.02630, cited in research/02-issue-discovery.md). Incumbent Advantage: \"at identical specs, incumbents are recommended 100% of the time\" (https://arxiv.org/html/2606.17443v1)"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://arxiv.org/html/2606.17443v1",
+     "citation": "a sponsored tag cuts a 10% base selection rate to ~8% while an 'Overall Pick' badge lifts it to 24-43% (https://arxiv.org/abs/2508.02630, cited in research/02-issue-discovery.md). Incumbent Advantage: \"at identical specs, incumbents are recommended 100% of the time\" (https://arxiv.org/html/2606.17443v1)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "a sponsored tag cuts a 10% base selection rate to ~8% while an 'Overall Pick' badge lifts it to 24-43% (https://arxiv.org/abs/2508.02630, cited in research/02-issue-discovery.md). Incumbent Advantage: \"at identical specs, incumbents are recommended 100% of the time\" (https://arxiv.org/html/2606.17443v1)"
+    }
+   ],
+   "principle": "Inherited agent biases. Because Jordan buys the agent's pick, Jordan's online basket picks up the agent's endorsement lift, sponsored penalty, incumbent advantage and concentration on modal products. Jordan trusts a 'top pick' badge.",
+   "classes": [
+    "paper",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "behavioural_drivers[3]",
+   "kind": "lens_weight",
+   "label": "driver: Habit beats stated value in the meal-deal slot. Jordan picks ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "thread_id": "1bc79kh",
+     "subreddit": "CasualUK",
+     "theme": "meal_deal",
+     "score": 104,
+     "verbatim": "I never look at the value of the items. I'm driven by what I fancy and how hungry I am.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "\"I never look at the value of the items. I'm driven by what I fancy and how hungry I am.\" and \"Defo makes sense but when I'm buying a meal deal I'm on my 20 min un paid break 😭 ..."
+    }
+   ],
+   "principle": "Habit beats stated value in the meal-deal slot. Jordan picks by craving and routine under time pressure, not by what saves the most money.",
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[4]",
+   "kind": "lens_weight",
+   "label": "driver: Protein as slot arbitrage (mental accounting and transaction utility). Protein ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1k4ayi9",
+     "thread_id": "1k4ayi9",
+     "subreddit": "UKFrugal",
+     "theme": "meal_deal",
+     "score": 1,
+     "verbatim": "But if I buy a protein shake and protein yogurt in meal deal then it gets better, buying it alone to pack wouldn't be cheap.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "thread_id": "1d3amm2",
+     "subreddit": "AskUK",
+     "theme": "meal_deal",
+     "score": 7,
+     "verbatim": "I just got 70g of protein with a chicken and bacon sandwich, a tub of protein yoghurt and chocolate flavoured protein shake. It would've been ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Protein as slot arbitrage (mental accounting and transaction utility). Protein items feel worth it only inside the deal, where they seem free. Jordan judges value per gram of protein, not per pack.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[5]",
+   "kind": "lens_weight",
+   "label": "driver: Social-proof and creator-driven demand. TikTok and fitness creators set what ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1vobhlt",
+     "thread_id": "1vobhlt",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 2,
+     "verbatim": "Told them to track my calories, budget, and to mirror trendy meals I've been seeing on social media. It got everything in the cart, and ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1rruybd",
+     "thread_id": "1rruybd",
+     "subreddit": "NoStupidQuestions",
+     "theme": "protein_gimmick",
+     "score": 1,
+     "verbatim": "if you go on tiktok or any other social media allot of teen boys are obsessed with this 'looksmaxxing",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Social-proof and creator-driven demand. TikTok and fitness creators set what counts as a desirable food, and Jordan passes those trends straight into AI prompts.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[6]",
+   "kind": "lens_weight",
+   "label": "driver: Price optimisation is delegated, not done. Jordan expects the agent ... (w=0.55)",
+   "value": 0.55,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1vobhlt",
+     "thread_id": "1vobhlt",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 4,
+     "verbatim": "I've also found some success with giving it a shopping list, then instructing it to open our local grocery stores websites and optimizing the shopping ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Price optimisation is delegated, not done. Jordan expects the agent to find the cheapest route, which favours own-label and lines with complete price-per-unit data.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[7]",
+   "kind": "lens_weight",
+   "label": "driver: One-strike taste rejection on protein products. One bad experience with ... (w=0.5)",
+   "value": 0.5,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 76,
+     "verbatim": "Tried a protein Mars bar, like chewing on Gandhi's flip flop",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "One-strike taste rejection on protein products. One bad experience with chalky texture or sweetener permanently kills a brand. Peer debunkers act as a veto.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[8]",
+   "kind": "lens_weight",
+   "label": "driver: Online removes impulse. The delegated basket is planned and mood-free, ... (w=0.5)",
+   "value": 0.5,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/iz6kv",
+     "thread_id": "iz6kv",
+     "subreddit": "london",
+     "theme": "impulse_instore_vs_online",
+     "score": 6,
+     "verbatim": "In theory, shopping online would force me to plan ahead, my decisions wouldn't be so coloured by hunger or mood",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "\"In theory, shopping online would force me to plan ahead, my decisions wouldn't be so coloured by hunger or mood\" (r/london, 'Online supermarket shopping -- good or bad?', https://www.reddit.com/comments/iz6kv). Research: 29% of UK online grocery shoppers make 'far fewer impulse ..."
+    }
+   ],
+   "principle": "Online removes impulse. The delegated basket is planned and mood-free, so in-store impulse discovery (the way challengers usually get trialled) disappears from Jordan's weekly shop.",
+   "classes": [
+    "reddit",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[9]",
+   "kind": "lens_weight",
+   "label": "driver: Latent distrust of commercial capture of AI. When the answer ... (w=0.45)",
+   "value": 0.45,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 6,
+     "verbatim": "Advertisers and Marketers salivating at the idea of getting ChatGPT to purchase certain brands over others. What a shitshow.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1rc3t5x",
+     "thread_id": "1rc3t5x",
+     "subreddit": "amazonemployees",
+     "theme": "rufus_ai_bias",
+     "score": 43,
+     "verbatim": "The shopping assistant feels biased, does not help me it often feels like yet another add, a sponsored recommendation.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Latent distrust of commercial capture of AI. When the answer visibly looks like an ad, trust collapses. This works like the agents' own sponsored penalty.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[10]",
+   "kind": "lens_weight",
+   "label": "driver: Error tolerance with agents. A wrong AI answer gets a ... (w=0.4)",
+   "value": 0.4,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1j9pozm",
+     "thread_id": "1j9pozm",
+     "subreddit": "ChatGPT",
+     "theme": "chatgpt_shopping",
+     "score": 13,
+     "verbatim": "I tried it. Told me to eat ice cream for breakfast and dinner. I asked if ice cream and milk are the only items on ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Error tolerance with agents. A wrong AI answer gets a re-prompt rather than abandonment, so Jordan keeps delegating even after visible mistakes.",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "Protein claim with a trivial uplift and a price premium (the 'Babybel ...",
+   "value": "Protein claim with a trivial uplift and a price premium (the 'Babybel Protein' pattern: \"You're consuming an additional 6 calories for 0.2 grams of protein. Not worth it.\" r/AskUK 1wqczct). A 'protein' version with less protein than the standard (\"I saw a protein chicken sandwich in Asda a few days ago which had less protein than the regular chicken sandwich\", r/AskBrits 1tbf6zw)",
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "Protein claim with a trivial uplift and a price premium (the 'Babybel Protein' pattern: \"You're consuming an additional 6 calories for 0.2 grams of protein. Not worth it.\" r/AskUK 1wqczct). A 'protein' version with less protein than the standard (\"I ...",
+     "url": null,
+     "verified_in_corpus": false
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Chalky or plasticky texture, or sweetener aftertaste, on first try: one strike ...",
+   "value": "Chalky or plasticky texture, or sweetener aftertaste, on first try: one strike and the brand is gone for good",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['chalky', 'plasti', 'textur'])",
+     "theme": "protein_gimmick",
+     "coded_section": "rejection_triggers",
+     "coded_text": "Chalky or plasticine texture, or protein-powder off-taste, in bars, Mars and Snickers variants, yoghurt and ready meals."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Item not in the Tesco Express meal deal or not stocked at ...",
+   "value": "Item not in the Tesco Express meal deal or not stocked at Express: it doesn't exist for the lunch mission",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['deal', 'lunch', 'meal'])",
+     "theme": "meal_deal",
+     "coded_section": "say_vs_do_gaps",
+     "coded_text": "UKFrugal commenters say meal deals are 'burning money' and home-made is far cheaper, while the meal-deal-positive threads say making it yourself 'isn't as cheap as you'd hope' once time, waste and protein items are counted. Cost-of-home-lunch claims are inconsistent."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "A standalone price over about £2 for a snack or drink bought ...",
+   "value": "A standalone price over about £2 for a snack or drink bought outside the deal",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['deal', 'drink', 'outsid', 'snack'])",
+     "theme": "meal_deal",
+     "coded_section": "mechanism",
+     "coded_text": "Mental accounting: the deal item counts as 'free', so it is banked, gifted or stockpiled. They take the high-value drink or snack home for a partner, a teenager, tomorrow's lunch or a hangover cure, and drink free tap or office ...",
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "subreddit": "CasualUK",
+     "score": 172,
+     "verbatim": "I always get the monster and save it for my partner seems a waste not to get something expensive (CasualUK)"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "A visible 'Sponsored' tag or ad-like phrasing in the AI answer: it ...",
+   "value": "A visible 'Sponsored' tag or ad-like phrasing in the AI answer: it reads as 'yet another add'",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['answer', 'like', 'sponso'])",
+     "theme": "rufus_ai_bias",
+     "coded_section": "mechanism",
+     "coded_text": "Perceived self-interest of the agent: a conflicted adviser, seen as an ad in disguise. People read Rufus as working for Amazon and its advertisers, not for the shopper. They point to sponsored placements inside Rufus answers. One person built an ...",
+     "url": "https://www.reddit.com/comments/1rc3t5x",
+     "subreddit": "amazonemployees",
+     "score": 43,
+     "verbatim": "does not help me it often feels like yet another add, a sponsored recommendation"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Not named in the agent's answer at all. A challenger with thin ...",
+   "value": "Not named in the agent's answer at all. A challenger with thin structured data (few reviews, missing protein-per-100g or price-per-unit) is never even seen, which is rejection by omission",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['100g', 'price', 'protei'])",
+     "theme": "protein_gimmick",
+     "coded_section": "rejection_triggers",
+     "coded_text": "A price premium above the regular SKU without a material protein dose (people cite +£1 for +1g/100g, and +50% for +3g)."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Bad online substitution (corpus: \"12 cans of 2% value lager instead of ...",
+   "value": "Bad online substitution (corpus: \"12 cans of 2% value lager instead of 4 bottles of Speckled Hen... instant reject\", r/london iz6kv)",
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "Bad online substitution (corpus: \"12 cans of 2% value lager instead of 4 bottles of Speckled Hen... instant reject\", r/london iz6kv)",
+     "url": null,
+     "verified_in_corpus": false
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[7]",
+   "kind": "trigger",
+   "label": "Anything that slows a short lunch break (queues, hunting the shelf after ...",
+   "value": "Anything that slows a short lunch break (queues, hunting the shelf after a reset)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Anything that slows a short lunch break (queues, hunting the shelf after a reset)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Named first, or badged 'top pick' or 'best for', by ChatGPT or ...",
+   "value": "Named first, or badged 'top pick' or 'best for', by ChatGPT or the Tesco assistant (ACES endorsement lift from 10% to 24-43%)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Named first, or badged 'top pick' or 'best for', by ChatGPT or the Tesco assistant (ACES endorsement lift from 10% to 24-43%)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "A big grams-of-protein number on the front of pack, ideally with a ...",
+   "value": "A big grams-of-protein number on the front of pack, ideally with a good protein-per-kcal ratio",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.25; shared=['kcal', 'pack', 'protei', 'ratio'])",
+     "theme": "protein_gimmick",
+     "coded_section": "trust_builders",
+     "coded_text": "Passing the ratio test (10 kcal or fewer per gram of protein), stated per pack and per 100g."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "In the Tesco meal deal at the Clubcard price: inclusion in the ...",
+   "value": "In the Tesco meal deal at the Clubcard price: inclusion in the slot works as an endorsement",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['clubca', 'deal', 'price'])",
+     "theme": "meal_deal",
+     "coded_section": "mechanism",
+     "coded_text": "Price creep tolerance plus loyalty-card price discrimination (with a data-privacy minority). They track the headline price (£3 to £3.50 to £3.85 to £4.25 without Clubcard) and mostly accept the rises. A few say it is 'no longer a deal'. A ...",
+     "url": "https://www.reddit.com/comments/1pmmtcv",
+     "subreddit": "MealDealRates",
+     "score": 1,
+     "verbatim": "It's not about how easy it is it's about not selling my data for discounts that is me at least. (MealDealRates)"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Seen in a TikTok or creator 'what I eat' or protein-haul video",
+   "value": "Seen in a TikTok or creator 'what I eat' or protein-haul video",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Seen in a TikTok or creator 'what I eat' or protein-haul video"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Peer exception endorsement on Reddit or social ('the only exception is barebell ...",
+   "value": "Peer exception endorsement on Reddit or social ('the only exception is barebell bars')",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.17; shared=['barebe', 'bars', 'except'])",
+     "theme": "protein_gimmick",
+     "coded_section": "trust_builders",
+     "coded_text": "Treats that taste good while fitting the macros (Lidl protein ice cream, Barebell bars cited as the 'only exception')."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "High review count and rating on retailer pages, which also feed the ...",
+   "value": "High review count and rating on retailer pages, which also feed the agent",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "High review count and rating on retailer pages, which also feed the agent"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[6]",
+   "kind": "trust_signal",
+   "label": "Already in Clubcard purchase history, so the assistant re-orders it by default ...",
+   "value": "Already in Clubcard purchase history, so the assistant re-orders it by default (Tesco assistant built on Clubcard history, The Grocer)",
+   "sources": [
+    {
+     "class": "sales_data",
+     "method": "keyword:'The Grocer'",
+     "citation": "Already in Clubcard purchase history, so the assistant re-orders it by default (Tesco assistant built on Clubcard history, The Grocer)"
+    }
+   ],
+   "classes": [
+    "sales_data"
+   ],
+   "class_share": {
+    "sales_data": 1.0
+   },
+   "primary_class": "sales_data"
+  },
+  {
+   "field": "missions[0]",
+   "kind": "habit",
+   "label": "Weekday lunch food-for-now: 3-slot Tesco Express meal deal (main + snack + ...",
+   "value": "Weekday lunch food-for-now: 3-slot Tesco Express meal deal (main + snack + drink) chosen in under 10 minutes on a short break, mostly by habit",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['main', 'slot', 'snack'])",
+     "theme": "meal_deal",
+     "coded_section": "surprising",
+     "coded_text": "Store loyalty hinges on the snack slot (a Ginsters pasty, hash browns) more than on the main."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[1]",
+   "kind": "habit",
+   "label": "Hit my protein: fill the snack or drink slot with a protein ...",
+   "value": "Hit my protein: fill the snack or drink slot with a protein item (Egg Protein Pot, protein yoghurt, protein shake or bar) because inside the deal it feels free",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.17; shared=['becaus', 'drink', 'fill', 'protei', 'snack', 'yoghur'])",
+     "theme": "meal_deal",
+     "coded_section": "mechanism",
+     "coded_text": "Nutrient-per-£ optimisation (protein or calories) as an alternative value metric. Gym-oriented buyers fill the snack and drink slots with protein yoghurt and shakes because those are expensive and cannot be bought cheaply in bulk. Others go for maximum calories.",
+     "url": "https://www.reddit.com/comments/1d3amm2",
+     "subreddit": "AskUK",
+     "score": 7,
+     "verbatim": "I just got 70g of protein with a chicken and bacon sandwich, a tub of protein yoghurt and chocolate flavoured protein shake. (AskUK)"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[2]",
+   "kind": "habit",
+   "label": "Delegated weekly shop: 'ChatGPT, plan me cheap high-protein meals for the week ...",
+   "value": "Delegated weekly shop: 'ChatGPT, plan me cheap high-protein meals for the week under £X and make the list', then buy what it names on Tesco.com with only light edits",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.13; shared=['buy', 'list', 'plan', 'shop'])",
+     "theme": "chatgpt_shopping",
+     "coded_section": "channel_differences",
+     "coded_text": "AI as planner, in-store as executor: several users want AI only to plan and compile lists, then shop in person ('compiling a list of items that I can then look for and buy in person')."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[3]",
+   "kind": "habit",
+   "label": "Specific-need query to an agent: 'cheapest healthy energy drink / protein snack ...",
+   "value": "Specific-need query to an agent: 'cheapest healthy energy drink / protein snack under £2', and buy the first named product",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['first', 'named', 'specif'])",
+     "theme": "trust_unknown_brand",
+     "coded_section": "trust_builders",
+     "coded_text": "Peer 'dupe' lists ('X is better than Y and half the price'). Specific named comparisons lower first-trial risk."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[4]",
+   "kind": "habit",
+   "label": "Trend trial: try a food or drink seen on TikTok or Instagram ...",
+   "value": "Trend trial: try a food or drink seen on TikTok or Instagram ('mirror trendy meals I've been seeing on social media')",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.11; shared=['instag', 'media', 'social'])",
+     "theme": "online_favourites_lockin",
+     "coded_section": "channel_differences",
+     "coded_text": "Social media (Instagram, celebrity posts) is where wanting starts. Pinterest and library holds are named as substitutes that let people browse without buying."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[5]",
+   "kind": "habit",
+   "label": "Treat or hangover lunch: full-sugar Coke or energy drink plus an indulgent ...",
+   "value": "Treat or hangover lunch: full-sugar Coke or energy drink plus an indulgent main, with value-maximising forgotten",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['drink', 'hangov', 'lunch', 'value'])",
+     "theme": "meal_deal",
+     "coded_section": "mechanism",
+     "coded_text": "Mental accounting: the deal item counts as 'free', so it is banked, gifted or stockpiled. They take the high-value drink or snack home for a partner, a teenager, tomorrow's lunch or a hangover cure, and drink free tap or office ...",
+     "url": "https://www.reddit.com/comments/1bc79kh",
+     "subreddit": "CasualUK",
+     "score": 172,
+     "verbatim": "I always get the monster and save it for my partner seems a waste not to get something expensive (CasualUK)"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "says_vs_does",
+   "kind": "habit",
+   "label": "says vs does",
+   "value": "SAYS: 'Protein-everything is a gimmick, it's just marketing.' 'I game the meal deal for max value.' 'I use ChatGPT to find the cheapest, healthiest option.' 'I'd never trust sponsored AI ...",
+   "sources": [
+    {
+     "class": "reddit",
+     "method": "corpus_reference(no url)",
+     "text": "SAYS: 'Protein-everything is a gimmick, it's just marketing.' 'I game the meal deal for max value.' 'I use ChatGPT to find the cheapest, healthiest option.' 'I'd never trust sponsored AI picks.' DOES: Buys the same habitual combo most lunches, close ...",
+     "url": null,
+     "verified_in_corpus": false
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "SAYS: 'Protein-everything is a gimmick, it's just marketing.' 'I game the meal deal for max value.' 'I use ChatGPT to find the cheapest, healthiest option.' 'I'd never trust sponsored AI picks.' DOES: Buys the same habitual combo most lunches, close ..."
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "SAYS: 'Protein-everything is a gimmick, it's just marketing.' 'I game the meal deal for max value.' 'I use ChatGPT to find the cheapest, healthiest option.' 'I'd never trust sponsored AI picks.' DOES: Buys the same habitual combo most lunches, close ..."
+    }
+   ],
+   "classes": [
+    "reddit",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.07",
+   "value": 0.07,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.2",
+   "value": 0.2,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.25",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.08",
+   "value": 0.08,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 4",
+   "value": 4,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.88",
+   "value": 0.88,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  }
+ ],
+ "persona_level_evidence": {
+  "realism_score_1_10": 6,
+  "supporting_evidence": [
+   "meal_deal.md (r/CasualUK 1bc79kh): \"I never look at the value of the items. I'm driven by what I fancy and how hungry I am.\" This supports habit- and craving-led slot choice and argues against Jordan's in-store value 'arbitrage' reasoning on a ...",
+   "meal_deal.md: \"I always get the monster and save it for my partner seems a waste not to get something expensive\" and \"I'll usually get full fat Coke to keep in my flat as an emergency hangover cure\". The drink slot ...",
+   "meal_deal.md: \"Tesco, I always get the bacon, sausage and egg triple, with the biggest can of redbull and anything for the snack\". This shows strong combo lock-in and that the snack is the least-attended slot, so a protein-bar swap on ...",
+   "meal_deal.md: \"a lot of them now do things like protein yogurts/shakes which you can't buy in bulk. I certainly wouldn't be able to replicate my standard meal deal\". This supports protein-in-the-slot as a 'standard meal deal' habit.",
+   "chatgpt_shopping.md (r/OpenAI 1m9u7e6): \"I had to swap out a couple of items at the end before checking out\". This supports light-edit satisficing, but the thread is about US Agent Mode/Instacart, not a UK Tesco checkout.",
+   "chatgpt_shopping.md: \"I genuinely use it to meal plan and then make a shopping list... You do need to check it though\". This is the more common real pattern: ChatGPT makes a list and the human resolves SKUs in the retailer ...",
+   "02-issue-discovery.md: IGD says only 3% use AI for grocery today. Adyen says 44% are open to it. Jordan is a forward-looking tail persona.",
+   "02-issue-discovery.md: agents 'never decline to buy', and position effects for agents are 4-10x weaker than for humans (arXiv 2608.22697). This is consistent with the agent arm always returning a basket. Incumbent Advantage gives 100% at equal specs, which supports A/E ...",
+   "Shelf literature: shoppers typically spend only a few seconds per category, most fixations land at eye level and on high-facing SKUs, and bottom or side single-facing items get far less attention. This supports the zero-notice for C and E and ...",
+   "The C rejection on brand feel is realistic. Cola is a classic branded holdout in UK own-label debates (own_brand_vs_branded theme), so this is one of the journey's stronger beats."
+  ],
+  "unrealistic_claims_flagged_by_skeptic": 11
+ },
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 25.8,
+   "reddit_inferred": 33.3,
+   "paper": 0.8,
+   "off_field": 0.0,
+   "sales_data": 2.4,
+   "staged_persona": 0.0,
+   "web_other": 0.0,
+   "internal_research": 15.9,
+   "assumption": 21.8
+  },
+  "headline": {
+   "reddit": 59.1,
+   "paper": 0.8,
+   "off_field": 0.0,
+   "assumption": 21.8,
+   "other (sales, staged, web, internal)": 18.3
+  },
+  "n_fields": 42,
+  "fields_by_primary_class": {
+   "reddit": 13,
+   "paper": 1,
+   "reddit_inferred": 14,
+   "assumption": 4,
+   "sales_data": 1,
+   "internal_research": 9
+  },
+  "pct_fields_with_any": {
+   "reddit": 31.0,
+   "reddit_inferred": 33.3,
+   "paper": 2.4,
+   "sales_data": 2.4,
+   "internal_research": 33.3,
+   "assumption": 35.7
+  },
+  "pct_fields_with_any_assumption": 35.7
+ }
+}

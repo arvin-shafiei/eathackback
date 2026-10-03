@@ -1,0 +1,1601 @@
+{
+ "persona_id": "p_upf_avoider_parent",
+ "name": "Hannah",
+ "archetype": "upf_avoider_parent",
+ "kind": "lens",
+ "source_file": "data/personas/lens/upf_avoider_parent.json",
+ "fields": [
+  {
+   "field": "profile.budget_gbp",
+   "kind": "profile",
+   "label": "budget_gbp",
+   "value": 25,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: mid-week top-up of about £20-30 for a family of four whose weekly online shop is about £120-160 (staged Priya dossier)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: mid-week top-up of about £20-30 for a family of four whose weekly online shop is about £120-160 (staged Priya dossier)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "profile.channel",
+   "kind": "profile",
+   "label": "channel",
+   "value": "instore",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no channel_source in data/personas/lens/upf_avoider_parent.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "profile.mission",
+   "kind": "profile",
+   "label": "mission",
+   "value": "top_up",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "missing_source",
+     "text": "no mission_source in data/personas/lens/upf_avoider_parent.json"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "lens.visible additives (E-numbers, 'emulsifier')",
+   "kind": "lens_weight",
+   "label": "lens: visible additives (E-numbers, 'emulsifier') (w=0.2)",
+   "value": 0.2,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "a lot of branded stuff tends to have filler ingredients to give a better texture (e.g emulsifiers)... I'll go for the cheaper option",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)",
+     "url": "https://doi.org/10.1016/j.tifs.2017.06.010"
+    }
+   ],
+   "measured_by_off_field": "additives_n",
+   "direction": "lower_better",
+   "why": "her working definition of UPF is 'has E-numbers or emulsifiers on the back', which is a cue heuristic, not NOVA",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.sweeteners in a kids' or 'healthy' product",
+   "kind": "lens_weight",
+   "label": "lens: sweeteners in a kids' or 'healthy' product (w=0.18)",
+   "value": 0.18,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 65,
+     "verbatim": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "Or the \"Low sugar!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "sweeteners",
+   "direction": "lower_better (any >0 is a near-hard reject for lunchbox items)",
+   "why": "sweeteners in a kids' product feel like hidden junk; the 'low sugar' claim backfires",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.sugar",
+   "kind": "lens_weight",
+   "label": "lens: sugar (w=0.16)",
+   "value": 0.16,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 30,
+     "verbatim": "Yes it may have 20g of protien but it also has 500 calories and 20g of sugar ffs.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged Priya dossier behavioural driver 'Say-do gap on UPF' (weight 0.85)"
+    }
+   ],
+   "measured_by_off_field": "sugars_100g",
+   "direction": "lower_better",
+   "why": "'avoid sugar for the kids' is the one stated rule she actually checks on the nutrition panel",
+   "classes": [
+    "reddit",
+    "staged_persona"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.short ingredient list",
+   "kind": "lens_weight",
+   "label": "lens: short ingredient list (w=0.14)",
+   "value": 0.14,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1buwayp",
+     "thread_id": "1buwayp",
+     "subreddit": "LifeProTips",
+     "theme": "trust_unknown_brand",
+     "score": 1,
+     "verbatim": "Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1e8k6o1",
+     "thread_id": "1e8k6o1",
+     "subreddit": "AskUK",
+     "theme": "delisted",
+     "score": 1,
+     "verbatim": "the ingredients list was so good and simple… no unnecessary stuff",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)",
+     "url": "https://doi.org/10.1016/j.tifs.2017.06.010"
+    }
+   ],
+   "measured_by_off_field": "ingredients_n",
+   "direction": "lower_better",
+   "why": "'4 ingredients' reads as clean; a long list reads as UPF",
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.nuts (nut-free school lunchbox rule)",
+   "kind": "lens_weight",
+   "label": "lens: nuts (nut-free school lunchbox rule) (w=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "skeptic verdict in data/personas/staged_personas_v1.json[0].verdict.unrealistic_claims ('Nut-free schools')"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "skeptic verdict in data/personas/staged_personas_v1.json[0].verdict.unrealistic_claims ('Nut-free schools')"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: no national statistic was pulled for the share of schools with a nut-free policy"
+    }
+   ],
+   "measured_by_off_field": "allergens (en:nuts, en:peanuts)",
+   "direction": "absent_required for lunchbox items",
+   "why": "most UK primary schools run nut-free lunchbox policies, so a nut product is out for the lunchbox whatever its UPF status",
+   "classes": [
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "lens.unit price vs own-label",
+   "kind": "lens_weight",
+   "label": "lens: unit price vs own-label (w=0.09)",
+   "value": 0.09,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/food_and_recipes/4922485",
+     "citation": "Mumsnet: 'I can't afford to buy the organic/non upf versions of these staples for my family, our food bill is ridiculous as it is' https://www.mumsnet.com/talk/food_and_recipes/4922485 (cited in research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "Mumsnet: 'I can't afford to buy the organic/non upf versions of these staples for my family, our food bill is ridiculous as it is' https://www.mumsnet.com/talk/food_and_recipes/4922485 (cited in research/02-issue-discovery.md)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 6,
+     "verbatim": "I don't buy hardly anything branded anymore either except a few things the children like.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "measured_by_off_field": "price_gbp / price per 100g (catalog price_gbp + quantity)",
+   "direction": "lower_better",
+   "why": "she pays a premium only for 'hero' items the kids eat on their own; for everything else own-label wins on price",
+   "classes": [
+    "reddit",
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "web_other": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "lens.front-of-pack reassurance claims ('no added sugar', 'made with real fruit', 'no preservatives')",
+   "kind": "lens_weight",
+   "label": "lens: front-of-pack reassurance claims ('no added sugar', 'made with real fruit', 'no preservatives') (w=0.08)",
+   "value": 0.08,
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/am_i_being_unreasonable/5386544",
+     "citation": "Mumsnet: 'brands of their bread have no preservatives. Not totally UPF free but better than having emulsifiers and E numbers' https://www.mumsnet.com/talk/am_i_being_unreasonable/5386544 (cited in staged Priya dossier)"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Mumsnet: 'brands of their bread have no preservatives. Not totally UPF free but better than having emulsifiers and E numbers' https://www.mumsnet.com/talk/am_i_being_unreasonable/5386544 (cited in staged Priya dossier)"
+    }
+   ],
+   "measured_by_off_field": "pack_copy (+ labels e.g. en:no-added-sugar, en:no-preservatives)",
+   "direction": "presence_better",
+   "why": "front-of-pack claims are what she sees in her ~5 seconds at the shelf; she trusts the 'clean' claims and distrusts 'high protein'",
+   "classes": [
+    "web_other",
+    "staged_persona"
+   ],
+   "class_share": {
+    "web_other": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "lens.actual processing level",
+   "kind": "lens_weight",
+   "label": "lens: actual processing level (w=0.05)",
+   "value": 0.05,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/",
+     "citation": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "only 13% identify all five UPFs)"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8921104/",
+     "citation": "UPF is 50.7% of UK household purchased energy https://pmc.ncbi.nlm.nih.gov/articles/PMC8921104/"
+    }
+   ],
+   "measured_by_off_field": "nova",
+   "direction": "lower_better",
+   "why": "deliberately small: she says she avoids UPF, but she cannot see NOVA. A clean-looking NOVA 4 passes and a NOVA 3 with one 'scary' word fails. This low weight encodes the say-do gap",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.O",
+   "kind": "ocean_trait",
+   "label": "OCEAN O = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.45 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.O.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN O effect (coef=-0.1)",
+   "value": -0.1,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (O was linked to more varied and healthier choices)",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Pliner & Hobden 1992, Appetite 19:105-120, doi:10.1016/0195-6663(92)90014-W (food neophobia construct). The O value itself is an assumption: she is open for herself but conservative for the kids",
+     "url": "https://doi.org/10.1016/0195-6663(92"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Pliner & Hobden 1992, Appetite 19:105-120, doi:10.1016/0195-6663(92)90014-W (food neophobia construct). The O value itself is an assumption: she is open for herself but conservative for the kids"
+    }
+   ],
+   "effect": "mid-low O: she is cautious with unfamiliar brands for the kids, so the Openness boost to noticing new brands is small and trust_new_brand stays low",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.C",
+   "kind": "ocean_trait",
+   "label": "OCEAN C = 0.68",
+   "value": 0.68,
+   "sources": [
+    {
+     "class": "internal_research",
+     "method": "ocean_prior_table",
+     "citation": "data/personas/ocean/C.json archetype prior: upf_avoider_parent +0.4 (health-aware diet, C3)"
+    },
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.68 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "ocean_effect.C.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=0.25)",
+   "value": 0.25,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (C was linked to less sweet/savoury snack intake via restrained eating). The coef is an assumption sized to the 0.2 reads_structured_data ceiling",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (C was linked to less sweet/savoury snack intake via restrained eating). The coef is an assumption sized to the 0.2 reads_structured_data ceiling"
+    }
+   ],
+   "effect": "high C: she reads labels and does restrained eating for the kids, so she pays more attention to sugars_100g, sweeteners and additives_n once she has noticed a product",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean_effect.C.1",
+   "kind": "ocean_trait",
+   "label": "OCEAN C effect (coef=-0.1)",
+   "value": -0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 2,
+     "verbatim": "the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "effect": "C is only moderately high (0.68, not 0.85) because she is time-poor and the Favourites list does her 'conscientiousness' for her, so the label read happens once, when an item is first added",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.E",
+   "kind": "ocean_trait",
+   "label": "OCEAN E = 0.5",
+   "value": 0.5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.5 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.E.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN E effect (coef=0.0)",
+   "value": 0.0,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 reported no strong extraversion effect on food choice",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 reported no strong extraversion effect on food choice"
+    }
+   ],
+   "effect": "neutral E: no effect on shelf behaviour in this model",
+   "classes": [
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "ocean.A",
+   "kind": "ocean_trait",
+   "label": "OCEAN A = 0.62",
+   "value": 0.62,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.62 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.A.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN A effect (coef=0.1)",
+   "value": 0.1,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 21,
+     "verbatim": "the kids love them",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "assumption: the staged dossier's trust signals (Mumsnet, school gate, 'the kids love them' https://www.reddit.com/comments/1o3q3ez). No direct paper links A to food choice strongly (Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 found weak A effects)",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "assumption: the staged dossier's trust signals (Mumsnet, school gate, 'the kids love them' https://www.reddit.com/comments/1o3q3ez). No direct paper links A to food choice strongly (Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 found weak A effects)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: the staged dossier's trust signals (Mumsnet, school gate, 'the kids love them' https://www.reddit.com/comments/1o3q3ez). No direct paper links A to food choice strongly (Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 found weak A effects)"
+    }
+   ],
+   "effect": "higher A: she trusts other parents' word of mouth and retailer own-label, and defers to the kids' veto",
+   "classes": [
+    "reddit",
+    "paper",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "paper": 0.25,
+    "staged_persona": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "ocean.N",
+   "kind": "ocean_trait",
+   "label": "OCEAN N = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "hand_set_score",
+     "text": "trait score 0.6 set by hand for the archetype; no psychometric measurement"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "ocean_effect.N.0",
+   "kind": "ocean_trait",
+   "label": "OCEAN N effect (coef=0.15)",
+   "value": 0.15,
+   "sources": [
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Keller & Siegrist 2015, Appetite 84:128-138, doi:10.1016/j.appet.2014.10.003 (N was linked to emotional/uncontrolled eating styles)",
+     "url": "https://doi.org/10.1016/j.appet.2014.10.003"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/",
+     "citation": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "only 13% identify all five UPFs). The N level is an assumption based on the anxious tone of the Mumsnet UPF threads cited in the staged dossier"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Mumsnet'",
+     "citation": "only 13% identify all five UPFs). The N level is an assumption based on the anxious tone of the Mumsnet UPF threads cited in the staged dossier"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "only 13% identify all five UPFs). The N level is an assumption based on the anxious tone of the Mumsnet UPF threads cited in the staged dossier"
+    }
+   ],
+   "effect": "elevated N: worry about 'chemicals' and kids' health drives cue-based avoidance (E-numbers, sweeteners) and loss aversion about wasting money on a trial the kids refuse",
+   "classes": [
+    "paper",
+    "web_other",
+    "staged_persona",
+    "assumption"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "web_other": 0.25,
+    "staged_persona": 0.25,
+    "assumption": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the ...",
+   "value": "any sweetener (sucralose, acesulfame K, aspartame) in a product meant for the kids",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 65,
+     "verbatim": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the ...",
+   "value": "E-numbers or 'emulsifier' visible in the ingredients, read as 'UPF' whatever the NOVA status",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "Rather than brands I'm trying to cut down on how much ultra-processed food I eat so it really depends which version is less processed. ... ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "url:academic_host",
+     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/",
+     "citation": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11311829/ (54% of 2,386 UK adults avoid UPF"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "only 13% identify all five UPFs)"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "nuts in a lunchbox item (nut-free school)",
+   "value": "nuts in a lunchbox item (nut-free school)",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[0].verdict (skeptic correction)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "staged_personas_v1.json[0].verdict (skeptic correction)"
+    },
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption on prevalence"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333,
+    "assumption": 0.3333
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "'high protein' or gym-style front of pack on a kids' snack, read ...",
+   "value": "'high protein' or gym-style front of pack on a kids' snack, read as a gimmick",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 13,
+     "verbatim": "it's all e numbers and crap but it's got protein in it so must be good right",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "the kids refuse it once (one-strike veto, never re-trialled)",
+   "value": "the kids refuse it once (one-strike veto, never re-trialled)",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://forums.moneysavingexpert.com/discussion/6653837",
+     "citation": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/02'",
+     "citation": "MSE: 'If I try supermarket branded and don't like it I'll never buy it again.' https://forums.moneysavingexpert.com/discussion/6653837 (cited in research/02-issue-discovery.md)"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "internal_research"
+   ],
+   "class_share": {
+    "web_other": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "unit price well above own-label for a non-hero item",
+   "value": "unit price well above own-label for a non-hero item",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/food_and_recipes/4922485",
+     "citation": "https://www.mumsnet.com/talk/food_and_recipes/4922485"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 6,
+     "verbatim": "I don't buy hardly anything branded anymore either except a few things the children like.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "web_other": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+   "value": "short, recognisable ingredient list ('4 ingredients', 'no preservatives')",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1buwayp",
+     "thread_id": "1buwayp",
+     "subreddit": "LifeProTips",
+     "theme": "trust_unknown_brand",
+     "score": 1,
+     "verbatim": "Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Román, Sánchez-Siles & Siegrist 2017, Trends Food Sci Tech 67:44-57, doi:10.1016/j.tifs.2017.06.010 (naturalness: consumers judge by absence of additives and short ingredient lists)",
+     "url": "https://doi.org/10.1016/j.tifs.2017.06.010"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "paper"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "paper": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "already a Favourite or the usual one (incumbent by habit), so she ...",
+   "value": "already a Favourite or the usual one (incumbent by habit), so she does not re-evaluate it",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 2,
+     "verbatim": "Yep...the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "other parents vouch for it / 'the kids love them'",
+   "value": "other parents vouch for it / 'the kids love them'",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1o3q3ez",
+     "thread_id": "1o3q3ez",
+     "subreddit": "veganuk",
+     "theme": "delisted",
+     "score": 21,
+     "verbatim": "we've just started buying your products exclusively (from Ocado though) and the kids love them",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "trusted retailer own-label for ingredients",
+   "value": "trusted retailer own-label for ingredients",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "thread_id": "1ow5fne",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "Rather than brands I'm trying to cut down on how much ultra-processed food I eat so it really depends which version is less processed. ... ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "sugar per 100g on the panel matches the 'low sugar' front-of-pack claim",
+   "value": "sugar per 100g on the panel matches the 'low sugar' front-of-pack claim",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1oqtnv1",
+     "thread_id": "1oqtnv1",
+     "subreddit": "AskUK",
+     "theme": "protein_gimmick",
+     "score": 97,
+     "thread_title": "Has anyone else noticed an increase in aggressive protein marketing in supermarkets?",
+     "verbatim": null,
+     "verified_in_corpus": false,
+     "method": "url_match(thread_only)",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[0]",
+   "kind": "habit",
+   "label": "rebuilds about 80% of the weekly basket from Favourites / previous order ...",
+   "value": "rebuilds about 80% of the weekly basket from Favourites / previous order in about 5-10 minutes; the health filter ran once, when the item was first added",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 2,
+     "verbatim": "Yep...the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[1]",
+   "kind": "habit",
+   "label": "mid-week in-store top-up with the kids or straight after work, about 5 ...",
+   "value": "mid-week in-store top-up with the kids or straight after work, about 5 seconds per shelf, mostly grabbing knowns",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 3,
+     "verbatim": "with two young kids the faff of getting them both into the car and round the shops",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "staged sim_parameters seconds_at_shelf=5"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "habits[2]",
+   "kind": "habit",
+   "label": "accepts most substitutions and sends back only obviously worse ones",
+   "value": "accepts most substitutions and sends back only obviously worse ones",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.thegrocer.co.uk/news/anger-as-tesco-overrides-online-accounts-to-accept-substitutions/561152.article",
+     "citation": "Tesco: about 80% accept substitutions, 9 in 10 keep them https://www.thegrocer.co.uk/news/anger-as-tesco-overrides-online-accounts-to-accept-substitutions/561152.article (cited in staged dossier)"
+    },
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "Tesco: about 80% accept substitutions, 9 in 10 keep them https://www.thegrocer.co.uk/news/anger-as-tesco-overrides-online-accounts-to-accept-substitutions/561152.article (cited in staged dossier)"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "staged_persona"
+   ],
+   "class_share": {
+    "web_other": 0.5,
+    "staged_persona": 0.5
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "habits[3]",
+   "kind": "habit",
+   "label": "pays a premium only for 'hero' lunchbox items; own-label for ingredients",
+   "value": "pays a premium only for 'hero' lunchbox items; own-label for ingredients",
+   "sources": [
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/food_and_recipes/4922485",
+     "citation": "https://www.mumsnet.com/talk/food_and_recipes/4922485"
+    }
+   ],
+   "classes": [
+    "web_other"
+   ],
+   "class_share": {
+    "web_other": 1.0
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "habits[4]",
+   "kind": "habit",
+   "label": "flips to the back of pack for kids' snacks only some of ...",
+   "value": "flips to the back of pack for kids' snacks only some of the time (P≈0.25-0.35); almost never for her own drink",
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "staged_personas_v1.json[0].verdict.corrections (skeptic calibration)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "staged_personas_v1.json[0].verdict.corrections (skeptic calibration)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.7",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "consistent with eye level vs floor +39% sales (research/04-3d-sim-evidence-and-tech.md, Wikipedia Planogram) and Chandon et al. 2009 J. Marketing 73(6) doi:10.1509/jmkg.73.6.1",
+     "url": "https://doi.org/10.1509/jmkg.73.6.1"
+    },
+    {
+     "class": "web_other",
+     "method": "keyword:'Wikipedia'",
+     "citation": "consistent with eye level vs floor +39% sales (research/04-3d-sim-evidence-and-tech.md, Wikipedia Planogram) and Chandon et al. 2009 J. Marketing 73(6) doi:10.1509/jmkg.73.6.1"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/04'",
+     "citation": "consistent with eye level vs floor +39% sales (research/04-3d-sim-evidence-and-tech.md, Wikipedia Planogram) and Chandon et al. 2009 J. Marketing 73(6) doi:10.1509/jmkg.73.6.1"
+    }
+   ],
+   "classes": [
+    "paper",
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "paper": 0.25,
+    "web_other": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25
+   },
+   "primary_class": "paper"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.12",
+   "value": 0.12,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "skeptic: side shelf, 1 facing, kraft pack ≈0.09-0.2 (research/05-personas.md)"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated (behavioural driver 'Habit and default via saved lists' weight 0.9)"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated (behavioural driver 'Habit and default via saved lists' weight 0.9)"
+    },
+    {
+     "url": "https://www.reddit.com/comments/18jsjo5",
+     "thread_id": "18jsjo5",
+     "subreddit": "AskUK",
+     "theme": "impulse_instore_vs_online",
+     "score": 2,
+     "verbatim": "Yep...the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.65",
+   "value": 0.65,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://www.mumsnet.com/talk/food_and_recipes/4922485",
+     "citation": "Mumsnet 'our food bill is ridiculous' https://www.mumsnet.com/talk/food_and_recipes/4922485"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qgcwyr",
+     "thread_id": "1qgcwyr",
+     "subreddit": "AskUK",
+     "theme": "shrinkflation_switch",
+     "score": 6,
+     "verbatim": "I don't buy hardly anything branded anymore either except a few things the children like.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.25,
+    "web_other": 0.25,
+    "staged_persona": 0.25,
+    "internal_research": 0.25
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "web_other",
+     "method": "url:non_academic",
+     "url": "https://forums.moneysavingexpert.com/discussion/6653837",
+     "citation": "one-strike MSE https://forums.moneysavingexpert.com/discussion/6653837"
+    }
+   ],
+   "classes": [
+    "web_other",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "web_other": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "web_other"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.45",
+   "value": 0.45,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "url": "https://www.reddit.com/comments/191icpc",
+     "thread_id": "191icpc",
+     "subreddit": "britishproblems",
+     "theme": "protein_gimmick",
+     "score": 65,
+     "verbatim": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1tbf6zw",
+     "thread_id": "1tbf6zw",
+     "subreddit": "AskBrits",
+     "theme": "protein_gimmick",
+     "score": 3,
+     "verbatim": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit",
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "staged_persona": 0.3333,
+    "internal_research": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.2",
+   "value": 0.2,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "skeptic correction P(opens ingredients) ≈0.25-0.35 for a kids' hero item and ≈0.05 for a drink, so 0.2 as an average across categories"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 5",
+   "value": 5,
+   "sources": [
+    {
+     "class": "staged_persona",
+     "method": "keyword:'staged_personas'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'skeptic'",
+     "citation": "data/personas/staged_personas_v1.json[0] (Priya) verdict.sim_parameters, skeptic-calibrated"
+    },
+    {
+     "class": "internal_research",
+     "method": "keyword:'research/05'",
+     "citation": "literature 3-6 s per shelf decision (research/05-personas.md critique: 'the literature says 3–6 seconds')"
+    }
+   ],
+   "classes": [
+    "staged_persona",
+    "internal_research"
+   ],
+   "class_share": {
+    "staged_persona": 0.5,
+    "internal_research": 0.5
+   },
+   "primary_class": "staged_persona"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.3",
+   "value": 0.3,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "keyword:'assum'",
+     "text": "assumption: lowered from the staged 0.8 (which modelled Priya's office lunch) to 0.3 because this persona's mission is a family top-up, not a lunchtime meal deal"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "set back to 0.8 for meal_deal missions"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  }
+ ],
+ "verbatims": [
+  {
+   "quote": "Yep...the different apps/websites build up handy favourite lists so you can basically do your weekly shop in 5 minutes.",
+   "url": "https://www.reddit.com/comments/18jsjo5"
+  },
+  {
+   "quote": "with two young kids the faff of getting them both into the car and round the shops makes the £2 delivery fee worthwhile.",
+   "url": "https://www.reddit.com/comments/18jsjo5"
+  },
+  {
+   "quote": "Rather than brands I'm trying to cut down on how much ultra-processed food I eat so it really depends which version is less processed. ... a lot of branded stuff tends to have filler ingredients to give a better texture ...",
+   "url": "https://www.reddit.com/comments/1ow5fne"
+  },
+  {
+   "quote": "High protein can just be the headline grabber. Check the ingredients as you're bound to find a bunch of additives and sweeteners.",
+   "url": "https://www.reddit.com/comments/191icpc"
+  },
+  {
+   "quote": "Or the \"Low sugar!\" (but excessuve sweeteners, and you're still hungry) craze.",
+   "url": "https://www.reddit.com/comments/1tbf6zw"
+  },
+  {
+   "quote": "I don't buy hardly anything branded anymore either except a few things the children like.",
+   "url": "https://www.reddit.com/comments/1qgcwyr"
+  },
+  {
+   "quote": "Shorter ingredients list is usually a good sign given the top 5 ingredients are decent.",
+   "url": "https://www.reddit.com/comments/1buwayp"
+  },
+  {
+   "quote": "Used to get Freddo multipacks for kids lunch boxes. Now only 4 per pack instead of 5, plus price also up.",
+   "url": "https://www.reddit.com/comments/1scat6b"
+  }
+ ],
+ "built_from": null,
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 29.4,
+   "reddit_inferred": 0.0,
+   "paper": 9.8,
+   "off_field": 0.0,
+   "sales_data": 0.0,
+   "staged_persona": 14.2,
+   "web_other": 9.4,
+   "internal_research": 11.7,
+   "assumption": 25.5
+  },
+  "headline": {
+   "reddit": 29.4,
+   "paper": 9.8,
+   "off_field": 0.0,
+   "assumption": 25.5,
+   "other (sales, staged, web, internal)": 35.3
+  },
+  "n_fields": 47,
+  "fields_by_primary_class": {
+   "staged_persona": 7,
+   "assumption": 7,
+   "reddit": 21,
+   "web_other": 5,
+   "paper": 6,
+   "internal_research": 1
+  },
+  "pct_fields_with_any": {
+   "reddit": 44.7,
+   "paper": 23.4,
+   "staged_persona": 36.2,
+   "web_other": 21.3,
+   "internal_research": 29.8,
+   "assumption": 40.4
+  },
+  "pct_fields_with_any_assumption": 40.4
+ }
+}

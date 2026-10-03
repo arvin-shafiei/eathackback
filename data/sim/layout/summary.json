@@ -1,0 +1,1075 @@
+{
+ "created": "2026-10-03T12:09:40",
+ "summary": {
+  "retailer": {
+   "revenue": {
+    "before": 11.62227,
+    "after": 12.95154,
+    "rel": 0.1144,
+    "rel_ci95": [
+     0.07115,
+     0.15574
+    ]
+   },
+   "challenger_looks": {
+    "before": 15.12756,
+    "after": 18.58409,
+    "rel": 0.2285,
+    "rel_ci95": [
+     0.18903,
+     0.28289
+    ]
+   },
+   "walk_m": {
+    "before": 78.66667,
+    "after": 91.13333,
+    "rel": 0.1585,
+    "rel_ci95": [
+     0.07542,
+     0.22374
+    ]
+   },
+   "found": {
+    "before": 0.59427,
+    "after": 0.61227,
+    "rel": 0.0303,
+    "rel_ci95": [
+     -0.00507,
+     0.06895
+    ]
+   }
+  },
+  "ease": {
+   "revenue": {
+    "before": 11.62227,
+    "after": 12.20567,
+    "rel": 0.0502,
+    "rel_ci95": [
+     0.02327,
+     0.08449
+    ]
+   },
+   "challenger_looks": {
+    "before": 15.12756,
+    "after": 15.30318,
+    "rel": 0.0116,
+    "rel_ci95": [
+     -0.00348,
+     0.03258
+    ]
+   },
+   "walk_m": {
+    "before": 78.66667,
+    "after": 76.06667,
+    "rel": -0.0331,
+    "rel_ci95": [
+     -0.11639,
+     0.02427
+    ]
+   },
+   "found": {
+    "before": 0.59427,
+    "after": 0.65025,
+    "rel": 0.0942,
+    "rel_ci95": [
+     0.05993,
+     0.1316
+    ]
+   }
+  },
+  "blended": {
+   "revenue": {
+    "before": 11.62227,
+    "after": 12.72185,
+    "rel": 0.0946,
+    "rel_ci95": [
+     0.05495,
+     0.13956
+    ]
+   },
+   "challenger_looks": {
+    "before": 15.12756,
+    "after": 17.44879,
+    "rel": 0.1534,
+    "rel_ci95": [
+     0.11836,
+     0.2009
+    ]
+   },
+   "walk_m": {
+    "before": 78.66667,
+    "after": 76.06667,
+    "rel": -0.0331,
+    "rel_ci95": [
+     -0.11639,
+     0.02427
+    ]
+   },
+   "found": {
+    "before": 0.59427,
+    "after": 0.6231,
+    "rel": 0.0485,
+    "rel_ci95": [
+     0.01674,
+     0.08441
+    ]
+   }
+  }
+ },
+ "runlog_check": {
+  "_doc": "Run logs hold slot-level Jev decisions (one Choice across the noticed set), not per-product P(pick_up), so they cannot be reused directly; this compares their empirical pick|noticed rate with the surrogate's P(pick_up)*P(take) on the same events. Surrogate > run log is expected: the slot Choice makes products compete and allows 'walk past the whole shelf'.",
+  "by_persona": {
+   "p_meal_deal_office": {
+    "runlog_pick_given_noticed": 0.109,
+    "ci95": [
+     0.0902,
+     0.1322
+    ],
+    "n": 850,
+    "surrogate_mean_pu_x_take": 0.07,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_upf_avoider_parent": {
+    "runlog_pick_given_noticed": 0.24,
+    "ci95": [
+     0.2087,
+     0.2738
+    ],
+    "n": 659,
+    "surrogate_mean_pu_x_take": 0.18,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_vegan_ethical": {
+    "runlog_pick_given_noticed": 0.214,
+    "ci95": [
+     0.1922,
+     0.2377
+    ],
+    "n": 1247,
+    "surrogate_mean_pu_x_take": 0.226,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_allergen_coeliac": {
+    "runlog_pick_given_noticed": 0.226,
+    "ci95": [
+     0.1991,
+     0.2547
+    ],
+    "n": 864,
+    "surrogate_mean_pu_x_take": 0.197,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_novelty_seeker_tiktok": {
+    "runlog_pick_given_noticed": 0.184,
+    "ci95": [
+     0.1613,
+     0.2092
+    ],
+    "n": 1005,
+    "surrogate_mean_pu_x_take": 0.171,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_frugal_unit_price": {
+    "runlog_pick_given_noticed": 0.318,
+    "ci95": [
+     0.2903,
+     0.3475
+    ],
+    "n": 1015,
+    "surrogate_mean_pu_x_take": 0.09,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_eco_low_chemical": {
+    "runlog_pick_given_noticed": 0.263,
+    "ci95": [
+     0.2395,
+     0.2882
+    ],
+    "n": 1254,
+    "surrogate_mean_pu_x_take": 0.304,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_habit_loyalist_shrinkflation_angry": {
+    "runlog_pick_given_noticed": 0.225,
+    "ci95": [
+     0.2017,
+     0.2493
+    ],
+    "n": 1180,
+    "surrogate_mean_pu_x_take": 0.103,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_ai_delegator": {
+    "runlog_pick_given_noticed": 0.182,
+    "ci95": [
+     0.1645,
+     0.2013
+    ],
+    "n": 1696,
+    "surrogate_mean_pu_x_take": 0.109,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_protein_sceptic_gimmick_reactant": {
+    "runlog_pick_given_noticed": 0.227,
+    "ci95": [
+     0.2043,
+     0.2521
+    ],
+    "n": 1179,
+    "surrogate_mean_pu_x_take": 0.126,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_glp1_small_appetite": {
+    "runlog_pick_given_noticed": 0.235,
+    "ci95": [
+     0.1997,
+     0.2736
+    ],
+    "n": 503,
+    "surrogate_mean_pu_x_take": 0.239,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   },
+   "p_protein_gym": {
+    "runlog_pick_given_noticed": 0.098,
+    "ci95": [
+     0.0795,
+     0.1214
+    ],
+    "n": 782,
+    "surrogate_mean_pu_x_take": 0.04,
+    "files": [
+     "data/sim/runs/run_20261003_120714_s1_jev_6a07.json",
+     "data/sim/runs/run_20261003_120819_s3_jev_3b76.json",
+     "data/sim/runs/run_20261003_120823_s11_jev_4482.json"
+    ]
+   }
+  }
+ },
+ "jev_session": {
+  "usd": 0.0,
+  "calls": 0,
+  "cached": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "max_usd": 1.0
+ },
+ "wall_s": 80.5,
+ "cli": "sim/layout_optimise.py --objective all --iters 20000 --seed 1",
+ "hfss_table": {
+  "5060512671247": {
+   "name": "Gut Lovin' Soda Cola",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -2,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060494810665": {
+   "name": "Raspberry Probiotic Soda",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "9350271002014": {
+   "name": "Remedy Kombucha Ginger Lemon",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060587580055": {
+   "name": "Ginger kombucha",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5000112545326": {
+   "name": "Coca-Cola Original Taste",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 2,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5000112630688": {
+   "name": "Coke Zero",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5013665116417": {
+   "name": "Organic Cola",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "4056489010104": {
+   "name": "Cola",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5059697704932": {
+   "name": "Diet lemonade",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "50271511": {
+   "name": "IRN-BRU Original and Best",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060489730657": {
+   "name": "Dash Lime Sparkling Water",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5024115330055": {
+   "name": "Purdey's Rejuvenate Natural Energy",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "51000005": {
+   "name": "Walkers Cheese & Onion crisps",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060042641000": {
+   "name": "Lightly sea salted crisps",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 6,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5017764003142": {
+   "name": "Lightly Salted Potato chips",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "00355858": {
+   "name": "Lightly sea salted",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 10,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5053990127740": {
+   "name": "Pringles Sour Cream",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 8,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060292308500": {
+   "name": "Sea Salt & Vinegar Potato Chips",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 3,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000328015897": {
+   "name": "oven baked cheese & onion flavour potato snack",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 6,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5013665115373": {
+   "name": "Lentil & Pea Veggie Cakes Beetroot & Balsamic",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -4,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060878780386": {
+   "name": "Lentil chips",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 11,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060283762199": {
+   "name": "Sea Salt Lentil Chips",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "4056489296454": {
+   "name": "Lentil bites sea salt",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 12,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060367450356": {
+   "name": "Blue Maize Tortilla Chips",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 6,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "8410076600790": {
+   "name": "Nature Valley Crunchy Oats & Honey",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 10,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060482840179": {
+   "name": "Apple & raisin oat bars",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 16,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5024121100475": {
+   "name": "Raspberry & Apple Soft Oaty Bars",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "20422684": {
+   "name": "Muesli Bars Chocolate",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060088701478": {
+   "name": "cocoa orange",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 11,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "4056489239918": {
+   "name": "Cacao & Orange 5 Raw Fruit & Nut Bars",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 10,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000159558396": {
+   "name": "Chocolate Chip cashew",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 10,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "8000500417195": {
+   "name": "Eat Natural Dark Chocolate With Cranberries And Macadam",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 17,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060811384084": {
+   "name": "Grenade High Protein Oreo",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -3,
+   "threshold": 4,
+   "missing_fields": [
+    "energy",
+    "sat_fat"
+   ]
+  },
+  "5060088709047": {
+   "name": "Protein flapjacks salted caramel",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 21,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060411920040": {
+   "name": "Sweet & salty almond",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 10,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "20402167": {
+   "name": "Deluxe Fruit & Nut protein bars",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 15,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5070000126579": {
+   "name": "Bio&Me Granola Super Nutty",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060043225353": {
+   "name": "Lizi's Low Sugar Granola Nuts & Seeds",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5010477348630": {
+   "name": "Jordans Organic Muesli",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "01835588": {
+   "name": "Sainsbury's SO Organic Granola",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 7,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5010029000023": {
+   "name": "Weetabix Original",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -5,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000127014084": {
+   "name": "Kellogg's Corn Flakes 1kg",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5900020042538": {
+   "name": "Nestl\u00e9 Gluten Free Corn Flakes",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000119117342": {
+   "name": "Tesco Wheat Biscuits",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -5,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5070000313801": {
+   "name": "Surreal Chocolate",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5010029221091": {
+   "name": "Weetabix Protein Crunch",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5059319015279": {
+   "name": "Kellogg's Krave Milk Chocolate",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 15,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "20425609": {
+   "name": "Lidl Crownfield Multigrain Hoops",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5201054017418": {
+   "name": "Total 0%",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -5,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5036589253471": {
+   "name": "GREEK RECIPE Strained Natural Yogurt",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -5,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "4016241050199": {
+   "name": "Skyr creamy Natural",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000462416772": {
+   "name": "Greek Style Yogurt",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 4,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "4025500277031": {
+   "name": "Vanilla Chocolate Balls",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "4025500243579": {
+   "name": "Smooth Toffee Flavour",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -1,
+   "threshold": 4,
+   "missing_fields": [
+    "sat_fat"
+   ]
+  },
+  "5060360506128": {
+   "name": "Activia Strawberry Yogurt",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "6413300018042": {
+   "name": "Protein yogurt strawberry",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -4,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060337220415": {
+   "name": "kefir drink original",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5411188121213": {
+   "name": "Greek Style Plain",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -3,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "7394376617164": {
+   "name": "Oatgurt greek style",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5054781763529": {
+   "name": "Plain Soya - Yogurt Alternative",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000168036755": {
+   "name": "Digestives The ORIGINAL",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 24,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5410126716016": {
+   "name": "Biscoff",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 24,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5054402919854": {
+   "name": "Bourbon Creams",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 21,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "0061232201047": {
+   "name": "Stem Ginger Oat Biscuits",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 12,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "7622300845759": {
+   "name": "Dairy Milk",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 25,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "8717677339914": {
+   "name": "Milk Chocolate",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 23,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5059697710001": {
+   "name": "Dark milk chocolate",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 20,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060719920162": {
+   "name": "Happy Hippy 74% Cocoa Organic Orange & Geranium Dark Chocolate",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 18,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "7622210445346": {
+   "name": "Soft Bakes Choc Chip",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 8,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5056357909546": {
+   "name": "SNICKERS HI PROTEIN LOW SUGAR",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 15,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "00227643": {
+   "name": "Free From Chocolate Chip Cookies",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 21,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "8410376058116": {
+   "name": "Sugar free ZERO Choc chip cookies",
+   "hfss": true,
+   "in_scope": true,
+   "npm_score": 8,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "7394376620713": {
+   "name": "Whole Oat Drink",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060406080223": {
+   "name": "BARISTA OAT",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060120281975": {
+   "name": "Oat Organic Drink",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5057753940317": {
+   "name": "Tesco Oat Drink",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5000181024043": {
+   "name": "Semi-Skimmed Milk",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5000246728183": {
+   "name": "BOB semi-skimmed",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5031021057952": {
+   "name": "Tesco Semi-skimmed Milk 568Ml / 1Pint",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060674960098": {
+   "name": "Mighty Pea Protein Oat",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5411188083191": {
+   "name": "Soya Drink Original",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -2,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5060362072263": {
+   "name": "Organic soya drink",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "4088600574530": {
+   "name": "Everyday Essentials Soya Unsweetened",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5411188110835": {
+   "name": "Alpro Almond Original 1L",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 1,
+   "missing_fields": []
+  },
+  "5000157062673": {
+   "name": "Cream of Tomato Soup",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 3,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5000157062680": {
+   "name": "Cream of Chicken Soup",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5012427072206": {
+   "name": "Mixed Vegetable and Lentil Soup",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 0,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "4088600068367": {
+   "name": "Cream of Tomato Soup",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 3,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060430292760": {
+   "name": "Protein Power Soup Garden Pea & Spinach",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -3,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5034124007626": {
+   "name": "Indian Lentil & Spinach Dhal",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5027040036603": {
+   "name": "Warming Carrot Soup",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "01498257": {
+   "name": "Spicy tomato, lentil and red pepper soup",
+   "hfss": false,
+   "in_scope": false,
+   "npm_score": -1,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5060262485286": {
+   "name": "Rice noodles Satay flavour",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5056638100006": {
+   "name": "Protein Power Buddha Bowl",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": -2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "5033665206864": {
+   "name": "Charlie Bingham Lasagne",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  },
+  "00953023": {
+   "name": "Chicken Tikka Masala",
+   "hfss": false,
+   "in_scope": true,
+   "npm_score": 2,
+   "threshold": 4,
+   "missing_fields": []
+  }
+ }
+}

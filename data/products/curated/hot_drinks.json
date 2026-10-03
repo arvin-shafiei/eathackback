@@ -1,0 +1,2096 @@
+{
+ "category": "hot_drinks",
+ "row_themes": {
+  "1": "coffee: instant jar vs sachet latte vs RTD oat challenger vs own-label ground",
+  "2": "everyday black tea: two incumbents vs organic challenger vs own-label",
+  "3": "hot chocolate & herbal: full sugar vs sweetened low-cal vs own-label lighter vs organic herbal"
+ },
+ "rows": {
+  "1": [
+   "8445290522740",
+   "8711000677810",
+   "5060574954630",
+   "4056489639145"
+  ],
+  "2": [
+   "8720608039593",
+   "5010357112092",
+   "5021991113673",
+   "5054781861034"
+  ],
+  "3": [
+   "5034660021582",
+   "7612100053607",
+   "5059697390005",
+   "5060519143730"
+  ]
+ },
+ "rules": "data/products/curated/hot_drinks_rules.md",
+ "source_pool": "data/products/uk_products.parquet (Open Food Facts UK)",
+ "products": [
+  {
+   "code": "8445290522740",
+   "name": "Nescafe Gold Blend",
+   "brand": "Nescafé",
+   "category": "hot_drinks",
+   "role": "incumbent",
+   "row": 1,
+   "price_gbp": 6.0,
+   "price_source": "assumption: typical UK RRP Nescafé Gold Blend 150g jar ~£6.00 (big-4 range ~£5.50-£7.00, 2025-26); not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.072,
+   "cups_per_pack": 83,
+   "cups_per_pack_source": "150g (OFF quantity) / 1.8g per mug (assumption: 1 heaped tsp)",
+   "pack_copy": "nescafe gold blend - 100% soluble coffee",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 1,
+   "nutriscore": "a",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 1,
+   "ingredients_text": "100% soluble coffee",
+   "sugars_100g": 0.0,
+   "fiber_100g": 19.1,
+   "proteins_100g": 19.4,
+   "salt_100g": 0.098,
+   "energy_kcal_100g": 296.0,
+   "fat_100g": 1.1,
+   "saturated_fat_100g": 0.2,
+   "per_cup": {
+    "basis": "powder",
+    "dose": "1.8g",
+    "source": "assumption: 1 heaped tsp ≈ 1.8g per mug",
+    "sugars_g": 0.0,
+    "energy_kcal": 5.3,
+    "proteins_g": 0.35
+   },
+   "serving_size_off": null,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "150g",
+   "stores": null,
+   "packaging": [],
+   "recycling": [
+    "en:recycle"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/844/529/052/2740/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/8445290522740",
+   "completeness": 0.6875,
+   "scans": 5.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 1.0,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (powder, dose 1.8g; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.979,
+     "why": [
+      "sugars per cup=0.0g (powder, dose 1.8g; OFF sugars_100g=0.0)",
+      "kcal per cup=5.3 (OFF energy-kcal_100g=296.0 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.614,
+     "why": [
+      "price_per_cup=£0.072 (price assumption / 83 cups); log-scaled within shelf £0.02-£2.0",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.41,
+     "why": [
+      "protein per cup=0.35g (OFF proteins_100g=19.4 x dose; milk not counted)",
+      "sugars per cup=0.0g (powder, dose 1.8g; OFF sugars_100g=0.0)",
+      "kcal per cup=5.3 (OFF energy-kcal_100g=296.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.944,
+     "why": [
+      "role=incumbent",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.072 (price assumption / 83 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.52,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=incumbent, OFF stores=unknown)",
+      "sugars per cup=0.0g (powder, dose 1.8g; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.48,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.675,
+     "why": [
+      "completeness=0.6875 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "8711000677810",
+   "name": "Original Latte",
+   "brand": "Kenco",
+   "category": "hot_drinks",
+   "role": "incumbent",
+   "row": 1,
+   "price_gbp": 3.25,
+   "price_source": "assumption: typical UK RRP Kenco latte sachet box ~£3.25; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.406,
+   "cups_per_pack": 8,
+   "cups_per_pack_source": "assumption: standard UK box of 8 sachets (OFF quantity empty)",
+   "pack_copy": "kenco original latte - instant latte sachets",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 4,
+   "nutriscore": "e",
+   "ecoscore": "b",
+   "additives_n": 5,
+   "additives": [
+    "en:e14xx",
+    "en:e340",
+    "en:e452",
+    "en:e481",
+    "en:e551"
+   ],
+   "labels": [],
+   "allergens": [
+    "en:milk"
+   ],
+   "traces": [],
+   "analysis": [
+    "en:may-contain-palm-oil",
+    "en:non-vegan",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 15,
+   "ingredients_text": "skimmed milk powder (36%), sugar, fully hydrogenated coconut oil, glucose syrup, instant coffee ((9%), maltodextrin, milk proteins, modified starch, stabilizers (e340, e452), anticaking agent (e551), salt, emulsifier (e481), flavouring, 30",
+   "sugars_100g": 40.0,
+   "fiber_100g": 2.2,
+   "proteins_100g": 15.0,
+   "salt_100g": 1.3,
+   "energy_kcal_100g": 407.0,
+   "fat_100g": 12.0,
+   "saturated_fat_100g": 12.0,
+   "per_cup": {
+    "basis": "powder",
+    "dose": "18.5g",
+    "source": "assumption: OFF serving_size 'approx 6g' is implausible for a 36%-milk-powder latte sachet; used 18.5g = Nescafé Gold Vanilla Latte sachet in OFF pool (7613034315557, quantity '8 x 18.5 g')",
+    "sugars_g": 7.4,
+    "energy_kcal": 75.3,
+    "proteins_g": 2.77
+   },
+   "serving_size_off": "approx 6g",
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": null,
+   "stores": null,
+   "packaging": [],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/871/100/067/7810/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/8711000677810",
+   "completeness": 0.5875,
+   "scans": 9.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.425,
+     "why": [
+      "additives_n=5 (OFF)",
+      "ecoscore=b (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=0.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.338,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=5 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=['flavouring', 'glucose syrup', 'hydrogenated', 'maltodextrin', 'milk proteins', 'modified starch'] (OFF ingredients_text)",
+      "sugars per cup=7.4g (powder, dose 18.5g; OFF sugars_100g=40.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.252,
+     "why": [
+      "sugars per cup=7.4g (powder, dose 18.5g; OFF sugars_100g=40.0)",
+      "kcal per cup=75.3 (OFF energy-kcal_100g=407.0 x dose)",
+      "no sugar/glucose in ingredients=False (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.294,
+     "why": [
+      "price_per_cup=£0.406 (price assumption / 8 cups); log-scaled within shelf £0.02-£2.0",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.292,
+     "why": [
+      "protein per cup=2.77g (OFF proteins_100g=15.0 x dose; milk not counted)",
+      "sugars per cup=7.4g (powder, dose 18.5g; OFF sugars_100g=40.0)",
+      "kcal per cup=75.3 (OFF energy-kcal_100g=407.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.9,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=5 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.869,
+     "why": [
+      "role=incumbent",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.406 (price assumption / 8 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.577,
+     "why": [
+      "format=individual sachets (desk drawer) (OFF quantity/name)",
+      "mainstream=True (role=incumbent, OFF stores=unknown)",
+      "sugars per cup=7.4g (powder, dose 18.5g; OFF sugars_100g=40.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.0,
+     "why": [
+      "vegan_signal=0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=['en:milk'] traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.235,
+     "why": [
+      "completeness=0.5875 (OFF)",
+      "nutriscore=e (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060574954630",
+   "name": "Iced Oat Flat White Coffee",
+   "brand": "Grind",
+   "category": "hot_drinks",
+   "role": "challenger",
+   "row": 1,
+   "price_gbp": 2.0,
+   "price_source": "assumption: typical UK RRP 250ml RTD oat coffee carton ~£2.00 (Grind/Minor Figures tier £1.80-£2.20); not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 2.0,
+   "cups_per_pack": 1,
+   "cups_per_pack_source": "250 ml single carton (OFF quantity)",
+   "pack_copy": "grind iced oat flat white coffee - cold brew arabica coffee with oat drink",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 3,
+   "nutriscore": "c",
+   "ecoscore": "unknown",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [],
+   "allergens": [
+    "en:gluten"
+   ],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 13,
+   "ingredients_text": "Oat Drink (Water, Oats (11%), Sunflower Oil, Tricalcium Phosphate, Calcium Carbonate, Salt), cold brew coffee (41%) (water, Arabica coffee), sugar, acidity regulator: potassium carbonate ingredients",
+   "sugars_100g": 2.2,
+   "fiber_100g": 1.0,
+   "proteins_100g": 1.1,
+   "salt_100g": 0.06,
+   "energy_kcal_100g": 40.0,
+   "fat_100g": 1.5,
+   "saturated_fat_100g": 0.4,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "250ml",
+    "source": "OFF quantity 250 ml, whole carton = one serve",
+    "sugars_g": 5.5,
+    "energy_kcal": 100.0,
+    "proteins_g": 2.75
+   },
+   "serving_size_off": "1 portion (40 ml)",
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "250 ml",
+   "stores": null,
+   "packaging": [],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/506/057/495/4630/front_en.16.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060574954630",
+   "completeness": 0.7,
+   "scans": 3.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.65,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=unknown (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.688,
+     "why": [
+      "nova=3 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=5.5g (prepared, dose 250ml; OFF sugars_100g=2.2)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.217,
+     "why": [
+      "sugars per cup=5.5g (prepared, dose 250ml; OFF sugars_100g=2.2)",
+      "kcal per cup=100.0 (OFF energy-kcal_100g=40.0 x dose)",
+      "no sugar/glucose in ingredients=False (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.0,
+     "why": [
+      "price_per_cup=£2.0 (price assumption / 1 cups); log-scaled within shelf £0.02-£2.0",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.273,
+     "why": [
+      "protein per cup=2.75g (OFF proteins_100g=1.1 x dose; milk not counted)",
+      "sugars per cup=5.5g (prepared, dose 250ml; OFF sugars_100g=2.2)",
+      "kcal per cup=100.0 (OFF energy-kcal_100g=40.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.3,
+     "why": [
+      "role=challenger",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£2.0 (price assumption / 1 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.708,
+     "why": [
+      "format=ready-to-drink single serve (OFF quantity/name)",
+      "mainstream=False (role=challenger, OFF stores=unknown)",
+      "sugars per cup=5.5g (prepared, dose 250ml; OFF sugars_100g=2.2)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.18,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten source ['oat', 'oats'] / allergens=['en:gluten'] (OFF)",
+      "allergens=['en:gluten'] traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.48,
+     "why": [
+      "completeness=0.7 (OFF)",
+      "nutriscore=c (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "4056489639145",
+   "name": "kenya",
+   "brand": "Bellarom (Lidl)",
+   "category": "hot_drinks",
+   "role": "own_label",
+   "row": 1,
+   "price_gbp": 3.29,
+   "price_source": "assumption: Lidl Bellarom single-origin ground coffee 250g typically ~£2.99-£3.49; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.092,
+   "cups_per_pack": 35.7,
+   "cups_per_pack_source": "250g (OFF quantity) / 7g per cup (assumption: cafetière/filter dose ~55-60g per litre)",
+   "pack_copy": "bellarom (lidl) kenya - single-origin kenya ground coffee, rainforest alliance",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 1,
+   "nutriscore": "b",
+   "ecoscore": "e",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:rainforest-alliance"
+   ],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 1,
+   "ingredients_text": "Mljevena pržena kava.",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.1,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 1.0,
+   "fat_100g": 0.0,
+   "saturated_fat_100g": 0.0,
+   "per_cup": {
+    "basis": "powder",
+    "dose": "7g",
+    "source": "assumption: 7g ground coffee per cup (nutrition per 100g ground; brewed values near zero)",
+    "sugars_g": 0.0,
+    "energy_kcal": 0.1,
+    "proteins_g": 0.01
+   },
+   "serving_size_off": "250",
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "250 g",
+   "stores": [
+    "Lidl"
+   ],
+   "packaging": [],
+   "recycling": [
+    "en:recycle"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/405/648/963/9145/front_en.19.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/4056489639145",
+   "completeness": 0.775,
+   "scans": 17.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.53,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=e (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 1.0,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (powder, dose 7g; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 1.0,
+     "why": [
+      "sugars per cup=0.0g (powder, dose 7g; OFF sugars_100g=0.0)",
+      "kcal per cup=0.1 (OFF energy-kcal_100g=1.0 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.718,
+     "why": [
+      "price_per_cup=£0.092 (price assumption / 35.7 cups); log-scaled within shelf £0.02-£2.0",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.4,
+     "why": [
+      "protein per cup=0.01g (OFF proteins_100g=0.1 x dose; milk not counted)",
+      "sugars per cup=0.0g (powder, dose 7g; OFF sugars_100g=0.0)",
+      "kcal per cup=0.1 (OFF energy-kcal_100g=1.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.434,
+     "why": [
+      "role=own_label",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.092 (price assumption / 35.7 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.52,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=own_label, OFF stores=['Lidl'])",
+      "sugars per cup=0.0g (powder, dose 7g; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.68,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:rainforest-alliance'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.81,
+     "why": [
+      "completeness=0.775 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=own_label",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "8720608039593",
+   "name": "Black Tea",
+   "brand": "PG Tips",
+   "category": "hot_drinks",
+   "role": "incumbent",
+   "row": 2,
+   "price_gbp": 1.75,
+   "price_source": "assumption: typical UK RRP PG Tips 40 bags ~£1.75; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.044,
+   "cups_per_pack": 40,
+   "cups_per_pack_source": "40 bags (OFF quantity)",
+   "pack_copy": "pg tips black tea - rainforest alliance, plant-based tea bags",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 1,
+   "nutriscore": "b",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:pefc",
+    "en:rainforest-alliance",
+    "en:plant-based-tea-bags"
+   ],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 1,
+   "ingredients_text": "Black Tea.",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0075,
+   "energy_kcal_100g": 1.26,
+   "fat_100g": 0.007,
+   "saturated_fat_100g": 0.002,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "250ml",
+    "source": "assumption: 250ml mug; OFF nutrition read as infusion values",
+    "sugars_g": 0.0,
+    "energy_kcal": 3.1,
+    "proteins_g": 0.0
+   },
+   "serving_size_off": "perg",
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "40 bags/sachets,  116 g",
+   "stores": [
+    "Save-On-Foods"
+   ],
+   "packaging": [],
+   "recycling": [
+    "en:Flatten & Recycle in Paper bin.",
+    "en:recycle-as-green-waste"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/872/060/803/9593/front_en.56.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/8720608039593",
+   "completeness": 0.8,
+   "scans": 10.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.8,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 1.0,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.988,
+     "why": [
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.704,
+     "why": [
+      "price_per_cup=£0.044 (price assumption / 40 cups); log-scaled within shelf £0.02-£2.0",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.394,
+     "why": [
+      "protein per cup=0.0g (OFF proteins_100g=0.0 x dose; milk not counted)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.966,
+     "why": [
+      "role=incumbent",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.044 (price assumption / 40 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.52,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=incumbent, OFF stores=['Save-On-Foods'])",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.68,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:rainforest-alliance'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.82,
+     "why": [
+      "completeness=0.8 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5010357112092",
+   "name": "Yorkshire Tea",
+   "brand": "Taylors of Harrogate",
+   "category": "hot_drinks",
+   "role": "incumbent",
+   "row": 2,
+   "price_gbp": 8.5,
+   "price_source": "assumption: typical UK RRP Yorkshire Tea 240 bags ~£8.50; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.035,
+   "cups_per_pack": 240,
+   "cups_per_pack_source": "OFF quantity '240' read as 240 bags (Yorkshire Tea's 240-bag box; OFF gives no unit)",
+   "pack_copy": "taylors of harrogate yorkshire tea",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 1,
+   "nutriscore": "b",
+   "ecoscore": "a",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:fsc",
+    "en:fsc-mix"
+   ],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 1,
+   "ingredients_text": "Black tea.",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0075,
+   "energy_kcal_100g": 1.26,
+   "fat_100g": 0.007,
+   "saturated_fat_100g": 0.002,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "250ml",
+    "source": "assumption: 250ml mug; OFF nutrition read as infusion values",
+    "sugars_g": 0.0,
+    "energy_kcal": 3.1,
+    "proteins_g": 0.0
+   },
+   "serving_size_off": null,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "240",
+   "stores": null,
+   "packaging": [],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/501/035/711/2092/front_en.22.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5010357112092",
+   "completeness": 0.675,
+   "scans": 10.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.77,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 1.0,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.988,
+     "why": [
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.747,
+     "why": [
+      "price_per_cup=£0.035 (price assumption / 240 cups); log-scaled within shelf £0.02-£2.0",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.394,
+     "why": [
+      "protein per cup=0.0g (OFF proteins_100g=0.0 x dose; milk not counted)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.976,
+     "why": [
+      "role=incumbent",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.035 (price assumption / 240 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.52,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=incumbent, OFF stores=unknown)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.48,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.57,
+     "why": [
+      "completeness=0.675 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5021991113673",
+   "name": "80 unbleached bags of organic everyday tea",
+   "brand": "Clipper Tea, Clipper",
+   "category": "hot_drinks",
+   "role": "challenger",
+   "row": 2,
+   "price_gbp": 3.8,
+   "price_source": "assumption: typical UK RRP Clipper Organic Everyday 80 bags ~£3.80; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.048,
+   "cups_per_pack": 80,
+   "cups_per_pack_source": "80 bags (OFF product_name)",
+   "pack_copy": "clipper tea 80 unbleached bags of organic everyday tea - organic",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 1,
+   "nutriscore": "b",
+   "ecoscore": "a",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:organic",
+    "en:soil-association-organic"
+   ],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 1,
+   "ingredients_text": "Organically Grown Black Tea",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0075,
+   "energy_kcal_100g": 1.26,
+   "fat_100g": 0.007,
+   "saturated_fat_100g": 0.002,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "250ml",
+    "source": "assumption: 250ml mug; OFF nutrition read as infusion values",
+    "sugars_g": 0.0,
+    "energy_kcal": 3.1,
+    "proteins_g": 0.0
+   },
+   "serving_size_off": null,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "250 g",
+   "stores": null,
+   "packaging": [
+    "en:biodegradable-box"
+   ],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/502/199/111/3673/front_en.4.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5021991113673",
+   "completeness": 0.875,
+   "scans": 1.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.97,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=True (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 1.0,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.988,
+     "why": [
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.688,
+     "why": [
+      "price_per_cup=£0.048 (price assumption / 80 cups); log-scaled within shelf £0.02-£2.0",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.394,
+     "why": [
+      "protein per cup=0.0g (OFF proteins_100g=0.0 x dose; milk not counted)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.462,
+     "why": [
+      "role=challenger",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.048 (price assumption / 80 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.32,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=False (role=challenger, OFF stores=unknown)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.88,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=True (OFF labels)",
+      "ethical_labels=['en:soil-association-organic'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.65,
+     "why": [
+      "completeness=0.875 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.55,
+     "why": [
+      "role=challenger",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5054781861034",
+   "name": "Everyday Tea Bags",
+   "brand": "Asda",
+   "category": "hot_drinks",
+   "role": "own_label",
+   "row": 2,
+   "price_gbp": 0.79,
+   "price_source": "assumption: Asda Everyday 40 tea bags (125g) typically ~£0.79; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.02,
+   "cups_per_pack": 40,
+   "cups_per_pack_source": "125g (OFF quantity) at ~3.1g/bag = 40 bags (assumption)",
+   "pack_copy": "asda everyday tea bags - rainforest alliance",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 1,
+   "nutriscore": "b",
+   "ecoscore": "a-plus",
+   "additives_n": 0,
+   "additives": [],
+   "labels": [
+    "en:rainforest-alliance",
+    "en:good-housekeeping-institute-approved-2016"
+   ],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 1,
+   "ingredients_text": "Black Tea.",
+   "sugars_100g": 0.0,
+   "fiber_100g": 0.0,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0075,
+   "energy_kcal_100g": 1.26,
+   "fat_100g": 0.007,
+   "saturated_fat_100g": 0.002,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "250ml",
+    "source": "assumption: 250ml mug; OFF nutrition read as infusion values",
+    "sugars_g": 0.0,
+    "energy_kcal": 3.1,
+    "proteins_g": 0.0
+   },
+   "serving_size_off": null,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "125g",
+   "stores": [
+    "Asda"
+   ],
+   "packaging": [
+    "en:box",
+    "en:container"
+   ],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/505/478/186/1034/front_en.4.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5054781861034",
+   "completeness": 0.875,
+   "scans": 1.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.8,
+     "why": [
+      "additives_n=0 (OFF)",
+      "ecoscore=a-plus (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 1.0,
+     "why": [
+      "nova=1 (OFF)",
+      "additives_n=0 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.988,
+     "why": [
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 1.0,
+     "why": [
+      "price_per_cup=£0.02 (price assumption / 40 cups); log-scaled within shelf £0.02-£2.0",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.394,
+     "why": [
+      "protein per cup=0.0g (OFF proteins_100g=0.0 x dose; milk not counted)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=3.1 (OFF energy-kcal_100g=1.26 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 1.0,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=0 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.5,
+     "why": [
+      "role=own_label",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.02 (price assumption / 40 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.52,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=own_label, OFF stores=['Asda'])",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.68,
+     "why": [
+      "vegan_signal=0.8 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:rainforest-alliance'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.85,
+     "why": [
+      "completeness=0.875 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=own_label",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5034660021582",
+   "name": "Hot Chocolate Powder",
+   "brand": "Cadbury",
+   "category": "hot_drinks",
+   "role": "incumbent",
+   "row": 3,
+   "price_gbp": 5.5,
+   "price_source": "assumption: typical UK RRP Cadbury Hot Chocolate 500g tub ~£5.50; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.198,
+   "cups_per_pack": 27.8,
+   "cups_per_pack_source": "500g (OFF quantity) / 18g (OFF serving_size)",
+   "pack_copy": "cadbury hot chocolate powder - vegan, cocoa life",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 4,
+   "nutriscore": "e",
+   "ecoscore": "a",
+   "additives_n": 1,
+   "additives": [
+    "en:e501"
+   ],
+   "labels": [
+    "en:vegetarian",
+    "en:vegan",
+    "en:cocoa-life",
+    "en:green-dot",
+    "en:the-vegan-society"
+   ],
+   "allergens": [],
+   "traces": [
+    "en:milk"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 4,
+   "ingredients_text": "Sugar, cocoa powder, acidity regulator (potassium carbonates), flavouring.",
+   "sugars_100g": 54.7619,
+   "fiber_100g": 4.0476,
+   "proteins_100g": 18.8095,
+   "salt_100g": 0.5952,
+   "energy_kcal_100g": 400.0,
+   "fat_100g": 9.7619,
+   "saturated_fat_100g": 6.4286,
+   "per_cup": {
+    "basis": "powder",
+    "dose": "18g",
+    "source": "OFF serving_size 18g; milk not included (shopper adds own)",
+    "sugars_g": 9.86,
+    "energy_kcal": 72.0,
+    "proteins_g": 3.39
+   },
+   "serving_size_off": "18g",
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "500 g",
+   "stores": [
+    "Tesco",
+    "Sainsbury's",
+    "Morrisons"
+   ],
+   "packaging": [
+    "en:bottle-cap",
+    "en:cardbox-and-plastic-cap",
+    "en:green-dot",
+    "en:other-plastic-cap",
+    "en:paper-carton"
+   ],
+   "recycling": [
+    "en:recycle"
+   ],
+   "image": "https://images.openfoodfacts.org/images/products/503/466/002/1582/front_en.93.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5034660021582",
+   "completeness": 0.7875,
+   "scans": 92.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.73,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=a (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.398,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=['flavouring'] (OFF ingredients_text)",
+      "sugars per cup=9.86g (powder, dose 18g; OFF sugars_100g=54.7619)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.183,
+     "why": [
+      "sugars per cup=9.86g (powder, dose 18g; OFF sugars_100g=54.7619)",
+      "kcal per cup=72.0 (OFF energy-kcal_100g=400.0 x dose)",
+      "no sugar/glucose in ingredients=False (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.427,
+     "why": [
+      "price_per_cup=£0.198 (price assumption / 27.8 cups); log-scaled within shelf £0.02-£2.0",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.295,
+     "why": [
+      "protein per cup=3.39g (OFF proteins_100g=18.8095 x dose; milk not counted)",
+      "sugars per cup=9.86g (powder, dose 18g; OFF sugars_100g=54.7619)",
+      "kcal per cup=72.0 (OFF energy-kcal_100g=400.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.98,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=1 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.9,
+     "why": [
+      "role=incumbent",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.198 (price assumption / 27.8 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.356,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=incumbent, OFF stores=['Tesco', \"Sainsbury's\", 'Morrisons'])",
+      "sugars per cup=9.86g (powder, dose 18g; OFF sugars_100g=54.7619)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.8,
+     "why": [
+      "vegan_signal=1 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:cocoa-life', 'en:the-vegan-society'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=none declared traces=['en:milk'] (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.515,
+     "why": [
+      "completeness=0.7875 (OFF)",
+      "nutriscore=e (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "7612100053607",
+   "name": "Belgian Choc",
+   "brand": "Options",
+   "category": "hot_drinks",
+   "role": "incumbent",
+   "row": 3,
+   "price_gbp": 3.75,
+   "price_source": "assumption: typical UK RRP Options Belgian Choc 220g ~£3.75; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.188,
+   "cups_per_pack": 20,
+   "cups_per_pack_source": "220g (OFF quantity) / 11g (OFF serving_size '11 g + 200 ml water')",
+   "pack_copy": "options belgian choc - ~42 kcal per prepared cup, gluten free",
+   "pack_copy_source": "OFF serving_size (11g + 200ml) x OFF energy-kcal_prepared 20/100ml = ~42 kcal/cup; brand's '40 calories' claim not verified, worded as computed",
+   "nova": 4,
+   "nutriscore": "d",
+   "ecoscore": "unknown",
+   "additives_n": 7,
+   "additives": [
+    "en:e322",
+    "en:e322i",
+    "en:e340",
+    "en:e414",
+    "en:e415",
+    "en:e551",
+    "en:e951"
+   ],
+   "labels": [
+    "en:no-gluten"
+   ],
+   "allergens": [
+    "en:milk",
+    "en:soybeans"
+   ],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:maybe-vegetarian"
+   ],
+   "ingredients_n": 20,
+   "ingredients_text": "milk  permeate powder, fat-reduced cocoa powder (21%), sugar, thickeners (acacia gum, xanthan gum), belgian chocolate (7%) (sugar, cocoa mass, fat-reduced cocoa powder, flavouring), dried glucose syrup, skimmed milk powder, coconut oil, whole milk powder, salt, emulsifier (soy lecithin), sweetener aspartame), anti-caking agent (e551), flavouring, stabiliser (e340),",
+   "sugars_100g": 2.85,
+   "fiber_100g": null,
+   "proteins_100g": 0.5,
+   "salt_100g": 0.13,
+   "energy_kcal_100g": 20.0,
+   "fat_100g": 0.4,
+   "saturated_fat_100g": 0.25,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "211ml",
+    "source": "OFF serving_size '11 g + 200 ml water'; OFF nutrition is as-prepared (20 kcal/100ml)",
+    "sugars_g": 6.01,
+    "energy_kcal": 42.2,
+    "proteins_g": 1.05
+   },
+   "serving_size_off": "11 g + 200 ml water",
+   "sweeteners": 1,
+   "sweeteners_list": [
+    "aspartame",
+    "en:e951"
+   ],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "220 g",
+   "stores": null,
+   "packaging": [
+    "en:mixed-plastic-sleeve",
+    "en:pet-cap",
+    "en:pet-pot"
+   ],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/761/210/005/3607/front_en.3.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/7612100053607",
+   "completeness": 0.8,
+   "scans": 23.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.37,
+     "why": [
+      "additives_n=7 (OFF)",
+      "ecoscore=unknown (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.11,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=7 (OFF)",
+      "sweeteners=['aspartame', 'en:e951'] (OFF additives/ingredients_text)",
+      "UPF marker ingredients=['flavouring', 'glucose syrup', 'permeate'] (OFF ingredients_text)",
+      "sugars per cup=6.01g (prepared, dose 211ml; OFF sugars_100g=2.85)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.431,
+     "why": [
+      "sugars per cup=6.01g (prepared, dose 211ml; OFF sugars_100g=2.85)",
+      "kcal per cup=42.2 (OFF energy-kcal_100g=20.0 x dose)",
+      "no sugar/glucose in ingredients=False (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.436,
+     "why": [
+      "price_per_cup=£0.188 (price assumption / 20 cups); log-scaled within shelf £0.02-£2.0",
+      "role=incumbent"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.278,
+     "why": [
+      "protein per cup=1.05g (OFF proteins_100g=0.5 x dose; milk not counted)",
+      "sugars per cup=6.01g (prepared, dose 211ml; OFF sugars_100g=2.85)",
+      "kcal per cup=42.2 (OFF energy-kcal_100g=20.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.66,
+     "why": [
+      "functional/diet claims=none (OFF name/labels/ingredients_text)",
+      "sweeteners=['aspartame', 'en:e951'] (OFF additives/ingredients_text)",
+      "additives_n=7 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.603,
+     "why": [
+      "role=incumbent",
+      "reformulated/'lighter' signal=True (OFF labels + sweeteners)",
+      "price_per_cup=£0.188 (price assumption / 20 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.42,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=incumbent, OFF stores=unknown)",
+      "sugars per cup=6.01g (prepared, dose 211ml; OFF sugars_100g=2.85)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.0,
+     "why": [
+      "vegan_signal=0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=none (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 1.0,
+     "why": [
+      "label en:no-gluten (OFF labels)",
+      "allergens=['en:milk', 'en:soybeans'] traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.42,
+     "why": [
+      "completeness=0.8 (OFF)",
+      "nutriscore=d (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=incumbent",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5059697390005",
+   "name": "Lighter hot chocolate",
+   "brand": "Tesco",
+   "category": "hot_drinks",
+   "role": "own_label",
+   "row": 3,
+   "price_gbp": 2.5,
+   "price_source": "assumption: Tesco Lighter Hot Chocolate 270g typically ~£2.50; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.102,
+   "cups_per_pack": 24.5,
+   "cups_per_pack_source": "270g (OFF quantity) / 11g powder per 211ml serving (assumption: same instant format as Options; OFF serving_size 211ml)",
+   "pack_copy": "tesco lighter hot chocolate - rainforest alliance, 30% less sugar, reduced sugar",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 4,
+   "nutriscore": "a",
+   "ecoscore": "unknown",
+   "additives_n": 6,
+   "additives": [
+    "en:e1200",
+    "en:e340",
+    "en:e407",
+    "en:e412",
+    "en:e551",
+    "en:e955"
+   ],
+   "labels": [
+    "en:low-or-no-sugar",
+    "en:low-sugar",
+    "en:vegetarian",
+    "en:reduced-sugar",
+    "en:30-less-sugar",
+    "en:rainforest-alliance"
+   ],
+   "allergens": [
+    "en:milk"
+   ],
+   "traces": [
+    "en:soybeans"
+   ],
+   "analysis": [
+    "en:palm-oil-free",
+    "en:non-vegan",
+    "en:vegetarian"
+   ],
+   "ingredients_n": 20,
+   "ingredients_text": "Whey Powder (_Milk_), Fat Reduced Cocoa Powder 21%, Dried Skimmed _Milk_, Glucose Syrup. Cocoa Powder 6%, Coconut Oil, Sugar, Polydextrose, Thickeners (Guar Gum, Carrageenan), Salt, Flavouring, _Milk_ Proteins, Anti-caking Agent (Silicon Dioxide), Stabiliser (Potassium Phosphate), Sweetener (Sucralose).",
+   "sugars_100g": 1.9,
+   "fiber_100g": 0.7,
+   "proteins_100g": 0.8,
+   "salt_100g": 0.1,
+   "energy_kcal_100g": 19.0,
+   "fat_100g": 0.5,
+   "saturated_fat_100g": 0.4,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "211ml",
+    "source": "OFF serving_size 211ml; OFF nutrition is as-prepared (19 kcal/100ml)",
+    "sugars_g": 4.01,
+    "energy_kcal": 40.1,
+    "proteins_g": 1.69
+   },
+   "serving_size_off": "211ml",
+   "sweeteners": 1,
+   "sweeteners_list": [
+    "en:e955",
+    "sucralose"
+   ],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "270g",
+   "stores": [
+    "Tesco"
+   ],
+   "packaging": [],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/505/969/739/0005/front_en.14.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5059697390005",
+   "completeness": 0.8,
+   "scans": 4.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.41,
+     "why": [
+      "additives_n=6 (OFF)",
+      "ecoscore=unknown (OFF; unknown->0.5)",
+      "organic=False (OFF labels)",
+      "palm-free=1.0 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.147,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=6 (OFF)",
+      "sweeteners=['en:e955', 'sucralose'] (OFF additives/ingredients_text)",
+      "UPF marker ingredients=['flavouring', 'glucose syrup', 'polydextrose', 'whey'] (OFF ingredients_text)",
+      "sugars per cup=4.01g (prepared, dose 211ml; OFF sugars_100g=1.9)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 0.506,
+     "why": [
+      "sugars per cup=4.01g (prepared, dose 211ml; OFF sugars_100g=1.9)",
+      "kcal per cup=40.1 (OFF energy-kcal_100g=19.0 x dose)",
+      "no sugar/glucose in ingredients=False (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.699,
+     "why": [
+      "price_per_cup=£0.102 (price assumption / 24.5 cups); log-scaled within shelf £0.02-£2.0",
+      "role=own_label"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.354,
+     "why": [
+      "protein per cup=1.69g (OFF proteins_100g=0.8 x dose; milk not counted)",
+      "sugars per cup=4.01g (prepared, dose 211ml; OFF sugars_100g=1.9)",
+      "kcal per cup=40.1 (OFF energy-kcal_100g=19.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.48,
+     "why": [
+      "functional/diet claims=['reduced/low sugar claim'] (OFF name/labels/ingredients_text)",
+      "sweeteners=['en:e955', 'sucralose'] (OFF additives/ingredients_text)",
+      "additives_n=6 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.129,
+     "why": [
+      "role=own_label",
+      "reformulated/'lighter' signal=True (OFF labels + sweeteners)",
+      "price_per_cup=£0.102 (price assumption / 24.5 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.453,
+     "why": [
+      "format=multi-cup jar/box (OFF quantity/name)",
+      "mainstream=True (role=own_label, OFF stores=['Tesco'])",
+      "sugars per cup=4.01g (prepared, dose 211ml; OFF sugars_100g=1.9)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.2,
+     "why": [
+      "vegan_signal=0 (OFF labels/analysis)",
+      "organic=False (OFF labels)",
+      "ethical_labels=['en:rainforest-alliance'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.7,
+     "why": [
+      "no gluten ingredient, but no gluten-free label (OFF labels)",
+      "allergens=['en:milk'] traces=['en:soybeans'] (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.92,
+     "why": [
+      "completeness=0.8 (OFF)",
+      "nutriscore=a (OFF)",
+      "stores known=True (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 0.0,
+     "why": [
+      "role=own_label",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=False (OFF name/ingredients)"
+     ]
+    }
+   }
+  },
+  {
+   "code": "5060519143730",
+   "name": "Day to Night Collection Herbal Tea Sachets",
+   "brand": "Pukka",
+   "category": "hot_drinks",
+   "role": "challenger",
+   "row": 3,
+   "price_gbp": 3.5,
+   "price_source": "assumption: typical UK RRP Pukka 20-sachet collection box ~£3.50; not fetched (no retailer page fetched; curator estimate, Oct 2026)",
+   "price_per_cup_gbp": 0.175,
+   "cups_per_pack": 20,
+   "cups_per_pack_source": "32.4g (OFF quantity) at ~1.6g/sachet = 20 sachets (assumption)",
+   "pack_copy": "pukka day to night collection herbal tea sachets - organic herbal & green tea collection (ginseng matcha green, turmeric, night time), organic, fair trade, 1% for the planet",
+   "pack_copy_source": "derived from OFF product_name + OFF labels (+ OFF ingredients_text for descriptors)",
+   "nova": 4,
+   "nutriscore": "b",
+   "ecoscore": "a-plus",
+   "additives_n": 1,
+   "additives": [
+    "en:e175"
+   ],
+   "labels": [
+    "en:fair-trade",
+    "en:organic",
+    "en:eu-organic",
+    "en:kosher",
+    "en:non-eu-agriculture",
+    "en:1-for-the-planet",
+    "en:eu-agriculture",
+    "en:eu-non-eu-agriculture",
+    "en:soil-association-organic"
+   ],
+   "allergens": [],
+   "traces": [],
+   "analysis": [
+    "en:palm-oil-content-unknown",
+    "en:vegan-status-unknown",
+    "en:vegetarian-status-unknown"
+   ],
+   "ingredients_n": 89,
+   "ingredients_text": "Ginseng Matcha Green: Jeju Island Sencha green tea (50%), lemongrass, ginger root, licorice root, lemon Vana tulsi leaf, lemongrass essential oil flavour, Matcha (Jeju Island Emerald) (2%), red ginseng root (2%). 10% FairWild™ certified ingredients (licorice) by dried weight. Visit www.fairwild.org. 20% fair trade ingredients certified according to the Fair for Life Standard - licorice, tulsi. Turmeric Gold: 100% organically grown and ethically sourced ingredients: Turmeric root (40%), green tea (20%), licorice root, cardamom pod, lemon essential oil flavour (6%), lemon whole (6%), lemon verbena leaf. 12% FairWild™ certified ingredients (licorice) by dried weight. Visit www.fairwild.org. 72% fair trade ingredients certified according to the Fair for Life Standard-turmeric, green tea, licorice. Revitalise: 100% organically grown and ethically sourced ingredients: Ceylon cinnamon bark (20%), orange peel, elderflower, cardamom pod (10%), licorice root, ginger root (7%), green tea, sweet cinnamon bark (6%), spearmint leaf, clove bud, black peppercorn. 8% FairWild™ certified ingredients (licorice) by dried weight. Visit www.fairwild.org. Visit www.fairwild.org. 21% fair trade ingredients certified according to the Fair for Life Standard - licorice, green tea, sweet cinnamon. After Dinner: Naturally caffeine-free and ethically sourced, 100% organically grown ingredients: Roasted chicory root (24%), aniseed. Sweet fennel seed (20%), licorice root, cardamom pod (8%), orange peel, ginger root. 12% FairWild™ certified ingredients (licorice) by dried weight. Visit www.fairwild.org. 32% fair trade ingredients certified according to the Fair for Life Standard-fennel, licorice. Night Time: Naturally caffeine-free and ethically sourced, 100% organically grown ingredients: Oat flowering tops (30%), licorice root, chamomile flower, lavender flower (14%), limeflower (10%), valerian root, tulsi leaf. 28% FairWild™ certified ingredients (licorice, limeflower) by dried weight. Visit www.fairwild.org. 33% fair trade ingredients certified according to the Fair for Life Standard-licorice, limeflower, tulsi.",
+   "sugars_100g": 0.0,
+   "fiber_100g": null,
+   "proteins_100g": 0.0,
+   "salt_100g": 0.0,
+   "energy_kcal_100g": 0.0,
+   "fat_100g": 0.0,
+   "saturated_fat_100g": 0.0,
+   "per_cup": {
+    "basis": "prepared",
+    "dose": "250ml",
+    "source": "assumption: 250ml mug; OFF nutrition 0 kcal",
+    "sugars_g": 0.0,
+    "energy_kcal": 0.0,
+    "proteins_g": 0.0
+   },
+   "serving_size_off": null,
+   "sweeteners": 0,
+   "sweeteners_list": [],
+   "palm_oil_n": 0,
+   "derived_field_notes": {
+    "sweeteners": "max(count of OFF additives in E420/E421/E950-E969, count of sweetener words in OFF ingredients_text); pool column empty",
+    "palm_oil_n": "count of 'palm' tokens in OFF ingredients_text; palm-free score from OFF analysis tags",
+    "per_cup": "OFF per-100g/ml values x dose; dose source given in per_cup.source",
+    "price_per_cup_gbp": "price_gbp (assumption) / cups_per_pack"
+   },
+   "quantity": "32,4g",
+   "stores": null,
+   "packaging": [],
+   "recycling": [],
+   "image": "https://images.openfoodfacts.org/images/products/506/051/914/3730/front_en.17.400.jpg",
+   "off_url": "https://world.openfoodfacts.org/product/5060519143730",
+   "completeness": 0.8,
+   "scans": 1.0,
+   "data_source": "OFF UK pool (data/products/uk_products.parquet) + OFF API v2 snapshot (hot_drinks_off_api/api_<code>.json, fetched 2026-10-03) for allergens/traces/ingredients_n/recycling/serving_size",
+   "lens_grades": {
+    "eco_low_chemical": {
+     "score": 0.91,
+     "why": [
+      "additives_n=1 (OFF)",
+      "ecoscore=a-plus (OFF; unknown->0.5)",
+      "organic=True (OFF labels)",
+      "palm-free=0.5 (OFF analysis)"
+     ]
+    },
+    "upf_avoider_parent": {
+     "score": 0.58,
+     "why": [
+      "nova=4 (OFF)",
+      "additives_n=1 (OFF)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "UPF marker ingredients=none (OFF ingredients_text)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "glp1_small_appetite": {
+     "score": 1.0,
+     "why": [
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=0.0 (OFF energy-kcal_100g=0.0 x dose)",
+      "no sugar/glucose in ingredients=True (OFF ingredients_text)"
+     ]
+    },
+    "frugal_unit_price": {
+     "score": 0.45,
+     "why": [
+      "price_per_cup=£0.175 (price assumption / 20 cups); log-scaled within shelf £0.02-£2.0",
+      "role=challenger"
+     ]
+    },
+    "protein_gym": {
+     "score": 0.4,
+     "why": [
+      "protein per cup=0.0g (OFF proteins_100g=0.0 x dose; milk not counted)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)",
+      "kcal per cup=0.0 (OFF energy-kcal_100g=0.0 x dose)"
+     ]
+    },
+    "protein_sceptic_gimmick_reactant": {
+     "score": 0.78,
+     "why": [
+      "functional/diet claims=['functional botanical (ginseng/matcha/tulsi/turmeric/adaptogen)'] (OFF name/labels/ingredients_text)",
+      "sweeteners=none (OFF additives/ingredients_text)",
+      "additives_n=1 (OFF)"
+     ]
+    },
+    "habit_loyalist_shrinkflation_angry": {
+     "score": 0.406,
+     "why": [
+      "role=challenger",
+      "reformulated/'lighter' signal=False (OFF labels + sweeteners)",
+      "price_per_cup=£0.175 (price assumption / 20 cups); log-scaled within shelf £0.02-£2.0"
+     ]
+    },
+    "meal_deal_office": {
+     "score": 0.5,
+     "why": [
+      "format=individual sachets (desk drawer) (OFF quantity/name)",
+      "mainstream=False (role=challenger, OFF stores=unknown)",
+      "sugars per cup=0.0g (prepared, dose 250ml; OFF sugars_100g=0.0)"
+     ]
+    },
+    "vegan_ethical": {
+     "score": 0.58,
+     "why": [
+      "vegan_signal=0.3 (OFF labels/analysis)",
+      "organic=True (OFF labels)",
+      "ethical_labels=['en:1-for-the-planet', 'en:fair-trade', 'en:soil-association-organic'] (OFF labels)"
+     ]
+    },
+    "allergen_coeliac": {
+     "score": 0.1,
+     "why": [
+      "gluten source ['oat'] / allergens=[] (OFF)",
+      "allergens=none declared traces=none (OFF API)"
+     ]
+    },
+    "ai_delegator": {
+     "score": 0.62,
+     "why": [
+      "completeness=0.8 (OFF)",
+      "nutriscore=b (OFF)",
+      "stores known=False (OFF)"
+     ]
+    },
+    "novelty_seeker_tiktok": {
+     "score": 1.0,
+     "why": [
+      "role=challenger",
+      "trend_term(oat/cold brew/iced/matcha/ginseng/turmeric)=True (OFF name/ingredients)"
+     ]
+    }
+   }
+  }
+ ]
+}

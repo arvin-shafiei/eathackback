@@ -1,0 +1,1403 @@
+{
+ "persona_id": "staged_agent_tesco",
+ "name": "Agent-Tesco",
+ "archetype": "AI agent: retailer-owned assistant using Clubcard history",
+ "kind": "staged",
+ "source_file": "data/personas/staged_personas_v1.json[11]",
+ "fields": [
+  {
+   "field": "behavioural_drivers[0]",
+   "kind": "lens_weight",
+   "label": "driver: Purchase-history replay (habit / status-quo default): the basket is seeded ... (w=0.9)",
+   "value": 0.9,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/qtbshl",
+     "thread_id": "qtbshl",
+     "subreddit": "adhdwomen",
+     "theme": "buy_it_again_repeat",
+     "score": 18,
+     "verbatim": "Instacart has been great for me, tbh. The buy it again tab? Bliss.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qpajil",
+     "thread_id": "1qpajil",
+     "subreddit": "Adulting",
+     "theme": "buy_it_again_repeat",
+     "score": 1,
+     "verbatim": "Plus you can just repeat the same order since I buy a lot of the same things.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Purchase-history replay (habit / status-quo default): the basket is seeded from past Clubcard purchases, and repeat items are re-added with little re-evaluation",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[1]",
+   "kind": "lens_weight",
+   "label": "driver: Personalisation collapses into exact repeats: history-driven recommendation re-serves known SKUs ... (w=0.65)",
+   "value": 0.65,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1r8zg70",
+     "thread_id": "1r8zg70",
+     "subreddit": "vine",
+     "theme": "rufus_ai_bias",
+     "score": 2,
+     "verbatim": "Rufus has tons of information about me but never recommends anything REMOTELY relevant in RFY except 3 time a year when it will repeat an ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Personalisation collapses into exact repeats: history-driven recommendation re-serves known SKUs rather than discovering adjacent new ones",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[2]",
+   "kind": "lens_weight",
+   "label": "driver: Own-label default in ingredient (non-hero) slots: when the product is ... (w=0.85)",
+   "value": 0.85,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/13u6xww",
+     "thread_id": "13u6xww",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 5,
+     "verbatim": "Finances aside, everyone buys own branded, except for the ones where they think branded tastes better.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Nielsen'",
+     "citation": "Research (MSE, cited in 02-issue-discovery.md): \"if it's only 1tbsp among 20+ other ingredients then price determines it.\" NielsenIQ 2026: \"58% of Consumers Say They Don't Care Whether a Product is a National Brand or Private Label.\" r/AskUK (https://www.reddit.com/comments/13u6xww): \"Finances aside, ..."
+    }
+   ],
+   "principle": "Own-label default in ingredient (non-hero) slots: when the product is one ingredient among many and history shows no brand loyalty, the price-per-unit leader (own-label) fills the slot",
+   "classes": [
+    "reddit",
+    "sales_data"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "sales_data": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[3]",
+   "kind": "lens_weight",
+   "label": "driver: Learned brand exceptions are preserved, but only for brands already ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/13u6xww",
+     "thread_id": "13u6xww",
+     "subreddit": "AskUK",
+     "theme": "own_brand_vs_branded",
+     "score": 1,
+     "verbatim": "Own brand for everything except: Branston Beans, the best you can get Mutti Tomatoes, far superior to any own brand Yorkshire Tea, I think it ...",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "same thread: \"I have learned with trial and error what I'm happy to compromise quality on.\""
+    }
+   ],
+   "principle": "Learned brand exceptions are preserved, but only for brands already in history: the agent keeps a human's established hero-brand loyalties and has no route to trial a new challenger",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[4]",
+   "kind": "lens_weight",
+   "label": "driver: Price-per-unit and value clarity dominate ranking (EDLP gets an algorithmic ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1b4i3rn",
+     "thread_id": "1b4i3rn",
+     "subreddit": "ukpolitics",
+     "theme": "own_brand_vs_branded",
+     "score": 120,
+     "verbatim": "Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times the price?!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "class": "paper",
+     "method": "text:citation_pattern",
+     "citation": "Kantar 2026 (research): \"EDLP and value clarity gain algorithmic advantage, especially in grocery and essentials.\" r/ukpolitics (https://www.reddit.com/comments/1b4i3rn): \"Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times ...",
+     "url": null
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'Kantar'",
+     "citation": "Kantar 2026 (research): \"EDLP and value clarity gain algorithmic advantage, especially in grocery and essentials.\" r/ukpolitics (https://www.reddit.com/comments/1b4i3rn): \"Tesco (normal, not value) Ketchup 890g: £1.35 Heinz Ketchup 900g: £4.50 How on earth can they justify it being more than three times ..."
+    }
+   ],
+   "principle": "Price-per-unit and value clarity dominate ranking (EDLP gets an algorithmic advantage); a large brand-to-own-label price gap moves the slot to own-label",
+   "classes": [
+    "reddit",
+    "paper",
+    "sales_data"
+   ],
+   "class_share": {
+    "reddit": 0.3333,
+    "paper": 0.3333,
+    "sales_data": 0.3333
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[5]",
+   "kind": "lens_weight",
+   "label": "driver: Structured-data and attribute gating: a product with blank fields, low ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "Research: Rufus narrows ~50 products to \"roughly five\""
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "\"Median 2,991 reviews\""
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "\"If those backend fields are blank…COSMO cannot classify the product correctly, and Rufus does not include it\" (ppc.land). Incumbent Advantage (arXiv 2606.17443): incumbents recommended \"100% of the time\" at identical specs"
+    },
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "\"Product parameters explain 82.4% of ranking variance"
+    },
+    {
+     "url": "https://www.reddit.com/comments/19dwzsy",
+     "thread_id": "19dwzsy",
+     "subreddit": "Etsy",
+     "theme": "online_favourites_lockin",
+     "score": 6,
+     "verbatim": "you don't have many sales or reviews, and therefore buyers are taking a risk. Many won't.",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Structured-data and attribute gating: a product with blank fields, low review count or a sub-floor rating never enters the consideration set; brand barely matters once parameters exist",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[6]",
+   "kind": "lens_weight",
+   "label": "driver: No impulse, no browsing: the agent only buys what a ... (w=0.8)",
+   "value": 0.8,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1rxetu2",
+     "thread_id": "1rxetu2",
+     "subreddit": "SavingMoney",
+     "theme": "buy_it_again_repeat",
+     "score": 17,
+     "verbatim": "I order online, that way I don't wander the store and throw more things in a cart than I need",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qpajil",
+     "thread_id": "1qpajil",
+     "subreddit": "Adulting",
+     "theme": "buy_it_again_repeat",
+     "score": 2,
+     "verbatim": "I don't know I want them until I see them lol!",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "No impulse, no browsing: the agent only buys what a mission or history asks for, which removes discovery purchases where challengers win with humans",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[7]",
+   "kind": "lens_weight",
+   "label": "driver: Never declines to buy: every slot gets filled, so agent ... (w=0.75)",
+   "value": 0.75,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "thread_id": "1m9u7e6",
+     "subreddit": "OpenAI",
+     "theme": "chatgpt_shopping",
+     "score": 11,
+     "verbatim": "I wanted to just let it rip and order whatever it put in the cart",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Never declines to buy: every slot gets filled, so agent data has no rejection signal; near-misses only show up through repeated sampling",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[8]",
+   "kind": "lens_weight",
+   "label": "driver: Silent substitution as brand switching: out-of-stocks are replaced automatically, shoppers ... (w=0.65)",
+   "value": 0.65,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1qpajil",
+     "thread_id": "1qpajil",
+     "subreddit": "Adulting",
+     "theme": "buy_it_again_repeat",
+     "score": 1,
+     "verbatim": "almost every time my wife orders grocery delivery, there is something missing, or replaced with something that was nothing like the original. Bleh",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Silent substitution as brand switching: out-of-stocks are replaced automatically, shoppers mostly keep the substitute, and the substitute then becomes history",
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[9]",
+   "kind": "lens_weight",
+   "label": "driver: Retailer-owned slot control: whoever answers the mission decides the cart, ... (w=0.6)",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "unclassified_text(no citation found)",
+     "text": "PYMNTS (research): \"whoever answers a customer's What's for dinner? question first gets to decide what ends up in the cart\""
+    },
+    {
+     "url": "https://www.reddit.com/comments/1sp38qu",
+     "thread_id": "1sp38qu",
+     "subreddit": "FulfillmentByAmazon",
+     "theme": "rufus_ai_bias",
+     "score": 1,
+     "verbatim": "ads appear under Rufus conversations now. Rufus evaluates which listing gets prime real estate and who gets buried",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    }
+   ],
+   "principle": "Retailer-owned slot control: whoever answers the mission decides the cart, and sponsored or retailer interests may enter the answer layer",
+   "classes": [
+    "reddit",
+    "assumption"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "behavioural_drivers[10]",
+   "kind": "lens_weight",
+   "label": "driver: Platform-endorsement reward and sponsored-tag penalty: retailer badges lift selection sharply, ... (w=0.5)",
+   "value": 0.5,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Platform-endorsement reward and sponsored-tag penalty: retailer badges lift selection sharply, while a 'sponsored' label slightly lowers it ACES (arXiv 2508.02630, research): agents \"consistently penalize sponsored tags while rewarding platform endorsements\"; ..."
+    }
+   ],
+   "principle": "Platform-endorsement reward and sponsored-tag penalty: retailer badges lift selection sharply, while a 'sponsored' label slightly lowers it",
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "behavioural_drivers[11]",
+   "kind": "lens_weight",
+   "label": "driver: Choice homogeneity: demand concentrates on a few modal SKUs per ... (w=0.7)",
+   "value": 0.7,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Choice homogeneity: demand concentrates on a few modal SKUs per slot, and others are never selected ACES (research): agents show \"choice homogeneity, often concentrating demand on a few modal products ..."
+    }
+   ],
+   "principle": "Choice homogeneity: demand concentrates on a few modal SKUs per slot, and others are never selected",
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "behavioural_drivers[12]",
+   "kind": "lens_weight",
+   "label": "driver: Stochastic and model-dependent output: identical missions return different baskets, and ... (w=0.45)",
+   "value": 0.45,
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1sp38qu",
+     "thread_id": "1sp38qu",
+     "subreddit": "FulfillmentByAmazon",
+     "theme": "rufus_ai_bias",
+     "score": 3,
+     "verbatim": "Anyone else noticing ranking changes since Amazon rolled out Rufus more aggressively?",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "class": "sales_data",
+     "method": "keyword:'market share'",
+     "citation": "ACES (research): \"model updates can drastically reshuffle market shares\". Profound: \"450 of 687 customers experienced at least one-third reduction in Shopping visibility\". SparkToro: \"<1 in 100 chance\" two responses give the same brand list. r/FulfillmentByAmazon (https://www.reddit.com/comments/1sp38qu): \"Anyone else noticing ranking ..."
+    }
+   ],
+   "principle": "Stochastic and model-dependent output: identical missions return different baskets, and a model update can reshuffle shares overnight",
+   "classes": [
+    "reddit",
+    "sales_data"
+   ],
+   "class_share": {
+    "reddit": 0.5,
+    "sales_data": 0.5
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "rejection_triggers[0]",
+   "kind": "trigger",
+   "label": "No Clubcard purchase history for the SKU (cold-start challenger): it is never ...",
+   "value": "No Clubcard purchase history for the SKU (cold-start challenger): it is never seeded into the repeat basket",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.08; shared=['basket', 'challe', 'repeat'])",
+     "theme": "buy_it_again_repeat",
+     "coded_section": "mechanism",
+     "coded_text": "Hedonic browsing / discovery (in-store serendipity vs the online repeat basket). These shoppers resist online grocery because they don't know what they want until they see it. The store prompts them on meals and treats, and some treat shopping as ...",
+     "url": "https://www.reddit.com/comments/1qpajil",
+     "subreddit": "Adulting",
+     "score": 1,
+     "verbatim": "It's not whimsical enough for me. I need to walk the aisles and let the store tell me what to buy."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[1]",
+   "kind": "trigger",
+   "label": "Not ranged by Tesco or delisted: the item does not exist in ...",
+   "value": "Not ranged by Tesco or delisted: the item does not exist in the agent's catalogue",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Not ranged by Tesco or delisted: the item does not exist in the agent's catalogue"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[2]",
+   "kind": "trigger",
+   "label": "Missing or blank structured attributes (price per 100g, dietary flags such as ...",
+   "value": "Missing or blank structured attributes (price per 100g, dietary flags such as vegan, protein and sugar claims, allergens): it cannot be matched to a mission slot",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['claims', 'protei', 'such'])",
+     "theme": "protein_gimmick",
+     "coded_section": "rejection_triggers",
+     "coded_text": "Small protein claims such as 'source of protein' at 4 to 6g per serving ('100% of the time it translates to has basically no protein')."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[3]",
+   "kind": "trigger",
+   "label": "Review count or rating below the implicit floor (research: Rufus picks have ...",
+   "value": "Review count or rating below the implicit floor (research: Rufus picks have median 2,991 reviews and a ~4.0-star floor); with incumbents at parity the incumbent wins 100% of the time",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['rating', 'review', 'star'])",
+     "theme": "online_favourites_lockin",
+     "coded_section": "trust_builders",
+     "coded_text": "Reading 1-3 star reviews and the newest reviews, and photo reviews; people trust mid-star and negative reviews more than the average rating."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[4]",
+   "kind": "trigger",
+   "label": "Price per unit well above the own-label equivalent in an ingredient (non-hero) ...",
+   "value": "Price per unit well above the own-label equivalent in an ingredient (non-hero) slot",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.22; shared=['label', 'own', 'price', 'well'])",
+     "theme": "own_brand_vs_branded",
+     "coded_section": "surprising",
+     "coded_text": "Own label is sometimes cited as healthier (less sugar and salt), giving it a health angle as well as a price one."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[5]",
+   "kind": "trigger",
+   "label": "Takes the basket over the shopper's budget cap",
+   "value": "Takes the basket over the shopper's budget cap",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['basket', 'budget', 'cap'])",
+     "theme": "chatgpt_shopping",
+     "coded_section": "mechanism",
+     "coded_text": "Budget constraint / mental accounting and deal-seeking (price optimisation). They use ChatGPT to read the weekly ad, plan meals around sale items, set a hard spending cap, or split the basket across 1-2 stores for the lowest total. The main ...",
+     "url": "https://www.reddit.com/comments/1vobhlt",
+     "subreddit": "ChatGPT",
+     "score": 4,
+     "verbatim": "optimizing the shopping list for lowest price between 1-2 store pick-ups. Saved a couple bucks every time!"
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[6]",
+   "kind": "trigger",
+   "label": "Out of stock at fulfilment: it is auto-substituted, often with own-label or ...",
+   "value": "Out of stock at fulfilment: it is auto-substituted, often with own-label or the incumbent, and the substitute is usually kept",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['incumb', 'label', 'own'])",
+     "theme": "trust_unknown_brand",
+     "coded_section": "rejection_triggers",
+     "coded_text": "Incumbent reformulation (Dawn scent change, Q-tips quality drop, Tesco own label decline). This triggers switching away from the trusted brand."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[7]",
+   "kind": "trigger",
+   "label": "Fails a hard dietary or allergen constraint in the mission brief",
+   "value": "Fails a hard dietary or allergen constraint in the mission brief",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['allerg', 'constr', 'dietar'])",
+     "theme": "delisted",
+     "coded_section": "rejection_triggers",
+     "coded_text": "Constrained substitutes for allergy or dietary needs (soya-free, nut-free), so a delisting means total loss and leads to costly niche online shops."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "rejection_triggers[8]",
+   "kind": "trigger",
+   "label": "Carries a 'sponsored' tag with no matching platform endorsement (a small penalty ...",
+   "value": "Carries a 'sponsored' tag with no matching platform endorsement (a small penalty per ACES)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Carries a 'sponsored' tag with no matching platform endorsement (a small penalty per ACES)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "rejection_triggers[9]",
+   "kind": "trigger",
+   "label": "Impulse or treat-only products not asked for by any mission (checkout and ...",
+   "value": "Impulse or treat-only products not asked for by any mission (checkout and gondola-end items never get added)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.10; shared=['get', 'impuls', 'produc'])",
+     "theme": "buy_it_again_repeat",
+     "coded_section": "channel_differences",
+     "coded_text": "Online and pickup are used for 'boring' repeat staples and as an impulse-control device. In-store is kept for produce, meat, discovery and treats: \"I want boring stuff I regularly get delivered. I want to shop for fun stuff.\""
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[0]",
+   "kind": "trust_signal",
+   "label": "Clubcard purchase frequency and recency for that exact SKU (the strongest signal)",
+   "value": "Clubcard purchase frequency and recency for that exact SKU (the strongest signal)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Clubcard purchase frequency and recency for that exact SKU (the strongest signal)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[1]",
+   "kind": "trust_signal",
+   "label": "Shopper kept a previous substitution (it is treated as accepted, and 9 ...",
+   "value": "Shopper kept a previous substitution (it is treated as accepted, and 9 in 10 are kept)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Shopper kept a previous substitution (it is treated as accepted, and 9 in 10 are kept)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[2]",
+   "kind": "trust_signal",
+   "label": "Clubcard Price or other retailer-owned badge or endorsement (ACES: endorsement lifts 10% ...",
+   "value": "Clubcard Price or other retailer-owned badge or endorsement (ACES: endorsement lifts 10% to as much as 42.6%)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['owned', 'price', 'retail'])",
+     "theme": "impulse_instore_vs_online",
+     "coded_section": "channel_differences",
+     "coded_text": "Third-party apps (Instacart, Uber, Shipt) carry a strong price and trust penalty compared with retailer-owned pickup. Consumers clearly separate the two."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[3]",
+   "kind": "trust_signal",
+   "label": "Lowest or competitive price per unit within the slot",
+   "value": "Lowest or competitive price per unit within the slot",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Lowest or competitive price per unit within the slot"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[4]",
+   "kind": "trust_signal",
+   "label": "Complete, machine-readable product attributes that match the mission's need-state (vegan, high protein, ...",
+   "value": "Complete, machine-readable product attributes that match the mission's need-state (vegan, high protein, low sugar, under £X)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['high', 'protei', 'sugar'])",
+     "theme": "protein_gimmick",
+     "coded_section": "rejection_triggers",
+     "coded_text": "A poor protein-to-calorie ratio: more than 10 kcal per gram of protein, or protein added to calorie-dense desserts and bars with high sugar."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[5]",
+   "kind": "trust_signal",
+   "label": "High rating and large review count (a +0.075-star edge flipped 50% of ...",
+   "value": "High rating and large review count (a +0.075-star edge flipped 50% of choices in the Incumbent Advantage study)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['rating', 'review', 'star'])",
+     "theme": "online_favourites_lockin",
+     "coded_section": "trust_builders",
+     "coded_text": "Reading 1-3 star reviews and the newest reviews, and photo reviews; people trust mid-star and negative reviews more than the average rating."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[6]",
+   "kind": "trust_signal",
+   "label": "In stock and available for the delivery slot",
+   "value": "In stock and available for the delivery slot",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "In stock and available for the delivery slot"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "trust_signals[7]",
+   "kind": "trust_signal",
+   "label": "Own-label tier that fits the mission (Finest for 'treat' or occasion, core ...",
+   "value": "Own-label tier that fits the mission (Finest for 'treat' or occasion, core or value for staples and budget caps)",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.16; shared=['finest', 'label', 'own', 'tier', 'treat'])",
+     "theme": "own_brand_vs_branded",
+     "coded_section": "mechanism",
+     "coded_text": "Good-better-best tiering (trade up within the retailer's own label, not to the brand). When they want a treat, shoppers trade up to Taste the Difference or Finest instead of the brand, and they avoid the bottom tier. The retailer keeps ...",
+     "url": "https://www.reddit.com/comments/1ow5fne",
+     "subreddit": "AskUK",
+     "score": 2,
+     "verbatim": "If I want to pay extra to have a nice thing I'd much rather get the taste the difference one than a branded one."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "trust_signals[8]",
+   "kind": "trust_signal",
+   "label": "Established brand already in the household's history ('except for Branston / Yorkshire ...",
+   "value": "Established brand already in the household's history ('except for Branston / Yorkshire Tea / Mutti' loyalties)",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "Established brand already in the household's history ('except for Branston / Yorkshire Tea / Mutti' loyalties)"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[0]",
+   "kind": "habit",
+   "label": "Weekly replenishment: rebuild 'my usual shop' from the Clubcard 'buy it again' ...",
+   "value": "Weekly replenishment: rebuild 'my usual shop' from the Clubcard 'buy it again' list and top up staples that have run out",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.22; shared=['again', 'buy', 'list', 'staple'])",
+     "theme": "buy_it_again_repeat",
+     "coded_section": "trust_builders",
+     "coded_text": "A repeat or buy-again list filterable by current deals, and a smart list that remembers staples."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[1]",
+   "kind": "habit",
+   "label": "'What's for dinner tonight?': turn a meal idea into ingredient slots and ...",
+   "value": "'What's for dinner tonight?': turn a meal idea into ingredient slots and fill each from the Tesco catalogue",
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "no_citation_and_no_corpus_match",
+     "text": "'What's for dinner tonight?': turn a meal idea into ingredient slots and fill each from the Tesco catalogue"
+    }
+   ],
+   "classes": [
+    "assumption"
+   ],
+   "class_share": {
+    "assumption": 1.0
+   },
+   "primary_class": "assumption"
+  },
+  {
+   "field": "missions[2]",
+   "kind": "habit",
+   "label": "'Vegan dinner for 4 under £15' (example mission from research): a budget-capped, ...",
+   "value": "'Vegan dinner for 4 under £15' (example mission from research): a budget-capped, diet-constrained slot fill",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.12; shared=['budget', 'constr', 'diet', 'fill'])",
+     "theme": "chatgpt_shopping",
+     "coded_section": "mechanism",
+     "coded_text": "Effort/friction reduction (delegation of list-building and cart-filling). They give the AI a few constraints (diet, budget, household size) and let it build the list or fill the cart. They value the minutes saved more than getting the choice exactly right.",
+     "url": "https://www.reddit.com/comments/1m9u7e6",
+     "subreddit": "OpenAI",
+     "score": 3,
+     "verbatim": "I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[3]",
+   "kind": "habit",
+   "label": "'Kids' lunchbox snacks for the week': repeat what the kids already accepted, ...",
+   "value": "'Kids' lunchbox snacks for the week': repeat what the kids already accepted, with own-label where history is weak",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['histor', 'own', 'repeat'])",
+     "theme": "rufus_ai_bias",
+     "coded_section": "surprising",
+     "coded_text": "Rufus repeated private details people had written in their own reviews (\"avid music listener... 10+ hours daily\", \"three embroidery machines\"). When asked, it denied having access to personal history, and that denial made trust drop further."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[4]",
+   "kind": "habit",
+   "label": "'Healthy, high-protein snacks / post-gym': fill from claim attributes (high protein, low ...",
+   "value": "'Healthy, high-protein snacks / post-gym': fill from claim attributes (high protein, low sugar) in structured data",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['high', 'protei', 'sugar'])",
+     "theme": "protein_gimmick",
+     "coded_section": "rejection_triggers",
+     "coded_text": "A poor protein-to-calorie ratio: more than 10 kcal per gram of protein, or protein added to calorie-dense desserts and bars with high sugar."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[5]",
+   "kind": "habit",
+   "label": "'Keep this week's shop under £X': trade branded for own-label to hit ...",
+   "value": "'Keep this week's shop under £X': trade branded for own-label to hit the cap",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.14; shared=['brande', 'label', 'own'])",
+     "theme": "delisted",
+     "coded_section": "channel_differences",
+     "coded_text": "Express and convenience formats carry branded, overpriced ranges, while large stores carry the budget own-label options."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[6]",
+   "kind": "habit",
+   "label": "Out-of-stock recovery: automatic substitution of an unavailable item with the 'closest' in-range ...",
+   "value": "Out-of-stock recovery: automatic substitution of an unavailable item with the 'closest' in-range product",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['item', 'produc', 'range'])",
+     "theme": "say_do_healthy",
+     "coded_section": "channel_differences",
+     "coded_text": "Convenience stores and bodegas vs supermarkets: the same item can cost about twice as much (bananas $0.49/lb vs $1 each), and fresh range is thin. Even so, a corner shop in a food desert found fresh fruit and veg were ..."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[7]",
+   "kind": "habit",
+   "label": "Weekly meal plan (5-7 dinners plus lunches): pick recipes, merge ingredient lists, ...",
+   "value": "Weekly meal plan (5-7 dinners plus lunches): pick recipes, merge ingredient lists, de-duplicate against history",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['lists', 'meal', 'weekly'])",
+     "theme": "buy_it_again_repeat",
+     "coded_section": "surprising",
+     "coded_text": "The data is noisy for this theme: under 5% of comments mention buy-it-again directly. Most repeat behaviour shows up as lists, meal plans and fixed weekly baskets, not as use of the retailer feature."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "missions[8]",
+   "kind": "habit",
+   "label": "Party or occasion basket ('kids' party', 'night in treat'): the one mission ...",
+   "value": "Party or occasion basket ('kids' party', 'night in treat'): the one mission type where it may go beyond history, still within Tesco range",
+   "sources": [
+    {
+     "class": "reddit_inferred",
+     "method": "inferred:keyword_overlap(jaccard=0.09; shared=['range', 'still', 'tesco'])",
+     "theme": "delisted",
+     "coded_section": "say_vs_do_gaps",
+     "coded_text": "Shoppers complain about losing own-brand value lines but keep using the same store ('still cheaper to shop at Tesco than Aldi'), so the retailer pays little for cutting the range."
+    }
+   ],
+   "classes": [
+    "reddit_inferred"
+   ],
+   "class_share": {
+    "reddit_inferred": 1.0
+   },
+   "primary_class": "reddit_inferred"
+  },
+  {
+   "field": "says_vs_does",
+   "kind": "habit",
+   "label": "says vs does",
+   "value": "SAYS: It is a personal helper that knows your tastes, plans meals and saves you time, and it puts \"you\" at the centre (\"taps into customers' previous shopping history\"). DOES: ...",
+   "sources": [
+    {
+     "url": "https://www.reddit.com/comments/1r8zg70",
+     "thread_id": "1r8zg70",
+     "subreddit": "vine",
+     "theme": "rufus_ai_bias",
+     "score": 2,
+     "verbatim": "never recommends anything REMOTELY relevant... except 3 time a year when it will repeat an *exact* product I have ordered before",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_verified",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1rc3t5x",
+     "thread_id": "1rc3t5x",
+     "subreddit": "amazonemployees",
+     "theme": "rufus_ai_bias",
+     "score": 43,
+     "verbatim": "yet another add, a sponsored recommendation",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1vjypr7",
+     "thread_id": "1vjypr7",
+     "subreddit": "AskABrit",
+     "theme": "chatgpt_shopping",
+     "score": 14,
+     "verbatim": "Trying to try new things and save some money whilst I'm at it",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    },
+    {
+     "url": "https://www.reddit.com/comments/1qpajil",
+     "thread_id": "1qpajil",
+     "subreddit": "Adulting",
+     "theme": "buy_it_again_repeat",
+     "score": 19,
+     "verbatim": "We have everything we NEED but wheres all the stuff I WANT??",
+     "verified_in_corpus": true,
+     "method": "url_match+quote_in_post",
+     "class": "reddit"
+    }
+   ],
+   "classes": [
+    "reddit"
+   ],
+   "class_share": {
+    "reddit": 1.0
+   },
+   "primary_class": "reddit"
+  },
+  {
+   "field": "sim_params.p_notice_eye_level",
+   "kind": "sim_param",
+   "label": "p_notice_eye_level = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.p_notice_bottom_or_side",
+   "kind": "sim_param",
+   "label": "p_notice_bottom_or_side = 0.8",
+   "value": 0.8,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.habit_lockin_0_1",
+   "kind": "sim_param",
+   "label": "habit_lockin_0_1 = 0.85",
+   "value": 0.85,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.price_sensitivity_0_1",
+   "kind": "sim_param",
+   "label": "price_sensitivity_0_1 = 0.6",
+   "value": 0.6,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.trust_new_brand_0_1",
+   "kind": "sim_param",
+   "label": "trust_new_brand_0_1 = 0.08",
+   "value": 0.08,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.gimmick_reactance_0_1",
+   "kind": "sim_param",
+   "label": "gimmick_reactance_0_1 = 0.05",
+   "value": 0.05,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.reads_structured_data_0_1",
+   "kind": "sim_param",
+   "label": "reads_structured_data_0_1 = 0.95",
+   "value": 0.95,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.seconds_at_shelf",
+   "kind": "sim_param",
+   "label": "seconds_at_shelf = 3",
+   "value": 3,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  },
+  {
+   "field": "sim_params.meal_deal_pull_0_1",
+   "kind": "sim_param",
+   "label": "meal_deal_pull_0_1 = 0.02",
+   "value": 0.02,
+   "sources": [
+    {
+     "class": "assumption",
+     "method": "skeptic_calibrated_prior",
+     "text": "set by the LLM skeptic verdict pass; research/05-personas.md section 6 says 'treat every number as a prior'"
+    },
+    {
+     "class": "internal_research",
+     "method": "table:research/05-personas.md section 4c",
+     "citation": "research/05-personas.md section 4c per-persona parameter table (skeptic-calibrated)"
+    }
+   ],
+   "classes": [
+    "internal_research",
+    "assumption"
+   ],
+   "class_share": {
+    "internal_research": 0.5,
+    "assumption": 0.5
+   },
+   "primary_class": "internal_research"
+  }
+ ],
+ "persona_level_evidence": {
+  "realism_score_1_10": 6.5,
+  "supporting_evidence": [
+   "Repeat-order lock-in is well supported. corpus/buy_it_again_repeat.md: 'Plus you can just repeat the same order since I buy a lot of the same things'; 'I eat the same thing every week'; 'I buy the same thing usually so the coupons are ...",
+   "Online removes impulse and discovery. corpus/buy_it_again_repeat.md: 'I save money by just ordering exactly what I need, it cuts out the impulse purchases'; 'reduces so many impulse grabs you'd make in store'; 'I don't know I want them until I see ...",
+   "Own-label in non-hero slots. corpus/buy_it_again_repeat.md: 'Where it doesn't really matter, we buy supermarket own brand stuff, but we will buy branded things we like.' This supports the own-label default plus learned brand exceptions.",
+   "Substitutions are resented when poor. corpus/buy_it_again_repeat.md: 'We frequently get substitutions that are not at all what we want (and wouldn't have bought if that was only option)'; the lasagna example (a human would have changed the meal; the system substitutes). ...",
+   "AI basket agents follow constraints and complete the basket. corpus/chatgpt_shopping.md, r/OpenAI agent mode: 'avoid red meat, prioritize health and keep it under $150 ... let it rip and order whatever it put in the cart'; HEB: 'It got everything in ...",
+   "02-issue-discovery.md winner section: agents 'never decline to buy'; their position effect is 4-10x weaker than humans' ('attributes displayed matter more than placement'). This supports setting p_notice nearly equal across eye level and bottom/side shelves for the agent. Also: incumbents win ...",
+   "02-issue-discovery.md: Tesco's assistant uses Clubcard history and adds items straight to the basket; 71% of new UK launches were outside the top 100 search results or missing. This supports challenger invisibility in the dotcom channel when products are not ranged ..."
+  ],
+  "unrealistic_claims_flagged_by_skeptic": 10
+ },
+ "evidence_mix": {
+  "method": "each field = 1 unit, split equally across the distinct source classes it cites; mix = mean over fields",
+  "pct": {
+   "reddit": 17.3,
+   "reddit_inferred": 39.2,
+   "paper": 0.7,
+   "off_field": 0.0,
+   "sales_data": 2.6,
+   "staged_persona": 0.0,
+   "web_other": 0.0,
+   "internal_research": 8.8,
+   "assumption": 31.4
+  },
+  "headline": {
+   "reddit": 56.5,
+   "paper": 0.7,
+   "off_field": 0.0,
+   "assumption": 31.4,
+   "other (sales, staged, web, internal)": 11.4
+  },
+  "n_fields": 51,
+  "fields_by_primary_class": {
+   "reddit": 12,
+   "assumption": 10,
+   "reddit_inferred": 20,
+   "internal_research": 9
+  },
+  "pct_fields_with_any": {
+   "reddit": 23.5,
+   "reddit_inferred": 39.2,
+   "paper": 2.0,
+   "sales_data": 5.9,
+   "internal_research": 17.6,
+   "assumption": 43.1
+  },
+  "pct_fields_with_any_assumption": 43.1
+ }
+}

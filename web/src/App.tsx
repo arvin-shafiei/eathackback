@@ -5,13 +5,16 @@ import { loadAll, loadRun, SIM_SERVER, type Loaded } from './data';
 import { buildTimeline, type Timeline } from './layout';
 import { armFilter, pickRates, archetypeOf } from './stats';
 import { Scene, type CamMode } from './scene/Scene';
-import type { ThoughtMode } from './scene/Shoppers';
+import type { ThoughtMode } from './scene/Crowd';
+import { Leaderboard } from './ui/Leaderboard';
+import { bus, sfx } from './scene/fx';
+import { STORE_VARIANT } from './data';
 import { ProductPanel } from './ui/ProductPanel';
 import { AgentPanel } from './ui/AgentPanel';
 import { TracePanel } from './ui/TracePanel';
 import { EditPanel } from './ui/EditPanel';
 import { ComparePanel } from './ui/ComparePanel';
-import { archColor, archLabel, AI_COLOR } from './theme';
+import { archColor, archLabel, AI_COLOR, ARCH_GEAR, carrierFor } from './theme';
 
 type Panel =
   | { kind: 'product'; code: string }
@@ -22,6 +25,8 @@ type Mode = 'replay' | 'edit' | 'compare';
 type Heat = 'off' | 'pick' | 'gap';
 
 const SPEEDS = [0.5, 1, 2, 4, 8];
+/** deep links for demos: ?t=40 starts the replay at 40s, ?nointro skips the fly-through */
+const START_T = (() => { const v = Number(new URLSearchParams(location.search).get('t')); return Number.isFinite(v) && v > 0 ? v : 0; })();
 /** a run that only contains ai agents (sim/agent_shopper.py output) */
 const isAgentArm = (r: RunIndexEntry) => r.file.startsWith('agent_') || (r.agents !== undefined && r.ai_agents !== undefined && r.agents > 0 && r.agents === r.ai_agents);
 const fmt = (t: number) => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
@@ -52,13 +57,19 @@ export default function App() {
   const [speed, setSpeed] = useState(2);
   const [uiTime, setUiTime] = useState(0);
   const timeRef = useRef(0);
-  const [cam, setCam] = useState<CamMode>('overview');
+  const [cam, setCam] = useState<CamMode>(() => (/[?&]nointro/.test(location.search) ? 'overview' : 'intro'));
   const [camNonce, setCamNonce] = useState(0);
   const [thoughts, setThoughts] = useState<ThoughtMode>('all');
   const [heat, setHeat] = useState<Heat>('off');
   const [editSel, setEditSel] = useState<string | null>(null);
   const [rerun, setRerun] = useState<{ busy: boolean; msg: string | null; ok?: boolean }>({ busy: false, msg: null });
   const [showLegend, setShowLegend] = useState(true);
+  const [soundOn, setSoundOn] = useState(false);
+  const [shakeOn, setShakeOn] = useState(true);
+  const [bonks, setBonks] = useState(0);
+  useEffect(() => { sfx.on = soundOn; if (soundOn) { sfx.ensure(); sfx.pick(); } }, [soundOn]);
+  useEffect(() => { bus.shakeOn = shakeOn; }, [shakeOn]);
+  useEffect(() => { const id = setInterval(() => setBonks(bus.bonks), 250); return () => clearInterval(id); }, []);
 
   // ---- load ----
   useEffect(() => {
@@ -82,8 +93,16 @@ export default function App() {
     if (entry) loadRun(entry).then(setAiRun).catch(() => setAiRun(null));
   }, [aiRunId, runs, localRuns]);
   // the run's own planogram (planogram_inline) wins, so shoppers walk to where products actually were
-  useEffect(() => { if (run && data) { const p = run.planogram_inline ?? data.planogram; setBasePlan(p); setPlan(p); setMoves([]); } }, [run, data]);
-  useEffect(() => { timeRef.current = 0; setPanel(null); }, [run, aiRun]);
+  useEffect(() => { if (run && data) { const p = { ...data.planogram, ...(run.planogram_inline ?? {}) }; setBasePlan(p); setPlan(p); setMoves([]); } }, [run, data]);
+  useEffect(() => { timeRef.current = START_T; setPanel(null); }, [run, aiRun]);
+  // ?follow=2 follows the 3rd human shopper (demo deep link)
+  useEffect(() => {
+    const f = new URLSearchParams(location.search).get('follow');
+    if (f == null || !run) return;
+    const humans = run.agents.filter((a) => !isAI(a));
+    const a = run.agents.find((x) => x.agent_id === f) ?? humans[Number(f)] ?? humans[0];
+    if (a) { setPanel({ kind: 'agent', id: a.agent_id }); setCam('follow'); }
+  }, [run, aiRun]);
   useEffect(() => { const id = setInterval(() => setUiTime(timeRef.current), 120); return () => clearInterval(id); }, []);
   useEffect(() => {
     const k = (e: KeyboardEvent) => { if (e.key === ' ' && (e.target as HTMLElement).tagName !== 'INPUT' && (e.target as HTMLElement).tagName !== 'BUTTON') { e.preventDefault(); setPlaying((p) => !p); } if (e.key === 'Escape') setPanel(null); };
@@ -103,7 +122,9 @@ export default function App() {
   const timelines = useMemo(() => {
     if (!data || !view || !basePlan) return {} as Record<string, Timeline>;
     const out: Record<string, Timeline> = {};
-    view.agents.forEach((a, i) => { out[a.agent_id] = buildTimeline(data.config, basePlan, a, i * 1.4, i); });
+    // stream shoppers in through the doors: ~90s for the whole crowd, never closer than 0.45s apart (visual pacing only)
+    const gap = Math.max(0.45, Math.min(1.4, 90 / Math.max(1, view.agents.length)));
+    view.agents.forEach((a, i) => { out[a.agent_id] = buildTimeline(data.config, basePlan, a, 0.6 + i * gap, i, isAI(a)); });
     return out;
   }, [data, view, basePlan]);
   const duration = useMemo(() => Math.max(10, ...agents.map((a) => timelines[a.agent_id]?.end ?? 0)) + 1, [agents, timelines]);
@@ -178,29 +199,39 @@ export default function App() {
     if (f?.e) side = <TracePanel run={view} agent={f.a} event={f.e} persona={personaFor(f.a)} product={products[f.e.product]} onAgent={() => setPanel({ kind: 'agent', id: f.a.agent_id })} onProduct={() => setPanel({ kind: 'product', code: f.e!.product })} onBack={panel.back ? () => setPanel(panel.back!) : undefined} onClose={() => setPanel(null)} />;
   }
 
+  const legend = archetypesInRun.map((a) => {
+    const persona = Object.values(personas).find((p) => p.archetype === a);
+    const c = carrierFor(a, persona?.mission, a === 'ai');
+    return { a, c };
+  });
+  const nShoppers = view?.agents.length ?? 0;
+  const nProducts = Object.keys(basePlan).reduce((s, k) => s + (basePlan[k]?.products?.length ?? 0), 0);
+  const intro = cam === 'intro';
+
   return (
-    <div className={`app mode-${mode}`}>
+    <div className={`app mode-${mode} ${intro ? 'is-intro' : ''}`}>
       <div className="stage">
         <Scene
-          cfg={data.config} planogram={mode === 'edit' ? plan : basePlan} products={products} personas={personas}
+          cfg={data.config} planogram={mode === 'edit' ? plan : basePlan} replayPlan={basePlan} products={products} personas={personas}
           agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && mode !== 'edit'} speed={speed} duration={duration}
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
           editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={changed}
           heat={heatMap} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
+          onIntroDone={() => setCam('overview')} onUserCamera={() => { if (cam === 'intro') { setCam('overview'); setCamNonce((n) => n + 1); } }}
         />
       </div>
 
       <header className="topbar">
         <div className="brand">
           <h1 className="sticker-title" data-text="same shelf">same shelf</h1>
-          <span className="tag">two shoppers · traceable</span>
+          <span className="brand-chip" aria-hidden>🛒🤖</span>
         </div>
-        <nav className="seg" aria-label="mode">
+        <nav className="seg seg-main" aria-label="mode">
           {(['replay', 'compare', 'edit'] as Mode[]).map((m) => (
             <button key={m} className={`seg-btn ${mode === m ? 'on' : ''}`} onClick={() => { setMode(m); if (m === 'edit') setPanel(null); }}>
-              {m === 'replay' ? 'replay' : m === 'compare' ? 'humans vs ai' : 'edit planogram'}
+              {m === 'replay' ? '▶ replay' : m === 'compare' ? '🧍 vs 🤖' : '✏️ edit shelf'}
             </button>
           ))}
         </nav>
@@ -208,7 +239,7 @@ export default function App() {
           <label className="select">
             <span>run</span>
             <select value={runId ?? ''} onChange={(e) => setRunId(e.target.value)}>
-              {runs.filter((r) => !isAgentArm(r)).map((r) => <option key={r.run_id} value={r.run_id}>{r.run_id}{r.fixture ? ' (fixture)' : ''}</option>)}
+              {runs.filter((r) => !isAgentArm(r)).map((r) => <option key={r.run_id} value={r.run_id}>{r.run_id}{r.fixture ? ' (fixture)' : ''}{r.agents ? ` · ${r.agents}` : ''}</option>)}
             </select>
           </label>
           {runs.some(isAgentArm) && (
@@ -216,19 +247,33 @@ export default function App() {
               <span>+ ai arm</span>
               <select value={aiRunId} onChange={(e) => setAiRunId(e.target.value)}>
                 <option value="">none</option>
-                {runs.filter(isAgentArm).map((r) => <option key={r.run_id} value={r.run_id}>{r.run_id}</option>)}
+                {runs.filter(isAgentArm).map((r) => <option key={r.run_id} value={r.run_id}>{r.run_id}{r.agents ? ` · ${r.agents}` : ''}</option>)}
               </select>
             </label>
           )}
           <div className="seg small" aria-label="who">
             {(['both', 'human', 'ai'] as Arm[]).map((a) => <button key={a} className={`seg-btn ${arm === a ? 'on' : ''}`} onClick={() => setArm(a)}>{a === 'both' ? 'everyone' : a === 'human' ? 'humans' : 'ai agents'}</button>)}
           </div>
+          <button className={`icon-btn ${soundOn ? 'on' : ''}`} onClick={() => setSoundOn((v) => !v)} aria-pressed={soundOn} aria-label={soundOn ? 'mute sound' : 'turn sound on'} title="cartoon sounds (off by default)">{soundOn ? '🔊' : '🔇'}</button>
         </div>
       </header>
 
-      {run?._fixture && <div className="fixture-banner" title={run._fixture}>fixture data: synthetic decisions to exercise the ui, not results</div>}
+      {mode === 'replay' && view && !intro && <Leaderboard run={view} arm={arm} products={products} onProduct={(code) => setPanel({ kind: 'product', code })} />}
 
-      {mode === 'replay' && (
+      {(run?._fixture || STORE_VARIANT) && <div className="fixture-banner" title={run?._fixture}>{STORE_VARIANT ? `fixture store layout (${STORE_VARIANT}): proves the 3d scales, not results` : 'fixture data: synthetic decisions to exercise the ui, not results'}</div>}
+
+      {intro && (
+        <div className="intro" role="dialog" aria-label="intro">
+          <div className="intro-card">
+            <div className="intro-kicker">eat_hack · track 1 human truth</div>
+            <h2 className="intro-title">same shelf,<br />two shoppers</h2>
+            <p className="intro-sub">{nShoppers} shoppers · {nProducts} real products · every number traced to its source</p>
+            <button className="btn btn-brand" onClick={() => { setCam('overview'); setCamNonce((n) => n + 1); }}>skip intro →</button>
+          </div>
+        </div>
+      )}
+
+      {mode === 'replay' && !intro && (
         <div className="lefttools">
           <div className="card mini">
             <div className="mini-h">camera</div>
@@ -236,6 +281,7 @@ export default function App() {
               <button className={`seg-btn ${cam === 'overview' ? 'on' : ''}`} onClick={() => { setCam('overview'); setCamNonce((n) => n + 1); }}>overview</button>
               <button className={`seg-btn ${cam === 'walk' ? 'on' : ''}`} onClick={() => { setCam('walk'); setCamNonce((n) => n + 1); }}>walk (wasd)</button>
               <button className={`seg-btn ${cam === 'follow' ? 'on' : ''}`} disabled={!selAgent} onClick={() => setCam('follow')} title={selAgent ? '' : 'click a shopper first'}>follow shopper</button>
+              <button className="seg-btn" onClick={() => { timeRef.current = 0; setCam('intro'); setCamNonce((n) => n + 1); }}>🎬 fly-through</button>
             </div>
             <div className="mini-h">thoughts</div>
             <div className="seg small">
@@ -246,11 +292,23 @@ export default function App() {
               {(['off', 'pick', 'gap'] as Heat[]).map((h) => <button key={h} className={`seg-btn ${heat === h ? 'on' : ''}`} onClick={() => setHeat(h)}>{h === 'pick' ? 'pick rate' : h === 'gap' ? 'ai − human' : 'off'}</button>)}
             </div>
             {heat === 'gap' && <p className="legend-note"><i style={{ background: '#16a34a' }} /> humans pick more <i style={{ background: AI_COLOR }} /> agents pick more</p>}
+            <div className="mini-h">silliness</div>
+            <div className="seg small">
+              <button className={`seg-btn ${shakeOn ? 'on' : ''}`} onClick={() => setShakeOn((v) => !v)} aria-pressed={shakeOn}>screen shake</button>
+              <button className={`seg-btn ${soundOn ? 'on' : ''}`} onClick={() => setSoundOn((v) => !v)} aria-pressed={soundOn}>sound</button>
+            </div>
           </div>
           {showLegend && (
             <div className="card mini legend">
               <div className="mini-h">who's shopping <button className="link-btn" onClick={() => setShowLegend(false)}>hide</button></div>
-              {archetypesInRun.map((a) => <div key={a} className="leg"><span className="dot" style={{ background: archColor(a) }} />{a === 'ai' ? 'ai agent (reads the feed)' : archLabel(a)}</div>)}
+              {legend.map(({ a, c }) => (
+                <div key={a} className="leg">
+                  <span className="dot" style={{ background: archColor(a) }} />
+                  <span className="leg-name">{a === 'ai' ? 'ai agent' : archLabel(a)}<em>{a === 'ai' ? '📡 scans the feed' : ARCH_GEAR[a] ?? ''}</em></span>
+                  <span className="leg-carrier" title={c === 'trolley' ? 'trolley' : c === 'basket' ? 'basket' : 'no carrier'}>{c === 'trolley' ? '🛒' : c === 'basket' ? '🧺' : '🤖'}</span>
+                </div>
+              ))}
+              <p className="legend-foot">carrier follows the mission (assumption: big shop = trolley, top-up = basket). bonks are physics, not data.</p>
             </div>
           )}
         </div>
@@ -264,16 +322,17 @@ export default function App() {
       )}
       {side && mode !== 'edit' && <div className="side">{side}</div>}
 
-      {mode !== 'edit' && (
+      {mode !== 'edit' && !intro && (
         <footer className="replay card">
-          <button className="btn btn-ink round" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'pause' : 'play'}>{playing ? '❚❚' : '▶'}</button>
+          <button className="btn btn-brand round" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'pause' : 'play'}>{playing ? '❚❚' : '▶'}</button>
           <input type="range" min={0} max={duration} step={0.1} value={uiTime} onChange={(e) => { timeRef.current = Number(e.target.value); setUiTime(timeRef.current); }} aria-label="replay time" />
           <span className="time">{fmt(uiTime)} / {fmt(duration)}</span>
           <div className="seg small">{SPEEDS.map((s) => <button key={s} className={`seg-btn ${speed === s ? 'on' : ''}`} onClick={() => setSpeed(s)}>{s}×</button>)}</div>
           <div className="counts">
-            <span title="picked so far">✅ {counts.pick ?? 0}</span>
-            <span title="rejected so far">✖ {counts.reject ?? 0}</span>
-            <span title="walked past so far">👀 {counts.walk_past ?? 0}</span>
+            <span className="count count-good" title="picked so far">✅ {counts.pick ?? 0}</span>
+            <span className="count count-bad" title="rejected so far">✖ {counts.reject ?? 0}</span>
+            <span className="count" title="walked past so far">👀 {counts.walk_past ?? 0}</span>
+            <span className="count count-bonk" title="physics bonks between shoppers. visual only, not part of the sim">💥 {bonks}</span>
           </div>
           {rerun.ok && rerun.msg && <span className="muted small">{rerun.msg}</span>}
         </footer>
