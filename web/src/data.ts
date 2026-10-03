@@ -69,4 +69,4 @@ export async function loadRun(entry: RunIndexEntry): Promise<Run> {
   return run;
 }
 
-export const SIM_SERVER = 'http://localhost:8787';
+export const SIM_SERVER = 'http://localhost:8788';

@@ -72,7 +72,7 @@ cd web && npm i && npm run dev
 # after any new sim output: npm run sync && node scripts/sync-dashboard.mjs
 
 # 2. sim server (add product, persona builder, re-run from the UI)
-python3 sim/server.py                  # :8787, which the vite /api proxy targets
+python3 sim/server.py 8788             # the vite /api proxy targets :8788 (override with SIM_PORT=...)
 python3 sim/server.py 8788             # if 8787 is busy; open dashboard.html?api=http://localhost:8788/api
                                        # (the 3D app's add-product expects 8787; integrations/api_server.py also defaults to 8788)
 

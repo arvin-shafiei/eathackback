@@ -1,4 +1,4 @@
-// Client for the local sim server (sim/server.py, default :8787). In `vite dev` / `vite preview` the page can use
+// Client for the local sim server (sim/server.py, run on :8788 — :8787 is often taken). In `vite dev` / `vite preview` the page can use
 // the same-origin /api proxy (vite.config.ts); otherwise it calls the server directly (it sends CORS headers).
 const KEY = 'dash.apiBase';
 
@@ -6,7 +6,7 @@ export function apiCandidates(): string[] {
   let saved = '';
   try { saved = localStorage.getItem(KEY) || ''; } catch { /* private mode */ }
   const qs = new URLSearchParams(location.search).get('api') || '';
-  return Array.from(new Set([qs, saved, '/api', 'http://localhost:8787/api'].filter(Boolean)));
+  return Array.from(new Set([qs, saved, '/api', 'http://localhost:8788/api'].filter(Boolean)));
 }
 export function saveApiBase(b: string) { try { localStorage.setItem(KEY, b); } catch { /* ignore */ } }
 
