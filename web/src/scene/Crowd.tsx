@@ -246,7 +246,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   };
 
   /** carrier collisions on/off (parked at a till = ghost: drawn from the park matrix, collides with nothing) */
-  const setCarrierSolid = (s: Shopper, on: boolean) => { s.cbOn = on && !!s.cbody; setSolid(s.cbody, on ? GROUP.carrier : null); };
+  const setCarrierSolid = (s: Shopper, on: boolean) => { s.cbOn = on && !!s.cbody; setSolid(s.cbody, on ? GROUP.carrier : null); if (on) load.current?.reghost(s.cbody); };
   /** off the floor: no collisions, parked far away (no rapier setEnabled toggling) */
   const ghost = (s: Shopper) => {
     setSolid(s.body, null); setCarrierSolid(s, false);
@@ -369,7 +369,8 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       const fm = Math.hypot(fx, fz) || 1;
       near(p.x, p.z, R0, s.si, (_o, ddx, ddz, dd) => {
         if (dd < 1e-4) { ddx = Math.sin(s.si); ddz = Math.cos(s.si); dd = 1; }
-        const wgt = (R0 - dd) / R0;
+        // soft personal space + a hard push once bodies would touch (setLinvel would otherwise win over contacts)
+        const wgt = (R0 - dd) / R0 + Math.max(0, 0.66 - dd) * 6;
         sx += (ddx / dd) * wgt; sz += (ddz / dd) * wgt;
         if (!busy && (-(ddx * fx + ddz * fz) / (dd * fm)) > 0.5) { sx += (-fz / fm) * wgt * 0.8; sz += (fx / fm) * wgt * 0.8; }
       });
@@ -413,7 +414,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           let nx = a.x - b.x, nz = a.z - b.z; const nl = Math.hypot(nx, nz) || 1; nx /= nl; nz /= nl;
           const va = s.body!.linvel(), vb = o.body.linvel();
           const closing = -((va.x - vb.x) * nx + (va.z - vb.z) * nz);
-          if (closing < 0.25) return;
+          if (closing < 0.6) return; // only real collisions bonk, not the polite shuffle of a crowd
           const kick = Math.min(3.4, 1.5 + closing * 0.7);
           s.knock.x += nx * kick; s.knock.y += nz * kick; o.knock.x -= nx * kick; o.knock.y -= nz * kick;
           s.sqv -= 3.4; o.sqv -= 3.4;
@@ -841,7 +842,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       for (const s of shoppers) {
         if (!s.active) continue;
         act++; if (s.qT) qd++;
-        near(s.px, s.pz, BODY.r * 2 * (s.ai ? AI_SCALE : 1) - 0.05, s.si, (o) => { if (o.si > s.si && o.active) ov++; });
+        if (!s.ai) near(s.px, s.pz, BODY.r * 2 - 0.08, s.si, (o) => { if (!o.ai && o.si > s.si && o.active) ov++; });
       }
       crowdStats.active = act; crowdStats.overlaps = ov; crowdStats.queued = qd; crowdStats.flights = flights.current.size; crowdStats.inCarriers = baked.current.size;
       const out: Sticker[] = [];

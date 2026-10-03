@@ -45,6 +45,12 @@ export function drawSticker(ctx: CanvasRenderingContext2D, W: number, H: number,
   }
 }
 
+/** floor-friendly tint of a department colour: keep the hue, make it light (generator colours can be saturated) */
+function pastel(hex: string) {
+  const c = new THREE.Color(hex); const hsl = { h: 0, s: 0, l: 0 }; c.getHSL(hsl);
+  return new THREE.Color().setHSL(hsl.h, Math.min(hsl.s, 0.7), Math.max(hsl.l, 0.86));
+}
+
 // ---------------------------------------------------------------- static: floor zones, borders, dividers, decor
 function buildStatic(P: StorePlan) {
   const k = new Kit();
@@ -54,8 +60,8 @@ function buildStatic(P: StorePlan) {
     const r = d.rect;
     const x0 = Math.max(B.xMin, r.x0), x1 = Math.min(B.xMax, r.x1), z0 = Math.max(B.zMin, r.z0), z1 = Math.min(B.zMax, r.z1);
     if (x1 - x0 < 0.2 || z1 - z0 < 0.2) continue;
-    k.floor(x0, z0, x1, z1, 0.004, shade(d.color, 0.15));
-    const bc = shade(d.color, -0.28), t = 0.14;
+    k.floor(x0, z0, x1, z1, 0.004, pastel(d.color));
+    const bc = pastel(d.color).lerp(new THREE.Color(d.color), 0.7).multiplyScalar(0.85), t = 0.16;
     k.floor(x0, z0, x1, z0 + t, 0.006, bc); k.floor(x0, z1 - t, x1, z1, 0.006, bc);
     k.floor(x0, z0, x0 + t, z1, 0.006, bc); k.floor(x1 - t, z0, x1, z1, 0.006, bc);
   }
@@ -85,6 +91,14 @@ function buildStatic(P: StorePlan) {
         }
       }
     }
+  });
+  // promo / seasonal floor: pallet displays stacked with cartons (decor)
+  const PAL = ['#FF4079', '#FE831B', '#ffd60a', '#2ecc71', '#2ba8ff', '#9b59b6'];
+  P.promo.pallets.forEach((pl, i) => {
+    k.boxAt(pl.x, 0.07, pl.z, pl.w, 0.14, pl.d, '#c49a6c', { ink: true });
+    const col = PAL[i % PAL.length];
+    for (let a = 0; a < 2; a++) for (let b = 0; b < 2; b++) for (let c = 0; c < 2 + (i % 2); c++)
+      k.boxAt(pl.x + (a - 0.5) * pl.w * 0.48, 0.14 + 0.2 + c * 0.4, pl.z + (b - 0.5) * pl.d * 0.48, pl.w * 0.46, 0.38, pl.d * 0.46, (a + b + c) % 2 ? col : '#ffffff', { ink: true });
   });
   // flower stand at the entrance
   if (P.produce.flowers) {
@@ -180,17 +194,17 @@ function buildFiller(cfg: StoreConfig, P: StorePlan, planogram: Planogram) {
     const p = P.units[u.id]; if (!p) continue;
     const spec = FILL[p.dept] ?? FILL_DEFAULT;
     const base = new THREE.Matrix4().compose(new THREE.Vector3(p.x, 0, p.z), new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), p.rotY), new THREE.Vector3(1, 1, 1));
-    for (let r = 1; r <= cfg.rows_per_unit; r++) {
+    for (let r = 1; r <= p.rows; r++) {
       if (planogram[`${u.id}-r${r}`]) continue;
       const y = rowY(cfg, r);
-      let x = -G.unitLen / 2 + 0.2;
+      let x = -p.len / 2 + 0.2;
       // runs of the same "product" (2-5 facings) so it reads like a merchandised shelf
-      while (x < G.unitLen / 2 - 0.25) {
+      while (x < p.len / 2 - 0.25) {
         const w = spec.w[0] + rnd() * (spec.w[1] - spec.w[0]);
         const h = Math.min(gap - 0.08, spec.h[0] + rnd() * (spec.h[1] - spec.h[0]));
         const c = new THREE.Color(spec.cols[Math.floor(rnd() * spec.cols.length)]);
         const n = 2 + Math.floor(rnd() * 4);
-        for (let i = 0; i < n && x + w < G.unitLen / 2 - 0.2; i++) {
+        for (let i = 0; i < n && x + w < p.len / 2 - 0.2; i++) {
           mats.push(base.clone().multiply(new THREE.Matrix4().compose(new THREE.Vector3(x + w / 2, y + h / 2, -0.2), new THREE.Quaternion(), new THREE.Vector3(w * 0.92, h, 0.3))));
           cols.push(c);
           x += w;

@@ -29,13 +29,13 @@ const WHITE = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.5 
 const INKMAT = new THREE.MeshStandardMaterial({ color: INK, roughness: 0.5 });
 const T = (x: number, y: number, z: number) => new THREE.Matrix4().makeTranslation(x, y, z);
 const unitM = (p: UnitPlace) => Kit.m(p.x, 0, p.z, p.rotY);
-const rowsOf = (cfg: StoreConfig) => Array.from({ length: cfg.rows_per_unit }, (_, i) => i + 1);
+const rowsOf = (cfg: StoreConfig, p?: UnitPlace) => Array.from({ length: p ? p.rows : cfg.rows_per_unit }, (_, i) => i + 1);
 
 // ---------------------------------------------------------------- fixtures (merged)
 function buildFixtures(cfg: StoreConfig, P: StorePlan) {
   const k = new Kit();
-  const L = G.unitLen, H = G.height;
-  const rows = rowsOf(cfg);
+  const H = G.height;
+  let L = G.unitLen, rows = rowsOf(cfg);
   const shelves = (at: (x: number, y: number, z: number) => THREE.Matrix4, board: string, lip = '#ffffff') => {
     for (const r of rows) {
       const y = rowY(cfg, r);
@@ -48,6 +48,9 @@ function buildFixtures(cfg: StoreConfig, P: StorePlan) {
     const M = unitM(p);
     const at = (x: number, y: number, z: number) => M.clone().multiply(T(x, y, z));
     const cat = catColor(u.category);
+    L = p.len; rows = rowsOf(cfg, p);
+    // units with fewer shelves than the store (e.g. produce tables): solid base under the lowest one
+    if (p.rows < cfg.rows_per_unit) { const yb = rowY(cfg, p.rows) - 0.06; k.box(L - 0.04, yb, 0.56, at(0, yb / 2, -0.2), p.fixture === 'produce' ? '#a86b3c' : '#e9dfd8', { ink: true }); }
     if (p.fixture === 'gondola') {
       k.box(L, H, 0.03, at(0, H / 2 + 0.05, -0.45), shade(cat, 0.82));
       shelves(at, '#f3ece6');
@@ -139,12 +142,12 @@ function buildEndcaps(P: StorePlan) {
 }
 
 // ---------------------------------------------------------------- shelf-edge price rails + wall headers (atlases)
-function drawRail(ctx: CanvasRenderingContext2D, W: number, H: number, slot: string, set: Planogram[string] | undefined, products: Record<string, Product>, changed: boolean, heat: Record<string, string> | null) {
+function drawRail(ctx: CanvasRenderingContext2D, W: number, H: number, slot: string, set: Planogram[string] | undefined, products: Record<string, Product>, changed: boolean, heat: Record<string, string> | null, len: number) {
   ctx.fillStyle = changed ? '#FFE14D' : '#ffffff'; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = INK; ctx.fillRect(0, 0, W, H * 0.08); ctx.fillRect(0, H * 0.92, W, H * 0.08);
-  const sx = W / G.unitLen;
+  const sx = W / len;
   for (const p of slotPlacements(slot, set)) {
-    const cx = (p.lx + G.unitLen / 2) * sx, pw = p.width * p.facings * sx;
+    const cx = (p.lx + len / 2) * sx, pw = p.width * p.facings * sx;
     if (heat?.[p.code]) { ctx.fillStyle = heat[p.code]; ctx.fillRect(cx - pw / 2 + 2, H * 0.08, pw - 4, H * 0.2); }
     const price = products[p.code]?.price_gbp;
     const txt = price ? `£${Number(price).toFixed(2)}` : '£?';
@@ -159,13 +162,13 @@ function drawRail(ctx: CanvasRenderingContext2D, W: number, H: number, slot: str
 }
 function buildRails(cfg: StoreConfig, P: StorePlan, planogram: Planogram, products: Record<string, Product>, changed: Set<string>, heat: Record<string, string> | null) {
   const slots: { slot: string; p: UnitPlace; row: number }[] = [];
-  for (const u of cfg.units) { const p = P.units[u.id]; if (!p) continue; for (const r of rowsOf(cfg)) { const slot = `${u.id}-r${r}`; if (planogram[slot]) slots.push({ slot, p, row: r }); } }
+  for (const u of cfg.units) { const p = P.units[u.id]; if (!p) continue; for (const r of rowsOf(cfg, p)) { const slot = `${u.id}-r${r}`; if (planogram[slot]) slots.push({ slot, p, row: r }); } }
   const cw = slots.length > 1024 ? 256 : 512;
   const atlas = new LabelAtlas(cw, cw / 16, slots.length, 4096);
   const q = new QuadBatch();
   for (const s of slots) {
-    const uv = atlas.add((ctx, w, h) => drawRail(ctx, w, h, s.slot, planogram[s.slot], products, changed.has(s.slot), heat));
-    q.add(unitM(s.p).multiply(T(0, rowY(cfg, s.row) - 0.03, 0.052)), G.unitLen, 0.075, uv);
+    const uv = atlas.add((ctx, w, h) => drawRail(ctx, w, h, s.slot, planogram[s.slot], products, changed.has(s.slot), heat, s.p.len));
+    q.add(unitM(s.p).multiply(T(0, rowY(cfg, s.row) - 0.03, 0.052)), s.p.len, 0.075, uv);
   }
   const mesh = new THREE.Mesh(q.geometry(), new THREE.MeshStandardMaterial({ map: atlas.texture(), roughness: 0.5 }));
   mesh.raycast = noRay;
@@ -193,7 +196,7 @@ function buildHeaders(cfg: StoreConfig, P: StorePlan) {
     }
     const y = p.fixture === 'produce' ? G.height + 0.05 : p.fixture === 'bakery' ? G.height + 0.2 : G.height + 0.16;
     const z = p.fixture === 'produce' ? 0.06 : p.fixture === 'bakery' ? 0.135 : 0.195;
-    q.add(unitM(p).multiply(T(0, y, z)), 1.7, 0.3, uv);
+    q.add(unitM(p).multiply(T(0, y, z)), Math.min(1.7, p.len - 0.3), Math.min(1.7, p.len - 0.3) * 0.176, uv);
   }
   const mesh = new THREE.Mesh(q.geometry(), new THREE.MeshBasicMaterial({ map: atlas.texture() }));
   mesh.raycast = noRay;
@@ -233,14 +236,14 @@ function SlotTargets({ cfg, P, editSel, changed, onSlot }: { cfg: StoreConfig; P
     <group>
       {cfg.units.flatMap((u) => {
         const p = P.units[u.id]; if (!p) return [];
-        return rowsOf(cfg).map((r) => {
+        return rowsOf(cfg, p).map((r) => {
           const slot = `${u.id}-r${r}`;
           const isSel = editSel === slot, isChanged = changed.has(slot);
           const m = unitM(p).multiply(T(0, rowY(cfg, r) + gap / 2 - 0.05, 0.08));
           const pos = new THREE.Vector3(), q = new THREE.Quaternion(), s = new THREE.Vector3(); m.decompose(pos, q, s);
           return (
             <mesh key={slot} position={pos} quaternion={q} onClick={(e: ThreeEvent<MouseEvent>) => { e.stopPropagation(); onSlot(slot); }}>
-              <planeGeometry args={[G.unitLen - 0.1, gap - 0.12]} />
+              <planeGeometry args={[p.len - 0.1, gap - 0.12]} />
               <meshBasicMaterial color={isSel ? BRAND_A : isChanged ? '#FFE14D' : '#ffffff'} transparent opacity={isSel ? 0.38 : isChanged ? 0.24 : 0.06} depthWrite={false} />
             </mesh>
           );
@@ -681,7 +684,7 @@ export function Store(props: StoreProps) {
         {wallBoxes.map(([x, z, w, d], i) => <CuboidCollider key={i} args={[w / 2, wallH / 2, d / 2 + 0.05]} position={[x, wallH / 2, z]} />)}
         {front.map(([a, b], i) => <CuboidCollider key={`f${i}`} args={[(b - a) / 2, 1.3, 0.14]} position={[(a + b) / 2, 1.3, B.zMax]} />)}
         {P.gondolas.map((g, i) => <CuboidCollider key={`g${i}`} args={[G.depth / 2 + 0.06, 1.1, (g.z1 - g.z0) / 2 + G.endcapDepth]} position={[g.x, 1.1, (g.z0 + g.z1) / 2]} restitution={0.5} />)}
-        {wallUnits.map((p, i) => <CuboidCollider key={`w${i}`} args={[G.unitLen / 2, 1.1, 0.42]} position={[p.x - Math.sin(p.rotY) * 0.2, 1.1, p.z - Math.cos(p.rotY) * 0.2]} rotation={[0, p.rotY, 0]} />)}
+        {wallUnits.map((p, i) => <CuboidCollider key={`w${i}`} args={[p.len / 2, 1.1, 0.42]} position={[p.x - Math.sin(p.rotY) * 0.2, 1.1, p.z - Math.cos(p.rotY) * 0.2]} rotation={[0, p.rotY, 0]} />)}
         {P.produce.tables.map((t, i) => <CuboidCollider key={`pt${i}`} args={[t.w / 2, 0.5, t.d / 2]} position={[t.x, 0.5, t.z]} />)}
         {P.produce.flowers && <CuboidCollider args={[0.8, 0.6, 0.8]} position={[P.produce.flowers.x, 0.6, P.produce.flowers.z]} />}
         {P.dividers.map((r, i) => <CuboidCollider key={`d${i}`} args={[(r.x1 - r.x0) / 2, 0.55, (r.z1 - r.z0) / 2]} position={[(r.x0 + r.x1) / 2, 0.55, (r.z0 + r.z1) / 2]} />)}
