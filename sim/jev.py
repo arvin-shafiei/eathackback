@@ -143,8 +143,15 @@ def _router_ask(state, questions: dict, *, tag: str) -> dict:
               "(sum 1). score: give a probability for every level index (sum 1). noul: probability the answer is yes. "
               "Judge only from the state; be realistic, not optimistic. Return ONLY JSON: {\"answers\": {<id>: {...}}}.")
     user = json.dumps({"state": state, "questions": spec}, ensure_ascii=False)
-    r = llm.chat_json(ROUTER_MODEL, system, user, max_tokens=min(6000, 300 + 90 * len(questions)),
-                      temperature=0.2, tag=f"jev-router:{tag}")
+    try:
+        r = llm.chat_json(ROUTER_MODEL, system, user, max_tokens=min(6000, 300 + 90 * len(questions)),
+                          temperature=0.2, tag=f"jev-router:{tag}")
+    except RuntimeError as e:  # router sometimes returns reasoning prose: retry once, stricter + more room
+        if "bad JSON" not in str(e):
+            raise
+        r = llm.chat_json(ROUTER_MODEL, system + " Do not explain. Your reply must start with '{' and be valid JSON.",
+                          user, max_tokens=min(12000, 2 * (300 + 90 * len(questions))), temperature=0.0,
+                          tag=f"jev-router-retry:{tag}")
     raw = (r["data"] or {}).get("answers", r["data"] or {})
     answers = {}
     for qid, q in questions.items():
