@@ -2,6 +2,16 @@
 
 **EAT_HACK · Really Good Culture · 3 Oct 2026**: Track 1 *Human Truth*, with a Track 2 *Retail Futures* output
 
+## ⛔ rule zero: we don't build a black box
+
+RGC's judges say *"a number that cannot be traced back to its source is worse than no number at all."* So we hold ourselves to this standard:
+
+- **Every number can be clicked down to its source.** That means an Open Food Facts field (barcode + field), a Jev probability (the exact question + answer distribution), a Reddit verbatim (thread URL), a paper or URL, real NielsenIQ sales (`data/sales/`), or a clearly **labelled assumption**.
+- **Every persona shows its provenance:** Reddit threads → coded themes → behavioural mechanisms → the persona's lens weights, triggers and verbatims → the sim parameters it ends up with. You can see the breakdown visually on the dashboard.
+- **Personas are editable, not magic.** A shop owner can build a new persona on the dashboard (OCEAN sliders, mission, budget, lens weights, triggers), run it through the store, and see why each of its decisions happened.
+- **Arithmetic lives in code. Judgment lives in Jev**, which returns typed answers with calibrated probabilities. There is no generated prose pretending to be data.
+- **It's enforced.** A Claude Code Stop hook (`.claude/hooks/blackbox-check.sh`) makes every work session end by answering *"is anything I just built a black box? if so, explain it."*
+
 ## the idea (v2, locked 3 Oct)
 
 **Deep synthetic shoppers walk a 3D store, read real products, and every number they produce traces back to a source.**
