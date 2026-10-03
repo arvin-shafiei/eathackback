@@ -4,6 +4,7 @@ import type { Product } from '../types';
 import { catColor, catLabel } from '../theme';
 import type { AddProductProps } from './featureProps';
 import { api, type ImportDraft } from '../api';
+import { Select } from './Select';
 import './add-product.css';
 
 type Key = 'name' | 'brand' | 'category' | 'role' | 'price_gbp' | 'quantity' | 'pack_copy' | 'labels' | 'ingredients_text'
@@ -101,6 +102,10 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
   const [imp, setImp] = useState<{ busy: boolean; err: string | null; draft: ImportDraft | null }>({ busy: false, err: null, draft: null });
 
   const categories = [...new Set(cfg.units.map((u) => u.category))];
+  const backFilled = !!(f.ingredients_text || f.allergens || f.nutriscore || NUTRIENTS.some(([k]) => f[k]));
+  // opens by itself when an import or the example fills it; after that only the user closes it
+  const [backOpen, setBackOpen] = useState(false);
+  useEffect(() => { if (backFilled) setBackOpen(true); }, [backFilled]);
   const units = cfg.units.filter((u) => u.category === f.category);
   const rows = Array.from({ length: cfg.rows_per_unit }, (_, i) => i + 1);
   const clear = (k: keyof Errs) => setErrs((e) => ({ ...e, [k]: undefined }));
@@ -110,7 +115,11 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
   };
   const bind = (k: Key) => ({
     id: `addp-${k}`, value: f[k], 'aria-invalid': errs[k] ? true : undefined, 'aria-describedby': errs[k] ? `addp-${k}-err` : undefined,
-    onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => set(k, e.target.value),
+    onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => set(k, e.target.value),
+  });
+  const pickOf = (k: Key) => ({
+    id: `addp-${k}`, value: f[k], invalid: !!errs[k], describedBy: errs[k] ? `addp-${k}-err` : undefined,
+    className: 'select-field', onChange: (v: string) => set(k, v),
   });
 
   const takeFile = async (file?: File) => {
@@ -227,8 +236,10 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
           </Field>
         </div>
 
-        <h3>back of pack</h3>
-        <p className="addp-hint">read by shoppers who turn it over, and by every ai agent.</p>
+        <details className="addp-fold" open={backOpen} onToggle={(e) => setBackOpen(e.currentTarget.open)}>
+        <summary title="read by shoppers who turn it over, and by every ai agent">
+          <h3>back of pack</h3><span className="thin">{backFilled ? 'filled in' : 'optional'}</span>
+        </summary>
         <div className="addp-grid">
           <Field id="addp-ingredients_text" wide label={<>ingredients <span className="thin" title="shoppers read the first 400 characters, ai agents the first 300">{f.ingredients_text.length}/800</span></>}>
             <textarea {...bind('ingredients_text')} maxLength={800} rows={3} />
@@ -243,17 +254,18 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
           </div>
           <Field id="addp-allergens" label={<>allergens <span className="thin">comma-separated</span></>}><input {...bind('allergens')} placeholder="milk, peanuts" /></Field>
           <Field id="addp-nutriscore" label={<>nutri-score <span className="thin">ai agents only</span></>}>
-            <select {...bind('nutriscore')}><option value="">not given</option>{['a', 'b', 'c', 'd', 'e'].map((s) => <option key={s} value={s}>{s}</option>)}</select>
+            <Select {...pickOf('nutriscore')} ariaLabel="nutri-score" options={[{ value: '', label: 'not given' }, ...['a', 'b', 'c', 'd', 'e'].map((s) => ({ value: s, label: s }))]} />
           </Field>
         </div>
+        </details>
 
         <h3>where it goes</h3>
         <p className="addp-hint">the shelves are full. pick the product yours replaces.</p>
         <div className="addp-grid">
           <Field id="addp-category" label="category *" err={errs.category}>
-            <select {...bind('category')} required><option value="">choose…</option>{categories.map((c) => <option key={c} value={c}>{catLabel(c)}</option>)}</select>
+            <Select {...pickOf('category')} ariaLabel="category" placeholder="choose…" options={categories.map((c) => ({ value: c, label: catLabel(c) }))} />
           </Field>
-          <Field id="addp-role" label="role"><select {...bind('role')}>{ROLES.map((r) => <option key={r} value={r}>{catLabel(r)}</option>)}</select></Field>
+          <Field id="addp-role" label="role"><Select {...pickOf('role')} ariaLabel="role" options={ROLES.map((r) => ({ value: r, label: catLabel(r) }))} /></Field>
         </div>
         {units.map((u) => (
           <div key={u.id} className="addp-shelf" role="group" aria-label={`shelf ${u.id}, ${catLabel(u.category)}`}>

@@ -1,4 +1,4 @@
-.addp { position: fixed; left: 16px; top: 116px; bottom: 104px; width: min(1040px, calc(100vw - 32px)); z-index: 21; padding: 0; overflow-y: auto; animation: slidein 260ms cubic-bezier(.16,1,.3,1) both; }
+.addp { position: fixed; left: 16px; top: 116px; bottom: 16px; width: min(1040px, calc(100vw - 32px)); z-index: 21; padding: 0; overflow-y: auto; animation: slidein 260ms cubic-bezier(.16,1,.3,1) both; }
 .addp h2 { font-size: 34px; margin-right: 40px; }
 .addp-hero > p { font-size: 13.5px; line-height: 1.5; margin: 8px 0 0; max-width: 60em; }
 .addp h3 { font-family: var(--display); font-weight: 800; font-size: 19px; margin: 22px 0 10px; padding-top: 16px; border-top: 2px dashed var(--line); }
@@ -80,7 +80,16 @@
   .addp-import-row { flex-wrap: wrap; }
 }
 @media (max-width: 760px) {
-  .addp { top: auto; height: 60vh; bottom: 92px; }
+  .addp { top: 150px; bottom: 12px; left: 8px; right: 8px; width: auto; }
   .addp-grid { grid-template-columns: 1fr; }
   .addp-nutri { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* ---- back of pack folds away until it has something in it */
+.addp-fold { margin-top: 22px; padding-top: 16px; border-top: 2px dashed var(--line); }
+.addp-fold > summary { display: flex; align-items: baseline; gap: 10px; cursor: pointer; list-style: none; }
+.addp-fold > summary::-webkit-details-marker { display: none; }
+.addp-fold > summary h3 { margin: 0; padding: 0; border: 0; }
+.addp-fold > summary h3::before { content: '▸'; display: inline-block; margin-right: 8px; transition: transform 140ms ease-out; }
+.addp-fold[open] > summary h3::before { transform: rotate(90deg); }
+.addp-fold[open] > summary { margin-bottom: 10px; }

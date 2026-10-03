@@ -66,7 +66,7 @@ export interface ProductStats {
   top_reject_reasons?: unknown[]; mean_sentiment?: number;
 }
 export interface Run {
-  run_id: string; created?: string; planogram?: string; models?: string[];
+  run_id: string; created?: string; planogram?: string; models?: string[]; seed?: number;
   agents: Agent[];
   stats?: { per_product?: Record<string, ProductStats> };
   notice_model?: Record<string, unknown>;
@@ -124,4 +124,42 @@ export interface PlacementExperiment {
   product: string; agents: number; seeds: number[]; models: string[]; mock: boolean; method: string;
   baseline: { pick_rate: number; notice_rate: number; n: number; run_ids: string[] };
   results: PlacementResult[];
+}
+
+// ---- sim/rearrange.py
+export interface SpotRef { slot: string; row: number; row_name: string; pos: number }
+export interface RearrangeMove {
+  code: string; name: string; brand: string; brand_supplied: boolean;
+  from: SpotRef; to: SpotRef;
+  /** chance a shopper passing the unit notices it, before and after */
+  notice_before: number; notice_after: number;
+  /** share of shoppers who bought it once they noticed it, blended with the unit average when thin */
+  conversion: number; noticed: number; picked: number; thin: boolean;
+  why: string;
+}
+export interface RearrangeUnit {
+  unit: string; category: string;
+  /** share of all shoppers who pass this unit */
+  reach: number; products: number; unit_conversion: number; noticed: number; picked: number;
+  before: number; after: number; lift: number; lift_pct: number; value_unit: string;
+  swaps: number; moves: RearrangeMove[];
+}
+export interface RearrangePlan {
+  objective: 'picks' | 'revenue'; max_swaps: number | null;
+  units: RearrangeUnit[]; planogram: Planogram; moves: number;
+  /** units no shopper noticed anything in during the runs learned from: left alone */
+  no_data_units?: { unit: string; category: string }[];
+  total: { before: number; after: number; lift: number; lift_pct: number; value_unit: string };
+  learned_from: { runs: string[]; missing: string[]; shoppers: number; engines: string[]; other_store?: boolean };
+  units_total?: number;
+  method: string; assumptions: string[]; sources: string[];
+}
+export interface RearrangeDiff {
+  picks_before: number; picks_after: number; shown_before: number; shown_after: number;
+  rate_before: number; rate_after: number; noticed_before: number; noticed_after: number;
+  delta_rate: number; delta_ci95: [number, number]; significant: boolean;
+}
+export interface RearrangeCheck {
+  engine: string; mock: boolean; agents: number; seeds: number[]; shoppers: number; cost_usd: number;
+  store: RearrangeDiff; units: (RearrangeDiff & { unit: string })[]; method: string;
 }

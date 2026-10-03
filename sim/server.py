@@ -10,6 +10,8 @@ POST /api/personas        persona builder: validate, normalise, fill sim_params 
                           to data/personas/custom/<slug>.json, return it
 POST /api/placement/scan        {"product": "<code>", "planogram": <dict>, "agents": 200, "seed": 1}
 POST /api/placement/experiment  {"product": "<code>", "planogram": <dict>, "placements": [{"slot","pos","facings"}], "agents": 60, "seeds": [1], "engine": "jev"}
+POST /api/rearrange/suggest   {"planogram": <dict>, "run_ids": [...], "objective": "picks|revenue", "max_swaps": 3}
+POST /api/rearrange/validate  {"before": <planogram>, "after": <planogram>, "agents": 150, "seeds": [11, 12], "engine": "jev"}
 POST /api/import     {"ref": "<tesco product link | barcode | open food facts link>"}  -> product draft
 /api/run, /api/agent_run, /api/optimise and /api/placement/* also take "products": [<brand-supplied product>, ...]
 (sim/uploads.py); /api/agent_run takes "exclude": [codes].
@@ -315,6 +317,23 @@ class H(BaseHTTPRequestHandler):
                                             b.get("planogram"),
                                             engine="mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE),
                                             extra_products=b.get("products"))
+                    return self._send(200, out)
+                if path.startswith("/api/rearrange/") and b.get("store") not in (*simrun.STORE_VARIANTS, "standard"):
+                    raise ValueError(f"rearrange runs on the standard and xl stores; the '{b.get('store')}' format is not "
+                                     "wired to it yet. open the app with ?store=xl")
+                if path == "/api/rearrange/suggest":
+                    import rearrange
+                    ms = b.get("max_swaps")
+                    out = rearrange.suggest(b.get("planogram"), b.get("products"), b.get("run_ids") or [],
+                                            b.get("objective", "picks"), units=b.get("units") or None,
+                                            max_swaps=max(1, min(int(ms), 50)) if ms else None)
+                    return self._send(200, out)
+                if path == "/api/rearrange/validate":
+                    import rearrange
+                    out = rearrange.validate(b.get("before"), b.get("after"), b.get("products"),
+                                             agents=min(int(b.get("agents", 150)), MAX_AGENTS),
+                                             seeds=(b.get("seeds") or [1])[:3], models=b.get("models"),
+                                             engine="mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE))
                     return self._send(200, out)
                 if path == "/api/import":
                     import tesco

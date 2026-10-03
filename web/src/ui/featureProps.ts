@@ -26,3 +26,32 @@ export interface InsightsProps extends PlacementSectionProps {
   onTrace: (agentId: string, step: number) => void;
   onClose: () => void;
 }
+
+export interface RearrangeProps {
+  /** the shopper run to learn from (not the merged human + ai view): its run_id must exist on the sim server */
+  run: Run; planogram: Planogram; cfg: StoreConfig; products: Record<string, Product>;
+  extraProducts: Product[];
+  /** product the user came from; its unit is shown first and its move is highlighted */
+  focus?: string;
+  useLLM: boolean; onUseLLM: (v: boolean) => void; busy: boolean;
+  /** show a proposed layout on the 3d shelves without running anything; null puts the real one back */
+  onPreview: (plan: Planogram | null) => void;
+  onApplyPlanogram: (plan: Planogram, label: string) => void;
+  onPickProduct: (code: string) => void;
+  onClose: () => void;
+}
+
+export interface SelectOption { value: string; label: string; hint?: string; group?: string; disabled?: boolean }
+export interface SelectProps {
+  value: string; options: SelectOption[]; onChange: (value: string) => void;
+  /** accessible name; also shown before the value when `prefix` is set */
+  ariaLabel: string;
+  /** small bold word inside the button before the value, e.g. "run" */
+  prefix?: string;
+  placeholder?: string;
+  /** show a filter box above the list (use for long lists) */
+  searchable?: boolean;
+  /** forwarded to the button, so a <label htmlFor> and field error wiring keep working */
+  id?: string; invalid?: boolean; describedBy?: string;
+  className?: string;
+}
