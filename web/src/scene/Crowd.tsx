@@ -171,6 +171,16 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     };
   }), [agents, timelines, personas, beats]);
 
+  useEffect(() => {
+    // headless debug: where everyone is, what they're doing (no stat reads this)
+    const w = window as unknown as { __crowd?: Record<string, unknown> };
+    if (!w.__crowd) return;
+    w.__crowd.dump = () => {
+      const sp = storePlan(cfg);
+      return { bounds: sp.bounds, lanes: sp.lanes.map((l) => ({ id: l.id, kind: l.kind, x: +l.x.toFixed(1), z: +l.z.toFixed(1) })), people: shoppers.filter((s) => s.active).map((s) => ({ id: s.agent.agent_id, x: +s.px.toFixed(2), z: +s.pz.toFixed(2), q: s.q?.group ?? null, inQ: !!s.qT, c: s.carrier, ph: sampleTimeline(s.tl, timeRef.current).seg?.phase ?? sampleTimeline(s.tl, timeRef.current).seg?.kind })) };
+    };
+  }, [cfg, shoppers, timeRef]);
+
   const groups = useMemo(() => {
     const g = queueGroups(storePlan(cfg));
     for (const s of shoppers) if (s.q) g.get(s.q.group)?.list.push(s);

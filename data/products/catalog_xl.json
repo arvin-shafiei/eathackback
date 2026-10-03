@@ -37555,11 +37555,11 @@
   "name": "Lemon Ice Tea",
   "brand": "Lipton, Waitrose",
   "category": "soft_drinks",
-  "role": "own_label",
-  "role_source": "brand 'Lipton, Waitrose' contains UK retailer name 'waitrose' (OFF brands)",
+  "role": "challenger",
+  "role_source": "brand not own-label and not in uk_bestsellers.csv / curated incumbents / assumed leaders [verifier fix 3 Oct: role re-derived with the corrected role_for; selection and planogram unchanged]",
   "curation": "auto_xl",
-  "price_gbp": 0.69,
-  "price_source": "assumption: category median RRP band by role — price = base[soft_drinks]=£1.11 x role_mult[own_label]=0.573 x (pack 500.0/330.0)^0.296, clipped to curated band £0.35-£2.2; fitted on the curated set's (assumed) prices; see data/products/curated_xl_rules.md",
+  "price_gbp": 1.59,
+  "price_source": "assumption: category median RRP band by role — price = base[soft_drinks]=£1.11 x role_mult[challenger]=1.294 x (pack 500.0/330.0)^0.296, clipped to curated band £0.35-£2.2; fitted on the curated set's (assumed) prices; see data/products/curated_xl_rules.md",
   "pack_copy": "Lemon Ice Tea - vegetarian, no artificial sweeteners, no preservatives, vegan",
   "pack_copy_source": "auto: OFF product_name + OFF labels (no front-of-pack text read)",
   "nova": 4,
@@ -37599,7 +37599,7 @@
   "palm_oil_n": null,
   "quantity": "500 ml",
   "pack_total_g_or_ml": 500.0,
-  "unit_price_gbp_per_kg": 1.38,
+  "unit_price_gbp_per_kg": 3.18,
   "stores": "Waitrose|Sainsbury's",
   "recycling": [],
   "image": "https://images.openfoodfacts.org/images/products/500/011/804/7794/front_en.33.400.jpg",
@@ -37636,10 +37636,10 @@
     ]
    },
    "frugal_unit_price": {
-    "score": 0.961,
+    "score": 0.59,
     "why": [
-     "unit_price=£1.38/kg|L (price_gbp is assumption / OFF quantity; band £1.06-£8.0)",
-     "role=own_label"
+     "unit_price=£3.18/kg|L (price_gbp is assumption / OFF quantity; band £1.06-£8.0)",
+     "role=challenger"
     ]
    },
    "protein_gym": {
@@ -37659,11 +37659,11 @@
     ]
    },
    "habit_loyalist_shrinkflation_angry": {
-    "score": 0.491,
+    "score": 0.439,
     "why": [
-     "role=own_label",
+     "role=challenger",
      "sugar+sweetener blend=False (OFF sugars_100g + additives)",
-     "unit_price=£1.38 (assumption)"
+     "unit_price=£3.18 (assumption)"
     ]
    },
    "meal_deal_office": {
@@ -37697,9 +37697,9 @@
     ]
    },
    "novelty_seeker_tiktok": {
-    "score": 0.45,
+    "score": 1.0,
     "why": [
-     "role=own_label",
+     "role=challenger",
      "trend term=vegan (OFF name/labels)"
     ]
    }
@@ -68541,11 +68541,11 @@
   "name": "AUTHENTIC GREEK YOGURT",
   "brand": "Marks & Spencers",
   "category": "yoghurt",
-  "role": "challenger",
-  "role_source": "brand not own-label and not in uk_bestsellers.csv / curated incumbents / assumed leaders",
+  "role": "own_label",
+  "role_source": "brand 'Marks & Spencers' contains UK retailer name 'marks & spencers' (OFF brands) [verifier fix 3 Oct: role re-derived with the corrected role_for; selection and planogram unchanged]",
   "curation": "auto_xl",
-  "price_gbp": 2.09,
-  "price_source": "assumption: category median RRP band by role — price = base[yoghurt]=£1.64 x role_mult[challenger]=1.294 x (pack unknown/450.0)^0.296, clipped to curated band £0.62-£3.75; fitted on the curated set's (assumed) prices; see data/products/curated_xl_rules.md",
+  "price_gbp": 0.94,
+  "price_source": "assumption: category median RRP band by role — price = base[yoghurt]=£1.64 x role_mult[own_label]=0.573 x (pack unknown/450.0)^0.296, clipped to curated band £0.62-£3.75; fitted on the curated set's (assumed) prices; see data/products/curated_xl_rules.md",
   "pack_copy": "AUTHENTIC GREEK YOGURT",
   "pack_copy_source": "auto: OFF product_name + OFF labels (no front-of-pack text read)",
   "nova": 1,
@@ -68610,10 +68610,10 @@
     ]
    },
    "frugal_unit_price": {
-    "score": 0.425,
+    "score": 0.575,
     "why": [
      "unit_price=£None/kg|L (price_gbp is assumption / OFF quantity; band £2.3-£8.33)",
-     "role=challenger"
+     "role=own_label"
     ]
    },
    "protein_gym": {
@@ -68635,7 +68635,7 @@
    "habit_loyalist_shrinkflation_angry": {
     "score": 0.4,
     "why": [
-     "role=challenger",
+     "role=own_label",
      "sugar+sweetener blend=False (OFF sugars_100g + additives)",
      "unit_price=£None (assumption)"
     ]
@@ -68671,9 +68671,9 @@
     ]
    },
    "novelty_seeker_tiktok": {
-    "score": 0.55,
+    "score": 0.0,
     "why": [
-     "role=challenger",
+     "role=own_label",
      "trend term=none (OFF name/labels)"
     ]
    }

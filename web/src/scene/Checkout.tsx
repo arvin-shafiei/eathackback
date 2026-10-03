@@ -1,17 +1,21 @@
-// Checkout theatre for the ops crowd: the checkout queues in the ops day log (minutes[].queues per lane) become
-// people standing in line, and the head of each line is served item by item:
-//   staffed till: unload onto the conveyor → belt carries packs to the scanner → cashier scans (beep + flash) →
-//                 packs slide into the bagging well → card machine (tap, approved ✓) → walk out through the gates
-//   self-checkout: one shared snake queue → kiosk → each pack basket → scanner (beep + glow) → bagging shelf → pay
-// Replay shoppers (the run log) use the same lanes; while one is at a lane (crowdBus queue/unload/scan events) the
-// ops customer steps back so they never stand inside each other.
-// assumption: visual pacing only (items per basket, scan cadence). The ops engine owns queue lengths and waits; the
-// HUD numbers come from the log via useOpsKpis, never from this animation.
-import { useEffect, useMemo, useRef, type MutableRefObject } from 'react';
+// Checkout queues, first come first served, replayed from the ops engine's own per-shopper checkout log
+// (sim/ops.py shoppers[]: lane, t_join, q_ahead, t_start, theatre.scans/bag/pay/done, abandoned; the fixture day gets
+// a synthesised stream that tracks minutes[].queues). Every shopper:
+//   walks up from the shop floor → joins the BACK of their lane's line → shuffles forward each time the till frees up →
+//   at the till: unloads onto the conveyor → belt carries packs to the scanner → cashier scans (beep + red flash) →
+//   bagging well → card machine (tap, ✓) → walks out through the gates.
+//   self-checkout: one snake queue per kiosk pod; the head walks to the kiosk the engine assigned, scans pack by pack.
+//   gave up (engine outcome=abandoned): leaves the line after their patience ran out, with a sticker.
+// Lane signs show how many are waiting. Replay-run shoppers (crowdBus queue events) at a lane push the ops line back.
+// assumption: visual pacing only (walk speeds, spacing, items drawn per basket ≤ 12). Join/serve/leave times and lane
+// choice come from the engine; the HUD numbers come from the log via useOpsKpis, never from this animation.
+import { useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import type { Product, StoreConfig } from '../types';
 import { storePlan, type Lane } from '../layout';
+import { laneMapper, type OpsDay, type OpsVisit } from '../ops';
 import { productMaterials } from './textures';
 import { bus, sfx } from './fx';
 import { onCrowd } from './crowdBus';
@@ -19,22 +23,21 @@ import { BODY_GEO, EYE_GEO, INK_MAT, PUPIL_GEO, type OpsLive } from './Staff';
 import { INK } from '../theme';
 
 type XZ = { x: number; z: number };
-interface Cust {
-  t0: number; n: number; mats: number[]; color: number;
-  from: XZ; scans: number[]; unload: number[]; tWalk: number; tPay0: number; tPayEnd: number; tLeaveEnd: number;
-  approved: boolean; beeped: number; exitPath: XZ[];
-}
-interface LaneSim { lane: Lane; custs: Cust[]; next: number }
+interface V extends OpsVisit { L: Lane; pod: number; color: number; mats: number[]; vis: number[] }
+interface Body { x: number; z: number; yaw: number; seen: number }
 
-const BELT_V = 0.9; // m/s along the belt
-const UNLOAD = 0.32, SCAN_GAP = 0.55, SELF_SCAN = 0.8, PAY = 1.4, LEAVE = 3.2;
+// all in ops SECONDS (1 replay second = 15 ops seconds at OPS_RATE 0.25)
+const APPROACH = 22, TO_TILL = 14, BELT = 14, LEAVE = 55, GIVEUP = 40;
+const SPACING = 0.82, SNAKE_LEN = 6;
+const WALK_V = 2.4; // m per replay second while shuffling up the line
+const MAX_DRAWN = 12;
 const ITEM = new THREE.BoxGeometry(0.13, 0.17, 0.09);
 const PALETTE = ['#f6a6b2', '#ffc98a', '#a7d8f0', '#b8e0a8', '#d7c2f2', '#f2d38a', '#9fd6cf', '#f0b6d8', '#c9cfdc', '#ffb199'].map((c) => new THREE.Color(c));
-const MAX_PEOPLE = 220, MAX_ITEMS = 160;
+const MAX_PEOPLE = 260, MAX_ITEMS = 220;
 const hash = (s: string) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; };
 
 let lastBeep = 0;
-function beep(now: number) { if (now - lastBeep > 0.07) { lastBeep = now; sfx.beep(); } }
+function beep(now: number) { if (now - lastBeep > 0.06) { lastBeep = now; sfx.beep(); } }
 
 const lerp = (a: XZ, b: XZ, k: number): XZ => ({ x: a.x + (b.x - a.x) * k, z: a.z + (b.z - a.z) * k });
 function along(path: XZ[], k: number): { p: XZ; yaw: number } {
@@ -51,16 +54,27 @@ function along(path: XZ[], k: number): { p: XZ; yaw: number } {
   }
   return { p: path[path.length - 1], yaw: 0 };
 }
+const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
 
-interface Props { cfg: StoreConfig; live: MutableRefObject<OpsLive>; products: Record<string, Product> }
+interface Props {
+  cfg: StoreConfig; live: MutableRefObject<OpsLive>; products: Record<string, Product>;
+  /** the ops day being replayed (its visits drive the queues) */
+  day: OpsDay | null;
+}
+interface Sticker { id: string; x: number; z: number; text: string; until: number }
 
-export function Checkout({ cfg, live, products }: Props) {
+export function Checkout({ cfg, live, products, day }: Props) {
   const P = storePlan(cfg);
   const staffed = useMemo(() => P.lanes.filter((l) => l.kind === 'staffed'), [P]);
-  const selfLanes = useMemo(() => P.lanes.filter((l) => l.kind === 'self'), [P]);
-  const sims = useMemo<LaneSim[]>(() => P.lanes.map((lane) => ({ lane, custs: [], next: 0 })), [P]);
-  // shared self-checkout queue head: the gap between the staffed bank and the kiosks, line grows toward the shop floor
-  const selfHead = useMemo<XZ>(() => (selfLanes.length ? { x: Math.min(...selfLanes.map((l) => l.x)) - 1.0, z: P.checkoutZ } : { x: 0, z: P.checkoutZ }), [selfLanes, P]);
+  // kiosk pods: self lanes clustered by x (a gap > 3 m starts a new pod); each pod has one snake queue at its mouth
+  const pods = useMemo(() => {
+    const se = P.lanes.filter((l) => l.kind === 'self').slice().sort((a, b) => a.x - b.x);
+    const out: { lanes: Lane[]; head: XZ }[] = [];
+    for (const l of se) { const last = out[out.length - 1]; if (last && l.x - Math.max(...last.lanes.map((x) => x.x)) < 3) last.lanes.push(l); else out.push({ lanes: [l], head: { x: 0, z: 0 } }); }
+    for (const p of out) p.head = { x: Math.min(...p.lanes.map((l) => l.x)) - 1.0, z: P.checkoutZ };
+    return out;
+  }, [P]);
+  const podOf = useMemo(() => { const m: Record<string, number> = {}; pods.forEach((p, i) => p.lanes.forEach((l) => { m[l.id] = i; })); return m; }, [pods]);
 
   // real products (with pack images) ride the belts
   const itemMats = useMemo(() => {
@@ -69,79 +83,127 @@ export function Checkout({ cfg, live, products }: Props) {
     const pick = (withImg.length >= 4 ? withImg : ps).slice().sort((a, b) => hash(a.code) - hash(b.code)).slice(0, 10);
     return pick.map((p) => productMaterials(p));
   }, [products]);
+
+  // the engine's visits, mapped onto this layout's lanes
+  const visits = useMemo<{ list: V[]; span: number }>(() => {
+    if (!day?.visits?.length) return { list: [], span: 0 };
+    const map = laneMapper(cfg, day.laneOrder);
+    const byId = Object.fromEntries(P.lanes.map((l) => [l.id, l]));
+    const list: V[] = [];
+    let span = 0;
+    for (const v of day.visits) {
+      const id = map(v.lane); const L = id ? byId[id] : null;
+      if (!L) continue;
+      const n = Math.max(1, Math.min(MAX_DRAWN, v.scans.length || v.items));
+      const vis = v.scans.length ? Array.from({ length: n }, (_, j) => v.scans[Math.floor((j * v.scans.length) / n)]) : [];
+      list.push({ ...v, L, pod: podOf[L.id] ?? -1, color: Math.floor(hash(v.id) * PALETTE.length), mats: Array.from({ length: n }, (_, i) => Math.floor(hash(`${v.id}${i}`) * Math.max(1, itemMats.length))), vis });
+      span = Math.max(span, v.tLeave - v.tJoin);
+    }
+    return { list, span: Math.min(3600, span) + APPROACH + LEAVE + GIVEUP };
+  }, [day, cfg, P, podOf, itemMats.length]);
+
   const itemMeshes = useRef<(THREE.InstancedMesh | null)[]>([]);
   const bodies = useRef<THREE.InstancedMesh>(null), hulls = useRef<THREE.InstancedMesh>(null);
   const eyes = useRef<THREE.InstancedMesh>(null), pupils = useRef<THREE.InstancedMesh>(null);
   const cards = useRef<Record<string, THREE.MeshBasicMaterial | null>>({});
   const beams = useRef<Record<string, THREE.Mesh | null>>({});
+  const bodiesById = useRef(new Map<string, Body>());
+  const beeped = useRef(new Map<string, number>());
+  const approved = useRef(new Set<string>());
+  const gaveUp = useRef(new Set<string>());
+  const lastT = useRef(-1);
+  const [signs, setSigns] = useState<Record<string, number>>({});
+  const signKey = useRef('');
+  const [stickers, setStickers] = useState<Sticker[]>([]);
 
-  // replay shoppers at a lane → the ops customer gives way
-  const replayBusy = useRef<Record<string, number>>({});
+  // replay-run shoppers at a lane → the ops line starts that many places further back
+  const replayAt = useRef<Record<string, Map<string, number>>>({});
   useEffect(() => onCrowd((e) => {
-    if ((e.type === 'queue' || e.type === 'unload' || e.type === 'scan' || e.type === 'bag') && 'lane' in e) replayBusy.current[e.lane] = performance.now() / 1000 + 5;
-    if (e.type === 'pay') replayBusy.current[e.lane] = performance.now() / 1000 + 2;
+    if (!('lane' in e) || !('agentId' in e)) return;
+    const m = (replayAt.current[e.lane] ??= new Map());
+    m.set(e.agentId, performance.now() / 1000 + (e.type === 'pay' ? 2 : 5));
   }), []);
 
-  const selfMaxX = selfLanes.length ? Math.max(...selfLanes.map((l) => l.x)) : 0;
-  const exitPath = (from: XZ, k: number, self: boolean): XZ[] => {
-    const j = ((k % 3) - 1) * 0.35;
+  const selfMaxX = useMemo(() => { const s = P.lanes.filter((l) => l.kind === 'self'); return s.length ? Math.max(...s.map((l) => l.x)) : 0; }, [P]);
+  const exitPath = (from: XZ, k: string, self: boolean): XZ[] => {
+    const j = (hash(k + 'j') - 0.5) * 0.7;
     // self-checkout: out along the corridor between the two kiosk rows, then round the end of the pod
     const lead: XZ[] = self ? [from, { x: from.x, z: P.checkoutZ }, { x: selfMaxX + 1.0, z: P.checkoutZ }] : [from];
     const last = lead[lead.length - 1];
     const ex = P.exits.reduce((b, e) => (Math.abs(e.x - last.x) < Math.abs(b.x - last.x) ? e : b), P.exits[0] ?? { x: 0, z: P.bounds.zMax });
-    const outZ = Math.max(P.checkoutZ + 2.6, (P.bank?.z1 ?? P.checkoutZ + 1.75) + 0.9) + j;
+    const outZ = Math.max(P.checkoutZ + 2.6, (P.bank?.z1 ?? P.checkoutZ + 1.75) + 0.9) + j * 0.5;
     return [...lead, { x: last.x, z: outZ }, { x: ex.x + j, z: ex.z - 1.6 }, { x: ex.x + j, z: ex.z + 2.5 }];
   };
-
-  function spawn(s: LaneSim, t: number, k: number) {
-    const L = s.lane, self = L.kind === 'self';
-    const n = self ? 2 + Math.floor(hash(`${L.id}${k}n`) * 5) : 4 + Math.floor(hash(`${L.id}${k}n`) * 9);
-    const mats = Array.from({ length: n }, (_, i) => Math.floor(hash(`${L.id}${k}${i}`) * Math.max(1, itemMats.length)));
-    const from = self ? selfHead : { x: L.stand.x + L.queueDir.x * 1.0, z: L.stand.z + L.queueDir.z * 1.0 };
-    const tWalk = self ? 1.4 : 0.9;
-    let scans: number[] = [], unload: number[] = [];
-    if (self) scans = Array.from({ length: n }, (_, i) => tWalk + 0.5 + i * SELF_SCAN);
-    else {
-      const lb = Math.max(0.4, (L.beltEnd?.z ?? L.z) - (L.beltStart?.z ?? L.z - 1));
-      unload = Array.from({ length: n }, (_, i) => tWalk + i * UNLOAD);
-      let prev = -Infinity;
-      scans = unload.map((u) => (prev = Math.max(u + lb / BELT_V + 0.2, prev + SCAN_GAP)));
+  /** place in line `r` (0 = next to be served) for a lane / pod, `off` extra places for replay shoppers */
+  const slot = (L: Lane, r: number): { p: XZ; yaw: number } => {
+    if (L.kind === 'staffed') {
+      const d = SPACING * (r + 1);
+      return { p: { x: L.stand.x + L.queueDir.x * d, z: L.stand.z + L.queueDir.z * d }, yaw: Math.atan2(-L.queueDir.x, -L.queueDir.z) };
     }
-    const tPay0 = scans[n - 1] + 0.5;
-    const tPayEnd = tPay0 + PAY;
-    const payAt = self ? L.stand : { x: L.stand.x, z: L.bag.z - 0.35 };
-    const c: Cust = { t0: t, n, mats, color: Math.floor(hash(`${L.id}${k}c`) * PALETTE.length), from, scans, unload, tWalk, tPay0, tPayEnd, tLeaveEnd: tPayEnd + LEAVE, approved: false, beeped: 0, exitPath: exitPath(payAt, k, self) };
-    s.custs.push(c);
-  }
+    const pod = pods[podOf[L.id]];
+    const head = pod?.head ?? L.stand;
+    // serpentine: down toward the shop floor, back up, … columns step away from the pod
+    const col = Math.floor(r / SNAKE_LEN), row = r % SNAKE_LEN, down = col % 2 === 0;
+    const z = head.z - 0.9 - (down ? row : SNAKE_LEN - 1 - row) * SPACING;
+    return { p: { x: head.x - col * 0.8, z }, yaw: down ? Math.PI : 0 };
+  };
+  const bagSpot = (L: Lane): XZ => (L.kind === 'self' ? L.stand : { x: L.stand.x, z: L.bag.z - 0.35 });
 
-  const spawnCount = useRef(0);
   const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpS = new THREE.Vector3(), tmpP = new THREE.Vector3(), tmpE = new THREE.Euler();
 
   useFrame((st) => {
-    const Lv = live.current, t = Lv.t, now = st.clock.elapsedTime, wall = performance.now() / 1000;
-    const rec = Lv.rec;
-    if (Lv.jump) for (const s of sims) { s.custs = []; s.next = t; }
-    const busyFrac = Math.min(0.9, Math.max(0.2, (rec?.in_store ?? 0) / Math.max(1, P.lanes.length * 3)));
-    const minute = rec?.t ?? 0;
-    const q = rec?.queues ?? {};
-    let selfWaiting = 0;
-    for (const L of selfLanes) selfWaiting += Math.max(0, (q[L.id] ?? 0) - 1);
+    const Lv = live.current, now = st.clock.elapsedTime, wall = performance.now() / 1000;
+    const T = bus.opsMin * 60;
+    const fwd = Lv.dtR > 0 && !Lv.jump;
+    const snap = Lv.jump || lastT.current < 0 || Math.abs(T - lastT.current) > 120;
+    lastT.current = T;
+    if (snap) { bodiesById.current.clear(); beeped.current.clear(); approved.current.clear(); }
+    const moveMax = Math.max(0, Lv.dtR) * WALK_V;
+
+    // replay shoppers per lane (stale entries drop out)
+    const replayN: Record<string, number> = {};
+    for (const [lane, m] of Object.entries(replayAt.current)) { for (const [k, until] of m) if (until < wall) m.delete(k); replayN[lane] = m.size; }
+
+    // ---- who's at the checkouts right now: binary search on tJoin, walk back over the longest trip
+    const list = visits.list;
+    let lo = 0, hi = list.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (list[mid].tJoin <= T + APPROACH) lo = mid + 1; else hi = mid; }
+    const active: V[] = [];
+    for (let i = lo - 1; i >= 0 && list[i].tJoin >= T - visits.span; i--) {
+      const v = list[i];
+      const end = v.abandoned ? v.tLeave + GIVEUP : v.done + LEAVE;
+      if (T < end) active.push(v);
+    }
+    active.reverse(); // by tJoin
+    // lines: per staffed lane, per pod (FIFO by tJoin). approaching shoppers count as already behind the last one.
+    const lines: Record<string, V[]> = {};
+    for (const v of active) {
+      const queued = v.abandoned ? T < v.tLeave : T < (v.tStart ?? Infinity);
+      if (!queued) continue;
+      const key = v.L.kind === 'staffed' ? v.L.id : `pod${v.pod}`;
+      (lines[key] ??= []).push(v);
+    }
+    const rankOf = new Map<string, number>();
+    for (const [key, vs] of Object.entries(lines)) {
+      const off = key.startsWith('pod') ? 0 : replayN[key] ?? 0;
+      vs.forEach((v, i) => rankOf.set(v.id, i + off));
+    }
 
     let np = 0, ni = 0;
     const counts = itemMats.map(() => 0);
-    const person = (p: XZ, yaw: number, ci: number, sit = 1) => {
+    const person = (p: XZ, yaw: number, ci: number) => {
       if (np >= MAX_PEOPLE || !bodies.current) return;
       tmpQ.setFromAxisAngle(UP, yaw);
-      tmpS.set(0.92, 0.92 * sit, 0.92);
+      tmpS.set(0.92, 0.92, 0.92);
       tmpM.compose(tmpP.set(p.x, 0, p.z), tmpQ, tmpS);
       bodies.current.setMatrixAt(np, tmpM); hulls.current?.setMatrixAt(np, tmpM);
       bodies.current.setColorAt(np, PALETTE[ci % PALETTE.length]);
       for (let e = 0; e < 2; e++) {
         const ex = (e ? 1 : -1) * 0.11 * 0.92;
-        const off = tmpA.set(ex, 0.93 * 0.92 * sit, 0.22 * 0.92).applyQuaternion(tmpQ);
-        tmpM.compose(tmpP.set(p.x + off.x, off.y, p.z + off.z), tmpQ, tmpS.set(0.92, 0.92, 0.92));
+        const off = tmpA.set(ex, 0.93 * 0.92, 0.22 * 0.92).applyQuaternion(tmpQ);
+        tmpM.compose(tmpP.set(p.x + off.x, off.y, p.z + off.z), tmpQ, tmpS);
         eyes.current?.setMatrixAt(np * 2 + e, tmpM);
-        const off2 = tmpB.set(ex, 0.93 * 0.92 * sit - 0.01, 0.22 * 0.92 + 0.065).applyQuaternion(tmpQ);
+        const off2 = tmpB.set(ex, 0.93 * 0.92 - 0.01, 0.22 * 0.92 + 0.065).applyQuaternion(tmpQ);
         tmpM.compose(tmpP.set(p.x + off2.x, off2.y, p.z + off2.z), tmpQ, tmpS);
         pupils.current?.setMatrixAt(np * 2 + e, tmpM);
       }
@@ -153,104 +215,143 @@ export function Checkout({ cfg, live, products }: Props) {
       tmpM.compose(tmpP.set(x, y, z), tmpQ, tmpS.set(1, 1, 1));
       m.setMatrixAt(counts[mi]++, tmpM); ni++;
     };
-
-    for (const s of sims) {
-      const L = s.lane, self = L.kind === 'self';
-      const dem = q[L.id] ?? 0;
-      const busy = (replayBusy.current[L.id] ?? 0) > wall;
-      // retire finished customers, spawn the next one when the till is free
-      s.custs = s.custs.filter((c) => t - c.t0 < c.tLeaveEnd);
-      const active = s.custs.find((c) => t - c.t0 < c.tPayEnd);
-      if (!active && !busy && rec && t >= s.next && Lv.dtR > 0) {
-        const k = spawnCount.current++;
-        const want = dem >= 1 || hash(`${L.id}@${minute}`) < busyFrac;
-        if (want) spawn(s, t, k);
-        else s.next = t + 1.5;
+    /** queue shuffling: ease toward the target place at walking pace (snap after a scrub) */
+    const ease = (id: string, tgt: XZ, yawT: number, ci: number) => {
+      let b = bodiesById.current.get(id);
+      if (!b || snap) { b = { x: tgt.x, z: tgt.z, yaw: yawT, seen: now }; bodiesById.current.set(id, b); }
+      const dx = tgt.x - b.x, dz = tgt.z - b.z, d = Math.hypot(dx, dz);
+      let yaw = yawT;
+      if (d > 0.02) {
+        const k = d > 8 ? 1 : Math.min(1, moveMax / d);
+        b.x += dx * k; b.z += dz * k;
+        if (d > 0.15) yaw = Math.atan2(dx, dz);
       }
-      // waiting line (staffed lanes: own line; self: drawn once below)
-      if (!self) {
-        const waiting = Math.min(6, Math.max(0, dem - (s.custs.some((c) => t - c.t0 < c.tPayEnd) ? 1 : 0)));
-        const shift = busy ? 1 : 0;
-        const yaw = Math.atan2(-L.queueDir.x, -L.queueDir.z);
-        for (let w = 0; w < waiting; w++) {
-          const d = 1.0 * (w + 1 + shift) + (hash(`${L.id}w${w}`) - 0.5) * 0.15;
-          person({ x: L.stand.x + L.queueDir.x * d + (hash(`${L.id}x${w}`) - 0.5) * 0.18, z: L.stand.z + L.queueDir.z * d }, yaw + Math.sin(now * 0.7 + w) * 0.15, Math.floor(hash(`${L.id}c${w}`) * 10));
+      b.yaw += Math.atan2(Math.sin(yaw - b.yaw), Math.cos(yaw - b.yaw)) * 0.25;
+      b.seen = now;
+      person(b, b.yaw + (d < 0.05 ? Math.sin(now * 0.8 + ci) * 0.08 : 0), ci);
+      return b;
+    };
+    const screens: Record<string, 'idle' | 'tap' | 'ok'> = {};
+
+    for (const v of active) {
+      const L = v.L, self = L.kind === 'self';
+      const r = rankOf.get(v.id);
+      // ----- 1. walking up / waiting in line / giving up
+      if (r !== undefined) {
+        const s = slot(L, r);
+        if (T < v.tJoin) {
+          // approach from the shop floor behind the line
+          const from = { x: s.p.x + (hash(v.id + 'a') - 0.5) * 3, z: s.p.z - 4.5 };
+          const k = (T - (v.tJoin - APPROACH)) / APPROACH;
+          const a = along([from, s.p], k);
+          bodiesById.current.set(v.id, { x: a.p.x, z: a.p.z, yaw: a.yaw, seen: now });
+          person(a.p, a.yaw, v.color);
+        } else ease(v.id, s.p, s.yaw, v.color);
+        continue;
+      }
+      if (v.abandoned) {
+        // patience ran out: turn round and walk back into the store
+        if (!gaveUp.current.has(v.id) && fwd) {
+          gaveUp.current.add(v.id);
+          const b = bodiesById.current.get(v.id);
+          if (b) setStickers((c) => [...c.filter((x) => x.until > T), { id: v.id, x: b.x, z: b.z, text: `gave up after ${mmss(v.waitS)}`, until: T + 90 }].slice(-4));
+        }
+        const b = bodiesById.current.get(v.id) ?? { x: slot(L, 0).p.x, z: slot(L, 0).p.z, yaw: 0, seen: now };
+        const k = (T - v.tLeave) / GIVEUP;
+        const a = along([{ x: b.x, z: b.z }, { x: b.x - 1.2, z: b.z - 1 }, { x: b.x - 1.8, z: b.z - 7 }], k);
+        if (k < 0.97) person(a.p, a.yaw, v.color);
+        continue;
+      }
+      const t0 = v.tStart!;
+      const tau = T - t0;
+      const head = slot(L, 0).p;
+      const tillYaw = self ? (L.stand.z > L.z ? Math.PI : 0) : Math.PI / 2;
+      // ----- 2. at the till
+      let pos: XZ, yaw: number;
+      const firstScan = v.scans[0] ?? v.bag;
+      if (tau < TO_TILL) {
+        const path = self ? [head, { x: L.stand.x, z: P.checkoutZ }, L.stand] : [head, L.stand];
+        const a = along(path, tau / TO_TILL); pos = a.p; yaw = a.yaw;
+      } else if (T < v.done) {
+        // staffed: unload at the belt end, then step down to the bagging well once the belt is loaded
+        const toBag = !self && T > Math.min(firstScan + 4, v.bag);
+        const k = toBag ? Math.min(1, (T - Math.min(firstScan + 4, v.bag)) / 10) : 0;
+        pos = self ? L.stand : lerp(L.stand, bagSpot(L), k); yaw = tillYaw;
+      } else {
+        const a = along(exitPath(bagSpot(L), v.id, self), (T - v.done) / LEAVE); pos = a.p; yaw = a.yaw;
+      }
+      bodiesById.current.set(v.id, { x: pos.x, z: pos.z, yaw, seen: now });
+      if (T < v.done + LEAVE * 0.96) person(pos, yaw + (T >= t0 + TO_TILL && T < v.done ? Math.sin(now * 3 + v.color) * 0.06 : 0), v.color);
+      if (T >= v.done) continue; // bagged up and carried out
+
+      // ----- 3. the packs (≤ 12 drawn; every real scan beeps)
+      const n = v.vis.length;
+      for (let i = 0; i < n; i++) {
+        const mi = v.mats[i], tS = v.vis[i];
+        const bagX = L.bag.x + ((i % 3) - 1) * 0.12, bagZ = L.bag.z + (Math.floor(i / 3) % 2) * 0.12 - 0.06, bagY = L.bag.y + 0.1 + Math.floor(i / 6) * 0.17;
+        if (self) {
+          const basket = { x: pos.x + (L.x - pos.x) * 0.25 + 0.3, z: pos.z + (L.z - pos.z) * 0.25 };
+          const lift = 6; // ops-s from basket to scanner
+          if (T < tS - lift) { if (tau >= TO_TILL) item(mi, basket.x + (i % 3) * 0.06, 0.62 + (i % 2) * 0.05, basket.z, i); }
+          else if (T < tS) { const k = (T - (tS - lift)) / lift; item(mi, basket.x + (L.scanner.x - basket.x) * k, 0.62 + (L.scanner.y + 0.12 - 0.62) * k + Math.sin(k * Math.PI) * 0.15, basket.z + (L.scanner.z - basket.z) * k, 0, -0.3 * k); }
+          else if (T < tS + 5) { const k = (T - tS) / 5; item(mi, L.scanner.x + (bagX - L.scanner.x) * k, L.scanner.y + 0.12 + (bagY - L.scanner.y - 0.12) * k + Math.sin(k * Math.PI) * 0.12, L.scanner.z + (bagZ - L.scanner.z) * k); }
+          else item(mi, bagX, bagY, bagZ, i * 0.4);
+        } else {
+          const bs = L.beltStart!, be = L.beltEnd!;
+          // unloaded one by one as soon as they reach the till, then the belt carries them down
+          const u = Math.max(t0 + TO_TILL + i * 1.6, tS - BELT - 30);
+          if (T < u) continue;
+          if (T < tS - 3) {
+            const scannedAhead = v.vis.filter((x) => x - 3 <= T).length;
+            const zMax = be.z - Math.max(0, i - scannedAhead) * 0.17;
+            const z = Math.min(bs.z + ((T - u) / BELT) * Math.max(0.3, be.z - bs.z), zMax);
+            item(mi, bs.x, 0.965 + 0.085, z, 0.1 * (i % 3));
+          } else if (T < tS + 5) {
+            const k = (T - (tS - 3)) / 8;
+            const x = be.x + (L.scanner.x - be.x) * Math.min(1, k * 2) + (bagX - L.scanner.x) * Math.max(0, k * 2 - 1);
+            const z = be.z + (L.scanner.z - be.z) * Math.min(1, k * 2) + (bagZ - L.scanner.z) * Math.max(0, k * 2 - 1);
+            item(mi, x, 1.05 + Math.sin(k * Math.PI) * 0.12, z, 0, -0.4 * Math.sin(k * Math.PI));
+          } else item(mi, bagX, bagY, bagZ, i * 0.4);
         }
       }
-      // card machine screen state
+      // beep + flash for every real scan crossed this frame (forward play only)
+      const done = v.scans.length ? upper(v.scans, T) : 0;
+      const prev = beeped.current.get(v.id);
+      if (prev === undefined || !fwd) beeped.current.set(v.id, done);
+      else if (done > prev) { beeped.current.set(v.id, done); bus.flash[L.id] = now; beep(now); }
+      // card machine
+      if (T >= v.pay && T < v.pay + 6) screens[L.id] = 'tap';
+      else if (T >= v.pay + 6 && T < v.done + 8) {
+        screens[L.id] = 'ok';
+        if (!approved.current.has(v.id) && fwd) { approved.current.add(v.id); sfx.blip(1320, 1980, 0.12, 'sine', 0.04); }
+      }
+    }
+    // forget bodies nobody drew for a while
+    if (bodiesById.current.size > 400) for (const [k, b] of bodiesById.current) if (now - b.seen > 2) bodiesById.current.delete(k);
+
+    for (const L of P.lanes) {
       const cm = cards.current[L.id];
-      let screen = 'idle';
-      for (const c of s.custs) {
-        const tau = t - c.t0;
-        // ----- the customer
-        let pos: XZ, yaw: number;
-        const tillYaw = self ? (L.stand.z > L.z ? Math.PI : 0) : Math.PI / 2;
-        const bagSpot = self ? L.stand : { x: L.stand.x, z: L.bag.z - 0.35 };
-        if (tau < c.tWalk) {
-          const path = self ? [c.from, { x: L.stand.x, z: c.from.z }, L.stand] : [c.from, L.stand];
-          const a = along(path, tau / c.tWalk); pos = a.p; yaw = a.yaw;
-        } else if (!self && tau < c.unload[c.n - 1] + UNLOAD) { pos = L.stand; yaw = tillYaw; }
-        else if (!self && tau < c.unload[c.n - 1] + UNLOAD + 0.8) { pos = lerp(L.stand, bagSpot, (tau - c.unload[c.n - 1] - UNLOAD) / 0.8); yaw = 0; }
-        else if (tau < c.tPayEnd) { pos = bagSpot; yaw = tillYaw; }
-        else { const a = along(c.exitPath, (tau - c.tPayEnd) / LEAVE); pos = a.p; yaw = a.yaw; }
-        if (tau < c.tLeaveEnd - 0.25) person(pos, yaw + (tau >= c.tWalk && tau < c.tPayEnd ? Math.sin(now * 3 + c.color) * 0.06 : 0), c.color);
-
-        // ----- the packs
-        for (let i = 0; i < c.n; i++) {
-          const mi = c.mats[i], tS = c.scans[i];
-          if (tau >= c.tPayEnd) break; // bagged up and carried out
-          const bagX = L.bag.x + ((i % 3) - 1) * 0.12, bagZ = L.bag.z + (Math.floor(i / 3) % 2) * 0.12 - 0.06, bagY = L.bag.y + 0.1 + Math.floor(i / 6) * 0.17;
-          if (self) {
-            const basket = { x: pos.x + (L.x - pos.x) * 0.25 + 0.3, z: pos.z + (L.z - pos.z) * 0.25 };
-            if (tau < tS - 0.4) { if (tau >= c.tWalk) item(mi, basket.x + (i % 3) * 0.06, 0.62 + (i % 2) * 0.05, basket.z, i); }
-            else if (tau < tS) { const k = (tau - (tS - 0.4)) / 0.4; item(mi, basket.x + (L.scanner.x - basket.x) * k, 0.62 + (L.scanner.y + 0.12 - 0.62) * k + Math.sin(k * Math.PI) * 0.15, basket.z + (L.scanner.z - basket.z) * k, 0, -0.3 * k); }
-            else if (tau < tS + 0.35) { const k = (tau - tS) / 0.35; item(mi, L.scanner.x + (bagX - L.scanner.x) * k, L.scanner.y + 0.12 + (bagY - L.scanner.y - 0.12) * k + Math.sin(k * Math.PI) * 0.12, L.scanner.z + (bagZ - L.scanner.z) * k); }
-            else item(mi, bagX, bagY, bagZ, i * 0.4);
-          } else {
-            const bs = L.beltStart!, be = L.beltEnd!;
-            const u = c.unload[i];
-            if (tau < u) continue; // still in the basket / trolley
-            if (tau < tS - 0.25) {
-              // on the belt, queued behind the pack ahead of it
-              const ahead = i - c.scans.filter((x) => x - 0.25 <= tau).length;
-              const zMax = be.z - Math.max(0, ahead) * 0.17;
-              const z = Math.min(bs.z + (tau - u) * BELT_V, zMax);
-              item(mi, bs.x, 0.965 + 0.085, z, 0.1 * (i % 3));
-            } else if (tau < tS + 0.3) {
-              const k = (tau - (tS - 0.25)) / 0.55;
-              const x = be.x + (L.scanner.x - be.x) * Math.min(1, k * 2) + (bagX - L.scanner.x) * Math.max(0, k * 2 - 1);
-              const z = be.z + (L.scanner.z - be.z) * Math.min(1, k * 2) + (bagZ - L.scanner.z) * Math.max(0, k * 2 - 1);
-              item(mi, x, 1.05 + Math.sin(k * Math.PI) * 0.12, z, 0, -0.4 * Math.sin(k * Math.PI));
-            } else item(mi, bagX, bagY, bagZ, i * 0.4);
-          }
-          // beep + flash as each pack crosses the scanner (forward play only)
-          if (i === c.beeped && tau >= tS && Lv.dtR > 0) { c.beeped++; bus.flash[L.id] = now; beep(now); }
-        }
-        if (c.beeped < c.n && tau > c.scans[c.beeped] + 0.5) c.beeped = c.scans.filter((x) => x <= tau).length; // after a scrub
-        if (tau >= c.tPay0 && tau < c.tPay0 + 1.0) screen = 'tap';
-        else if (tau >= c.tPay0 + 1.0 && tau < c.tPayEnd + 0.6) { screen = 'ok'; if (!c.approved && Lv.dtR > 0) { c.approved = true; sfx.blip(1320, 1980, 0.12, 'sine', 0.04); } }
-      }
-      if (cm) cm.color.set(screen === 'ok' ? '#22c55e' : screen === 'tap' ? (Math.sin(now * 14) > 0 ? '#7CC8FF' : '#ffffff') : '#24324a');
+      const sc = screens[L.id] ?? 'idle';
+      if (cm) cm.color.set(sc === 'ok' ? '#22c55e' : sc === 'tap' ? (Math.sin(now * 14) > 0 ? '#7CC8FF' : '#ffffff') : '#24324a');
       const beam = beams.current[L.id];
       if (beam) { const since = now - (bus.flash[L.id] ?? -9); const k = Math.max(0, 1 - since / 0.22); beam.visible = k > 0.01; beam.scale.set(1, 0.4 + k * 0.6, 1); ((beam.material as THREE.MeshBasicMaterial).opacity = k * 0.55); }
     }
-    // shared self-checkout snake
-    const sw = Math.min(10, selfWaiting);
-    for (let w = 0; w < sw; w++) {
-      const row = Math.floor(w / 5), col = w % 5;
-      const z = selfHead.z - 0.9 - col * 0.9, x = selfHead.x - row * 0.9;
-      person({ x: x + (hash(`sq${w}`) - 0.5) * 0.15, z }, Math.sin(now * 0.6 + w) * 0.2, Math.floor(hash(`sqc${w}`) * 10));
-    }
-
     for (const m of [bodies.current, hulls.current]) if (m) { m.count = np; m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
     for (const m of [eyes.current, pupils.current]) if (m) { m.count = np * 2; m.instanceMatrix.needsUpdate = true; }
     itemMeshes.current.forEach((m, i) => { if (m) { m.count = counts[i]; m.instanceMatrix.needsUpdate = true; } });
+
+    // lane signs: people waiting (not yet at the till), refreshed when it changes
+    const waiting: Record<string, number> = {};
+    for (const [key, vs] of Object.entries(lines)) waiting[key] = vs.filter((v) => T >= v.tJoin).length;
+    const k = JSON.stringify(waiting);
+    if (k !== signKey.current) { signKey.current = k; setSigns(waiting); }
+    if (stickers.length && stickers.some((s) => s.until < T || s.until > T + 200)) setStickers((c) => c.filter((s) => s.until > T && s.until < T + 200));
   });
 
   const bodyMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.45 }), []);
   const white = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.25 }), []);
   const ink = useMemo(() => new THREE.MeshBasicMaterial({ color: INK }), []);
-  const beamMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#ff2a4f', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide }), []);
+  const beamMats = useMemo(() => Object.fromEntries(P.lanes.map((l) => [l.id, new THREE.MeshBasicMaterial({ color: '#ff2a4f', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide })])), [P]);
 
   return (
     <group>
@@ -274,13 +375,44 @@ export function Checkout({ cfg, live, products }: Props) {
       ))}
       {/* scanner beams: a red fan of light on every beep */}
       {P.lanes.map((L) => (
-        <mesh key={L.id} ref={(m) => { beams.current[L.id] = m; }} position={[L.scanner.x, L.scanner.y + 0.14, L.scanner.z]} material={beamMat.clone()} visible={false} raycast={noRay} rotation={[Math.PI, 0, 0]}>
+        <mesh key={L.id} ref={(m) => { beams.current[L.id] = m; }} position={[L.scanner.x, L.scanner.y + 0.14, L.scanner.z]} material={beamMats[L.id]} visible={false} raycast={noRay} rotation={[Math.PI, 0, 0]}>
           <coneGeometry args={[0.2, 0.28, 18, 1, true]} />
         </mesh>
+      ))}
+      {/* queue signs: how many are waiting per till / kiosk pod (from the engine's join/serve times) */}
+      {staffed.map((L) => {
+        const n = signs[L.id] ?? 0;
+        if (n < 1) return null;
+        return (
+          <Html key={L.id} position={[L.stand.x, 2.25, L.stand.z - 0.2]} center zIndexRange={[11, 0]}>
+            <div style={{ ...SIGN, ...(n >= 4 ? HOT : null) }} title={`${n} waiting at ${L.id} (ops engine checkout log)`}>{L.id} · {n} in line</div>
+          </Html>
+        );
+      })}
+      {pods.map((p, i) => {
+        const n = signs[`pod${i}`] ?? 0;
+        if (n < 1) return null;
+        return (
+          <Html key={`pod${i}`} position={[p.head.x, 2.25, p.head.z - 0.9]} center zIndexRange={[11, 0]}>
+            <div style={{ ...SIGN, ...(n >= 6 ? HOT : null) }} title={`${n} waiting for a self-checkout (ops engine checkout log)`}>self-checkout · {n} in line</div>
+          </Html>
+        );
+      })}
+      {stickers.map((s) => (
+        <Html key={s.id} position={[s.x, 2.1, s.z]} center zIndexRange={[12, 0]}>
+          <div style={{ ...SIGN, background: '#FFE14D', transform: 'rotate(-3deg)' }} title="engine outcome: abandoned (patience ran out in the queue)">😤 {s.text}</div>
+        </Html>
       ))}
     </group>
   );
 }
+/** number of sorted values ≤ t */
+function upper(xs: number[], t: number) { let lo = 0, hi = xs.length; while (lo < hi) { const m = (lo + hi) >> 1; if (xs[m] <= t) lo = m + 1; else hi = m; } return lo; }
+const SIGN: React.CSSProperties = {
+  font: '800 12px "Baloo 2", system-ui', color: INK, background: '#fff', border: `2px solid ${INK}`, borderRadius: 999,
+  padding: '1px 9px', boxShadow: `0 3px 0 ${INK}`, whiteSpace: 'nowrap', pointerEvents: 'none', userSelect: 'none',
+};
+const HOT: React.CSSProperties = { background: '#FF5A7A', color: '#fff' };
 const UP = new THREE.Vector3(0, 1, 0);
 const tmpA = new THREE.Vector3(), tmpB = new THREE.Vector3();
 const noRay = () => null;

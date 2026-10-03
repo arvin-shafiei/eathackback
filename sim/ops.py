@@ -161,7 +161,7 @@ class Resource:
 
 
 # ================================================================ store + geometry
-def load_store_bundle():
+def load_store_bundle(P=None):
     xl = [os.path.join(ROOT, p) for p in ("data/store/store_xl.config.json", "data/store/planogram_xl.json",
                                           "data/products/catalog_xl.json")]
     small = [os.path.join(ROOT, p) for p in ("data/store/store.config.json", "data/store/planogram.json",
@@ -184,8 +184,9 @@ def load_store_bundle():
         store["_synth_geometry"] = "assumption: small store has no geometry; 2 tills + 4 SCO synthesised"
         for s in plan.values():
             for c in s["products"]:
-                s.setdefault("capacity", {})[c] = 6
-                s.setdefault("stock", {})[c] = 6
+                dc = P("default_capacity_units") if P else 6  # params_extra default_capacity_units (labelled)
+                s.setdefault("capacity", {})[c] = dc
+                s.setdefault("stock", {})[c] = dc
     return store, plan, catalog, [os.path.relpath(p, ROOT) for p in paths], fallback
 
 
@@ -251,6 +252,7 @@ def sigmoid(x):
 class Surrogate:
     def __init__(self, catalog, P):
         self.m = P("surrogate_shrinkage_m")
+        self.min_n = P("surrogate_min_pair_n")
         counts = collections.defaultdict(lambda: [0, 0])
         files = sorted(glob.glob(os.path.join(ROOT, "data/sim/runs/run_*jev*.json")))
         n_ev = 0
@@ -288,7 +290,7 @@ class Surrogate:
         npairs = 0
         for (a, code), (n, k) in counts.items():
             g = self._grade(a, code)
-            if n < 5 or g is None or a not in self.gbar:
+            if n < self.min_n or g is None or a not in self.gbar:
                 continue
             ps = (k + self.m * self.arch_mean[a]) / (n + self.m)
             x = g - self.gbar[a]
@@ -354,12 +356,12 @@ def arrival_rate_per_min(P, dow, minute_of_day):
         P("weekday_shopping_trip_start_share_by_hour")[h] / 60.0
 
 
-def daypart(hour):
-    for k, (a, b) in {"08-12": (0, 12), "12-14": (12, 14), "14-15": (14, 15), "15-17": (15, 17),
-                      "17-19": (17, 19), "19-22": (19, 24)}.items():
+def daypart(hour, parts):
+    """Map an hour to a mission_mix_by_daypart key using params_extra `dayparts` ([start, end) hours)."""
+    for k, (a, b) in parts.items():
         if a <= hour < b:
             return k
-    return "19-22"
+    return list(parts)[-1]
 
 
 def poisson(rng, lam):
@@ -447,10 +449,11 @@ class OpsSim:
     @staticmethod
     def build_shared(use_jev=True):
         P = Params()
-        bundle = load_store_bundle()
+        bundle = load_store_bundle(P)
         store, plan, catalog, paths, fallback = bundle
         personas, psrc = load_personas()
-        return {"bundle": bundle, "geo": Geo(store), "sur": Surrogate(catalog, P), "personas": personas,
+        sur = Surrogate(catalog, P)
+        return {"bundle": bundle, "geo": Geo(store), "sur": sur, "personas": personas, "P_shared": P,
                 "persona_src": psrc, "jev_table": {}, "jev_meta": {"calls": 0, "cached": 0, "cost_usd": 0.0,
                                                                    "errors": [], "fallback_used": 0}}
 
@@ -474,7 +477,10 @@ class OpsSim:
             self.slot_products[sid] = list(s["products"])
             for c in s["products"]:
                 self.slot_of[c] = sid
-                self.cap[c] = int(round(int((s.get("capacity") or {}).get(c, 6)) * mult))
+                cap0 = (s.get("capacity") or {}).get(c)
+                if cap0 is None:
+                    cap0 = P("default_capacity_units")
+                self.cap[c] = int(round(int(cap0) * mult))
                 self.shelf[c] = self.cap[c]  # opens fully faced up (planogram stock = capacity)
         self.slot_order = sorted(plan)
         self.prod_order = sorted(self.cap)
@@ -582,7 +588,7 @@ class OpsSim:
                         want.append(c)
             desires[uid] = (want, len(slots))
         return {"route": route, "desires": desires, "target": target, "shelf_cap": shelf_cap, "ocean": ocean,
-                "secs": float(pp.get("seconds_at_shelf") or 6), "arch": arch}
+                "secs": float(pp.get("seconds_at_shelf") or P("default_seconds_at_shelf")), "arch": arch}
 
     def build_forecast(self):
         """Manager's 'history': E[units per shopper] by product and mission from a Monte Carlo of the same
@@ -597,7 +603,7 @@ class OpsSim:
         for dow in set(self.dows):
             for h in range(24):
                 lam_h = sum(arrival_rate_per_min(self.P, dow, h * 60 + mm) for mm in range(60))
-                mx = mix[daypart(h)]
+                mx = mix[daypart(h, self.P("dayparts"))]
                 self._fc_hour[(dow, h)] = (lam_h, mx)
 
     def _mc_forecast(self, n):
@@ -648,11 +654,12 @@ class OpsSim:
     def jev_state(self, persona, mission, bucket, loose, age):
         import jev as J
         traits = []
+        lo_t, hi_t = self.P("ocean_phrase_thresholds")
         for t in "OCEAN":
             v = float((persona.get("ocean") or {}).get(t, 0.5))
-            if v >= 0.65:
+            if v >= hi_t:
                 traits.append(J.OCEAN_PHRASES[t][0])
-            elif v <= 0.35:
+            elif v <= lo_t:
                 traits.append(J.OCEAN_PHRASES[t][1])
         size = {"few": "a few items (1 to 5) in their hands or a basket", "small": "a basket of about 6 to 15 items",
                 "big": "a trolley with about 16 to 40 items", "very_big": "a full trolley with more than 40 items"}[bucket]
@@ -736,7 +743,7 @@ class OpsSim:
                 i += 1
                 key = f"{self.seed}|{sid}"
                 hr = mnt // 60
-                mx = mix[daypart(hr)]
+                mx = mix[daypart(hr, P("dayparts"))]
                 u, acc, mission = hu(key, "mission"), 0.0, missions[-1]
                 for m in missions:
                     acc += mx.get(m, 0)
@@ -762,7 +769,7 @@ class OpsSim:
                             "desires": pl["desires"], "target": pl["target"], "shelf_cap": pl["shelf_cap"],
                             "secs": pl["secs"], "offrange": offr,
                             "planned_items": min(sum(len(w) for w, _ in pl["desires"].values()), pl["shelf_cap"]) + offr, "loose": loose, "age": age, "theft": th,
-                            "cafe": hu(key, "cafe") < cafe_p[daypart(hr)],
+                            "cafe": hu(key, "cafe") < cafe_p[daypart(hr, P("dayparts"))],
                             "patience_s": random.Random(f"{key}|patience").gammavariate(P("patience_gamma_shape"), P("patience_min")[mission] * 60 / P("patience_gamma_shape"))})
         return out
 
@@ -917,9 +924,10 @@ class OpsSim:
         if self.cafe_seats.users >= self.cafe_seats.cap:
             # wait up to N minutes for a seat (polled each 30 s), else leave without buying
             waited = 0.0
+            poll = self.P("staff_idle_poll_s")
             while self.cafe_seats.users >= self.cafe_seats.cap and waited < cf["wait_for_seat_max_min"] * 60:
-                yield 30
-                waited += 30
+                yield poll
+                waited += poll
             if self.cafe_seats.users >= self.cafe_seats.cap:
                 self.c["cafe_turnaway"] += 1
                 self.ev(env.now, "cafe_turnaway", shopper=s["id"])
@@ -1106,8 +1114,9 @@ class OpsSim:
             yield att_need
             self.attendants[lane["bank"]].release()
             self.c["sco_interventions"] += 1
-        th["bag"] = round(env.now - pay * 0.5, 1)
-        th["pay"] = round(env.now - pay * 0.25, 1)
+        tbp = P("theatre_bag_pay_offsets")
+        th["bag"] = round(env.now - pay * tbp["bag_before_end_x_pay"], 1)
+        th["pay"] = round(env.now - pay * tbp["pay_before_end_x_pay"], 1)
         th["done"] = round(env.now, 1)
         s["theatre"] = th
         s["t_end"] = env.now
@@ -1165,7 +1174,7 @@ class OpsSim:
             if c is None:
                 if st["task"] != "idle":
                     self.move(st, (st["x"], st["z"]), 0, "idle")
-                yield 30
+                yield P("staff_idle_poll_s")
                 continue
             t0 = env.now
             self.inprogress.add(c)
@@ -1219,12 +1228,14 @@ class OpsSim:
             return (min(due)[1] if due else None), None
         dow = self.dows[min(int(self.env.now // DAY_S), self.days - 1)]
         hr = int((self.env.now % DAY_S) // 3600)
-        mean_task = (sum(self.task_s[-50:]) / len(self.task_s[-50:])) if self.task_s else 300.0
-        mg = P("margin_proxy_by_role")
+        mean_task = (sum(self.task_s[-50:]) / len(self.task_s[-50:])) if self.task_s else P("restock_task_s_prior")
+        mg, mg0 = P("margin_proxy_by_role"), P("margin_proxy_default")
+        t_lo, t_hi = P("restock_lookahead_s")
+        es_thr = P("restock_bay_shortfall_units")
         nR = max(1, self.staff_n["restock"])
         if self.restock_policy == "priority":
             n_due = sum(1 for c in cands if self.shelf[c] <= trig * self.cap[c])
-            T = max(300.0, n_due / nR * mean_task)
+            T = max(t_lo, n_due / nR * mean_task)
             thr = P("restock_smart_pso_threshold")
             best, bs = None, -1.0
             for c in cands:
@@ -1232,13 +1243,13 @@ class OpsSim:
                 pso = poisson_sf(self.shelf[c], lam * T)
                 if not (self.shelf[c] <= trig * self.cap[c] or pso > thr):
                     continue
-                score = pso * lam * 3600 * self.price[c] * mg.get(self.catalog[c].get("role"), 0.3)
+                score = pso * lam * 3600 * self.price[c] * mg.get(self.catalog[c].get("role"), mg0)
                 if score > bs or (score == bs and best is not None and c < best):
                     best, bs = c, score
             return best, None
         # priority_bay
         bays_due = {self.slot_of[c].rsplit("-r", 1)[0] for c in cands if self.shelf[c] <= trig * self.cap[c]}
-        T = min(3600.0, max(300.0, len(bays_due) / nR * mean_task))
+        T = min(t_hi, max(t_lo, len(bays_due) / nR * mean_task))
         cph, cu = P("restock_cases_per_hour"), P("restock_case_units")
         by_unit = collections.defaultdict(list)
         for c in cands:
@@ -1250,9 +1261,9 @@ class OpsSim:
             for c in cs:
                 es = exp_shortfall(self.shelf[c], self.rate_per_s(c, dow, hr) * T)
                 short[c] = es
-                if not (es > 0.5 or self.shelf[c] <= trig * self.cap[c]):
+                if not (es > es_thr or self.shelf[c] <= trig * self.cap[c]):
                     continue
-                v = es * self.price[c] * mg.get(self.catalog[c].get("role"), 0.3)
+                v = es * self.price[c] * mg.get(self.catalog[c].get("role"), mg0)
                 val += v
                 lab += math.ceil(min(self.cap[c] - self.shelf[c], self.backroom[c]) / cu) * 3600.0 / cph
                 if v > lv:
@@ -1262,13 +1273,13 @@ class OpsSim:
             sc = val / lab
             if sc > bs:
                 best, bs = lead, sc
-        return best, (lambda x: short.get(x, 0.0) > 0.5)
+        return best, (lambda x: short.get(x, 0.0) > es_thr)
 
     def cleaner(self, st):
         P, env = self.P, self.env
         while True:
             if not self.spill_q:
-                yield 15
+                yield P("cleaner_poll_s")
                 continue
             sp = self.spill_q.popleft()
             t0 = env.now
@@ -1382,7 +1393,7 @@ class OpsSim:
             if self.env.now >= t_open:
                 self.snapshot()
             yield step
-            if self.env.now > t_close + 3 * 3600:
+            if self.env.now > t_close + self.P("post_close_drain_h") * 3600:
                 break
 
     # ---------------------------------------------------------------- run
@@ -1422,7 +1433,7 @@ class OpsSim:
             env.at(d * DAY_S + self.open_h * 3600, lambda d=d: env.process(self.ticker(d)))
             for s in self.day_spawn[d]:
                 env.at(s["t_arrive"], lambda s=s: self._start_shopper(s))
-        end = (self.days - 1) * DAY_S + (self.close_h + 3) * 3600
+        end = (self.days - 1) * DAY_S + (self.close_h + self.P("post_close_drain_h")) * 3600
         env.run(end)
         for c, t0 in list(self.zero_since.items()):  # close open stock-out intervals at the end of trading
             self.oos_seconds[c] += max(0.0, min(env.now, (self.days - 1) * DAY_S + self.close_h * 3600) - t0)
@@ -1457,6 +1468,7 @@ class OpsSim:
         oos_by_day = collections.Counter(int(o["t"] // DAY_S) for s in sh for o in s.get("oos", []))
         lost = 0.0
         recovered = 0.0
+        trade_up = 0.0
         react = collections.Counter()
         for s in sh:
             for o in s.get("oos", []):
@@ -1464,6 +1476,7 @@ class OpsSim:
                 if o.get("sub"):
                     recovered += o.get("recovered_gbp", 0)
                     lost += max(0.0, o["price"] - o.get("recovered_gbp", 0))
+                    trade_up += max(0.0, o.get("recovered_gbp", 0) - o["price"])
                 else:
                     lost += o["price"]
         ab_val = sum(sum(self.price[c] for c in s["basket"]) + s["offrange"] * self.offrange_price for s in ab)
@@ -1500,7 +1513,7 @@ class OpsSim:
                                      "mean_service_s": round(statistics.mean([s["service_s"] for s in v]), 1),
                                      "mean_wait_s": round(statistics.mean([s["wait_s"] for s in v]), 1)} for t, v in by_type.items()},
                 "lanes": lanes, "sco_interventions": self.c["sco_interventions"],
-                "trace": "wait = service start - queue join (served shoppers); abandon = still queued after patience (exponential, patience_min by mission); service = service_time_formula x lognormal(service_time_cv); SCO interventions hold a bank attendant (ceil(terminals/sco_terminals_per_attendant))",
+                "trace": "wait = service start - queue join (served shoppers); abandon = still queued after patience (gamma, mean patience_min by mission, shape patience_gamma_shape); service = service_time_formula x lognormal(service_time_cv); SCO interventions hold a bank attendant (ceil(terminals/sco_terminals_per_attendant))",
                 "params": ["service_time_formula", "staffed_fixed_s", "staffed_per_item_s", "sco_initiation_s", "sco_per_item_s",
                            "sco_payment_card_s", "sco_deactivation_s", "sco_intervention_prob", "sco_intervention_resolution_s",
                            "produce_weigh_s_staffed", "produce_weigh_s_sco", "age_check_delay_s_sco", "age_check_delay_s_staffed",
@@ -1522,6 +1535,8 @@ class OpsSim:
                 "sku_oos_benchmark": {"value": P("oos_rate"), "source": "params.json oos_rate (Gruen et al. 2002)"},
                 "skus_ever_empty": sum(1 for c in self.cap if self.oos_seconds[c] > 0),
                 "lost_sales_gbp": round(lost, 2), "substitution_recovered_gbp": round(recovered, 2),
+                "substitution_trade_up_gbp": round(trade_up, 2), "lost_sales_net_gbp": round(lost - trade_up, 2),
+                "lost_sales_trace": "lost_sales_gbp = sum over OOS events of price (no substitute) or max(0, price - substitute price); trading UP to a pricier substitute is not netted there. lost_sales_net_gbp = lost_sales_gbp - substitution_trade_up_gbp",
                 "restock_tasks": self.c["restock_tasks"], "units_restocked": self.c["units_restocked"],
                 "night_fill_units": self.c["night_fill_units"],
                 "staff_queries": self.c["staff_queries"], "queries_answered": self.c["queries_answered"],
@@ -1530,7 +1545,8 @@ class OpsSim:
                 "backroom_units_end": sum(self.backroom.values()),
                 "trace": "OOS event = shopper wants (noticed x P(take)) a SKU whose shelf is 0 -> Gruen reaction drawn; lost £ = price unless substituted (difference counted); SKU-minutes OOS = time each SKU's shelf sat at 0 during trading",
                 "params": ["oos_reaction", "oos_staff_query_prob", "oos_staff_query_min", "restock_trigger_fill", "restock_cases_per_hour",
-                           "restock_case_units", "restock_smart_pso_threshold", "margin_proxy_by_role", "backroom_cover_days", "night_fill"]},
+                           "restock_case_units", "restock_smart_pso_threshold", "margin_proxy_by_role", "margin_proxy_default", "backroom_cover_days", "night_fill",
+                           "restock_batch_fill_below", "restock_task_s_prior", "restock_lookahead_s", "restock_bay_shortfall_units", "staff_idle_poll_s"]},
             "manager": {
                 "orders": len(self.orders), "units_ordered": sum(o["qty"] for o in self.orders),
                 "deliveries_received": self.c["deliveries"], "units_delivered": self.c["units_delivered"],
@@ -1550,7 +1566,7 @@ class OpsSim:
                 "cleaner_utilisation": util["clean"],
                 "trace": "per unit visit P(spill) = spill_rate/1000/route_units x (multiplier if bumped); P(bump) = 1-exp(-k x others in walkway)",
                 "params": ["spill_rate_per_1000_shoppers", "spill_prob_multiplier_on_collision", "bump_k_per_other", "cleaner_response_target_min",
-                           "spill_clean_and_dry_min", "spill_detour_m", "slips_share_major_injuries"]},
+                           "spill_clean_and_dry_min", "spill_detour_m", "slips_share_major_injuries", "cleaner_poll_s"]},
             "cafe": {
                 "visits": self.c["cafe_visits"], "turnaway": self.c["cafe_turnaway"],
                 "revenue_gbp": round(getattr(self, "cafe_rev", 0.0), 2),
@@ -1614,7 +1630,7 @@ class OpsSim:
             "surrogate": self.sur.summary(),
             "jev": {**self.shared["jev_meta"], "question": JEV_SCO_Q, "table": jt,
                     "price": "TypeSafe $0.042 per 1M input tokens, output free (sim/jev.py PRICE_SOURCE)"},
-            "params_used": P.used,
+            "params_used": {**self.shared["P_shared"].used, **P.used},  # shared = surrogate/bundle params read once in build_shared
             "geometry": {"units": {u: {"x": p[0], "z": p[1], "walkway": p[2]} for u, p in geo.upos.items()},
                          "front_cross_z": geo.zf, "back_cross_z": geo.zb, "segments": geo.segments,
                          "lanes": [{k: l[k] for k in ("id", "type", "bank", "x", "z")} for l in self.lanes],
@@ -1641,7 +1657,7 @@ def summary_row(K):
             "abandoned": c["abandoned"], "served": c["served"], "throughput_per_open_hour": c["throughput_per_open_hour"],
             "share_self_checkout": c["share_self_checkout"], "oos_events": s["oos_events"],
             "sku_minutes_oos_share": s["sku_minutes_oos_share"], "shoppers_hit_oos_share": s["shoppers_hit_oos_share"],
-            "lost_sales_gbp": s["lost_sales_gbp"], "restock_tasks": s["restock_tasks"],
+            "lost_sales_gbp": s["lost_sales_gbp"], "lost_sales_net_gbp": s["lost_sales_net_gbp"], "restock_tasks": s["restock_tasks"],
             "restocker_utilisation": s["restocker_utilisation"], "orders": K["manager"]["orders"],
             "spills": sp["spills"], "mean_spill_response_s": sp["mean_response_s"]}
 

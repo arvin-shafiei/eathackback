@@ -15,7 +15,7 @@
 import type { StoreConfig, Planogram, Unit, Agent, SimEvent } from './types';
 
 export const G = {
-  spacing: 5.0, // gondola centre-to-centre (assumption: visual only, ~4m walkway so trolleys can pass + 1m gondola)
+  spacing: 7.0, // gondola centre-to-centre (assumption: visual only, widened 3 Oct so crowds spread: ~6m walkway + 1m gondola)
   depth: 1.0, // gondola depth, both sides
   height: 2.1,
   unitLen: 6.4, // one bay of shelving along the aisle
@@ -23,11 +23,11 @@ export const G = {
   standOff: 1.3, // how far in front of the shelf face a shopper stands
   walkSpeed: 1.3, // m/s. assumption: typical in-store walking speed is slower than the ~1.4 m/s street pace
   aiWalkSpeed: 2.2, // m/s. assumption: visual only. ai agents read a feed, so their "walk" is just a way to show which slot they read
-  crossGap: 2.4, // cross-aisle distance from the gondola ends (room for end caps + trolleys)
+  crossGap: 3.6, // cross-aisle distance from the gondola ends (room for end caps + trolleys)
   endcapDepth: 0.7,
   wallDepth: 1.0, // wall multideck / bakery rack / produce rack depth
-  wallWalk: 3.8, // walkway in front of wall fixtures (assumption: visual, two trolleys pass)
-  midAisle: 4.2, // middle cross aisle between the back and front block (between end caps)
+  wallWalk: 5.2, // walkway in front of wall fixtures (assumption: visual, two trolleys pass)
+  midAisle: 5.6, // middle cross aisle between the back and front block (between end caps)
 };
 
 /** dwell (replay seconds) per decision. visual pacing only, never feeds a stat. */

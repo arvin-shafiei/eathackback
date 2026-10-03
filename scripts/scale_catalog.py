@@ -85,7 +85,7 @@ SUBTYPES = {
 
 # ---------------------------------------------------------------- roles
 OWN_LABEL_RETAILERS = ["tesco", "sainsbury's", "sainsburys", "asda", "aldi", "lidl", "morrisons", "co-op", "coop",
-                       "m&s", "marks & spencer", "marks and spencer", "waitrose", "iceland", "ocado"]
+                       "m&s", "marks & spencer", "marks & spencers", "marks and spencer", "waitrose", "iceland", "ocado"]
 # assumption: well-known retailer-exclusive sub-brands (Aldi/Lidl/Tesco/etc. exclusive labels), so they are own_label
 # even though the retailer name is not in the OFF brand string. Seed list = the own-label sub-brands already used by
 # the curators (Freeway, Crownfield, Gelatelli, Bellarom, Specially Selected, Everyday Essentials, Sweet Corner, Alesto,
@@ -97,7 +97,8 @@ OWN_LABEL_SUBBRANDS = ["freeway", "crownfield", "gelatelli", "bellarom", "specia
                        "by sainsbury", "extra special", "just essentials", "the best", "duchy organic",
                        "essential waitrose", "simply", "baresi", "belbake", "rowan hill", "brooklea", "emporium",
                        "nature's pick", "corale", "cowbelle", "grandessa", "barissimo", "expressi", "nutoka",
-                       "acti leaf", "the grower's harvest", "growers harvest", "alcafe", "diplomat", "kong strong", "carrick glen"]
+                       "acti leaf", "the grower's harvest", "growers harvest", "alcafe", "diplomat", "kong strong", "carrick glen",
+                       "taste the difference"]
 # assumption: big UK brands for the 4 categories that data/sales/uk_bestsellers.csv does not cover (bakery, frozen,
 # hot drinks, sugar confectionery). Seeded from the curators' own incumbents in those categories plus the obvious
 # category leaders; labelled per product as role_source.
@@ -167,10 +168,17 @@ def brand_matches(brand_n: str, names, first_token=False) -> str | None:
 
 def role_for(brand: str, bestsellers, curated_inc):
     b = norm(brand)
-    m = brand_matches(b, OWN_LABEL_RETAILERS)
+    # OFF `brands` can list the maker AND the stockist ("Lipton, Waitrose"). When the FIRST listed brand is neither a
+    # retailer nor a retailer sub-brand, the retailer named later is the stockist, not the owner, so it cannot make
+    # the product own_label (verifier fix, 3 Oct: 'Lipton, Waitrose' was wrongly own_label). Incumbent checks still
+    # see the whole string ('Jörd, Arla' stays incumbent via Arla).
+    first = b.split(",")[0].strip()
+    stockist_only = first != b and not brand_matches(first, OWN_LABEL_RETAILERS + ["co op"]) and \
+        not brand_matches(first, OWN_LABEL_SUBBRANDS)
+    m = None if stockist_only else brand_matches(b, OWN_LABEL_RETAILERS)
     if m:
         return "own_label", f"brand '{brand}' contains UK retailer name '{m}' (OFF brands)"
-    m = brand_matches(b, OWN_LABEL_SUBBRANDS)
+    m = None if stockist_only else brand_matches(b, OWN_LABEL_SUBBRANDS)
     if m:
         return "own_label", f"assumption: '{m}' is a retailer-exclusive sub-brand (OFF brands='{brand}')"
     m = brand_matches(b, bestsellers, first_token=True)
