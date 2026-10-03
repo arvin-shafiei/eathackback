@@ -78,10 +78,10 @@ export function RearrangePanel(props: RearrangeProps) {
     props.onApplyPlanogram(proposed, 'rearranged shelves');
   };
 
+  void amount; void setAmount; // amount stays 'medium' (≤3 swaps per unit); the toggle was cut to keep the panel simple
   return (
     <aside className="card rearrange" aria-label="rearrange the shelves">
-      <Head objective={objective} onObjective={setObjective} amount={amount} onAmount={setAmount}
-        useLLM={useLLM} onUseLLM={props.onUseLLM} onClose={props.onClose} />
+      <Head objective={objective} onObjective={setObjective} onClose={props.onClose} />
       <div className="ra-board">
         {plan.busy && <p className="ra-tile ra-wait muted" role="status">working out the best order…</p>}
         {plan.err && <ErrorNote err={plan.err} />}
@@ -89,8 +89,19 @@ export function RearrangePanel(props: RearrangeProps) {
         {plan.data && <Summary plan={plan.data} />}
         {plan.data && plan.data.moves > 0 && (
           <>
-            <Actions check={check} useLLM={useLLM} busy={busy} preview={preview} seeds={testSeeds(run.seed)} onPreview={setPreview} onCheck={runCheck} onApply={apply} />
-            <Units plan={plan.data} planogram={planogram} cfg={props.cfg} products={props.products} focus={props.focus} onPickProduct={props.onPickProduct} />
+            <TopMoves plan={plan.data} onPick={props.onPickProduct} />
+            <div className="ra-btns">
+              <button className={`seg-btn ra-preview ${preview ? 'on' : ''}`} aria-pressed={preview} onClick={() => setPreview(!preview)}>preview</button>
+              <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy}>{busy ? 're-running…' : 'apply'}</button>
+            </div>
+            <details className="ra-how">
+              <summary>test it with new shoppers</summary>
+              <Actions check={check} useLLM={useLLM} busy={busy} seeds={testSeeds(run.seed)} onCheck={runCheck} />
+            </details>
+            <details className="ra-how">
+              <summary>see every shelf</summary>
+              <Units plan={plan.data} planogram={planogram} cfg={props.cfg} products={props.products} focus={props.focus} onPickProduct={props.onPickProduct} />
+            </details>
           </>
         )}
         {plan.data && <Method plan={plan.data} />}
@@ -99,36 +110,34 @@ export function RearrangePanel(props: RearrangeProps) {
   );
 }
 
-interface HeadProps {
-  objective: Objective; onObjective: (o: Objective) => void; amount: string; onAmount: (a: string) => void;
-  useLLM: boolean; onUseLLM: (v: boolean) => void; onClose: () => void;
+const TOP_MOVES = 5;
+
+function TopMoves({ plan, onPick }: { plan: RearrangePlan; onPick: (code: string) => void }) {
+  // biggest-lift units first; within a unit keep the planner's order
+  const moves = [...plan.units].sort((a, b) => b.lift_pct - a.lift_pct).flatMap((u) => u.moves).slice(0, TOP_MOVES);
+  return (
+    <ol className="ra-top-moves">
+      {moves.map((m) => (
+        <li key={m.code}>
+          <button className="link-btn" onClick={() => onPick(m.code)}>{prodLabel(m, m.code)}</button>
+          <span className="muted"> {m.from.row_name === m.to.row_name ? `${m.from.row_name}, spot ${m.from.pos + 1} → ${m.to.pos + 1}` : `${m.from.row_name} → ${m.to.row_name}`}</span>
+        </li>
+      ))}
+    </ol>
+  );
 }
 
-function Head({ objective, onObjective, amount, onAmount, useLLM, onUseLLM, onClose }: HeadProps) {
+interface HeadProps { objective: Objective; onObjective: (o: Objective) => void; onClose: () => void }
+
+function Head({ objective, onObjective, onClose }: HeadProps) {
   return (
     <header className="ra-top">
       <button className="x" onClick={onClose} aria-label="close">×</button>
       <h2 className="display">rearrange the shelves</h2>
-      <div className="ra-controls">
-        <div className="ra-ctl">
-          <span className="ra-ctl-l" id="ra-goal">goal</span>
-          <div className="seg" role="group" aria-labelledby="ra-goal">
-            {GOALS.map((g) => (
-              <button key={g.id} className={`seg-btn ${objective === g.id ? 'on' : ''}`} aria-pressed={objective === g.id} onClick={() => onObjective(g.id)}>{g.label}</button>
-            ))}
-          </div>
-        </div>
-        <div className="ra-ctl">
-          <span className="ra-ctl-l" id="ra-amount">move</span>
-          <div className="seg" role="group" aria-labelledby="ra-amount">
-            {AMOUNTS.map((a) => (
-              <button key={a.id} className={`seg-btn ${amount === a.id ? 'on' : ''}`} aria-pressed={amount === a.id} title={a.title} onClick={() => onAmount(a.id)}>{a.label}</button>
-            ))}
-          </div>
-        </div>
-        <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached). applies to the shopper test below.">
-          <input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> use llm (costs)
-        </label>
+      <div className="seg" role="group" aria-label="goal">
+        {GOALS.map((g) => (
+          <button key={g.id} className={`seg-btn ${objective === g.id ? 'on' : ''}`} aria-pressed={objective === g.id} onClick={() => onObjective(g.id)}>{g.label}</button>
+        ))}
       </div>
     </header>
   );
@@ -172,18 +181,15 @@ function Summary({ plan }: { plan: RearrangePlan }) {
 }
 
 interface ActionsProps {
-  check: Job<RearrangeCheck>; useLLM: boolean; busy: boolean; preview: boolean; seeds: number[];
-  onPreview: (v: boolean) => void; onCheck: () => void; onApply: () => void;
+  check: Job<RearrangeCheck>; useLLM: boolean; busy: boolean; seeds: number[]; onCheck: () => void;
 }
 
-function Actions({ check, useLLM, busy, preview, seeds, onPreview, onCheck, onApply }: ActionsProps) {
+function Actions({ check, useLLM, busy, seeds, onCheck }: ActionsProps) {
   return (
     <section className="ra-tile ra-act">
       <div className="ra-btns">
-        <button className={`seg-btn ra-preview ${preview ? 'on' : ''}`} aria-pressed={preview} onClick={() => onPreview(!preview)}>preview</button>
         <button className="btn btn-white" onClick={onCheck} disabled={check.busy || busy}
-          title={`${TEST_AGENTS} new shoppers walk the old and the new layout (seeds ${seeds.join(' and ')}, not the one it learned from)`}>{check.busy ? 'shoppers are walking…' : 'test with shoppers'}</button>
-        <button className="btn btn-brand ra-apply" onClick={onApply} disabled={busy}>{busy ? 're-running…' : 'apply'}</button>
+          title={`${TEST_AGENTS} new shoppers walk the old and the new layout (seeds ${seeds.join(' and ')}, not the one it learned from)`}>{check.busy ? 'shoppers are walking…' : 'run the test'}</button>
       </div>
       {check.busy && (
         <p className="notice ok" role="status">
