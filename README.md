@@ -149,7 +149,22 @@ A brand puts its own product on the shelf and watches the synthetic shoppers rea
 3. **Analytics** (mode): picked / noticed / weighed-up against the unit median, a one-line diagnosis with its rule shown, funnel, breakdowns by shopper type, mission, OCEAN and AI archetype, a shopper behaviour log with CSV export, what it lost to, and rejection quotes that open the trace.
 4. **Placement**: the notice rate of every row, position and facings in its unit (computed from `sim/notice.py`, no model call), then a same-seed before/after test on up to three spots with a 95% interval, and "apply and re-run".
 
-Code: `sim/uploads.py`, `sim/tesco.py`, `sim/placement.py`, `web/src/insights.ts`, `web/src/ui/{AddProductPanel,InsightsPanel,PlacementSection}.tsx`.
+5. **Do this next**: analytics opens with up to three numbered actions: the best spot for the product, the top reason shoppers put it back, and a link to rearrange its shelf.
+6. **Rearrange** (mode): for each shelf unit, swap products so the unit sells more. It multiplies how often each product was bought once noticed (from the run) by how often each spot is noticed (`sim/notice.py`), and treats products on one shelf as competing, because a shopper buys at most one per shelf. Preview it on the 3D shelves, test it on seeds the plan has not seen, then apply.
+
+Code: `sim/uploads.py`, `sim/tesco.py`, `sim/placement.py`, `sim/rearrange.py`, `web/src/insights.ts`, `web/src/ui/{AddProductPanel,InsightsPanel,PlacementSection,RearrangePanel}.tsx`.
+
+## beyond the demo: what it takes to make the brand track real
+
+| | today | what a real version needs |
+|---|---|---|
+| **Scale** | One Python process, one run at a time behind a lock; runs are JSON files on disk. A brand run is 150 shoppers. | A job queue with workers, runs in a database, and results streamed to the browser. The notice step is plain arithmetic and the engine calls are independent per shopper, so it parallelises. |
+| **Cost** | About $3.20 per 1,000 shoppers on Jev on the standard store (table below), so a 150-shopper brand run is roughly $0.50. The placement scan and the rearrangement plan make no model call. | A spend cap per account. The shopper test of a rearrangement runs the store twice, so it costs two runs. |
+| **Privacy** | No personal data. Shoppers are synthetic; the Reddit corpus stores no usernames. | If real shopper panels calibrate the personas, that data needs consent and must stay separate from any one brand's uploads. |
+| **Data ownership** | An uploaded product lives in the run file and the browser session. Nothing is shared between brands because there are no accounts. | Accounts and per-brand storage, so one brand never sees another's unreleased product or its results. |
+| **Security** | A brand's pack copy goes into the shopper prompt, length-capped but not filtered, so a brand could try to write instructions into it. The Tesco import only fetches `tesco.com` product URLs and Open Food Facts by barcode. | Filter and flag instruction-like pack copy; rate-limit imports; run the page fetch in a sandbox. |
+| **Product data** | A Tesco link opens one public page in a browser window and reads the data Tesco publishes for search engines; the rest is Open Food Facts. | Tesco's permission or a licensed product feed (GS1, Brandbank). |
+| **Validity** | Predictions are checked against synthetic shoppers on held-out seeds, not against sales. | Calibrate against real sell-through for a few known shelf changes before a brand acts on a number. |
 
 ## honest limitations
 

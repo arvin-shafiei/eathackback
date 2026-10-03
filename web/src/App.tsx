@@ -465,6 +465,7 @@ export default function App() {
         <InsightsPanel run={view} product={focusProduct} slot={slotOf(focusProduct.code)} planogram={basePlan} cfg={data.config} products={products} personas={personas}
           extraProducts={run?.catalog_inline ?? []} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy}
           onPickProduct={setFocus} onTrace={openTrace} onClose={() => setMode('replay')}
+          onRearrange={() => { setFocus(focusProduct.code); setMode('rearrange'); }}
           onApplyPlanogram={(p, label) => { setFocus(focusProduct.code); void simulate(p, run?.catalog_inline ?? [], label); }} />
       )}
       {mode === 'rearrange' && run && (
