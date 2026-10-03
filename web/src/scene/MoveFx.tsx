@@ -6,7 +6,8 @@ import { sfx } from './fx';
 
 /** span = length of what must fit on screen (m); when set, the camera backs off far enough to frame it */
 export interface FlyTarget { x: number; y: number; z: number; fx: number; fz: number; dist?: number; span?: number }
-export interface MoveArrow { from: THREE.Vector3Like; to: THREE.Vector3Like; fx: number; fz: number; main: boolean }
+/** label = a step number drawn as a badge on the arrow ("1", "2", "3") */
+export interface MoveArrow { from: THREE.Vector3Like; to: THREE.Vector3Like; fx: number; fz: number; main: boolean; label?: string }
 
 /** the panel <-> scene channel (module level, like fx.bus): replay the last move, fly the camera to a unit */
 export const moveFx = {
@@ -115,7 +116,7 @@ export class MoveFxLayer {
   get animating() { return this.live > 0 || this.pulse.length > 0; }
   private buildArrows() {
     this.arrowsV = moveFx.arrowsV;
-    for (const c of [...this.arrows.children]) { this.arrows.remove(c); c.traverse((o) => { if (o instanceof THREE.Mesh || o instanceof THREE.LineSegments) { o.geometry.dispose(); if (o.material !== this.arrowMat) (o.material as THREE.Material).dispose(); } }); }
+    for (const c of [...this.arrows.children]) { this.arrows.remove(c); c.traverse((o) => { if (o instanceof THREE.Sprite) { o.material.map?.dispose(); o.material.dispose(); } if (o instanceof THREE.Mesh || o instanceof THREE.LineSegments) { o.geometry.dispose(); if (o.material !== this.arrowMat) (o.material as THREE.Material).dispose(); } }); }
     this.pulse = [];
     for (const a of moveFx.arrows) {
       const A = new THREE.Vector3(a.from.x, a.from.y, a.from.z), B = new THREE.Vector3(a.to.x, a.to.y, a.to.z);
@@ -124,6 +125,8 @@ export class MoveFxLayer {
       const out = 0.28; // start/end in front of the shelf lip so the arrow reads from the aisle
       const A1 = A.clone().addScaledVector(front, out), B1 = B.clone().addScaledVector(front, out);
       const mid = A1.clone().add(B1).multiplyScalar(0.5).addScaledVector(front, 0.35 + d * 0.12); mid.y += 0.35 + Math.min(2.2, d * 0.28);
+      // numbered steps that share endpoints (a swap) get stacked arcs so their badges never sit on top of each other
+      if (a.label) mid.y += (Number(a.label) - 1) * 0.45;
       const curve = new THREE.QuadraticBezierCurve3(A1, mid, B1);
       const r = a.main ? 0.045 : 0.022, head = a.main ? 0.2 : 0.11;
       // stop the tube short of the head
@@ -136,6 +139,13 @@ export class MoveFxLayer {
       for (const o of [tube, cone]) { o.renderOrder = 8; o.raycast = () => null; o.frustumCulled = false; }
       this.arrows.add(tube, cone);
       this.pulse.push({ o: cone, base: 1, kind: 'cone' });
+      if (a.label) {
+        // numbered badge at the top of the arc, always on top, so the order of the steps reads from the aisle
+        const badge = new THREE.Sprite(new THREE.SpriteMaterial({ map: badgeTexture(a.label), depthTest: false, transparent: true, toneMapped: false }));
+        badge.position.copy(curve.getPoint(0.4)); badge.position.y += 0.18; badge.scale.setScalar(0.34);
+        badge.renderOrder = 11; badge.raycast = () => null;
+        this.arrows.add(badge);
+      }
       if (a.main) {
         // glow ring around where it is now (faces the aisle), dashed ghost box where it goes
         const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.025, 10, 40), coneMat('#ff2e88'));
@@ -201,4 +211,15 @@ export class MoveFxLayer {
     this.bubbles.geometry.dispose(); (this.bubbles.material as THREE.Material).dispose();
     this.sparks.geometry.dispose(); (this.sparks.material as THREE.Material).dispose();
   }
+}
+
+/** a round pink badge with a step number */
+function badgeTexture(text: string) {
+  const c = document.createElement('canvas'); c.width = c.height = 128;
+  const x = c.getContext('2d')!;
+  x.fillStyle = '#ff2e88'; x.beginPath(); x.arc(64, 64, 58, 0, Math.PI * 2); x.fill();
+  x.lineWidth = 8; x.strokeStyle = '#ffffff'; x.stroke();
+  x.fillStyle = '#ffffff'; x.font = '900 72px Inter, system-ui, sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText(text, 64, 70);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
 }

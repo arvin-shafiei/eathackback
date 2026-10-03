@@ -34,6 +34,7 @@ export function RearrangePanel(props: RearrangeProps) {
   const { run, planogram, extraProducts, useLLM, busy, cfg } = props;
   const [objective, setObjective] = useState<Objective>('picks');
   const [plan, setPlan] = useState<Job<RearrangePlan>>(loading);
+  const [plan1, setPlan1] = useState<RearrangePlan | null>(null);
   const [check, setCheck] = useState<Job<RearrangeCheck>>(idle);
   const [sel, setSel] = useState<string | null>(null);
   const [after, setAfter] = useState(false);
@@ -49,18 +50,31 @@ export function RearrangePanel(props: RearrangeProps) {
     setPlan(loading);
     setCheck(idle);
     setSel(null); setAfter(false);
-    api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps: MAX_SWAPS })
-      .then((data) => { if (gen.current === id) setPlan({ busy: false, data, err: null }); })
+    const ask = (max_swaps: number) => api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps });
+    // one-swap and two-swap plans: a unit uses the two-swap plan when it is one loop of at most MAX_STEPS products
+    Promise.all([ask(1), ask(MAX_SWAPS)])
+      .then(([one, two]) => { if (gen.current === id) { setPlan({ busy: false, data: two, err: null }); setPlan1(one); } })
       .catch((e) => { if (gen.current === id) setPlan({ busy: false, data: null, err: fail(e) }); });
     return () => { gen.current++; };
   }, [run.run_id, scope, objective]);
 
   const proposed = plan.data?.planogram ?? null;
-  // categories with a swap worth making, best first; one swap each keeps every card to two products
-  const units = useMemo(() => plan.data ? [...plan.data.units].filter((u) => u.moves.length >= 2).sort((a, b) => b.lift_pct - a.lift_pct).slice(0, TOP_UNITS) : [], [plan.data]);
-  const cur = units.find((u) => u.unit === sel) ?? null;
-  // the store with ONLY the chosen unit swapped
-  const one = useMemo(() => (cur && proposed ? onlyUnit(planogram, proposed, cur.unit) : null), [cur, proposed, scope]); // eslint-disable-line react-hooks/exhaustive-deps
+  // per unit: the two-swap plan if it is ONE loop of ≤ MAX_STEPS products, else the one-swap plan; best gain first
+  const units = useMemo(() => {
+    if (!plan.data) return [];
+    const by1 = new Map((plan1?.units ?? []).map((u) => [u.unit, u]));
+    const out: { u: RearrangeUnit; steps: RearrangeMove[] }[] = [];
+    for (const u2 of plan.data.units) {
+      const loop = u2.moves.length ? orderSteps(u2.moves) : null;
+      if (loop && loop.length === u2.moves.length && loop.length <= MAX_STEPS) { out.push({ u: u2, steps: loop }); continue; }
+      const u1 = by1.get(u2.unit), l1 = u1?.moves.length ? orderSteps(u1.moves) : null;
+      if (u1 && l1 && l1.length === u1.moves.length) out.push({ u: u1, steps: l1 });
+    }
+    return out.sort((a, b) => b.u.lift_pct - a.u.lift_pct).slice(0, TOP_UNITS);
+  }, [plan.data, plan1]);
+  const cur = units.find((x) => x.u.unit === sel) ?? null;
+  // the store with ONLY the chosen unit's steps done
+  const one = useMemo(() => (cur ? applySteps(planogram, cur.steps) : null), [cur, scope]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // preview: the shelves animate (packs fly) whenever this flips
   useEffect(() => { live.current.onPreview(after && one ? one : null); }, [after, one]);
@@ -68,16 +82,17 @@ export function RearrangePanel(props: RearrangeProps) {
   // arrows for the chosen swap, only while showing 'before'
   useEffect(() => {
     const list: MoveArrow[] = [];
-    if (cur && proposed && !after) for (const m of cur.moves) { const a = arrowFor(cfg, planogram, proposed, m, true); if (a) list.push(a); }
+    if (cur && one && !after) cur.steps.forEach((m, i) => { const a = arrowFor(cfg, planogram, one, m, true); if (a) list.push({ ...a, label: String(i + 1) }); });
     moveFx.setArrows(list);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cur, proposed, after, scope, cfg]);
 
-  const choose = (u: RearrangeUnit) => {
+  const choose = (x: { u: RearrangeUnit; steps: RearrangeMove[] }) => {
     setAfter(false);
-    if (sel === u.unit) { setSel(null); return; }
-    setSel(u.unit);
-    const pts = proposed ? u.moves.map((m) => arrowFor(cfg, planogram, proposed, m, true)).filter(Boolean) as MoveArrow[] : [];
+    if (sel === x.u.unit) { setSel(null); return; }
+    setSel(x.u.unit);
+    const done = applySteps(planogram, x.steps);
+    const pts = x.steps.map((m) => arrowFor(cfg, planogram, done, m, true)).filter(Boolean) as MoveArrow[];
     if (!pts.length) return;
     const xs = pts.flatMap((a) => [a.from, a.to]);
     const c = { x: avg(xs.map((p) => p.x)), y: avg(xs.map((p) => p.y)), z: avg(xs.map((p) => p.z)) };
@@ -93,7 +108,7 @@ export function RearrangePanel(props: RearrangeProps) {
       .then((data) => { if (gen.current === id) setCheck({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setCheck({ busy: false, data: null, err: fail(e) }); });
   };
-  const apply = () => { if (one && cur) props.onApplyPlanogram(one, `swap in ${catLabel(cur.category)}`); };
+  const apply = () => { if (one && cur) props.onApplyPlanogram(one, `rearranged ${catLabel(cur.u.category)}`); };
 
   if (collapsed) {
     return (
@@ -112,19 +127,19 @@ export function RearrangePanel(props: RearrangeProps) {
         {plan.data?.learned_from.other_store && <p className="notice">learned on a different layout: only shared products have data.</p>}
         {!!units.length && proposed && (
           <>
-            <p className="ra-tm-h"><b>pick a category.</b> <span className="muted">one swap each, best first.</span></p>
+            <p className="ra-tm-h"><b>pick a category.</b> <span className="muted">up to {MAX_STEPS} moves each, best first.</span></p>
             <ol className="ra-cats">
-              {units.map((u) => {
+              {units.map(({ u, steps }) => {
                 const unit = cfg.units.find((x) => x.id === u.unit);
                 return (
                   <li key={u.unit}>
-                    <button className={`ra-cat ${u.unit === sel ? 'on' : ''}`} aria-pressed={u.unit === sel} onClick={() => choose(u)}
+                    <button className={`ra-cat ${u.unit === sel ? 'on' : ''}`} aria-pressed={u.unit === sel} onClick={() => choose({ u, steps })}
                       title={`${u.before} → ${u.after} ${u.value_unit}`}>
                       <i className="dot" style={{ background: catColor(u.category) }} aria-hidden />
                       <span className="ra-cat-name">{catLabel(u.category)}<small className="muted"> aisle {unit?.aisle ?? '?'}{unit ? (unit.side === 'L' ? ', left' : ', right') : ''}</small></span>
                       <b className="ra-cat-lift">{lift(u.lift_pct)}</b>
                     </button>
-                    {u.unit === sel && <SwapCard u={u} cfg={cfg} before={planogram} after={proposed} products={props.products}
+                    {u.unit === sel && <SwapCard u={u} steps={steps} cfg={cfg} before={planogram} products={props.products}
                       showing={after} onWatch={() => setAfter(!after)} onApply={apply} busy={busy} onAnalytics={props.onPickProduct} />}
                   </li>
                 );
@@ -132,7 +147,7 @@ export function RearrangePanel(props: RearrangeProps) {
             </ol>
             {cur && (
               <details className="ra-how">
-                <summary>test this swap with new shoppers</summary>
+                <summary>test this with new shoppers</summary>
                 <Actions check={check} useLLM={useLLM} busy={busy} seeds={testSeeds(run.seed)} onCheck={runCheck} />
               </details>
             )}
@@ -147,15 +162,37 @@ export function RearrangePanel(props: RearrangeProps) {
 /** categories listed (assumption: a short list a store owner can act on today) */
 const TOP_UNITS = 6;
 const avg = (xs: number[]) => xs.reduce((a, b) => a + b, 0) / Math.max(1, xs.length);
-/** the current planogram with one unit's shelves replaced by the proposal */
-function onlyUnit(before: Planogram, proposed: Planogram, unit: string): Planogram {
+/** most products one suggestion may touch (assumption: a loop a person can do by hand without losing track) */
+const MAX_STEPS = 3;
+const spotKey = (s: { slot: string; pos: number }) => `${s.slot}#${s.pos}`;
+/**
+ * the moves as steps you can do by hand, or null if they are not one closed loop.
+ * loop A→B's spot, B→C's spot, C→A's spot: hold A, then C into A's gap, B into C's gap, A into B's gap.
+ */
+function orderSteps(moves: RearrangeMove[]): RearrangeMove[] | null {
+  const byFrom = new Map(moves.map((m) => [spotKey(m.from), m]));
+  const seq: RearrangeMove[] = [moves[0]];
+  for (let m = byFrom.get(spotKey(moves[0].to)); m && m !== moves[0]; m = byFrom.get(spotKey(m.to))) {
+    if (seq.length > moves.length) return null;
+    seq.push(m);
+  }
+  if (spotKey(seq[seq.length - 1].to) !== spotKey(moves[0].from)) return null;
+  return [...seq.slice(1).reverse(), seq[0]];
+}
+/** the current planogram with just these moves done (each product takes its facings with it) */
+function applySteps(before: Planogram, steps: RearrangeMove[]): Planogram {
   const out: Planogram = { ...before };
-  for (const k of Object.keys(proposed)) if (k.startsWith(`${unit}-r`)) out[k] = proposed[k];
+  const touch = (slot: string) => (out[slot] = { ...out[slot], products: [...out[slot].products], facings: { ...out[slot].facings } });
+  const f = new Map(steps.map((m) => [m.code, before[m.from.slot]?.facings?.[m.code] ?? 1]));
+  for (const m of steps) if (out[m.from.slot] === before[m.from.slot]) touch(m.from.slot);
+  for (const m of steps) if (out[m.to.slot] === before[m.to.slot]) touch(m.to.slot);
+  for (const m of steps) delete out[m.from.slot].facings[m.code];
+  for (const m of steps) { out[m.to.slot].products[m.to.pos] = m.code; out[m.to.slot].facings[m.code] = f.get(m.code) ?? 1; }
   return out;
 }
 
-// assumption: one swap per shelf unit, so every suggestion is two products trading places
-const MAX_SWAPS = 1;
+// assumption: at most two swaps per shelf unit, so a suggestion is a swap or a loop of three
+const MAX_SWAPS = 2;
 
 /** the aisle-facing direction of a unit (local +z), world xz */
 function frontOf(cfg: StoreConfig, u: Unit) {
@@ -170,31 +207,63 @@ function arrowFor(cfg: StoreConfig, before: Planogram, after: Planogram, m: Rear
 }
 
 interface SwapCardProps {
-  u: RearrangeUnit; cfg: StoreConfig; before: Planogram; after: Planogram; products: Record<string, Product>;
+  u: RearrangeUnit; steps: RearrangeMove[]; cfg: StoreConfig; before: Planogram; products: Record<string, Product>;
   showing: boolean; busy: boolean; onWatch: () => void; onApply: () => void; onAnalytics: (code: string) => void;
 }
 
-/** one swap in kid words: two products, where each is now (shelf + height), and what the swap buys */
-function SwapCard({ u, cfg, before, products, showing, busy, onWatch, onApply, onAnalytics }: SwapCardProps) {
-  const [a, b] = u.moves;
-  const side = (m: RearrangeMove) => {
-    const w = productWorld(cfg, before, m.from.slot, m.code);
-    return (
-      <div className="ra-swap-side">
-        <button className="link-btn ra-swap-name" onClick={() => onAnalytics(m.code)}>{prodLabel(products[m.code] ?? m, m.code)}</button>
-        <span className="ra-swap-where"><b>{m.from.row_name} shelf</b>{w ? ` · ${(w.y - w.h / 2).toFixed(1)} m up` : ''} · spot {m.from.pos + 1}</span>
-        <span className="muted small">seen by {pct(m.notice_before)} → <b>{pct(m.notice_after)}</b></span>
-      </div>
-    );
+/** the moves as numbered steps that match the numbered arrows in the store */
+function SwapCard({ u, steps, cfg, before, products, showing, busy, onWatch, onApply, onAnalytics }: SwapCardProps) {
+  const name = (c: string) => prodLabel(products[c] ?? steps.find((m) => m.code === c), c);
+  const where = (s: RearrangeMove['from'], code: string) => {
+    const w = productWorld(cfg, before, s.slot, code);
+    return <><b>{s.row_name} shelf</b>{w ? ` · ${(w.y - w.h / 2).toFixed(1)} m up` : ''} · spot {s.pos + 1}</>;
   };
+  const held = steps[steps.length - 1];
   return (
     <div className="ra-swap">
-      <div className="ra-swap-pair">{side(a)}<span className="ra-swap-x" aria-label="swaps with">⇄</span>{b && side(b)}</div>
-      <p className="ra-swap-why muted">{a.why}.</p>
+      <Why u={u} steps={steps} name={name} />
+      <p className="ra-step0">how: first, take <b>{name(held.code)}</b> off the shelf and hold it.</p>
+      <ol className="ra-steps">
+        {steps.map((m, i) => (
+          <li key={m.code}>
+            <span className="ra-step-n">{i + 1}</span>
+            <span className="ra-step-b">
+              <button className="link-btn ra-swap-name" onClick={() => onAnalytics(m.code)}>{name(m.code)}</button>
+              <span className="ra-step-w">{where(m.from, m.code)} → {where(m.to, m.code)}</span>
+              <span className="muted small">seen by {pct(m.notice_before)} → <b>{pct(m.notice_after)}</b> of shoppers who pass</span>
+            </span>
+          </li>
+        ))}
+      </ol>
       <div className="ra-btns">
         <button className="btn btn-white" onClick={onWatch}>{showing ? '↺ put it back' : '▶ watch it'}</button>
-        <button className="btn btn-brand" onClick={onApply} disabled={busy}>{busy ? 're-running…' : 'do this swap'}</button>
+        <button className="btn btn-brand" onClick={onApply} disabled={busy}>{busy ? 're-running…' : 'do it'}</button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * the reason in plain words, from the planner's own numbers: which product earns more per look (conversion, from the run),
+ * how many shoppers notice each spot (notice model), and what the unit gains (rearrange.py unit value, per 100 passers)
+ */
+function Why({ u, steps, name }: { u: RearrangeUnit; steps: RearrangeMove[]; name: (c: string) => string }) {
+  const up = [...steps].sort((a, b) => (b.notice_after - b.notice_before) * b.conversion - (a.notice_after - a.notice_before) * a.conversion)[0];
+  const others = steps.filter((m) => m !== up);
+  const money = u.value_unit.startsWith('£');
+  return (
+    <div className="ra-why">
+      <p className="ra-why-big"><b>{lift(u.lift_pct)}</b> {money ? 'sales £' : 'sales'} from this shelf</p>
+      <p className="ra-why-sub">{money ? `£${u.before.toFixed(2)} → £${u.after.toFixed(2)}` : `${u.before.toFixed(1)} → ${u.after.toFixed(1)} buys`} for every 100 shoppers who walk past</p>
+      <ul className="ra-why-list">
+        <li><b>{name(up.code)}</b> sells well: <b>{pct(up.conversion)}</b> of people who notice it buy it (this shelf's average is {pct(u.unit_conversion)}).</li>
+        <li>but it sits on the <b>{up.from.row_name} shelf</b>, where only <b>{pct(up.notice_before)}</b> of shoppers notice it.</li>
+        <li>on the <b>{up.to.row_name} shelf</b>, <b>{pct(up.notice_after)}</b> notice it, so more of them buy it.</li>
+        {others.map((m) => (
+          <li key={m.code}><b>{name(m.code)}</b> sells less per look ({pct(m.conversion)}), so it {m.notice_after < m.notice_before ? 'gives up the better spot' : 'shifts along'}.</li>
+        ))}
+      </ul>
+      {up.thin && <p className="ra-why-thin muted">based on only {up.picked} buys in {up.noticed} looks, so it leans on the shelf average. test it before you commit.</p>}
     </div>
   );
 }
