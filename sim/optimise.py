@@ -25,6 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
 import run as simrun  # noqa: E402
+import uploads  # noqa: E402
 
 REG = "Regulation (EC) No 1924/2006 Annex, retained in UK law: https://www.legislation.gov.uk/eur/2006/1924/annex"
 
@@ -60,6 +61,10 @@ def true_claims(p: dict) -> list[dict]:
         if lab in ("en:vegan", "en:organic", "en:fair-trade", "en:gluten-free"):
             out.append({"claim": lab.replace("en:", "").replace("-", " "), "why": f"labels contains {lab} (OFF)",
                         "source": f"OFF labels field, {p.get('off_url') or p['code']}"})
+    if p.get("brand_supplied"):
+        # the figures were typed in by the brand, so the claim is only as true as they are
+        for c in out:
+            c["why"] = c["why"].replace("(OFF)", f"({uploads.SOURCE})")
     copy_l = (p.get("pack_copy") or "").lower()
     return [c for c in out if c["claim"] not in copy_l]
 
@@ -68,7 +73,7 @@ def find_slot(plan, code):
     for sid, s in plan.items():
         if code in s.get("products", []):
             return sid
-    raise SystemExit(f"{code} not on the planogram")
+    raise ValueError(f"{code} not on the planogram")
 
 
 def make_edit(kind, plan, catalog, code, price=None):
@@ -100,7 +105,8 @@ def make_edit(kind, plan, catalog, code, price=None):
             return None
         c = claims[0]
         patch[code] = {"pack_copy": (catalog[code].get("pack_copy", "").rstrip(". ") + f". {c['claim']}").strip(". ")}
-        desc = f"surfaced true claim '{c['claim']}' in pack_copy ({c['why']}; {c['source']})"
+        kind_of = "claim the brand's own figures qualify for" if catalog[code].get("brand_supplied") else "true claim"
+        desc = f"surfaced {kind_of} '{c['claim']}' in pack_copy ({c['why']}; {c['source']})"
     elif kind == "price":
         if price is None:
             return None
@@ -122,20 +128,22 @@ def newcomb_diff_ci(k1, n1, k0, n0):
 
 
 def optimise(product, agents=40, seeds=(1,), models=None, mock=False, edits=("eye", "facings", "claim"),
-             price=None, planogram=None, max_tokens=250, engine=None):
+             price=None, planogram=None, max_tokens=250, engine=None, extra_products=None):
     engine = "mock" if mock else (engine or simrun.DEFAULT_ENGINE)
     mock = engine == "mock"
     if engine != "llm":
         models = None
     base_plan, plan_src = simrun.load_planogram(planogram)
     catalog, _ = simrun.load_catalog(base_plan)
+    catalog, _ = uploads.merge(catalog, extra_products, simrun.load_store()[0])
     results = []
     totals = {}
     base_k = base_n = 0
     base_runs = []
     for seed in seeds:
         base = simrun.run_simulation(planogram=base_plan, agents=agents, models=models, seed=seed, engine=engine,
-                                     max_tokens=max_tokens, label=f"optimise baseline {product}")
+                                     max_tokens=max_tokens, label=f"optimise baseline {product}",
+                                     extra_products=extra_products)
         base_runs.append(base["run_id"])
         s = base["stats"]["per_product"].get(product, {"picked": 0, "shown": 0})
         base_k += s["picked"]
@@ -150,12 +158,13 @@ def optimise(product, agents=40, seeds=(1,), models=None, mock=False, edits=("ey
             # agents whose path never enters the edited unit are copied unchanged
             rerun = simrun.run_simulation(planogram=e["planogram"], agents=agents, models=models, seed=seed,
                                           engine=engine, max_tokens=max_tokens, only_agents=affected, save=False,
-                                          catalog_patch=e["catalog_patch"]) if affected else {"agents": [], "cost": {"usd": 0}}
+                                          catalog_patch=e["catalog_patch"],
+                                          extra_products=extra_products) if affected else {"agents": [], "cost": {"usd": 0}}
             by_id = {a["agent_id"]: a for a in rerun["agents"]}
             merged = [by_id.get(a["agent_id"], a) for a in base["agents"]]
             cat2 = dict(catalog)
             for c, upd in e["catalog_patch"].items():
-                cat2[c] = {**cat2[c], **upd}
+                cat2[c] = {**cat2.get(c, {}), **upd}
             st = simrun.compute_stats(merged, cat2)["per_product"].get(product, {"picked": 0, "shown": 0})
             t = totals.setdefault(kind, {"k": 0, "n": 0, "desc": e["desc"], "affected_agents": 0, "cost": 0.0,
                                          "notice_k": 0})

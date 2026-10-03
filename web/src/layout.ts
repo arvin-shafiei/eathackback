@@ -1165,43 +1165,67 @@ export function buildTimeline(cfg: StoreConfig, plan: Planogram, agent: Agent, s
   const rankOf = (dept: string) => { const i = walkOrder.indexOf(dept); return i >= 0 ? i : (defs[dept]?.rank ?? 20); };
   const reverse = mission === 'big_shop' && rnd() < 0.5;
 
-  // candidate stops for every event (own slot + twins), resolved once
-  interface Cand { slot: string; at: WP; area: string; dept: string; twin: boolean; face: number }
-  const cands: Cand[][] = evs.map((e) => {
-    const own = shelfSlotFor(plan, e.slot, e.product || null);
-    const { unit } = parseSlot(own);
+  // stops = shelf units (all of a unit's events are done in one visit, in order along the run). A unit's stop may be
+  // moved to a twin unit carrying the same category (another aisle) when that is less crowded.
+  interface Ev { e: SimEvent; slot: string; at: WP; lx: number }
+  interface Stop { unit: string; evs: Ev[]; dept: string; area: string; twins: string[] }
+  const stops = new Map<string, Stop>();
+  for (const e of evs) {
+    const slot = shelfSlotFor(plan, e.slot, e.product || null);
+    const unit = parseSlot(slot).unit;
     const u = units[unit];
-    if (!u || !sp.units[unit]) return [];
-    const list = [own, ...(ai ? [] : (st.twins.get(`${plan[own]?.category ?? u.category}`) ?? []).filter((s) => parseSlot(s).unit !== unit))];
-    return list.map((slot) => {
-      const uid = parseSlot(slot).unit, uu = units[uid];
-      const at = slot === own ? standPoint(cfg, plan, e.slot, e.product || null, jitter) : (() => { const w = unitLocalToWorld(cfg, uu, (rnd() - 0.5) * Math.max(0, unitLength(uid) - 1.5), G.standOff + jitter); return { ...w, walkway: sp.units[uid]?.walkway ?? null }; })();
-      const rotY = uu ? unitFrame(cfg, uu).rotY : 0;
-      return at ? { slot, at, area: areaOf(sp, uid), dept: sp.units[uid]?.dept ?? 'grocery', twin: slot !== own, face: Math.atan2(-Math.sin(rotY), -Math.cos(rotY)) } : null;
-    }).filter((c): c is Cand => !!c);
-  });
-  const todo = new Set(evs.map((_, i) => i).filter((i) => cands[i].length));
+    if (!u || !sp.units[unit]) continue;
+    const at = standPoint(cfg, plan, e.slot, e.product || null, jitter); if (!at) continue;
+    const p = sp.units[unit], c = Math.cos(p.rotY), s = Math.sin(p.rotY);
+    const lx = (at.x - p.x) * c - (at.z - p.z) * s; // along-run coordinate
+    let st0 = stops.get(unit);
+    if (!st0) {
+      const cat = plan[slot]?.category ?? u.category;
+      const tw = ai ? [] : (st.twins.get(cat) ?? []).map((x) => parseSlot(x).unit).filter((x) => x !== unit && sp.units[x]).slice(0, 4);
+      st0 = { unit, evs: [], dept: p.dept, area: areaOf(sp, unit), twins: tw };
+      stops.set(unit, st0);
+    }
+    st0.evs.push({ e, slot, at, lx });
+  }
+  const unitCentre = (id: string) => { const p = sp.units[id]; return { x: p.x + Math.sin(p.rotY) * G.standOff, z: p.z + Math.cos(p.rotY) * G.standOff }; };
+  const todo = new Set(stops.keys());
   // big shop: produce first, then the racetrack in rank order, or the other way round (reverse) for half the shoppers
   const rr = (dept: string) => { const r = rankOf(dept); return reverse && r > 1 ? 100 - r : r; };
-  const minRank = () => Math.min(...[...todo].map((i) => rr(cands[i][0].dept)));
   while (todo.size) {
-    let best: { i: number; c: Cand; cost: number } | null = null;
-    const r0 = mission === 'big_shop' ? minRank() : 0;
-    for (const i of todo) for (const c of cands[i]) {
-      const d = Math.hypot(c.at.x - cur.x, c.at.z - cur.z);
-      let cost = d + ROUTE.congCost * congAt(st, c.area, t + d / speed) + (c.twin ? ROUTE.twinCost : 0) + rnd() * 0.8;
-      if (mission === 'meal_deal') cost += ROUTE.mealRankCost * mealDealRank(c.dept);
-      else if (mission === 'big_shop') cost += ROUTE.rankCost * Math.max(0, rr(c.dept) - r0);
-      if (!best || cost < best.cost) best = { i, c, cost };
+    let best: { stop: Stop; unit: string; cost: number } | null = null;
+    const r0 = mission === 'big_shop' ? Math.min(...[...todo].map((k) => rr(stops.get(k)!.dept))) : 0;
+    for (const key of todo) {
+      const stp = stops.get(key)!;
+      for (const uid of [stp.unit, ...stp.twins]) {
+        const c = unitCentre(uid);
+        const d = Math.hypot(c.x - cur.x, c.z - cur.z);
+        let cost = d + ROUTE.congCost * congAt(st, areaOf(sp, uid), t + d / speed) + (uid !== stp.unit ? ROUTE.twinCost : 0) + rnd() * 0.8;
+        if (mission === 'meal_deal') cost += ROUTE.mealRankCost * mealDealRank(stp.dept);
+        else if (mission === 'big_shop') cost += ROUTE.rankCost * Math.max(0, rr(stp.dept) - r0);
+        if (!best || cost < best.cost) best = { stop: stp, unit: uid, cost };
+      }
     }
     if (!best) break;
-    todo.delete(best.i);
-    const e = evs[best.i];
-    moveTo(best.c.at);
-    const dwell = ai ? (e.decision === 'pick' ? DWELL.ai_pick : DWELL.ai_walk_past) : DWELL[e.decision] ?? DWELL.walk_past;
-    segs.push({ t0: t, t1: t + dwell, a: cur, b: cur, kind: 'dwell', event: e, slot: best.c.slot, face: best.c.face });
-    congAdd(st, best.c.area, t, t + dwell);
-    t += dwell;
+    todo.delete(best.stop.unit);
+    const uid = best.unit, p = sp.units[uid], u = units[uid];
+    const twin = uid !== best.stop.unit;
+    const rotY = p.rotY, face = Math.atan2(-Math.sin(rotY), -Math.cos(rotY));
+    // walk the run from the end nearest to us
+    const c = Math.cos(rotY), s = Math.sin(rotY);
+    const myLx = (cur.x - p.x) * c - (cur.z - p.z) * s;
+    const list = best.stop.evs.slice().sort((a, b) => (myLx < 0 ? a.lx - b.lx : b.lx - a.lx));
+    const half = Math.max(0, p.len / 2 - 0.5);
+    const t0 = t;
+    list.forEach((ev, i) => {
+      // on a twin unit, spread the stops along its run in the same order (visual only)
+      const at: WP = twin ? { ...unitLocalToWorld(cfg, u, (list.length > 1 ? i / (list.length - 1) - 0.5 : 0) * 2 * half * (myLx < 0 ? 1 : -1), G.standOff + jitter), walkway: p.walkway } : ev.at;
+      if (i === 0) moveTo(at); else step(at);
+      const e = ev.e;
+      const dwell = ai ? (e.decision === 'pick' ? DWELL.ai_pick : DWELL.ai_walk_past) : DWELL[e.decision] ?? DWELL.walk_past;
+      segs.push({ t0: t, t1: t + dwell, a: cur, b: cur, kind: 'dwell', event: e, slot: twin ? `${uid}-r${parseSlot(ev.slot).row}` : ev.slot, face });
+      t += dwell;
+    });
+    congAdd(st, areaOf(sp, uid), t0, t);
   }
   // finish in the front cross aisle, spread along the bank
   const fx = Math.max(sp.bank.x0, Math.min(sp.bank.x1, cur.x + (lane - 0.5) * 6));
