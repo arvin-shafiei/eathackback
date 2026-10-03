@@ -294,6 +294,10 @@ def simulate_agent(a, ctx):
 
 def apply_decision(out, noticed, slot_events, catalog, src, reads_labels):
     codes = [c for c, _, _ in noticed]
+    if isinstance(out, list):  # some models wrap the JSON object in a list
+        out = next((o for o in out if isinstance(o, dict)), {})
+    if not isinstance(out, dict):
+        out = {}
     dec = str(out.get("decision", "walk_past")).lower().strip()
     if dec not in prompts.DECISIONS:
         dec = "walk_past"
