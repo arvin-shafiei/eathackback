@@ -159,7 +159,7 @@ export function RearrangePanel(props: RearrangeProps) {
                   </div>
                 </>
               )}
-              {moving > 0 && <p className="ra-moving" role="status">moving {plural(moving, 'product')}…</p>}
+              {moving > 0 && <p className="ra-moving" role="status">shuffling {plural(moving, 'shelf spot')}…</p>}
             </section>
             <TopMoves moves={shown} total={moves.length} sel={sel} all={allArrows} onAll={setAllArrows} onPick={pick} onAnalytics={props.onPickProduct} />
             <div className="ra-btns">

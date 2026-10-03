@@ -11,7 +11,7 @@ interface Props {
   cfg: StoreConfig; planogram: Planogram; products: Record<string, Product>;
   gaps: Record<string, [number, number][]>; timeRef: MutableRefObject<number>; live: boolean;
   selectedProduct: string | null; onProduct: (code: string) => void; editMode: boolean; onSlot: (slot: string) => void;
-  lodDistance?: number; decor?: boolean;
+  lodDistance?: number; decor?: boolean; highlightMoves?: boolean;
 }
 
 export function Shelves(p: Props) {

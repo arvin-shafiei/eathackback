@@ -196,6 +196,8 @@ export interface SceneProps {
   cam: CamMode; camNonce: number; onBackground: () => void; onIntroDone: () => void; onUserCamera: () => void;
   /** both optional, like Ops' own props: undefined lets the ops layer load its day and clock itself */
   ops?: OpsDay | null; clockStart?: number;
+  /** rearrange mode: products moved by the last planogram switch pulse */
+  highlightMoves?: boolean;
 }
 
 /** perf: App re-renders ~8x/s (clock readout, bonk counter) with fresh inline callbacks. The 3D tree must not
@@ -241,7 +243,7 @@ const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>
           <Store cfg={p.cfg} planogram={p.planogram} products={p.products} onProduct={p.onProduct} editMode={p.editMode} editSel={p.editSel} onSlot={p.onSlot} changed={p.changed} heat={p.heat} />
           <TrafficHeat cfg={p.cfg} timelines={p.timelines} on={!!p.ownerHeat} lastMinutes={p.ownerHeatMin ?? null} timeRef={p.timeRef} minLevel={p.ownerHeatLevel ?? 0} />
-          <Shelves cfg={p.cfg} planogram={p.planogram} products={p.products} gaps={beats.gaps} timeRef={p.timeRef} live={!p.editMode} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} onSlot={p.onSlot} />
+          <Shelves cfg={p.cfg} planogram={p.planogram} products={p.products} gaps={beats.gaps} timeRef={p.timeRef} live={!p.editMode} selectedProduct={p.selectedProduct} onProduct={p.onProduct} editMode={p.editMode} onSlot={p.onSlot} highlightMoves={p.highlightMoves} />
           <Ops cfg={p.cfg} ops={p.ops} timeRef={p.timeRef} clockStart={p.clockStart} planogram={p.replayPlan} products={p.products} live={!p.editMode} />
           {!p.editMode && (
             <Crowd cfg={p.cfg} agents={p.agents} timelines={p.timelines} beats={beats} timeRef={p.timeRef} personas={p.personas} products={p.products}

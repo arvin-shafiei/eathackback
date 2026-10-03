@@ -353,7 +353,7 @@ export default function App() {
     <div className={`app mode-${mode} ${intro ? 'is-intro' : ''}`}>
       <div className="stage">
         <Scene
-          cfg={data.config} planogram={mode === 'edit' ? plan : mode === 'rearrange' && preview ? preview : basePlan} replayPlan={basePlan} products={products} personas={personas}
+          cfg={data.config} planogram={mode === 'edit' ? plan : mode === 'rearrange' && preview ? preview : basePlan} replayPlan={basePlan} products={products} personas={personas} highlightMoves={mode === 'rearrange'}
           agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && (mode === 'replay' || mode === 'compare')} speed={speed} duration={duration}
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
@@ -472,7 +472,7 @@ export default function App() {
         <RearrangePanel run={run} planogram={basePlan} cfg={data.config} products={products} extraProducts={run.catalog_inline ?? []}
           focus={focus ?? undefined} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy} onPreview={setPreview}
           onPickProduct={(code) => { setFocus(code); setMode('insights'); }} onClose={() => setMode('replay')}
-          onApplyPlanogram={(p, label) => { setPreview(null); void simulate(p, run.catalog_inline ?? [], label); }} />
+          onApplyPlanogram={(p, label) => { void simulate(p, run.catalog_inline ?? [], label); }} />
       )}
       {mode === 'customer' && (
         <CustomerPanel planogram={basePlan} cfg={data.config} products={products} runAgents={run?.agents} runId={run?.run_id}

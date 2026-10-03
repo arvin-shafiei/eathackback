@@ -10,13 +10,14 @@
 //   shelfStock / resetShelves / onShelfChange
 // Without those calls the shelves fall back to the replay's pick gaps (beats.gaps) and the ops log stock share.
 // Visual only: nothing here feeds a stat.
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import type { Planogram, Product, StoreConfig, Unit } from '../types';
 import { G, parseSlot, rowGap, rowY, shelfSlotFor, slotPlacements, storePlan, unitFrame, unitLength } from '../layout';
 import { CHILLED, catColor } from '../theme';
 import { bus } from './fx';
+import { MoveFxLayer, moveFx } from './MoveFx';
 import { registerShelf } from './shelfBus';
 import { PackAtlas, packBoxGeometry, packColor, packMaterial, packUniforms, tagPlaneGeometry } from './textures';
 
@@ -78,13 +79,15 @@ interface Stack { lx: number; y: number }
 interface Group {
   key: string; unitId: string; page: number; centre: THREE.Vector3;
   near: THREE.InstancedMesh; far: THREE.InstancedMesh; nearRecs: Rec[]; farRecs: Rec[];
-  nearTile: THREE.InstancedBufferAttribute; farTile: THREE.InstancedBufferAttribute; farTint: THREE.InstancedBufferAttribute; dirty: boolean;
+  nearTile: THREE.InstancedBufferAttribute; nearTint: THREE.InstancedBufferAttribute; farTile: THREE.InstancedBufferAttribute; farTint: THREE.InstancedBufferAttribute; dirty: boolean;
 }
 interface Rec {
   key: string; slot: string; code: string; unit: Unit; base: THREE.Matrix4; rotY: number;
   w: number; h: number; d: number; D: number; cols: number; layers: number; runL: number; runW: number; y0: number; back: number;
   stacks: Stack[]; total: number; idx: number; group: Group; nearStart: number; farIdx: number;
   removed: number; manualApplied: number; popT: number;
+  /** fridge glow (aTint.w) to fall back to after the moved-pack pulse */
+  cold: number;
   /** overstock filler on a slot the planogram left empty (visual only, never resolved by code alone) */
   fill?: boolean;
 }
@@ -275,7 +278,7 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
       const proto: Proto = {
         key: `${slot}|${p.code}`, slot, code: p.code, fill, unit: u, base: ub.base, rotY: ub.rotY,
         w, h, d, D, cols, layers, runL, runW, y0, back: FRONT - D * d, stacks, total: stacks.length * D, idx: cell.idx,
-        removed: 0, manualApplied: 0, popT: -1, page: cell.page, tint: new THREE.Color(packColor(prod)).multiplyScalar(0.82), glow: cold, cell,
+        removed: 0, manualApplied: 0, popT: -1, cold, page: cell.page, tint: new THREE.Color(packColor(prod)).multiplyScalar(0.82), glow: cold, cell,
       };
       slotProtos.push(proto); protos.push(proto);
       const tw = Math.min(runW - 0.02, 0.13), th = tw * (atlas.tagH / atlas.cellW);
@@ -305,7 +308,7 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
       return { m, cell, tint, tile };
     };
     const N = mk(nN), F = mk(nF);
-    const grp: Group = { key, unitId: list[0].unit.id, page: list[0].page, centre: new THREE.Vector3(), near: N.m, far: F.m, nearRecs: [], farRecs: [], nearTile: N.tile, farTile: F.tile, farTint: F.tint, dirty: true };
+    const grp: Group = { key, unitId: list[0].unit.id, page: list[0].page, centre: new THREE.Vector3(), near: N.m, far: F.m, nearRecs: [], farRecs: [], nearTile: N.tile, nearTint: N.tint, farTile: F.tile, farTint: F.tint, dirty: true };
     let i = 0;
     list.forEach((p, fi) => {
       const { page: _pg, tint, glow, cell, ...rest } = p; void _pg;
@@ -352,6 +355,83 @@ function build(cfg: StoreConfig, planogram: Planogram, products: Record<string, 
   return { groups, recs, dividers, strips: stripMesh, tags: tagMeshes, geoms, mats: [divMat, stripMat] };
 }
 
+
+// ------------------------------------------------------------------ rearrangement flights (visual only)
+// When the planogram switches (rearrange preview on/off, apply), every product whose run changed place flies from its
+// old spot to the new one: lift, arc (higher for longer hops), a tumble, then a squash-and-stretch landing. The real
+// pack instances are moved (no proxies), so pack art and LOD stay right. Unmoved products never touch their matrices.
+interface Pose { p: THREE.Vector3; q: THREE.Quaternion; s: THREE.Vector3 }
+interface Flight {
+  r: Rec; delay: number; dur: number; h: number; axis: THREE.Vector3;
+  near: { j: number; a: Pose; b: Pose; d: number }[]; far: { a: Pose; b: Pose };
+  dest: THREE.Vector3; br: number; landed: boolean; done: boolean;
+}
+const LAND = 0.5;
+const pose = (m: THREE.Matrix4): Pose => { const o = { p: new THREE.Vector3(), q: new THREE.Quaternion(), s: new THREE.Vector3() }; m.decompose(o.p, o.q, o.s); return o; };
+const stackN = (r: Rec, j: number) => r.D - Math.min(r.D, Math.max(0, r.removed - j * r.D));
+const runCentre = (r: Rec) => new THREE.Vector3(r.runL + r.runW / 2, r.y0 + (r.layers * r.h) / 2, r.back + (r.D * r.d) / 2).applyMatrix4(r.base);
+
+/** flights from the previous build's recs to the new ones; [] when nothing moved or the store itself changed */
+function planFlights(prev: Rec[], next: Rec[], camPos: THREE.Vector3): Flight[] {
+  const old = new Map<string, Rec>(), oldBy = new Map<string, Rec[]>();
+  for (const r of prev) if (!r.fill) { old.set(r.key, r); (oldBy.get(r.code) ?? oldBy.set(r.code, []).get(r.code)!).push(r); }
+  const used = new Set<Rec>();
+  const pairs: [Rec, Rec][] = [];
+  for (const r of next) {
+    if (r.fill) continue;
+    let o = old.get(r.key);
+    if (o && used.has(o)) o = undefined;
+    if (!o) o = oldBy.get(r.code)?.find((x) => !used.has(x));
+    if (!o) continue;
+    used.add(o);
+    const same = o.slot === r.slot && Math.abs(o.runL - r.runL) < 0.01 && Math.abs(o.runW - r.runW) < 0.01 && o.stacks.length === r.stacks.length && o.unit.id === r.unit.id;
+    if (!same) pairs.push([o, r]);
+  }
+  if (!pairs.length || pairs.length > 1500) return [];
+  // ripple: the hop nearest the camera goes first, the rest follow by distance from it
+  const dests = pairs.map(([, r]) => runCentre(r));
+  let oi = 0, best = Infinity;
+  dests.forEach((d, i) => { const k = d.distanceToSquared(camPos); if (k < best) { best = k; oi = i; } });
+  const origin = dests[oi];
+  return pairs.map(([o, r], i) => {
+    const dest = dests[i];
+    const dist = runCentre(o).distanceTo(dest);
+    const near = r.stacks.map((st, j) => {
+      const os = o.stacks[j % o.stacks.length];
+      const a = pose(stackMatrix(o, os, o.D)), b = pose(stackMatrix(r, st, Math.max(1, stackN(r, j))));
+      return { j, a, b, d: j * 0.035 + Math.random() * 0.05 };
+    });
+    return {
+      r, delay: Math.min(1.4, origin.distanceTo(dest) * 0.045) + Math.random() * 0.12,
+      dur: 1.2 + Math.min(0.6, dist * 0.05), h: 0.35 + Math.min(3.2, dist * 0.22),
+      axis: new THREE.Vector3(Math.random() - 0.5, Math.random() * 0.4, Math.random() - 0.5).normalize(),
+      near, far: { a: pose(farMatrix(o, o.total)), b: pose(farMatrix(r, Math.max(1, r.total - r.removed))) },
+      dest, br: Math.max(0.22, Math.min(0.75, Math.max(r.runW, r.layers * r.h) * 0.62)), landed: false, done: false,
+    };
+  });
+}
+const _fp = new THREE.Vector3(), _fq = new THREE.Quaternion(), _fs = new THREE.Vector3(), _fspin = new THREE.Quaternion(), _fm = new THREE.Matrix4();
+/** matrix of one flying pack at local time k (seconds since its own start) */
+function flyMatrix(f: Flight, a: Pose, b: Pose, k: number): THREE.Matrix4 {
+  if (k <= 0) return _fm.compose(a.p, a.q, a.s);
+  const u = Math.min(1, k / f.dur);
+  const e = u < 0.5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
+  _fp.lerpVectors(a.p, b.p, e); _fp.y += f.h * 4 * u * (1 - u);
+  _fq.slerpQuaternions(a.q, b.q, e).multiply(_fspin.setFromAxisAngle(f.axis, Math.PI * 2 * e));
+  _fs.lerpVectors(a.s, b.s, e);
+  if (u < 1) {
+    // anticipation squash at lift-off, stretch along the arc
+    const st = u < 0.08 ? -Math.sin((u / 0.08) * Math.PI) * 0.18 : Math.sin(u * Math.PI) * 0.22;
+    _fs.y *= 1 + st; _fs.x *= 1 - st * 0.45; _fs.z *= 1 - st * 0.45;
+  } else {
+    const L = (k - f.dur) / LAND;
+    const sq = Math.sin(L * Math.PI * 2.6) * Math.exp(-L * 4.2) * 0.38;
+    _fs.y *= 1 - sq; _fs.x *= 1 + sq * 0.5; _fs.z *= 1 + sq * 0.5;
+    _fp.y -= (b.s.y * sq) / 2;
+  }
+  return _fm.compose(_fp, _fq, _fs);
+}
+
 // ------------------------------------------------------------------ component
 export interface ShelfFillProps {
   cfg: StoreConfig; planogram: Planogram; products: Record<string, Product>;
@@ -363,9 +443,11 @@ export interface ShelfFillProps {
   lodDistance?: number;
   /** shelf-edge strips, price tags and dividers (turn off if Store draws its own) */
   decor?: boolean;
+  /** rearrange mode: products that moved in the last planogram switch pulse (glow) */
+  highlightMoves?: boolean;
 }
 
-export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selectedProduct, onProduct, editMode, onSlot, lodDistance = 46, decor = true }: ShelfFillProps) {
+export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selectedProduct, onProduct, editMode, onSlot, lodDistance = 46, decor = true, highlightMoves = false }: ShelfFillProps) {
   const camera = useThree((s) => s.camera);
   // the atlas survives planogram edits (same products, new places); rebuilt when the catalogue changes
   const atlasKit = useMemo(() => {
@@ -401,6 +483,33 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     };
   }, [built, planogram]);
 
+  // ---- rearrangement flights + bubbles
+  const fx = useMemo(() => new MoveFxLayer(), []);
+  useEffect(() => () => fx.dispose(), [fx]);
+  const prevBuilt = useRef<{ built: Built; kit: typeof atlasKit } | null>(null);
+  const flights = useRef<{ list: Flight[]; t0: number; replay: number }>({ list: [], t0: -1, replay: moveFx.replayNonce });
+  const glowSet = useRef(new Set<Rec>());
+  useLayoutEffect(() => {
+    const prev = prevBuilt.current;
+    prevBuilt.current = { built, kit: atlasKit };
+    if (!prev || prev.built === built || prev.kit !== atlasKit) return;
+    const list = planFlights(prev.built.recs, built.recs, camera.position);
+    // a new switch mid-flight: older flights belong to recs that no longer exist
+    flights.current = { list, t0: -1, replay: moveFx.replayNonce };
+    for (const g of built.groups) { g.near.frustumCulled = !list.length; g.far.frustumCulled = !list.length; }
+    glowSet.current = new Set(list.map((f) => f.r));
+    if (list.length) {
+      const per = new Map<string, number>();
+      for (const f of list) per.set(f.r.unit.id, (per.get(f.r.unit.id) ?? 0) + 1);
+      const busiest = [...per].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+      moveFx.last = { moved: list.length, busiest, at: performance.now() };
+      moveFx.emit();
+    }
+  }, [built, atlasKit, camera]);
+  const fly = useRef<{ nonce: number; t0: number; pos: THREE.Vector3; tgt: THREE.Vector3 } | null>(null);
+  const flyNonce = useRef(moveFx.flyNonce);
+
+  const glowOn = useRef(false);
   const lastV = useRef(-1), lastSig = useRef(''), lastAvg = useRef(-1), lastAvgT = useRef(-1);
   // perf: every gap start/end time, sorted. The hidden set can only change when t crosses one of these, so the
   // per-frame check is a binary search instead of a walk over every product's gaps.
@@ -420,8 +529,9 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
     scene.onBeforeRender = (...a) => { camera.position.set(pin[0], pin[1], pin[2]); camera.lookAt(pin[3], pin[4], pin[5]); camera.updateMatrixWorld(); prev.apply(scene, a); };
     return () => { scene.onBeforeRender = prev; };
   }, [pin, scene, camera]);
-  useFrame((state) => {
+  useFrame((state, dt) => {
     const now = state.clock.elapsedTime, t = timeRef.current;
+    let busy = false;
     packUniforms.uTime.value = now;
     packUniforms.uSel.value = selectedProduct ? atlasKit.atlas.cell(selectedProduct)?.idx ?? -1 : -1;
     atlasKit.atlas.tick(now);
@@ -470,10 +580,67 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
         } else if (want !== r.removed) applyRec(r, want);
       }
     }
+    // rearrangement flights (after stock, so they win this frame)
+    const F = flights.current;
+    if (F.replay !== moveFx.replayNonce) {
+      F.replay = moveFx.replayNonce; F.t0 = -1;
+      for (const f of F.list) { f.landed = false; f.done = false; }
+      for (const g of built.groups) { g.near.frustumCulled = false; g.far.frustumCulled = false; }
+    }
+    if (F.list.length && F.list.some((f) => !f.done)) {
+      busy = true;
+      if (F.t0 < 0) F.t0 = now;
+      let left = 0;
+      for (const f of F.list) {
+        if (f.done) continue;
+        const k = now - F.t0 - f.delay, r = f.r, g = r.group;
+        for (const st of f.near) {
+          if (stackN(r, st.j) <= 0) continue;
+          g.near.setMatrixAt(r.nearStart + st.j, flyMatrix(f, st.a, st.b, k - st.d));
+        }
+        g.far.setMatrixAt(r.farIdx, flyMatrix(f, f.far.a, f.far.b, k));
+        g.dirty = true;
+        if (!f.landed && k >= f.dur) { f.landed = true; fx.pop(f.dest.x, f.dest.y, f.dest.z, f.br, now); }
+        const lastD = f.near.length ? f.near[f.near.length - 1].d : 0;
+        if (k >= f.dur + LAND + lastD) { f.done = true; applyRec(r, r.removed); } else left++;
+      }
+      if (!left) for (const g of built.groups) { g.near.frustumCulled = true; g.far.frustumCulled = true; }
+    }
+    // moved products pulse while the rearrange panel is open (aTint.w drives the shader's glow)
+    const glowing = highlightMoves && glowSet.current.size > 0;
+    if (glowing || glowOn.current) {
+      const w = glowing ? 0.9 + Math.sin(now * 4.5) * 0.8 : 0;
+      for (const r of glowSet.current) {
+        const g = r.group, v = Math.max(r.cold, w);
+        for (let j = 0; j < r.stacks.length; j++) g.nearTint.setW(r.nearStart + j, v);
+        g.farTint.setW(r.farIdx, v);
+        g.nearTint.needsUpdate = true; g.farTint.needsUpdate = true;
+      }
+      glowOn.current = glowing; busy ||= glowing;
+    }
+    // camera fly requested by the panel (show me where / a move row)
+    if (flyNonce.current !== moveFx.flyNonce && moveFx.fly) {
+      flyNonce.current = moveFx.flyNonce;
+      const q = moveFx.fly, dist = q.dist ?? 5.2;
+      const tgt = new THREE.Vector3(q.x, q.y, q.z);
+      const pos = tgt.clone().add(new THREE.Vector3(q.fx, 0, q.fz).normalize().multiplyScalar(dist)); pos.y = Math.min(2.2, Math.max(1.5, q.y + 0.7 + dist * 0.08));
+      fly.current = { nonce: moveFx.flyNonce, t0: now, pos, tgt };
+    }
+    const controls = state.controls as unknown as { target: THREE.Vector3; update: () => void } | null;
+    if (fly.current && controls) {
+      const k = (now - fly.current.t0) / 1.6;
+      const a = 1 - Math.exp(-Math.min(dt, 0.05) * 4.5);
+      camera.position.lerp(fly.current.pos, a); controls.target.lerp(fly.current.tgt, a * 1.3); controls.update();
+      busy = true;
+      if (k >= 1) fly.current = null;
+    }
+    fx.tick(now);
+    busy ||= fx.animating;
     for (const g of built.groups) if (g.dirty) {
       g.dirty = false;
       g.near.instanceMatrix.needsUpdate = true; g.far.instanceMatrix.needsUpdate = true; g.nearTile.needsUpdate = true;
     }
+    if (busy) state.invalidate();
   });
 
   const click = (e: ThreeEvent<MouseEvent>) => {
@@ -498,6 +665,9 @@ export function ShelfFill({ cfg, planogram, products, gaps, timeRef, live, selec
       {decor && <primitive object={built.strips} />}
       {decor && built.tags.map((m, i) => <primitive key={i} object={m} />)}
       {decor && <primitive object={built.dividers} />}
+      <primitive object={fx.bubbles} />
+      <primitive object={fx.sparks} />
+      <primitive object={fx.arrows} />
     </group>
   );
 }
