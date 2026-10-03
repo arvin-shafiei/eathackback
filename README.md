@@ -18,6 +18,18 @@ RGC's judges say *"a number that cannot be traced back to its source is worse th
 
 EPOS records the sale. It never sees the shopper who noticed a product, picked it up and put it back. **simsbury** (same shelf, two shoppers) is a 3D supermarket stocked with real UK products from Open Food Facts and walked by synthetic shoppers. Each shopper is grounded in 10,642 coded Reddit comments, published shelf-effect research and Big Five traits. Code decides what each shopper *notices*: shelf row, facings, centrality and mission, using a literature-calibrated logit. **TypeSafe Jev** then returns calibrated probabilities for *pick up → put back or take*, and for which of the shopper's rejection triggers fired. Every number clicks through to a paper, a Reddit thread, an Open Food Facts field, a Jev distribution or a labelled assumption. The tool gives brands a funnel diagnosis and legal pack-claim tests, and gives retailers an HFSS-aware layout optimiser. An AI-agent arm checks how a machine shopper reads the same range. **The non-obvious finding:** once noticed, challengers are picked up as often as incumbents but kept less often. They lose *in the hand*, at a stage EPOS can't see.
 
+## three services (one engine)
+
+Built for **small and independent supermarkets** that can't afford a dunnhumby-style insight team:
+
+| for | the question | what simsbury does |
+|---|---|---|
+| 🏷️ **brands** | "Do shoppers look at my product, pick it up, then put it back or take it, and why?" | A per-product funnel (look → pick up → put back / take) by shopper type, showing the stage where the product loses people and the reason with its source. Plus a pack test using only true claims, and a shelf-placement search. |
+| 🏪 **store owners** | "Where does it get congested, which shelf and which neighbours should a product go on, and what should I move?" | A traffic heatmap with congestion hotspots and dead zones, top / eye / bottom shelf guidance from the sourced notice model, adjacency tips from products bought together, and a rearrange plan you can test with simulated shoppers before applying it. |
+| 🧺 **shoppers** | "The store keeps moving things, so where's my stuff, and what's new that I'd actually like?" | It logs what a new customer bought and builds their persona: likes, avoids and shopper type. Health traits are only used when the customer declares them. Their next visit gets a short route to their usual items wherever they've moved, plus **one** new item they'd probably like. |
+
+Click any shopper, human or AI agent, to see **what it's thinking** (the recorded Jev probabilities), **what it's about to buy** and **what's in its trolley**.
+
 ## what's real vs simulated
 
 - **REAL (TypeSafe Jev, calibrated):**
