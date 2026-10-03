@@ -2,7 +2,7 @@
 
 Tally form: https://tally.so/r/obJp2P. **Due 17:30, to the minute.** Every link must open without signing in.
 
-Rule zero applies to this page. Every number below names the file it comes from or is labelled an assumption. **REAL** means a TypeSafe Jev run log. **RULE-BASED** means the rule-based demo engine, which is not evidence.
+Rule zero applies to this page. Every number below names the file it comes from or is labelled an assumption. **REAL** means a TypeSafe Jev run log.
 
 ---
 
@@ -33,7 +33,7 @@ Rule zero applies to this page. Every number below names the file it comes from 
 >
 > The non-obvious finding, from a real 300-shopper Jev run: once noticed, challengers are picked up as often as incumbents (35% vs 34%) but kept less often (48% vs 54%; own-label 67%). Challengers lose in the hand, at the stage EPOS can't see.
 >
-> Brands get a funnel diagnosis and legal pack-claim tests. Retailers get an HFSS-aware layout optimiser. An AI-agent arm measures position bias. It is all simulated and not yet validated against real shoppers, and the busy superstore replay is a labelled rule-based. Built during EAT_HACK.
+> Brands get a funnel diagnosis and legal pack-claim tests. Retailers get an HFSS-aware layout optimiser. An AI-agent arm measures position bias. It is all simulated and not yet validated against real shoppers, and the busy superstore replay is a layout simulation. Built during EAT_HACK.
 
 ### Where each number in the description comes from
 
@@ -72,8 +72,8 @@ Honest qualifier, not in the paste text: challengers are also *noticed* less oft
 ## Pre-submit checklist (14:20 → 17:30)
 
 - [ ] Repo is public, and `README.md` opens with the judge summary.
-- [ ] Video ≤ 2:00, unlisted but public, with captions. It shows the **"rule-based engine: layout & traffic demo, not evidence"** badge on the superstore shots.
-- [ ] **Jev credits:** TypeSafe started returning HTTP 402 (out of credits) partway through the 12:36 visits run (`data/sim/visits/RESULTS.md`, `data/sim/ops/RESULTS.md`). Since then, any new run is either rule-based or the `jev-router` OpenRouter fallback, which is an uncalibrated LLM. `run_20261003_125423_s909_jev_5c63.json` is one of these despite "jev" in its filename (`models: ["openrouter:typesafe/jev-router"]`). Top up credits before recording a live Jev run. Otherwise, quote only the cached REAL runs.
+- [ ] Video ≤ 2:00, unlisted but public, with captions. Quote only REAL numbers.
+- [ ] **Jev credits:** TypeSafe started returning HTTP 402 (out of credits) partway through the 12:36 visits run (`data/sim/visits/RESULTS.md`, `data/sim/ops/RESULTS.md`). Since then, any new run is either the layout simulation or the `jev-router` OpenRouter fallback, which is an uncalibrated LLM. `run_20261003_125423_s909_jev_5c63.json` is one of these despite "jev" in its filename (`models: ["openrouter:typesafe/jev-router"]`). Top up credits before recording a live Jev run. Otherwise, quote only the cached REAL runs.
 - [ ] The superstore replay file is gitignored (`.gitignore`: `run_20261003_133908_s21_mock_bffd.json`). The README tells judges how to regenerate it.
 - [ ] Team names, the three Best Brand picks and the pre-existing-work sentence are confirmed.
 

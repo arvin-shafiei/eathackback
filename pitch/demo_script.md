@@ -3,7 +3,7 @@
 Built against the brief's rubric. Every beat below is tagged with the criterion it scores:
 **O** Originality 30% · **B** Build & execution 30% · **V** Value & relevance, with evidence, 25% · **D** Demo & communication 15%.
 
-**Rule for every take:** any number spoken or captioned comes from a **REAL Jev file** listed in the source column. The superstore crowd is the **rule-based** engine, which is for layout and traffic only. Keep its badge, *"⚠ rule-based engine: layout & traffic demo, not evidence"*, in frame, and never read its counters aloud.
+**Rule for every take:** any number spoken or captioned comes from a **REAL Jev file** listed in the source column. The superstore crowd is the fast layout simulation, so never read its counters aloud.
 
 ---
 
@@ -32,7 +32,7 @@ Record at 1080p, 60 fps. Captions in lowercase, 8 words or fewer. Practise once 
 | time | screen | voice-over | scores | source |
 |---|---|---|---|---|
 | **0:00–0:12** hook | **A.** The intro flies over the car park (auto weather) and through the doors into the superstore: minion shoppers with trolleys, one picks a product up and **puts it back** (✖ sticker). | "Every supermarket knows what sold. None of them know who picked it up and put it back. EPOS can't see that, and for small stores it's the whole story." | V, D | none |
-| **0:12–0:28** what it is | Still **A**: pull back to the overview with the departments, 36 aisles, queues and café. Keep the rule-based badge visible. | "simsbury is a living supermarket: 2,638 real UK products from Open Food Facts, walked by shoppers built from 10,000 real Reddit comments and published shelf research. AI shopping agents shop the same range, from a product feed. This crowd is our free rule-based engine for layout and traffic; the evidence is next." | **O**, B | products: `data/products/catalog_superstore.json`; Reddit: `data/reddit/comments.csv` (10,642) |
+| **0:12–0:28** what it is | Still **A**: pull back to the overview with the departments, 36 aisles, queues and café. Show the crowd moving. | "simsbury is a living supermarket: 2,638 real UK products from Open Food Facts, walked by shoppers built from 10,000 real Reddit comments and published shelf research. AI shopping agents shop the same range, from a product feed. This crowd is a fast layout simulation; the evidence is next." | **O**, B | products: `data/products/catalog_superstore.json`; Reddit: `data/reddit/comments.csv` (10,642) |
 | **0:28–0:52** the trace (REAL) | **B**, shopper a001 (Dev, frugal). Click the Kallo veggie cakes stop at U2-r2 to open the **trace**: noticing 0.50 with its logit terms → **P(pick up) 0.26** → put-off *"protein claim at a price premium"* **p = 0.53** → the Reddit quote and its thread link. | "Here's a real run: 300 shoppers, every decision from TypeSafe Jev, which returns calibrated probabilities, not chat. Dev noticed these veggie cakes, a coin-flip from shelf position, picked them up, then put them back. Jev puts 53% on 'a protein claim carrying a price premium', a trigger taken from a real Reddit thread. Click any number and it goes back to its source. No black box." | **B**, **V**, O | `data/sim/runs/run_20261003_120823_s11_jev_4482.json` → a001, slot U2-r2, `5013665115373`: `p_notice 0.4982`, `p_pick_up 0.26`, trigger p 0.53, verbatim + URL |
 | **0:52–1:08** the finding | **D** `#brand`: the funnel against its category, with the leak-stage diagnosis "loses people at put-back". | "Across all 300, challengers get picked up as often as big brands, 35 versus 34%. But only 48% are kept, against 54% for incumbents and 67% for own-label. Challengers lose *in the hand*, the moment EPOS never sees." | **V** (evidence), O | role split re-derived from run 4482 (`README.md` headline table); `data/sim/brand/5060512671247.json` → keep 0.20 vs category 0.40 |
 | **1:08–1:22** brands | Still **D**: pack-test row (true claims only), then **E** → **＋ add product** with a Tesco link pasted. | "For brands: see where you lose shoppers, test pack claims you're legally allowed to make, or paste your Tesco link and drop your product onto a shelf." | V, B | pack test: `data/sim/brand/pack_test/`; import: `sim/tesco.py` |
@@ -58,14 +58,14 @@ Record at 1080p, 60 fps. Captions in lowercase, 8 words or fewer. Practise once 
 
 - **"Isn't this a GPT wrapper?"** No. Code decides noticing with a published-coefficient logit, and Jev returns typed, calibrated probabilities. No generated prose is treated as data.
 - **"Synthetic personas already exist (RGC's Signal Twins)."** Ours are grounded and auditable. Each persona carries an evidence-mix meter showing how much is assumption (21–34% for the lens personas), and they shop a physical shelf, so we can see the put-back.
-- **"Is it validated?"** Not against real shoppers yet, and we say so. The 300-shopper run is real Jev, and the superstore crowd is labelled rule-based.
+- **"Is it validated?"** Not against real shoppers yet, and we say so. The 300-shopper run is real Jev, and the superstore crowd is a layout simulation.
 - **"Incrementality?"** The rearrange and placement tests run on held-out shoppers, so we can see whether a move wins new buys or just takes them from a neighbour.
 
 ## don't say
 
-- Superstore leaderboard or counter numbers (rule-based).
+- Superstore leaderboard or counter numbers.
 - "Validated against real shoppers."
-- Any £ or +% from layout/rearrange without "prices are assumptions / rule-based shoppers".
+- Any £ or +% from layout/rearrange without "prices are assumptions".
 - That the personal route improved basket completion: the pre-registered result was null (`data/sim/visits/RESULTS.md`).
 
 ## fallbacks

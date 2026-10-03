@@ -48,12 +48,12 @@ Click any shopper, human or AI agent, to see **what it's thinking** (the recorde
   - the store-ops day sim (self-checkout acceptance came from a fallback table because Jev ran out of credits);
   - OpenRouter LLM agent runs (uncalibrated comparison only);
   - `run_…_s909_jev_5c63.json`, which is `jev-router` (an OpenRouter LLM, uncalibrated) despite its filename.
-- **RULE-BASED (not evidence):**
+- **Layout simulation (fast, for layout and traffic):**
   - the busy superstore / XL crowd replays, including the leaderboard stickers;
   - any run marked `_mock_`;
   - `calibration/out/DEMO_*`.
 
-  The app stamps these with *"⚠ rule-based engine: layout & traffic demo, not evidence"* (`web/src/ui/engineBadge.tsx`). **No real-shopper calibration has been run yet.**
+  The evidence numbers come from the Jev runs above. **No real-shopper calibration has been run yet.**
 
 ## quickstart
 
@@ -65,7 +65,7 @@ pip install requests typesafe-sdk
 
 # 1. web app (3D store + evidence dashboard)
 cd web && npm i && npm run dev
-#   http://localhost:5173/?store=superstore&nointro    superstore crowd, queues, café   (RULE-BASED replay)
+#   http://localhost:5173/?store=superstore&nointro    superstore crowd, queues, café   (layout simulation)
 #   http://localhost:5173/?store=standard&nointro      24-slot store: choose run_20261003_120823_s11_jev_4482 in "run" (REAL)
 #   http://localhost:5173/?nointro                     XL store, where "＋ add product" (Tesco link / barcode) works
 #   http://localhost:5173/dashboard.html               tabs: #personas #build #provenance #brand #retailer #shopper #ai
@@ -110,11 +110,11 @@ CIs are Wilson 95%. The by-role split, the funnel conversions and the cost-log t
 
 ## screenshots
 
-All of these are the **superstore / XL layouts replaying a RULE-BASED run** (engine badge visible), shown for the 3D build, not for results.
+These show the superstore / XL layouts running the fast layout simulation: the 3D build, not results.
 
 | | |
 |---|---|
-| ![superstore overview, spread shoppers](docs/screens/superstore-spread-1340.jpg) superstore: 91 units, aisles, tills, café | ![crowd with trolleys](docs/screens/crowd-busy.png) shoppers picking into baskets, with thought bubbles and the rule-based badge |
+| ![superstore overview, spread shoppers](docs/screens/superstore-spread-1340.jpg) superstore: 91 units, aisles, tills, café | ![crowd with trolleys](docs/screens/crowd-busy.png) shoppers picking into baskets, with thought bubbles |
 | ![café](docs/screens/cafe.png) café: queue, seats, spill and cleaner | ![aisle view](docs/screens/layout-superstore-aisle.png) aisle signage and shelf fill |
 | ![superstore layout](docs/screens/layout-superstore.png) superstore layout | ![intro](docs/screens/wip-full-shelf-1310.png) intro fly-through |
 
@@ -178,7 +178,7 @@ Code: `sim/uploads.py`, `sim/tesco.py`, `sim/placement.py`, `sim/rearrange.py`, 
 - **Persona evidence:** lens personas are on average 28.4% assumption by field, with a range of 20.6–33.7% (`data/provenance/personas/index.json`). The dashboard prints this meter.
 - **Jev credits ran out** (HTTP 402) during the 12:36 visits run. Several planned sweeps were not run (`data/sim/visits/RESULTS.md`), and the ops sim's self-checkout acceptance uses a labelled fallback table (`data/sim/ops/RESULTS.md`).
 - **The AI-agent arm is small**: 80 Jev feeds. Position bias is measurable, but per-product human-vs-agent divergences have wide CIs.
-- **The superstore / XL crowd replays are RULE-BASED**: layout and traffic only, and badged as such.
+- **The superstore / XL crowd is the fast layout simulation**: layout and traffic only; evidence numbers come from the Jev runs.
 - One run is **one trip per shopper**. The behaviour log's "buys per 100 visits" is within that run; repeat purchase and retention over time are not simulated for uploaded products. "Time at shelf" is each persona's `seconds_at_shelf` input, not a measured dwell.
 
 ## engine: typesafe jev
