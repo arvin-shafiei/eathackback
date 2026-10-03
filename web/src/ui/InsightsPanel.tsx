@@ -138,9 +138,7 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
       {!!run.cost?.errors && (
         <p className="notice">{plural(run.cost.errors, 'llm call')} failed in this run. the sim logs each as a walk-past with the reason "(llm error)"; they are not shopper decisions, so every count on this page leaves them out.</p>
       )}
-      {s.ai_loaded && s.ai_sessions === 0 && (
-        <p className="notice">no ai agent was shown this product in the loaded run. there is no ai comparison for it yet.</p>
-      )}
+      {s.ai_loaded && s.ai_sessions === 0 && <p className="ins-data-note">no ai comparison for this product in the loaded run.</p>}
       {s.thin && s.human_shown > 0 && (
         <p className="notice">only {plural(s.human_shown, 'shopper')} passed it. that is too few to act on (we want {MIN_HUMAN_SHOWN}, an assumption). re-run with more shoppers.</p>
       )}
