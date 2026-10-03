@@ -50,5 +50,5 @@ export function engineOfAll(...runs: (Run | null | undefined)[]): EngineInfo | n
 export function EngineBadge({ info, className = '' }: { info: EngineInfo | null; className?: string }) {
   // rule-based runs: no on-screen badge (team decision 3 Oct). the engine stays in each event's trace, the run file and the README.
   if (!info || info.kind === 'mock') return null;
-  return <span className={`engine-badge engine-${info.kind} ${className}`} title={info.title} role="note">{info.kind === 'mock' ? '⚠ ' : ''}{info.text}</span>;
+  return <span className={`engine-badge engine-${info.kind} ${className}`} title={info.title} role="note">{info.text}</span>;
 }
