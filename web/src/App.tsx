@@ -103,7 +103,13 @@ export default function App() {
     const entry = runs.find((r) => r.run_id === runId);
     if (!entry) return;
     setRun(null);
-    loadRun(entry).then(setRun).catch((e) => setErr(`couldn't load run ${entry.file}: ${e.message}`));
+    loadRun(entry).then(setRun).catch((e) => {
+      // an indexed run whose file is not in this checkout (gitignored, not synced): drop it and open the next one
+      const rest = runs.filter((r) => r.run_id !== entry.run_id && !isAgentArm(r));
+      if (!rest.length) { setErr(`couldn't load run ${entry.file}: ${e.message}`); return; }
+      setRuns((rs) => rs.filter((r) => r.run_id !== entry.run_id));
+      setRunId((rest.find((r) => (r.agents ?? 0) >= 10) ?? rest[0]).run_id);
+    });
   }, [runId, runs, localRuns]);
   useEffect(() => {
     if (!aiRunId) { setAiRun(null); return; }
