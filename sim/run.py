@@ -26,6 +26,7 @@ sys.path.insert(0, HERE)
 
 import notice  # noqa: E402
 import prompts  # noqa: E402
+import uploads  # noqa: E402
 
 FIX = os.path.join(HERE, "fixtures")
 RUNS_DIR = os.path.join(ROOT, "data", "sim", "runs")
@@ -398,15 +399,17 @@ def compute_stats(agents, catalog):
 
 # ---------------------------------------------------------------- driver
 def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False, max_tokens=250,
-                   workers=8, only_agents=None, save=True, run_id=None, label="", catalog_patch=None):
+                   workers=8, only_agents=None, save=True, run_id=None, label="", catalog_patch=None,
+                   extra_products=None):
     models = models or [DEFAULT_MODEL]
     store, store_src = load_store()
     plan, plan_src = load_planogram(planogram)
     catalog, cat_src = load_catalog(plan)
+    catalog, uploaded = uploads.merge(catalog, extra_products, store)
     if catalog_patch:
         catalog = dict(catalog)
         for code, upd in catalog_patch.items():
-            catalog[code] = {**catalog[code], **upd}
+            catalog[code] = {**catalog.get(code, {}), **upd}
     personas, pers_src = load_personas()
     if not personas:
         raise RuntimeError("no personas found")
@@ -431,6 +434,8 @@ def run_simulation(*, planogram=None, agents=10, models=None, seed=1, mock=False
                     "errors": sum(len(a["calls"]["errors"]) for a in results)}}
     if isinstance(planogram, dict):
         run["planogram_inline"] = plan
+    if uploaded:
+        run["catalog_inline"] = uploaded
     if save:
         os.makedirs(RUNS_DIR, exist_ok=True)
         with open(os.path.join(RUNS_DIR, run_id + ".json"), "w") as f:

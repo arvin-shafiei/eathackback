@@ -3,6 +3,10 @@
 POST /api/run       {"planogram": <dict or path>, "agents": 10, "models": ["google/gemini-2.5-flash"], "seed": 1, "mock": false}
 POST /api/agent_run {"models": [...], "runs": 3, "seed": 1, "mock": false}
 POST /api/optimise  {"product": "<code>", "agents": 30, "seeds": [1], "edits": ["eye","facings","claim"], "mock": false}
+POST /api/placement/scan        {"product": "<code>", "planogram": <dict>, "agents": 200, "seed": 1}
+POST /api/placement/experiment  {"product": "<code>", "planogram": <dict>, "placements": [{"slot","pos","facings"}], "agents": 60, "seeds": [1], "mock": false}
+POST /api/import     {"ref": "<tesco product link | barcode | open food facts link>"}  -> product draft
+Every POST also takes "products": [<brand-supplied product>, ...] (sim/uploads.py); /api/agent_run takes "exclude": [codes].
 GET  /api/runs            list of runs (id, created, models, n_agents, cost)
 GET  /api/runs/<run_id>   full run json
 GET  /api/coefficients    notice-model coefficients with sources
@@ -82,20 +86,40 @@ class H(BaseHTTPRequestHandler):
                                                 models=b.get("models"), seed=int(b.get("seed", 1)),
                                                 mock=bool(b.get("mock", False)),
                                                 max_tokens=min(int(b.get("max_tokens", 250)), 300),
-                                                label=b.get("label", "ui"))
+                                                label=b.get("label", "ui"),
+                                                extra_products=b.get("products"))
                     return self._send(200, run)
                 if path == "/api/agent_run":
                     import agent_shopper
                     run = agent_shopper.run_agents(b.get("models") or [simrun.DEFAULT_MODEL],
                                                    min(int(b.get("runs", 3)), 20), int(b.get("seed", 1)),
-                                                   bool(b.get("mock", False)))
+                                                   bool(b.get("mock", False)),
+                                                   extra_products=b.get("products"), exclude=b.get("exclude"))
                     return self._send(200, run)
                 if path == "/api/optimise":
                     import optimise
                     out = optimise.optimise(b["product"], min(int(b.get("agents", 30)), MAX_AGENTS),
                                             b.get("seeds", [1]), b.get("models"), bool(b.get("mock", False)),
                                             b.get("edits", ["eye", "facings", "claim"]), b.get("price"),
-                                            b.get("planogram"))
+                                            b.get("planogram"), extra_products=b.get("products"))
+                    return self._send(200, out)
+                if path == "/api/import":
+                    import tesco
+                    return self._send(200, tesco.import_product(str(b.get("ref") or "")))
+                if path == "/api/placement/scan":
+                    import placement
+                    out = placement.scan(b["product"], planogram=b.get("planogram"),
+                                         extra_products=b.get("products"),
+                                         agents=min(int(b.get("agents", 200)), 1000), seed=int(b.get("seed", 1)))
+                    return self._send(200, out)
+                if path == "/api/placement/experiment":
+                    import placement
+                    out = placement.experiment(b["product"], planogram=b.get("planogram"),
+                                               extra_products=b.get("products"),
+                                               placements=(b.get("placements") or [])[:5],
+                                               agents=min(int(b.get("agents", 60)), MAX_AGENTS),
+                                               seeds=b.get("seeds", [1]), models=b.get("models"),
+                                               mock=bool(b.get("mock", False)))
                     return self._send(200, out)
             self._send(404, {"error": "not found"})
         except Exception as e:

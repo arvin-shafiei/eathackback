@@ -54,7 +54,7 @@ export function productTexture(p: Product, onUpgrade?: () => void): THREE.Textur
   if (hit) return hit;
   const fb = fallbackTexture(p);
   cache.set(key, fb);
-  if (p.image && /^https?:|^\//.test(p.image)) {
+  if (p.image && /^https?:|^\/|^data:image\//.test(p.image)) {
     loader.load(
       p.image,
       (t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; cache.set(key, t); onUpgrade?.(); },

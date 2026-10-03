@@ -24,6 +24,8 @@ export interface Product {
   sugars_100g?: number; fiber_100g?: number; proteins_100g?: number; salt_100g?: number;
   sweeteners?: number; palm_oil_n?: number; recycling?: string[];
   image?: string; off_url?: string; color?: string; fixture?: boolean;
+  /** typed in by a brand (sim/uploads.py), not checked against Open Food Facts */
+  brand_supplied?: boolean; source?: string;
   lens_grades?: Record<string, LensGrade>;
   [k: string]: unknown;
 }
@@ -65,10 +67,55 @@ export interface Run {
   stats?: { per_product?: Record<string, ProductStats> };
   notice_model?: Record<string, unknown>;
   planogram_inline?: Planogram;
+  /** brand-supplied products this run was simulated with */
+  catalog_inline?: Product[];
+  excluded?: string[];
   arm?: string; label?: string; mock?: boolean;
+  cost?: { usd?: number; llm_calls?: number; cached?: number; errors?: number };
   _fixture?: string;
 }
 export interface RunIndexEntry { run_id: string; file: string; created?: string; agents?: number; ai_agents?: number; fixture?: boolean }
 
 export type Arm = 'human' | 'ai' | 'both';
 export const isAI = (a: Agent) => a.persona_id === 'ai_agent' || a.persona_id.startsWith('ai_');
+
+// ---- sim server responses (sim/optimise.py, sim/placement.py)
+export interface OptimiseResult {
+  edit: string; skipped?: boolean; why?: string; what_changed?: string;
+  pick_base?: number; pick_new?: number; delta_pick?: number; delta_ci95?: [number, number];
+  n_base?: number; n_new?: number; cost_usd?: number; significant?: boolean;
+}
+export interface OptimiseResponse {
+  product: string; name?: string; agents: number; seeds: number[]; models: string[]; method: string;
+  true_claims_available: { claim: string; why: string; source: string }[];
+  results: OptimiseResult[];
+}
+export interface Placement { slot: string; pos: number; facings: number }
+export interface PlacementCandidate extends Placement {
+  row: number; row_name: string;
+  /** product currently at that slot+pos, which would swap places with ours; null if it is our own position */
+  displaces: string | null;
+  /** mean p_notice over the shoppers who pass the unit */
+  notice_rate: number;
+  /** share of all shoppers who pass the unit at all */
+  reach: number;
+  lift_vs_current: number; is_current?: boolean;
+}
+export interface PlacementScan {
+  product: string; unit: string; category: string; n_agents: number; seed: number;
+  current: PlacementCandidate; candidates: PlacementCandidate[];
+  method: string; sources: string[];
+}
+export interface PlacementResult {
+  placement: Placement; what_changed: string;
+  pick_base: number; pick_new: number; delta_pick: number; delta_ci95: [number, number];
+  notice_base: number; notice_new: number; n_base: number; n_new: number;
+  significant: boolean; cost_usd?: number;
+  /** the full planogram with this placement applied, ready to re-run */
+  planogram: Planogram;
+}
+export interface PlacementExperiment {
+  product: string; agents: number; seeds: number[]; models: string[]; mock: boolean; method: string;
+  baseline: { pick_rate: number; notice_rate: number; n: number; run_ids: string[] };
+  results: PlacementResult[];
+}

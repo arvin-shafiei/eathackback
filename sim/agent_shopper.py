@@ -21,6 +21,7 @@ sys.path.insert(0, HERE)
 
 import prompts  # noqa: E402
 import run as simrun  # noqa: E402
+import uploads  # noqa: E402
 
 MISSIONS = [
     {"id": "work_drink_snack", "categories": ["soft_drinks", "snack_bars"],
@@ -80,6 +81,10 @@ def one_run(model, mission, rep, catalog, seed, mock, max_tokens):
             calls["errors"].append(str(e)[:200])
             out = {"decision": "walk_past", "product": "", "reason": "(llm error)", "mechanism": "error"}
             src = "llm error"
+    if isinstance(out, list):  # some models wrap the JSON object in a list
+        out = next((o for o in out if isinstance(o, dict)), {})
+    if not isinstance(out, dict):
+        out = {}
     chosen = str(out.get("product") or "")
     dec = str(out.get("decision", "pick")).lower()
     events = []
@@ -126,8 +131,14 @@ def position_bias(agents):
     return out
 
 
-def run_agents(models, runs=5, seed=1, mock=False, max_tokens=250, missions=None, workers=8, save=True):
+def run_agents(models, runs=5, seed=1, mock=False, max_tokens=250, missions=None, workers=8, save=True,
+               extra_products=None, exclude=None):
+    """extra_products: brand uploads added to the feed. exclude: codes they replaced on the shelf, dropped
+    from the feed so both arms shop the same range."""
     catalog, cat_src = simrun.load_catalog()
+    catalog, uploaded = uploads.merge(catalog, extra_products, simrun.load_store()[0])
+    for code in exclude or []:
+        catalog.pop(str(code), None)
     ms = [m for m in MISSIONS if not missions or m["id"] in missions]
     jobs = [(mo, m, r) for mo in models for m in ms for r in range(runs)]
     with ThreadPoolExecutor(max_workers=workers) as ex:
@@ -153,6 +164,9 @@ def run_agents(models, runs=5, seed=1, mock=False, max_tokens=250, missions=None
                     "llm_calls": sum(a["calls"]["llm"] for a in agents),
                     "cached": sum(a["calls"]["cached"] for a in agents),
                     "errors": sum(len(a["calls"]["errors"]) for a in agents)}}
+    if uploaded:
+        run["catalog_inline"] = uploaded
+        run["excluded"] = [str(c) for c in exclude or []]
     if save:
         os.makedirs(simrun.RUNS_DIR, exist_ok=True)
         with open(os.path.join(simrun.RUNS_DIR, run_id + ".json"), "w") as f:
