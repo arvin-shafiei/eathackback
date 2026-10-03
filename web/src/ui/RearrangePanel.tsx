@@ -214,7 +214,7 @@ function CheckResult({ check }: { check: RearrangeCheck }) {
         {tone === 'flat' ? 'no clear change: ' : tone === 'up' ? 'it works: ' : 'it got worse: '}
         shoppers bought <b>{d.picks_before.toLocaleString()} → {d.picks_after.toLocaleString()}</b>
         {d.picks_before > 0 && <> ({lift((d.picks_after - d.picks_before) / d.picks_before)})</>}.
-        {check.mock && <Sticker tone="yellow" title="use llm is off: picks come from the mock heuristic in sim/run.py, not from a model">practice shoppers</Sticker>}
+        {check.mock && <Sticker tone="yellow" title="use llm is off: picks come from the rule-based shoppers in sim/run.py, not from a model">practice shoppers</Sticker>}
       </p>
       <details className="ra-how">
       <summary>the numbers</summary>

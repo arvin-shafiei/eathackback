@@ -167,7 +167,7 @@ function BusyNote({ useLLM }: { useLLM: boolean }) {
 }
 
 function MockNote() {
-  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic mock heuristic in sim/run.py, not from a model">practice shoppers</Sticker>;
+  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic rule-based shoppers in sim/run.py, not from a model">practice shoppers</Sticker>;
 }
 
 interface HeatmapProps {

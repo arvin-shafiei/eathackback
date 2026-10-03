@@ -25,7 +25,7 @@ export function EditPanel({ cfg, planogram, products, changed, selected, onSwap,
           <p className="muted">drag a product set onto another slot to swap them, or click two slots on the shelves. then re-run the shoppers.</p>
         </div>
         <div className="edit-actions">
-          <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> use llm (costs)</label>
+          <label className="toggle llm" title="off = rule-based shoppers, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> use llm (costs)</label>
           <button className="btn btn-white" onClick={download}>download json</button>
           <button className="btn btn-white" onClick={onReset} disabled={!changed.size}>reset</button>
           <button className="btn btn-brand" onClick={onRerun} disabled={!changed.size || rerunState.busy}>{rerunState.busy ? 're-running…' : 're-run shoppers'}</button>

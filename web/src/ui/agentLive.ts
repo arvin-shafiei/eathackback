@@ -1,6 +1,6 @@
 // Pure helpers for the live shopper panel: what a shopper is deciding, about to buy and has bought at replay time t.
 // Rule zero (no black box): everything here is read straight from the recorded run events (sim/jev.py funnel fields,
-// sim/agent_shopper.py feed picks, mock heuristic reasons). Nothing is generated or paraphrased.
+// sim/agent_shopper.py feed picks, rule-based shoppers reasons). Nothing is generated or paraphrased.
 import type { Agent, Persona, Product, SimEvent } from '../types';
 import type { Seg, Timeline } from '../layout';
 
@@ -33,7 +33,7 @@ export type AgentEngine = 'jev' | 'router' | 'mock' | 'llm' | 'unknown';
 export function eventEngine(e: LiveEvent, agent?: LiveAgent): AgentEngine {
   const refs = (e.source_refs ?? []).join(' ');
   const model = e.jev_model ?? agent?.model ?? '';
-  if (/mock heuristic/.test(refs) || e.reason?.startsWith('[mock]') || model === 'mock') return 'mock';
+  if (/rule-based shoppers/.test(refs) || e.reason?.startsWith('[mock]') || model === 'mock') return 'mock';
   const j = e.jev;
   if (/jev-router/.test(model) || j?.calibrated === false || j?.requests?.some((r) => r.calibrated === false)) return 'router';
   if (/^jev-/.test(model) || e.engine === 'jev') return 'jev';
@@ -52,7 +52,7 @@ export function agentEngine(a: LiveAgent): AgentEngine {
 export const ENGINE_TEXT: Record<AgentEngine, { text: string; css: string; title: string }> = {
   jev: { text: 'jev · calibrated', css: 'engine-jev', title: 'decided by TypeSafe Jev (System One): calibrated probabilities' },
   router: { text: 'jev-router · uncalibrated', css: 'engine-router', title: 'decided by the jev-router fallback (an LLM). probabilities are not calibrated' },
-  mock: { text: '⚠ mock heuristic', css: 'engine-mock', title: 'rule-based mock engine, no model call. not evidence' },
+  mock: { text: 'rule-based shoppers', css: 'engine-mock', title: 'rule-based rule-based engine, no model call. not evidence' },
   llm: { text: 'llm · uncalibrated', css: 'engine-llm', title: 'decided by an LLM. probabilities are not calibrated' },
   unknown: { text: 'engine not recorded', css: 'engine-unknown', title: 'this run does not say which engine decided' },
 };

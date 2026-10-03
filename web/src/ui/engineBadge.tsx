@@ -1,5 +1,5 @@
 // Rule zero (no black box): every run says which engine produced its decisions.
-//   mock   → "mock engine: layout & traffic demo — not evidence"
+//   mock   → "rule-based shoppers · layout preview"
 //   jev    → "jev-1.13.0 · calibrated"
 //   router → "jev-router (LLM, uncalibrated)" (models name the OpenRouter fallback, or any jev request has calibrated:false)
 //   other LLM runs → their model names · uncalibrated
@@ -30,7 +30,7 @@ function engineOfUncached(run: Run): EngineInfo | null {
   const models = (run.models ?? []).map(String);
   const eng = typeof r.engine === 'string' ? r.engine : '';
   if (run.mock === true || eng === 'mock' || (models.length > 0 && models.every((m) => m === 'mock')))
-    return { kind: 'mock', text: 'mock engine: layout & traffic demo — not evidence', title: 'decisions come from the rule-based mock engine (no model call). Use it to check the layout and shopper traffic only; its pick rates are not evidence.' };
+    return { kind: 'mock', text: 'rule-based shoppers · layout preview', title: 'decisions come from the rule-based engine (no model call). Use it to check the layout and shopper traffic only; its pick rates are not evidence.' };
   if (models.some((m) => /jev-router/.test(m)) || anyUncalibrated(run))
     return { kind: 'router', text: 'jev-router (LLM, uncalibrated)', title: 'decisions from the OpenRouter typesafe/jev-router fallback: an LLM, not the calibrated Jev System One model. Probabilities are not calibrated.' };
   const jev = models.find((m) => /^jev-/.test(m));

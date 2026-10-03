@@ -302,7 +302,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
           <PackPreview f={f} image={image} />
           <div className="addp-foot">
             <button className="btn btn-brand" type="submit" disabled={busy}>{busy ? 'shoppers are walking…' : 'send the shoppers'}</button>
-            <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> real ai shoppers (costs)</label>
+            <label className="toggle llm" title="off = rule-based shoppers, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> real ai shoppers (costs)</label>
             <p className="addp-hint">{useLLM ? 'on: each shopper is a real ai model. costs money.' : 'off: free practice shoppers with canned reasons.'}</p>
             <div role="status">{msg && <p className={`notice ${busy ? 'ok' : ''}`}>{msg}</p>}</div>
           </div>

@@ -65,7 +65,7 @@ export function DecisionNumbers({ e, agent, persona, products, color }: { e: Liv
             <DistList rows={fd.rows} color={color} />
             {fd.pNone != null && <p className="muted small">none of them: {pct(fd.pNone)} · ← = the one it took</p>}
           </>
-        ) : eng === 'mock' ? <p className="muted small">mock heuristic: a rule picked this, no probabilities were recorded.</p> : <p className="muted small">no choice distribution recorded for this agent.</p>}
+        ) : eng === 'mock' ? <p className="muted small">rule-based shoppers: a rule picked this, no probabilities were recorded.</p> : <p className="muted small">no choice distribution recorded for this agent.</p>}
       </div>
     );
   }
@@ -100,7 +100,7 @@ export function DecisionNumbers({ e, agent, persona, products, color }: { e: Liv
           </ul>
         </>
       )}
-      {eng === 'mock' && <p className="muted small">mock heuristic: a fixed rule made this call, no model, no probabilities.</p>}
+      {eng === 'mock' && <p className="muted small">rule-based shoppers: a fixed rule made this call, no model, no probabilities.</p>}
     </div>
   );
 }

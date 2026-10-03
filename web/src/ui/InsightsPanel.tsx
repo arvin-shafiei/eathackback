@@ -59,7 +59,7 @@ export function InsightsPanel(props: InsightsProps) {
       <div ref={placementRef} className="ins-placement">
         <div className="ins-band">
           <h3 className="display">what to change</h3>
-          <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached). applies to the experiments below.">
+          <label className="toggle llm" title="off = rule-based shoppers, free. on = real llm calls via openrouter (costs money, cached). applies to the experiments below.">
             <input type="checkbox" checked={props.useLLM} onChange={(e) => props.onUseLLM(e.target.checked)} /> real ai shoppers (costs)
           </label>
         </div>
@@ -229,7 +229,7 @@ function BehaviourSection({ run, code, name, personas }: { run: Run; code: strin
     a.download = `${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-shopper-log.csv`; a.click();
   };
   const per100 = (x: number | null) => (x === null ? '–' : x.toFixed(1));
-  const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged on mock</span>);
+  const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged by rule-based shoppers</span>);
   return (
     <Fold q="how do shoppers behave at it?" span={6} a={`${b.rows.length} shoppers logged, one row each. download them as a csv under "see all".`}
       viz={(
