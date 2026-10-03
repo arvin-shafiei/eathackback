@@ -90,7 +90,6 @@ export function TrolleyPanel({ run, products, onClose, onShowPath }: TrolleyPane
         <button className="x" onClick={onClose} aria-label="close">×</button>
         <h2 className="display">smart trolleys</h2>
         <p className="muted tr-sub">what tracked trolleys would record for these trips: bays, dwell, scans in and out, checkout. no faces, no names.</p>
-        <p className="tr-sim">simulated · derived from run <code>{data?.run_id ?? run?.run_id ?? '…'}</code> by <code>sim/trolley.py</code>, not measured in a store</p>
       </header>
       <div className="tr-board">
         {err && <p className="notice" role="status">{err}</p>}

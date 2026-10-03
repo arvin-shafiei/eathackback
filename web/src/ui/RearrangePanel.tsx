@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Planogram, RearrangeCheck, RearrangeMove, RearrangePlan, SpotRef, StoreConfig, Unit } from '../types';
+import type { Planogram, Product, RearrangeCheck, RearrangeMove, RearrangePlan, RearrangeUnit, StoreConfig, Unit } from '../types';
 import { productWorld, unitLocalToWorld } from '../layout';
 import { moveFx, type MoveArrow } from '../scene/MoveFx';
 import { api } from '../api';
-import { prodLabel } from '../theme';
+import { catLabel, prodLabel } from '../theme';
 import type { RearrangeProps } from './featureProps';
 import { Src } from './bits';
 import './rearrange.css';
@@ -12,7 +12,6 @@ import './rearrange.css';
 const TEST_AGENTS = 150;
 /** shoppers the plan has not seen: two seeds away from the run it learned from */
 const testSeeds = (learned: number | undefined) => [(learned ?? 1) + 100, (learned ?? 1) + 101];
-const MOVES_SHOWN = 5;
 
 type Objective = RearrangePlan['objective'];
 const GOALS: { id: Objective; label: string }[] = [{ id: 'picks', label: 'more buys' }, { id: 'revenue', label: 'more revenue' }];
@@ -37,7 +36,8 @@ export function RearrangePanel(props: RearrangeProps) {
   const [plan, setPlan] = useState<Job<RearrangePlan>>(loading);
   const [check, setCheck] = useState<Job<RearrangeCheck>>(idle);
   const [sel, setSel] = useState<string | null>(null);
-  const [shownN, setShownN] = useState(MOVES_SHOWN);
+  // restock checklist ticks, keyed slot#pos; and which unit is open
+  const [done, setDone] = useState<Set<string>>(() => new Set());
   const [collapsed, setCollapsed] = useState(false);
   const gen = useRef(0);
   // extraProducts and the callbacks are fresh on every render; the effects read the latest without re-running for them
@@ -49,7 +49,7 @@ export function RearrangePanel(props: RearrangeProps) {
     const id = ++gen.current;
     setPlan(loading);
     setCheck(idle);
-    setSel(null); setShownN(MOVES_SHOWN);
+    setSel(null); setDone(new Set());
     api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps: MAX_SWAPS })
       .then((data) => { if (gen.current === id) setPlan({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setPlan({ busy: false, data: null, err: fail(e) }); });
@@ -61,27 +61,28 @@ export function RearrangePanel(props: RearrangeProps) {
   useEffect(() => { live.current.onPreview(null); }, []);
   useEffect(() => () => { live.current.onPreview(null); moveFx.setArrows([]); }, []);
 
-  // biggest-lift units first; within a unit keep the planner's order
-  const moves = useMemo(() => plan.data ? [...plan.data.units].sort((a, b) => b.lift_pct - a.lift_pct).flatMap((u) => u.moves) : [], [plan.data]);
-  const shown = moves.slice(0, shownN);
+  // units that change, biggest lift first; each is restocked from empty, so its list is the whole unit, not a chain of swaps
+  const units = useMemo(() => plan.data ? [...plan.data.units].filter((u) => u.moves.length).sort((a, b) => b.lift_pct - a.lift_pct) : [], [plan.data]);
+  const totalMoves = plan.data?.moves ?? 0;
 
-  // one arrow: the tapped move (ring where it is now, ghost box where it goes)
+  // tapping a unit: small arrows for everything that changes place in it, camera framed on the whole unit
   useEffect(() => {
-    const m = sel && proposed ? moves.find((x) => x.code === sel) : null;
-    const a = m && proposed ? arrowFor(cfg, planogram, proposed, m, true) : null;
-    moveFx.setArrows(a ? [a] : []);
+    const u = sel && proposed ? units.find((x) => x.unit === sel) : null;
+    const list: MoveArrow[] = [];
+    if (u && proposed) for (const m of u.moves) { const a = arrowFor(cfg, planogram, proposed, m, false); if (a) list.push(a); }
+    moveFx.setArrows(list);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sel, proposed, scope, cfg]);
 
-  const pick = (m: RearrangeMove) => {
-    if (sel === m.code) { setSel(null); return; }
-    setSel(m.code);
-    const a = proposed && arrowFor(cfg, planogram, proposed, m, true);
-    if (a) {
-      const span = Math.hypot(a.to.x - a.from.x, a.to.y - a.from.y, a.to.z - a.from.z);
-      moveFx.flyTo({ x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2, z: (a.from.z + a.to.z) / 2, fx: a.fx, fz: a.fz, span });
-    }
+  const pick = (u: RearrangeUnit) => {
+    if (sel === u.unit) { setSel(null); return; }
+    setSel(u.unit);
+    const unit = cfg.units.find((x) => x.id === u.unit);
+    if (!unit) return;
+    const mid = unitLocalToWorld(cfg, unit, 0, -0.2), f = frontOf(cfg, unit);
+    moveFx.flyTo({ x: mid.x, y: 1, z: mid.z, fx: f.x, fz: f.z, span: UNIT_LEN });
   };
+  const tick = (k: string) => setDone((d) => { const n = new Set(d); if (n.has(k)) n.delete(k); else n.add(k); return n; });
 
   const runCheck = () => {
     if (!proposed) return;
@@ -110,21 +111,16 @@ export function RearrangePanel(props: RearrangeProps) {
         {plan.data && <Summary plan={plan.data} />}
         {plan.data && proposed && plan.data.moves > 0 && (
           <>
-            <p className="ra-tm-h muted">tap a move to see an arrow in the store</p>
+            <p className="ra-tm-h muted">clear these shelves, then put everything back in this order. tap a unit to see it in the store.</p>
             <ol className="ra-cards">
-              {shown.map((m, i) => (
-                <MoveCard key={m.code} n={i + 1} m={m} on={m.code === sel} cfg={cfg} before={planogram} after={proposed}
-                  onPick={() => pick(m)} onAnalytics={() => props.onPickProduct(m.code)} />
+              {units.map((u, i) => (
+                <UnitCard key={u.unit} n={i + 1} u={u} on={u.unit === sel} cfg={cfg} after={proposed} products={props.products}
+                  done={done} onTick={tick} onPick={() => pick(u)} />
               ))}
             </ol>
-            {moves.length > shownN && (
-              <button className="link-btn ra-more" onClick={() => setShownN(shownN + MOVES_SHOWN)}>
-                show {Math.min(MOVES_SHOWN, moves.length - shownN)} more ({moves.length - shownN} left)
-              </button>
-            )}
             <div className="ra-btns">
               <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy} title="re-run the store on the new layout">
-                {busy ? 're-running…' : `do all ${plural(moves.length, 'move')}`}
+                {busy ? 're-running…' : `apply all ${plural(units.length, 'unit')} (${plural(totalMoves, 'product')} change place)`}
               </button>
             </div>
             <details className="ra-how">
@@ -154,55 +150,57 @@ function arrowFor(cfg: StoreConfig, before: Planogram, after: Planogram, m: Rear
   return { from: { x: a.x, y: a.y, z: a.z }, to: { x: b.x, y: b.y, z: b.z }, fx: f.x, fz: f.z, main };
 }
 
-/** a spot in words: aisle, side, shelf, height off the floor (metres, from the 3d layout), spot along the shelf, floor x/z */
-function placeOf(cfg: StoreConfig, plan: Planogram, s: SpotRef, code: string) {
-  const w = productWorld(cfg, plan, s.slot, code);
-  if (!w) return null;
-  return {
-    aisle: w.unit.aisle, side: w.unit.side === 'L' ? 'left' : 'right', unit: w.unit.id,
-    shelf: s.row, of: cfg.rows_per_unit, name: s.row_name, h: w.y - w.h / 2, spot: s.pos + 1, x: w.x, z: w.z,
-  };
-}
-type Place = NonNullable<ReturnType<typeof placeOf>>;
+/** length of one shelf bay along the aisle, metres (layout.ts G.unitLen) */
+const UNIT_LEN = 6.4;
 
-function PlaceLine({ label, p }: { label: string; p: Place }) {
-  return (
-    <div className="ra-place">
-      <span className="ra-place-l">{label}</span>
-      <span>
-        <b>aisle {p.aisle}</b>, {p.side} side · <b>{p.name} shelf</b> ({p.shelf} of {p.of} from the top) · <b>{p.h.toFixed(2)} m</b> off the floor · spot {p.spot}
-        <small className="muted ra-xyz"> {p.unit} · x {p.x.toFixed(1)} m, z {p.z.toFixed(1)} m</small>
-      </span>
-    </div>
-  );
+interface UnitCardProps {
+  n: number; u: RearrangeUnit; on: boolean; cfg: StoreConfig; after: Planogram; products: Record<string, Product>;
+  done: Set<string>; onTick: (k: string) => void; onPick: () => void;
 }
 
-interface MoveCardProps {
-  n: number; m: RearrangeMove; on: boolean; cfg: StoreConfig; before: Planogram; after: Planogram;
-  onPick: () => void; onAnalytics: () => void;
-}
-
-function MoveCard({ n, m, on, cfg, before, after, onPick, onAnalytics }: MoveCardProps) {
-  const from = placeOf(cfg, before, m.from, m.code), to = placeOf(cfg, after, m.to, m.code);
-  const dh = from && to ? to.h - from.h : 0;
+/** one shelf unit as a restock checklist: shelves top to bottom, products left to right (as you face the shelf) */
+function UnitCard({ n, u, on, cfg, after, products, done, onTick, onPick }: UnitCardProps) {
+  const unit = cfg.units.find((x) => x.id === u.unit);
+  const moved = new Set(u.moves.map((m) => m.code));
+  const rows = Array.from({ length: cfg.rows_per_unit }, (_, i) => i + 1);
+  const keys = rows.flatMap((r) => (after[`${u.unit}-r${r}`]?.products ?? []).map((_, p) => `${u.unit}-r${r}#${p}`));
+  const ticked = keys.filter((k) => done.has(k)).length;
   return (
     <li className={`ra-card ${on ? 'on' : ''}`}>
       <button className="ra-card-btn" aria-pressed={on} onClick={onPick}>
         <span className="ra-card-n">{n}</span>
         <span className="ra-card-body">
-          <b className="ra-card-name">{prodLabel(m, m.code)}</b>
-          {from && <PlaceLine label="now" p={from} />}
-          {to && <PlaceLine label="move to" p={to} />}
-          <span className="ra-card-sum">
-            {Math.abs(dh) >= 0.05 ? (dh > 0 ? `⬆ up ${dh.toFixed(2)} m` : `⬇ down ${(-dh).toFixed(2)} m`) : '↔ same height'}
-            {from && to && from.aisle !== to.aisle ? ` · from aisle ${from.aisle} to aisle ${to.aisle}` : ''}
-            {' · '}seen by {pct(m.notice_before)} → <b>{pct(m.notice_after)}</b> of shoppers who pass
-          </span>
+          <b className="ra-card-name">aisle {unit?.aisle ?? '?'}, {unit?.side === 'L' ? 'left' : 'right'} side · {catLabel(u.category)}</b>
+          <span className="muted small">{u.unit} · {plural(u.moves.length, 'product')} change place · {ticked}/{keys.length} placed</span>
         </span>
       </button>
-      {on && (
-        <p className="why">{m.why}. <button className="link-btn" onClick={onAnalytics}>analytics</button></p>
-      )}
+      <div className="ra-shelves">
+        {rows.map((r) => {
+          const slot = `${u.unit}-r${r}`, set = after[slot], codes = set?.products ?? [];
+          const w = productWorld(cfg, after, slot, null);
+          return (
+            <div key={r} className="ra-shelf-l">
+              <p className="ra-shelf-h"><b>{cfg.row_names[String(r)] ?? `row ${r}`} shelf</b> <span className="muted">· {r} of {cfg.rows_per_unit} from the top{w ? ` · ${(w.y - w.h / 2).toFixed(2)} m off the floor` : ''} · left → right</span></p>
+              <ol className="ra-check-list">
+                {codes.map((c, p) => {
+                  const k = `${slot}#${p}`, f = set?.facings?.[c] ?? 1;
+                  return (
+                    <li key={k} className={done.has(k) ? 'is-done' : ''}>
+                      <label>
+                        <input type="checkbox" checked={done.has(k)} onChange={() => onTick(k)} />
+                        <span className="ra-pos">{p + 1}</span>
+                        <span>{prodLabel(products[c], c)}{f > 1 ? <span className="muted"> ×{f} facings</span> : null}</span>
+                        {moved.has(c) && <span className="ra-new" title="this product is in a different spot from today">new spot</span>}
+                      </label>
+                    </li>
+                  );
+                })}
+                {!codes.length && <li className="muted">leave empty</li>}
+              </ol>
+            </div>
+          );
+        })}
+      </div>
     </li>
   );
 }

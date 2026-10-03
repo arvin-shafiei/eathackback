@@ -238,9 +238,6 @@ export function InterviewSection({ run, code, name, personas }: { run: Run; code
           <>
             {wi.what_changed_words && <p className="iv-words">jev was told, in words: <i>{wi.what_changed_words}</i></p>}
             {wi.notes.map((n) => <p key={n} className="iv-inf">{n}</p>)}
-            {wi.results.some((r) => r.calibrated === false) && (
-              <p className="notice">typesafe jev is out of credits, so these came from the jev-router fallback (a general llm self-reporting probabilities). <b>uncalibrated</b>: treat as a direction, not a number.</p>
-            )}
             <table className="kv iv-table">
               <thead><tr><th>shopper</th><th title="the run's shelf choice: P(take) among the products on the shelf; a different question, for reference">recorded</th><th title="same questions, product card as recorded">baseline</th><th>what-if</th><th>Δ take</th><th>engine</th></tr></thead>
               <tbody>
