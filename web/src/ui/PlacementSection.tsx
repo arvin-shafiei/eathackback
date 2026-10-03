@@ -109,7 +109,7 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
       <div className="pl-main">
       <h3>where on the shelf</h3>
       <p className="muted pl-note">
-        chance of being noticed in every spot of this unit, from the notice model alone. free and instant: no llm is called.
+        how often each spot gets noticed. computed from the notice model, no model call.
       </p>
       {scan.busy && <p className="muted pl-note" role="status">scanning the shelf…</p>}
       {scan.err && <ErrorNote msg={scan.err} />}
@@ -122,8 +122,7 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
       <div className="pl-side">
       <h3>test it with shoppers</h3>
       <p className="muted pl-note">
-        noticing is not buying. this walks {TEST_AGENTS} simulated shoppers (seed {TEST_SEEDS.join(', ')}) through the store once per selected
-        placement and counts who puts {product.brand || 'it'} in the basket. sample size is an assumption, picked to keep the run short.
+        noticing isn't buying. {TEST_AGENTS} shoppers walk each spot on the same seed, and we count who buys.
       </p>
       <Chosen cfg={cfg} chosen={chosen} onToggle={toggle} />
       <div className="pl-actions">
@@ -138,14 +137,13 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
 
       </div>
       <div className="pl-side">
-      <h3>other honest fixes</h3>
+      <h3>other fixes</h3>
       <p className="muted pl-note">
-        things you can change without moving: a claim that is already true of the product, one more facing{hasPrice ? ', and your what-if price' : ''}.
-        same {TEST_AGENTS} shoppers, seed {TEST_SEEDS.join(', ')}.
+        a claim the product already earns, one more facing{hasPrice ? ', your new price' : ''}. same {TEST_AGENTS} shoppers.
       </p>
       <div className="pl-actions">
         <label className="pl-price">
-          what-if price £
+          new price £
           <input type="number" min="0.01" step="0.01" inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)}
             placeholder={Number(product.price_gbp).toFixed(2)} aria-label="what-if price in pounds, leave empty to skip the price test" />
         </label>
@@ -172,14 +170,14 @@ function BusyNote({ useLLM }: { useLLM: boolean }) {
   return (
     <p className="notice ok" role="status">
       {useLLM
-        ? 'the llm is on: every noticed product is a real model call, so this can take minutes. leave the panel open.'
-        : 'mock shoppers are walking. this usually takes a few seconds.'}
+        ? 'real model calls. this can take a few minutes; keep this open.'
+        : 'mock shoppers are walking.'}
     </p>
   );
 }
 
 function MockNote() {
-  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic mock heuristic in sim/run.py, not from a model">mock heuristic, not an llm</Sticker>;
+  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic mock heuristic in sim/run.py, not from a model">mock shoppers</Sticker>;
 }
 
 interface HeatmapProps {
@@ -204,7 +202,7 @@ function Heatmap({ scan, cfg, planogram, products, facings, onFacings, picked, o
             <button key={f} className={`seg-btn ${facings === f ? 'on' : ''}`} aria-pressed={facings === f} onClick={() => onFacings(f)}>{facingsText(f)}</button>
           ))}
         </div>
-        <span className="muted small">{picked.length}/{MAX_TESTS} picked to test{picked.length >= MAX_TESTS ? ' (unpick one to swap)' : ''}</span>
+        <span className="muted small">{picked.length} of {MAX_TESTS} picked</span>
       </div>
       <div className="pl-grid">
         {rows.map((r) => {
@@ -225,15 +223,14 @@ function Heatmap({ scan, cfg, planogram, products, facings, onFacings, picked, o
       </div>
       <div className="pl-legend muted">
         <span>{pct1(lo)}</span><i aria-hidden /><span>{pct1(hi)}</span>
-        <span>notice rate, lowest to highest of the {scan.candidates.length} spots scanned (all facings)</span>
+        <span>notice rate across {scan.candidates.length} spots</span>
       </div>
       <p className="pl-note">
-        <b>{pct1(scan.current.reach)}</b> of shoppers walk past this unit at all (about {passing} of {scan.n_agents} simulated, seed {scan.seed}).
-        each cell is the mean chance of being noticed among those who do; lift is in percentage points against where you are now
-        ({pct1(scan.current.notice_rate)}, {where(cfg, scan.current)}).
+        <b>{pct1(scan.current.reach)}</b> of shoppers pass this unit ({passing} of {scan.n_agents}). lift is against your current spot,{' '}
+        {pct1(scan.current.notice_rate)}.
       </p>
       <details className="pl-method">
-        <summary>how this was counted</summary>
+        <summary>how this is counted</summary>
         <p>{scan.method}</p>
         {!!scan.sources?.length && <ul className="refs">{scan.sources.map((s) => <li key={s}><Src s={s} /></li>)}</ul>}
       </details>
@@ -257,15 +254,15 @@ function HeatCell({ c, lo, hi, products, here, on, best, full, onToggle }: HeatC
       {here && <span className="pl-here">you are here</span>}
       {best && !here && <span className="pl-here pl-best">best spot</span>}
       <span className="pl-rate">{pct1(c.notice_rate)}</span>
-      <span className="pl-swap">{swap ? `swaps with ${swap}` : 'your own spot'}</span>
-      <span className="pl-lift">{c.is_current ? 'current placement' : pts(c.lift_vs_current)}</span>
+      <span className="pl-swap">{swap ? `↔ ${swap}` : 'your spot'}</span>
+      <span className="pl-lift">{c.is_current ? 'now' : pts(c.lift_vs_current)}</span>
       {on && <span className="pl-tick">testing</span>}
     </button>
   );
 }
 
 function Chosen({ cfg, chosen, onToggle }: { cfg: StoreConfig; chosen: PlacementCandidate[]; onToggle: (c: PlacementCandidate) => void }) {
-  if (!chosen.length) return <p className="muted pl-note">nothing picked yet. click up to {MAX_TESTS} cells in the grid above.</p>;
+  if (!chosen.length) return <p className="muted pl-note">pick up to {MAX_TESTS} spots on the shelf.</p>;
   return (
     <ul className="pl-chosen">
       {chosen.map((c) => (
@@ -292,14 +289,13 @@ function ExperimentResults({ exp, cfg, product, busy, onApply }: ExperimentProps
   return (
     <div className="pl-results">
       <p className="pl-note">
-        before: pick rate <b>{pct1(exp.baseline.pick_rate)}</b>, noticed {pct1(exp.baseline.notice_rate)}, counted over {exp.baseline.n} shoppers
-        who stood at it ({exp.agents} walked the store × {exp.seeds.length} seed{exp.seeds.length === 1 ? '' : 's'}; {exp.models.join(', ')}).
+        now: <b>{pct1(exp.baseline.pick_rate)}</b> picked, {pct1(exp.baseline.notice_rate)} noticed, over {exp.baseline.n} shoppers at the shelf.
       </p>
       {exp.results.map((r) => (
         <DeltaRow key={keyOf(r.placement)} what={r.what_changed} base={r.pick_base} next={r.pick_new} delta={r.delta_pick} ci={r.delta_ci95}
           nBase={r.n_base} nNew={r.n_new} significant={r.significant} span={span} cost={r.cost_usd}
           extra={<>noticed {pct1(r.notice_base)} → {pct1(r.notice_new)}</>}
-          action={<button className="btn btn-white pl-apply" disabled={busy} onClick={() => onApply(r.planogram, label(r))}>{busy ? 're-running…' : 'apply and re-run the store'}</button>} />
+          action={<button className="btn btn-white pl-apply" disabled={busy} onClick={() => onApply(r.planogram, label(r))}>{busy ? 're-running…' : 'apply and re-run'}</button>} />
       ))}
       {!exp.results.length && <p className="muted pl-note">the server returned no results for these placements.</p>}
       <details className="pl-method">
@@ -321,11 +317,11 @@ function Fixes({ opt }: { opt: OptimiseResponse }) {
         <DeltaRow key={r.edit} what={<><b>{r.edit}</b>: {r.what_changed}</>} base={r.pick_base ?? 0} next={r.pick_new ?? 0} delta={r.delta_pick ?? 0}
           ci={r.delta_ci95 ?? [0, 0]} nBase={r.n_base ?? 0} nNew={r.n_new ?? 0} significant={!!r.significant} span={span} cost={r.cost_usd} />
       ))}
-      <h4 className="pl-sub">true claims this product could carry</h4>
+      <h4 className="pl-sub">claims it could carry</h4>
       {opt.true_claims_available.map((c) => (
         <p key={c.claim} className="pl-claim"><Sticker tone="good">{c.claim}</Sticker> <span>{c.why}</span> <Src s={c.source} /></p>
       ))}
-      {!opt.true_claims_available.length && <p className="muted pl-note">none: nothing in this product's fields clears a claim threshold.</p>}
+      {!opt.true_claims_available.length && <p className="muted pl-note">none. nothing in its fields clears a claim threshold.</p>}
       <details className="pl-method">
         <summary>how this was tested</summary>
         <p>{opt.method}</p>
@@ -351,7 +347,7 @@ function DeltaRow({ what, base, next, delta, ci, nBase, nNew, significant, span,
       <div className="pl-nums">
         <span>pick rate {pct1(base)} → <b>{pct1(next)}</b></span>
         <b className="pl-delta">{pts(delta)}</b>
-        <span className="muted">95% interval {pts(ci[0])} to {pts(ci[1])}</span>
+        <span className="muted">95% ci {pts(ci[0])} to {pts(ci[1])}</span>
       </div>
       <div className="pl-ci" role="img" aria-label={`change ${pts(delta)}, 95% interval ${pts(ci[0])} to ${pts(ci[1])}`}>
         <i className="pl-range" style={{ left: `${x(ci[0])}%`, width: `${x(ci[1]) - x(ci[0])}%` }} />
@@ -361,10 +357,10 @@ function DeltaRow({ what, base, next, delta, ci, nBase, nNew, significant, span,
       <div className="pl-axis muted"><span>{pts(-span)}</span><span>no change</span><span>{pts(span)}</span></div>
       <div className="pl-foot">
         <Sticker tone={tone === 'up' ? 'good' : tone === 'down' ? 'bad' : 'white'}>
-          {tone === 'flat' ? 'not distinguishable from no change' : tone === 'up' ? 'interval is above zero' : 'interval is below zero'}
+          {tone === 'flat' ? 'no clear change' : tone === 'up' ? 'clear lift' : 'clear drop'}
         </Sticker>
         <span className="muted small">
-          n = {nBase} shoppers who stood at it before, {nNew} after{extra && <> · {extra}</>}{!!cost && <> · llm cost ${cost.toFixed(3)}</>}
+          n = {nBase} before, {nNew} after{extra && <> · {extra}</>}{!!cost && <> · llm cost ${cost.toFixed(3)}</>}
         </span>
         {action}
       </div>

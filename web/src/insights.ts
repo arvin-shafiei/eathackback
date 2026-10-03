@@ -153,27 +153,37 @@ export function diagnose(run: Run, code: string, peerCodes: string[], human: Rec
   };
 }
 
-const STEP_FIX: Record<Step, string> = {
-  notice: 'shoppers walk by without seeing it, which is a placement problem, so try the placement search below',
-  consider: 'shoppers glance at it and move on, which is a pack-copy or claim problem',
-  pick: 'shoppers read it and put it back, which is a price or ingredient problem',
+const STEP_LEAD: Record<Step, string> = {
+  notice: "most shoppers don't see it.",
+  consider: 'shoppers see it, then move on.',
+  pick: 'shoppers weigh it up, then put it back.',
 };
-const STEP_DENOM: Record<Step, string> = { notice: 'passes', consider: 'notices', pick: 'considerations' };
+const STEP_DID: Record<Step, string> = { notice: 'noticed it', consider: 'considered it', pick: 'bought it' };
+const STEP_FIX: Record<Step, string> = {
+  notice: 'try a better spot below',
+  consider: 'work on the pack copy or claim',
+  pick: 'look at price and ingredients',
+};
 export const mechLabel = (m: string) => m.replace(/_/g, ' ');
 
 export function diagnosisText(d: Diagnosis): { main: string; arm: string | null } {
   let main: string;
   const b = d.bottleneck;
-  if (d.verdict === 'no_data') main = 'no human shopper passed this product in this run, so there is nothing to diagnose.';
-  else if (d.verdict === 'no_peers') main = 'no other product in its unit was passed by a human shopper (or it is not on this planogram), so there is no neighbour to compare against.';
-  else if (!b || b.rate === null || b.unit_median === null) main = 'at or above its unit neighbours at every step (notice, consider, pick), so no single step leaks more than the shelf around it.';
+  if (d.verdict === 'no_data') main = 'no shopper passed this product in this run.';
+  else if (d.verdict === 'no_peers') main = 'nothing else in its unit was passed, so there is no neighbour to compare it with.';
+  else if (!b || b.rate === null || b.unit_median === null) {
+    const bought = d.gaps.find((g) => g.step === 'pick');
+    main = bought && bought.k === 0
+      ? 'it gets noticed and considered as often as its neighbours, but nobody bought it in this run.'
+      : 'it keeps up with its neighbours at every step: noticed, considered and bought.';
+  }
   else {
-    const rej = b.step === 'pick' && d.top_reject ? ` (top rejection mechanism: ${mechLabel(d.top_reject.mechanism)}, ${d.top_reject.count} rejection${d.top_reject.count === 1 ? '' : 's'})` : '';
-    main = `it loses shoppers at the ${b.step} step, ${pct(b.rate)} (${b.k} of ${b.n} ${STEP_DENOM[b.step]}) against a unit median of ${pct(b.unit_median)} over ${b.peers} neighbour${b.peers === 1 ? '' : 's'}, ${Math.round(b.gap_pts ?? 0)} points below: ${STEP_FIX[b.step]}${rej}.`;
+    const rej = b.step === 'pick' && d.top_reject ? `. top reason: ${mechLabel(d.top_reject.mechanism)} (${d.top_reject.count})` : '';
+    main = `${STEP_LEAD[b.step]} ${pct(b.rate)} ${STEP_DID[b.step]} (${b.k} of ${b.n}); the unit median is ${pct(b.unit_median)}. ${STEP_FIX[b.step]}${rej}.`;
   }
   const g = d.arm_gap;
   const arm = g
-    ? `ai agents pick it ${g.gap < 0 ? 'less' : 'more'} than humans do: ${pct(g.ai.pick_rate)} (${g.ai.picked} of ${g.ai.shown} feed views) against ${pct(g.human.pick_rate)} (${g.human.picked} of ${g.human.shown} shelf passes), a gap of ${Math.abs(pts(g.gap))} points, so ${g.gap < 0 ? 'the structured fields an agent reads are selling it worse than the pack does' : 'it reads better as data than it looks on the shelf'}.`
+    ? `ai agents pick it ${g.gap < 0 ? 'less' : 'more'} than shoppers do: ${pct(g.ai.pick_rate)} (${g.ai.picked} of ${g.ai.shown}) against ${pct(g.human.pick_rate)} (${g.human.picked} of ${g.human.shown}).`
     : null;
   return { main, arm };
 }
