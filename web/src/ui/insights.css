@@ -169,3 +169,25 @@
   .insights details.fold > summary { flex-direction: column; gap: 2px; }
   .insights .fold-a { text-align: left; white-space: normal; }
 }
+
+/* ---- overview: every question is a tile with a small chart and a takeaway */
+.insights .t-4 { grid-column: span 4; }
+.insights .qtile { display: flex; flex-direction: column; gap: 8px; }
+.insights .qtile h3 { margin: 0; font-size: 17px; }
+.insights .q-bars { display: grid; gap: 7px; }
+.insights .q-bar { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12.5px; }
+.insights .q-bar-l { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.insights .q-bar-t { height: 14px; border-radius: 999px; background: var(--surface-dim); border: 2px solid var(--ink); overflow: hidden; }
+.insights .q-bar-t i { display: block; height: 100%; background: var(--ink); }
+.insights .q-bar-r { font-weight: 700; color: var(--muted); white-space: nowrap; min-width: 56px; text-align: right; }
+.insights .q-bar.is-me .q-bar-l, .insights .q-bar.is-me .q-bar-r { font-weight: 800; color: var(--ink); }
+.insights .q-take { font-size: 13.5px; font-weight: 700; line-height: 1.4; margin: 2px 0 0; }
+.insights .q-empty { font-size: 13px; margin: 0; }
+.insights .q-more { align-self: flex-start; margin-top: auto; font-size: 12.5px; }
+.insights .q-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.insights .q-stats > div { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; background: var(--surface-dim); border: 2px solid var(--line); border-radius: 14px; }
+.insights .q-stats b { font-family: var(--display); font-weight: 800; font-size: 28px; line-height: 1; }
+.insights .q-stats span { font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.insights .qtile .fold-body { padding: 12px 0 0; margin-top: 4px; border-top: 2px dashed var(--line); }
+.insights .ins-board { gap: 14px; }
+@media (max-width: 980px) { .insights .t-4 { grid-column: span 12; } }
