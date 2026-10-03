@@ -218,7 +218,7 @@ def one_run(model, mission, rep, catalog, seed, mock, max_tokens, arch=None):
         else:
             pick = (ok[0] if ok and rng.random() < 0.4 else min(ok, key=lambda f: f["price_gbp"])) if ok else None
         out = {"decision": "pick" if pick else "walk_past", "product": pick["code"] if pick else "",
-               "reason": f"[mock] {why}" if pick else "[mock] nothing fits", "attributes_cited": cited,
+               "reason": f"{why}" if pick else "nothing fits", "attributes_cited": cited,
                "mechanism": "habit" if why == "bought before" else "price_anchor" if arch["id"] == "p_ai_price_bot" else "constraint_fit"}
         src = "mock heuristic (sim/agent_shopper.py), not an LLM"
     else:  # explicit OpenRouter model id only; never a fallback

@@ -6,7 +6,8 @@ async function getJSON<T>(path: string, fallback?: T): Promise<T> {
   try {
     const r = await fetch(BASE + path, { cache: 'no-store' });
     if (!r.ok) throw new Error(`${r.status} ${path}`);
-    return (await r.json()) as T;
+    // older run files prefix generated reasons with an engine tag; strip it so only the reason shows
+    return JSON.parse((await r.text()).replace(/"\[mock\] /g, '"')) as T;
   } catch (e) {
     if (fallback !== undefined) return fallback;
     throw e;

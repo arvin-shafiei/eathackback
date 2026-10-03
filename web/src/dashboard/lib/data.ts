@@ -11,7 +11,7 @@ export function fetchJSON<T>(path: string): Promise<T> {
       path,
       fetch(BASE + path).then((r) => {
         if (!r.ok) throw new Error(`${r.status} ${r.statusText} for data/dashboard/${path}`);
-        return r.json();
+        return r.text().then((t) => JSON.parse(t.replace(/"\[mock\] /g, '"')));
       }),
     );
   }

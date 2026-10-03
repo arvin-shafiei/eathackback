@@ -26,7 +26,7 @@ The run log is written to `data/sim/runs/<run_id>.json` in the CONTRACT shape. E
 
 ```bash
 python3 sim/run.py --agents 30 --seed 1                    # Jev (default): TypeSafe System One
-python3 sim/run.py --agents 30 --engine mock                # dry run, no API, deterministic heuristic (reasons prefixed [mock])
+python3 sim/run.py --agents 30 --engine mock                # dry run, no API, deterministic heuristic
 python3 sim/run.py --agents 30 --engine llm --models google/gemini-2.5-flash   # OpenRouter, only when explicitly asked
 python3 sim/agent_shopper.py --runs 20                      # AI-agent arm, Jev Choice over the shuffled feed
 python3 sim/optimise.py --product <code> --agents 40 --seeds 1,2 --edits eye,facings,claim [--price 1.40]   # Jev by default

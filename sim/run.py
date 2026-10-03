@@ -254,15 +254,15 @@ def mock_decide(persona, ocean, cards, budget_left, rng_key):
         if s < worst_s:
             worst, worst_s, worst_why = c, s, why or "too dear for what it is"
     if best and best_s > 0.05 and (budget_left is None or (best.get("price_gbp") or 0) <= budget_left):
-        return {"decision": "pick", "product": best["code"], "reason": "[mock] fine, that'll do, it's what I'd usually grab",
+        return {"decision": "pick", "product": best["code"], "reason": "fine, that'll do, it's what I'd usually grab",
                 "attributes_cited": ["price_gbp", "brand"], "feeling": "fine", "sentiment": 0.3,
                 "mechanism": "habit" if "challenger" not in best.get("_role", "") else "novelty", "others": {}}
     if worst and worst_s < -0.6:
-        return {"decision": "reject", "product": worst["code"], "reason": f"[mock] {worst_why}",
+        return {"decision": "reject", "product": worst["code"], "reason": f"{worst_why}",
                 "attributes_cited": ["ingredients_text" if "in it" in worst_why else "price_gbp"],
                 "feeling": "meh", "sentiment": -0.4, "mechanism": "gimmick_reactance" if "gimmick" in worst_why else "price_anchor",
                 "others": {}}
-    return {"decision": "walk_past", "product": cards[0]["code"], "reason": "[mock] don't need any of that today",
+    return {"decision": "walk_past", "product": cards[0]["code"], "reason": "don't need any of that today",
             "attributes_cited": [], "feeling": "indifferent", "sentiment": 0.0, "mechanism": "indifference", "others": {}}
 
 
