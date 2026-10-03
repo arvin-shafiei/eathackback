@@ -166,7 +166,9 @@ def p_notice(*, row: int, facings: int, pos: int, n_in_set: int, on_mission: boo
     c = coefficients()
     d = c["_derived"]
     pp = persona_params or {}
-    rowname = ROW_NAMES.get(int(row), "eye")
+    # rows below the 3 we have alphas for (4-5 on superstore gondolas) are below eye level -> bottom alpha.
+    # source: data/store/formats/*.config.json notice_row_map (assumption, conservative; was silently "eye" before)
+    rowname = ROW_NAMES.get(int(row), "bottom")
 
     a0 = d["alpha0"]["value"]
     if c["persona_eye_override"]["value"] and pp.get("p_notice_eye_level"):

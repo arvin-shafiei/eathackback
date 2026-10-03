@@ -17,6 +17,7 @@ import { canvasTex } from './textures';
 import { bus } from './fx';
 import { restockShelf } from './shelfBus';
 import { INK } from '../theme';
+import { cafeSpills, opsWet, spillsChanged, CLEAN_DRY_S, type CafeSpill } from './cafe/cafeState';
 
 /** what the Ops layer computes once per frame (priority -1) and every ops child reads */
 export interface OpsLive {
@@ -170,28 +171,38 @@ const SIGN_TEX = () => canvasTex(128, 160, (ctx) => {
 });
 let signTex: THREE.Texture | null = null;
 
-/** spill decal + yellow A-frame wet-floor sign. The puddle shrinks while it's being cleaned */
-export function WetFloor({ x, z, cleaning }: { x: number; z: number; cleaning: boolean }) {
+/** spill decal + yellow A-frame wet-floor sign. The puddle shrinks while it's being cleaned.
+ *  color: puddle colour (aisle water blue; café coffee brown). sign: show the A-frame (default on).
+ *  fade(): 0..1 visibility read every frame (café spills fade out as they dry) */
+export function WetFloor({ x, z, cleaning, color = '#7fd4ff', sign = true, fade, size = 1 }: { x: number; z: number; cleaning: boolean; color?: string; sign?: boolean; fade?: () => number; size?: number }) {
   const tex = useMemo(() => (signTex ??= SIGN_TEX()), []);
   const puddle = useRef<THREE.Mesh>(null);
-  useFrame((st) => { if (puddle.current) puddle.current.scale.setScalar(cleaning ? 0.8 + Math.sin(st.clock.elapsedTime * 3) * 0.05 : 1 + Math.sin(st.clock.elapsedTime * 1.5) * 0.03); });
+  const mats = useRef<(THREE.MeshStandardMaterial | null)[]>([]);
+  useFrame((st) => {
+    const now = st.clock.elapsedTime;
+    const k = fade ? Math.max(0, Math.min(1, fade())) : 1;
+    if (puddle.current) puddle.current.scale.setScalar(size * (0.35 + 0.65 * k) * (cleaning ? 0.8 + Math.sin(now * 3) * 0.05 : 1 + Math.sin(now * 1.5) * 0.03));
+    mats.current.forEach((m, i) => { if (m) m.opacity = (i ? 0.55 : 0.7) * k; });
+  });
   return (
     <group position={[x, 0, z]}>
       <mesh ref={puddle} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.012, 0]}>
         <circleGeometry args={[0.75, 28]} />
-        <meshStandardMaterial color="#7fd4ff" transparent opacity={0.65} roughness={0.02} metalness={0.2} />
+        <meshStandardMaterial ref={(m) => { mats.current[0] = m; }} color={color} transparent opacity={0.7} roughness={0.02} metalness={0.2} depthWrite={false} />
       </mesh>
       {[[0.3, -0.2], [-0.25, 0.35]].map(([dx, dz], i) => (
-        <mesh key={i} rotation={[-Math.PI / 2, 0, 0]} position={[dx, 0.013, dz]}><circleGeometry args={[0.28, 18]} /><meshStandardMaterial color="#7fd4ff" transparent opacity={0.55} roughness={0.02} /></mesh>
+        <mesh key={i} rotation={[-Math.PI / 2, 0, 0]} position={[dx * size, 0.013, dz * size]}><circleGeometry args={[0.28 * size, 18]} /><meshStandardMaterial ref={(m) => { mats.current[i + 1] = m; }} color={color} transparent opacity={0.55} roughness={0.02} depthWrite={false} /></mesh>
       ))}
-      <group position={[-0.9, 0, -0.4]} rotation={[0, 0.6, 0]}>
-        {[-1, 1].map((k) => (
-          <mesh key={k} position={[0, 0.36, k * 0.12]} rotation={[k * 0.3, k < 0 ? Math.PI : 0, 0]}>
-            <planeGeometry args={[0.36, 0.72]} />
-            <meshBasicMaterial map={tex} side={THREE.DoubleSide} />
-          </mesh>
-        ))}
-      </group>
+      {sign && (
+        <group position={[-0.9, 0, -0.4]} rotation={[0, 0.6, 0]}>
+          {[-1, 1].map((k) => (
+            <mesh key={k} position={[0, 0.36, k * 0.12]} rotation={[k * 0.3, k < 0 ? Math.PI : 0, 0]}>
+              <planeGeometry args={[0.36, 0.72]} />
+              <meshBasicMaterial map={tex} side={THREE.DoubleSide} />
+            </mesh>
+          ))}
+        </group>
+      )}
     </group>
   );
 }
@@ -252,6 +263,12 @@ export function StaffCrew({ cfg, roster, live, planogram, walkersOut }: CrewProp
       let row = r?.staff?.find((x) => x.id === s.id);
       // the guard answers a live alarm even before the log's next row says "respond"
       if (s.role === 'guard' && L.guard && L.t < L.guard.until && row?.task !== 'respond') row = { id: s.id, task: 'respond', at: { x: L.guard.x + 0.9, z: L.guard.z - 1.4 } };
+      // café spills: a cleaner the log has free (anything but an ops 'clean') grabs mop + sign and goes over
+      let cafeSp: CafeSpill | undefined;
+      if (s.role === 'cleaner' && row?.task !== 'clean') {
+        cafeSp = cafeSpills.find((x) => x.state !== 'done' && x.claimed === s.id) ?? cafeSpills.find((x) => x.state !== 'done' && !x.claimed);
+        if (cafeSp) { cafeSp.claimed = s.id; row = { id: s.id, task: 'clean', at: { x: cafeSp.x + 0.75, z: cafeSp.z + 0.1 } }; }
+      } else if (s.role === 'cleaner') for (const x of cafeSpills) if (x.claimed === s.id) x.claimed = null; // log pulled them away
       const goalKey = row ? `${row.task}@${typeof row.at === 'object' ? `${row.at.x.toFixed(1)},${row.at.z.toFixed(1)}` : row.at}` : 'idle';
       w.task = row?.task ?? 'idle';
       if (goalKey !== w.goal) {
@@ -274,6 +291,12 @@ export function StaffCrew({ cfg, roster, live, planogram, walkersOut }: CrewProp
         w.yaw += Math.atan2(Math.sin(want - w.yaw), Math.cos(want - w.yaw)) * 0.25;
         w.moving = true;
         if (stp >= d) w.path.shift();
+      }
+      if (cafeSp && !w.moving && dtR > 0 && Math.hypot(w.pos.x - cafeSp.x - 0.75, w.pos.z - cafeSp.z - 0.1) < 0.6) {
+        w.yaw = Math.atan2(cafeSp.x - w.pos.x, cafeSp.z - w.pos.z);
+        if (cafeSp.state === 'open') { cafeSp.state = 'cleaning'; cafeSp.tClean = L.t; spillsChanged(); }
+        // mop for spill_clean_and_dry_min (params.json, assumption) in replay seconds
+        else if (L.t - cafeSp.tClean >= CLEAN_DRY_S) { cafeSp.state = 'done'; cafeSp.tDone = L.t; cafeSp.claimed = null; spillsChanged(); }
       }
       if (w.moving || dtR <= 0 || !row?.at || typeof row.at !== 'string') return;
       const at = row.at;
@@ -305,6 +328,12 @@ export function StaffCrew({ cfg, roster, live, planogram, walkersOut }: CrewProp
 
 /** spills from the ops minute (state open/cleaning); rendered by the Ops layer */
 export function Spills({ cfg, spills }: { cfg: StoreConfig; spills: OpsMinute['spills'] }) {
+  // keep wetZones() (cafe/cafeState) in sync so the crowd can steer round wet aisles
+  useEffect(() => {
+    opsWet.length = 0;
+    for (const sp of spills ?? []) { if (sp.state === 'done') continue; const p = spillPos(cfg, sp.at); if (p) opsWet.push({ id: sp.id, x: p.x, z: p.z }); }
+    return () => { opsWet.length = 0; };
+  }, [cfg, spills]);
   return <>{(spills ?? []).filter((sp) => sp.state !== 'done').map((sp) => { const p = spillPos(cfg, sp.at); return p ? <WetFloor key={sp.id} x={p.x} z={p.z} cleaning={sp.state === 'cleaning'} /> : null; })}</>;
 }
 

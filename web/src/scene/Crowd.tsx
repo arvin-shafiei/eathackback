@@ -20,7 +20,7 @@ import { productMaterials } from './textures';
 import { accessoriesFor, aiKindOf, robotPartsFor, AI_KIND, type AiKind, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, cupGeometry, type PartUse } from './parts';
 import type { Beat, Beats } from './beats';
 import { bus, sfx } from './fx';
-import { CarrierLoad, GROUP, createCarrier, insideCarrier, setSolid, stackLocal, throwPack } from './Basket';
+import { CarrierLoad, GROUP, createCarrier, followCarrier, insideCarrier, setSolid, stackLocal, throwPack } from './Basket';
 import { restockShelf, takeFromShelf } from './shelfBus';
 import { crowdStats, emitCrowd } from './crowdBus';
 
@@ -136,6 +136,51 @@ function queueGroups(sp: StorePlan): Map<string, QGroup> {
   return out;
 }
 
+/** string → [0,1) (seeded per shopper, stable across reloads) */
+function hash01(str: string) { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 100000) / 100000; }
+
+/**
+ * De-trunk the walk. layout's router sends everyone heading the same way down the same walkway when they only pass
+ * THROUGH a gondola block. For each plain transit leg (no phase, mostly along z) that crosses a whole block, pick a
+ * per-shopper seeded parallel walkway within ±2 of the routed one and go round that way instead. Endpoints, dwells,
+ * picks and timing are untouched (the leg keeps its t0..t1; we only skip detours that would need >1.5x the length).
+ * assumption: visual only. Decisions and order still come from the run log.
+ */
+function spreadTimeline(tl: Timeline, sp: StorePlan, seed: string): Timeline {
+  const blocks = new Map<number, { z0: number; z1: number; xs: number[] }>();
+  for (const w of sp.walkways) { const b = blocks.get(w.block) ?? { z0: w.z0, z1: w.z1, xs: [] }; b.z0 = Math.min(b.z0, w.z0); b.z1 = Math.max(b.z1, w.z1); b.xs.push(w.x); blocks.set(w.block, b); }
+  const bl = [...blocks.values()].map((b) => ({ ...b, xs: [...new Set(b.xs.map((x) => +x.toFixed(2)))].sort((a, c) => a - c) }));
+  const out: typeof tl.segs = [];
+  let changed = false;
+  tl.segs.forEach((g, gi) => {
+    const dz = g.b.z - g.a.z, dx = g.b.x - g.a.x, L = Math.hypot(dx, dz);
+    if (g.kind !== 'move' || g.phase || L < 8 || Math.abs(dx) > 2.5 || g.t1 <= g.t0) { out.push(g); return; }
+    const lo = Math.min(g.a.z, g.b.z), hi = Math.max(g.a.z, g.b.z);
+    const B = bl.find((b) => lo <= b.z0 + 0.2 && hi >= b.z1 - 0.2 && b.xs.length > 1);
+    if (!B) { out.push(g); return; }
+    const x0 = (g.a.x + g.b.x) / 2;
+    const near = B.xs.filter((x) => Math.abs(x - x0) < 2.6 * G.spacing);
+    if (near.length < 2) { out.push(g); return; }
+    const xp = near[Math.floor(hash01(`${seed}:${gi}`) * near.length)];
+    if (Math.abs(xp - x0) < 0.5) { out.push(g); return; }
+    const down = dz < 0;
+    const zIn = down ? B.z1 + 1.1 : B.z0 - 1.1, zOut = down ? B.z0 - 1.1 : B.z1 + 1.1;
+    const pts = [g.a, { x: g.a.x, z: zIn }, { x: xp, z: zIn }, { x: xp, z: zOut }, { x: g.b.x, z: zOut }, g.b]
+      .filter((p, i, arr) => i === 0 || Math.hypot(p.x - arr[i - 1].x, p.z - arr[i - 1].z) > 0.05);
+    let L2 = 0; for (let i = 1; i < pts.length; i++) L2 += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].z - pts[i - 1].z);
+    if (L2 > L * 1.5) { out.push(g); return; }
+    let t = g.t0, acc = 0;
+    for (let i = 1; i < pts.length; i++) {
+      acc += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].z - pts[i - 1].z);
+      const t1 = i === pts.length - 1 ? g.t1 : g.t0 + (g.t1 - g.t0) * (acc / L2);
+      out.push({ ...g, t0: t, t1, a: { x: pts[i - 1].x, z: pts[i - 1].z, walkway: null }, b: { x: pts[i].x, z: pts[i].z, walkway: null } });
+      t = t1;
+    }
+    changed = true;
+  });
+  return changed ? { ...tl, segs: out } : tl;
+}
+
 /** café visit window handed to Cafe.tsx: from reaching the café entrance until back out of it.
  *  layout's café leg is: door → inside → counter → (hold cafe) → seat → (hold cafe) → 2 moves → door */
 function cafeWindow(tl: Timeline): [number, number] | null {
@@ -165,7 +210,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   const speedRef = useRef(speed); speedRef.current = speed;
 
   // ---------- shoppers (data) ----------
-  const shoppers = useMemo<Shopper[]>(() => agents.filter((a) => timelines[a.agent_id]).map((a, si) => {
+  const shoppers = useMemo<Shopper[]>(() => { const SP0 = storePlan(cfg); return agents.filter((a) => timelines[a.agent_id]).map((a, si) => {
     const ai = isAI(a);
     // ai shoppers are archetypes (persona_id / archetype), the model is only a detail
     const arch = ai ? (a.archetype ?? personas[a.persona_id]?.archetype ?? a.persona_id) : archetypeOf(a, personas);
@@ -173,7 +218,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const mission = a.mission ?? personas[a.persona_id]?.mission;
     const parts = aiKind ? robotPartsFor(aiKind) : accessoriesFor(arch);
     const carrier = carrierFor(arch, mission, ai);
-    const tl = timelines[a.agent_id];
+    const tl = spreadTimeline(timelines[a.agent_id], SP0, a.agent_id);
     return {
       si, agent: a, ai, aiKind, arch, color: new THREE.Color(aiKind ? AI_KIND[aiKind].body : archColor(arch)), carrier, tl, beats: beats.byAgent[a.agent_id] ?? [],
       body: null, cbody: null, active: false, held: 0, cbOn: false, knock: new THREE.Vector2(), sq: 0, sqv: 0, cool: 0, step: Math.random() * 6,
@@ -187,12 +232,14 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       q: queueInfo(tl), qT: null, qFace: 0,
       co: tl.checkout ?? null, park: parkMatrix(tl.checkout ?? null, carrier), cafeT: cafeWindow(tl),
     };
-  }), [agents, timelines, personas, beats]);
+  }); }, [cfg, agents, timelines, personas, beats]);
 
   useEffect(() => {
     // headless debug: where everyone is, what they're doing (no stat reads this)
     const w = window as unknown as { __crowd?: Record<string, unknown> };
     if (!w.__crowd) return;
+    w.__crowd.tl = (id: string) => shoppers.find((s) => s.agent.agent_id === id)?.tl.segs.map((g) => [+g.t0.toFixed(1), g.kind, g.phase ?? '', +g.a.x.toFixed(1), +g.a.z.toFixed(1), +g.b.x.toFixed(1), +g.b.z.toFixed(1), g.a.walkway ?? '', g.b.walkway ?? '']);
+    w.__crowd.plan = () => { const sp = storePlan(cfg); return { entrances: sp.entrances, exits: sp.exits, walkways: sp.walkways.map((x) => [x.id, x.aisleNo, x.x, x.z0, x.z1, x.dept]) }; };
     w.__crowd.dump = () => {
       const sp = storePlan(cfg);
       return { bounds: sp.bounds, lanes: sp.lanes.map((l) => ({ id: l.id, kind: l.kind, x: +l.x.toFixed(1), z: +l.z.toFixed(1) })), people: shoppers.filter((s) => s.active).map((s) => ({ id: s.agent.agent_id, x: +s.px.toFixed(2), z: +s.pz.toFixed(2), q: s.q?.group ?? null, inQ: !!s.qT, c: s.carrier, ph: sampleTimeline(s.tl, timeRef.current).seg?.phase ?? sampleTimeline(s.tl, timeRef.current).seg?.kind })) };
@@ -409,12 +456,21 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         sx += (ddx / dd) * wgt; sz += (ddz / dd) * wgt;
         if (!busy && (-(ddx * fx + ddz * fz) / (dd * fm)) > 0.5) { sx += (-fz / fm) * wgt * 0.8; sz += (fx / fm) * wgt * 0.8; }
       });
+      // kinematic trolleys don't shove anyone, so keep clear of other people's trolleys (and my trolley of theirs)
+      near(p.x, p.z, 2.2, s.si, (o) => {
+        if (o.carrier !== 'trolley' || !o.cbOn || !o.cbody) return;
+        const c = o.cbody.translation();
+        const ex = p.x - c.x, ez = p.z - c.z, ed = Math.hypot(ex, ez) || 1e-3;
+        if (ed < 0.95) { const wgt = (0.95 - ed) * 4; sx += (ex / ed) * wgt; sz += (ez / ed) * wgt; }
+      });
       const sepGain = busy ? 0.9 : 2.2;
       const gain = 3.2;
       let vx = fx + dx * gain + s.knock.x + sx * sepGain, vz = fz + dz * gain + s.knock.y + sz * sepGain;
       const vmax = walk * 1.7 + 1.4, vm = Math.hypot(vx, vz);
       if (vm > vmax) { vx *= vmax / vm; vz *= vmax / vm; }
+      if (!Number.isFinite(vx) || !Number.isFinite(vz)) { vx = 0; vz = 0; }
       s.body.setLinvel({ x: vx, y: 0, z: vz }, true);
+      if (s.cbody && s.cbOn) followCarrier(s.cbody, s.body, s.carrier === 'trolley' ? TROLLEY.anchor : BASKET.anchor, BODY.center);
       s.knock.multiplyScalar(Math.exp(-dt / 0.28));
       const r = s.body.rotation();
       const yaw = 2 * Math.atan2(r.y, r.w);

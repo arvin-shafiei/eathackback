@@ -368,54 +368,61 @@ function dataPlan(cfg: StoreConfig): StorePlan | null {
   const z0 = blocks.length ? blocks[0].z0 : D * 0.3, z1 = blocks.length ? blocks[blocks.length - 1].z1 : D * 0.6;
   const crossFront = z0 - G.crossGap, crossBack = z1 + G.crossGap;
 
-  // ---- checkouts: real lane pitch, bank centred on the stretched aisle block
-  const coList = (Array.isArray(C.checkouts) ? C.checkouts : []).map(rec).filter((c) => typeof c.x === 'number' && typeof c.z === 'number');
-  const cxs = coList.map((c) => c.x as number);
-  const bankL = cxs.length ? Math.min(...cxs) : Wd / 2, bankR = cxs.length ? Math.max(...cxs) : Wd / 2;
-  const off = sx((bankL + bankR) / 2) - (bankL + bankR) / 2;
-  /** front-band x: things beside the bank (exits, gates) move with it, the rest use the stretch */
-  const FX = (x: number) => (x >= bankL - 10 && x <= bankR + 3 ? x + off : sx(x)) - W / 2;
-  const belt = 2.6;
-  const lanes: Lane[] = [];
+  // ---- café zone edge first (the checkout bank is laid out beside it)
+  const cr = rec(C.cafe), cz_ = rec(cr.zone);
+  const cafeX1 = typeof cz_.x1 === 'number' ? X(cz_.x1 as number) : xMin;
+  // ---- doors (real x along the shopfront)
+  const ents = (Array.isArray(C.entrances) ? C.entrances : [C.entrance]).map(rec).filter((e) => typeof e.x === 'number');
+  const entrances: StorePlan['entrances'] = (ents.length ? ents : [{ x: Wd * 0.2 }]).map((e) => ({ x: X(e.x as number), z: zMax, nx: 0, nz: -1 }));
+  // ---- checkouts: real counts (staffed / self) from the config's checkout list; the bank is laid out here across the
+  //      front, between the café / main entrance and the far entrance, so it always fits inside the shell.
+  //      assumption (visual): till pitch 2.9 m, kiosk pitch 1.45 m in two facing rows (the generator's pitch).
+  const coList = (Array.isArray(C.checkouts) ? C.checkouts : []).map(rec);
   const staffed = coList.filter((c) => /staff|till|manned/.test(String(c.type ?? '')));
   const selfs = coList.filter((c) => /self|sco/.test(String(c.type ?? '')));
+  const staffedZ = staffed.filter((c) => typeof c.z === 'number');
+  const checkoutZ = staffedZ.length ? Z(staffedZ.reduce((s, c) => s + (c.z as number), 0) / staffedZ.length) : D - 8;
+  const EXIT_ROOM = 4.6; // assumption: exit door + EAS gate pair beside each end of the bank
+  const leftLimit = Math.max(cafeX1 + 1.2, ...entrances.filter((e) => e.x < 0).map((e) => e.x + 2.2)) + EXIT_ROOM;
+  const rightLimit = Math.min(xMax - 1.2, ...entrances.filter((e) => e.x > 0).map((e) => e.x - 2.2)) - EXIT_ROOM;
+  const avail = Math.max(10, rightLimit - leftLimit);
+  const selfCols = Math.ceil(selfs.length / 2);
+  let pitchS = 2.9, kpitch = 1.45;
+  const want = staffed.length * pitchS + (selfs.length ? 1.6 + selfCols * kpitch : 0);
+  if (want > avail) { const k = avail / want; pitchS *= Math.max(0.75, k); kpitch *= Math.max(0.8, k); }
+  const bankW = staffed.length * pitchS + (selfs.length ? 1.6 + selfCols * kpitch : 0);
+  const bankLeft = Math.max(leftLimit, Math.min(rightLimit - bankW, -bankW / 2));
+  const belt = 2.6;
+  const lanes: Lane[] = [];
   staffed.forEach((c, i) => {
-    const cx = FX(c.x as number), cz = Z(c.z as number);
-    const sxx = cx - 0.95;
+    const cx = bankLeft + (i + 0.5) * pitchS, cz = checkoutZ;
     lanes.push({
       id: String(c.id ?? `T${i + 1}`), kind: 'staffed', idx: i, x: cx, z: cz,
-      stand: { x: sxx, z: cz - belt / 2 + 0.1 }, queueDir: { x: 0, z: -1 },
+      stand: { x: cx - 0.95, z: cz - belt / 2 + 0.1 }, queueDir: { x: 0, z: -1 },
       beltStart: { x: cx - 0.12, z: cz - belt / 2 + 0.25 }, beltEnd: { x: cx - 0.12, z: cz + 0.35 },
       scanner: { x: cx - 0.1, y: 0.99, z: cz + 0.55 }, bag: { x: cx - 0.2, y: 0.99, z: cz + belt / 2 - 0.25 }, cashier: { x: cx + 0.65, z: cz + 0.5 },
     });
   });
-  const selfMidZ = selfs.length ? selfs.reduce((s, c) => s + Z(c.z as number), 0) / selfs.length : 0;
+  const sLeft = bankLeft + staffed.length * pitchS + 1.6;
   selfs.forEach((c, i) => {
-    const kx = FX(c.x as number), kz = Z(c.z as number);
-    const face = Math.sign(selfMidZ - kz) || 1;
+    const col = i % selfCols, row = Math.floor(i / selfCols);
+    const face = row === 0 ? 1 : -1; // two rows facing each other across a corridor
+    const kx = sLeft + (col + 0.5) * kpitch, kz = checkoutZ + (row === 0 ? -1.35 : 1.35);
     lanes.push({
       id: String(c.id ?? `S${i + 1}`), kind: 'self', idx: i, x: kx, z: kz,
       stand: { x: kx, z: kz + face * 0.72 }, queueDir: { x: -1, z: 0 },
       scanner: { x: kx - 0.1, y: 1.0, z: kz + face * 0.2 }, bag: { x: kx + 0.45, y: 0.82, z: kz + face * 0.12 },
     });
   });
-  const checkoutZ = staffed.length ? Z(staffed.reduce((s, c) => s + (c.z as number), 0) / staffed.length) : D - 8;
   const laneMinX = lanes.length ? Math.min(...lanes.map((l) => l.x)) : 0, laneMaxX = lanes.length ? Math.max(...lanes.map((l) => l.x)) : 0;
-  const laneMinZ = lanes.length ? Math.min(...lanes.map((l) => l.z)) : checkoutZ, laneMaxZ = lanes.length ? Math.max(...lanes.map((l) => l.z)) : checkoutZ;
-  const bank: Rect = { x0: laneMinX - 0.75, x1: laneMaxX + 0.7, z0: Math.min(checkoutZ - 1.75, laneMinZ - 0.6), z1: Math.max(checkoutZ + 1.75, laneMaxZ + 0.6) };
+  const bank: Rect = { x0: laneMinX - 0.75, x1: laneMaxX + 0.7, z0: checkoutZ - 1.75, z1: checkoutZ + 1.75 };
   const lobbyZ = checkoutZ + belt / 2 + 1.7;
-
-  // ---- doors + gates
-  const ents = (Array.isArray(C.entrances) ? C.entrances : [C.entrance]).map(rec).filter((e) => typeof e.x === 'number');
-  const entrances: StorePlan['entrances'] = (ents.length ? ents : [{ x: Wd * 0.2 }]).map((e) => ({ x: X(e.x as number), z: zMax, nx: 0, nz: -1 }));
-  const exRaw = (Array.isArray(C.exits) ? C.exits : []).map(rec).filter((e) => typeof e.x === 'number');
-  const exits: XY[] = exRaw.length ? exRaw.map((e) => ({ x: FX(e.x as number), z: zMax })) : [{ x: (bank.x0 + bank.x1) / 2, z: zMax }];
-  const gRaw = (Array.isArray(C.security_gates) ? C.security_gates : []).map(rec).filter((g) => typeof g.x === 'number');
-  const gates = gRaw.length ? gRaw.map((g, i) => ({ id: String(g.id ?? `G${i + 1}`), x: FX(g.x as number), z: Z(num(g.z, 1.2)) }))
-    : exits.flatMap((e, i) => [{ id: `G${i + 1}a`, x: e.x - 1.15, z: zMax - 1.3 }, { id: `G${i + 1}b`, x: e.x + 1.15, z: zMax - 1.3 }]);
+  // ---- exits + EAS gates beside the ends of the bank (as many as the config lists, max one per end)
+  const nExit = Math.max(1, Math.min(2, (Array.isArray(C.exits) ? C.exits : []).length || 1));
+  const exits: XY[] = nExit === 1 ? [{ x: bank.x1 + 2.6, z: zMax }] : [{ x: bank.x0 - 2.6, z: zMax }, { x: bank.x1 + 2.6, z: zMax }];
+  const gates = exits.flatMap((e, i) => [{ id: `G${i + 1}a`, x: e.x - 1.0, z: zMax - 1.3 }, { id: `G${i + 1}b`, x: e.x + 1.0, z: zMax - 1.3 }]);
 
   // ---- café (real zone, tables, seats, counter)
-  const cr = rec(C.cafe), cz_ = rec(cr.zone);
   let cafe: StorePlan['cafe'] = { x: xMin, z: zMax, w: 0, d: 0, counter: { x: xMin, z: zMax }, seats: [], tables: [] };
   if (typeof cz_.x0 === 'number') {
     const x0 = X(cz_.x0 as number), x1 = X(num(cz_.x1, 0)), za = Z(num(cz_.z1, 0)), zb = Z(cz_.z0 as number);
@@ -1029,8 +1036,12 @@ export function routeBetween(cfg: StoreConfig, a: XY, b: XY, spread = 0.5): XY[]
 export interface WP { x: number; z: number; walkway: number | null }
 export type Phase = 'queue' | 'unload' | 'scan' | 'bag' | 'pay' | 'cafe' | 'exit';
 export interface Seg { t0: number; t1: number; a: WP; b: WP; kind: 'move' | 'dwell' | 'phase'; event?: SimEvent; slot?: string; face?: number; phase?: Phase; lane?: string }
-export interface CheckoutPlan { lane: Lane; tArrive: number; tUnload0: number; tScan: number[]; tBag: number; tPay: number; tDone: number; items: number }
-export interface Timeline { segs: Seg[]; start: number; end: number; checkout?: CheckoutPlan; cafeSeat?: number }
+export interface CheckoutPlan { lane: Lane; tArrive: number; tUnload0: number; tScan: number[]; tBag: number; tPay: number; tDone: number; items: number; balked?: boolean }
+/** one held queue position: slot k (0 = next to be served) at (x, z) from t0 to t1 */
+export interface QueueSlot { t0: number; t1: number; k: number; x: number; z: number }
+/** a shopper's place in a checkout line over time. group = staffed lane id, or 'self' for the shared self-checkout snake */
+export interface QueueTrack { group: string; kind: 'staffed' | 'self'; tJoin: number; tServe: number; slots: QueueSlot[]; balked: boolean }
+export interface Timeline { segs: Seg[]; start: number; end: number; checkout?: CheckoutPlan; cafeSeat?: number; queue?: QueueTrack; mission?: MissionKind }
 
 /** events from the ai-agent arm use slot "feed:<mission>"; place them at the product's shelf slot */
 const slotIndex = new WeakMap<Planogram, Record<string, string>>();
@@ -1051,15 +1062,79 @@ function standPoint(cfg: StoreConfig, plan: Planogram, rawSlot: string, code: st
   return { ...w, walkway: storePlan(cfg).units[u.id]?.walkway ?? null };
 }
 
-/** shopping part of a trip: in through a door, every logged event in order, then to the front cross-aisle by the tills */
+// ---------------- mission-driven routes ----------------
+export type MissionKind = 'meal_deal' | 'top_up' | 'big_shop' | 'browse';
+/** mission → route style. assumption: keyword match on the run's mission / archetype / persona id */
+export function missionKind(a: Agent): MissionKind {
+  const s = `${a.mission ?? ''} ${a.archetype ?? ''} ${a.persona_id ?? ''}`.toLowerCase();
+  if (/meal.?deal|lunch|office/.test(s)) return 'meal_deal';
+  if (/week|big|family|parent|stock.?up|monthly/.test(s)) return 'big_shop';
+  if (/top.?up|quick|express|gym|treat|commut|student|single/.test(s)) return 'top_up';
+  return 'browse';
+}
+/** meal deal priority by department text: main → drink → snack, everything else after. assumption: UK meal-deal flow */
+const mealDealRank = (dept: string) => (/food.?to.?go|sandwich|meal/.test(dept) ? 0 : /drink|water|juice/.test(dept) ? 1 : /snack|crisp|biscuit|confection/.test(dept) ? 2 : 3);
+
+/** route tuning (replay metres / seconds). Every number is an assumption, visual only (no stat reads a route) */
+const ROUTE = {
+  congBucket: 15, // s: congestion is counted per 15 replay-second window per aisle / wall department
+  congCost: 6, // m of detour a shopper accepts to avoid one other planned shopper in that aisle + window
+  twinCost: 4, // m: preference for the product's own slot over a same-category twin aisle
+  rankCost: 9, // m per department rank step for the produce-first racetrack (big shops)
+  mealRankCost: 80, // m per meal-deal step (main → drink → snack is near-strict)
+  endTurn: 1.1, // m past the end of a walkway when leaving it via a cross aisle
+};
+
+interface RouteState { cong: Map<string, Map<number, number>>; twins: Map<string, string[]> }
+const routeStates = new WeakMap<StorePlan, RouteState>();
+/** per-store planned congestion. App builds timelines in order 0..n, so seedIdx 0 starts a fresh plan */
+function routeState(sp: StorePlan, plan: Planogram, reset: boolean): RouteState {
+  let st = routeStates.get(sp);
+  if (!st || reset) {
+    // twins: slots with the same category in another unit (other aisles / bays carrying that category)
+    const twins = new Map<string, string[]>();
+    for (const slot of Object.keys(plan)) {
+      const { unit, row } = parseSlot(slot);
+      if (!sp.units[unit]) continue;
+      void row; const key = `${plan[slot]?.category}`;
+      const l = twins.get(key) ?? twins.set(key, []).get(key)!;
+      if (!l.some((x) => parseSlot(x).unit === unit)) l.push(slot); // one twin per unit
+    }
+    st = { cong: new Map(), twins };
+    routeStates.set(sp, st);
+  }
+  return st;
+}
+const areaOf = (sp: StorePlan, unitId: string) => { const p = sp.units[unitId]; return p ? (p.walkway !== null ? `w${p.walkway}` : `d${p.dept}`) : 'none'; };
+const congAt = (st: RouteState, area: string, t: number) => st.cong.get(area)?.get(Math.floor(t / ROUTE.congBucket)) ?? 0;
+const congAdd = (st: RouteState, area: string, t0: number, t1: number) => {
+  const m = st.cong.get(area) ?? st.cong.set(area, new Map()).get(area)!;
+  for (let b = Math.floor(t0 / ROUTE.congBucket); b <= Math.floor(t1 / ROUTE.congBucket); b++) m.set(b, (m.get(b) ?? 0) + 1);
+};
+const seeded = (seed: number) => { let s = (seed * 2654435761) >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; };
+
+/**
+ * Shopping part of a trip. The logged events (what the shopper saw / picked / rejected) are all kept, but the ORDER and
+ * the aisle are planned here so the floor fills like a real store instead of one trunk route:
+ *  - meal deal: main (food to go) → drink → snack, then the tills; top-up / browse: nearest-next over its own list only;
+ *    big shop: produce first, then the racetrack by department rank, clockwise or anticlockwise per shopper.
+ *  - congestion-aware: each candidate stop costs walking distance + ROUTE.congCost per shopper already planned in that
+ *    aisle in that time window, so a crowded aisle is visited later (or a twin aisle with the same category is used).
+ *  - twin aisles: if the category sits on the same shelf row in another aisle, the shopper may use that aisle instead
+ *    (visual only: the logged event still names the product; the stand point is in the chosen aisle).
+ *  - leaving a numbered aisle uses the end facing the next stop (front / middle / back cross aisle), entrances alternate.
+ */
 export function buildTimeline(cfg: StoreConfig, plan: Planogram, agent: Agent, startAt: number, seedIdx: number, ai = false): Timeline {
   const sp = storePlan(cfg);
-  const jitter = ((seedIdx * 37) % 7) / 7 * 0.5 - 0.25;
-  const lane = ((seedIdx * 53) % 11) / 10;
+  const st = routeState(sp, plan, seedIdx === 0);
+  const rnd = seeded(seedIdx * 7919 + 17);
+  const jitter = rnd() * 0.5 - 0.25;
+  const lane = rnd();
   const speed = ai ? G.aiWalkSpeed : G.walkSpeed;
+  const mission = ai ? 'browse' : missionKind(agent);
   const segs: Seg[] = [];
-  let t = startAt;
-  const door = sp.entrances[seedIdx % sp.entrances.length];
+  let t = startAt + rnd() * 1.5; // assumption: up to 1.5 s arrival jitter so the doors don't pulse
+  const door = sp.entrances[Math.floor(rnd() * sp.entrances.length) % sp.entrances.length];
   let cur: WP = { x: door.x + jitter * 3 - door.nx * 4.2, z: door.z - door.nz * 4.2, walkway: null };
   const step = (w: XY & { walkway?: number | null }) => {
     const d = Math.hypot(w.x - cur.x, w.z - cur.z);
@@ -1069,40 +1144,164 @@ export function buildTimeline(cfg: StoreConfig, plan: Planogram, agent: Agent, s
     segs.push({ t0: t, t1: t + dt, a: cur, b, kind: 'move' });
     t += dt; cur = b;
   };
-  const moveTo = (b: WP) => { const pts = routeBetween(cfg, cur, b, lane); pts.forEach((p, i) => step(i === pts.length - 1 ? b : p)); };
+  const moveTo = (b: WP) => {
+    // leave a numbered aisle by the end that faces the target (keeps the cross aisles all in use)
+    if (cur.walkway !== null && cur.walkway !== b.walkway) {
+      const w = sp.walkways[cur.walkway];
+      if (w) {
+        const goBack = b.z < w.z0 || (b.z <= w.z1 && (b.walkway === null ? cur.z - w.z0 < w.z1 - cur.z : lane < 0.5));
+        const ez = goBack ? w.z0 - G.endcapDepth - ROUTE.endTurn : w.z1 + G.endcapDepth + ROUTE.endTurn;
+        step({ x: w.x + (lane - 0.5) * 1.2, z: cur.z, walkway: w.id });
+        step({ x: w.x + (lane - 0.5) * 1.2, z: ez, walkway: null });
+      }
+    }
+    const pts = routeBetween(cfg, cur, b, lane); pts.forEach((p, i) => step(i === pts.length - 1 ? b : p));
+  };
   step({ x: door.x + jitter * 2 + door.nx * 2.2, z: door.z + door.nz * 2.2 });
   const evs = agent.events.length ? agent.events : agent.path.map((slot, i) => ({ step: i, slot, product: '', p_notice: 0, noticed: false, decision: 'not_noticed' as const }));
   const units = unitsById(cfg);
-  for (const e of evs) {
-    const st = standPoint(cfg, plan, e.slot, e.product || null, jitter);
-    if (!st) continue;
-    moveTo(st);
+  const defs = deptDefs(cfg);
+  const walkOrder = (rec(rec(cfg as unknown as AnyRec).adjacency).walk_order as unknown[] | undefined)?.map(String) ?? [];
+  const rankOf = (dept: string) => { const i = walkOrder.indexOf(dept); return i >= 0 ? i : (defs[dept]?.rank ?? 20); };
+  const reverse = mission === 'big_shop' && rnd() < 0.5;
+
+  // candidate stops for every event (own slot + twins), resolved once
+  interface Cand { slot: string; at: WP; area: string; dept: string; twin: boolean; face: number }
+  const cands: Cand[][] = evs.map((e) => {
+    const own = shelfSlotFor(plan, e.slot, e.product || null);
+    const { unit } = parseSlot(own);
+    const u = units[unit];
+    if (!u || !sp.units[unit]) return [];
+    const list = [own, ...(ai ? [] : (st.twins.get(`${plan[own]?.category ?? u.category}`) ?? []).filter((s) => parseSlot(s).unit !== unit))];
+    return list.map((slot) => {
+      const uid = parseSlot(slot).unit, uu = units[uid];
+      const at = slot === own ? standPoint(cfg, plan, e.slot, e.product || null, jitter) : (() => { const w = unitLocalToWorld(cfg, uu, (rnd() - 0.5) * Math.max(0, unitLength(uid) - 1.5), G.standOff + jitter); return { ...w, walkway: sp.units[uid]?.walkway ?? null }; })();
+      const rotY = uu ? unitFrame(cfg, uu).rotY : 0;
+      return at ? { slot, at, area: areaOf(sp, uid), dept: sp.units[uid]?.dept ?? 'grocery', twin: slot !== own, face: Math.atan2(-Math.sin(rotY), -Math.cos(rotY)) } : null;
+    }).filter((c): c is Cand => !!c);
+  });
+  const todo = new Set(evs.map((_, i) => i).filter((i) => cands[i].length));
+  // big shop: produce first, then the racetrack in rank order, or the other way round (reverse) for half the shoppers
+  const rr = (dept: string) => { const r = rankOf(dept); return reverse && r > 1 ? 100 - r : r; };
+  const minRank = () => Math.min(...[...todo].map((i) => rr(cands[i][0].dept)));
+  while (todo.size) {
+    let best: { i: number; c: Cand; cost: number } | null = null;
+    const r0 = mission === 'big_shop' ? minRank() : 0;
+    for (const i of todo) for (const c of cands[i]) {
+      const d = Math.hypot(c.at.x - cur.x, c.at.z - cur.z);
+      let cost = d + ROUTE.congCost * congAt(st, c.area, t + d / speed) + (c.twin ? ROUTE.twinCost : 0) + rnd() * 0.8;
+      if (mission === 'meal_deal') cost += ROUTE.mealRankCost * mealDealRank(c.dept);
+      else if (mission === 'big_shop') cost += ROUTE.rankCost * Math.max(0, rr(c.dept) - r0);
+      if (!best || cost < best.cost) best = { i, c, cost };
+    }
+    if (!best) break;
+    todo.delete(best.i);
+    const e = evs[best.i];
+    moveTo(best.c.at);
     const dwell = ai ? (e.decision === 'pick' ? DWELL.ai_pick : DWELL.ai_walk_past) : DWELL[e.decision] ?? DWELL.walk_past;
-    const u = units[parseSlot(shelfSlotFor(plan, e.slot, e.product || null)).unit];
-    const rotY = u ? unitFrame(cfg, u).rotY : 0;
-    const face = Math.atan2(-Math.sin(rotY), -Math.cos(rotY));
-    segs.push({ t0: t, t1: t + dwell, a: cur, b: cur, kind: 'dwell', event: e, slot: e.slot, face });
+    segs.push({ t0: t, t1: t + dwell, a: cur, b: cur, kind: 'dwell', event: e, slot: best.c.slot, face: best.c.face });
+    congAdd(st, best.c.area, t, t + dwell);
     t += dwell;
   }
-  // finish in the front cross aisle, spread along it
-  const fx = Math.max(sp.bank.x0, Math.min(sp.bank.x1, cur.x));
-  moveTo({ x: fx + (lane - 0.5) * 2, z: Math.min(sp.crossBack + 0.4 + (lane - 0.5) * 1.1, sp.bank.z0 - 1.2), walkway: null });
-  return { segs, start: startAt, end: t };
+  // finish in the front cross aisle, spread along the bank
+  const fx = Math.max(sp.bank.x0, Math.min(sp.bank.x1, cur.x + (lane - 0.5) * 6));
+  moveTo({ x: fx, z: Math.min(sp.crossBack + 0.4 + (lane - 0.5) * 1.1, sp.bank.z0 - 1.2), walkway: null });
+  return { segs, start: startAt, end: t, mission };
+}
+
+// ---------------- checkout queues ----------------
+/** queue geometry + choice rules. assumption (visual only; the ops engine owns real service times + routing) */
+export const QUEUE = {
+  staffedFirst: 1.6, // m from the till stand to the first waiting slot (the person unloading has the belt)
+  staffedGap: 1.15, // m per waiting shopper in a till line (person + basket/trolley)
+  selfGap: 0.9, // m between people in the shared self-checkout snake
+  selfPerRow: 8, // people per row of the snake before it folds back
+  selfRowGap: 1.1, // m between snake rows
+  overhead: 3.4, // s per customer at a till on top of scanning (bag + pay + hand-over), replay pacing
+  balkAhead: 5, // people already waiting at every preferred lane → a small basket balks to the other kind
+};
+/** world position of waiting slot k (0 = next to be served) of a line: a staffed lane id, or 'self' */
+export function queueSlotPos(sp: StorePlan, group: string, k: number): XY {
+  if (group === 'self') {
+    const self = sp.lanes.filter((l) => l.kind === 'self');
+    const x0 = Math.min(...self.map((l) => l.x)) - 0.7;
+    const row = Math.floor(k / QUEUE.selfPerRow), i = k % QUEUE.selfPerRow;
+    return { x: x0 + (row % 2 === 0 ? i : QUEUE.selfPerRow - 1 - i) * QUEUE.selfGap, z: sp.bank.z0 - 0.9 - row * QUEUE.selfRowGap };
+  }
+  const L = sp.lanes.find((l) => l.id === group);
+  if (!L) return { x: 0, z: 0 };
+  const n = Math.hypot(L.queueDir.x, L.queueDir.z) || 1, off = QUEUE.staffedFirst + k * QUEUE.staffedGap;
+  return { x: L.stand.x + (L.queueDir.x / n) * off, z: L.stand.z + (L.queueDir.z / n) * off };
+}
+/** who is waiting where at time t: group → [{id, k, x, z}] in line order (from Timeline.queue) */
+export function queueAt(tls: Record<string, Timeline>, t: number) {
+  const out = new Map<string, { id: string; k: number; x: number; z: number }[]>();
+  for (const [id, tl] of Object.entries(tls)) {
+    const q = tl.queue; if (!q || t < q.tJoin || t >= q.tServe) continue;
+    const s = q.slots.find((x) => t >= x.t0 && t < x.t1); if (!s) continue;
+    (out.get(q.group) ?? out.set(q.group, []).get(q.group)!).push({ id, k: s.k, x: s.x, z: s.z });
+  }
+  for (const l of out.values()) l.sort((a, b) => a.k - b.k);
+  return out;
 }
 
 /**
- * Checkout + exit for every shopper, scheduled together so lanes queue properly (first come, first served).
- * Routing: small baskets go to self-checkout, trolleys and bigger shops to a staffed till; within a kind the lane
- * that frees up first wins. assumption: a simple stand-in for the ops engine's routing (sim/ops.py) until its
- * per-shopper lane choice is in the run log. Visual only: no decision or stat depends on it.
+ * Checkout + exit for every shopper, scheduled together so lines are real FIFO queues:
+ *  - staffed tills: one line per lane, waiting slots spaced QUEUE.staffedGap behind the belt; everyone steps up one slot
+ *    when the person at the front starts unloading.
+ *  - self-checkout: ONE shared snake feeding the kiosk bank; the head goes to the next free kiosk.
+ *  - lane choice: basket rule (small basket + no trolley → self) then lowest expected wait = time until the lane frees
+ *    (items ahead x scan s + QUEUE.overhead per customer, TILL pacing); a small basket balks to the tills if every
+ *    self-checkout is QUEUE.balkAhead deep. Visual only: no decision or stat depends on it (the ops engine has its own).
  */
 export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline>, items: Record<string, number>, carriers: Record<string, string>, aiIds: Set<string>, cafeIds: Set<string>) {
   const sp = storePlan(cfg);
+  const staffedL = sp.lanes.filter((l) => l.kind === 'staffed'), selfL = sp.lanes.filter((l) => l.kind === 'self');
   const free: Record<string, number> = Object.fromEntries(sp.lanes.map((l) => [l.id, 0]));
-  const qlen: Record<string, number[]> = Object.fromEntries(sp.lanes.map((l) => [l.id, []]));
+  const starts: Record<string, number[]> = { self: [], ...Object.fromEntries(staffedL.map((l) => [l.id, [] as number[]])) };
   const order = Object.keys(tls).sort((a, b) => tls[a].end - tls[b].end);
   const seatFree = sp.cafe.seats.map(() => 0);
-  const selfMaxX = Math.max(...sp.lanes.filter((l) => l.kind === 'self').map((l) => l.x), -Infinity);
+  const selfMaxX = Math.max(...selfL.map((l) => l.x), -Infinity), selfMinX = Math.min(...selfL.map((l) => l.x), Infinity);
+  const ahead = (g: string, t: number) => starts[g].filter((s) => s > t).length;
+  const svc = (kind: 'staffed' | 'self', n: number) => (kind === 'staffed' ? n * TILL.scanPer + QUEUE.overhead : n * TILL.selfScanPer + 0.5 + TILL.bag + TILL.pay);
+  // ---- pass 1: lane choice per shopper (in the order they reach the front), against an approximate lane state.
+  //      choose: basket rule, then lowest expected cost; a small basket balks to the tills if the snake is long
+  interface Dec { L: Lane; kind: 'staffed' | 'self'; group: string; arrive: number; balked: boolean }
+  const decided = new Map<string, Dec>();
+  {
+    const free1: Record<string, number> = Object.fromEntries(sp.lanes.map((l) => [l.id, 0]));
+    const starts1: Record<string, number[]> = { self: [], ...Object.fromEntries(staffedL.map((l) => [l.id, [] as number[]])) };
+    for (const id of order) {
+      const n = items[id] ?? 0;
+      if (aiIds.has(id) || n <= 0 || !sp.lanes.length) continue;
+      const tl = tls[id], last = tl.segs[tl.segs.length - 1];
+      const cur = last ? last.b : { x: 0, z: sp.crossBack };
+      const t = tl.end;
+      const est = (L: Lane) => {
+        const arrive = t + Math.hypot(L.stand.x - cur.x, L.stand.z - cur.z) / G.walkSpeed;
+        const freeAt = L.kind === 'self' ? Math.min(...selfL.map((x) => free1[x.id])) : free1[L.id];
+        return { L, arrive, wait: Math.max(0, freeAt - arrive), q: starts1[L.kind === 'self' ? 'self' : L.id].filter((x) => x > arrive).length };
+      };
+      // assumption: shoppers weigh walking time at ~0.35 of queueing time (they will walk past tills to a short line)
+      const cost = (a: ReturnType<typeof est>) => a.wait + svc(a.L.kind, n) + 0.35 * (a.arrive - t) + a.q * 0.5;
+      const pickBest = (pool: Lane[]) => pool.map(est).sort((a, b) => cost(a) - cost(b))[0];
+      const small = carriers[id] !== 'trolley' && n <= TILL.selfMaxItems;
+      let kind: 'staffed' | 'self' = (small && selfL.length) || !staffedL.length ? 'self' : 'staffed';
+      let choice = pickBest(kind === 'self' ? [selfL[0]] : staffedL);
+      let balked = false;
+      if (kind === 'self' && choice.q >= QUEUE.balkAhead && staffedL.length) {
+        const alt = pickBest(staffedL);
+        if (alt.q < choice.q) { choice = alt; kind = 'staffed'; balked = true; }
+      }
+      const group = kind === 'self' ? 'self' : choice.L.id;
+      const K = kind === 'self' ? selfL.reduce((b, x) => (free1[x.id] < free1[b.id] ? x : b), selfL[0]) : choice.L;
+      const start = Math.max(choice.arrive, free1[K.id], ...starts1[group]);
+      starts1[group].push(start); free1[K.id] = start + svc(kind, n) + (kind === 'staffed' ? n * TILL.unloadPer : 0);
+      decided.set(id, { L: choice.L, kind, group, arrive: choice.arrive, balked });
+    }
+  }
+  // ---- pass 2: build the walks + FIFO lines in the order shoppers actually reach their line
+  order.sort((a, b) => (decided.get(a)?.arrive ?? tls[a].end) - (decided.get(b)?.arrive ?? tls[b].end));
   order.forEach((id, k) => {
     const tl = tls[id];
     let t = tl.end;
@@ -1117,38 +1316,58 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       tl.segs.push({ t0: t, t1: t + dt, a: cur, b, kind: 'move', phase, lane }); t += dt; cur = b;
     };
     const goR = (b: WP, phase?: Phase, lane?: string) => { const pts = routeBetween(cfg, cur, b, ((k * 29) % 10) / 10); pts.forEach((p, i) => go(i === pts.length - 1 ? b : { ...p, walkway: null }, phase, lane)); };
-    const hold = (dur: number, phase: Phase, face: number, lane?: string) => { tl.segs.push({ t0: t, t1: t + dur, a: cur, b: cur, kind: 'phase', phase, face, lane }); t += dur; };
+    const hold = (dur: number, phase: Phase, face: number, lane?: string) => { if (dur <= 1e-3) return; tl.segs.push({ t0: t, t1: t + dur, a: cur, b: cur, kind: 'phase', phase, face, lane }); t += dur; };
     const n = items[id] ?? 0;
     const lobby = sp.lobbyZ + ((k % 3) - 1) * 0.4;
     if (!ai && n > 0 && sp.lanes.length) {
-      const wantSelf = carriers[id] !== 'trolley' && n <= TILL.selfMaxItems;
-      const pool = sp.lanes.filter((l) => (wantSelf ? l.kind === 'self' : l.kind === 'staffed'));
-      const lanes = pool.length ? pool : sp.lanes;
-      // earliest-free lane, nearest x breaks ties
-      let best = lanes[0], bestT = Infinity;
-      for (const l of lanes) { const arrive = t + Math.hypot(l.stand.x - cur.x, l.stand.z - cur.z) / speed; const f = Math.max(arrive, free[l.id]) + Math.abs(l.x - cur.x) * 0.02; if (f < bestT) { bestT = f; best = l; } }
-      const L = best;
-      // walk to the queue end, wait, step up
-      const q = qlen[L.id].filter((x) => x > t).length;
-      const back = 1.0 * (1 + Math.min(q, 4));
-      const qpt = { x: L.stand.x + L.queueDir.x * back, z: L.stand.z + L.queueDir.z * back, walkway: null };
-      if (L.kind === 'self') goR({ x: qpt.x - 0.8, z: sp.bank.z0 - 0.9, walkway: null }, 'queue', L.id);
-      goR(qpt, 'queue', L.id);
-      const startService = Math.max(t, free[L.id]);
-      const faceQ = L.kind === 'staffed' ? 0 : -Math.PI / 2;
-      if (startService > t) hold(startService - t, 'queue', faceQ, L.id);
+      const dec = decided.get(id)!;
+      const { kind, group, balked } = dec;
+      const choice = { L: dec.L, arrive: dec.arrive };
+      // ---- walk to the tail of the line (slot = people still waiting when we get there)
+      let kq = ahead(group, choice.arrive);
+      const tail = queueSlotPos(sp, group, kq);
+      goR({ ...tail, walkway: null }, 'queue', group === 'self' ? selfL[0]?.id : group);
+      kq = ahead(group, t);
+      const tJoin = t;
+      let pos = queueSlotPos(sp, group, kq);
+      go({ ...pos, walkway: null }, 'queue', group === 'self' ? selfL[0]?.id : group);
+      // ---- service start: FIFO behind everyone already in this line
+      const prev = starts[group].length ? Math.max(...starts[group]) : 0;
+      let L = choice.L;
+      let tStart: number;
+      if (kind === 'self') {
+        L = selfL.reduce((b, s) => (free[s.id] < free[b.id] ? s : b), selfL[0]);
+        tStart = Math.max(t, free[L.id], prev);
+      } else tStart = Math.max(t, free[L.id], prev);
+      // ---- step up one slot each time someone ahead is called
+      const slots: QueueSlot[] = [];
+      const faceQ = kind === 'staffed' ? 0 : Math.PI;
+      const calls = starts[group].filter((s) => s > t).sort((a, b) => a - b);
+      let since = t;
+      for (const c of calls) {
+        if (c >= tStart) break;
+        hold(c - t, 'queue', faceQ, L.id);
+        slots.push({ t0: since, t1: t, k: kq, x: pos.x, z: pos.z });
+        kq = Math.max(0, kq - 1); pos = queueSlotPos(sp, group, kq);
+        since = t; go({ ...pos, walkway: null }, 'queue', L.id);
+      }
+      hold(tStart - t, 'queue', faceQ, L.id);
+      slots.push({ t0: since, t1: t, k: kq, x: pos.x, z: pos.z });
+      starts[group].push(t);
+      tl.queue = { group, kind, tJoin, tServe: t, slots, balked };
+      // ---- to the till / kiosk
+      if (kind === 'self') { go({ x: selfMinX - 1.0, z: sp.checkoutZ, walkway: null }, 'queue', L.id); go({ x: L.stand.x, z: sp.checkoutZ, walkway: null }, 'queue', L.id); }
       go({ ...L.stand, walkway: null }, 'queue', L.id);
       const tArrive = t;
       const faceTill = L.kind === 'staffed' ? Math.PI / 2 : (L.stand.z > L.z ? Math.PI : 0);
-      let tScan: number[] = [], tUnload0 = t;
+      let tScan: number[] = [];
+      const tUnload0 = t;
       if (L.kind === 'staffed') {
         hold(n * TILL.unloadPer + 0.3, 'unload', faceTill, L.id);
         const s0 = tUnload0 + 0.9;
         tScan = Array.from({ length: n }, (_, i) => Math.max(s0 + i * TILL.scanPer, tUnload0 + (i + 1) * TILL.unloadPer + 0.7));
-        // walk to the bagging end while the cashier scans
-        const bagSpot = { x: L.stand.x, z: L.bag.z, walkway: null };
+        go({ x: L.stand.x, z: L.bag.z, walkway: null }, 'scan', L.id);
         const ends = tScan[n - 1];
-        go(bagSpot, 'scan', L.id);
         if (ends > t) hold(ends - t, 'scan', faceTill, L.id);
       } else {
         tScan = Array.from({ length: n }, (_, i) => t + 0.35 + (i + 1) * TILL.selfScanPer);
@@ -1156,10 +1375,9 @@ export function scheduleCheckouts(cfg: StoreConfig, tls: Record<string, Timeline
       }
       const tBag = t; hold(TILL.bag, 'bag', faceTill, L.id);
       const tPay = t; hold(TILL.pay, 'pay', faceTill, L.id);
-      free[L.id] = t - (L.kind === 'staffed' ? TILL.bag + TILL.pay - 0.4 : 0);
-      qlen[L.id].push(t);
-      tl.checkout = { lane: L, tArrive, tUnload0, tScan, tBag, tPay, tDone: t, items: n };
-      // out of the pod / lane into the lobby
+      // the next shopper may start unloading while this one bags + pays (staffed); a kiosk frees when they step away
+      free[L.id] = t - (L.kind === 'staffed' ? TILL.bag + TILL.pay - 0.4 : -0.6);
+      tl.checkout = { lane: L, tArrive, tUnload0, tScan, tBag, tPay, tDone: t, items: n, balked };
       if (L.kind === 'self') go({ x: selfMaxX + 1.1, z: cur.z, walkway: null }, 'exit');
       go({ x: cur.x, z: lobby, walkway: null }, 'exit');
     } else {

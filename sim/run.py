@@ -61,6 +61,9 @@ def load_json(path):
 
 
 def load_store():
+    if os.environ.get("SIM_STORE_CONFIG"):
+        p = os.environ["SIM_STORE_CONFIG"]
+        return load_json(p), os.path.relpath(p, ROOT)
     p = _first_existing(os.path.join(ROOT, "data/store/store.config.json"), os.path.join(FIX, "store.config.json"))
     return load_json(p), os.path.relpath(p, ROOT)
 
@@ -74,7 +77,7 @@ def load_planogram(planogram):
 
 
 def load_catalog(planogram: dict | None = None):
-    real = os.path.join(ROOT, "data/products/catalog.json")
+    real = os.environ.get("SIM_CATALOG") or os.path.join(ROOT, "data/products/catalog.json")
     paths = [real, os.path.join(FIX, "catalog.json")]
     cat = {}
     used = []
@@ -230,7 +233,23 @@ def simulate_agent(a, ctx):
     calls = {"llm": 0, "cached": 0, "cost": 0.0, "errors": [], "input_tokens": 0, "cost_if_uncached": 0.0}
     jev_model = None
     step = 0
+    store_cats = sorted({x["category"] for x in store["units"]})
+    if not set(mcats) & set(store_cats) or (mission == "weekly_shop" and len(store_cats) > 15):
+        # big formats: a weekly shop covers many more categories than the 6 in MISSION_CATEGORIES.
+        # assumption: each big-shop shopper samples ~40% of the store's categories (seeded per shopper),
+        # so baskets differ and footfall spreads; smaller missions sample 3-6 categories.
+        k = max(3, int(len(store_cats) * (0.4 if mission == "weekly_shop" else 0.12)))
+        rng_c = random.Random(f"cats-{seed}-{aid}")
+        mcats = sorted(set(m for m in mcats if m in store_cats) | set(rng_c.sample(store_cats, min(k, len(store_cats)))))
+    # duplicate aisles: visit ONE unit per category, chosen by a seeded draw (assumption: shoppers use whichever
+    # copy of a category they reach first; seeded uniform choice spreads them evenly across duplicates)
+    by_cat = {}
+    for u in store["units"]:
+        by_cat.setdefault(u["category"], []).append(u)
+    chosen = {c: us[int(hu(seed, aid, "dup", c) * len(us))]["id"] for c, us in by_cat.items()}
     for u in unit_order(store):
+        if chosen.get(u["category"]) != u["id"]:
+            continue
         on_mission = u["category"] in mcats
         if not on_mission and hu(seed, aid, "browse", u["id"]) >= browse_p:
             continue
@@ -297,7 +316,7 @@ def simulate_agent(a, ctx):
                         slot_events[code].update(decision="walk_past", stage_reached="looked", reason="(jev error)",
                                                  mechanism="error", engine="jev", label_read=reads_labels)
             elif noticed:
-                cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES[r],
+                cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES.get(r, "bottom"),
                                               facings=fac) for code, prod, fac in noticed]
                 if engine == "mock":
                     for c, (_, prod, _) in zip(cards, noticed):
@@ -610,7 +629,13 @@ def main():
     ap.add_argument("--workers", type=int, default=None, help="agents in flight (default 40 for jev, 8 otherwise)")
     ap.add_argument("--jev-max-usd", type=float, default=5.0, help="session spend stop for Jev")
     ap.add_argument("--label", default="")
+    ap.add_argument("--store-format", default=None, help="express|metro|superstore: use data/store/formats/<f>.config.json + planogram_<f>.json + catalog_superstore.json")
     a = ap.parse_args()
+    if a.store_format:
+        os.environ["SIM_STORE_CONFIG"] = os.path.join(ROOT, f"data/store/formats/{a.store_format}.config.json")
+        os.environ["SIM_CATALOG"] = os.path.join(ROOT, "data/products/catalog_superstore.json")
+        a.planogram = a.planogram or f"data/store/formats/planogram_{a.store_format}.json"
+        a.label = a.label or a.store_format
     engine = "mock" if a.mock else a.engine
     if engine == "jev":
         import jev

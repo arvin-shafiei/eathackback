@@ -11,10 +11,10 @@ import { BASKET, TROLLEY } from './parts';
 export type Rapier = ReturnType<typeof useRapier>['rapier'];
 
 /** collision groups: (membership << 16) | filter. Packs never hit shopper capsules (so a throw can't bounce off
- *  the thrower), shoppers never hit packs; everything else collides. */
+ *  the thrower), shoppers never hit packs, kinematic carriers only catch packs. */
 export const GROUP = {
   shopper: (0x0001 << 16) | (0xffff & ~0x0004),
-  carrier: (0x0002 << 16) | 0xffff,
+  carrier: (0x0002 << 16) | 0x0004, // carriers only catch packs (shoppers steer around trolleys instead)
   pack: (0x0004 << 16) | (0xffff & ~0x0001),
 };
 
@@ -41,19 +41,19 @@ export function insideCarrier(c: Carrier, lp: THREE.Vector3) {
   return Math.abs(lp.x) < d.hx + 0.05 && Math.abs(lp.z) < d.hz + 0.05 && lp.y > d.floor - 0.05 && lp.y < d.floor + 1.2;
 }
 
-/** build the carrier body, welded to the shopper with a fixed joint. `own` registers each collider (for bonks). */
-export function createCarrier(world: World, R: Rapier, owner: RigidBody, carrier: Carrier, parkY: number, own: (c: Collider) => void): RigidBody | null {
+/** build the carrier body: a kinematic compound that follows its shopper every physics step (followCarrier).
+ *  Kinematic, not a dynamic body on a fixed joint: the jointed version panicked rapier 0.14's solver ("unreachable")
+ *  once shoppers were teleported / ghosted. `own` registers each collider (for bonks). */
+export function createCarrier(world: World, R: Rapier, _owner: RigidBody, carrier: Carrier, parkY: number, own: (c: Collider) => void): RigidBody | null {
   if (carrier === 'none') return null;
   const tr = carrier === 'trolley';
-  const cb = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(0, parkY, 1).setGravityScale(0).setLinearDamping(0.6).setAngularDamping(3).setCanSleep(false));
-  cb.setEnabledTranslations(true, false, true, false);
-  cb.setEnabledRotations(false, true, false, false);
+  const cb = world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(0, parkY, 1));
   const add = (hx: number, hy: number, hz: number, x: number, y: number, z: number) => {
-    own(world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setDensity(tr ? 30 : 15).setFriction(0.7).setRestitution(0.25).setCollisionGroups(0), cb));
+    own(world.createCollider(R.ColliderDesc.cuboid(hx, hy, hz).setTranslation(x, y, z).setFriction(0.7).setRestitution(0.25).setCollisionGroups(0), cb));
   };
   if (tr) {
     const { hx, hz, floorY, wallH } = TROLLEY;
-    add(0.26, 0.13, hz - 0.02, 0, 0.21, 0); // chassis: what other shoppers bump into
+    add(0.26, 0.13, hz - 0.02, 0, 0.21, 0); // chassis
     add(hx, 0.02, hz, 0, floorY, 0); // basket floor (packs land here)
     add(0.015, wallH / 2, hz, hx, floorY + wallH / 2, 0); add(0.015, wallH / 2, hz, -hx, floorY + wallH / 2, 0);
     add(hx, wallH / 2, 0.015, 0, floorY + wallH / 2, hz); add(hx, wallH / 2, 0.015, 0, floorY + wallH / 2, -hz);
@@ -63,10 +63,18 @@ export function createCarrier(world: World, R: Rapier, owner: RigidBody, carrier
     add(0.012, wallH / 2, hz, hx, wallH / 2, 0); add(0.012, wallH / 2, hz, -hx, wallH / 2, 0);
     add(hx, wallH / 2, 0.012, 0, wallH / 2, hz); add(hx, wallH / 2, 0.012, 0, wallH / 2, -hz);
   }
-  const anchor = tr ? TROLLEY.anchor : BASKET.anchor;
-  const j = world.createImpulseJoint(R.JointData.fixed({ x: anchor[0], y: anchor[1], z: anchor[2] }, { w: 1, x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, { w: 1, x: 0, y: 0, z: 0 }), owner, cb, true);
-  j.setContactsEnabled(false);
   return cb;
+}
+
+const _fq = { x: 0, y: 0, z: 0, w: 1 };
+/** move a kinematic carrier to its shopper's pose (body origin at `centerY`, carrier at `anchor` in body frame) */
+export function followCarrier(cb: RigidBody, owner: RigidBody, anchor: readonly number[], centerY: number) {
+  const p = owner.translation(), r = owner.rotation();
+  const yaw = 2 * Math.atan2(r.y, r.w), c = Math.cos(yaw), sn = Math.sin(yaw);
+  if (!Number.isFinite(yaw) || !Number.isFinite(p.x) || !Number.isFinite(p.z)) return;
+  cb.setNextKinematicTranslation({ x: p.x + anchor[0] * c + anchor[2] * sn, y: centerY + anchor[1], z: p.z - anchor[0] * sn + anchor[2] * c });
+  _fq.y = Math.sin(yaw / 2); _fq.w = Math.cos(yaw / 2);
+  cb.setNextKinematicRotation(_fq);
 }
 
 /** collisions on/off for every collider of a body (instead of rapier's setEnabled, which panics the 0.14 solver when

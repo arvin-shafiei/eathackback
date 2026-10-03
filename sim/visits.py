@@ -206,7 +206,7 @@ def simulate_agent_v(a, ctx):
                             slot_events[code].update(decision="walk_past", stage_reached="looked", reason="(jev error)",
                                                      mechanism="error", engine="jev", label_read=reads_labels)
                 elif noticed:
-                    cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES[r],
+                    cards = [prompts.product_card(prod, reads_labels=reads_labels, row_name=notice.ROW_NAMES.get(r, "bottom"),
                                                   facings=fac) for code, prod, fac in noticed]
                     if engine == "mock":
                         for c, (_, prod, _) in zip(cards, noticed):

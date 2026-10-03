@@ -6,7 +6,7 @@
 // texture, so a 150+ unit superstore is a few dozen draw calls. Everything solid is a fixed rapier collider.
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { useFrame, type ThreeEvent } from '@react-three/fiber';
+import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import { Edges } from '@react-three/drei';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import type { Planogram, Product, StoreConfig } from '../types';
@@ -606,6 +606,13 @@ export function Store(props: StoreProps) {
   const band = useMemo(() => canvasTex(512, 32, (ctx) => { const g = ctx.createLinearGradient(0, 0, 512, 0); g.addColorStop(0, '#FF4079'); g.addColorStop(1, '#FE831B'); ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 32); }), []);
   const belt = useMemo(beltTex, []);
   useFrame((_, dt) => { belt.offset.y -= dt * 0.6; });
+  // debug / screenshot hook: window.__cam(px, py, pz, tx, ty, tz) points the camera; window.__plan is the store plan
+  const camera = useThree((s) => s.camera), controls = useThree((s) => s.controls) as unknown as { target: THREE.Vector3; update: () => void } | null;
+  useEffect(() => {
+    const w = window as unknown as Record<string, unknown>;
+    w.__plan = P;
+    w.__cam = (px: number, py: number, pz: number, tx: number, ty: number, tz: number) => { camera.position.set(px, py, pz); controls?.target.set(tx, ty, tz); controls?.update(); };
+  }, [camera, controls, P]);
   const fixtures = useMemo(() => buildFixtures(cfg, P), [cfg, P]);
   const endcaps = useMemo(() => buildEndcaps(P), [P]);
   const headers = useMemo(() => buildHeaders(cfg, P), [cfg, P]);
