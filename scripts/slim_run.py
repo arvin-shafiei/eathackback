@@ -1,0 +1,29 @@
+"""Shrink a sim run log for the browser and git without losing traceability.
+
+The repeated per-event OCEAN trait explanations (`notice_factors.trait_terms[].effect/file`) are moved once into
+a top-level `trait_effects` table keyed by `<trait>:<id or effect hash>`; each event keeps the key + its numeric
+term, so every notice probability still traces to its effect text and source file.
+Usage: python3 scripts/slim_run.py data/sim/runs/<run>.json   (rewrites in place, compact JSON)
+"""
+import hashlib, json, sys
+
+path = sys.argv[1]
+r = json.load(open(path))
+table = {}
+for a in r.get("agents", []):
+    for ev in a.get("events", []):
+        nf = ev.get("notice_factors") or {}
+        terms = nf.get("trait_terms")
+        if not terms:
+            continue
+        slim = []
+        for t in terms:
+            key = f"{t.get('trait')}:{t.get('id') or hashlib.sha1((t.get('effect') or '').encode()).hexdigest()[:8]}"
+            table.setdefault(key, {"trait": t.get("trait"), "effect": t.get("effect"), "file": t.get("file")})
+            slim.append({"k": key, "term": t.get("term")})
+        nf["trait_terms"] = slim
+r["trait_effects"] = table
+r["slimmed"] = "trait_terms[].effect/file moved to top-level trait_effects (scripts/slim_run.py); values unchanged"
+with open(path, "w") as f:
+    json.dump(r, f, separators=(",", ":"))
+print(path, "trait effects:", len(table))
