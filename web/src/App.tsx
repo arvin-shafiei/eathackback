@@ -148,7 +148,7 @@ export default function App() {
     if (entry) loadRun(entry).then(setAiRun).catch(() => setAiRun(null));
   }, [aiRunId, runs, localRuns]);
   // the run's own planogram (planogram_inline) wins, so shoppers walk to where products actually were
-  useEffect(() => { if (run && data) { const p = { ...data.planogram, ...(run.planogram_inline ?? {}) }; setBasePlan(p); setPlan(p); setMoves([]); } }, [run, data]);
+  useEffect(() => { if (run && data) { const p = { ...data.planogram, ...(run.planogram_inline ?? {}) }; setBasePlan(p); setPlan(p); setMoves([]); setFocus((f) => (f && Object.values(p).some((s) => s.products.includes(f)) ? f : null)); } }, [run, data]);
   useEffect(() => { timeRef.current = START_T; setPanel(null); }, [run, aiRun]);
   // ?follow=2 follows the 3rd human shopper (demo deep link)
   useEffect(() => {

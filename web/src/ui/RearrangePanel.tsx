@@ -299,7 +299,7 @@ function ErrorNote({ err, what }: { err: Fail; what?: string }) {
 
 function Summary({ plan }: { plan: RearrangePlan }) {
   const t = plan.total;
-  if (!plan.moves) {
+  if (!plan.moves || t.lift_pct < 0.001) {
     return (
       <section className="ra-tile ra-sum">
         <p className="ra-none">nothing to move. the shelves are already in their best order for these shoppers.</p>

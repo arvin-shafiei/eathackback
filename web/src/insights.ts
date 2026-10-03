@@ -141,7 +141,10 @@ export function diagnose(run: Run, code: string, peerCodes: string[], human: Rec
     const med = median(rates);
     return { ...s, unit_median: med, peers: rates.length, gap_pts: s.rate === null || med === null ? null : (med - s.rate) * 100 };
   });
-  const below = gaps.filter((g) => g.gap_pts !== null && g.gap_pts >= MIN_GAP_PTS).sort((a, b) => (b.gap_pts ?? 0) - (a.gap_pts ?? 0));
+  // a product that sells at or above the middle of its unit is not leaking, whatever its step rates say
+  const peerSales = median(peerCodes.filter((c) => c !== code && (human[c]?.shown ?? 0) > 0).map((c) => human[c].pick_rate));
+  const outsells = own.picked > 0 && peerSales !== null && own.pick_rate >= peerSales;
+  const below = outsells ? [] : gaps.filter((g) => g.gap_pts !== null && g.gap_pts >= MIN_GAP_PTS).sort((a, b) => (b.gap_pts ?? 0) - (a.gap_pts ?? 0));
   const top = rejections(run, code, 'human').groups[0];
   const gap = aiOwn.pick_rate - own.pick_rate;
   return {
@@ -154,7 +157,7 @@ export function diagnose(run: Run, code: string, peerCodes: string[], human: Rec
 }
 
 const STEP_LEAD: Record<Step, string> = {
-  notice: "most shoppers don't see it.",
+  notice: 'fewer shoppers see it than its neighbours.',
   consider: 'shoppers see it, then move on without a closer look.',
   pick: 'shoppers look closer, then put it back.',
 };

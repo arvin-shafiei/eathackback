@@ -45,8 +45,8 @@ OFF_FIELDS = ("product_name,brands,quantity,ingredients_text_en,ingredients_text
 CATEGORY_KEYWORDS = (
     ("plant_milk_dairy_alt", ("plant-based-milk", "milk-substitute", "dairy-substitute", "oat-drink", "soy-drink")),
     ("yoghurt", ("yogurt", "yoghurt", "kefir", "skyr")),
+    ("snack_bars", ("cereal-bar", "protein-bar", "en:bars")),
     ("breakfast_cereal", ("breakfast-cereal", "cereals", "muesli", "granola", "porridge")),
-    ("snack_bars", ("bars", "cereal-bar", "protein-bar")),
     ("crisps_savoury", ("crisps", "chips", "salty-snacks", "popcorn")),
     ("biscuits_chocolate", ("biscuit", "chocolate", "cookies", "confectioner")),
     ("soft_drinks", ("sodas", "soft-drink", "carbonated", "beverages", "kombucha", "juices")),
@@ -251,7 +251,7 @@ def import_product(ref: str) -> dict:
     draft.update(barcode=barcode, imported_from=ref)
     off = off_lookup(barcode) if barcode else {}
     if not m and not off:
-        raise RuntimeError(f"open food facts has no product with barcode {barcode}. type the product in instead.")
+        raise RuntimeError(f"open food facts has no product with barcode {barcode or ref}. type the product in instead.")
     if off and not m:
         off_only = f"Open Food Facts, https://world.openfoodfacts.org/product/{barcode}"
         for k, v in (("name", off.get("product_name")), ("brand", (off.get("brands") or "").split(",")[0].strip())):

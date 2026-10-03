@@ -208,7 +208,7 @@ export class PackAtlas {
     this.drawFallback(ctx, p, x, y);
     this.drawTag(ctx, tag, x, y + this.frontH);
     this.dirty.add(page);
-    if (p.image && /^https?:|^\//.test(p.image)) this.queue.push(p.code);
+    if (p.image && /^https?:|^\/|^data:image\//.test(p.image)) this.queue.push(p.code);
     return cell;
   }
 
