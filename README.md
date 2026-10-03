@@ -186,7 +186,7 @@ Results: [`research/05-personas.md`](research/05-personas.md)
 
 ## stack (planned)
 
-react-three-fiber + drei (3D store), Kenney Mini Market / Food Kit (CC0) assets, Open Food Facts product data and images (UK), grid A* pathing, a fast utility model in JS for thousands of shoppers, and the Claude API for real agent shoppers and "thought bubbles".
+react-three-fiber + drei (3D store), Kenney Mini Market / Food Kit (CC0) assets, Open Food Facts product data and images (UK), grid A* pathing, a literature-calibrated notice model in code, and TypeSafe Jev for every shopper and AI-agent judgment (no LLM calls).
 
 ## engine: typesafe jev
 

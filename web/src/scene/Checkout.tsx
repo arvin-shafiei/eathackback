@@ -133,10 +133,10 @@ export function Checkout({ cfg, live, products }: Props) {
       bodies.current.setColorAt(np, PALETTE[ci % PALETTE.length]);
       for (let e = 0; e < 2; e++) {
         const ex = (e ? 1 : -1) * 0.11 * 0.92;
-        const off = new THREE.Vector3(ex, 0.93 * 0.92 * sit, 0.22 * 0.92).applyQuaternion(tmpQ);
+        const off = tmpA.set(ex, 0.93 * 0.92 * sit, 0.22 * 0.92).applyQuaternion(tmpQ);
         tmpM.compose(tmpP.set(p.x + off.x, off.y, p.z + off.z), tmpQ, tmpS.set(0.92, 0.92, 0.92));
         eyes.current?.setMatrixAt(np * 2 + e, tmpM);
-        const off2 = new THREE.Vector3(ex, 0.93 * 0.92 * sit - 0.01, 0.22 * 0.92 + 0.065).applyQuaternion(tmpQ);
+        const off2 = tmpB.set(ex, 0.93 * 0.92 * sit - 0.01, 0.22 * 0.92 + 0.065).applyQuaternion(tmpQ);
         tmpM.compose(tmpP.set(p.x + off2.x, off2.y, p.z + off2.z), tmpQ, tmpS);
         pupils.current?.setMatrixAt(np * 2 + e, tmpM);
       }
@@ -269,7 +269,7 @@ export function Checkout({ cfg, live, products }: Props) {
       ))}
       {/* scanner beams: a red fan of light on every beep */}
       {P.lanes.map((L) => (
-        <mesh key={L.id} ref={(m) => { beams.current[L.id] = m; }} position={[L.scanner.x, L.scanner.y + 0.14, L.scanner.z]} material={beamMat.clone()} visible={false} raycast={noRay}>
+        <mesh key={L.id} ref={(m) => { beams.current[L.id] = m; }} position={[L.scanner.x, L.scanner.y + 0.14, L.scanner.z]} material={beamMat.clone()} visible={false} raycast={noRay} rotation={[Math.PI, 0, 0]}>
           <coneGeometry args={[0.2, 0.28, 18, 1, true]} />
         </mesh>
       ))}
@@ -277,4 +277,5 @@ export function Checkout({ cfg, live, products }: Props) {
   );
 }
 const UP = new THREE.Vector3(0, 1, 0);
+const tmpA = new THREE.Vector3(), tmpB = new THREE.Vector3();
 const noRay = () => null;

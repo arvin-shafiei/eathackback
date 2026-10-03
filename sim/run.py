@@ -278,6 +278,15 @@ def simulate_agent(a, ctx):
                         ev.update(upd)
                         ev["source_refs"] = refs
                         ev["label_read"] = reads_labels
+                        if ev.get("decision") == "pick":  # same budget rule as the llm/mock path
+                            price = float(catalog[code].get("price_gbp") or 0)
+                            if budget_left is not None and price > budget_left + 1e-9:
+                                ev.update(decision="reject", stage_reached="put_back", budget_override=True)
+                                ev["reason"] = (ev.get("reason") or "") + f" -> over budget (£{price:.2f} > £{budget_left:.2f} left), put back"
+                            else:
+                                if budget_left is not None:
+                                    budget_left -= price
+                                basket.append(catalog[code].get("name", code))
                 except jev.JevSpendGuard:
                     raise
                 except Exception as e:  # no fallback to another model: record the error and move on
