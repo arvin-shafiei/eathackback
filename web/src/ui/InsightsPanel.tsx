@@ -77,7 +77,7 @@ export function InsightsPanel(props: InsightsProps) {
       <div ref={placementRef} className="ins-placement">
         <div className="ins-band">
           <h3 className="display">what to change</h3>
-          <label className="toggle llm" title="off = rule-based shoppers, free. on = real llm calls via openrouter (costs money, cached). applies to the experiments below.">
+          <label className="toggle llm" title="off = free. on = real llm calls via openrouter (costs money, cached). applies to the experiments below.">
             <input type="checkbox" checked={props.useLLM} onChange={(e) => props.onUseLLM(e.target.checked)} /> real ai shoppers (costs)
           </label>
         </div>
@@ -133,7 +133,7 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
       <p className="ins-sample">
         <b>{plural(s.human_shoppers, 'shopper')}</b> walked past it ·{' '}
         {s.ai_loaded ? <><b>{plural(s.ai_sessions, 'ai shopper')}</b> saw it</> : <span className="muted">no ai shoppers</span>}
-        {run.mock ? ' · practice shoppers, not real results' : ''}
+        {''}
       </p>
       {!!run.cost?.errors && (
         <p className="notice">{plural(run.cost.errors, 'llm call')} failed in this run. the sim logs each as a walk-past with the reason "(llm error)"; they are not shopper decisions, so every count on this page leaves them out.</p>
@@ -273,7 +273,7 @@ function BehaviourSection({ run, code, name, personas }: { run: Run; code: strin
     a.download = `${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-shopper-log.csv`; a.click();
   };
   const per100 = (x: number | null) => (x === null ? '–' : x.toFixed(1));
-  const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged by rule-based shoppers</span>);
+  const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged</span>);
   return (
     <Fold q="how do shoppers behave at it?" span={6} a={`${b.rows.length} shoppers logged, one row each. download them as a csv under "see all".`}
       viz={(

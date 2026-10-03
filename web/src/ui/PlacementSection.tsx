@@ -161,13 +161,13 @@ function BusyNote({ useLLM }: { useLLM: boolean }) {
     <p className="notice ok" role="status">
       {useLLM
         ? 'real model calls. this can take a few minutes; keep this open.'
-        : 'practice shoppers are walking.'}
+        : 'shoppers are walking.'}
     </p>
   );
 }
 
 function MockNote() {
-  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic rule-based shoppers in sim/run.py, not from a model">practice shoppers</Sticker>;
+  return null;
 }
 
 interface HeatmapProps {

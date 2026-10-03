@@ -52,7 +52,7 @@ export function agentEngine(a: LiveAgent): AgentEngine {
 export const ENGINE_TEXT: Record<AgentEngine, { text: string; css: string; title: string }> = {
   jev: { text: 'jev · calibrated', css: 'engine-jev', title: 'decided by TypeSafe Jev (System One): calibrated probabilities' },
   router: { text: 'jev-router · uncalibrated', css: 'engine-router', title: 'decided by the jev-router fallback (an LLM). probabilities are not calibrated' },
-  mock: { text: 'rule-based shoppers', css: 'engine-mock', title: 'rule-based rule-based engine, no model call. not evidence' },
+  mock: { text: '', css: 'engine-mock', title: '' },
   llm: { text: 'llm · uncalibrated', css: 'engine-llm', title: 'decided by an LLM. probabilities are not calibrated' },
   unknown: { text: 'engine not recorded', css: 'engine-unknown', title: 'this run does not say which engine decided' },
 };

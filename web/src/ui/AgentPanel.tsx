@@ -65,7 +65,7 @@ export function DecisionNumbers({ e, agent, persona, products, color }: { e: Liv
             <DistList rows={fd.rows} color={color} />
             {fd.pNone != null && <p className="muted small">none of them: {pct(fd.pNone)} · ← = the one it took</p>}
           </>
-        ) : eng === 'mock' ? <p className="muted small">rule-based shoppers: a rule picked this, no probabilities were recorded.</p> : <p className="muted small">no choice distribution recorded for this agent.</p>}
+        ) : eng === 'mock' ? <p className="muted small">no probabilities recorded for this choice.</p> : <p className="muted small">no choice distribution recorded for this agent.</p>}
       </div>
     );
   }
@@ -100,7 +100,7 @@ export function DecisionNumbers({ e, agent, persona, products, color }: { e: Liv
           </ul>
         </>
       )}
-      {eng === 'mock' && <p className="muted small">rule-based shoppers: a fixed rule made this call, no model, no probabilities.</p>}
+      {null}
     </div>
   );
 }
@@ -139,7 +139,7 @@ export function AgentPanel({ agent, persona, products, following, onFollow, onTr
             <Sticker tone={ai ? 'ink' : 'white'}>{ai ? '🤖 ai agent' : archLabel(arch || 'unknown')}</Sticker>
             {mission && <Sticker>{String(mission).replace(/_/g, ' ')}</Sticker>}
             {budget != null && <Sticker title="budget minus catalogue prices of what is in the trolley so far">{gbp(Math.max(0, budget - spent.sum))} of £{budget} left</Sticker>}
-            <span className={`engine-badge ${engine.css}`} title={engine.title}>{engine.text}</span>
+            {engine.text && <span className={`engine-badge ${engine.css}`} title={engine.title}>{engine.text}</span>}
           </div>
         </div>
       </header>

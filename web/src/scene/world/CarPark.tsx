@@ -8,12 +8,13 @@ import { useFrame } from '@react-three/fiber';
 import { snowable } from './wxState';
 import { Geo, cylGeo, mat, rng } from './geo';
 import type { WorldPlan } from './World';
+import { CAR_FX } from './eggs';
 
 const CAR_COLORS = ['#e8434b', '#2d6cdf', '#f4f2ee', '#1f1d24', '#9aa3ad', '#ffcf3f', '#3aa76d', '#ff7a3d', '#7b4fd6', '#c9c2b8', '#14406e', '#ff4f8b', '#5ec2d9', '#f4f2ee', '#2b2b30'];
 const noRay = () => null;
 
 /** one low-poly car (facing +z, 4.2 m), white body (instance colour tints it), dark glass + tyres */
-function carGeometry() {
+export function carGeometry() {
   const g = new Geo();
   g.box(0, 0.62, 0, 1.78, 0.56, 4.2, '#ffffff');               // body
   g.box(0, 0.62, 2.02, 1.7, 0.36, 0.2, '#ffffff');              // bumper bulk
@@ -219,6 +220,17 @@ export function CarPark({ W }: { W: WorldPlan }) {
       const yaw = r.dir > 0 ? Math.PI / 2 : -Math.PI / 2;
       c.setMatrixAt(i, mat(x, 0, r.z, yaw)); s.setMatrixAt(i, mat(x, 0.035, r.z, yaw, 2.5, 1, 5)); i++;
     });
+    // easter-egg overrides on parked cars (UFO abduction, shrink ray)
+    if (CAR_FX.parked !== built.parked) CAR_FX.parked = built.parked;
+    if (CAR_FX.dirty.size) {
+      for (const j of CAR_FX.dirty) {
+        const p = built.parked[j]; if (!p) continue;
+        const o = CAR_FX.over.get(j);
+        c.setMatrixAt(j, o ? o.m : mat(p.x, 0, p.z, p.yaw));
+        s.setMatrixAt(j, mat(p.x, 0.035, p.z, p.yaw, 2.5 * (o ? o.sh : 1) + 1e-4, 1, 5 * (o ? o.sh : 1) + 1e-4));
+      }
+      CAR_FX.dirty.clear();
+    }
     c.instanceMatrix.needsUpdate = true; s.instanceMatrix.needsUpdate = true;
   });
 

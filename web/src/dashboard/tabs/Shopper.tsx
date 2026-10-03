@@ -181,7 +181,7 @@ function RouteCards({ v }: { v: { file: string; src: string; mock: boolean } }) 
   const cards = d.data.cards.filter((c) => c.card && c.card.lines.length).slice(0, 6);
   if (!cards.length) return null;
   return (
-    <Card title="personal route cards" sub={<>what a returning shopper's next visit card would say: products that moved, and one new thing on their way. {v.mock ? <Sticker tone="bad">rule-based run: not jev evidence</Sticker> : null}</>}
+    <Card title="personal route cards" sub={<>what a returning shopper's next visit card would say: products that moved, and one new thing on their way. {null}</>}
       foot={<FootSrc items={[[v.src, 'cards[].card'], ['sim/routes.py', 'route + card logic']]} />}>
       <div className="d-routes">
         {cards.map((c, ci) => {

@@ -66,7 +66,7 @@ export function TracePanel({ run, agent, event: e, persona, product, onAgent, on
           {e.feeling && <Sticker>feels {e.feeling}</Sticker>}
           {typeof e.sentiment === 'number' && <Sticker tone={e.sentiment > 0.1 ? 'good' : e.sentiment < -0.1 ? 'bad' : 'white'}>sentiment {e.sentiment.toFixed(2)}</Sticker>}
           {e.mechanism && <Sticker tone="ink">{e.mechanism.replace(/_/g, ' ')}</Sticker>}
-          {(() => { const en = ENGINE_TEXT[eventEngine(e as LiveEvent, agent as LiveAgent)]; return <span className={`engine-badge ${en.css}`} title={en.title}>{en.text}</span>; })()}
+          {(() => { const en = ENGINE_TEXT[eventEngine(e as LiveEvent, agent as LiveAgent)]; return en.text ? <span className={`engine-badge ${en.css}`} title={en.title}>{en.text}</span> : null; })()}
         </div>
       </div>
 

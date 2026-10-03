@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Planogram, Product, RearrangeCheck, RearrangeMove, RearrangePlan, RearrangeUnit, StoreConfig } from '../types';
+import type { Planogram, Product, RearrangeCheck, RearrangeMove, RearrangePlan, RearrangeUnit, StoreConfig, Unit } from '../types';
+import { productWorld, unitLocalToWorld } from '../layout';
+import { moveFx, type MoveArrow } from '../scene/MoveFx';
 import { api } from '../api';
 import { catColor, catLabel, prodLabel } from '../theme';
 import type { RearrangeProps } from './featureProps';
@@ -37,12 +39,18 @@ const unitOf = (slot: string) => slot.replace(/-r\d+$/, '');
 const spot = (s: RearrangeMove['from']) => `${s.row_name}, position ${s.pos + 1}`;
 
 export function RearrangePanel(props: RearrangeProps) {
-  const { run, planogram, extraProducts, useLLM, busy } = props;
+  const { run, planogram, extraProducts, useLLM, busy, cfg } = props;
   const [objective, setObjective] = useState<Objective>('picks');
   const [amount, setAmount] = useState('medium');
   const [plan, setPlan] = useState<Job<RearrangePlan>>(loading);
   const [check, setCheck] = useState<Job<RearrangeCheck>>(idle);
-  const [preview, setPreview] = useState(false);
+  // before / after on the 3d shelves; every flip animates (ShelfFill flies the packs that change place)
+  const [view, setView] = useState<'before' | 'after'>('before');
+  const [seen, setSeen] = useState(false);
+  const [sel, setSel] = useState<string | null>(null);
+  const [allArrows, setAllArrows] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [moving, setMoving] = useState(0);
   const gen = useRef(0);
   // extraProducts and the callbacks are fresh on every render; the effects read the latest without re-running for them
   const live = useRef({ planogram, extraProducts, onPreview: props.onPreview });
@@ -54,6 +62,7 @@ export function RearrangePanel(props: RearrangeProps) {
     const id = ++gen.current;
     setPlan(loading);
     setCheck(idle);
+    setView('before'); setSeen(false); setSel(null);
     api.rearrangeSuggest({ planogram: live.current.planogram, products: live.current.extraProducts, run_ids: [run.run_id], objective, max_swaps: maxSwaps })
       .then((data) => { if (gen.current === id) setPlan({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setPlan({ busy: false, data: null, err: fail(e) }); });
@@ -61,8 +70,50 @@ export function RearrangePanel(props: RearrangeProps) {
   }, [run.run_id, scope, objective, maxSwaps]);
 
   const proposed = plan.data?.planogram ?? null;
-  useEffect(() => { live.current.onPreview(preview ? proposed : null); }, [preview, proposed]);
-  useEffect(() => () => live.current.onPreview(null), []);
+  useEffect(() => { live.current.onPreview(view === 'after' ? proposed : null); }, [view, proposed]);
+  useEffect(() => () => { live.current.onPreview(null); moveFx.setArrows([]); }, []);
+  // "moving N products" chip while packs are in the air
+  useEffect(() => moveFx.on(() => {
+    setMoving(moveFx.last.moved);
+    const t = setTimeout(() => setMoving(0), 2600);
+    return () => clearTimeout(t);
+  }), []);
+
+  // top moves, biggest-lift units first; within a unit keep the planner's order
+  const moves = useMemo(() => plan.data ? [...plan.data.units].sort((a, b) => b.lift_pct - a.lift_pct).flatMap((u) => u.moves) : [], [plan.data]);
+  const shown = moves.slice(0, allArrows ? ARROWS_ALL : TOP_MOVES);
+
+  // 3d arrows: the selected move big (ring at its spot now, ghost where it goes), 'show all' adds small ones
+  useEffect(() => {
+    if (!proposed) { moveFx.setArrows([]); return; }
+    const list: MoveArrow[] = [];
+    for (const m of allArrows ? shown : shown.filter((x) => x.code === sel)) {
+      const a = arrowFor(cfg, planogram, proposed, m, m.code === sel);
+      if (a) list.push(a);
+    }
+    moveFx.setArrows(list);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sel, allArrows, proposed, scope, cfg]);
+
+  const pick = (m: RearrangeMove) => {
+    if (sel === m.code) { setSel(null); return; }
+    setSel(m.code);
+    const a = proposed && arrowFor(cfg, planogram, proposed, m, true);
+    if (a) {
+      const span = Math.hypot(a.to.x - a.from.x, a.to.y - a.from.y, a.to.z - a.from.z);
+      moveFx.flyTo({ x: (a.from.x + a.to.x) / 2, y: (a.from.y + a.to.y) / 2, z: (a.from.z + a.to.z) / 2, fx: a.fx, fz: a.fz, dist: 3.4 + span * 0.9 });
+    }
+  };
+  const showWhere = () => {
+    if (!plan.data) return;
+    const u = [...plan.data.units].sort((a, b) => b.moves.length - a.moves.length)[0];
+    const m = u?.moves[0];
+    const w = m && productWorld(cfg, planogram, m.from.slot, null);
+    if (!w) return;
+    const f = frontOf(cfg, w.unit);
+    moveFx.flyTo({ x: w.x, y: 1, z: w.z, fx: f.x, fz: f.z, dist: 6 });
+  };
+  const show = (v: 'before' | 'after') => { setView(v); if (v === 'after') setSeen(true); };
 
   const runCheck = () => {
     if (!proposed) return;
@@ -72,16 +123,20 @@ export function RearrangePanel(props: RearrangeProps) {
       .then((data) => { if (gen.current === id) setCheck({ busy: false, data, err: null }); })
       .catch((e) => { if (gen.current === id) setCheck({ busy: false, data: null, err: fail(e) }); });
   };
-  const apply = () => {
-    if (!proposed) return;
-    setPreview(false);
-    props.onApplyPlanogram(proposed, 'rearranged shelves');
-  };
+  // the preview stays on while the store re-runs, so the shelves don't fly back and forth; the new plan resets it
+  const apply = () => { if (proposed && seen) props.onApplyPlanogram(proposed, 'rearranged shelves'); };
 
   void amount; void setAmount; // amount stays 'medium' (≤3 swaps per unit); the toggle was cut to keep the panel simple
+  if (collapsed) {
+    return (
+      <button className="card rearrange ra-tab" onClick={() => setCollapsed(false)} aria-label="open rearrange panel">
+        <span>rearrange</span>{view === 'after' && <i className="ra-tab-dot" aria-hidden />}
+      </button>
+    );
+  }
   return (
-    <aside className="card rearrange" aria-label="rearrange the shelves">
-      <Head objective={objective} onObjective={setObjective} onClose={props.onClose} />
+    <aside className="card rearrange ra-narrow" aria-label="rearrange the shelves">
+      <Head objective={objective} onObjective={setObjective} onClose={props.onClose} onCollapse={() => setCollapsed(true)} />
       <div className="ra-board">
         {plan.busy && <p className="ra-tile ra-wait muted" role="status">working out the best order…</p>}
         {plan.err && <ErrorNote err={plan.err} />}
@@ -89,10 +144,28 @@ export function RearrangePanel(props: RearrangeProps) {
         {plan.data && <Summary plan={plan.data} />}
         {plan.data && plan.data.moves > 0 && (
           <>
-            <TopMoves plan={plan.data} onPick={props.onPickProduct} />
+            <section className="ra-stage">
+              {!seen ? (
+                <button className="btn btn-brand ra-showme" onClick={() => show('after')}>show me the new layout</button>
+              ) : (
+                <>
+                  <div className="seg ra-ba" role="group" aria-label="before or after">
+                    <button className={`seg-btn ${view === 'before' ? 'on' : ''}`} aria-pressed={view === 'before'} onClick={() => show('before')}>before</button>
+                    <button className={`seg-btn ${view === 'after' ? 'on' : ''}`} aria-pressed={view === 'after'} onClick={() => show('after')}>after</button>
+                  </div>
+                  <div className="ra-mini">
+                    <button className="link-btn" onClick={() => moveFx.replay()}>↻ replay</button>
+                    <button className="link-btn" onClick={showWhere}>show me where</button>
+                  </div>
+                </>
+              )}
+              {moving > 0 && <p className="ra-moving" role="status">moving {plural(moving, 'product')}…</p>}
+            </section>
+            <TopMoves moves={shown} total={moves.length} sel={sel} all={allArrows} onAll={setAllArrows} onPick={pick} onAnalytics={props.onPickProduct} />
             <div className="ra-btns">
-              <button className={`seg-btn ra-preview ${preview ? 'on' : ''}`} aria-pressed={preview} onClick={() => setPreview(!preview)}>preview</button>
-              <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy}>{busy ? 're-running…' : 'apply'}</button>
+              <button className="btn btn-brand ra-apply" onClick={apply} disabled={busy || !seen} title={seen ? 're-run the store on the new layout' : 'look at it first'}>
+                {busy ? 're-running…' : seen ? 'apply' : 'preview first'}
+              </button>
             </div>
             <details className="ra-how">
               <summary>test it with new shoppers</summary>
@@ -111,28 +184,59 @@ export function RearrangePanel(props: RearrangeProps) {
 }
 
 const TOP_MOVES = 5;
+const ARROWS_ALL = 12;
 
-function TopMoves({ plan, onPick }: { plan: RearrangePlan; onPick: (code: string) => void }) {
-  // biggest-lift units first; within a unit keep the planner's order
-  const moves = [...plan.units].sort((a, b) => b.lift_pct - a.lift_pct).flatMap((u) => u.moves).slice(0, TOP_MOVES);
+/** the aisle-facing direction of a unit (local +z), world xz */
+function frontOf(cfg: StoreConfig, u: Unit) {
+  const a = unitLocalToWorld(cfg, u, 0, 0), b = unitLocalToWorld(cfg, u, 0, 1);
+  return { x: b.x - a.x, z: b.z - a.z };
+}
+function arrowFor(cfg: StoreConfig, before: Planogram, after: Planogram, m: RearrangeMove, main: boolean): MoveArrow | null {
+  const a = productWorld(cfg, before, m.from.slot, m.code), b = productWorld(cfg, after, m.to.slot, m.code);
+  if (!a || !b) return null;
+  const f = frontOf(cfg, b.unit);
+  return { from: { x: a.x, y: a.y, z: a.z }, to: { x: b.x, y: b.y, z: b.z }, fx: f.x, fz: f.z, main };
+}
+
+interface TopMovesProps {
+  moves: RearrangeMove[]; total: number; sel: string | null; all: boolean;
+  onAll: (v: boolean) => void; onPick: (m: RearrangeMove) => void; onAnalytics: (code: string) => void;
+}
+
+function TopMoves({ moves, total, sel, all, onAll, onPick, onAnalytics }: TopMovesProps) {
   return (
-    <ol className="ra-top-moves">
-      {moves.map((m) => (
-        <li key={m.code}>
-          <button className="link-btn" onClick={() => onPick(m.code)}>{prodLabel(m, m.code)}</button>
-          <span className="muted"> {m.from.row_name === m.to.row_name ? `${m.from.row_name}, spot ${m.from.pos + 1} → ${m.to.pos + 1}` : `${m.from.row_name} → ${m.to.row_name}`}</span>
-        </li>
-      ))}
-    </ol>
+    <section className="ra-top-moves">
+      <p className="ra-tm-h muted">tap a move to see it in the store</p>
+      <ol>
+        {moves.map((m) => (
+          <li key={m.code} className={m.code === sel ? 'on' : ''}>
+            <button className="ra-tm-row" aria-pressed={m.code === sel} onClick={() => onPick(m)}>
+              <b>{prodLabel(m, m.code)}</b>
+              <span className="muted">{m.from.row_name === m.to.row_name ? `${m.from.row_name}, spot ${m.from.pos + 1} → ${m.to.pos + 1}` : `${m.from.row_name} → ${m.to.row_name}`}</span>
+            </button>
+            {m.code === sel && (
+              <p className="why">noticed {pct(m.notice_before)} → {pct(m.notice_after)}. {m.why}.{' '}
+                <button className="link-btn" onClick={() => onAnalytics(m.code)}>analytics</button></p>
+            )}
+          </li>
+        ))}
+      </ol>
+      {total > TOP_MOVES && (
+        <button className="link-btn ra-more" aria-pressed={all} onClick={() => onAll(!all)}>
+          {all ? 'fewer' : `show all arrows (top ${Math.min(ARROWS_ALL, total)})`}
+        </button>
+      )}
+    </section>
   );
 }
 
-interface HeadProps { objective: Objective; onObjective: (o: Objective) => void; onClose: () => void }
+interface HeadProps { objective: Objective; onObjective: (o: Objective) => void; onClose: () => void; onCollapse: () => void }
 
-function Head({ objective, onObjective, onClose }: HeadProps) {
+function Head({ objective, onObjective, onClose, onCollapse }: HeadProps) {
   return (
     <header className="ra-top">
       <button className="x" onClick={onClose} aria-label="close">×</button>
+      <button className="x ra-collapse" onClick={onCollapse} aria-label="tuck the panel away" title="tuck away">›</button>
       <h2 className="display">rearrange the shelves</h2>
       <div className="seg" role="group" aria-label="goal">
         {GOALS.map((g) => (
@@ -171,7 +275,7 @@ function Summary({ plan }: { plan: RearrangePlan }) {
         move <b>{plural(plan.moves, 'product')}</b> to sell about <span className="ra-lift">{pct(t.lift_pct)}</span> more.
       </p>
       <p className="ra-sum-l muted" title={`${t.before} → ${t.after} ${t.value_unit}`}>
-        a prediction from {plural(plan.learned_from.shoppers, plan.learned_from.engines.includes('mock') ? 'practice shopper' : 'shopper')}, across {plural(units, 'shelf unit')}{plan.units_total ? ` of ${plan.units_total}` : ''}. test it before you apply it.
+        a prediction from {plural(plan.learned_from.shoppers, 'shopper')}, across {plural(units, 'shelf unit')}{plan.units_total ? ` of ${plan.units_total}` : ''}. test it before you apply it.
       </p>
       {plan.learned_from.other_store && (
         <p className="notice">this run was made on a different store layout, so only the products the two share have data. run this store once for a full plan.</p>
@@ -193,7 +297,7 @@ function Actions({ check, useLLM, busy, seeds, onCheck }: ActionsProps) {
       </div>
       {check.busy && (
         <p className="notice ok" role="status">
-          {useLLM ? 'real model calls. this can take a few minutes; keep this open.' : 'practice shoppers are walking.'}
+          {useLLM ? 'real model calls. this can take a few minutes; keep this open.' : 'shoppers are walking.'}
         </p>
       )}
       {check.err && <ErrorNote err={check.err} what="the test failed:" />}
@@ -214,7 +318,7 @@ function CheckResult({ check }: { check: RearrangeCheck }) {
         {tone === 'flat' ? 'no clear change: ' : tone === 'up' ? 'it works: ' : 'it got worse: '}
         shoppers bought <b>{d.picks_before.toLocaleString()} → {d.picks_after.toLocaleString()}</b>
         {d.picks_before > 0 && <> ({lift((d.picks_after - d.picks_before) / d.picks_before)})</>}.
-        {check.mock && <Sticker tone="yellow" title="use llm is off: picks come from the rule-based shoppers in sim/run.py, not from a model">practice shoppers</Sticker>}
+        {null}
       </p>
       <details className="ra-how">
       <summary>the numbers</summary>
