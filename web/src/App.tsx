@@ -98,6 +98,7 @@ export default function App() {
   const [ownerHeat, setOwnerHeat] = useState(false);
   const [routeSlots, setRouteSlots] = useState<string[]>([]);
   const [ownerHeatMin, setOwnerHeatMin] = useState<number | null>(null);
+  const [ownerHeatLevel, setOwnerHeatLevel] = useState(0);
   const timeRef = useRef(0);
   const [cam, setCam] = useState<CamMode>(() => (/[?&]nointro/.test(location.search) ? 'overview' : 'intro'));
   const [camNonce, setCamNonce] = useState(0);
@@ -357,7 +358,7 @@ export default function App() {
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
           editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={mode === 'customer' && routeSlots.length ? new Set(routeSlots) : changed}
-          heat={heatMap} ownerHeat={mode === 'owner' && ownerHeat} ownerHeatMin={ownerHeatMin} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
+          heat={heatMap} ownerHeat={mode === 'owner' && ownerHeat} ownerHeatMin={ownerHeatMin} ownerHeatLevel={ownerHeatLevel} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
           onIntroDone={() => setCam('overview')} onUserCamera={() => { if (cam === 'intro') { setCam('overview'); setCamNonce((n) => n + 1); } }}
         />
       </div>
@@ -477,7 +478,7 @@ export default function App() {
       )}
       {mode === 'owner' && (
         <OwnerPanel cfg={data.config} planogram={basePlan} products={products} timelines={timelines} run={view}
-          onToggleHeat={setOwnerHeat} onHeatWindow={setOwnerHeatMin}
+          onToggleHeat={setOwnerHeat} onHeatWindow={setOwnerHeatMin} onHeatMin={setOwnerHeatLevel}
           onOpenRearrange={() => setMode('rearrange')} onClose={() => setMode('replay')} />
       )}
       {job.msg && (mode === 'insights' || mode === 'rearrange') && <div className="loading-run sticker">{job.msg}</div>}

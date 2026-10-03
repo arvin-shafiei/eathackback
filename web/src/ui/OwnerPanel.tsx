@@ -19,6 +19,8 @@ export interface OwnerPanelProps {
   onOpenRearrange: () => void;
   /** optional: heatmap time window, null = whole run, N = last N minutes of replay (pass to <TrafficHeat lastMinutes>) */
   onHeatWindow?: (lastMinutes: number | null) => void;
+  /** optional: hide quiet cells (0..1 of the colour scale) → <TrafficHeat minLevel> */
+  onHeatMin?: (minLevel: number) => void;
   onClose?: () => void;
 }
 
@@ -26,7 +28,8 @@ const pct = (x: number) => `${Math.round(x * 100)}%`;
 const secs = (s: number) => (s < 60 ? `${Math.round(s)} s` : `${Math.floor(s / 60)} min ${Math.round(s % 60)} s`);
 const ROWS = ['top', 'eye', 'bottom'] as const;
 
-export function OwnerPanel({ cfg, planogram, products, timelines, run, onToggleHeat, onOpenRearrange, onHeatWindow, onClose }: OwnerPanelProps) {
+export function OwnerPanel({ cfg, planogram, products, timelines, run, onToggleHeat, onOpenRearrange, onHeatWindow, onHeatMin, onClose }: OwnerPanelProps) {
+  const [heatMin, setHeatMin] = useState(0);
   const [heat, setHeat] = useState(false);
   const [winMin, setWinMin] = useState<number | null>(null);
   const r = useMemo(() => ownerReport(cfg, planogram, products, timelines, run), [cfg, planogram, products, timelines, run]);
@@ -50,6 +53,13 @@ export function OwnerPanel({ cfg, planogram, products, timelines, run, onToggleH
         <h3>where it gets busy</h3>
         <div className="ow-row">
           <label className="ow-toggle"><input type="checkbox" checked={heat} onChange={(e) => { setHeat(e.target.checked); onToggleHeat(e.target.checked); }} /> show floor heatmap</label>
+          {onHeatMin && (
+            <label className="ow-toggle" title="hide quiet floor cells so only the busy (yellow → red) areas show">
+              hide quiet areas
+              <input type="range" min={0} max={0.8} step={0.05} value={heatMin} onChange={(e) => { const v = Number(e.target.value); setHeatMin(v); onHeatMin(v); }} />
+              <span className="muted">{heatMin === 0 ? 'show all' : heatMin < 0.35 ? 'hide blue' : heatMin < 0.6 ? 'busy only' : 'hotspots only'}</span>
+            </label>
+          )}
           {onHeatWindow && (
             <select className="ow-sel" value={winMin ?? ''} onChange={(e) => { const v = e.target.value ? Number(e.target.value) : null; setWinMin(v); onHeatWindow(v); }}>
               <option value="">whole run</option><option value="2">last 2 min</option><option value="5">last 5 min</option><option value="10">last 10 min</option>

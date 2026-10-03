@@ -17,6 +17,8 @@ export interface TrafficHeatProps {
   lastMinutes?: number | null;
   /** replay clock (App's timeRef); only needed when lastMinutes is set */
   timeRef?: MutableRefObject<number>;
+  /** 0..1 on the colour scale: cells below it are hidden (0 = show all, 0.5 = only yellow→red busy areas) */
+  minLevel?: number;
 }
 
 /** cool → hot ramp (blue, teal, yellow, orange, red). k in 0..1 */
@@ -28,14 +30,16 @@ function ramp(k: number): [number, number, number] {
 }
 
 /** paint the grid into an RGBA buffer. colour scale: sqrt(density / max) so quiet-but-used cells still show; empty cells are transparent */
-function paint(g: OccGrid, data: Uint8Array) {
+function paint(g: OccGrid, data: Uint8Array, minLevel = 0) {
   const max = g.max || 1;
   for (let iz = 0; iz < g.nz; iz++) for (let ix = 0; ix < g.nx; ix++) {
     const d = g.density[iz * g.nx + ix];
     // texture row 0 = world +z edge (plane is rotated -90° about x, so v=0 lands at max z)
     const o = ((g.nz - 1 - iz) * g.nx + ix) * 4;
     if (d <= 0) { data[o + 3] = 0; continue; }
-    const k = Math.sqrt(d / max), c = ramp(k);
+    const k = Math.sqrt(d / max);
+    if (k < minLevel) { data[o + 3] = 0; continue; }
+    const c = ramp(k);
     data[o] = c[0]; data[o + 1] = c[1]; data[o + 2] = c[2]; data[o + 3] = Math.round(90 + 140 * k);
   }
 }
@@ -60,7 +64,7 @@ function HotLabel({ h }: { h: Hotspot }) {
   );
 }
 
-export function TrafficHeat({ cfg, timelines, on, lastMinutes = null, timeRef }: TrafficHeatProps) {
+export function TrafficHeat({ cfg, timelines, on, lastMinutes = null, timeRef, minLevel = 0 }: TrafficHeatProps) {
   // whole-run grid: computed once per timelines
   const whole = useMemo(() => (on ? occupancy(cfg, timelines) : null), [cfg, timelines, on]);
   // windowed grid: recomputed at most every 2 s of wall time while the replay clock moves
@@ -82,7 +86,7 @@ export function TrafficHeat({ cfg, timelines, on, lastMinutes = null, timeRef }:
     t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearFilter; t.colorSpace = THREE.SRGBColorSpace;
     return t;
   }, [grid?.nx, grid?.nz]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { if (tex && grid) { paint(grid, tex.image.data as Uint8Array); tex.needsUpdate = true; } }, [tex, grid]);
+  useEffect(() => { if (tex && grid) { paint(grid, tex.image.data as Uint8Array, minLevel); tex.needsUpdate = true; } }, [tex, grid, minLevel]);
   useEffect(() => () => tex?.dispose(), [tex]);
   const top = useMemo(() => (grid ? hotspots(cfg, grid, 3) : []), [cfg, grid]);
 
