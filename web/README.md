@@ -53,6 +53,12 @@ The shapes follow `/CONTRACT.md`. Tolerated extras:
 
 Start the sim server with `python sim/server.py`. If something else is already on :8787, the UI falls back to the stub.
 
+## add product and analytics
+
+- **＋ add product**: paste a Tesco link or barcode (calls `/api/import`) or type the pack in; pick the product it replaces; **send the shoppers** runs 150 shoppers plus the AI arm on the store on screen and opens analytics. Needs the sim server.
+- **📊 analytics**: per-product numbers counted in the browser from the run's events (`src/insights.ts`), plus the placement heatmap, placement test and other fixes from the server (`src/ui/PlacementSection.tsx`).
+- Both screens pause the 3D replay while open. "use llm" off means the mock heuristic.
+
 ## where things live
 
 - `src/layout.ts`: store geometry, built only from `store.config.json`, so more aisles, units or rows just work. Also waypoint routing and the replay timeline.

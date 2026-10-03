@@ -62,6 +62,17 @@ Every product has a **4-step funnel**: 👀 **look** → 🤚 **pick up** → �
 - Every decision carries its persona, OCEAN scores, the product fields it read, its stated reason, and the source each assumption came from: a Reddit verbatim, a paper, or an OFF field.
 - No black boxes.
 
+## add your own product (brand upload)
+
+A brand puts its own product on the shelf and watches the synthetic shoppers react, then changes something and re-tests.
+
+1. **Add product** (mode in the 3D app): paste a Tesco product link or a barcode, or type the pack in. It takes the place of one product in a slot you choose.
+2. **Run**: 150 shoppers and the AI-agent arm shop the store with it (`/api/run` and `/api/agent_run` with `products`).
+3. **Analytics** (mode): picked / noticed / weighed-up against the unit median, a one-line diagnosis with its rule shown, funnel, breakdowns by shopper type, mission, OCEAN and AI archetype, a shopper behaviour log with CSV export, what it lost to, and rejection quotes that open the trace.
+4. **Placement**: the notice rate of every row, position and facings in its unit (computed from `sim/notice.py`, no model call), then a same-seed before/after test on up to three spots with a 95% interval, and "apply and re-run".
+
+Code: `sim/uploads.py`, `sim/tesco.py`, `sim/placement.py`, `web/src/insights.ts`, `web/src/ui/{AddProductPanel,InsightsPanel,PlacementSection}.tsx`.
+
 ## pressure test (honest)
 
 | attack | risk | answer / mitigation |
@@ -72,7 +83,7 @@ Every product has a **4-step funnel**: 👀 **look** → 🤚 **pick up** → �
 | **"The 3D is eye candy."** | 🟠 med | The 3D *is* the data: shelf position drives P(notice) with cited effects (eye level ~+39% sales, facings elasticity ~0.17). The walk-pasts are visible. Ugly-but-true beats pretty-but-fake: 24 slots, boxes plus product images. |
 | **"Can you build it by 17:30?"** | 🟠 med | Scope: one store, 24 slots, ~50–70 products, ~200 agent runs, one optimisation loop. Pre-compute runs and render replays; the live demo shows replay plus one live re-run. A fast utility model handles noticing; the LLM handles read-and-decide only for noticed items. |
 | **"Where's the money?"** | 🟢 low | Challenger brands (RGC Club: 400+) want buyer-meeting evidence before listing; retailers want layout and range what-ifs. Anchors: the £999 Retail Report add-on; virtual-store tests at £20–60k taking weeks. |
-| **"Scraped Tesco data?"** | 🟢 avoided | We use **Open Food Facts** (open licence, ingredients, additives, NOVA, eco-score). Better for traceability, and no ToS issue. Retailer price data is optional enrichment. |
+| **"Scraped Tesco data?"** | 🟠 one page, on request | The catalogue is **Open Food Facts** (open licence, ingredients, additives, NOVA, eco-score). The one exception: when a brand pastes a Tesco link for its own product, `sim/tesco.py` opens that single page in a browser window and reads the schema.org block Tesco publishes for search engines (name, price, image, barcode); everything else comes from Open Food Facts by that barcode. Nothing is crawled, and a barcode works with no Tesco request at all. A production version would need Tesco's permission or a licensed product feed. |
 | **"Is the agent-shopper arm a gimmick?"** | 🟢 low | It's the most original part: no RGC dimension covers it, and IGD/Kantar are warning about exactly this. Same products, structured feed, ACES-style randomised positions, report divergence. |
 
 **Verdict:** build it, but **lead with traceable grounding**: "why did shopper #37 walk past Nutty Crunch?", answered by shelf slot, notice probability, OCEAN trait, the attribute read, a Reddit verbatim and the source. The personas and the 3D are how we deliver that, not the pitch itself.
@@ -165,6 +176,8 @@ Results: [`research/05-personas.md`](research/05-personas.md)
 - Reddit over-represents label-readers and list-makers. Counts are directional.
 - The ACES coefficients come from non-food categories, so food-specific agent behaviour is measured live.
 - Only **honest data edits** are allowed: filling in true missing facts, never adversarial prompt text.
+- A brand-supplied product is **unverified**: every field is stamped `brand-supplied, unverified`, and its pack copy goes into the shopper prompt (length-capped, not filtered), so a brand could try to write instructions into it.
+- One run is **one trip per shopper**. The behaviour log's "buys per 100 visits" is within that run; repeat purchase and retention over time are not simulated for uploaded products. "Time at shelf" is each persona's `seconds_at_shelf` input, not a measured dwell.
 
 ---
 

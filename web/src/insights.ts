@@ -16,6 +16,8 @@ export type Step = 'notice' | 'consider' | 'pick';
 export const STEPS: Step[] = ['notice', 'consider', 'pick'];
 
 type Ev = SimEvent & { secondary?: boolean };
+/** a model call that failed is logged as a walk-past with mechanism "error"; it is not a shopper decision, so nothing counts it */
+export const isFailed = (e: SimEvent) => e.mechanism === 'error';
 export const isSecondary = (e: SimEvent) => Boolean((e as Ev).secondary) || (e.reason ?? '').startsWith('(secondary');
 
 export const ratio = (k: number, n: number): number | null => (n > 0 ? k / n : null);
@@ -72,6 +74,7 @@ export function funnels(run: Run, arm: InsightArm): Record<string, Funnel> {
   for (const a of run.agents.filter(armFilter(arm))) {
     const mine = new Set<string>();
     for (const e of a.events) {
+      if (isFailed(e)) continue;
       const f = (out[e.product] ??= { ...EMPTY_FUNNEL, ci95: [0, 0] });
       f.shown++;
       mine.add(e.product);
@@ -195,7 +198,7 @@ export function breakdown(run: Run, code: string, dim: Dimension, personas: Reco
   for (const a of run.agents.filter(armFilter(DIMENSION_ARM[dim]))) {
     const keys = segmentKeys(a, dim, personas);
     for (const e of a.events) {
-      if (e.product !== code) continue;
+      if (e.product !== code || isFailed(e)) continue;
       for (const k of keys) {
         const r = (acc[k] ??= { shown: 0, picked: 0 });
         r.shown++;
@@ -221,7 +224,7 @@ export function lostTo(run: Run, code: string, arm: InsightArm): LostTo {
   const counts: Record<string, number> = {};
   let denominator = 0, none = 0;
   for (const a of run.agents.filter(armFilter(arm))) {
-    const mine = a.events.filter((e) => e.product === code);
+    const mine = a.events.filter((e) => e.product === code && !isFailed(e));
     const seen = mine.filter((e) => e.noticed);
     if (!seen.length || mine.some((e) => e.decision === 'pick')) continue;
     denominator++;
@@ -247,6 +250,7 @@ export function rejections(run: Run, code: string, arm: InsightArm): Rejections 
   const by: Record<string, DecisionRef[]> = {};
   let total = 0, secondary = 0;
   for (const a of run.agents.filter(armFilter(arm))) for (const e of a.events) {
+    if (isFailed(e)) continue;
     if (e.product !== code || e.decision !== 'reject') continue;
     if (isSecondary(e)) { secondary++; continue; }
     total++;
@@ -287,7 +291,7 @@ export function behaviour(run: Run, code: string, personas: Record<string, Perso
   const humans = run.agents.filter(armFilter('human'));
   const rows: BehaviourRow[] = [];
   for (const a of humans) for (const e of a.events) {
-    if (e.product !== code) continue;
+    if (e.product !== code || isFailed(e)) continue;
     const x = e as SimEvent & { picked_up?: unknown; back_of_pack_seen?: unknown };
     const secs = (e.notice_factors as Record<string, unknown> | undefined)?.seconds_at_shelf;
     rows.push({

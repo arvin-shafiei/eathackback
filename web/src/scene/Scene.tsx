@@ -155,7 +155,8 @@ export interface SceneProps {
   editMode: boolean; editSel: string | null; onSlot: (slot: string) => void; changed: Set<string>;
   heat: Record<string, string> | null; thoughts: ThoughtMode;
   cam: CamMode; camNonce: number; onBackground: () => void; onIntroDone: () => void; onUserCamera: () => void;
-  ops: OpsDay | null; clockStart: number;
+  /** both optional, like Ops' own props: undefined lets the ops layer load its day and clock itself */
+  ops?: OpsDay | null; clockStart?: number;
 }
 
 export function Scene(p: SceneProps) {
