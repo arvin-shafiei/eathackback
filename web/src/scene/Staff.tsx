@@ -13,6 +13,7 @@ import type { Planogram, StoreConfig } from '../types';
 import { productWorld, routeBetween, storePlan } from '../layout';
 import { resolveAt, spillPos, type OpsMinute, type OpsStaff } from '../ops';
 import { inkHull } from './parts';
+import { minionGeo, minionTint, MINION_MAT, MINION_SKIN_ARM, MINION_SHOULDER } from './minion';
 import { canvasTex } from './textures';
 import { bus } from './fx';
 import { restockShelf } from './shelfBus';
@@ -31,7 +32,7 @@ export const ROLE: Record<string, { body: string; label: string }> = {
   cleaner: { body: '#22b8b0', label: 'cleaner' },
   manager: { body: '#6d28d9', label: 'manager' },
   guard: { body: '#24324a', label: 'security' },
-  cashier: { body: '#16a34a', label: 'cashier' },
+  cashier: { body: '#ff5fa2', label: 'cashier' },
   barista: { body: '#7a4b2a', label: 'barista' },
 };
 export const INK_MAT = inkHull(0.026);
@@ -71,7 +72,7 @@ export function Person({ role, wref, cashierLane }: { role: string; wref: Mutabl
   const boxes = useRef<(THREE.Mesh | null)[]>([]);
   const tabletGlow = useRef<THREE.MeshStandardMaterial>(null);
   const r = ROLE[role] ?? ROLE.manager;
-  const mat = useMemo(() => new THREE.MeshStandardMaterial({ color: r.body, roughness: 0.35 }), [r.body]);
+  const mat = minionTint(r.body), armMat = minionTint(MINION_SKIN_ARM), mg = minionGeo();
   const step = useRef(Math.random() * 6);
   useFrame((st, dt) => {
     const w = wref.current; if (!w || !g.current) return;
@@ -108,16 +109,12 @@ export function Person({ role, wref, cashierLane }: { role: string; wref: Mutabl
   });
   return (
     <group ref={g}>
-      <mesh geometry={BODY_GEO} material={mat} castShadow />
-      <mesh geometry={BODY_GEO} material={INK_MAT} />
-      {[-1, 1].map((k) => (
-        <group key={k} position={[k * 0.11, 0.93, 0.22]}>
-          <mesh geometry={EYE_GEO} material={WHITE} />
-          <mesh geometry={PUPIL_GEO} material={INKM} position={[0, -0.01, 0.07]} />
-        </group>
-      ))}
-      <group ref={armR} position={[0.31, 0.74, 0.02]}><mesh geometry={ARM_GEO} material={mat} /></group>
-      <group ref={armL} position={[-0.31, 0.74, 0.02]}><mesh geometry={ARM_GEO} material={mat} /></group>
+      {/* minion: yellow body + goggles + eyes (one mesh), overalls in the role colour, gloved arms */}
+      <mesh geometry={mg.head} material={MINION_MAT.head} castShadow />
+      <mesh geometry={mg.hull} material={MINION_MAT.hull} />
+      <mesh geometry={mg.overalls} material={mat} />
+      <group ref={armR} position={[MINION_SHOULDER.x, MINION_SHOULDER.y, MINION_SHOULDER.z]}><mesh geometry={mg.arm} material={armMat} /></group>
+      <group ref={armL} position={[-MINION_SHOULDER.x, MINION_SHOULDER.y, MINION_SHOULDER.z]}><mesh geometry={mg.arm} material={armMat} /></group>
       {role === 'restocker' && (
         <group position={[0, 0, 0.85]}>
           <mesh position={[0, 0.75, 0]} material={CAGE_WIRE}><boxGeometry args={[0.7, 1.4, 0.6]} /></mesh>
@@ -125,7 +122,7 @@ export function Person({ role, wref, cashierLane }: { role: string; wref: Mutabl
           {[[-0.3, -0.25], [0.3, -0.25], [-0.3, 0.25], [0.3, 0.25]].map(([x, z]) => <mesh key={`${x}${z}`} position={[x, 0.05, z]} material={INKM}><sphereGeometry args={[0.05, 8, 6]} /></mesh>)}
         </group>
       )}
-      {role === 'restocker' && <mesh position={[0, 1.18, 0.02]}><cylinderGeometry args={[0.27, 0.29, 0.1, 18]} /><meshStandardMaterial color="#FF4079" /></mesh>}
+      {role === 'restocker' && <mesh position={[0, 1.2, 0.02]}><cylinderGeometry args={[0.24, 0.27, 0.1, 18]} /><meshStandardMaterial color="#FF4079" /></mesh>}
       {role === 'cleaner' && (
         <group ref={prop} position={[0.32, 0, 0.32]}>
           <mesh position={[0, 0.6, 0]} rotation={[0.2, 0, 0]}><cylinderGeometry args={[0.018, 0.018, 1.2]} /><meshStandardMaterial color="#c9cfdc" metalness={0.5} /></mesh>
@@ -141,22 +138,20 @@ export function Person({ role, wref, cashierLane }: { role: string; wref: Mutabl
       )}
       {role === 'manager' && (
         <>
-          <mesh position={[0, 0.6, 0.28]} rotation={[-0.14, 0, 0]}><boxGeometry args={[0.08, 0.28, 0.03]} /><meshStandardMaterial color="#e63946" /></mesh>
+          <mesh position={[0, 0.66, 0.31]} rotation={[-0.14, 0, 0]}><boxGeometry args={[0.08, 0.24, 0.03]} /><meshStandardMaterial color="#e63946" /></mesh>
           <mesh position={[-0.3, 0.55, 0.32]} rotation={[-0.9, 0, 0]}><boxGeometry args={[0.26, 0.34, 0.025]} /><meshStandardMaterial ref={tabletGlow} color={INK} emissive="#7CC8FF" emissiveIntensity={0.35} /></mesh>
         </>
       )}
       {role === 'guard' && (
         <>
-          <mesh position={[0, 1.13, 0]}><cylinderGeometry args={[0.27, 0.3, 0.12, 18]} /><meshStandardMaterial color="#141b2b" /></mesh>
-          <mesh position={[0, 1.12, 0.26]} rotation={[0.25, 0, 0]}><boxGeometry args={[0.34, 0.03, 0.16]} /><meshStandardMaterial color="#141b2b" /></mesh>
-          <mesh position={[0, 0.62, 0]}><cylinderGeometry args={[0.296, 0.296, 0.12, 20, 1, true]} /><meshStandardMaterial color="#d6ff3d" emissive="#d6ff3d" emissiveIntensity={0.2} side={THREE.DoubleSide} /></mesh>
+          <mesh position={[0, 1.2, 0]}><cylinderGeometry args={[0.24, 0.27, 0.12, 18]} /><meshStandardMaterial color="#141b2b" /></mesh>
+          <mesh position={[0, 1.17, 0.24]} rotation={[0.25, 0, 0]}><boxGeometry args={[0.34, 0.03, 0.16]} /><meshStandardMaterial color="#141b2b" /></mesh>
+          <mesh position={[0, 0.66, 0]}><cylinderGeometry args={[0.318, 0.318, 0.1, 20, 1, true]} /><meshStandardMaterial color="#d6ff3d" emissive="#d6ff3d" emissiveIntensity={0.2} side={THREE.DoubleSide} /></mesh>
         </>
       )}
-      {role === 'cashier' && <mesh position={[0, 0.5, 0.05]}><cylinderGeometry args={[0.292, 0.31, 0.5, 20, 1, true]} /><meshStandardMaterial color="#e9fbe9" side={THREE.DoubleSide} /></mesh>}
       {role === 'barista' && (
         <>
-          <mesh position={[0, 0.48, 0.04]}><cylinderGeometry args={[0.292, 0.31, 0.56, 20, 1, true]} /><meshStandardMaterial color="#2a2230" side={THREE.DoubleSide} /></mesh>
-          <mesh position={[0, 1.13, 0]}><cylinderGeometry args={[0.24, 0.27, 0.1, 18]} /><meshStandardMaterial color="#2a2230" /></mesh>
+          <mesh position={[0, 1.2, 0]}><cylinderGeometry args={[0.22, 0.25, 0.1, 18]} /><meshStandardMaterial color="#2a2230" /></mesh>
         </>
       )}
     </group>

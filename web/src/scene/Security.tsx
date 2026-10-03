@@ -9,7 +9,8 @@ import { useFrame } from '@react-three/fiber';
 import type { StoreConfig } from '../types';
 import { storePlan } from '../layout';
 import { bus } from './fx';
-import { BODY_GEO, EYE_GEO, INK_MAT, PUPIL_GEO, WHITE, INKM, type OpsLive } from './Staff';
+import { type OpsLive } from './Staff';
+import { minionGeo, minionTint, MINION_MAT, MINION_SKIN_ARM } from './minion';
 import type { MutableRefObject } from 'react';
 
 export interface Lifter { id: number; gate: { x: number; z: number; id?: string }; t0: number; value?: number; kind?: string }
@@ -60,18 +61,13 @@ function Shoplifter({ l, live }: { l: Lifter; live: MutableRefObject<OpsLive> })
   });
   return (
     <group ref={g} visible={false}>
-      <mesh geometry={BODY_GEO} raycast={noRay}><meshStandardMaterial color="#6b6f7a" roughness={0.6} /></mesh>
-      <mesh geometry={BODY_GEO} material={INK_MAT} raycast={noRay} />
-      {/* hoodie up */}
-      <mesh position={[0, 1.02, 0]} raycast={noRay}><sphereGeometry args={[0.31, 16, 10, 0, Math.PI * 2, 0, Math.PI / 1.7]} /><meshStandardMaterial color="#4a4e58" /></mesh>
+      {/* minion in grey overalls with the hood up */}
+      <mesh geometry={minionGeo().head} material={MINION_MAT.head} raycast={noRay} />
+      <mesh geometry={minionGeo().hull} material={MINION_MAT.hull} raycast={noRay} />
+      <mesh geometry={minionGeo().overalls} material={minionTint('#6b6f7a')} raycast={noRay} />
+      <mesh position={[0, 0.9, -0.02]} raycast={noRay}><sphereGeometry args={[0.325, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2.3]} /><meshStandardMaterial color="#4a4e58" /></mesh>
       {/* hands up */}
-      {[-1, 1].map((k) => <mesh key={k} position={[k * 0.33, 1.05, 0]} rotation={[0, 0, k * 0.3]} raycast={noRay}><capsuleGeometry args={[0.05, 0.3, 4, 8]} /><meshStandardMaterial color="#6b6f7a" /></mesh>)}
-      {[-1, 1].map((k) => (
-        <group key={`e${k}`} position={[k * 0.1, 0.9, 0.24]}>
-          <mesh geometry={EYE_GEO} material={WHITE} raycast={noRay} />
-          <mesh geometry={PUPIL_GEO} material={INKM} position={[0, 0.02, 0.07]} raycast={noRay} />
-        </group>
-      ))}
+      {[-1, 1].map((k) => <group key={k} position={[k * 0.3, 0.66, 0.02]} rotation={[0, 0, k * 2.6]}><mesh geometry={minionGeo().arm} material={minionTint(MINION_SKIN_ARM)} raycast={noRay} /></group>)}
       {/* the unscanned goods, peeking out of a bag */}
       <mesh position={[-0.38, 0.45, 0.1]} raycast={noRay}><boxGeometry args={[0.26, 0.3, 0.16]} /><meshStandardMaterial color="#e9dfd8" /></mesh>
     </group>

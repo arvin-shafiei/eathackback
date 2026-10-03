@@ -19,7 +19,8 @@ import { laneMapper, type OpsDay, type OpsVisit } from '../ops';
 import { productMaterials } from './textures';
 import { bus, sfx } from './fx';
 import { onCrowd } from './crowdBus';
-import { BODY_GEO, EYE_GEO, INK_MAT, PUPIL_GEO, type OpsLive } from './Staff';
+import { type OpsLive } from './Staff';
+import { minionGeo, MINION_MAT } from './minion';
 import { INK } from '../theme';
 
 type XZ = { x: number; z: number };
@@ -104,7 +105,7 @@ export function Checkout({ cfg, live, products, day }: Props) {
 
   const itemMeshes = useRef<(THREE.InstancedMesh | null)[]>([]);
   const bodies = useRef<THREE.InstancedMesh>(null), hulls = useRef<THREE.InstancedMesh>(null);
-  const eyes = useRef<THREE.InstancedMesh>(null), pupils = useRef<THREE.InstancedMesh>(null);
+  const overalls = useRef<THREE.InstancedMesh>(null);
   const cards = useRef<Record<string, THREE.MeshBasicMaterial | null>>({});
   const beams = useRef<Record<string, THREE.Mesh | null>>({});
   const bodiesById = useRef(new Map<string, Body>());
@@ -196,17 +197,9 @@ export function Checkout({ cfg, live, products, day }: Props) {
       tmpQ.setFromAxisAngle(UP, yaw);
       tmpS.set(0.92, 0.92, 0.92);
       tmpM.compose(tmpP.set(p.x, 0, p.z), tmpQ, tmpS);
-      bodies.current.setMatrixAt(np, tmpM); hulls.current?.setMatrixAt(np, tmpM);
-      bodies.current.setColorAt(np, PALETTE[ci % PALETTE.length]);
-      for (let e = 0; e < 2; e++) {
-        const ex = (e ? 1 : -1) * 0.11 * 0.92;
-        const off = tmpA.set(ex, 0.93 * 0.92, 0.22 * 0.92).applyQuaternion(tmpQ);
-        tmpM.compose(tmpP.set(p.x + off.x, off.y, p.z + off.z), tmpQ, tmpS);
-        eyes.current?.setMatrixAt(np * 2 + e, tmpM);
-        const off2 = tmpB.set(ex, 0.93 * 0.92 - 0.01, 0.22 * 0.92 + 0.065).applyQuaternion(tmpQ);
-        tmpM.compose(tmpP.set(p.x + off2.x, off2.y, p.z + off2.z), tmpQ, tmpS);
-        pupils.current?.setMatrixAt(np * 2 + e, tmpM);
-      }
+      // minion: yellow body + goggles + eyes in one mesh; the shopper's colour goes on the overalls
+      bodies.current.setMatrixAt(np, tmpM); hulls.current?.setMatrixAt(np, tmpM); overalls.current?.setMatrixAt(np, tmpM);
+      overalls.current?.setColorAt(np, PALETTE[ci % PALETTE.length]);
       np++;
     };
     const item = (mi: number, x: number, y: number, z: number, yaw = 0, tilt = 0) => {
@@ -336,8 +329,7 @@ export function Checkout({ cfg, live, products, day }: Props) {
       const beam = beams.current[L.id];
       if (beam) { const since = now - (bus.flash[L.id] ?? -9); const k = Math.max(0, 1 - since / 0.22); beam.visible = k > 0.01; beam.scale.set(1, 0.4 + k * 0.6, 1); ((beam.material as THREE.MeshBasicMaterial).opacity = k * 0.55); }
     }
-    for (const m of [bodies.current, hulls.current]) if (m) { m.count = np; m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
-    for (const m of [eyes.current, pupils.current]) if (m) { m.count = np * 2; m.instanceMatrix.needsUpdate = true; }
+    for (const m of [bodies.current, hulls.current, overalls.current]) if (m) { m.count = np; m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
     itemMeshes.current.forEach((m, i) => { if (m) { m.count = counts[i]; m.instanceMatrix.needsUpdate = true; } });
 
     // lane signs: people waiting (not yet at the till), refreshed when it changes
@@ -348,17 +340,15 @@ export function Checkout({ cfg, live, products, day }: Props) {
     if (stickers.length && stickers.some((s) => s.until < T || s.until > T + 200)) setStickers((c) => c.filter((s) => s.until > T && s.until < T + 200));
   });
 
-  const bodyMat = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.45 }), []);
-  const white = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.25 }), []);
+  const mg = minionGeo();
   const ink = useMemo(() => new THREE.MeshBasicMaterial({ color: INK }), []);
   const beamMats = useMemo(() => Object.fromEntries(P.lanes.map((l) => [l.id, new THREE.MeshBasicMaterial({ color: '#ff2a4f', transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide })])), [P]);
 
   return (
     <group>
-      <instancedMesh ref={bodies} args={[BODY_GEO, bodyMat, MAX_PEOPLE]} frustumCulled={false} castShadow raycast={noRay} />
-      <instancedMesh ref={hulls} args={[BODY_GEO, INK_MAT, MAX_PEOPLE]} frustumCulled={false} raycast={noRay} />
-      <instancedMesh ref={eyes} args={[EYE_GEO, white, MAX_PEOPLE * 2]} frustumCulled={false} raycast={noRay} />
-      <instancedMesh ref={pupils} args={[PUPIL_GEO, ink, MAX_PEOPLE * 2]} frustumCulled={false} raycast={noRay} />
+      <instancedMesh ref={bodies} args={[mg.head, MINION_MAT.head, MAX_PEOPLE]} frustumCulled={false} castShadow raycast={noRay} />
+      <instancedMesh ref={hulls} args={[mg.hull, MINION_MAT.hull, MAX_PEOPLE]} frustumCulled={false} raycast={noRay} />
+      <instancedMesh ref={overalls} args={[mg.overalls, MINION_MAT.tint, MAX_PEOPLE]} frustumCulled={false} raycast={noRay} />
       {itemMats.map((mats, i) => (
         <instancedMesh key={i} ref={(m) => { itemMeshes.current[i] = m; }} args={[ITEM, mats, MAX_ITEMS]} frustumCulled={false} castShadow raycast={noRay} />
       ))}
@@ -414,5 +404,4 @@ const SIGN: React.CSSProperties = {
 };
 const HOT: React.CSSProperties = { background: '#FF5A7A', color: '#fff' };
 const UP = new THREE.Vector3(0, 1, 0);
-const tmpA = new THREE.Vector3(), tmpB = new THREE.Vector3();
 const noRay = () => null;

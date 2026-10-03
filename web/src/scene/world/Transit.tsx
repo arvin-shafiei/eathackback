@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import type { WorldPlan } from './World';
 import { Geo, cylGeo, mat, rng } from './geo';
 import { snowable } from './wxState';
+import { minionGeo } from '../minion';
 
 const noRay = () => null;
 
@@ -162,12 +163,8 @@ function busGeo() {
   return g.build();
 }
 
-function walkerGeo() {
-  const g = new Geo();
-  g.add(new THREE.CapsuleGeometry(0.22, 0.75, 3, 8), '#ffffff', mat(0, 0.6, 0));
-  g.add(new THREE.SphereGeometry(0.17, 8, 6), '#ffe0cc', mat(0, 1.33, 0));
-  return g.build();
-}
+/** street walkers are minions too: yellow body + goggles + eyes (vertex coloured) and overalls tinted per walker */
+const WALKER_SCALE = 1.15;
 
 type Path = { pts: THREE.Vector2[]; cum: number[]; len: number };
 function mkPath(pts: [number, number][]): Path {
@@ -190,7 +187,7 @@ export function Transit({ W }: { W: WorldPlan }) {
   const built = useMemo(() => buildTransit(W), [W]);
   const lambert = useMemo(() => snowable(new THREE.MeshLambertMaterial({ vertexColors: true })), []);
   const basic = useMemo(() => new THREE.MeshBasicMaterial({ vertexColors: true }), []);
-  const geos = useMemo(() => ({ bus: busGeo(), walker: walkerGeo() }), []);
+  const geos = useMemo(() => ({ bus: busGeo(), walker: minionGeo().head, overalls: minionGeo().overalls }), []);
   const ugTex = useMemo(() => signTex([['UNDERGROUND', 150], ['Simsbury Park', 62]]), []);
   const ttTex = useMemo(timetableTex, []);
   const { sx, sz, bx } = transitSpots(W);
@@ -225,7 +222,7 @@ export function Transit({ W }: { W: WorldPlan }) {
     return { X0, X1, v, Dd, T2, dwell, segs, zLane: W.zNear, zBay: W.zC + 5.75 };
   }, [W, paths]);
 
-  const busRef = useRef<THREE.InstancedMesh>(null), wRef = useRef<THREE.InstancedMesh>(null);
+  const busRef = useRef<THREE.InstancedMesh>(null), wRef = useRef<THREE.InstancedMesh>(null), oRef = useRef<THREE.InstancedMesh>(null);
   const st = useRef({
     t: 0, nextTube: 1, prevDwell: [false, false],
     w: Array.from({ length: NW }, () => ({ on: false, path: null as Path | null, s: 0, delay: 0, v: 1.3, ph: 0 })),
@@ -234,10 +231,10 @@ export function Transit({ W }: { W: WorldPlan }) {
   // start the clock so the first bus pulls into the bay ~15 s after load (nice for demos / screenshots)
   useEffect(() => { const sg = bus.segs[0]; st.current.t = Math.max(0, sg.T1 + bus.T2 - 15); }, [bus]);
   useEffect(() => {
-    const im = wRef.current; if (!im) return;
+    const im = wRef.current, om = oRef.current; if (!im || !om) return;
     const c = new THREE.Color(), z = new THREE.Matrix4().makeScale(0, 0, 0);
-    for (let i = 0; i < NW; i++) { im.setColorAt(i, c.set(WALKER_COLS[i % WALKER_COLS.length])); im.setMatrixAt(i, z); }
-    im.instanceMatrix.needsUpdate = true; if (im.instanceColor) im.instanceColor.needsUpdate = true;
+    for (let i = 0; i < NW; i++) { om.setColorAt(i, c.set(WALKER_COLS[i % WALKER_COLS.length])); im.setMatrixAt(i, z); om.setMatrixAt(i, z); }
+    for (const m of [im, om]) { m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }
   }, []);
 
   const v2 = useMemo(() => new THREE.Vector2(), []);
@@ -278,19 +275,20 @@ export function Transit({ W }: { W: WorldPlan }) {
     });
     if (bm) bm.instanceMatrix.needsUpdate = true;
     // walkers
-    const im = wRef.current; if (!im) return;
+    const im = wRef.current, om = oRef.current; if (!im || !om) return;
     S.w.forEach((w, i) => {
       if (!w.on || !w.path) return;
-      if (w.delay > 0) { w.delay -= dt; im.setMatrixAt(i, mat(0, -50, 0, 0, 0, 0, 0)); return; }
+      if (w.delay > 0) { w.delay -= dt; const h = mat(0, -50, 0, 0, 0, 0, 0); im.setMatrixAt(i, h); om.setMatrixAt(i, h); return; }
       w.s += w.v * dt;
       const L = w.path.len;
-      if (w.s >= L) { w.on = false; im.setMatrixAt(i, mat(0, -50, 0, 0, 0, 0, 0)); return; }
+      if (w.s >= L) { w.on = false; const h = mat(0, -50, 0, 0, 0, 0, 0); im.setMatrixAt(i, h); om.setMatrixAt(i, h); return; }
       const yaw = at(w.path, w.s, v2);
       const sc = Math.min(1, w.s / 0.8, (L - w.s) / 1.4);
       const bob = Math.abs(Math.sin(w.s * 4.2 + w.ph)) * 0.07;
-      im.setMatrixAt(i, mat(v2.x, bob, v2.y, yaw + Math.sin(w.s * 4.2 + w.ph) * 0.08, sc, sc, sc));
+      const k = sc * WALKER_SCALE, m = mat(v2.x, bob, v2.y, yaw + Math.sin(w.s * 4.2 + w.ph) * 0.08, k, k, k);
+      im.setMatrixAt(i, m); om.setMatrixAt(i, m);
     });
-    im.instanceMatrix.needsUpdate = true;
+    im.instanceMatrix.needsUpdate = true; om.instanceMatrix.needsUpdate = true;
   });
 
   return (
@@ -299,6 +297,7 @@ export function Transit({ W }: { W: WorldPlan }) {
       <mesh geometry={built.glow} material={basic} raycast={noRay} />
       <instancedMesh ref={busRef} args={[geos.bus, lambert, 2]} raycast={noRay} frustumCulled={false} />
       <instancedMesh ref={wRef} args={[geos.walker, lambert, NW]} raycast={noRay} frustumCulled={false} />
+      <instancedMesh ref={oRef} args={[geos.overalls, lambert, NW]} raycast={noRay} frustumCulled={false} />
       {/* fascia signs: over the canopy (+x face) and the long +z face */}
       <mesh position={[built.fx + 0.08, 5.0, sz]} rotation={[0, Math.PI / 2, 0]} raycast={noRay}>
         <planeGeometry args={[6.4, 1.6]} /><meshBasicMaterial map={ugTex} />
