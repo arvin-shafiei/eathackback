@@ -45,8 +45,13 @@ _run_lock = threading.Lock()
 def _store_for(body):
     """Hold the run lock and point the loaders in sim/run.py at the store the request names ("store": "xl").
     Reset on the way out, so a request that names no store always gets the standard one."""
+    store = body.get("store") or None
+    if store not in simrun.STORE_VARIANTS and store != "standard" and body.get("products"):
+        # simulating an upload on the wrong store would put it on shelves the shoppers never walk
+        raise ValueError(f"brand uploads run on the standard and xl stores; the '{store}' format is not wired to the "
+                         "upload path yet. open the app with ?store=xl")
     with _run_lock:
-        simrun.STORE_VARIANT = body.get("store") if body.get("store") in simrun.STORE_VARIANTS else None
+        simrun.STORE_VARIANT = store if store in simrun.STORE_VARIANTS else None
         try:
             yield
         finally:
