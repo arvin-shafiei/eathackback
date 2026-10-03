@@ -23,7 +23,7 @@ const keyOf = (p: Placement) => `${p.slot}|${p.pos}|${p.facings}`;
 const pct1 = (x: number) => `${(x * 100).toFixed(1)}%`;
 const pts = (x: number) => `${x >= 0 ? '+' : '−'}${Math.abs(x * 100).toFixed(1)} pts`;
 const errText = (e: unknown) => (e instanceof Error ? e.message : String(e));
-const facingsText = (n: number) => `${n} facing${n === 1 ? '' : 's'}`;
+const facingsText = (n: number) => `${n} pack${n === 1 ? '' : 's'} wide`;
 const rowName = (cfg: StoreConfig, slot: string) => {
   const r = slot.match(/-r(\d+)$/)?.[1] ?? '';
   return cfg.row_names[r] ?? `row ${r}`;
@@ -130,7 +130,7 @@ function PlacementBody({ product, planogram, cfg, products, extraProducts, useLL
       {exp.data && <ExperimentResults exp={exp.data} cfg={cfg} product={product} busy={busy} onApply={onApplyPlanogram} />}
       </details>
       <details className="pl-side pl-fold" open={!!opt.data || opt.busy || !!opt.err || undefined}>
-      <summary><h3>try a claim, a facing or a price</h3></summary>
+      <summary><h3>try a claim, more space or a new price</h3></summary>
       <div className="pl-actions">
         <label className="pl-price">
           new price £
@@ -161,13 +161,13 @@ function BusyNote({ useLLM }: { useLLM: boolean }) {
     <p className="notice ok" role="status">
       {useLLM
         ? 'real model calls. this can take a few minutes; keep this open.'
-        : 'mock shoppers are walking.'}
+        : 'practice shoppers are walking.'}
     </p>
   );
 }
 
 function MockNote() {
-  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic mock heuristic in sim/run.py, not from a model">mock shoppers</Sticker>;
+  return <Sticker tone="yellow" title="use llm is off: reasons and picks come from the deterministic mock heuristic in sim/run.py, not from a model">practice shoppers</Sticker>;
 }
 
 interface HeatmapProps {
@@ -197,7 +197,7 @@ function Heatmap({ scan, cfg, planogram, products, facings, onFacings, picked, o
             <button key={f} className={`seg-btn ${facings === f ? 'on' : ''}`} aria-pressed={facings === f} onClick={() => onFacings(f)}>{facingsText(f)}</button>
           ))}
         </div>
-        <span className="muted small">{picked.length} of {MAX_TESTS} picked</span>
+        <span className="muted small">tap a spot to test it</span>
       </div>
       <div className="pl-grid">
         {rows.map((r) => {
@@ -250,7 +250,7 @@ function HeatCell({ c, lo, hi, products, here, on, best, full, onToggle }: HeatC
       <span className="pl-rate">{pct1(c.notice_rate)}</span>
       <span className="pl-swap">{swap ? `↔ ${swap}` : 'your spot'}</span>
       <span className="pl-lift">{c.is_current ? 'now' : pts(c.lift_vs_current)}</span>
-      {on && <span className="pl-tick">testing</span>}
+      {on && <span className="pl-tick">to test</span>}
     </button>
   );
 }

@@ -58,7 +58,7 @@ export function InsightsPanel(props: InsightsProps) {
         <div className="ins-band">
           <h3 className="display">what to change</h3>
           <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached). applies to the experiments below.">
-            <input type="checkbox" checked={props.useLLM} onChange={(e) => props.onUseLLM(e.target.checked)} /> use llm (costs)
+            <input type="checkbox" checked={props.useLLM} onChange={(e) => props.onUseLLM(e.target.checked)} /> real ai shoppers (costs)
           </label>
         </div>
         <PlacementSection product={p} slot={slot} planogram={planogram} cfg={cfg} products={products} extraProducts={props.extraProducts}
@@ -90,9 +90,9 @@ function Head({ product: p, slot, rowName, options, products, onPickProduct }: H
       <div className="ins-head-main">
         <h2 className="display" title={`${p.brand} ${p.name}`}>{p.brand} <span className="thin">{p.brand && p.name.toLowerCase().startsWith(p.brand.toLowerCase()) ? p.name.slice(p.brand.length).trim() : p.name}</span></h2>
         <div className="chips">
-          {p.brand_supplied && <Sticker tone="yellow" title="typed in by the brand; not checked against open food facts">brand-supplied, unverified</Sticker>}
+          {p.brand_supplied && <Sticker tone="yellow" title="typed in by the brand; not checked against open food facts">your product</Sticker>}
           <Sticker>{catLabel(p.category)}</Sticker>
-          <Sticker title="where it sits in this planogram">{slot ? `${slot}${rowName ? ` · ${rowName} row` : ''}` : 'not on the shelf'}</Sticker>
+          <Sticker title={slot ? `slot ${slot}` : undefined}>{slot ? (rowName ? `${rowName} shelf` : slot) : 'not on the shelf'}</Sticker>
           <Sticker title={p.price_source}>£{Number(p.price_gbp).toFixed(2)}</Sticker>
         </div>
         <Select
@@ -111,9 +111,9 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
   return (
     <>
       <p className="ins-sample">
-        <b>{plural(s.human_shoppers, 'shopper')}</b> passed it ·{' '}
-        {s.ai_loaded ? <><b>{plural(s.ai_sessions, 'ai session')}</b> saw it</> : <span className="muted">no ai arm loaded</span>}
-        {run.mock ? ' · mock shoppers' : ''}
+        <b>{plural(s.human_shoppers, 'shopper')}</b> walked past it ·{' '}
+        {s.ai_loaded ? <><b>{plural(s.ai_sessions, 'ai shopper')}</b> saw it</> : <span className="muted">no ai shoppers</span>}
+        {run.mock ? ' · practice shoppers, not real results' : ''}
       </p>
       {!!run.cost?.errors && (
         <p className="notice">{plural(run.cost.errors, 'llm call')} failed in this run. the sim logs each as a walk-past with the reason "(llm error)"; they are not shopper decisions, so every count on this page leaves them out.</p>
@@ -128,7 +128,7 @@ function SampleLine({ sample: s, run }: { sample: SampleSize; run: Run }) {
   );
 }
 
-const STEP_OF: Record<string, string> = { notice: 'noticed', consider: 'considered', pick: 'bought' };
+const STEP_OF: Record<string, string> = { notice: 'noticed', consider: 'looked closer', pick: 'bought' };
 
 interface StoryProps { own: Funnel; ai: Funnel; aiLoaded: boolean; d: Diagnosis; unit?: string; onPlacement: () => void }
 /** the whole page in one tile: did it sell, where it loses shoppers, and the four steps behind that */
@@ -137,9 +137,9 @@ function Story({ own, ai, aiLoaded, d, unit, onPlacement }: StoryProps) {
   const [notice, consider, pick] = stepRates(own);
   const leak = d.bottleneck ? STEP_OF[d.bottleneck.step] : null;
   const steps = [
-    { k: 'passed', v: own.shown, rate: null as number | null, why: 'stood at its shelf' },
+    { k: 'walked past', v: own.shown, rate: null as number | null, why: 'stood at its shelf' },
     { k: 'noticed', v: own.noticed, rate: notice.rate, why: 'of those who passed' },
-    { k: 'considered', v: own.considered, rate: consider.rate, why: 'of those who noticed: picked it up or weighed it' },
+    { k: 'looked closer', v: own.considered, rate: consider.rate, why: 'of those who noticed: picked it up or weighed it' },
     { k: 'bought', v: own.picked, rate: pick.rate, why: 'of those who considered' },
   ];
   return (
