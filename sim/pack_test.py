@@ -184,7 +184,8 @@ def build_variants(p: dict, max_variants: int = 5) -> list[dict]:
 
 # ---------------------------------------------------------------- 2. Jev fan-out
 def load_personas() -> list[dict]:
-    return [json.load(open(f)) for f in sorted(glob.glob(os.path.join(PERSONA_DIR, "*.json")))]
+    ps = [json.load(open(f)) for f in sorted(glob.glob(os.path.join(PERSONA_DIR, "*.json")))]
+    return [p for p in ps if p.get("kind") != "ai_agent"]  # AI-agent archetypes read feeds, not packs
 
 
 def slot_set(code: str, catalog: dict) -> list[dict]:

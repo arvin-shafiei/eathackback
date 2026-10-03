@@ -1,0 +1,184 @@
+{
+ "id": "p_ai_price_bot",
+ "kind": "ai_agent",
+ "name": "price bot",
+ "label": "price bot",
+ "archetype": "ai_price_bot",
+ "emoji": "🤖",
+ "mission": "feed_mission",
+ "secondary_missions": [
+  "cheapest_fizzy",
+  "cheapest_breakfast",
+  "cheapest_protein_per_gram"
+ ],
+ "missions_source": "assumption: cost-minimising variants of the general missions; grounded in user requests to have an agent find the cheapest items (verbatims below) and the 'cheapest decent fizzy drink' harness variant in data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.missions[3]",
+ "budget_gbp": null,
+ "budget_source": "assumption: no fixed budget; the objective is minimum price per unit subject to the request's hard constraints",
+ "channel": "agent",
+ "channel_source": "assumption: a comparison / cost-minimiser agent reading feeds (CartHappy-style 'moved it to the retailers with the best price', https://www.reddit.com/comments/1vobhlt)",
+ "acts_for": "a budget-first user who told the agent to minimise cost (assumption: a scripted or prompted price-comparison agent)",
+ "population_weight": {
+  "value": 0.01,
+  "source": "assumption: a niche subset of the ~3% who use AI for grocery (IGD, research/02-issue-discovery.md); no measured share"
+ },
+ "ocean": null,
+ "ocean_note": "not a human; personality not applicable. OCEAN is null on purpose: the agent's behaviour is set by its lens, its sim_params and the model that decides (recorded per agent as `model`), not by traits.",
+ "ocean_effects": [],
+ "lens_note": "A cost minimiser. Price per unit first, everything else is a constraint or a tie-breaker. Most weights are assumptions; the only measured anchor is how hard LLM agents already weigh price (ACES ln(price) beta -1.61 to -2.80).",
+ "lens": [
+  {
+   "attribute": "price_per_unit",
+   "off_field": "derived: price_gbp / quantity (per 100 g or 100 ml), price_per_litre_gbp when present",
+   "direction": "lower_better",
+   "weight": 0.55,
+   "why": "Its whole objective. Per-unit, not per-pack, so multipacks and big packs win.",
+   "source": "assumption: objective of the archetype; anchor Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2 ln(price) beta up to -2.80 (GPT-5.1); user demand: 'split it between two supermarkets based on the cheapest items from each' https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "attribute": "hard_constraint_fit",
+   "off_field": "catalog nutrients/labels vs the request (e.g. proteins_100g >= 20, sweeteners, allergens)",
+   "direction": "pass_required",
+   "weight": 0.2,
+   "why": "It will not buy something cheaper that breaks an explicit constraint ('at least 20 g protein').",
+   "source": "assumption: constraint-first, then cost (constraint-satisfaction behaviour of agents, data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.missions[1])"
+  },
+  {
+   "attribute": "data_completeness",
+   "off_field": "non-null price_gbp + quantity (needed to compute price per unit)",
+   "direction": "higher_better (gate)",
+   "weight": 0.15,
+   "why": "No pack size = no price per unit = cannot be compared, so it is skipped.",
+   "source": "assumption, by construction of price per unit; same structured-data gate as data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 2"
+  },
+  {
+   "attribute": "own_label",
+   "off_field": "catalog role == own_label",
+   "direction": "own_label_better (follows from price)",
+   "weight": 0.07,
+   "why": "Not a preference in itself; own-label usually is the price-per-unit leader.",
+   "source": "assumption; NielsenIQ 2026 58% don't care brand vs private label (via data/personas/staged_personas_v1.json[11] behavioural_drivers[2])"
+  },
+  {
+   "attribute": "rating",
+   "off_field": "not in data/products/catalog.json (no rating/review/badge/sponsored fields yet): every product scores neutral on this until a review feed is joined",
+   "direction": "higher_better (tie-break only)",
+   "weight": 0.03,
+   "why": "Only breaks exact price ties.",
+   "source": "assumption; Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2 shows every model weights rating, so it is not zero"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Any cheaper per-unit option that meets the constraints exists",
+   "source": "assumption: definition of a cost minimiser"
+  },
+  {
+   "trigger": "Missing pack size or price (price per unit not computable)",
+   "source": "assumption, by construction"
+  },
+  {
+   "trigger": "Breaks an explicit constraint in the request",
+   "source": "assumption: constraint-first"
+  },
+  {
+   "trigger": "Premium claim with a price premium ('protein', 'prebiotic') when the request did not ask for it",
+   "source": "assumption: claims are a cost, not a value, to this agent"
+  }
+ ],
+ "trust_signals": [
+  {
+   "signal": "Lowest price per 100 g / 100 ml in the slot",
+   "source": "assumption: objective"
+  },
+  {
+   "signal": "Clear quantity / multipack size in the record",
+   "source": "assumption: needed for price per unit"
+  },
+  {
+   "signal": "Promotions applied automatically to the cart",
+   "source": "'The supermarket has rewards and savings caked into your account that it just applied automatically' https://www.reddit.com/comments/1m9u7e6"
+  }
+ ],
+ "habits": [
+  {
+   "habit": "Re-checks prices and switches retailer or SKU when cheaper; no loyalty",
+   "source": "'Run it so it regularly checks prices and when they are on sale at the lowest prices order a set number of them.' https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "habit": "Always returns the cheapest compliant item; never declines",
+   "source": "Agents vs humans, 5,000 sessions, arXiv 2608.22697 (https://arxiv.org/abs/2608.22697): agents 'never decline to buy'; position effect 4-10x weaker than humans', via research/02-issue-discovery.md"
+  }
+ ],
+ "says_vs_does": "SAYS 'best value'. DOES pick the lowest price per unit that clears the hard constraints, which is usually own-label or the biggest pack, regardless of taste. Source: assumption (archetype definition), consistent with ACES price coefficients",
+ "dossier": "I am not a person. I am an agent someone set up to spend as little as possible. Give me a request, 'a high-protein snack, at least 20 g', and I treat everything in it as a pass/fail rule, then sort what passes by price per 100 grams. I need the pack size to do that, so a product without one does not get compared. Brand means nothing to me except that the shop's own label is usually cheapest. A clever claim on the front of the pack is just a reason the price is higher. I will switch shop, size or brand every week if the numbers move, and I never come back empty-handed.",
+ "dossier_word_count_note": "about 110 words; assumption-led archetype (no staged dossier), grounded in the verbatims below",
+ "verbatims": [
+  {
+   "quote": "Wondering if it can be given a list of items and told to split it between two supermarkets based on the cheapest items from each?",
+   "url": "https://www.reddit.com/comments/1m9u7e6",
+   "subreddit": "OpenAI",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "Run it so it regularly checks prices and when they are on sale at the lowest prices order a set number of them.",
+   "url": "https://www.reddit.com/comments/1m9u7e6",
+   "subreddit": "OpenAI",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "I tried CartHappy and it built my grocery list from my purchase history and automatically moved it to the retailers with the best price.",
+   "url": "https://www.reddit.com/comments/1vobhlt",
+   "subreddit": "ChatGPT",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "I was only getting responses that said it can't find real time sales or prices no matter what my prompt was. That was on o1. I switched to 4o and it worked fine.",
+   "url": "https://www.reddit.com/comments/1j9pozm",
+   "subreddit": "ChatGPT",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "I started plugging my groceries list into chat gpt and asking for price comparisons between each local grocery store. It’s pretty accurate in that I know I may be paying more for certain items at Store A, but still pay less in total than if I go to Stores B, ...",
+   "url": "https://www.reddit.com/comments/1ui9o6z",
+   "subreddit": "MiddleClassFinance",
+   "theme": "buy_it_again_repeat"
+  }
+ ],
+ "counter_evidence": [
+  {
+   "point": "LLM price and arithmetic handling is unreliable ('prices were a bit off', 'those prices maybe would've been accurate in 2005'), so a real price bot is less crisp than this lens",
+   "source": "https://www.reddit.com/comments/1hyqe97 (via data/personas/staged_personas_v1.json[10] verdict.supporting_evidence)"
+  }
+ ],
+ "sim_params": {
+  "p_notice_eye_level": 0.97,
+  "p_notice_bottom_or_side": 0.95,
+  "habit_lockin_0_1": 0.02,
+  "price_sensitivity_0_1": 0.95,
+  "trust_new_brand_0_1": 0.5,
+  "gimmick_reactance_0_1": 0.4,
+  "reads_structured_data_0_1": 0.95,
+  "seconds_at_shelf": 5,
+  "meal_deal_pull_0_1": 0.05,
+  "p_decline": 0.0
+ },
+ "sim_params_scope": "Feed channel.",
+ "sim_params_sources": {
+  "p_notice_eye_level": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters (reads every row)",
+  "p_notice_bottom_or_side": "assumption: a sorter reads the whole feed, slightly above Agent-GPT 0.9",
+  "habit_lockin_0_1": "assumption: no loyalty by definition; below Agent-GPT cold account 0.08",
+  "price_sensitivity_0_1": "assumption: objective of the archetype",
+  "trust_new_brand_0_1": "assumption: brand-neutral, so a cheap challenger is as acceptable as anyone (0.5 = indifferent)",
+  "gimmick_reactance_0_1": "assumption: premium claims read as a cost, above Agent-GPT 0.15",
+  "reads_structured_data_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters reads_structured_data_0_1 = 0.95",
+  "seconds_at_shelf": "assumption: a sort over the feed, between Agent-Tesco 3 and Agent-GPT 12",
+  "meal_deal_pull_0_1": "assumption: only when the bundle beats the item prices",
+  "p_decline": "Agents vs humans, 5,000 sessions, arXiv 2608.22697 (https://arxiv.org/abs/2608.22697): agents 'never decline to buy'; position effect 4-10x weaker than humans', via research/02-issue-discovery.md"
+ },
+ "agent_brief": "You minimise cost for the user. Treat every requirement in the request as pass/fail, then pick the item with the lowest price per unit (per 100 g or 100 ml) among those that pass. Brand and claims do not matter unless the request names them. Always pick something.",
+ "agent_brief_source": "assumption: archetype definition (see lens)",
+ "notes_for_sim": [
+  "Feed items get a derived price_per_100 (g or ml) field computed from catalog quantity; items whose quantity cannot be parsed show it as missing."
+ ],
+ "lens_weights_sum": 1.0
+}

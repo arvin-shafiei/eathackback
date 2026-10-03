@@ -319,7 +319,7 @@ def main(argv=None):
         sys.exit(f"only {len(brands)} Shelf brands map to sim products - fill calibration/brand_map.json")
 
     arch_of = persona_archetypes()
-    agents = [ag for ag in run.get("agents", []) if ag.get("persona_id") != "ai_agent"]
+    agents = [ag for ag in run.get("agents", []) if ag.get("persona_id") != "ai_agent" and ag.get("kind") != "ai_agent"]
     for ag in agents:
         ag["_arch"] = ag.get("archetype") or arch_of.get(ag.get("persona_id")) or \
             str(ag.get("persona_id", "")).removeprefix("p_")

@@ -12,7 +12,7 @@ export function wilson(k: number, n: number, z = 1.96): [number, number] {
 export const armFilter = (arm: Arm) => (a: Agent) => (arm === 'both' ? true : arm === 'ai' ? isAI(a) : !isAI(a));
 
 export function archetypeOf(a: Agent, personas: Record<string, Persona>) {
-  if (isAI(a)) return a.model ? `ai · ${a.model.split('/').pop()}` : 'ai_agent';
+  if (isAI(a)) return a.archetype && a.archetype !== 'ai_agent' ? a.archetype : 'ai_agent'; // AI agents group by archetype; the model is a detail (agent.model)
   return a.archetype ?? personas[a.persona_id]?.archetype ?? a.persona_id.replace(/^p_/, '');
 }
 

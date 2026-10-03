@@ -14,10 +14,10 @@ import type { Collider, RigidBody, World } from '@dimforge/rapier3d-compat';
 import type { Agent, Persona, Product, StoreConfig } from '../types';
 import { isAI } from '../types';
 import { BEAT, G, TILL, categoryHeight, sampleTimeline, storePlan, type CheckoutPlan, type Lane, type StorePlan, type Timeline } from '../layout';
-import { archColor, carrierFor, DECISION, BRAND_A, type Carrier } from '../theme';
+import { archColor, archLabel, carrierFor, DECISION, BRAND_A, type Carrier } from '../theme';
 import { archetypeOf } from '../stats';
 import { productMaterials } from './textures';
-import { accessoriesFor, ROBOT_PARTS, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, cupGeometry, type PartUse } from './parts';
+import { accessoriesFor, aiKindOf, robotPartsFor, AI_KIND, type AiKind, PARTS, GEO, BODY, BASKET, TROLLEY, inkHull, trolleyGeometry, basketGeometry, bagGeometry, cupGeometry, type PartUse } from './parts';
 import type { Beat, Beats } from './beats';
 import { bus, sfx } from './fx';
 import { CarrierLoad, GROUP, createCarrier, insideCarrier, setSolid, stackLocal, throwPack } from './Basket';
@@ -47,7 +47,7 @@ interface QInfo { group: string; qStart: number; qStep: number }
 interface QGroup { head: XY; dir: XY; side: XY; startOff: number; len: number; perCol: number; list: Shopper[] }
 
 interface Shopper {
-  si: number; agent: Agent; ai: boolean; arch: string; color: THREE.Color; carrier: Carrier; tl: Timeline; beats: Beat[];
+  si: number; agent: Agent; ai: boolean; aiKind: AiKind | null; arch: string; color: THREE.Color; carrier: Carrier; tl: Timeline; beats: Beat[];
   body: RigidBody | null; cbody: RigidBody | null; active: boolean; held: number; cbOn: boolean;
   knock: THREE.Vector2; sq: number; sqv: number; cool: number; step: number;
   /** smoothed arm rotations (shoulder frame) + rubber-arm stretch */
@@ -105,9 +105,15 @@ function queueInfo(tl: Timeline): QInfo | null {
   const co = tl.checkout; if (!co) return null;
   const qs = tl.segs.filter((x) => x.phase === 'queue');
   const moves = qs.filter((x) => x.kind === 'move');
-  if (qs.length < 2 || !moves.length) return null;
+  if (!moves.length) return null;
   const step = moves[moves.length - 1];
-  return { group: co.lane.kind === 'self' ? 'self' : co.lane.id, qStart: qs[0].t0, qStep: step.t0 };
+  // join the line once the walk over is (nearly) done: the last ~2.5 s of the approach, or the wait itself.
+  // before that they follow the routed walk, so nobody cuts through the shelving toward their slot
+  const hold = qs.find((x) => x.kind === 'phase');
+  const approach = moves.length > 1 ? moves[moves.length - 2] : null;
+  const qStart = hold ? Math.max(approach ? approach.t1 - 2.5 : hold.t0, hold.t0 - 2.5) : step.t0;
+  if (step.t0 - qStart < 0.3) return null;
+  return { group: co.lane.kind === 'self' ? 'self' : co.lane.id, qStart, qStep: step.t0 };
 }
 
 /** checkout lines: one straight line per staffed till, one shared snake for the self-checkout bank */
@@ -130,9 +136,15 @@ function queueGroups(sp: StorePlan): Map<string, QGroup> {
   return out;
 }
 
+/** café visit window handed to Cafe.tsx: from reaching the café entrance until back out of it.
+ *  layout's café leg is: door → inside → counter → (hold cafe) → seat → (hold cafe) → 2 moves → door */
 function cafeWindow(tl: Timeline): [number, number] | null {
-  const segs = tl.segs.filter((x) => x.phase === 'cafe' && x.lane?.startsWith('seat'));
-  return segs.length ? [segs[0].t0, segs[segs.length - 1].t1] : null;
+  const i0 = tl.segs.findIndex((x) => x.phase === 'cafe');
+  if (i0 < 0) return null;
+  let i1 = i0; for (let i = i0; i < tl.segs.length; i++) if (tl.segs[i].phase === 'cafe') i1 = i;
+  const start = i0 >= 3 ? tl.segs[i0 - 3].t1 : tl.segs[i0].t0;
+  const end = tl.segs[Math.min(tl.segs.length - 1, i1 + 3)].t1;
+  return end > start ? [start, end] : null;
 }
 const lerp3 = (a: THREE.Vector3, b: THREE.Vector3, k: number, lift = 0) => { const p = a.clone().lerp(b, k); p.y += Math.sin(Math.PI * k) * lift; return p; };
 
@@ -143,6 +155,8 @@ interface Bonk { id: number; x: number; y: number; z: number; word: string }
 const AI_SCALE = 0.8;
 const BONK_WORDS = ['bonk!', 'oof!', 'boing!', 'sorry!', 'bump!', 'whoops!', 'mind out!', 'ope!'];
 const CELL = 1.25;
+/** headless bisect flags: ?crowddbg=nothrow,noload,nocarrier */
+const DBG = (() => { try { return new URLSearchParams(location.search).get('crowddbg') ?? ''; } catch { return ''; } })();
 const FAR = 4000; // where off-floor bodies wait (no collisions, far from everything)
 const cellKey = (x: number, z: number) => (Math.floor(x / CELL) + 2048) * 4096 + (Math.floor(z / CELL) + 2048);
 
@@ -153,19 +167,23 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   // ---------- shoppers (data) ----------
   const shoppers = useMemo<Shopper[]>(() => agents.filter((a) => timelines[a.agent_id]).map((a, si) => {
     const ai = isAI(a);
-    const arch = ai ? 'ai_agent' : archetypeOf(a, personas);
+    // ai shoppers are archetypes (persona_id / archetype), the model is only a detail
+    const arch = ai ? (a.archetype ?? personas[a.persona_id]?.archetype ?? a.persona_id) : archetypeOf(a, personas);
+    const aiKind: AiKind | null = ai ? aiKindOf(`${arch} ${a.persona_id}`) : null;
     const mission = a.mission ?? personas[a.persona_id]?.mission;
-    const parts = ai ? ROBOT_PARTS : accessoriesFor(arch);
+    const parts = aiKind ? robotPartsFor(aiKind) : accessoriesFor(arch);
     const carrier = carrierFor(arch, mission, ai);
     const tl = timelines[a.agent_id];
     return {
-      si, agent: a, ai, arch, color: new THREE.Color(archColor(ai ? 'ai' : arch)), carrier, tl, beats: beats.byAgent[a.agent_id] ?? [],
+      si, agent: a, ai, aiKind, arch, color: new THREE.Color(aiKind ? AI_KIND[aiKind].body : archColor(arch)), carrier, tl, beats: beats.byAgent[a.agent_id] ?? [],
       body: null, cbody: null, active: false, held: 0, cbOn: false, knock: new THREE.Vector2(), sq: 0, sqv: 0, cool: 0, step: Math.random() * 6,
       qR: poseQ(new THREE.Quaternion(), 1, 0, 0.12), qL: poseQ(new THREE.Quaternion(), -1, 0, 0.12), strR: 1, strL: 1,
       look: new THREE.Vector3(0, 0, 1), handR: new THREE.Matrix4(), handL: new THREE.Matrix4(),
       parts, pos: new THREE.Vector3(0, -50, 0), yaw: 0, px: 0, pz: -999,
       // golden-ratio spread so neighbours in the run get different walking lines (± ~0.5 m)
-      laneOff: ai ? 0 : (((si * 0.6180339) % 1) - 0.5) * (carrier === 'trolley' ? 0.7 : 1.05),
+      // keep left (UK) by direction of travel + a per-shopper golden-ratio spread so a crowd fills the walkway
+      // width (0.25..1.15 m left of the routed line; trolleys a bit tighter). negative = left of travel
+      laneOff: -(0.25 + ((si * 0.6180339) % 1) * 0.9) * (carrier === 'trolley' ? 0.8 : ai ? 0.6 : 1),
       q: queueInfo(tl), qT: null, qFace: 0,
       co: tl.checkout ?? null, park: parkMatrix(tl.checkout ?? null, carrier), cafeT: cafeWindow(tl),
     };
@@ -207,7 +225,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       );
       owner.set(col.handle, s.si);
       s.body = body; made.push(body);
-      s.cbody = createCarrier(world, R, body, s.carrier, BODY.center, (c) => owner.set(c.handle, s.si));
+      s.cbody = DBG.includes('nocarrier') ? null : createCarrier(world, R, body, s.carrier, BODY.center, (c) => owner.set(c.handle, s.si));
       if (s.cbody) made.push(s.cbody);
       placeAt(s, FAR + s.si * 6, FAR, 0); // carrier starts welded in place, not yanked across the map
     }
@@ -234,7 +252,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
   }, [shoppers, world]);
   const bake = (s: Shopper, b: Beat, local: THREE.Matrix4, size: { w: number; h: number; d: number }) => {
     baked.current.set(b.id, local);
-    if (s.cbody && s.cbOn) load.current?.add(s.cbody, b.id, local, size);
+    if (s.cbody && s.cbOn && !DBG.includes('noload')) load.current?.add(s.cbody, b.id, local, size);
   };
   const unbake = (id: number) => { baked.current.delete(id); load.current?.remove(id); };
 
@@ -269,6 +287,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
 
   // ---------- steering: before every physics step ----------
   const grid = useRef(new Map<number, number[]>());
+  const lastStepT = useRef(0);
   const near = (x: number, z: number, r: number, skip: number, fn: (o: Shopper, dx: number, dz: number, d: number) => void) => {
     const g = grid.current;
     const cx = Math.floor(x / CELL), cz = Math.floor(z / CELL);
@@ -314,7 +333,13 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     for (const s of shoppers) {
       if (!s.body) continue;
       const smp = sampleTimeline(s.tl, t);
-      if (!smp.visible) {
+      const inCafe = !!s.cafeT && t >= s.cafeT[0] && t < s.cafeT[1];
+      if (s.cafeT && !scrub) {
+        const c = s.cafeT, prevT = lastStepT.current;
+        if (prevT < c[0] && t >= c[0]) emitCrowd({ type: 'cafe_enter', shopperId: s.agent.agent_id, agentId: s.agent.agent_id, t, tEnd: c[1], seat: s.tl.cafeSeat ?? null, x: smp.x, z: smp.z, color: '#' + s.color.getHexString(), arch: s.arch });
+        if (prevT < c[1] && t >= c[1]) emitCrowd({ type: 'cafe_leave', shopperId: s.agent.agent_id, agentId: s.agent.agent_id, t, x: smp.x, z: smp.z });
+      }
+      if (!smp.visible || inCafe) {
         if (s.active) { s.active = false; ghost(s); s.pos.set(0, -50, 0); s.px = 0; s.pz = -999; }
         s.held = 0;
         continue;
@@ -343,14 +368,14 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       const walk = (s.ai ? G.aiWalkSpeed : G.walkSpeed) * sp;
       let tx = smp.x, tz = smp.z, want = smp.heading, fx = 0, fz = 0;
       let busy = seg?.kind !== 'move';
-      if (s.qT) {
+      if (s.qT && Math.hypot(s.qT.x - smp.x, s.qT.z - smp.z) < 8) {
         // in a checkout line: hold your place, face the till
         tx = s.qT.x; tz = s.qT.z; want = s.qFace; busy = true;
       } else {
         if (seg?.kind === 'move' && seg.t1 > seg.t0) {
           const k = sp / (seg.t1 - seg.t0); fx = (seg.b.x - seg.a.x) * k; fz = (seg.b.z - seg.a.z) * k;
           // walk your own line: sideways offset, tapered to zero at both ends of the segment
-          if (s.laneOff && (!seg.phase || seg.phase === 'exit')) {
+          if (s.laneOff && (!seg.phase || seg.phase === 'exit') && !inCafe) {
             const sx = seg.b.x - seg.a.x, sz = seg.b.z - seg.a.z, L = Math.hypot(sx, sz);
             if (L > 0.5) {
               const da = Math.hypot(tx - seg.a.x, tz - seg.a.z), db = Math.hypot(seg.b.x - tx, seg.b.z - tz);
@@ -397,6 +422,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
       s.body.setAngvel({ x: 0, y: Math.max(-9, Math.min(9, err * 7)), z: 0 }, true);
     }
     scrubbed.current = false;
+    lastStepT.current = t;
   });
 
   // ---------- bonks: after each step, look at contacts between different shoppers ----------
@@ -406,35 +432,39 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const owner = colliderOwner.current;
     const now = performance.now() / 1000;
     let fresh: Bonk[] | null = null;
+    // collect candidate pairs first: rapier forbids calling back into the world from inside contactPairsWith
+    const cand: [Collider, Collider, number, number][] = [];
     for (const s of shoppers) {
       if (!s.active || !s.body || s.cool > now) continue;
       const nc = s.body.numColliders();
-      for (let ci = 0; ci < nc && s.cool <= now; ci++) {
+      for (let ci = 0; ci < nc; ci++) {
         const col: Collider = s.body.collider(ci);
         w.contactPairsWith(col, (other) => {
-          if (s.cool > now) return;
           const oi = owner.get(other.handle);
-          if (oi === undefined || oi === s.si) return;
-          const o = shoppers[oi];
-          if (!o?.active || !o.body || o.cool > now) return;
-          let touching = false;
-          w.contactPair(col, other, (m) => { if (m.numContacts() > 0) touching = true; });
-          if (!touching) return;
-          const a = s.body!.translation(), b = o.body.translation();
-          let nx = a.x - b.x, nz = a.z - b.z; const nl = Math.hypot(nx, nz) || 1; nx /= nl; nz /= nl;
-          const va = s.body!.linvel(), vb = o.body.linvel();
-          const closing = -((va.x - vb.x) * nx + (va.z - vb.z) * nz);
-          if (closing < 0.6) return; // only real collisions bonk, not the polite shuffle of a crowd
-          const kick = Math.min(3.4, 1.5 + closing * 0.7);
-          s.knock.x += nx * kick; s.knock.y += nz * kick; o.knock.x -= nx * kick; o.knock.y -= nz * kick;
-          s.sqv -= 3.4; o.sqv -= 3.4;
-          s.cool = o.cool = now + 1.1;
-          bus.bonks++; bus.shake = Math.min(1, bus.shake + 0.35);
-          sfx.bonk();
-          emitCrowd({ type: 'bonk', a: s.agent.agent_id, b: o.agent.agent_id, x: (a.x + b.x) / 2, z: (a.z + b.z) / 2 });
-          (fresh ??= []).push({ id: bonkId.current++, x: (a.x + b.x) / 2, y: 1.7, z: (a.z + b.z) / 2, word: BONK_WORDS[(s.si + o.si + bonkId.current) % BONK_WORDS.length] });
+          if (oi === undefined || oi <= s.si) return; // each pair once
+          cand.push([col, other, s.si, oi]);
         });
       }
+    }
+    for (const [col, other, si, oi] of cand) {
+      const s = shoppers[si], o = shoppers[oi];
+      if (s.cool > now || !o?.active || !o.body || !s.body || o.cool > now) continue;
+      let touching = false;
+      w.contactPair(col, other, (m) => { if (m.numContacts() > 0) touching = true; });
+      if (!touching) continue;
+      const a = s.body.translation(), b = o.body.translation();
+      let nx = a.x - b.x, nz = a.z - b.z; const nl = Math.hypot(nx, nz) || 1; nx /= nl; nz /= nl;
+      const va = s.body.linvel(), vb = o.body.linvel();
+      const closing = -((va.x - vb.x) * nx + (va.z - vb.z) * nz);
+      if (closing < 0.6) continue; // only real collisions bonk, not the polite shuffle of a crowd
+      const kick = Math.min(3.4, 1.5 + closing * 0.7);
+      s.knock.x += nx * kick; s.knock.y += nz * kick; o.knock.x -= nx * kick; o.knock.y -= nz * kick;
+      s.sqv -= 3.4; o.sqv -= 3.4;
+      s.cool = o.cool = now + 1.1;
+      bus.bonks++; bus.shake = Math.min(1, bus.shake + 0.35);
+      sfx.bonk();
+      emitCrowd({ type: 'bonk', a: s.agent.agent_id, b: o.agent.agent_id, x: (a.x + b.x) / 2, z: (a.z + b.z) / 2 });
+      (fresh ??= []).push({ id: bonkId.current++, x: (a.x + b.x) / 2, y: 1.7, z: (a.z + b.z) / 2, word: BONK_WORDS[(s.si + o.si + bonkId.current) % BONK_WORDS.length] });
     }
     if (fresh) { const add = fresh; setBonks((cur) => [...cur.slice(-5), ...add]); }
   });
@@ -474,7 +504,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     // per-shopper slot indices
     const beanIdx = new Map<number, number>(), robotIdx = new Map<number, number>(), trolleyIdx = new Map<number, number>(), basketIdx = new Map<number, number>();
     humans.forEach((s, i) => { beanIdx.set(s.si, i); bean.setColorAt(i, s.color); arm.setColorAt(s.si * 2, s.color.clone().multiplyScalar(0.82)); arm.setColorAt(s.si * 2 + 1, s.color.clone().multiplyScalar(0.82)); });
-    robots.forEach((s, i) => { robotIdx.set(s.si, i); robot.setColorAt(i, new THREE.Color('#b9a6ff')); arm.setColorAt(s.si * 2, new THREE.Color('#9f97b8')); arm.setColorAt(s.si * 2 + 1, new THREE.Color('#9f97b8')); });
+    robots.forEach((s, i) => { robotIdx.set(s.si, i); const k = AI_KIND[s.aiKind ?? 'general']; robot.setColorAt(i, s.color); arm.setColorAt(s.si * 2, new THREE.Color(k.arm)); arm.setColorAt(s.si * 2 + 1, new THREE.Color(k.arm)); });
     if (!shoppers.length) { arm.setColorAt(0, new THREE.Color('#fff')); }
     if (!humans.length) bean.setColorAt(0, new THREE.Color('#fff'));
     if (!robots.length) robot.setColorAt(0, new THREE.Color('#fff'));
@@ -597,7 +627,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         }
       }
       // checkout + café choreography (phases come from the scheduled timeline, not the run log)
-      let seatLift = 0, sipping = false;
+      const seatLift = 0, sipping = false; // café visits are drawn by Cafe.tsx (shopper hidden meanwhile)
       const co = s.co;
       if (co && !s.ai) {
         if (crossed(co.tBag)) emitCrowd({ type: 'bag', agentId: s.agent.agent_id, lane: co.lane.id, t });
@@ -613,13 +643,6 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
         else if (t >= co.tDone) { thR = moving ? Math.sin(s.step) * 0.3 : 0.05; phR = 0.12; }
       }
       if (s.qT) { thR = Math.sin(now * 1.3 + s.si) * 0.06; phR = 0.18; if (s.carrier === 'none') { thL = -thR; phL = 0.18; } } // waiting in line
-      if (s.cafeT && t >= s.cafeT[0] && t < s.cafeT[1]) {
-        seatLift = 0.36; sipping = true; roll = 0; hop = 0; ik = 0;
-        const c = (t - s.cafeT[0]) % 3.2;
-        const k = c < 0.9 ? Math.sin(Math.PI * c / 0.9) : 0; // sip every few seconds
-        thR = -1.0 - k * 1.2; phR = 0.15 + k * 0.25; thL = -1.25; phL = 0.1;
-        lean = -0.08 + Math.sin(now * 0.8 + s.si) * 0.03; // relaxed lean back
-      }
       // squash & stretch + hop stretch
       const st = s.sq + hop * 0.35;
       tmpE.set(lean, yaw + wiggle * 0.6, roll, 'YXZ'); tmpQ.setFromEuler(tmpE);
@@ -793,7 +816,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
           else if (s.cbody) {
             const ct = s.cbody.translation(), cr = s.cbody.rotation();
             const cm = new THREE.Matrix4().compose(new THREE.Vector3(ct.x, ct.y, ct.z), new THREE.Quaternion(cr.x, cr.y, cr.z, cr.w), new THREE.Vector3(1, 1, 1));
-            if (crossed(b.tLaunch) && !fl && !baked.current.has(b.id)) {
+            if (crossed(b.tLaunch) && !fl && !baked.current.has(b.id) && !DBG.includes('nothrow')) {
               const src = new THREE.Vector3().setFromMatrixPosition(hand).add(new THREE.Vector3(0, 0.05, 0));
               // aim at the open spot over the pile, so the pack drops onto what's already in there
               const aimL = stackLocal(s.carrier, b.pickIdx, sz.h, new THREE.Matrix4());
@@ -823,7 +846,7 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
             if (!m) {
               let local = baked.current.get(b.id);
               if (!local) { local = stackLocal(s.carrier, b.pickIdx, sz.h, new THREE.Matrix4()); bake(s, b, local, sz); }
-              else if (ld && !ld.has(b.id) && s.cbOn) ld.add(s.cbody, b.id, local, sz);
+              else if (ld && !ld.has(b.id) && s.cbOn && !DBG.includes('noload')) ld.add(s.cbody, b.id, local, sz);
               m = new THREE.Matrix4().multiplyMatrices(cm, local);
             }
             m.multiply(new THREE.Matrix4().makeScale(sz.w, sz.h, sz.d));
@@ -878,14 +901,27 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const s = e.instanceId !== undefined ? list[e.instanceId] : undefined;
     if (s) onAgent(s.agent.agent_id);
   };
-  const hover = (on: boolean) => () => { document.body.style.cursor = on ? 'pointer' : ''; };
+  const [hovered, setHovered] = useState<number | null>(null);
+  const hover = (list: Shopper[]) => ({
+    onPointerMove: (e: ThreeEvent<PointerEvent>) => { const s = e.instanceId !== undefined ? list[e.instanceId] : undefined; document.body.style.cursor = 'pointer'; if (s && s.si !== hovered) setHovered(s.si); },
+    onPointerOut: () => { document.body.style.cursor = ''; setHovered(null); },
+  });
+  const hs = hovered !== null ? shoppers[hovered] : null;
 
   return (
     <group>
       <primitive object={meshes.group} />
       {/* click targets: the visible body meshes themselves */}
-      <primitive object={meshes.bean} onClick={click(meshes.beanList)} onPointerOver={hover(true)} onPointerOut={hover(false)} />
-      <primitive object={meshes.robot} onClick={click(meshes.robotList)} onPointerOver={hover(true)} onPointerOut={hover(false)} />
+      <primitive object={meshes.bean} onClick={click(meshes.beanList)} {...hover(meshes.beanList)} />
+      <primitive object={meshes.robot} onClick={click(meshes.robotList)} {...hover(meshes.robotList)} />
+      {hs?.active && (
+        <Html position={[hs.pos.x, hs.ai ? 1.75 : 1.6, hs.pos.z]} center zIndexRange={[40, 30]} style={{ pointerEvents: 'none' }}>
+          <div className="sticker sticker-small" style={{ whiteSpace: 'nowrap', ['--stk' as string]: '#' + hs.color.getHexString() }}>
+            {hs.aiKind ? `🤖 ${AI_KIND[hs.aiKind].label}` : archLabel(hs.arch)}
+            {hs.ai && hs.agent.model && <span style={{ opacity: 0.6, fontSize: '0.8em' }}> · {hs.agent.model.split('/').pop()}</span>}
+          </div>
+        </Html>
+      )}
       <mesh ref={selRing} rotation={[-Math.PI / 2, 0, 0]} visible={false}>
         <ringGeometry args={[0.52, 0.66, 40, 1, 0, Math.PI * 1.6]} />
         <meshBasicMaterial color={BRAND_A} />

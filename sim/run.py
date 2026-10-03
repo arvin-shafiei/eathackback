@@ -89,7 +89,7 @@ def load_catalog(planogram: dict | None = None):
     return cat, used
 
 
-def load_personas():
+def load_personas(include_ai=False):
     out = []
     files = sorted(glob.glob(os.path.join(ROOT, "data/personas/lens/*.json")))
     src = "data/personas/lens/*.json"
@@ -107,6 +107,8 @@ def load_personas():
         items = d if isinstance(d, list) else d.get("personas", [d]) if isinstance(d, dict) else []
         for p in items:
             if isinstance(p, dict) and p.get("id"):
+                if p.get("kind") == "ai_agent" and not include_ai:  # AI-agent archetypes shop the feed (sim/agent_shopper.py), not the store
+                    continue
                 q = normalise_persona(p, fp)
                 q["custom"] = fp in custom
                 out.append(q)

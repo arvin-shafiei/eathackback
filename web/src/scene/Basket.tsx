@@ -123,7 +123,7 @@ export class CarrierLoad {
 export function throwPack(world: World, R: Rapier, src: THREE.Vector3, dst: THREE.Vector3, T: number, size: { w: number; h: number; d: number }, spin: number) {
   const vel = dst.clone().sub(src).divideScalar(T); vel.y += 0.5 * 9.81 * T;
   const body = world.createRigidBody(R.RigidBodyDesc.dynamic().setTranslation(src.x, src.y, src.z).setLinvel(vel.x, vel.y, vel.z)
-    .setAngvel({ x: 6 * spin, y: 3, z: 2 * spin }).setCcdEnabled(true).setLinearDamping(0.05).setAngularDamping(0.6));
+    .setAngvel({ x: 6 * spin, y: 3, z: 2 * spin }).setLinearDamping(0.05).setAngularDamping(0.6));
   world.createCollider(R.ColliderDesc.cuboid(size.w / 2, size.h / 2, size.d / 2).setDensity(60).setRestitution(0.3).setFriction(0.85).setCollisionGroups(GROUP.pack), body);
   return body;
 }

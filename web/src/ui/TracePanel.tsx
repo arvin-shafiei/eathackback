@@ -2,6 +2,7 @@ import type { Agent, Persona, Product, Run, SimEvent } from '../types';
 import { isAI } from '../types';
 import { archColor, archLabel, DECISION, AI_COLOR, prodLabel } from '../theme';
 import { Radar, Src, Sticker } from './bits';
+import { aiArchOf, aiLabel, decidedBy } from './aiArch';
 
 interface Props {
   run: Run; agent: Agent; event: SimEvent; persona?: Persona; product?: Product;
@@ -41,7 +42,7 @@ const fmtVal = (v: unknown): string => {
 
 export function TracePanel({ run, agent, event: e, persona, product, onAgent, onProduct, onBack, onClose }: Props) {
   const ai = isAI(agent);
-  const arch = agent.archetype ?? persona?.archetype ?? '';
+  const arch = ai ? aiArchOf(agent) : agent.archetype ?? persona?.archetype ?? '';
   const color = ai ? AI_COLOR : archColor(arch);
   const d = DECISION[e.decision];
   const ocean = agent.ocean && Object.keys(agent.ocean).length ? agent.ocean : persona?.ocean;
@@ -67,8 +68,8 @@ export function TracePanel({ run, agent, event: e, persona, product, onAgent, on
           <h3>1 · who</h3>
           <button className="row-btn" onClick={onAgent}>
             <span className="dot" style={{ background: color }} />
-            <b>{ai ? `ai agent · ${agent.model}` : persona?.name ?? agent.persona_id}</b>
-            <span className="muted"> {ai ? 'reads a feed' : archLabel(arch)} · {agent.agent_id} · open card →</span>
+            <b>{ai ? `🤖 ${aiLabel(arch, persona)}` : persona?.name ?? agent.persona_id}</b>
+            <span className="muted"> {ai ? `reads a feed · ${decidedBy(agent)}` : archLabel(arch)} · {agent.agent_id} · open card →</span>
           </button>
           {ocean && !ai && <div className="trace-radar"><Radar ocean={ocean} color={color} size={140} /></div>}
         </li>

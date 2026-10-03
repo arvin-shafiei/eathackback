@@ -61,7 +61,30 @@ export const PARTS: Record<string, PartDef> = {
   antenna: { geom: () => new THREE.CylinderGeometry(0.016, 0.016, 0.24), mat: () => std(INK) },
   bulb: { geom: () => new THREE.SphereGeometry(0.06, 12, 8), mat: () => new THREE.MeshBasicMaterial({ color: '#FFE14D' }) },
   hoverRing: { geom: () => new THREE.TorusGeometry(0.22, 0.03, 8, 24), mat: () => new THREE.MeshBasicMaterial({ color: '#7CFFCB', transparent: true, opacity: 0.6 }) },
+  // ai archetype kits
+  chatBubble: { geom: () => new RoundedBoxGeometry(0.46, 0.28, 0.07, 3, 0.1), mat: () => std('#ffffff', { roughness: 0.3 }) },
+  chatTail: { geom: () => new THREE.ConeGeometry(0.06, 0.13, 8).rotateZ(Math.PI), mat: () => std('#ffffff', { roughness: 0.3 }) },
+  chatDot: { geom: () => new THREE.SphereGeometry(0.032, 10, 8), mat: () => new THREE.MeshBasicMaterial({ color: '#6d28d9' }) },
+  loyaltyCard: {
+    geom: () => new THREE.BoxGeometry(0.3, 0.19, 0.02),
+    mat: () => { const t = labelTex(160, 100, (c) => { c.fillStyle = '#0ea5e9'; rr(c, 2, 2, 156, 96, 12); c.fill(); c.fillStyle = '#fde047'; c.fillRect(2, 22, 156, 16); c.fillStyle = '#ffffff'; c.font = '800 30px "Baloo 2", system-ui'; c.textAlign = 'center'; c.fillText('★ CLUB', 80, 80); }); const e = std('#0369a1'); return [e, e, e, e, new THREE.MeshStandardMaterial({ map: t, roughness: 0.35 }), e]; },
+  },
+  lanyardStrap: { geom: () => new THREE.BoxGeometry(0.03, 0.34, 0.012), mat: () => std('#0ea5e9') },
+  priceScreen: {
+    geom: () => new THREE.PlaneGeometry(0.42, 0.25),
+    mat: () => new THREE.MeshBasicMaterial({ map: labelTex(168, 100, (c) => { c.fillStyle = '#062b12'; c.fillRect(0, 0, 168, 100); c.fillStyle = '#4dff88'; c.font = '800 64px ui-monospace, monospace'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('£', 46, 54); c.font = '700 34px ui-monospace, monospace'; c.fillText('.99', 116, 60); }) }),
+  },
+  priceTag: { geom: () => new THREE.BoxGeometry(0.2, 0.12, 0.015), mat: () => std('#fde047') },
 };
+
+function labelTex(w: number, h: number, draw: (c: CanvasRenderingContext2D) => void) {
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  const c = cv.getContext('2d'); if (c) draw(c);
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; return t;
+}
+function rr(c: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
+}
 
 const HEAD = 1.13;
 /** accessory kit per archetype: the 3D twin of ARCH_GEAR in theme.ts */
@@ -101,6 +124,31 @@ export const ROBOT_PARTS: PartUse[] = [
   { key: 'bulb', attach: 'root', m: M([0, 1.38, 0]) },
   { key: 'hoverRing', attach: 'root', m: M([0, 0.06, 0], [Math.PI / 2, 0, 0]) },
 ];
+
+/** ai shoppers are archetypes too (persona_id / archetype on the record), never keyed on the model string */
+export type AiKind = 'general' | 'retailer' | 'price';
+export function aiKindOf(key: string): AiKind {
+  const k = key.toLowerCase();
+  if (/retail|loyal|store|club/.test(k)) return 'retailer';
+  if (/price|bot|deal|frugal|cheap/.test(k)) return 'price';
+  return 'general';
+}
+export const AI_KIND: Record<AiKind, { body: string; arm: string; label: string; gear: string }> = {
+  general: { body: '#b9a6ff', arm: '#9f97b8', label: 'general AI assistant', gear: '💬 chat-bubble robot' },
+  retailer: { body: '#8fd3f5', arm: '#6fa9c4', label: 'retailer AI assistant', gear: '💳 loyalty-card robot' },
+  price: { body: '#ffe27a', arm: '#c9b25a', label: 'price-comparison bot', gear: '💷 £-display robot' },
+};
+export function robotPartsFor(kind: AiKind): PartUse[] {
+  const r = (key: string, m: THREE.Matrix4): PartUse => ({ key, attach: 'root', m });
+  const ring = r('hoverRing', M([0, 0.06, 0], [Math.PI / 2, 0, 0]));
+  if (kind === 'price') return [r('robotScreen', M([0, 0.88, 0.235])), r('priceScreen', M([0, 0.88, 0.258])), r('priceTag', M([0.2, 1.3, 0], [0, 0, 0.3])), r('antenna', M([0.12, 1.2, 0], [0, 0, -0.3])), ring];
+  if (kind === 'retailer') return [...ROBOT_PARTS.filter((p) => p.key !== 'hoverRing'), r('loyaltyCard', M([0, 0.5, 0.262], [-0.08, 0, 0])), r('lanyardStrap', M([0.11, 0.66, 0.255], [-0.05, 0, 0.35])), r('lanyardStrap', M([-0.11, 0.66, 0.255], [-0.05, 0, -0.35])), ring];
+  return [
+    r('robotScreen', M([0, 0.88, 0.235])), r('robotEye', M([0.09, 0.9, 0.26])), r('robotEye', M([-0.09, 0.9, 0.26])),
+    r('chatBubble', M([0.18, 1.52, 0])), r('chatTail', M([0.08, 1.35, 0], [0, 0, -0.5])),
+    r('chatDot', M([0.08, 1.52, 0.04])), r('chatDot', M([0.18, 1.52, 0.04])), r('chatDot', M([0.28, 1.52, 0.04])), ring,
+  ];
+}
 
 // ---------- core body geometry ----------
 export const GEO = {

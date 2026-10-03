@@ -603,8 +603,8 @@ FORMATS = {
               "staffed": 4, "self": 8, "entrances": 1, "cafe": None, "left_zone_m": 10.0,
               # metro: the alcohol-free range sits in the drinks aisle (too few SKUs for its own BWS bay)
               "depts": [(d, {"cats": ["soft_drinks", "water", "low_no_alcohol"]} if d == "drinks" else {}) for d in DEPTS if d not in ("grocery", "bws")]},
-    "superstore": {"name": "eat_hack Superstore (retail park)", "centre_aisles": 36, "banks": 2, "bays_per_side": 3,
-                   "staffed": 10, "self": 20, "entrances": 2, "cafe": {"tables": 10, "seats_per_table": 4},
+    "superstore": {"name": "eat_hack Superstore (retail park)", "centre_aisles": 36, "banks": 2, "bays_per_side": 8,
+                   "staffed": 16, "self": 32, "entrances": 2, "cafe": {"tables": 16, "seats_per_table": 4},
                    "depts": [(d, {}) for d in DEPTS if d != "grocery"], "left_zone_m": 20.0},
 }
 # Floor geometry (metres). assumption: UK superstore conventions; aisle walkway lets two trolleys pass.

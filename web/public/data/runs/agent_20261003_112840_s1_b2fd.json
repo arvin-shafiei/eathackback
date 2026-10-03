@@ -26,8 +26,8 @@
  "agents": [
   {
    "agent_id": "ai_gemini-2.5-flash_work_drink_snack_0",
-   "persona_id": "ai_agent",
-   "archetype": "ai_agent",
+   "persona_id": "p_ai_assistant_general",
+   "archetype": "ai_assistant_general",
    "model": "google/gemini-2.5-flash",
    "ocean": {},
    "mission": "work_drink_snack",
@@ -180,7 +180,10 @@
     "errors": []
    },
    "picked_position": 1,
-   "feed_len": 6
+   "feed_len": 6,
+   "kind": "ai_agent",
+   "archetype_label": "general shopping assistant",
+   "migrated": true
   }
  ],
  "stats": {
@@ -193,7 +196,7 @@
     "rejected": 0,
     "walk_past": 0,
     "by_archetype": {
-     "ai_agent": {
+     "ai_assistant_general": {
       "shown": 1,
       "noticed": 1,
       "picked": 1,
@@ -297,7 +300,7 @@
     "rejected": 0,
     "walk_past": 1,
     "by_archetype": {
-     "ai_agent": {
+     "ai_assistant_general": {
       "shown": 1,
       "noticed": 1,
       "picked": 0,
@@ -401,7 +404,7 @@
     "rejected": 0,
     "walk_past": 1,
     "by_archetype": {
-     "ai_agent": {
+     "ai_assistant_general": {
       "shown": 1,
       "noticed": 1,
       "picked": 0,
@@ -505,7 +508,7 @@
     "rejected": 0,
     "walk_past": 1,
     "by_archetype": {
-     "ai_agent": {
+     "ai_assistant_general": {
       "shown": 1,
       "noticed": 1,
       "picked": 0,
@@ -609,7 +612,7 @@
     "rejected": 0,
     "walk_past": 1,
     "by_archetype": {
-     "ai_agent": {
+     "ai_assistant_general": {
       "shown": 1,
       "noticed": 1,
       "picked": 0,
@@ -713,7 +716,7 @@
     "rejected": 0,
     "walk_past": 1,
     "by_archetype": {
-     "ai_agent": {
+     "ai_assistant_general": {
       "shown": 1,
       "noticed": 1,
       "picked": 0,
@@ -837,5 +840,13 @@
   "llm_calls": 1,
   "cached": 0,
   "errors": 0
- }
+ },
+ "migrated_note": "migrated 2026-10-03: this run predates AI-agent archetypes; every agent here was given one of the 4 generic assistant missions (work drink+snack, kids lunchbox, cheap breakfast, high-protein snack), so persona_id was set to p_ai_assistant_general (data/personas/lens/ai_assistant_general.json). The decision itself is unchanged; `model` is what decided.",
+ "archetypes": [
+  {
+   "id": "p_ai_assistant_general",
+   "archetype": "ai_assistant_general",
+   "label": "general shopping assistant"
+  }
+ ]
 }

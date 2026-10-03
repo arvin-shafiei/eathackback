@@ -3,6 +3,7 @@ import type { Agent, Persona, Product } from '../types';
 import { isAI } from '../types';
 import { archColor, archLabel, DECISION, AI_COLOR, prodLabel } from '../theme';
 import { Bar, Radar, Src, Sticker } from './bits';
+import { aiArchOf, aiLabel, decidedBy } from './aiArch';
 
 interface Props {
   agent: Agent; persona?: Persona; products: Record<string, Product>;
@@ -12,7 +13,7 @@ interface Props {
 
 export function AgentPanel({ agent, persona, products, following, onFollow, onTrace, onClose }: Props) {
   const ai = isAI(agent);
-  const arch = agent.archetype ?? persona?.archetype ?? '';
+  const arch = ai ? aiArchOf(agent) : agent.archetype ?? persona?.archetype ?? '';
   const color = ai ? AI_COLOR : archColor(arch);
   const ocean = agent.ocean && Object.keys(agent.ocean).length ? agent.ocean : persona?.ocean;
   const [showSkipped, setShowSkipped] = useState(false);
@@ -26,9 +27,10 @@ export function AgentPanel({ agent, persona, products, following, onFollow, onTr
       <header className="agent-head">
         <div className="avatar" style={{ background: color }}>{ai ? '🤖' : (persona?.name ?? '?').slice(0, 1)}</div>
         <div>
-          <h2 className="display">{ai ? 'ai shopping agent' : persona?.name ?? agent.persona_id}</h2>
+          <h2 className="display">{ai ? aiLabel(arch, persona) : persona?.name ?? agent.persona_id}</h2>
+          {ai && <p className="muted small">{decidedBy(agent)}</p>}
           <div className="chips">
-            <Sticker tone={ai ? 'ink' : 'white'}>{ai ? agent.model : archLabel(arch || 'unknown')}</Sticker>
+            <Sticker tone={ai ? 'ink' : 'white'}>{ai ? '🤖 ai agent' : archLabel(arch || 'unknown')}</Sticker>
             {(agent.mission ?? persona?.mission) && <Sticker>{String(agent.mission ?? persona?.mission).replace(/_/g, ' ')}</Sticker>}
             {persona?.budget_gbp != null && <Sticker>£{persona.budget_gbp} budget</Sticker>}
             <Sticker tone="yellow">{picks.length} in basket</Sticker>
@@ -37,11 +39,21 @@ export function AgentPanel({ agent, persona, products, following, onFollow, onTr
       </header>
       <button className={`btn ${following ? 'btn-ink' : 'btn-white'}`} onClick={onFollow}>{following ? 'following' : 'follow with camera'}</button>
 
-      {ai ? (
-        <p className="pack">reads the catalogue as a feed (randomised order). it never sees shelf height, facings or the pack. only structured fields. <span className="muted">agent id {agent.agent_id}</span></p>
-      ) : (
+      {ai && (
         <>
-          {ocean && (
+          <p className="pack">{persona?.acts_for ? `acts for ${persona.acts_for}. ` : ''}reads the catalogue as a feed (randomised order). it never sees shelf height, facings or the pack. only structured fields. <span className="muted">agent id {agent.agent_id}</span></p>
+          {persona?.ocean_note && <p className="muted small">ocean: {persona.ocean_note}</p>}
+          {agent.prompt_state && (
+            <section>
+              <h3>what it was told</h3>
+              <p className="dossier">{agent.prompt_state}</p>
+            </section>
+          )}
+        </>
+      )}
+      {(
+        <>
+          {ocean && !ai && Object.keys(ocean).length > 0 && (
             <section className="ocean">
               <h3>ocean</h3>
               <div className="ocean-wrap">
