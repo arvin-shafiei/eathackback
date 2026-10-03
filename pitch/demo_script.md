@@ -1,75 +1,71 @@
-# simsbury: 2:00 demo video + 3:00 live final
+# simsbury: 2:00 demo video
 
-Built against the brief's rubric. Every beat below is tagged with the criterion it scores:
-**O** Originality 30% · **B** Build & execution 30% · **V** Value & relevance, with evidence, 25% · **D** Demo & communication 15%.
+Rubric (from the brief): **O** Originality 30% · **B** Build & execution 30% · **V** Value & relevance, with evidence, 25% · **D** Demo & communication 15%.
 
-**Rule for every take:** any number spoken or captioned comes from a **REAL Jev file** listed in the source column. The superstore crowd is the fast layout simulation, so never read its counters aloud.
+**One rule:** only say a number out loud if it comes from the **real Jev run** `run_20261003_120823_s11_jev_4482` (300 shoppers). Pick that run in the **run** dropdown for every beat that shows numbers. The superstore crowd is for looks.
 
 ---
 
-## setup (5 min, before recording)
+## setup (5 min before recording)
 
 ```bash
-python3 sim/server.py 8788            # sim server (8787 is taken on this Mac); the app proxy targets 8788
-cd web && npm run sync && node scripts/sync-dashboard.mjs && npm run dev   # http://localhost:5173
+python3 sim/server.py 8788          # sim server (needed for rearrange)
+cd web && npm run dev               # http://localhost:5173
 ```
 
 | tab | URL | prep |
 |---|---|---|
-| A | `localhost:5173/?store=superstore&weather=auto` | Let the intro fly-through play once (it's the hook). Speed 2×, thoughts "all". |
-| B | `localhost:5173/?store=standard&nointro&follow=a001` | **run** dropdown → `run_20261003_120823_s11_jev_4482 · 300` (REAL Jev). Shopper a001 panel open. |
-| C | `localhost:5173/dashboard.html#provenance` | Focus persona "Dev" (`p_frugal_unit_price`). |
-| D | `localhost:5173/dashboard.html#brand?code=5060512671247` | Gut Lovin' Soda Cola. |
-| E | `localhost:5173/?store=xl&nointro` | **your store** open (heatmap on). Then **rearrange** with "more buys"; on xl it returns in seconds. |
-| F | tab E → **shoppers** | Click "use a simulated shopper's basket", then **build profile** and **next visit**. |
+| A | `localhost:5173/?store=superstore&weather=auto` | let the fly-in intro play once. speed 2×. |
+| B | `localhost:5173/?store=standard&nointro` | **run** → `…jev_4482 · 300`. this is the evidence tab. |
+| C | `localhost:5173/dashboard.html#brand?code=5060512671247` | Gut Lovin' Soda Cola brand page. |
 
-Record at 1080p, 60 fps. Captions in lowercase, 8 words or fewer. Practise once and cut the dead time.
+Record 1080p. Captions lowercase, ≤ 8 words. Hard-refresh every tab (Cmd+Shift+R) first.
 
 ---
 
-## the 2:00 video
+## the script (2:00)
 
-| time | screen | voice-over | scores | source |
-|---|---|---|---|---|
-| **0:00–0:12** hook | **A.** The intro flies over the car park (auto weather) and through the doors into the superstore: minion shoppers with trolleys, one picks a product up and **puts it back** (✖ sticker). | "Every supermarket knows what sold. None of them know who picked it up and put it back. EPOS can't see that, and for small stores it's the whole story." | V, D | none |
-| **0:12–0:28** what it is | Still **A**: pull back to the overview with the departments, 36 aisles, queues and café. Show the crowd moving. | "simsbury is a living supermarket: 2,638 real UK products from Open Food Facts, walked by shoppers built from 10,000 real Reddit comments and published shelf research. AI shopping agents shop the same range, from a product feed. This crowd is a fast layout simulation; the evidence is next." | **O**, B | products: `data/products/catalog_superstore.json`; Reddit: `data/reddit/comments.csv` (10,642) |
-| **0:28–0:52** the trace (REAL) | **B**, shopper a001 (Dev, frugal). Click the Kallo veggie cakes stop at U2-r2 to open the **trace**: noticing 0.50 with its logit terms → **P(pick up) 0.26** → put-off *"protein claim at a price premium"* **p = 0.53** → the Reddit quote and its thread link. | "Here's a real run: 300 shoppers, every decision from TypeSafe Jev, which returns calibrated probabilities, not chat. Dev noticed these veggie cakes, a coin-flip from shelf position, picked them up, then put them back. Jev puts 53% on 'a protein claim carrying a price premium', a trigger taken from a real Reddit thread. Click any number and it goes back to its source. No black box." | **B**, **V**, O | `data/sim/runs/run_20261003_120823_s11_jev_4482.json` → a001, slot U2-r2, `5013665115373`: `p_notice 0.4982`, `p_pick_up 0.26`, trigger p 0.53, verbatim + URL |
-| **0:52–1:08** the finding | **D** `#brand`: the funnel against its category, with the leak-stage diagnosis "loses people at put-back". | "Across all 300, challengers get picked up as often as big brands, 35 versus 34%. But only 48% are kept, against 54% for incumbents and 67% for own-label. Challengers lose *in the hand*, the moment EPOS never sees." | **V** (evidence), O | role split re-derived from run 4482 (`README.md` headline table); `data/sim/brand/5060512671247.json` → keep 0.20 vs category 0.40 |
-| **1:08–1:22** brands | Still **D**: pack-test row (true claims only), then **E** → **＋ add product** with a Tesco link pasted. | "For brands: see where you lose shoppers, test pack claims you're legally allowed to make, or paste your Tesco link and drop your product onto a shelf." | V, B | pack test: `data/sim/brand/pack_test/`; import: `sim/tesco.py` |
-| **1:22–1:38** store owners | **E** **your store**: floor heatmap and hotspots, the "which shelf" panel (top / eye / bottom with source), then **rearrange** → top moves → **preview**. | "For the owner of a small store: where it gets congested, which shelf a product earns, what to put next to what. Rearrange, preview, and test it on fresh shoppers before moving a single tin." | **V**, B | shelf effects: `sim/coefficients.json` (eye vs floor, facings 0.17; cited papers) |
-| **1:38–1:52** shoppers | **F** **shoppers**: basket → persona card (likes and avoids with sources) → **next visit**: the route lights up on the shelves, plus "moved from aisle 3 to 1" and one new item. | "And for the customer: we learn from what they buy, never guessing health from a basket, so after a re-layout their next visit is a short route to their usual things, plus one new thing they'd actually like." | **O**, V | `sim/customer.py` (method + assumptions in the response) |
-| **1:52–2:00** close | End card: **simsbury**, "the shoppers EPOS never sees, traced to source", plus the repo URL. | "Brands, store owners, shoppers. About $3 per thousand simulated shoppers. simsbury: no black box." | V, D | cost: `data/sim/cost_log.jsonl` (measured $0.87 / 300 shoppers ≈ $3.20/1k) |
+| time | on screen | say | scores |
+|---|---|---|---|
+| **0:00–0:10** hook | **A.** fly-in over the car park, through the doors. a minion picks a product up and **puts it back** (✖). | "Every supermarket knows what sold. Nobody knows who picked it up and put it back. The till can't see that." | V, D |
+| **0:10–0:22** what it is | **A.** pull back over the full store: aisles, bakery, tech corner, crowd moving. | "This is simsbury. A living supermarket: real UK products from Open Food Facts, shoppers built from ten thousand real Reddit comments and published shelf research, each decision made by TypeSafe Jev." | **O**, B |
+| **0:22–0:40** click a shopper | **B.** click any minion. the panel shows **thinking now / about to buy / in the trolley**. click a put-back → **trace**: noticed → picked up → put back, with Jev's probability and the Reddit quote + link. | "Click anyone and see what they're thinking. This shopper picked these up and put them back. Jev gives the reason a probability, and it links back to the real Reddit thread it came from. Every number traces to a source. No black box." | **B**, V |
+| **0:40–0:58** analytics | **B → analytics.** top: **best and worst sellers** (top 10 green, bottom 10 red). click a bottom-10 product → "0 of N shoppers bought it" + the funnel. | "For a brand: the top and bottom ten straight away. Click the worst one and you see exactly where it loses people. Across 300 shoppers, challenger brands get picked up as often as big brands, 35 versus 34 percent, but they're kept far less: 48 percent against 54 and 67 for own-label. They lose in the hand, the moment the till never sees." | **V** (evidence), O |
+| **0:58–1:15** your store | **B → your store.** heatmap is on: blue quiet → red busy. drag **hide quiet areas** so only the hotspots stay. | "For the shop owner: where the store gets busy, and where nobody goes. Slide it and only the hotspots are left." | V, B |
+| **1:15–1:40** rearrange | **B → rearrange.** pick the top category. green box: **"+X% sales from this shelf"** + the plain-words why. numbered arrows 1, 2 on the shelf. press **▶ watch it**: packs fly and swap. **do it**. | "Then fix it. Pick a category. It says why: this product sells when people see it, but it's on the bottom shelf. Swap it to eye level. Here are the moves, in order, with arrows. Watch it. Do it. Then test it on new shoppers before you move a single tin." | **V**, **B**, O |
+| **1:40–1:52** shoppers + trolleys | **B → shoppers.** use a shopper's basket → profile → **next visit** route lights up. flick to **smart trolleys**. | "And for the customer: we learn what they buy and give them a short route to their usual things after a re-layout, plus one new thing they'd like." | O, V |
+| **1:52–2:00** close | end card: **simsbury**, "the shoppers the till never sees", repo URL. | "Brands, store owners, shoppers. About three dollars per thousand simulated shoppers. simsbury. No black box." | V, D |
+
+**Rearrange numbers:** read the "+X%" only if the run dropdown is on `…jev_4482`. If the panel says "learned on a different layout", don't read the % aloud; just show the swap.
 
 ---
 
-## the 3:00 live final (finalists)
+## sources for every number said
 
-1. **0:00–0:20, hook (D):** "EPOS sees the sale, not the put-back." Show tab A live (weather on).
-2. **0:20–1:00, the trace (B, V):** tab B. Click a real decision all the way to its Reddit source. Say "calibrated, not chat" and "rule zero: if we can't trace a number, we don't show it." Also mention the Stop hook that makes us check every session for black boxes (`.claude/hooks/blackbox-check.sh`).
-3. **1:00–1:30, the finding (V):** challengers lose in the hand: picked up 35 vs 34%, kept 48 vs 54 vs 67%.
-4. **1:30–2:30, the three services (V, B):** brand funnel (D) → your store heatmap + rearrange (E) → shoppers persona + route (F). One sentence each, and click, don't talk.
-5. **2:30–3:00, beyond the demo (B, V):**
-   - **Scale and cost:** about $3.20 per 1,000 shoppers, 13 min per 1,000 at Jev's rate limit.
-   - **Privacy:** health traits only if declared; k ≥ 10 aggregation.
-   - **Honest limits:** not yet calibrated against real shoppers. The Shelf-vote harness exists in `calibration/`.
-   - **Next step:** a live pilot with one independent store.
-
-## judge Q&A crib (full list: `pitch/judge_qa.md`)
-
-- **"Isn't this a GPT wrapper?"** No. Code decides noticing with a published-coefficient logit, and Jev returns typed, calibrated probabilities. No generated prose is treated as data.
-- **"Synthetic personas already exist (RGC's Signal Twins)."** Ours are grounded and auditable. Each persona carries an evidence-mix meter showing how much is assumption (21–34% for the lens personas), and they shop a physical shelf, so we can see the put-back.
-- **"Is it validated?"** Not against real shoppers yet, and we say so. The 300-shopper run is real Jev, and the superstore crowd is a layout simulation.
-- **"Incrementality?"** The rearrange and placement tests run on held-out shoppers, so we can see whether a move wins new buys or just takes them from a neighbour.
+| number | where it comes from |
+|---|---|
+| 35% vs 34% picked up, 48 / 54 / 67% kept | run 4482, role split (`README.md` headline table) |
+| ten thousand Reddit comments | `data/reddit/comments.csv` (10,642 rows) |
+| about $3 per 1,000 shoppers | run 4482: $0.95 uncached ($0.87 actual) for 300 shoppers ≈ $3.20 per 1,000 (`README.md` cost table, `run_…4482.json → cost`) |
+| "+X% sales from this shelf" | `sim/rearrange.py` unit value before → after, on the run picked |
+| top / bottom 10 % | taken ÷ shown per product, counted from the picked run's events; 10+ shoppers only (assumption) |
 
 ## don't say
 
-- Superstore leaderboard or counter numbers.
-- "Validated against real shoppers."
-- Any £ or +% from layout/rearrange without "prices are assumptions".
-- That the personal route improved basket completion: the pre-registered result was null (`data/sim/visits/RESULTS.md`).
+- "validated against real shoppers" (not yet).
+- superstore crowd counters or leaderboard numbers.
+- any £ figure without "prices are assumptions".
+
+## 3:00 live final (if shortlisted)
+
+Same order, slower, plus 30 s at the end:
+- **Scale:** about $3.20 per 1,000 shoppers, ~13 min per 1,000 at Jev's rate limit.
+- **Privacy:** health traits only if the shopper declares them; results grouped in tens or more.
+- **Honest limit:** not yet calibrated against a real store. Next step: a pilot with one independent shop.
+- **Rule zero:** a Stop hook checks every session for black boxes (`.claude/hooks/blackbox-check.sh`).
 
 ## fallbacks
 
-- **Superstore loads slowly** (about 20 s): start tab A before recording.
-- **Rearrange on the superstore takes about 55 s:** demo it on xl (tab E).
-- **Sim server down:** `python3 sim/server.py 8788`. If add-product fails, cut that beat and extend the trace.
+- superstore slow to load: open tab A first and leave it.
+- sim server down: `python3 sim/server.py 8788`; if rearrange still fails, cut that beat and stay on analytics longer.
+- the plane crash / creator visit / UFO may play on their own. They're fine in the background, but don't wait for them.
