@@ -52,7 +52,7 @@ export function RankSection({ run, products, current, onPickProduct }: { run: Ru
     </ol>
   );
   return (
-    <section className="tile t-12 rk">
+    <section className="rk rk-top">
       <button className="rk-head" onClick={() => setOpen(!open)} aria-expanded={open}>
         <h3>best and worst sellers</h3>
         <span className="muted small">share of shoppers who took it when it was in front of them · {rows.length} products with {MIN_SHOWN}+ shoppers {open ? '▾' : '▸'}</span>

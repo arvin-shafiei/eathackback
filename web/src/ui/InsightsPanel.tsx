@@ -55,6 +55,7 @@ export function InsightsPanel(props: InsightsProps) {
 
   return (
     <aside className="card insights" aria-label={`product analytics for ${p.name}`}>
+      <RankSection run={run} products={products} current={p.code} onPickProduct={onPickProduct} />
       <div className="ins-top">
         <button className="x" onClick={onClose} aria-label="close product analytics">×</button>
         <Head product={p} slot={slot} rowName={slot ? cfg.row_names[rowOf(slot)] : undefined} options={shelfOptions(planogram, products)} products={products} onPickProduct={onPickProduct} />
@@ -64,7 +65,6 @@ export function InsightsPanel(props: InsightsProps) {
         <p className="notice">no shopper and no ai agent was shown this product in <code>{run.run_id}</code>, so there is nothing to count. pick another run in the run picker, or re-run the store with this product on the shelf.</p>
       ) : (
         <div className="ins-board">
-          <RankSection run={run} products={products} current={p.code} onPickProduct={onPickProduct} />
           <Story own={own} ai={aiOwn} aiLoaded={sample.ai_loaded} d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined}
             best={best} rowNames={cfg.row_names} topReject={diagnosis.top_reject} onRearrange={props.onRearrange}
             onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />

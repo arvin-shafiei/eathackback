@@ -27,6 +27,8 @@ export interface CrashScatter { trees: Inst[]; lamps: Inst[]; houses: Inst[]; bl
 const FIRST_MIN = 120, FIRST_RAND = 120;        // assumption: visual (first + repeat delay, s; UFO is 45-90)
 const V = 22;                                    // assumption: visual (approach ground speed, m/s)
 const T = { smoke: 1.5, td: 15, rest: 19.5, go: 21, bail: [8.2, 8.9, 9.6], land: [23, 24.2, 25.4] }; // assumption: visual
+/** wreck distance from the store's right-hand outer edge, metres (assumption: visual, beside the wall) */
+const BESIDE = 14;
 const CRUISE = 46, SLOPE = 0.16;                 // assumption: visual (start altitude m, glide slope ~9 deg)
 const L_APPROACH = V * T.td;                     // horizontal distance flown before touchdown
 const SKID = (V * (T.rest - T.td)) / 2;          // decelerating skid length
@@ -116,7 +118,7 @@ function findSite(W: WorldPlan, sc: CrashScatter): Site {
   };
   sc.blocks.forEach((b) => dec(b, (x, z, sx, sy, sz) => ({ x, z, r: Math.hypot(sx, sz) / 2, top: sy })));
   sc.houses.forEach((b) => dec(b, (x, z, sx, sy, sz) => ({ x, z, r: Math.hypot(sx, sz) / 2, top: sy + 2.4 })));
-  sc.trees.forEach((b) => dec(b, (x, z, sx, sy) => ({ x, z, r: 1.9 * sx, top: 5.6 * sy })));
+  // trees are left out on purpose: a cartoon belly-landing may skid past them, so the site can sit right beside the store
   sc.lamps.forEach((b) => dec(b, (x, z) => ({ x, z, r: 1.4, top: 7.2 })));
   const farEdge = zRoad + roadW / 2 + 3;
   const rects: R[] = [
@@ -133,7 +135,7 @@ function findSite(W: WorldPlan, sc: CrashScatter): Site {
     const j0 = Math.floor((c.z - c.r - PAD) / CELL), j1 = Math.floor((c.z + c.r + PAD) / CELL);
     for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) { const k = key(i, j); let l = grid.get(k); if (!l) grid.set(k, (l = [])); l.push(c); }
   }
-  const CLEAR = 4;
+  const CLEAR = 3;
   const hit = (x: number, z: number, alt: number, margin: number, veh = false) => {
     const l = grid.get(key(Math.floor(x / CELL), Math.floor(z / CELL)));
     if (l) for (const c of l) { const dx = x - c.x, dz = z - c.z, rr = c.r + margin; if (dx * dx + dz * dz < rr * rr && alt < c.top + CLEAR) return true; }
@@ -149,8 +151,8 @@ function findSite(W: WorldPlan, sc: CrashScatter): Site {
     return true;
   };
   const flightClear = (td: THREE.Vector2, d: THREE.Vector2) => {
-    for (let s = 0; s <= SKID + 12; s += 3) if (hit(td.x + d.x * s, td.y + d.y * s, 0, 13)) return false;            // skid strip (wingspan + margin)
-    for (let s = 0; s <= L_APPROACH; s += 4) if (hit(td.x - d.x * s, td.y - d.y * s, Math.min(CRUISE, s * SLOPE), 18)) return false; // glide path + chutes
+    for (let s = 0; s <= SKID + 12; s += 3) if (hit(td.x + d.x * s, td.y + d.y * s, 0, 9)) return false;            // skid strip (wingspan + margin)
+    for (let s = 0; s <= L_APPROACH; s += 4) if (hit(td.x - d.x * s, td.y - d.y * s, Math.min(CRUISE, s * SLOPE), 11)) return false; // glide path + chutes
     return true;
   };
   const V2 = (x: number, z: number) => new THREE.Vector2(x, z);
@@ -166,9 +168,9 @@ function findSite(W: WorldPlan, sc: CrashScatter): Site {
   // 1) open grass to the right of the car park / store (in view of the overview camera)
   const G = V2(xR + 3, lanes[2]);
   const cands: { rest: THREE.Vector2; d: THREE.Vector2; score: number }[] = [];
-  for (let x = xR + 45; x <= xR + 230; x += 6) for (let z = B.zMin - 150; z <= zC - 8; z += 6) for (let k = 0; k < 16; k++) {
+  for (let x = xR + 12; x <= xR + 230; x += 4) for (let z = B.zMin - 150; z <= zC - 8; z += 6) for (let k = 0; k < 16; k++) {
     const a = (k / 16) * Math.PI * 2, d = V2(Math.cos(a), Math.sin(a));
-    cands.push({ rest: V2(x, z), d, score: Math.hypot(x - (xR + 45), z - (W.zA + 10)) + 20 * Math.abs(d.y) });
+    cands.push({ rest: V2(x, z), d, score: Math.hypot(x - (xR + 12), z - (W.zA + 10)) + 20 * Math.abs(d.y) });
   }
   cands.sort((a, b) => a.score - b.score);
   // the engine's drive over the grass: BFS on a 3 m grid from the car park edge, then string-pulled
@@ -205,6 +207,17 @@ function findSite(W: WorldPlan, sc: CrashScatter): Site {
     for (let i = 0; i < chain.length - 1; i++) if (!segFar(chain[i], chain[i + 1], rest)) return null;
     return out.slice(0, -1); // waypoints between G and E
   };
+  // 0) right beside the store: belly-land along its right-hand side wall, sliding from the back towards the car park,
+  //    stopping level with the middle of the store; the engine comes straight across from the car park
+  if (BESIDE > 0) {
+    const d = V2(0, 1);
+    const rest = V2(xR + BESIDE, (B.zMin + zF) / 2);
+    const td = rest.clone().addScaledVector(d, -SKID);
+    const f = finish(td, d, G);
+    const arrive = [V2(xR + 60, W.zFar), V2(xR - 4, W.zFar), V2(xR - 4, lanes[2]), G, f.E];
+    const leave = [...arrive.slice(3)].reverse().concat([V2(xR - 4, zC - 0.5), V2(xR - 4, W.zNear), V2(xR + 60, W.zNear)]);
+    return { td, rest: f.rest, dir: d, arrive, leave, land: f.land };
+  }
   for (const c of cands) {
     const td = c.rest.clone().addScaledVector(c.d, -SKID);
     if (!flightClear(td, c.d)) continue;
