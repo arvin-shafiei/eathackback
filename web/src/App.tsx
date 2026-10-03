@@ -477,12 +477,14 @@ export default function App() {
           <button className="btn btn-brand round" onClick={() => setPlaying((p) => !p)} aria-label={playing ? 'pause' : 'play'}>{playing ? '❚❚' : '▶'}</button>
           <input type="range" min={0} max={duration} step={0.1} value={uiTime} onChange={(e) => { timeRef.current = Number(e.target.value); setUiTime(timeRef.current); }} aria-label="replay time" />
           <span className="time">{fmt(uiTime)} / {fmt(duration)}</span>
-          <div className="seg small">{SPEEDS.map((s) => <button key={s} className={`seg-btn ${speed === s ? 'on' : ''}`} onClick={() => setSpeed(s)}>{s}×</button>)}</div>
+          {opts
+            ? <div className="seg small">{SPEEDS.map((s) => <button key={s} className={`seg-btn ${speed === s ? 'on' : ''}`} onClick={() => setSpeed(s)}>{s}×</button>)}</div>
+            : <button className="seg-btn" title="change speed" onClick={() => setSpeed(SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length])}>speed {speed}×</button>}
           <div className="counts">
-            <span className="count count-good" title="picked so far">✅ {counts.pick ?? 0}</span>
-            <span className="count count-bad" title="rejected so far">✖ {counts.reject ?? 0}</span>
-            <span className="count" title="walked past so far">👀 {counts.walk_past ?? 0}</span>
-            <span className="count count-bonk" title="physics bonks between shoppers. visual only, not part of the sim">💥 {bonks}</span>
+            <span className="count count-good" title="products bought so far">{counts.pick ?? 0} bought</span>
+            <span className="count count-bad" title="products picked up and put back so far">{counts.reject ?? 0} put back</span>
+            <span className="count" title="products noticed and walked past so far">{counts.walk_past ?? 0} walked past</span>
+            {opts && <span className="count count-bonk" title="physics bonks between shoppers. visual only, not part of the sim">💥 {bonks}</span>}
           </div>
           {rerun.ok && rerun.msg && <span className="muted small">{rerun.msg}</span>}
         </footer>

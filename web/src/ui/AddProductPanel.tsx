@@ -24,6 +24,7 @@ const EXAMPLE: Form = {
   sugars_100g: '29', fiber_100g: '7.5', proteins_100g: '20', salt_100g: '0.3', energy_kcal_100g: '395', allergens: 'peanuts, oats', nutriscore: 'b',
 };
 const ROLES = ['challenger', 'incumbent', 'own_label'];
+const ROLE_WORDS: Record<string, string> = { challenger: 'a new or small brand', incumbent: 'a big, known brand', own_label: "the supermarket's own brand" };
 const NUTRIENTS: [Key, string][] = [['sugars_100g', 'sugars g'], ['fiber_100g', 'fibre g'], ['proteins_100g', 'protein g'], ['salt_100g', 'salt g'], ['energy_kcal_100g', 'energy kcal']];
 const FOCUS_ORDER: (keyof Errs)[] = ['name', 'brand', 'price_gbp', ...NUTRIENTS.map(([k]) => k), 'category'];
 const MAX_FILE_MB = 8, MAX_SIDE_PX = 320, JPEG_QUALITY = 0.82;
@@ -265,7 +266,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
           <Field id="addp-category" label="category *" err={errs.category}>
             <Select {...pickOf('category')} ariaLabel="category" placeholder="choose…" options={categories.map((c) => ({ value: c, label: catLabel(c) }))} />
           </Field>
-          <Field id="addp-role" label="role"><Select {...pickOf('role')} ariaLabel="role" options={ROLES.map((r) => ({ value: r, label: catLabel(r) }))} /></Field>
+          <Field id="addp-role" label="what it is"><Select {...pickOf('role')} ariaLabel="what it is" options={ROLES.map((r) => ({ value: r, label: ROLE_WORDS[r] ?? r }))} /></Field>
         </div>
         {units.map((u) => (
           <div key={u.id} className="addp-shelf" role="group" aria-label={`shelf ${u.id}, ${catLabel(u.category)}`}>
@@ -301,8 +302,8 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
           <PackPreview f={f} image={image} />
           <div className="addp-foot">
             <button className="btn btn-brand" type="submit" disabled={busy}>{busy ? 'shoppers are walking…' : 'send the shoppers'}</button>
-            <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> use llm (costs)</label>
-            <p className="addp-hint">{useLLM ? 'on: real model calls, costs money.' : 'off: free mock shoppers, canned reasons.'}</p>
+            <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> real ai shoppers (costs)</label>
+            <p className="addp-hint">{useLLM ? 'on: each shopper is a real ai model. costs money.' : 'off: free practice shoppers with canned reasons.'}</p>
             <div role="status">{msg && <p className={`notice ${busy ? 'ok' : ''}`}>{msg}</p>}</div>
           </div>
         </aside>

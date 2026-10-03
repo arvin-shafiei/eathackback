@@ -155,10 +155,10 @@ export function diagnose(run: Run, code: string, peerCodes: string[], human: Rec
 
 const STEP_LEAD: Record<Step, string> = {
   notice: "most shoppers don't see it.",
-  consider: 'shoppers see it, then move on.',
-  pick: 'shoppers weigh it up, then put it back.',
+  consider: 'shoppers see it, then move on without a closer look.',
+  pick: 'shoppers look closer, then put it back.',
 };
-const STEP_DID: Record<Step, string> = { notice: 'noticed it', consider: 'considered it', pick: 'bought it' };
+const STEP_DID: Record<Step, string> = { notice: 'noticed it', consider: 'looked closer', pick: 'bought it' };
 const STEP_FIX: Record<Step, string> = {
   notice: 'try a better spot below',
   consider: 'work on the pack copy or claim',
@@ -174,12 +174,12 @@ export function diagnosisText(d: Diagnosis): { main: string; arm: string | null 
   else if (!b || b.rate === null || b.unit_median === null) {
     const bought = d.gaps.find((g) => g.step === 'pick');
     main = bought && bought.k === 0
-      ? 'it gets noticed and considered as often as its neighbours, but nobody bought it in this run.'
-      : 'it keeps up with its neighbours at every step: noticed, considered and bought.';
+      ? 'shoppers notice it and look closer as often as they do its neighbours, but nobody bought it in this run.'
+      : 'it keeps up with its neighbours at every step: noticed, looked at and bought.';
   }
   else {
     const rej = b.step === 'pick' && d.top_reject ? `. top reason: ${mechLabel(d.top_reject.mechanism)} (${d.top_reject.count})` : '';
-    main = `${STEP_LEAD[b.step]} ${pct(b.rate)} ${STEP_DID[b.step]} (${b.k} of ${b.n}); the unit median is ${pct(b.unit_median)}. ${STEP_FIX[b.step]}${rej}.`;
+    main = `${STEP_LEAD[b.step]} ${pct(b.rate)} ${STEP_DID[b.step]} (${b.k} of ${b.n}); its shelf neighbours average ${pct(b.unit_median)}. ${STEP_FIX[b.step]}${rej}.`;
   }
   const g = d.arm_gap;
   const arm = g
