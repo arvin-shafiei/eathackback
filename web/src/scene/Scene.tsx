@@ -5,7 +5,7 @@ import { OrbitControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import type { OrbitControls as OrbitImpl } from 'three-stdlib';
 import type { Agent, Persona, Planogram, Product, StoreConfig } from '../types';
-import { G, gondolaX, storeBounds, zRange, type Timeline } from '../layout';
+import { gondolaX, storeBounds, storePlan, zRange, type Timeline } from '../layout';
 import { Store } from './Store';
 import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
@@ -13,7 +13,7 @@ import { buildBeats } from './beats';
 import { bus } from './fx';
 
 export type CamMode = 'intro' | 'overview' | 'walk' | 'follow';
-export const INTRO_SECONDS = 9;
+export const INTRO_SECONDS = 10;
 
 function Clock({ timeRef, playing, speed, duration }: { timeRef: MutableRefObject<number>; playing: boolean; speed: number; duration: number }) {
   useFrame((_, dt) => {
@@ -41,29 +41,32 @@ function CameraRig({ mode, nonce, cfg, onIntroDone }: { mode: CamMode; nonce: nu
     if (mode === 'overview') goal.current = { ...ov, until: performance.now() + 1400 };
     if (mode === 'walk') {
       const x = gondolaX(cfg, 0.5 + Math.floor(cfg.aisles / 2));
-      goal.current = { pos: new THREE.Vector3(x, 1.6, zRange()[0] - 1.8), target: new THREE.Vector3(x, 1.25, zRange()[0] + 4), until: performance.now() + 1400 };
+      goal.current = { pos: new THREE.Vector3(x, 1.6, zRange(cfg)[0] - 1.8), target: new THREE.Vector3(x, 1.25, zRange(cfg)[0] + 4), until: performance.now() + 1400 };
     }
     if (mode === 'intro') {
       const B = storeBounds(cfg);
-      const front = cfg.entrance.z - 1.4;
+      const P = storePlan(cfg);
+      const front = P.frontZ;
       const ax = gondolaX(cfg, 0.5 + Math.floor(cfg.aisles / 2));
-      const [z0, z1] = zRange();
+      const [z0, z1] = zRange(cfg);
       intro.current = {
         t0: performance.now(), el: 0,
         pos: new THREE.CatmullRomCurve3([
           new THREE.Vector3(B.cx + 3, 30, B.zMin - 26),
-          new THREE.Vector3(B.cx + 1.2, 3.4, front - 8),
-          new THREE.Vector3(B.cx + 0.2, 1.9, front + 2.4),
+          new THREE.Vector3(P.entrances[0].x + 1.2, 3.4, front - 8),
+          new THREE.Vector3(P.entrances[0].x + 0.2, 1.9, front + 2.4),
           new THREE.Vector3(ax, 2.4, z0 - 1.2),
-          new THREE.Vector3(ax + 1.2, 6, z1 + 2),
+          new THREE.Vector3(ax + 0.6, 2.8, z1 - 1),
+          new THREE.Vector3(P.lanes[0]?.x ?? 0, 5.5, P.checkoutZ - 4),
           ov.pos,
         ], false, 'centripetal'),
         tgt: new THREE.CatmullRomCurve3([
           new THREE.Vector3(B.cx, 0, B.cz),
-          new THREE.Vector3(B.cx, 2.4, front),
-          new THREE.Vector3(B.cx, 1.4, z0),
+          new THREE.Vector3(P.entrances[0].x, 2.4, front),
+          new THREE.Vector3(P.entrances[0].x, 1.4, z0),
           new THREE.Vector3(ax, 1.2, z1),
-          new THREE.Vector3(B.cx, 0.6, G.zCentre),
+          new THREE.Vector3(ax, 1.0, P.checkoutZ),
+          new THREE.Vector3(B.cx, 0.6, P.checkoutZ + 1),
           ov.target,
         ], false, 'centripetal'),
       };

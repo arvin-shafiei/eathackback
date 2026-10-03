@@ -165,3 +165,22 @@ export function basketGeometry() {
   ];
   return mergeGeometries(parts.map((g) => g.toNonIndexed()));
 }
+
+/** paper carrier bag (after paying): origin = handle top */
+export function bagGeometry() {
+  const kraft = '#d9a05b', dark = '#a8743a';
+  return mergeGeometries([
+    box(0.26, 0.3, 0.14, 0, -0.2, 0, kraft),
+    box(0.27, 0.04, 0.15, 0, -0.06, 0, dark),
+    colored(new THREE.TorusGeometry(0.06, 0.012, 6, 12, Math.PI).translate(0, -0.05, 0), INK),
+    box(0.1, 0.1, 0.005, 0, -0.2, 0.072, '#FF4079'),
+  ].map((g) => g.toNonIndexed()));
+}
+/** café cup with a brand sleeve: origin = cup bottom */
+export function cupGeometry() {
+  return mergeGeometries([
+    colored(new THREE.CylinderGeometry(0.05, 0.04, 0.13, 14).translate(0, 0.065, 0), '#ffffff'),
+    colored(new THREE.CylinderGeometry(0.052, 0.047, 0.05, 14).translate(0, 0.07, 0), '#FE831B'),
+    colored(new THREE.CylinderGeometry(0.053, 0.053, 0.015, 14).translate(0, 0.135, 0), INK),
+  ].map((g) => g.toNonIndexed()));
+}

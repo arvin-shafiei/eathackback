@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Arm, Persona, Planogram, Product, Run, RunIndexEntry } from './types';
 import { isAI } from './types';
 import { loadAll, loadRun, SIM_SERVER, type Loaded } from './data';
-import { buildTimeline, type Timeline } from './layout';
+import { buildTimeline, scheduleCheckouts, type Timeline } from './layout';
 import { armFilter, pickRates, archetypeOf } from './stats';
 import { Scene, type CamMode } from './scene/Scene';
 import type { ThoughtMode } from './scene/Crowd';
@@ -25,6 +25,10 @@ type Mode = 'replay' | 'edit' | 'compare';
 type Heat = 'off' | 'pick' | 'gap';
 
 const SPEEDS = [0.5, 1, 2, 4, 8];
+/** share of replayed human shoppers who stop at the café before leaving.
+ *  assumption: visual only (the ops engine owns café occupancy, turnaway and revenue from its own sourced inputs) */
+const CAFE_SHARE = 0.15;
+const hash01 = (s: string) => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return ((h >>> 0) % 10000) / 10000; };
 /** deep links for demos: ?t=40 starts the replay at 40s, ?nointro skips the fly-through */
 const START_T = (() => { const v = Number(new URLSearchParams(location.search).get('t')); return Number.isFinite(v) && v > 0 ? v : 0; })();
 /** a run that only contains ai agents (sim/agent_shopper.py output) */
@@ -124,9 +128,21 @@ export default function App() {
     const out: Record<string, Timeline> = {};
     // stream shoppers in through the doors: ~90s for the whole crowd, never closer than 0.45s apart (visual pacing only)
     const gap = Math.max(0.45, Math.min(1.4, 90 / Math.max(1, view.agents.length)));
-    view.agents.forEach((a, i) => { out[a.agent_id] = buildTimeline(data.config, basePlan, a, 0.6 + i * gap, i, isAI(a)); });
+    const items: Record<string, number> = {}, carriers: Record<string, string> = {};
+    const aiIds = new Set<string>(), cafeIds = new Set<string>();
+    view.agents.forEach((a, i) => {
+      const ai = isAI(a);
+      out[a.agent_id] = buildTimeline(data.config, basePlan, a, 0.6 + i * gap, i, ai);
+      items[a.agent_id] = ai ? 0 : a.events.filter((e) => e.decision === 'pick' && e.product).length;
+      const arch = ai ? 'ai_agent' : archetypeOf(a, personas);
+      carriers[a.agent_id] = carrierFor(arch, a.mission ?? personas[a.persona_id]?.mission, ai);
+      if (ai) aiIds.add(a.agent_id);
+      // café visit: CAFE_SHARE of human shoppers, picked by a stable hash of the agent id (visual only, see CAFE_SHARE)
+      else if (hash01(a.agent_id) < CAFE_SHARE) cafeIds.add(a.agent_id);
+    });
+    scheduleCheckouts(data.config, out, items, carriers, aiIds, cafeIds);
     return out;
-  }, [data, view, basePlan]);
+  }, [data, view, basePlan, personas]);
   const duration = useMemo(() => Math.max(10, ...agents.map((a) => timelines[a.agent_id]?.end ?? 0)) + 1, [agents, timelines]);
 
   const changed = useMemo(() => {

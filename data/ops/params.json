@@ -1,0 +1,670 @@
+{
+ "_doc": "Store-ops parameters. Every entry: value, unit, range, source (URL/paper or 'assumption: why'), confidence (high = measured, peer-reviewed or official; medium = measured but small/old/US; low = labelled assumption). Built 2026-10-03 from fetched sources; see data/ops/evidence.md for quotes.",
+ "params": {
+  "staffed_fixed_s": {
+   "value": 43.0,
+   "unit": "s per transaction",
+   "range": [
+    40.0,
+    75.1
+   ],
+   "source": "Klee, E. (2006) 'Paper or Plastic? The Effect of Time on Check and Debit Card Use at Grocery Stores', Federal Reserve FEDS 2006-02, Table 3(a) and Section A, https://www.federalreserve.gov/pubs/feds/2006/200602/200602pap.pdf (US grocery chain scanner data, 24,354 transactions; 'ring time' = first item scanned to cashier drawer close): intercept of ring-time regression, debit-card payers (42.997, SE 1.4); check payers 75.061.",
+   "confidence": "high",
+   "note": "US data, 1990s-2000s tender mix. Card payment is the modern UK default, so the debit intercept is used. Excludes queueing and customer unload time."
+  },
+  "staffed_per_item_s": {
+   "value": 3.24,
+   "unit": "s per item",
+   "range": [
+    2.0,
+    3.78
+   ],
+   "source": "Klee, E. (2006) 'Paper or Plastic? The Effect of Time on Check and Debit Card Use at Grocery Stores', Federal Reserve FEDS 2006-02, Table 3(a) and Section A, https://www.federalreserve.gov/pubs/feds/2006/200602/200602pap.pdf (US grocery chain scanner data, 24,354 transactions; 'ring time' = first item scanned to cashier drawer close): items-bought coefficient 3.242 (debit), 3.775 (check); squared term -0.001 (n.s.). Range low end: Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702 cashier unit scan time 2-3 s/item.",
+   "confidence": "high",
+   "note": "Includes cashier scanning and bagging as practised in the sample stores."
+  },
+  "staffed_mean_ring_time_by_tender_s": {
+   "value": {
+    "cash": 56,
+    "debit": 101,
+    "credit": 112,
+    "check": 148
+   },
+   "unit": "s per transaction",
+   "range": null,
+   "source": "Klee, E. (2006) 'Paper or Plastic? The Effect of Time on Check and Debit Card Use at Grocery Stores', Federal Reserve FEDS 2006-02, Table 3(a) and Section A, https://www.federalreserve.gov/pubs/feds/2006/200602/200602pap.pdf (US grocery chain scanner data, 24,354 transactions; 'ring time' = first item scanned to cashier drawer close) Section A (means over all baskets).",
+   "confidence": "high"
+  },
+  "basket_items_median_us": {
+   "value": 12,
+   "unit": "items per transaction",
+   "range": null,
+   "source": "Klee, E. (2006) 'Paper or Plastic? The Effect of Time on Check and Debit Card Use at Grocery Stores', Federal Reserve FEDS 2006-02, Table 3(a) and Section A, https://www.federalreserve.gov/pubs/feds/2006/200602/200602pap.pdf (US grocery chain scanner data, 24,354 transactions; 'ring time' = first item scanned to cashier drawer close) Table 2 summary: median ~12, mean 16.66 items; ring time median 109 s, mean 128 s, top-coded 600 s.",
+   "confidence": "high",
+   "note": "Right-skewed; use for sanity checks of the mission-weighted basket mix."
+  },
+  "basket_items_mean_us": {
+   "value": 16.66,
+   "unit": "items per transaction",
+   "range": null,
+   "source": "Klee, E. (2006) 'Paper or Plastic? The Effect of Time on Check and Debit Card Use at Grocery Stores', Federal Reserve FEDS 2006-02, Table 3(a) and Section A, https://www.federalreserve.gov/pubs/feds/2006/200602/200602pap.pdf (US grocery chain scanner data, 24,354 transactions; 'ring time' = first item scanned to cashier drawer close)",
+   "confidence": "high"
+  },
+  "sco_initiation_s": {
+   "value": 7.5,
+   "unit": "s per transaction",
+   "range": [
+    5,
+    15
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: 'Initiation Time' 5/5/5/15 s across 4 stores, mean 7.5.",
+   "confidence": "medium",
+   "note": "Small sample (author-timed purchases), 2004 machines."
+  },
+  "sco_per_item_s": {
+   "value": 6.0,
+   "unit": "s per item",
+   "range": [
+    5,
+    8
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: ACM 'Unit Scan Time' 5/6/5/8 s; mean 6.0. Same study's cashier unit scan time 2-3 s, so SCO is ~2.2x slower per item.",
+   "confidence": "medium",
+   "note": "2004 hardware; modern SCO probably at the faster end. Ratio to staffed (2.2x) is the more robust quantity."
+  },
+  "sco_payment_card_s": {
+   "value": 23.75,
+   "unit": "s per transaction",
+   "range": [
+    20,
+    30
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: ACM 'Transaction Time, Credit' 20/30/20/25 s.",
+   "confidence": "medium"
+  },
+  "sco_payment_cash_s": {
+   "value": 33.75,
+   "unit": "s per transaction",
+   "range": [
+    30,
+    40
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: ACM 'Transaction Time, Cash' 30/35/30/40 s.",
+   "confidence": "medium"
+  },
+  "staffed_payment_card_s": {
+   "value": 23.3,
+   "unit": "s per transaction",
+   "range": [
+    20,
+    33.3
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: standard checkout 'Transaction Time, Credit' 20/33.3/20/20 s.",
+   "confidence": "medium",
+   "note": "Already inside staffed_fixed_s; listed for the breakdown only."
+  },
+  "sco_deactivation_s": {
+   "value": 2.5,
+   "unit": "s per transaction",
+   "range": [
+    0,
+    5
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: 'Deactivation Time' 2/5/0/3 s.",
+   "confidence": "medium"
+  },
+  "sco_intervention_prob": {
+   "value": 0.34,
+   "unit": "probability per SCO transaction",
+   "range": [
+    0.2,
+    0.6
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: 'Problem Frequency' 25/30/20/60 % of SCO transactions; mean 33.75%.",
+   "confidence": "low",
+   "note": "2004 machines; no newer public measured rate fetched. An industry vendor paper (CARI J. Tech. Sci. 2026, doi:10.47941/jts.3523) cites 18-25% false-positive alerts, consistent with the low end."
+  },
+  "sco_intervention_resolution_s": {
+   "value": 43.75,
+   "unit": "s per intervention",
+   "range": [
+    30,
+    60
+   ],
+   "source": "Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702: 'Problem Resolution Time' 40/30/45/60 s; text: missing staff 'may add between 1 and 5 minutes'.",
+   "confidence": "medium"
+  },
+  "sco_terminals_per_attendant": {
+   "value": 5,
+   "unit": "terminals",
+   "range": [
+    4,
+    6
+   ],
+   "source": "Wikipedia 'Self-checkout' https://en.wikipedia.org/wiki/Self-checkout: 'one attendant can often run four to six checkout lanes'.",
+   "confidence": "medium"
+  },
+  "scan_only_speedup": {
+   "value": 0.109,
+   "unit": "fractional increase in scan speed",
+   "range": null,
+   "source": "'Automation-Enabled Specialization and Retail Service Productivity' (2024), doi:10.66033/jmpr2024-111 (abstract via OpenAlex): within-cashier field experiment, 4 Singapore supermarket outlets, 152,246 transactions, 38 cashiers: scan-only counters raised scanning speed 10.9% and customer service rate ~21%.",
+   "confidence": "medium",
+   "note": "Use for an express / scan-only staffed lane variant."
+  },
+  "produce_weigh_s_staffed": {
+   "value": 4,
+   "unit": "s per loose produce line",
+   "range": [
+    2,
+    8
+   ],
+   "source": "assumption: cashier keys a PLU from memory and the scale is in the scanner bed; set ~1 item-time (3.24 s, staffed_per_item_s) rounded up. No measured source fetched.",
+   "confidence": "low"
+  },
+  "produce_weigh_s_sco": {
+   "value": 10,
+   "unit": "s per loose produce line",
+   "range": [
+    6,
+    40
+   ],
+   "source": "assumption: shopper searches the touchscreen produce menu; range upper bound 40 s is Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702 ('items without bar codes ... adds about 40 sec for each item' when assistance is needed).",
+   "confidence": "low"
+  },
+  "age_check_delay_s_sco": {
+   "value": 43.75,
+   "unit": "s per transaction with an age-restricted item",
+   "range": [
+    30,
+    60
+   ],
+   "source": "assumption: an age-restricted item forces an attendant approval, modelled as one SCO intervention (sco_intervention_resolution_s, Edwards, J. & Kenner, R. (2004) 'The Effectiveness of Self-Checkout', Worcester Polytechnic Institute IQP 04D068I, Table 13 'Experiential study time results' (timed purchases at Home Depot, Wal-Mart, BJ's, Price Chopper), http://digital.wpi.edu/downloads/8049g5702). UK Challenge 25 practice means most alcohol baskets trigger it.",
+   "confidence": "low"
+  },
+  "age_check_delay_s_staffed": {
+   "value": 8,
+   "unit": "s per transaction with an age-restricted item",
+   "range": [
+    3,
+    30
+   ],
+   "source": "assumption: cashier glances / asks for ID in-lane; 30 s upper bound when ID is requested and inspected. No measured source fetched.",
+   "confidence": "low"
+  },
+  "service_time_formula": {
+   "value": {
+    "staffed": "staffed_fixed_s + staffed_per_item_s*n_items + produce_weigh_s_staffed*n_loose + age_check_delay_s_staffed*has_age_item",
+    "sco": "sco_initiation_s + sco_per_item_s*n_items + sco_payment_card_s + sco_deactivation_s + produce_weigh_s_sco*n_loose + age_check_delay_s_sco*has_age_item + sco_intervention_prob*sco_intervention_resolution_s"
+   },
+   "unit": "s",
+   "range": null,
+   "source": "Additive model: staffed slope/intercept from Klee 2006 Table 3(a); SCO components from WPI 2004 Table 13. Klee finds the items effect is near-linear (squared term -0.001, n.s. for debit).",
+   "confidence": "medium",
+   "worked_example": {
+    "items": 12,
+    "staffed_s": 81.9,
+    "sco_s": 120.6
+   }
+  },
+  "weekday_shopping_trip_start_share_by_hour": {
+   "value": [
+    0.00047,
+    0.00013,
+    0.00011,
+    6e-05,
+    6e-05,
+    0.00019,
+    0.00334,
+    0.01033,
+    0.03178,
+    0.07221,
+    0.11605,
+    0.13009,
+    0.10998,
+    0.10042,
+    0.08866,
+    0.07558,
+    0.0715,
+    0.06222,
+    0.05389,
+    0.04376,
+    0.01835,
+    0.00803,
+    0.00236,
+    0.00042
+   ],
+   "unit": "fraction of weekday shopping trips starting in hour h (index 0 = 00:00-00:59)",
+   "range": null,
+   "source": "DfT National Travel Survey 2025, NTS0502b 'Trip purpose by trip start time (Monday to Friday only): England', row 'Shopping' (unweighted sample 35,864 trips), https://assets.publishing.service.gov.uk/media/6a9ecdd5474b8101ece46434/nts0502.ods",
+   "confidence": "high",
+   "note": "Covers all shopping trips (not only grocery) and is trip START time; arrival at store is later by the trip duration. Peak 11:00-11:59 (13.0%); 10:00-14:59 holds 54.5%. Weekends not in this table: reuse the weekday curve (assumption)."
+  },
+  "shopping_trips_by_day_share": {
+   "value": {
+    "Mon": 0.1376,
+    "Tue": 0.1249,
+    "Wed": 0.1212,
+    "Thu": 0.127,
+    "Fri": 0.1512,
+    "Sat": 0.2073,
+    "Sun": 0.1308
+   },
+   "unit": "fraction of weekly shopping trips",
+   "range": null,
+   "source": "DfT NTS 2025, NTS0504b 'day_purpose', column 'Shopping' (trips per person per year: Mon 20.0, Tue 18.2, Wed 17.6, Thu 18.5, Fri 22.0, Sat 30.1, Sun 19.0), https://www.gov.uk/government/statistical-data-sets/nts05-trips (table NTS0504b_day_purpose)",
+   "confidence": "high"
+  },
+  "shopping_trips_day_multiplier": {
+   "value": {
+    "Mon": 0.963,
+    "Tue": 0.874,
+    "Wed": 0.848,
+    "Thu": 0.889,
+    "Fri": 1.058,
+    "Sat": 1.451,
+    "Sun": 0.916
+   },
+   "unit": "x average day",
+   "range": null,
+   "source": "derived: shopping_trips_by_day_share * 7",
+   "confidence": "high",
+   "note": "Saturday is 1.45x an average day. Sunday trading hours are capped at 6 h for large stores in England & Wales (Sunday Trading Act 1994), so Sunday's trips are compressed into fewer hours."
+  },
+  "school_escort_trip_start_share_15h": {
+   "value": 0.312,
+   "unit": "fraction of weekday 'escort education' trips starting 15:00-15:59",
+   "range": null,
+   "source": "DfT NTS 2025, NTS0502b row 'Escort education' (15:00 31.2%, 14:00 9.3%, 16:00 4.9%)",
+   "confidence": "high",
+   "note": "Grounds the after-school family-shop window at ~15:00-17:00."
+  },
+  "commute_trip_start_share_17h": {
+   "value": 0.136,
+   "unit": "fraction of weekday commuting trips starting 17:00-17:59",
+   "range": null,
+   "source": "DfT NTS 2025, NTS0502b row 'Commuting' (16:00 10.6%, 17:00 13.6%, 18:00 5.9%)",
+   "confidence": "high",
+   "note": "Grounds the after-work top-up window at ~17:00-19:00."
+  },
+  "store_customers_per_week": {
+   "value": 10900,
+   "unit": "transactions per week",
+   "range": [
+    4000,
+    10900
+   ],
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf, cost example table: 'Avg # customers/week 10,900' (supermarket, avg transaction $27.34) vs 4,000 (smaller format).",
+   "confidence": "medium",
+   "note": "US illustrative store; used only to scale absolute arrivals."
+  },
+  "peak_arrivals_per_hour_example": {
+   "value": 294,
+   "unit": "shoppers per hour",
+   "range": null,
+   "source": "derived: store_customers_per_week * shopping_trips_by_day_share.Sat * weekday_share[11:00] = 10900*0.2073*0.1301",
+   "confidence": "medium",
+   "note": "Applies the weekday hour curve to Saturday (assumption)."
+  },
+  "arrival_process": {
+   "value": "non-homogeneous Poisson",
+   "unit": "-",
+   "range": null,
+   "source": "assumption: standard for independent shoppers in queueing models (M/M/c / Erlang C); rate per hour = weekly volume * day share * hour share. No UK test of Poisson-ness fetched.",
+   "confidence": "medium"
+  },
+  "trip_start_to_arrival_lag_min": {
+   "value": 15,
+   "unit": "minutes",
+   "range": [
+    5,
+    25
+   ],
+   "source": "assumption: typical local shopping trip duration; shifts the NTS start-time curve to store arrivals. No NTS value fetched for shopping trip duration.",
+   "confidence": "low"
+  },
+  "mission_mix_by_daypart": {
+   "value": {
+    "08-12": {
+     "weekly_shop": 0.4,
+     "top_up": 0.35,
+     "meal_deal": 0.05,
+     "treat": 0.1,
+     "gym": 0.1
+    },
+    "12-14": {
+     "weekly_shop": 0.15,
+     "top_up": 0.25,
+     "meal_deal": 0.45,
+     "treat": 0.1,
+     "gym": 0.05
+    },
+    "14-15": {
+     "weekly_shop": 0.35,
+     "top_up": 0.35,
+     "meal_deal": 0.1,
+     "treat": 0.15,
+     "gym": 0.05
+    },
+    "15-17": {
+     "weekly_shop": 0.3,
+     "top_up": 0.3,
+     "meal_deal": 0.05,
+     "treat": 0.3,
+     "gym": 0.05
+    },
+    "17-19": {
+     "weekly_shop": 0.2,
+     "top_up": 0.5,
+     "meal_deal": 0.05,
+     "treat": 0.1,
+     "gym": 0.15
+    },
+    "19-22": {
+     "weekly_shop": 0.15,
+     "top_up": 0.5,
+     "meal_deal": 0.05,
+     "treat": 0.2,
+     "gym": 0.1
+    }
+   },
+   "unit": "share of arriving shoppers",
+   "range": null,
+   "source": "assumption: windows anchored on sourced peaks (NTS shopping peak 10-14h; school-escort peak 15h; commute-home peak 17h) but the mission shares themselves are not sourced. IGD/Kantar mission data not fetchable (research/04 notes 404).",
+   "confidence": "low"
+  },
+  "after_school_treat_uplift": {
+   "value": 2.0,
+   "unit": "x treat/dessert mission share vs baseline",
+   "range": [
+    1.0,
+    3.0
+   ],
+   "source": "assumption: family trips after the 15:00 school pick-up (NTS escort peak) carry more snacks/desserts. No daypart category-share source found; set 1.0 to switch off.",
+   "confidence": "low"
+  },
+  "basket_items_by_mission": {
+   "value": {
+    "meal_deal": {
+     "mean": 3,
+     "range": [
+      3,
+      4
+     ]
+    },
+    "top_up": {
+     "mean": 7,
+     "range": [
+      5,
+      10
+     ]
+    },
+    "weekly_shop": {
+     "mean": 40,
+     "range": [
+      30,
+      60
+     ]
+    },
+    "treat": {
+     "mean": 2,
+     "range": [
+      1,
+      4
+     ]
+    },
+    "gym": {
+     "mean": 3,
+     "range": [
+      2,
+      5
+     ]
+    }
+   },
+   "unit": "items",
+   "range": null,
+   "source": "meal_deal/top_up/weekly_shop: research/04-3d-sim-evidence-and-tech.md section 1 'UK meal-deal and missions' (labelled [M] assumptions there; IGD/Kantar 404); meal deal = main+snack+drink (Reddit r/CasualUK 1bc79kh, research/corpus/meal_deal.md). treat and gym: assumption. Sanity check vs Klee, E. (2006) 'Paper or Plastic? The Effect of Time on Check and Debit Card Use at Grocery Stores', Federal Reserve FEDS 2006-02, Table 3(a) and Section A, https://www.federalreserve.gov/pubs/feds/2006/200602/200602pap.pdf (US grocery chain scanner data, 24,354 transactions; 'ring time' = first item scanned to cashier drawer close) all-transaction median 12 / mean 16.7.",
+   "confidence": "low"
+  },
+  "basket_size_distribution": {
+   "value": "negative binomial around mission mean",
+   "unit": "-",
+   "range": null,
+   "source": "assumption: count data that is right-skewed like Klee's (mean 16.7 > median 12).",
+   "confidence": "low"
+  },
+  "oos_rate": {
+   "value": 0.083,
+   "unit": "fraction of SKU-store observations out of stock",
+   "range": [
+    0.072,
+    0.108
+   ],
+   "source": "Gruen, Corsten & Bharadwaj (2002) 'Retail Out-of-Stocks: A Worldwide Examination of Extent, Causes and Consumer Responses', GMA; figures as summarised in Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf and research/04-3d-sim-evidence-and-tech.md row 21 [V]. Range: Gruen 2007 regional figures quoted in 'The Effect of Inventory Level on Product Availability and Sale', Prague Economic Papers 2015, doi:10.18267/j.pep.556, https://pep.vse.cz/doi/10.18267/j.pep.556.pdf (quoting Gruen 2007 regional OOS rates): north-west Europe 7.2%, south/east Europe 10.8%, Europe 8.6%, US 7.9%.",
+   "confidence": "high"
+  },
+  "oos_reaction": {
+   "value": {
+    "other_store": 0.31,
+    "substitute_other_brand": 0.26,
+    "substitute_same_brand": 0.19,
+    "delay": 0.15,
+    "do_not_buy": 0.09
+   },
+   "unit": "share of shoppers facing an OOS",
+   "range": null,
+   "source": "Gruen, Corsten & Bharadwaj (2002) 'Retail Out-of-Stocks: A Worldwide Examination of Extent, Causes and Consumer Responses', GMA; figures as summarised in Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf and research/04-3d-sim-evidence-and-tech.md row 21 [V] (71,000+ consumers)",
+   "confidence": "high"
+  },
+  "oos_root_cause": {
+   "value": {
+    "store_ordering_forecasting": 0.47,
+    "store_shelf_restocking": 0.25,
+    "upstream": 0.28
+   },
+   "unit": "share of OOS events",
+   "range": null,
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf (root-cause pie in executive summary; 2002 study: ~75% store practices)",
+   "confidence": "high",
+   "note": "Restockers address the 25% shelf share; manager ordering addresses the 47%."
+  },
+  "shoppers_encountering_oos": {
+   "value": 0.4,
+   "unit": "fraction of shoppers meeting >=1 OOS per trip",
+   "range": null,
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf cost table",
+   "confidence": "medium"
+  },
+  "oos_staff_query_prob": {
+   "value": 0.1,
+   "unit": "fraction of OOS-hit shoppers who ask staff",
+   "range": null,
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf cost table ('% times shoppers involve store labor 10%')",
+   "confidence": "medium"
+  },
+  "oos_staff_query_min": {
+   "value": 6,
+   "unit": "staff minutes per query",
+   "range": [
+    4,
+    6
+   ],
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf cost table (6 min supermarket, 4 min small format)",
+   "confidence": "medium"
+  },
+  "oos_weekend_effect": {
+   "value": "higher on Sat/Sun",
+   "unit": "-",
+   "range": null,
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf ch.2-3: 'knowing that OOS will increase on Saturday and Sunday, stocking labor can be reallocated'",
+   "confidence": "medium"
+  },
+  "retail_sales_lost_to_oos": {
+   "value": 0.04,
+   "unit": "fraction of annual sales",
+   "range": null,
+   "source": "Gruen, T. & Corsten, D. (2008) 'A Comprehensive Guide to Retail Out-of-Stock Reduction in the FMCG Industry', GMA/FMI/NACDS/P&G, https://www.nacds.org/pdfs/membership/out_of_stock.pdf exec summary (from 2002 study)",
+   "confidence": "high"
+  },
+  "instore_logistics_share_of_staff_hours": {
+   "value": 0.4,
+   "unit": "fraction",
+   "range": null,
+   "source": "Reiner, G., Teller, C. & Kotzab, H. (2013) 'Analyzing the Efficient Execution of In-Store Logistics Processes in Grocery Retailing: The Case of Dairy Products', Production and Operations Management 22(4), doi:10.1111/poms.12003; survey of 202 stores of one central-European chain; green OA copy https://openresearch.surrey.ac.uk/view/delivery/44SUR_INST/12138884720002346/13140556810002346 (Table 3) citing Liebmann & Zentes 2001: in-store logistics 'can take up more than 40% of the working hours of store employees'",
+   "confidence": "medium"
+  },
+  "dairy_shelf_replenishment_hours_per_day": {
+   "value": {
+    "supermarket": 2.7,
+    "small_hypermarket": 4.7,
+    "large_hypermarket": 6.4
+   },
+   "unit": "hours/day (dairy category only)",
+   "range": null,
+   "source": "Reiner, G., Teller, C. & Kotzab, H. (2013) 'Analyzing the Efficient Execution of In-Store Logistics Processes in Grocery Retailing: The Case of Dairy Products', Production and Operations Management 22(4), doi:10.1111/poms.12003; survey of 202 stores of one central-European chain; green OA copy https://openresearch.surrey.ac.uk/view/delivery/44SUR_INST/12138884720002346/13140556810002346 (Table 3) Table 3 'Time for shelf replenishment'; staff-hours 4.1/8.8/14.3",
+   "confidence": "high"
+  },
+  "restock_cases_per_hour": {
+   "value": 45,
+   "unit": "cases per restocker-hour",
+   "range": [
+    25,
+    70
+   ],
+   "source": "assumption: no measured shelf-stacking rate fetched (van Zelst et al. 2009 IJPE doi:10.1016/j.ijpe.2006.06.010 models it but is paywalled). 45/h is ~80 s per case including walking from cage to shelf.",
+   "confidence": "low"
+  },
+  "restock_trigger_fill": {
+   "value": 0.25,
+   "unit": "fraction of shelf capacity",
+   "range": [
+    0.1,
+    0.5
+   ],
+   "source": "assumption: restocker queues a SKU when shelf fill drops below 25%; priority = P(OOS before next pass) * demand rate. Gruen & Corsten 2008 Pattern 2/4 ('check the stock more frequently ... multiple times during the day') motivates frequency, not the threshold.",
+   "confidence": "low"
+  },
+  "backroom_dwell_hours": {
+   "value": 12.5,
+   "unit": "hours (dairy)",
+   "range": null,
+   "source": "Reiner, G., Teller, C. & Kotzab, H. (2013) 'Analyzing the Efficient Execution of In-Store Logistics Processes in Grocery Retailing: The Case of Dairy Products', Production and Operations Management 22(4), doi:10.1111/poms.12003; survey of 202 stores of one central-European chain; green OA copy https://openresearch.surrey.ac.uk/view/delivery/44SUR_INST/12138884720002346/13140556810002346 (Table 3) ('stored there for an average of 12.5 hours (sigma 13)')",
+   "confidence": "medium"
+  },
+  "reorder_point_formula": {
+   "value": "ROP = E(L)*E(D) + SS; SS = z*sqrt(E(L)*sigma_D^2 + E(D)^2*sigma_L^2)",
+   "unit": "units",
+   "range": null,
+   "source": "Wikipedia 'Safety stock' https://en.wikipedia.org/wiki/Safety_stock citing Ballou, Business Logistics/Supply Chain Management 5th ed., and Chopra, Reinhardt & Dada (2004) 'The Effect of Lead Time Uncertainty on Safety Stocks', Decision Sciences 35(1)",
+   "confidence": "high"
+  },
+  "service_level_z": {
+   "value": 1.65,
+   "unit": "z",
+   "range": [
+    1.28,
+    2.33
+   ],
+   "source": "Wikipedia 'Safety stock' https://en.wikipedia.org/wiki/Safety_stock citing Ballou, Business Logistics/Supply Chain Management 5th ed., and Chopra, Reinhardt & Dada (2004) 'The Effect of Lead Time Uncertainty on Safety Stocks', Decision Sciences 35(1) ('z = 1.65 for 95% service level'); range = 90%-99%.",
+   "confidence": "high",
+   "note": "95% target is an assumption; the 8.3% observed OOS rate implies real stores run near ~92% availability."
+  },
+  "lead_time_days_chilled": {
+   "value": 1,
+   "unit": "days",
+   "range": [
+    0.5,
+    2
+   ],
+   "source": "Reiner, G., Teller, C. & Kotzab, H. (2013) 'Analyzing the Efficient Execution of In-Store Logistics Processes in Grocery Retailing: The Case of Dairy Products', Production and Operations Management 22(4), doi:10.1111/poms.12003; survey of 202 stores of one central-European chain; green OA copy https://openresearch.surrey.ac.uk/view/delivery/44SUR_INST/12138884720002346/13140556810002346 (Table 3): dairy 'delivered daily to all stores', 5.9 orders/week, ordering 38.2 min/day; their simulation delivers at 6 a.m. next day and Saturday orders on Monday.",
+   "confidence": "medium"
+  },
+  "lead_time_days_ambient": {
+   "value": 2,
+   "unit": "days",
+   "range": [
+    1,
+    3
+   ],
+   "source": "assumption: ambient lines ride the same daily DC network but on a less frequent per-line schedule; set 2 days. No UK ambient lead-time figure fetched.",
+   "confidence": "low"
+  },
+  "lead_time_sd_days": {
+   "value": 0.25,
+   "unit": "days",
+   "range": [
+    0,
+    0.5
+   ],
+   "source": "assumption: daily DC deliveries are reliable; Reiner et al. report delivery delays as an issue but no SD.",
+   "confidence": "low"
+  },
+  "order_review_period_days": {
+   "value": 1,
+   "unit": "days",
+   "range": null,
+   "source": "Reiner, G., Teller, C. & Kotzab, H. (2013) 'Analyzing the Efficient Execution of In-Store Logistics Processes in Grocery Retailing: The Case of Dairy Products', Production and Operations Management 22(4), doi:10.1111/poms.12003; survey of 202 stores of one central-European chain; green OA copy https://openresearch.surrey.ac.uk/view/delivery/44SUR_INST/12138884720002346/13140556810002346 (Table 3) (5.9 orders/week, dairy ordered daily)",
+   "confidence": "medium"
+  },
+  "slips_share_major_injuries": {
+   "value": 0.4,
+   "unit": "fraction of reported major workplace injuries",
+   "range": null,
+   "source": "HSE leaflet INDG225(rev2) 'Preventing slips and trips at work' (2014), https://www.hse.gov.uk/pubns/indg225.pdf: slips and trips 'cause 40 per cent of all reported major injuries' and are 'the most reported injury to members of the public'.",
+   "confidence": "high"
+  },
+  "spill_rate_per_1000_shoppers": {
+   "value": 2.0,
+   "unit": "spills per 1,000 shopper trips",
+   "range": [
+    0.5,
+    5
+   ],
+   "source": "assumption: no public per-shopper spill frequency found. At 1,500 shoppers/day this is ~3 spills/day, which a single cleaner can cover. HSE INDG225 only says spills must be 'cleaned up promptly'.",
+   "confidence": "low"
+  },
+  "spill_prob_multiplier_on_collision": {
+   "value": 5,
+   "unit": "x base drop chance for a shopper who has just bumped another",
+   "range": [
+    2,
+    10
+   ],
+   "source": "assumption: links spills to crowding (store-ops idea doc). Not sourced.",
+   "confidence": "low"
+  },
+  "cleaner_response_target_min": {
+   "value": 5,
+   "unit": "minutes from report to cleaner arrival",
+   "range": [
+    2,
+    15
+   ],
+   "source": "assumption: HSE INDG225 requires prompt removal ('Remove spillages promptly') but gives no time; 5 min is a typical internal target.",
+   "confidence": "low"
+  },
+  "spill_clean_and_dry_min": {
+   "value": 3,
+   "unit": "minutes aisle blocked after cleaner arrives",
+   "range": [
+    1,
+    10
+   ],
+   "source": "assumption: mop + wet-floor sign; not sourced.",
+   "confidence": "low"
+  },
+  "checkout_lanes_needed_example": {
+   "value": {
+    "lambda_per_h": 294,
+    "mean_items": 16.66,
+    "staffed_service_s": 97.0,
+    "lanes_at_rho_0.85": 10
+   },
+   "unit": "lanes",
+   "range": null,
+   "source": "derived: peak_arrivals_per_hour_example / (3600 / (staffed_fixed_s + staffed_per_item_s*mean_items)) / 0.85 target utilisation (0.85 is an assumption).",
+   "confidence": "medium",
+   "note": "All-staffed equivalent; SCO terminals replace staffed lanes at ~1:2.2 per-item speed."
+  }
+ }
+}

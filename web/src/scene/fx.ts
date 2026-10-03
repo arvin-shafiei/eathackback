@@ -4,8 +4,14 @@
 export const bus = {
   /** live xz of the followed shopper (physics position, not the replay path) */
   follow: null as null | { x: number; z: number; heading: number },
-  /** shoppers within a few metres of the sliding doors */
-  door: 0,
+  /** shoppers near each sliding door (index = entrance, then exits after them) */
+  doors: [] as number[],
+  /** last scanner beep per lane id (clock seconds) → scanner flash */
+  flash: {} as Record<string, number>,
+  /** EAS gate alarm: gate id → clock seconds until which it flashes + beeps */
+  alarm: {} as Record<string, number>,
+  /** live crowd positions for staff avoidance / hud (xz pairs) */
+  live: 0,
   /** screen-shake energy, decays in the camera rig */
   shake: 0,
   shakeOn: false,
@@ -36,4 +42,7 @@ export const sfx = {
   bonk() { this.blip(520, 90, 0.18, 'triangle', 0.16); },
   pick() { this.blip(660, 1320, 0.12, 'sine', 0.08); },
   nope() { this.blip(300, 160, 0.22, 'square', 0.04); },
+  beep() { this.blip(1850, 1840, 0.09, 'square', 0.035); },
+  alarm() { [0, 0.22, 0.44].forEach((d) => setTimeout(() => this.blip(2200, 2150, 0.16, 'square', 0.05), d * 1000)); },
+  ding() { this.blip(880, 1760, 0.25, 'sine', 0.07); },
 };
