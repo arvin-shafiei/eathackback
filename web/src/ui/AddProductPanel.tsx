@@ -189,7 +189,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
       <p className="muted">it replaces one product. 150 shoppers walk the store, and you see who picked it and why the rest didn't.{' '}
         <button type="button" className="link-btn" onClick={fillExample}>try an example</button>
       </p>
-      {isExample && <p className="addp-hint"><span className="chip chip-yellow">example</span> a made-up snack bar. nothing in it is real.</p>}
+      {isExample && <p className="addp-hint"><span className="chip chip-yellow">example</span></p>}
       <div className="addp-import">
         <label htmlFor="addp-ref">paste a tesco link or a barcode <span className="thin">or fill it in below</span></label>
         <div className="addp-import-row">

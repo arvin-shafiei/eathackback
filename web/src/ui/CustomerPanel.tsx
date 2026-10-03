@@ -151,7 +151,7 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
       </header>
       <div className="cu-board">
         <section className="cu-tile">
-          <h3>what they bought <span className="muted">{basket.length} item{basket.length === 1 ? '' : 's'}{visits.length ? (trolley ? ` · plus ${visits.length} earlier trolley trip${visits.length === 1 ? '' : 's'}` : ` · plus 1 earlier visit (another simulated shopper of the same type)`) : ''}</span></h3>
+          <h3>what they bought <span className="muted">{basket.length} item{basket.length === 1 ? '' : 's'}{visits.length ? (trolley ? ` · plus ${visits.length} earlier trolley trip${visits.length === 1 ? '' : 's'}` : ` · plus 1 earlier visit (another shopper of the same type)`) : ''}</span></h3>
           <input className="cu-search" placeholder="search by name or brand…" value={q} onChange={(e) => setQ(e.target.value)} />
           {hits.length > 0 && (
             <ul className="cu-hits">
@@ -162,7 +162,7 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
           )}
           {shoppers.length > 0 && (
             <label className="cu-agent">
-              <span className="muted">or use a simulated shopper's basket</span>
+              <span className="muted">or use a shopper's basket</span>
               <select defaultValue="" onChange={(e) => pickAgent(e.target.value)}>
                 <option value="" disabled>pick a shopper…</option>
                 {shoppers.map((a) => {
