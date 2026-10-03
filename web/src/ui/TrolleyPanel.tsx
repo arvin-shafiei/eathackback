@@ -114,11 +114,11 @@ export function TrolleyPanel({ run, products, onClose, onShowPath }: TrolleyPane
               ))}
             </div>
             <table className="tr-table">
-              <thead><tr><th>trolley</th><th>min</th><th>bays</th><th>in</th><th>out</th><th>paid</th><th /></tr></thead>
+              <thead><tr><th>trip</th><th>minutes</th><th>bays visited</th><th>scanned in</th><th>put back</th><th>paid</th><th /></tr></thead>
               <tbody>
-                {rows.slice(0, 200).map((s) => (
+                {rows.slice(0, 200).map((s, i) => (
                   <tr key={s.session_id} onClick={() => setSel(s.session_id)} tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && setSel(s.session_id)}>
-                    <td><code>{s.trolley_id}</code></td><td>{s.minutes}</td><td>{s.counts.bays}</td><td>{s.counts.scan_in}</td>
+                    <td><b>trip {i + 1}</b> <span className="muted">{hhmm(s.start)} · trolley <code>{s.trolley_id}</code></span></td><td>{s.minutes}</td><td>{s.counts.bays}</td><td>{s.counts.scan_in}</td>
                     <td className={s.counts.scan_out ? 'tr-out' : ''}>{s.counts.scan_out}</td>
                     <td>£{s.checkout.total_gbp.toFixed(2)}</td>
                     <td>{s.checkout.opt_in_loyalty && <span className="tr-badge" title={s.checkout.loyalty_id ?? ''}>opted in</span>}</td>
@@ -214,7 +214,7 @@ export function TrolleyImport<T>({ runId, planogram, declared, onProfile, onErro
       <span className="muted">smart trolley, opted-in loyalty id {data ? `(${data.loyalty.length}, simulated from ${data.run_id})` : '…'}</span>
       <select defaultValue="" disabled={!data || busy} onChange={(e) => void pick(e.target.value)}>
         <option value="" disabled>{busy ? 'reading trolley sessions…' : 'pick a loyalty id…'}</option>
-        {data?.loyalty.map((l) => <option key={l.loyalty_id} value={l.loyalty_id}>{l.loyalty_id} · {l.trips} trip{l.trips === 1 ? '' : 's'}</option>)}
+        {data?.loyalty.map((l, i) => <option key={l.loyalty_id} value={l.loyalty_id}>customer {i + 1} · {l.trips} trip{l.trips === 1 ? '' : 's'} · loyalty {l.loyalty_id}</option>)}
       </select>
     </label>
   );

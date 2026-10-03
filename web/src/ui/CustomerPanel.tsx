@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Agent, Planogram, Product, StoreConfig } from '../types';
 import { SIM_SERVER, STORE_VARIANT } from '../data';
-import { catColor, prodLabel } from '../theme';
+import { archLabel, catColor, catLabel, prodLabel } from '../theme';
 import './customer.css';
 import { TrolleyImport } from './TrolleyPanel';
 
@@ -165,7 +165,12 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
               <span className="muted">or use a simulated shopper's basket</span>
               <select defaultValue="" onChange={(e) => pickAgent(e.target.value)}>
                 <option value="" disabled>pick a shopper…</option>
-                {shoppers.map((a) => <option key={a.agent_id} value={a.agent_id}>{a.agent_id} · {taken(a).length} items</option>)}
+                {shoppers.map((a) => {
+                  const items = taken(a);
+                  const spend = items.reduce((t, c) => t + (Number(products[c]?.price_gbp) || 0), 0);
+                  const who = archLabel(a.archetype ?? a.persona_id.replace(/^p_/, ''));
+                  return <option key={a.agent_id} value={a.agent_id}>{who}{a.mission ? ` · ${a.mission.replace(/_/g, ' ')}` : ''} · {items.length} items · £{spend.toFixed(2)} ({a.agent_id})</option>;
+                })}
               </select>
             </label>
           )}
@@ -175,7 +180,9 @@ export function CustomerPanel({ planogram, products, runAgents, onClose, onShowR
             <div className="chips">
               {basket.map((c) => (
                 <button key={c} className="chip" title="remove" onClick={() => { setBasket((b) => b.filter((x) => x !== c)); reset(); }}>
-                  {prodLabel(products[c], c)} ×
+                  <i className="dot" style={{ background: catColor(products[c]?.category ?? '') }} aria-hidden />
+                  {prodLabel(products[c], c)}
+                  <span className="muted"> · {catLabel(products[c]?.category ?? 'unknown')}{products[c]?.price_gbp ? ` · £${Number(products[c]?.price_gbp).toFixed(2)}` : ''}</span> ×
                 </button>
               ))}
               {visits.length > 0 && <button className="chip chip-yellow" onClick={() => { setVisits([]); reset(); }}>drop earlier visit ×</button>}
