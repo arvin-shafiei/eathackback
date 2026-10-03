@@ -230,10 +230,28 @@ def _unit_plan(store, plan, catalog, unit, obs, objective, agents, seed, max_swa
             "_assign": [(items[i]["code"], spots[j]["slot"], spots[j]["pos"]) for i, j in enumerate(assign)]}
 
 
+_SUGGEST_CACHE: dict = {}
+
+
 def suggest(planogram=None, extra_products=None, run_ids=None, objective="picks", agents=300, seed=1, units=None,
             max_swaps=None):
     """max_swaps: cap on swaps per unit. The search takes the most valuable swap first, so a small cap keeps the
-    biggest wins and moves the fewest products."""
+    biggest wins and moves the fewest products. Identical requests (same store, planogram, products, runs, objective,
+    cap) return the cached plan instantly: the result is deterministic, so this changes nothing but speed."""
+    import hashlib
+    ck = hashlib.sha256(json.dumps([simrun.STORE_VARIANT, planogram, extra_products, run_ids, objective, agents, seed,
+                                    units, max_swaps], sort_keys=True, default=str).encode()).hexdigest()
+    if ck in _SUGGEST_CACHE:
+        return _SUGGEST_CACHE[ck]
+    out = _suggest(planogram, extra_products, run_ids, objective, agents, seed, units, max_swaps)
+    if len(_SUGGEST_CACHE) > 64:
+        _SUGGEST_CACHE.clear()
+    _SUGGEST_CACHE[ck] = out
+    return out
+
+
+def _suggest(planogram=None, extra_products=None, run_ids=None, objective="picks", agents=300, seed=1, units=None,
+             max_swaps=None):
     if objective not in ("picks", "revenue"):
         raise ValueError("objective must be 'picks' or 'revenue'")
     store, store_src = simrun.load_store()
