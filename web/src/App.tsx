@@ -19,6 +19,7 @@ import { ComparePanel } from './ui/ComparePanel';
 import { AddProductPanel } from './ui/AddProductPanel';
 import { InsightsPanel } from './ui/InsightsPanel';
 import { OwnerPanel } from './ui/OwnerPanel';
+import { CustomerPanel } from './ui/CustomerPanel';
 import { RearrangePanel } from './ui/RearrangePanel';
 import { Select } from './ui/Select';
 import { aiGear, isAIArch, shopperLabel } from './ui/aiArch';
@@ -29,11 +30,11 @@ type Panel =
   | { kind: 'agent'; id: string }
   | { kind: 'trace'; agentId: string; step: number; back?: Panel }
   | null;
-type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange' | 'owner';
-const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange', owner: 'your store' };
+type Mode = 'replay' | 'edit' | 'compare' | 'add' | 'insights' | 'rearrange' | 'owner' | 'customer';
+const MODE_LABEL: Record<Mode, string> = { replay: 'watch', compare: 'humans vs ai', edit: 'edit shelf', add: 'add product', insights: 'analytics', rearrange: 'rearrange', owner: 'your store', customer: 'shoppers' };
 /** the four things a brand does; the rest sit behind "options" */
-const MAIN_MODES: Mode[] = ['replay', 'add', 'insights', 'owner', 'rearrange'];
-const ALL_MODES: Mode[] = ['replay', 'compare', 'edit', 'add', 'insights', 'owner', 'rearrange'];
+const MAIN_MODES: Mode[] = ['replay', 'insights', 'owner', 'customer', 'add', 'rearrange'];
+const ALL_MODES: Mode[] = ['replay', 'compare', 'edit', 'add', 'insights', 'owner', 'customer', 'rearrange'];
 /** shoppers per brand-upload run: at 20 a single product is passed by under 10 shoppers, which is noise */
 const UPLOAD_AGENTS = 150;
 const UPLOAD_AI_RUNS = 3;
@@ -95,6 +96,7 @@ export default function App() {
   const [speed, setSpeed] = useState(2);
   const [uiTime, setUiTime] = useState(0);
   const [ownerHeat, setOwnerHeat] = useState(false);
+  const [routeSlots, setRouteSlots] = useState<string[]>([]);
   const [ownerHeatMin, setOwnerHeatMin] = useState<number | null>(null);
   const timeRef = useRef(0);
   const [cam, setCam] = useState<CamMode>(() => (/[?&]nointro/.test(location.search) ? 'overview' : 'intro'));
@@ -354,7 +356,7 @@ export default function App() {
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}
-          editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={changed}
+          editMode={mode === 'edit'} editSel={editSel} onSlot={onSlot} changed={mode === 'customer' && routeSlots.length ? new Set(routeSlots) : changed}
           heat={heatMap} ownerHeat={mode === 'owner' && ownerHeat} ownerHeatMin={ownerHeatMin} thoughts={thoughts} cam={cam} camNonce={camNonce} onBackground={() => mode === 'edit' && setEditSel(null)}
           onIntroDone={() => setCam('overview')} onUserCamera={() => { if (cam === 'intro') { setCam('overview'); setCamNonce((n) => n + 1); } }}
         />
@@ -471,6 +473,10 @@ export default function App() {
           focus={focus ?? undefined} useLLM={useLLM} onUseLLM={setUseLLM} busy={job.busy} onPreview={setPreview}
           onPickProduct={(code) => { setFocus(code); setMode('insights'); }} onClose={() => setMode('replay')}
           onApplyPlanogram={(p, label) => { setPreview(null); void simulate(p, run.catalog_inline ?? [], label); }} />
+      )}
+      {mode === 'customer' && (
+        <CustomerPanel planogram={basePlan} cfg={data.config} products={products} runAgents={run?.agents}
+          onClose={() => { setRouteSlots([]); setMode('replay'); }} onShowRoute={setRouteSlots} />
       )}
       {mode === 'owner' && (
         <OwnerPanel cfg={data.config} planogram={basePlan} products={products} timelines={timelines} run={view}

@@ -5,6 +5,13 @@ import * as THREE from 'three';
 
 export const HORIZON = '#ffe3d6';
 
+/** live sky uniforms (Weather.tsx lerps uOver: 0 = pastel sun, 1 = soft grey-lilac overcast) */
+export const skyU = {
+  uOver: { value: 0 },
+  cOvTop: { value: new THREE.Color('#b9b4c8') },
+  cOvHor: { value: new THREE.Color('#dcd6dc') },
+};
+
 export function Sky({ cx, cz, r = 700 }: { cx: number; cz: number; r?: number }) {
   const mat = useMemo(() => new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite: false, fog: false,
@@ -15,12 +22,14 @@ export function Sky({ cx, cz, r = 700 }: { cx: number; cz: number; r?: number })
       cTop: { value: new THREE.Color('#cdb0f2') },
       cSun: { value: new THREE.Color('#fff2c8') },
       sunDir: { value: new THREE.Vector3(0.35, 0.16, -1).normalize() },
+      ...skyU,
     },
     vertexShader: /* glsl */`
       varying vec3 vDir;
       void main() { vDir = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
     fragmentShader: /* glsl */`
-      uniform vec3 cHor, cLow, cMid, cTop, cSun, sunDir;
+      uniform vec3 cHor, cLow, cMid, cTop, cSun, sunDir, cOvTop, cOvHor;
+      uniform float uOver;
       varying vec3 vDir;
       void main() {
         float h = clamp(vDir.y, 0.0, 1.0);
@@ -32,6 +41,10 @@ export function Sky({ cx, cz, r = 700 }: { cx: number; cz: number; r?: number })
         // soft banded clouds near the horizon
         float band = sin(vDir.x * 9.0 + vDir.z * 4.0) * sin(vDir.z * 7.0 - vDir.x * 3.0);
         c = mix(c, vec3(1.0, 0.96, 0.95), smoothstep(0.55, 0.95, band) * smoothstep(0.04, 0.12, h) * (1.0 - smoothstep(0.18, 0.3, h)) * 0.45);
+        // overcast: blend toward a flat grey-lilac gradient and kill the sun disc
+        vec3 ov = mix(cOvHor, cOvTop, smoothstep(0.0, 0.6, h));
+        ov += vec3(0.04) * sin(vDir.x * 13.0 + vDir.z * 5.0) * sin(vDir.z * 11.0) * smoothstep(0.05, 0.3, h);
+        c = mix(c, ov, uOver);
         gl_FragColor = vec4(min(c, 1.0), 1.0);
       }`,
   }), []);

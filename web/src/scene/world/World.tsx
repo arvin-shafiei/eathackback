@@ -12,6 +12,10 @@ import { stickerSign } from '../textures';
 import { Geo, cylGeo, mat, rng } from './geo';
 import { CarPark, blob } from './CarPark';
 import { Sky } from './Sky';
+import { Weather } from './Weather';
+import { Transit, transitSpots } from './Transit';
+import { Air } from './Air';
+import { snowable } from './wxState';
 
 const noRay = () => null;
 
@@ -118,15 +122,7 @@ function buildStatic(W: WorldPlan) {
     g.box(gi.x, 2.3, lz - 7.12, 2.1, 0.8, 0.06, '#2a2f3a');
     for (const z of [lz - 6.2, lz + 2.4, lz + 3.6]) for (const s of [-1, 1]) g.add(cylGeo(10), '#1c1a1f', mat(gi.x + s * 1.15, 0.45, z, 0, 0.45, 0.3, 0.45, 0, Math.PI / 2));
   }
-  // bus stop on the store-side pavement: shelter, glass back, ad panel, flag pole
-  const bx = W.cx + B.w * 0.25, bz = zC + 4.4;
-  g.box(bx, 2.5, bz, 4.2, 0.1, 1.6, '#2a2328');
-  for (const sx of [-2, 2]) g.box(bx + sx, 1.25, bz - 0.7, 0.08, 2.5, 0.08, '#2a2328');
-  g.box(bx, 1.35, bz - 0.72, 4.0, 1.9, 0.04, '#cfe8f2');
-  g.box(bx + 2.02, 1.35, bz - 0.2, 0.06, 1.9, 1.1, '#FF4079');
-  g.box(bx, 0.5, bz - 0.5, 2.6, 0.08, 0.4, '#FE831B');
-  g.cyl(bx - 3, 1.6, bz + 0.9, 0.05, 3.2, '#2a2328', 6);
-  g.add(cylGeo(16), '#e53935', mat(bx - 3, 3.05, bz + 0.9, 0, 0.36, 0.05, 0.36, Math.PI / 2));
+  // (bus interchange + tube station live in Transit.tsx)
   // pylon sign posts at the car park entrance (the sign face is a textured plane)
   const px = xL - 2.6, pz = zC - 1.5;
   g.box(px, 4.2, pz, 0.5, 8.4, 0.5, '#2a2328');
@@ -159,7 +155,9 @@ function buildScatter(W: WorldPlan) {
   const TREE = ['#7fb069', '#6aa35a', '#8cbf6e', '#5e9550', '#9cc47a', '#c8a94e'];
   const zFar = zRoad + roadW / 2 + 3;
   // free of store, yard, car park, road
+  const ko = transitSpots(W).keepOut;
   const blocked = (x: number, z: number, pad = 2) =>
+    (x > ko[0] - pad && x < ko[2] + pad && z > ko[1] - pad && z < ko[3] + pad) ||
     (x > xL - 6 - pad && x < xR + 6 + pad && z > B.zMin - 16 - pad && z < zC + 3 + pad) ||
     (z > zC - pad && z < zFar + pad);
   const tree = (x: number, z: number, s: number) => {
@@ -234,11 +232,11 @@ export function World({ cfg }: { cfg: StoreConfig }) {
   const stat = useMemo(() => buildStatic(W), [W]);
   const sc = useMemo(() => buildScatter(W), [W]);
   useEffect(() => () => stat.dispose(), [stat]);
-  const lambert = useMemo(() => new THREE.MeshLambertMaterial({ vertexColors: true }), []);
+  const lambert = useMemo(() => snowable(new THREE.MeshLambertMaterial({ vertexColors: true })), []);
   const geos = useMemo(() => ({ tree: treeGeo(), lamp: lampGeo(), roof: roofGeo(), box: new THREE.BoxGeometry(1, 1, 1), plane: new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2) }), []);
-  const houseMat = useMemo(() => new THREE.MeshLambertMaterial({ map: windowTex(2, 2, true) }), []);
-  const blockMat = useMemo(() => new THREE.MeshLambertMaterial({ map: windowTex(5, 7, false) }), []);
-  const roofMat = useMemo(() => new THREE.MeshLambertMaterial({ color: '#ffffff' }), []);
+  const houseMat = useMemo(() => snowable(new THREE.MeshLambertMaterial({ map: windowTex(2, 2, true) })), []);
+  const blockMat = useMemo(() => snowable(new THREE.MeshLambertMaterial({ map: windowTex(5, 7, false) })), []);
+  const roofMat = useMemo(() => snowable(new THREE.MeshLambertMaterial({ color: '#ffffff' })), []);
   const blobMat = useMemo(() => new THREE.MeshBasicMaterial({ map: blob(), transparent: true, depthWrite: false, opacity: 0.7 }), []);
   const signTex = useMemo(() => stickerSign([{ text: 'simsbury', size: 190 }], { w: 1024, h: 300, brand: true }), []);
   const pylonTex = useMemo(() => stickerSign([{ text: 'simsbury', size: 120 }, { text: 'same shelf · two shoppers', size: 44, font: '700 44px Inter, system-ui' }], { w: 1024, h: 300, brand: true }), []);
@@ -269,6 +267,9 @@ export function World({ cfg }: { cfg: StoreConfig }) {
         </mesh>
       ))}
       <CarPark W={W} />
+      <Transit W={W} />
+      <Air W={W} />
+      <Weather W={W} />
     </group>
   );
 }

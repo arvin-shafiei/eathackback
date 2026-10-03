@@ -51,7 +51,7 @@ export const GEO = {
   body: () => new THREE.CapsuleGeometry(BODY.r, BODY.top - BODY.r * 2, 10, 26).translate(0, BODY.center, 0),
   /** denim dungarees: seat + legs band, front bib, pocket, straps, buttons (vertex coloured, one draw) */
   overalls: () => {
-    const denim = '#3d6fb8', seam = '#2b5594', btn = '#1d1b22', R = BODY.r + 0.012;
+    const denim = '#ffffff', seam = '#c8c8c8', /* white so instanceColor = shopper-type colour shows on the overalls */ btn = '#1d1b22', R = BODY.r + 0.012;
     const parts = [
       colored(new THREE.SphereGeometry(R, 26, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2).translate(0, BODY.r, 0), denim),
       colored(new THREE.CylinderGeometry(R, R, 0.16, 26, 1, true).translate(0, BODY.r + 0.08, 0), denim),

@@ -13,6 +13,7 @@ import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import type { Agent, Persona, Product, StoreConfig } from '../types';
 import { isAI } from '../types';
 import { BEAT, G, TILL, categoryHeight, sampleTimeline, storePlan, type CheckoutPlan, type Timeline } from '../layout';
+import { SHOPPER_SKIN } from './parts';
 import { archColor, archLabel, DECISION, BRAND_A, type Carrier } from '../theme';
 import { archetypeOf } from '../stats';
 import { aiKindOf, AI_KIND, type AiKind, GEO, BODY, TROLLEY, inkHull, trolleyGeometry, bagGeometry } from './parts';
@@ -241,7 +242,10 @@ export function Crowd({ cfg, agents, timelines, beats, timeRef, personas, produc
     const blob = mk(GEO.blob(), new THREE.MeshBasicMaterial({ color: '#7a3550', transparent: true, opacity: 0.18, depthWrite: false }), N);
     const trolley = mk(trolleyGeometry(), new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.35, metalness: 0.25 }), N);
     const c = new THREE.Color();
-    shoppers.forEach((s) => { body.setColorAt(s.si, s.color); c.copy(s.color).multiplyScalar(0.94); arm.setColorAt(s.si * 2, c); arm.setColorAt(s.si * 2 + 1, c); });
+    // every shopper is the same yellow character; the shopper-type colour is on the overalls (legend still reads)
+    const skin = new THREE.Color(SHOPPER_SKIN), skinArm = skin.clone().multiplyScalar(0.94);
+    shoppers.forEach((s) => { body.setColorAt(s.si, skin); overalls.setColorAt(s.si, s.color); arm.setColorAt(s.si * 2, skinArm); arm.setColorAt(s.si * 2 + 1, skinArm); });
+    if (!N) overalls.setColorAt(0, c.set('#fff'));
     if (!N) { body.setColorAt(0, c.set('#fff')); arm.setColorAt(0, c); }
     // carried packs: ONE instanced box for every pick / reject beat, tinted per product (no per-SKU draw calls)
     const packIdx = new Map<number, number>(); const packSize: { w: number; h: number; d: number }[] = [];

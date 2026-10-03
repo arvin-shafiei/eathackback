@@ -15,6 +15,10 @@ POST /api/rearrange/validate  {"before": <planogram>, "after": <planogram>, "age
 POST /api/import     {"ref": "<tesco product link | barcode | open food facts link>"}  -> product draft
 /api/run, /api/agent_run, /api/optimise and /api/placement/* also take "products": [<brand-supplied product>, ...]
 (sim/uploads.py); /api/agent_run takes "exclude": [codes].
+POST /api/customer/profile {"basket": [codes], "visits": [[codes]...], "declared": {"diet": [...], "goals": [...]},
+                            "planogram": <dict>, "engine": "code|jev"} -> persona guess, likes/avoids, habits, persona
+POST /api/customer/route   {"profile": <profile> | "basket": [...], "planogram": <dict>} -> next-visit card
+POST /api/customer/save    {"profile": <profile>} -> data/personas/customers/<id>.json
 GET  /api/runs            list of runs (id, created, models, n_agents, cost)
 GET  /api/runs/<run_id>   full run json
 GET  /api/coefficients    notice-model coefficients with sources
@@ -286,6 +290,16 @@ class H(BaseHTTPRequestHandler):
             b = self._body()
             if path == "/api/personas":
                 return self._send(200, build_persona(b))
+            # ---- customer service (sim/customer.py): profile a real shopper from their basket, then a next-visit card
+            if path.startswith("/api/customer/"):
+                import customer
+                with _store_for({k: v for k, v in b.items() if k != "products"}):
+                    if path == "/api/customer/profile":
+                        return self._send(200, customer.profile(b))
+                    if path == "/api/customer/save":
+                        return self._send(200, customer.save(b))
+                    if path == "/api/customer/route":
+                        return self._send(200, customer.route_card(b))
             with _store_for(b):
                 if path == "/api/run":
                     engine = "mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE)

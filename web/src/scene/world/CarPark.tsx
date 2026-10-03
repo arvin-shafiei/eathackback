@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
+import { snowable } from './wxState';
 import { Geo, cylGeo, mat, rng } from './geo';
 import type { WorldPlan } from './World';
 
@@ -157,7 +158,7 @@ function loop(pts: [number, number][], round = 3.5) {
 export function CarPark({ W }: { W: WorldPlan }) {
   const built = useMemo(() => buildCarPark(W), [W]);
   const carGeo = useMemo(carGeometry, []);
-  const lambert = useMemo(() => new THREE.MeshLambertMaterial({ vertexColors: true }), []);
+  const lambert = useMemo(() => snowable(new THREE.MeshLambertMaterial({ vertexColors: true })), []);
   const blobMat = useMemo(() => new THREE.MeshBasicMaterial({ map: blob(), transparent: true, depthWrite: false }), []);
   const disMat = useMemo(() => new THREE.MeshBasicMaterial({ map: iconTex('\u267F'), transparent: true, depthWrite: false }), []);
   const pcMat = useMemo(() => new THREE.MeshBasicMaterial({ map: iconTex('\u{1F46A}'), transparent: true, depthWrite: false }), []);
