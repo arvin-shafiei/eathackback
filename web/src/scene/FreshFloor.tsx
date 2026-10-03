@@ -244,7 +244,7 @@ function build(F: Fresh) {
     k.box(0.9, 2.05, 0.05, L(base, dx, 1.03, 0.2), '#8cc7b0');
     k.box(0.3, 0.4, 0.02, L(base, dx, 1.55, 0.23), '#d5ecf2', { bucket: 'glass' });
     k.sphere(0.035, L(base, dx + 0.32, 1.0, 0.25), '#c9ced6', 'metal');
-    banners.add(L(base, dx, 2.35, 0.2), 1.1, 0.27, banner.add((c, w, h) => drawSticker(c, w, h, 'consultation room', null, { face: '#ffffff' })));
+    banners.add(L(base, dx, 2.35, 0.4), 1.1, 0.27, banner.add((c, w, h) => drawSticker(c, w, h, 'consultation room', null, { face: '#ffffff' })));
     // counter with a glass screen, staff gap at the door end
     const cx0 = -Lp / 2 + 0.3, cx1 = Lp / 2 - 1.9, cw = cx1 - cx0, ccx = (cx0 + cx1) / 2;
     k.box(cw, 1.02, 0.7, L(base, ccx, 0.51, 2.0), '#f7f7f4', { ink: true });
@@ -259,10 +259,10 @@ function build(F: Fresh) {
     banners.add(L(base, ccx, hy, 2.02), 1.9, 0.48, sUV);
     banners.add(L(base, ccx, hy, 1.98, Math.PI), 1.9, 0.48, sUV);
     const crossUV = board.add(cross);
-    const crossAt = L(base, scx, 2.55, 0.16);
+    const crossAt = L(base, scx, 2.55, 0.42);
     k.box(0.62, 0.62, 0.1, crossAt, '#2f8f5b');
-    boards.add(L(base, scx, 2.55, 0.215), 0.56, 0.35, crossUV);
-    k.box(0.12, 0.42, 0.42, L(base, -Lp / 2 + 0.1, 2.5, 0.35), '#1f9d55', { bucket: 'glow' }); // projecting cross block
+    boards.add(L(base, scx, 2.55, 0.48), 0.56, 0.35, crossUV);
+    k.box(0.12, 0.42, 0.42, L(base, -Lp / 2 + 0.3, 2.5, 0.6), '#1f9d55', { bucket: 'glow' }); // projecting cross block
     // queue rope + posts in front of the counter
     const qz = 3.0, qx0 = cx0 + 0.3, qx1 = Math.min(cx1 - 0.6, qx0 + 3.2);
     for (let x = qx0; x <= qx1 + 1e-3; x += (qx1 - qx0) / 3) {
@@ -344,7 +344,7 @@ function build(F: Fresh) {
     for (let i = 0; i < 6; i++) P.add('sph', L(base, La / 2 - 0.6 - (i % 3) * 0.55, 0.25 + Math.floor(i / 3) * 0.4, D - 2.6 - 0.2).multiply(new THREE.Matrix4().makeScale(0.28, 0.22, 0.2)), jit('#efe9dc', r));
     // banner over the doorway inside the shop + inside the annex
     if (bh.doorZ !== null) {
-      const inX = bh.wallX + (bh.s < 0 ? 0.2 : -0.2);
+      const inX = bh.wallX + (bh.s < 0 ? 0.5 : -0.5);
       const sm = M(inX, 2.75, bh.doorZ, bh.s < 0 ? Math.PI / 2 : -Math.PI / 2);
       banners.add(sm, 1.6, 0.4, banner.add((c, w, h) => drawSticker(c, w, h, 'bakehouse', 'baked here daily', { chip: '🥖', chipColor: '#FE831B' })));
     }
