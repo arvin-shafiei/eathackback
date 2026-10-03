@@ -255,3 +255,76 @@ export function rejections(run: Run, code: string, arm: InsightArm): Rejections 
   const groups = Object.entries(by).map(([mechanism, items]) => ({ mechanism, items })).sort((a, b) => b.items.length - a.items.length);
   return { total, secondary, groups };
 }
+
+// ---- behaviour log: what each human shopper did at this product, straight from the run's events
+
+export type Outcome = 'pick' | 'reject' | 'walk_past' | 'not_noticed';
+export interface BehaviourRow {
+  agent_id: string; persona_id: string; archetype: string; mission: string; slot: string;
+  /** seconds this shopper gives a shelf: the persona's sim_parameters.seconds_at_shelf, an input to the notice model */
+  seconds_at_shelf: number | null;
+  p_notice: number; noticed: boolean;
+  /** jev runs only: the shopper took it off the shelf, and turned it over */
+  picked_up: boolean | null; back_of_pack: boolean | null;
+  decision: Outcome; mechanism: string; feeling: string; sentiment: number | null; reason: string;
+}
+export interface BehaviourGroup { key: string; shown: number; noticed: number; picked_up: number; picked: number; mean_seconds: number | null; mean_sentiment: number | null }
+export interface Behaviour {
+  rows: BehaviourRow[];
+  /** every human shopper in the run, whether or not they passed this shelf */
+  store_shoppers: number;
+  buys_per_100_visits: number | null; buys_per_100_passes: number | null;
+  /** mean seconds at shelf by what the shopper did */
+  seconds: Record<Outcome, { mean: number | null; n: number }>;
+  picked_up: { k: number; n: number } | null;
+  back_of_pack: { k: number; n: number } | null;
+  by_archetype: BehaviourGroup[];
+}
+
+const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
+
+export function behaviour(run: Run, code: string, personas: Record<string, Persona>): Behaviour {
+  const humans = run.agents.filter(armFilter('human'));
+  const rows: BehaviourRow[] = [];
+  for (const a of humans) for (const e of a.events) {
+    if (e.product !== code) continue;
+    const x = e as SimEvent & { picked_up?: unknown; back_of_pack_seen?: unknown };
+    const secs = (e.notice_factors as Record<string, unknown> | undefined)?.seconds_at_shelf;
+    rows.push({
+      agent_id: a.agent_id, persona_id: a.persona_id, archetype: archetypeOf(a, personas), mission: a.mission ?? '', slot: e.slot,
+      seconds_at_shelf: typeof secs === 'number' ? secs : null, p_notice: e.p_notice, noticed: e.noticed,
+      picked_up: typeof x.picked_up === 'boolean' ? x.picked_up : null,
+      back_of_pack: typeof x.back_of_pack_seen === 'boolean' ? x.back_of_pack_seen : null,
+      decision: e.decision, mechanism: e.mechanism ?? '', feeling: e.feeling ?? '',
+      sentiment: typeof e.sentiment === 'number' && !isSecondary(e) ? e.sentiment : null, reason: e.reason ?? '',
+    });
+  }
+  const picked = rows.filter((r) => r.decision === 'pick').length;
+  const noticed = rows.filter((r) => r.noticed);
+  const flag = (k: 'picked_up' | 'back_of_pack') => {
+    const known = noticed.filter((r) => r[k] !== null);
+    return known.length ? { k: known.filter((r) => r[k]).length, n: known.length } : null;
+  };
+  const secsOf = (o: Outcome) => { const xs = rows.filter((r) => r.decision === o && r.seconds_at_shelf !== null).map((r) => r.seconds_at_shelf as number); return { mean: mean(xs), n: xs.length }; };
+  const groups: Record<string, BehaviourRow[]> = {};
+  for (const r of rows) (groups[r.archetype] ??= []).push(r);
+  return {
+    rows, store_shoppers: humans.length,
+    buys_per_100_visits: humans.length ? (picked / humans.length) * 100 : null,
+    buys_per_100_passes: rows.length ? (picked / rows.length) * 100 : null,
+    seconds: { pick: secsOf('pick'), reject: secsOf('reject'), walk_past: secsOf('walk_past'), not_noticed: secsOf('not_noticed') },
+    picked_up: flag('picked_up'), back_of_pack: flag('back_of_pack'),
+    by_archetype: Object.entries(groups).map(([key, g]) => ({
+      key, shown: g.length, noticed: g.filter((r) => r.noticed).length, picked_up: g.filter((r) => r.picked_up).length,
+      picked: g.filter((r) => r.decision === 'pick').length,
+      mean_seconds: mean(g.filter((r) => r.seconds_at_shelf !== null).map((r) => r.seconds_at_shelf as number)),
+      mean_sentiment: mean(g.filter((r) => r.sentiment !== null).map((r) => r.sentiment as number)),
+    })).sort((a, b) => b.shown - a.shown),
+  };
+}
+
+const CSV_COLS: (keyof BehaviourRow)[] = ['agent_id', 'persona_id', 'archetype', 'mission', 'slot', 'seconds_at_shelf', 'p_notice', 'noticed', 'picked_up', 'back_of_pack', 'decision', 'mechanism', 'feeling', 'sentiment', 'reason'];
+export function behaviourCsv(rows: BehaviourRow[]): string {
+  const cell = (v: unknown) => { const s = v === null || v === undefined ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+  return [CSV_COLS.join(','), ...rows.map((r) => CSV_COLS.map((c) => cell(r[c])).join(','))].join('\n');
+}

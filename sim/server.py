@@ -266,6 +266,8 @@ class H(BaseHTTPRequestHandler):
             if path == "/api/personas":
                 return self._send(200, build_persona(b))
             with _run_lock:
+                # the store on screen: every loader in sim/run.py reads this while the lock is held
+                simrun.STORE_VARIANT = b.get("store") if b.get("store") in simrun.STORE_VARIANTS else None
                 if path == "/api/run":
                     engine = "mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE)
                     pids = b.get("persona_ids") or None

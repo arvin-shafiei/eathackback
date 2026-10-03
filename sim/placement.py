@@ -140,7 +140,7 @@ def scan(product, planogram=None, extra_products=None, agents=200, seed=1):
             return 0.0
         s = 0.0
         for w, on_mission, ocean, sp in shoppers:
-            p, _ = notice.p_notice(row=row, facings=facings, pos=pos, n_in_set=n, on_mission=on_mission,
+            p, _ = notice.p_notice(row=simrun.notice_row(store, row), facings=facings, pos=pos, n_in_set=n, on_mission=on_mission,
                                    ocean=ocean, role=prod.get("role", ""), persona_params=sp,
                                    nutriscore=prod.get("nutriscore", ""), category=category)
             s += w * p
@@ -155,7 +155,7 @@ def scan(product, planogram=None, extra_products=None, agents=200, seed=1):
             for fac in options:
                 new, _, displaced = apply_placement(plan, product, sid, idx, fac)
                 _, _, shown_pos, n, _ = _locate(new, catalog, product)
-                candidates.append({"slot": sid, "row": row, "row_name": notice.ROW_NAMES.get(row, str(row)),
+                candidates.append({"slot": sid, "row": row, "row_name": (store.get("row_names") or {}).get(str(row)) or notice.ROW_NAMES.get(row, str(row)),
                                    "pos": idx, "facings": fac, "displaces": displaced,
                                    "notice_rate": notice_rate(row, fac, shown_pos, n), "reach": reach,
                                    "is_current": here and fac == cur_fac})

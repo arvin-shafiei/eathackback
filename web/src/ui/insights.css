@@ -127,3 +127,15 @@
   .insights .ins-head .prod-thumb { width: 60px; height: 74px; }
   .insights .ins-head h2 { font-size: 24px; }
 }
+
+/* ---- behaviour log */
+.insights .ins-beh h3 { align-items: center; }
+.insights .ins-dl { margin-left: auto; height: 34px; padding: 0 14px; font-size: 14px; }
+.insights .beh-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 4px 0 14px; }
+.insights .beh-stats > div { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; background: var(--surface-dim); border: 2px solid var(--line); border-radius: 16px; min-width: 0; }
+.insights .beh-n { font-family: var(--display); font-weight: 800; font-size: 34px; line-height: 1; }
+.insights .beh-line { font-size: 13px; margin-bottom: 6px; }
+.insights .beh-line b { font-family: var(--display); font-weight: 800; font-size: 20px; }
+.insights .ins-beh .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--ink); margin-right: 4px; }
+@media (max-width: 980px) { .insights .beh-stats { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) { .insights .beh-stats { grid-template-columns: 1fr; } }

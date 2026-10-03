@@ -215,16 +215,19 @@ export default function App() {
     setJob({ busy: true, msg: `${UPLOAD_AGENTS} shoppers are walking the store…` });
     try {
       const human = await api.run({ planogram: p, products: extra, agents: UPLOAD_AGENTS, seed: 1, mock: !useLLM, label });
-      register(human);
       let warn: string | null = null;
+      let ai: Run | null = null;
       if (withAI && data) {
         setJob({ busy: true, msg: 'ai shopping agents are reading the feed…' });
         // both arms shop the same range: drop every catalogue product that is no longer on this shelf
         const onShelf = new Set(Object.values(p).flatMap((s) => s.products));
         const exclude = Object.values(data.planogram).flatMap((s) => s.products).filter((c) => !onShelf.has(c));
-        try { register(await api.agentRun({ products: extra, exclude, runs: UPLOAD_AI_RUNS, seed: 1, mock: !useLLM }), true); }
+        try { ai = await api.agentRun({ products: extra, exclude, runs: UPLOAD_AI_RUNS, seed: 1, mock: !useLLM }); }
         catch (e) { setAiRunId(''); warn = `the shoppers finished, but the ai-agent arm failed (${(e as Error).message}), so there is no human vs ai comparison for this run.`; }
       }
+      // both runs land in one render: the physics crowd rebuilds its bodies once, not twice in a row
+      if (ai) register(ai, true);
+      register(human);
       setJob({ busy: false, msg: warn });
       return true;
     } catch (e) {
@@ -279,7 +282,7 @@ export default function App() {
       <div className="stage">
         <Scene
           cfg={data.config} planogram={mode === 'edit' ? plan : basePlan} replayPlan={basePlan} products={products} personas={personas}
-          agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && mode !== 'edit'} speed={speed} duration={duration}
+          agents={agents} timelines={timelines} timeRef={timeRef} playing={playing && mode !== 'edit' && mode !== 'add' && mode !== 'insights'} speed={speed} duration={duration}
           selectedProduct={panel?.kind === 'product' ? panel.code : panel?.kind === 'trace' ? findEvent(panel.agentId, panel.step)?.e?.product ?? null : null}
           onProduct={(code) => setPanel({ kind: 'product', code })}
           selectedAgent={selAgent} onAgent={(id) => setPanel({ kind: 'agent', id })} onEvent={openTrace}

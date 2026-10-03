@@ -4,7 +4,7 @@ import { isAI } from '../types';
 import { archetypeOf, pct } from '../stats';
 import {
   ARM_GAP, DIMENSION_ARM, EMPTY_FUNNEL, LOW_N_ROW, MIN_HUMAN_SHOWN,
-  breakdown, diagnose, diagnosisText, funnels, lostTo, mechLabel, rejections, rowOf, sampleSize, shelfOptions,
+  behaviour, behaviourCsv, breakdown, diagnose, diagnosisText, funnels, lostTo, mechLabel, rejections, rowOf, sampleSize, shelfOptions,
   slotOfProduct, slotProducts, stepRates, unitProducts,
   type Diagnosis, type Dimension, type Funnel, type InsightArm, type LostTo, type Rejections, type SampleSize,
 } from '../insights';
@@ -48,6 +48,7 @@ export function InsightsPanel(props: InsightsProps) {
           <DiagnosisSection d={diagnosis} unit={slot ? slot.split('-r')[0] : undefined} onPlacement={() => placementRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })} />
           <FunnelSection f={own} />
           <BreakdownSection run={run} code={p.code} personas={personas} aiLoaded={sample.ai_loaded} />
+          <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
           <LostToSection run={run} code={p.code} products={products} aiLoaded={sample.ai_loaded} onPickProduct={onPickProduct} />
           <RejectSection run={run} code={p.code} personas={personas} onTrace={onTrace} />
           <NeighbourSection codes={slotProducts(planogram, slot)} me={p.code} slot={slot} human={human} products={products} onPickProduct={onPickProduct} />
@@ -229,6 +230,48 @@ function FunnelSection({ f }: { f: Funnel }) {
         <span className="chip chip-bad">{f.rejected} put it back</span>
         <span className="muted small">of {f.shown} shown · pick rate = {f.picked} ÷ {f.shown}</span>
       </div>
+    </section>
+  );
+}
+
+const secs = (x: number | null) => (x === null ? '–' : `${x.toFixed(1)}s`);
+
+function BehaviourSection({ run, code, name, personas }: { run: Run; code: string; name: string; personas: Record<string, Persona> }) {
+  const b = useMemo(() => behaviour(run, code, personas), [run, code, personas]);
+  const download = () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([behaviourCsv(b.rows)], { type: 'text/csv' }));
+    a.download = `${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}-shopper-log.csv`; a.click();
+  };
+  const per100 = (x: number | null) => (x === null ? '–' : x.toFixed(1));
+  const share = (f: { k: number; n: number } | null) => (f ? <><b>{pct(f.k / f.n)}</b> <span className="muted">{f.k} of {f.n} who noticed it</span></> : <span className="muted">not logged by this engine</span>);
+  return (
+    <section className="tile t-12 ins-beh">
+      <h3>shopper behaviour log <span className="muted">({b.rows.length} human shoppers at this product, one row each)</span>
+        <button className="btn btn-white ins-dl" onClick={download} disabled={!b.rows.length}>download csv</button>
+      </h3>
+      <div className="beh-stats">
+        <div><span className="kpi-l">buying frequency</span><b className="beh-n">{per100(b.buys_per_100_visits)}</b><span className="kpi-s">buys per 100 store visits ({b.store_shoppers} shoppers walked the store)</span></div>
+        <div><span className="kpi-l">per shelf pass</span><b className="beh-n">{per100(b.buys_per_100_passes)}</b><span className="kpi-s">buys per 100 shoppers who stood at it</span></div>
+        <div><span className="kpi-l">time at shelf, buyers</span><b className="beh-n">{secs(b.seconds.pick.mean)}</b><span className="kpi-s">n={b.seconds.pick.n} · walked past {secs(b.seconds.walk_past.mean)} (n={b.seconds.walk_past.n}) · put back {secs(b.seconds.reject.mean)} (n={b.seconds.reject.n})</span></div>
+        <div><span className="kpi-l">picked it up</span><span className="beh-line">{share(b.picked_up)}</span><span className="kpi-l">turned it over</span><span className="beh-line">{share(b.back_of_pack)}</span></div>
+      </div>
+      <table className="kv ins-table">
+        <thead><tr><th>shopper type</th><th>stood at it</th><th>noticed</th><th>picked up</th><th>bought</th><th>time at shelf</th><th>mean sentiment</th></tr></thead>
+        <tbody>
+          {b.by_archetype.map((g) => (
+            <tr key={g.key} className={g.shown < LOW_N_ROW ? 'ins-thin' : ''}>
+              <th><span className="dot" style={{ background: archColor(g.key) }} /> {archLabel(g.key)}</th>
+              <td>{g.shown}</td><td>{g.noticed}</td><td>{b.picked_up ? g.picked_up : '–'}</td><td>{g.picked}</td>
+              <td>{secs(g.mean_seconds)}</td><td>{g.mean_sentiment === null ? 'n/a' : signed(g.mean_sentiment)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="why">
+        time at shelf is the seconds each shopper type gives a shelf (the persona's <code>seconds_at_shelf</code>, an input to the notice model), averaged over the shoppers in each outcome; it is not a measured dwell.
+        buying frequency counts this run only: every shopper makes one trip, so repeat purchase and retention over time are not in these numbers. rows with fewer than {LOW_N_ROW} shoppers are greyed.
+      </p>
     </section>
   );
 }
