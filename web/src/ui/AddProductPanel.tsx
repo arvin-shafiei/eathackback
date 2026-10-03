@@ -153,7 +153,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
     if (!f.category) e.category = 'choose a category.';
     if (price === undefined || price <= 0) e.price_gbp = 'enter a price above £0.';
     for (const [k, label] of NUTRIENTS) if ((num(f[k]) ?? 0) < 0) e[k] = `${label} cannot be negative.`;
-    if (f.category && !pick) e.replaces = 'click the product yours should replace.';
+    if (f.category && !pick) e.replaces = 'pick the product yours replaces.';
     setErrs(e);
     const first = FOCUS_ORDER.find((k) => e[k]);
     if (first) document.getElementById(`addp-${first}`)?.focus();
@@ -176,23 +176,23 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
       <button className="x" type="button" onClick={onClose} aria-label="close add your product">×</button>
       <header className="addp-hero">
       <h2 className="display">put your product on the shelf</h2>
-      <p className="muted">it takes one product's place, 150 shoppers walk the store again, and you see who picked it, who walked past, and why.{' '}
-        <button type="button" className="link-btn" onClick={fillExample}>fill with an example</button>
+      <p className="muted">it replaces one product. 150 shoppers walk the store, and you see who picked it and why the rest didn't.{' '}
+        <button type="button" className="link-btn" onClick={fillExample}>try an example</button>
       </p>
-      {isExample && <p className="addp-hint"><span className="chip chip-yellow">example</span> a made-up snack bar, not a real product. every value in it is invented.</p>}
+      {isExample && <p className="addp-hint"><span className="chip chip-yellow">example</span> a made-up snack bar. nothing in it is real.</p>}
       <div className="addp-import">
-        <label htmlFor="addp-ref">start from a tesco link or a barcode <span className="thin">or type it in below</span></label>
+        <label htmlFor="addp-ref">paste a tesco link or a barcode <span className="thin">or fill it in below</span></label>
         <div className="addp-import-row">
           <input id="addp-ref" value={ref} onChange={(e) => setRef(e.target.value)} placeholder="https://www.tesco.com/groceries/en-GB/products/…  or  5060088701478"
             onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void runImport(); } }} autoComplete="off" />
-          <button type="button" className="btn btn-ink" onClick={() => void runImport()} disabled={imp.busy || !ref.trim()}>{imp.busy ? 'reading…' : 'fetch product'}</button>
+          <button type="button" className="btn btn-ink" onClick={() => void runImport()} disabled={imp.busy || !ref.trim()}>{imp.busy ? 'reading…' : 'fetch'}</button>
         </div>
         <div role="status">
           {imp.err && <p className="notice">{imp.err}</p>}
           {imp.draft && (
             <p className="addp-hint">
-              filled {Object.keys(imp.draft.field_sources ?? {}).length} fields. name, price and image come from the tesco page when you paste a link; ingredients, nutrition and labels come from{' '}
-              {imp.draft.off_url ? <a href={imp.draft.off_url} target="_blank" rel="noreferrer">open food facts</a> : 'open food facts (no entry found for this barcode)'}. check them, then choose where it goes.
+              filled {Object.keys(imp.draft.field_sources ?? {}).length} fields.{' '}
+              {imp.draft.off_url ? <>nutrition and ingredients are from <a href={imp.draft.off_url} target="_blank" rel="noreferrer">open food facts</a>.</> : 'open food facts has no entry for this barcode, so add the back of pack yourself.'} check them, then pick a shelf.
             </p>
           )}
         </div>
@@ -200,16 +200,16 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
       </header>
       <form className="addp-body" onSubmit={submit} noValidate>
         <div className="addp-form">
-        <h3>the pack <span className="thin">what every shopper who notices it sees</span></h3>
+        <h3>the pack <span className="thin">what shoppers see</span></h3>
         <div className="addp-grid">
           <Field id="addp-name" label="name *" err={errs.name}><input {...bind('name')} maxLength={80} required autoComplete="off" /></Field>
           <Field id="addp-brand" label="brand *" err={errs.brand}><input {...bind('brand')} maxLength={60} required autoComplete="off" /></Field>
           <Field id="addp-price_gbp" label="price £ *" err={errs.price_gbp}><input {...bind('price_gbp')} type="number" min="0" step="0.01" inputMode="decimal" required /></Field>
-          <Field id="addp-quantity" label={<>pack size <span className="thin">stored, no shopper reads it</span></>}><input {...bind('quantity')} maxLength={40} placeholder="40 g" /></Field>
-          <Field id="addp-pack_copy" wide label={<>front-of-pack text <span className="thin">{f.pack_copy.length}/300 characters</span></>}>
+          <Field id="addp-quantity" label={<>pack size <span className="thin">not shown to shoppers</span></>}><input {...bind('quantity')} maxLength={40} placeholder="40 g" /></Field>
+          <Field id="addp-pack_copy" wide label={<>front of pack <span className="thin">{f.pack_copy.length}/300</span></>}>
             <textarea {...bind('pack_copy')} maxLength={300} rows={3} />
           </Field>
-          <Field id="addp-labels" wide label={<>labels <span className="thin">comma-separated. shoppers see the first 5 as badges</span></>}>
+          <Field id="addp-labels" wide label={<>labels <span className="thin">comma-separated, first 5 show</span></>}>
             <input {...bind('labels')} placeholder="vegan, organic, gluten-free" />
           </Field>
           <Field id="addp-image" wide label="pack image" err={errs.image}>
@@ -221,20 +221,20 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
                 <input id="addp-image" type="file" accept="image/*" aria-describedby={errs.image ? 'addp-image-err' : 'addp-image-note'}
                   onChange={(e) => { void takeFile(e.target.files?.[0]); e.target.value = ''; }} />
                 {image && <button type="button" className="link-btn" onClick={() => setImage('')}>remove image</button>}
-                <p className="addp-hint" id="addp-image-note">the image is only drawn on the 3D pack. shoppers decide from the text fields. it is shrunk in your browser to {MAX_SIDE_PX}px on its longer side; files over {MAX_FILE_MB} MB are refused.</p>
+                <p className="addp-hint" id="addp-image-note">drawn on the 3d pack only. shoppers decide from the text. max {MAX_FILE_MB} MB.</p>
               </div>
             </div>
           </Field>
         </div>
 
         <h3>back of pack</h3>
-        <p className="addp-hint">only shoppers who turn the pack over read this. ai shopping agents read all of it in their feed.</p>
+        <p className="addp-hint">read by shoppers who turn it over, and by every ai agent.</p>
         <div className="addp-grid">
-          <Field id="addp-ingredients_text" wide label={<>ingredients <span className="thin">{f.ingredients_text.length}/800 characters. shoppers read the first 400, ai agents the first 300</span></>}>
+          <Field id="addp-ingredients_text" wide label={<>ingredients <span className="thin" title="shoppers read the first 400 characters, ai agents the first 300">{f.ingredients_text.length}/800</span></>}>
             <textarea {...bind('ingredients_text')} maxLength={800} rows={3} />
           </Field>
           <div className="addp-f wide">
-            <span className="addp-lbl">per 100g <span className="thin">optional. an empty box is sent as unknown, not as 0. energy only feeds the claim checker</span></span>
+            <span className="addp-lbl">per 100g <span className="thin">optional. blank means unknown</span></span>
             <div className="addp-nutri">
               {NUTRIENTS.map(([k, label]) => (
                 <Field key={k} id={`addp-${k}`} label={label} err={errs[k]}><input {...bind(k)} type="number" min="0" step="any" inputMode="decimal" /></Field>
@@ -242,13 +242,13 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
             </div>
           </div>
           <Field id="addp-allergens" label={<>allergens <span className="thin">comma-separated</span></>}><input {...bind('allergens')} placeholder="milk, peanuts" /></Field>
-          <Field id="addp-nutriscore" label={<>nutri-score <span className="thin">optional. only ai agents read it</span></>}>
+          <Field id="addp-nutriscore" label={<>nutri-score <span className="thin">ai agents only</span></>}>
             <select {...bind('nutriscore')}><option value="">not given</option>{['a', 'b', 'c', 'd', 'e'].map((s) => <option key={s} value={s}>{s}</option>)}</select>
           </Field>
         </div>
 
         <h3>where it goes</h3>
-        <p className="addp-hint">every shelf is full, so a new product takes an existing product's place. pick the one to replace.</p>
+        <p className="addp-hint">the shelves are full. pick the product yours replaces.</p>
         <div className="addp-grid">
           <Field id="addp-category" label="category *" err={errs.category}>
             <select {...bind('category')} required><option value="">choose…</option>{categories.map((c) => <option key={c} value={c}>{catLabel(c)}</option>)}</select>
@@ -290,7 +290,7 @@ export function AddProductPanel({ cfg, planogram, products, useLLM, onUseLLM, bu
           <div className="addp-foot">
             <button className="btn btn-brand" type="submit" disabled={busy}>{busy ? 'shoppers are walking…' : 'send the shoppers'}</button>
             <label className="toggle llm" title="off = mock heuristic, free. on = real llm calls via openrouter (costs money, cached)"><input type="checkbox" checked={useLLM} onChange={(e) => onUseLLM(e.target.checked)} /> use llm (costs)</label>
-            <p className="addp-hint">{useLLM ? 'on: every decision is a real llm call and costs money.' : 'off: decisions come from a free mock heuristic and the reasons are canned.'}</p>
+            <p className="addp-hint">{useLLM ? 'on: real model calls, costs money.' : 'off: free mock shoppers, canned reasons.'}</p>
             <div role="status">{msg && <p className={`notice ${busy ? 'ok' : ''}`}>{msg}</p>}</div>
           </div>
         </aside>

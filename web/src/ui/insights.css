@@ -13,7 +13,7 @@
 .insights .ins-top { position: relative; padding: 20px 22px 16px; background: #fff; border-bottom: 2px solid var(--ink); border-radius: var(--r-card) var(--r-card) 0 0; }
 .insights .ins-head { align-items: center; padding-right: 48px; }
 .insights .ins-head .prod-thumb { width: 84px; height: 104px; }
-.insights .ins-head h2 { font-size: 32px; }
+.insights .ins-head h2 { font-size: 32px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .insights .ins-head-main { min-width: 0; flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: end; }
 .insights .ins-head-main > * { grid-column: 1; }
 .insights .ins-select { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
@@ -43,9 +43,7 @@
 .insights .kpi-l { font-size: 12px; font-weight: 800; color: var(--muted); }
 .insights .kpi-n { font-family: var(--display); font-weight: 800; font-size: 46px; line-height: 1; letter-spacing: -0.02em; }
 .insights .kpi-s { font-size: 11.5px; line-height: 1.4; color: var(--muted); font-weight: 600; margin-top: 4px; }
-.insights .kpi.is-hero { background: var(--brand); color: #fff; box-shadow: 0 4px 0 var(--magenta); }
-.insights .kpi.is-hero .kpi-l, .insights .kpi.is-hero .kpi-s { color: #fff; }
-.insights .kpi.is-hero .kpi-n { font-size: 60px; text-shadow: 0 3px 0 rgba(20, 16, 20, .22); }
+.insights .kpi.is-hero .kpi-n { font-size: 60px; }
 .insights .kpi.is-ai .kpi-n { color: var(--ai); }
 .insights .kpi-vs { align-self: flex-start; margin-top: 8px; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 999px; border: 2px solid var(--ink); background: #fff; }
 .insights .kpi-vs.is-up { background: #dcfce7; }
@@ -54,7 +52,7 @@
 
 /* ---- diagnosis */
 .insights .ins-diag { background: #fff7c2; }
-.insights .ins-diagnosis { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.28; margin: 10px 0 6px; max-width: 62em; }
+.insights .ins-diagnosis { font-family: var(--display); font-weight: 700; font-size: 22px; line-height: 1.28; margin: 0 0 6px; max-width: 46em; }
 .insights .ins-diagnosis.ins-arm { font-size: 16px; color: var(--ai); }
 .insights .ins-how { margin-top: 8px; font-size: 12px; line-height: 1.55; color: var(--muted); }
 .insights .ins-how summary { cursor: pointer; font-weight: 700; color: var(--magenta); }
@@ -67,9 +65,9 @@
 .insights .fn-label b { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1; color: var(--ink); margin-right: 4px; }
 .insights .fn-track { height: 44px; border-radius: 12px; background: var(--surface-dim); border: 2px solid var(--ink); overflow: hidden; }
 .insights .fn-fill { height: 100%; min-width: 3px; background: var(--ink); border-right: 2px solid var(--ink); transition: width 420ms cubic-bezier(.16, 1, .3, 1); }
-.insights .fn-noticed .fn-fill { background: var(--magenta); }
-.insights .fn-considered .fn-fill { background: var(--hot); }
-.insights .fn-picked .fn-fill { background: var(--brand); }
+.insights .fn-noticed .fn-fill { background: color-mix(in srgb, var(--ink) 68%, #fff); }
+.insights .fn-considered .fn-fill { background: color-mix(in srgb, var(--ink) 42%, #fff); }
+.insights .fn-picked .fn-fill { background: var(--hot); }
 .insights .fn-conv { font-size: 12px; font-weight: 600; color: var(--muted); }
 .insights .fn-conv b { font-family: var(--display); font-weight: 800; font-size: 16px; color: var(--ink); }
 .insights .ins-drop { color: var(--bad); font-weight: 800; margin-left: 4px; }
@@ -105,7 +103,7 @@
 .insights .ins-band { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 14px 2px 12px; }
 .insights .ins-band h3 { font-size: 26px; margin: 0; }
 .insights .ins-band .toggle { height: auto; padding: 6px 12px; background: #fff; border: 2px solid var(--ink); border-radius: 999px; box-shadow: var(--ledge-chip); }
-.insights .prov { margin: 16px 20px 18px; }
+.insights .prov { margin: 14px 22px 18px; padding-top: 0; border-top: 0; }
 
 @media (max-width: 1360px) { .card.insights { top: 140px; } }
 @media (max-width: 980px) {
