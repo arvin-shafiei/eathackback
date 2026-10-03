@@ -24,6 +24,8 @@ export interface InsightsProps extends PlacementSectionProps {
   onUseLLM: (v: boolean) => void;
   onPickProduct: (code: string) => void;
   onTrace: (agentId: string, step: number) => void;
+  /** open the shelf rearrangement for this product's unit */
+  onRearrange?: () => void;
   onClose: () => void;
 }
 
