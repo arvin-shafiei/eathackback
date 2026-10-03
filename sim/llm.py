@@ -127,6 +127,7 @@ def chat_json(model: str, system: str, user: str, *, max_tokens: int = 250,
                 continue
             text = j["choices"][0]["message"].get("content") or ""
             usage = j.get("usage", {}) or {}
+            usage["model"] = j.get("model")  # routed model (e.g. for typesafe/jev-router)
             cost = float(usage.get("cost") or 0.0)
             with _lock:
                 _session_cost["usd"] += cost

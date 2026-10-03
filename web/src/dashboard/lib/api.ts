@@ -25,7 +25,7 @@ async function probe(base: string): Promise<{ ok: boolean; why: string; n?: numb
     if (!Array.isArray(j)) return { ok: false, why: 'answered, but /personas is not a list: not the sim server' };
     return { ok: true, why: '', n: j.length };
   } catch (e) {
-    return { ok: false, why: (e as Error).name === 'AbortError' ? 'timed out after 3 s' : 'no answer (server not running?)' };
+    return { ok: false, why: (e as Error).name === 'AbortError' ? 'timed out after 3 s' : 'no answer, or blocked by CORS: not the sim server (is it running?)' };
   }
 }
 

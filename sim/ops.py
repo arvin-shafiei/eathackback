@@ -501,7 +501,7 @@ class OpsSim:
         for co in store["checkouts"]:
             self.lanes.append({"id": co["id"], "type": "staffed" if co["type"] == "staffed" else "self",
                                "bank": co.get("bank", "self"), "x": co["x"], "z": co["z"], "queue": [], "cur": None,
-                               "cur_pred_end": 0.0, "busy_s": 0.0, "served": 0})
+                               "cur_pred_end": 0.0, "busy_s": 0.0, "served": 0, "inbound": []})
         per_att = P("sco_terminals_per_attendant")
         self.attendants = {}
         for b in {l["bank"] for l in self.lanes if l["type"] == "self"}:
@@ -676,7 +676,10 @@ class OpsSim:
                 tab[k] = {"p": fb[k[2]], "source": "fallback (params_extra sco_accept_fallback, --no-jev)"}
                 meta["fallback_used"] += 1
             return
+        os.environ["JEV_BACKEND"] = "typesafe"  # TypeSafe Jev only: never the OpenRouter "jev-router" fallback in sim/jev.py
         import jev as J
+        if hasattr(J, "_backend"):
+            J._backend["active"] = "typesafe"
         pmap = {p["id"]: p for p in self.personas}
         budget = max(0, self.jev_max_calls - meta["calls"] - meta["cached"])
         ask_now, rest = todo[:budget], todo[budget:]
@@ -688,6 +691,8 @@ class OpsSim:
             st = self.jev_state(pmap[pid], mission, b, loose, age)
             try:
                 r = J.ask(st, {"use_sco": JEV_SCO_Q}, tag=f"ops_sco:{pid}:{mission}:{b}:{int(loose)}:{int(age)}")
+                if r.get("backend", "typesafe") != "typesafe" or r.get("calibrated") is False:
+                    raise RuntimeError("non-TypeSafe backend answered; refused (ops uses TypeSafe Jev only)")
                 return k, {"p": round(float(r["answers"]["use_sco"]["noul"]), 4), "source": "jev",
                            "jev_model": r.get("model"), "cache_key": r["cache_key"], "cached": r["cached"],
                            "cost_usd": r["cost"]}
@@ -834,6 +839,7 @@ class OpsSim:
                 if self.on_oos(s, c, uid):
                     taken += 1  # substitute went in the basket
             yield nslots * s["secs"]
+            s["waypoints"][-1].append(round(nslots * s["secs"]))  # 5th element = dwell seconds at this bay
             mult = P("spill_prob_multiplier_on_collision") if bumped else 1
             if hu(s["key"], "spill", uid) < p_spill_visit * mult:
                 self.new_spill(env.now, uid, seg, up, s, bumped)
@@ -989,7 +995,8 @@ class OpsSim:
     def lane_wait(self, lane):
         now = self.env.now
         w = max(0.0, lane["cur_pred_end"] - now) if lane["cur"] else 0.0
-        return w + sum(self.predict(q, lane["type"]) for q in lane["queue"])
+        # a router knows whom it has already sent (inbound, still walking); a shopper picking by eye does not
+        return w + sum(self.predict(q, lane["type"]) for q in lane["queue"] + lane["inbound"])
 
     def choose_lane(self, s, pos):
         P = self.P
@@ -1005,7 +1012,7 @@ class OpsSim:
         s["accepts_sco"] = accepts
         lanes = [l for l in self.lanes if l["type"] == "staffed" or accepts]
         dist = {l["id"]: self.geo.dist(pos, (l["x"], l["z"], None)) for l in lanes}
-        if self.routing == "smart":
+        if self.routing in ("smart", "smart_blind"):
             def cost(l):
                 return dist[l["id"]] / self.walk + self.lane_wait(l) + self.predict(s, l["type"])
             lane = min(lanes, key=lambda l: (cost(l), l["id"]))
@@ -1020,10 +1027,14 @@ class OpsSim:
         else:  # nearest
             lane = min(lanes, key=lambda l: (dist[l["id"]], l["id"]))
         s["lane"], s["lane_type"] = lane["id"], lane["type"]
+        if self.routing in ("smart", "smart_wait"):
+            lane["inbound"].append(s)
         return lane
 
     def join(self, lane, s):
         env = self.env
+        if s in lane["inbound"]:
+            lane["inbound"].remove(s)
         s["t_join"] = env.now
         s["q_ahead"] = len(lane["queue"]) + (1 if lane["cur"] else 0)
         lane["queue"].append(s)
@@ -1471,6 +1482,7 @@ class OpsSim:
             "shoppers": {"value": len(sh), "trace": "arrivals: Poisson per minute, rate = store_customers_per_week x shopping_trips_by_day_share[dow] x weekday_shopping_trip_start_share_by_hour[h - lag]/60",
                          "params": ["store_customers_per_week", "shopping_trips_by_day_share", "weekday_shopping_trip_start_share_by_hour", "trip_start_to_arrival_lag_min"]},
             "missions": dict(collections.Counter(s["mission"] for s in sh)),
+            "traffic": self.traffic_kpis(sh, paid),
             "checkout": {
                 "routing": self.routing,
                 "served": len(paid), "abandoned": len(ab), "abandon_rate": round(len(ab) / max(1, len(queued)), 4),
@@ -1499,7 +1511,8 @@ class OpsSim:
                 "oos_events": self.c["oos_events"], "oos_reactions": dict(react),
                 "shoppers_hit_oos_share": round(len(hit) / max(1, len(sh)), 4),
                 "shoppers_hit_oos_benchmark": {"value": P("shoppers_encountering_oos"), "source": "params.json shoppers_encountering_oos (Gruen & Corsten 2008)"},
-                "sku_minutes_oos_share": round(oos_s / sku_open_s, 4),
+                "sku_minutes_oos_share": round(statistics.mean(len(f["empty"]) / len(self.cap) for fr in by_day_frames.values() for f in fr), 4) if by_day_frames else None,
+                "sku_minutes_oos_trace": "mean over trading-hour timeline frames of (SKUs with shelf = 0) / SKUs",
                 "sku_oos_share_by_day": {self.dows[d]: round(statistics.mean(len(f["empty"]) / len(self.cap) for f in fr), 4)
                                          for d, fr in sorted(by_day_frames.items())},
                 "oos_events_by_day": {self.dows[d]: n for d, n in sorted(oos_by_day.items())},
@@ -1555,7 +1568,30 @@ class OpsSim:
                         "offrange_items_gbp_estimate": round(getattr(self, "offrange_rev", 0.0), 2),
                         "cafe_gbp": round(getattr(self, "cafe_rev", 0.0), 2)},
         }
+        for blk in K.values():  # register every parameter a KPI names, so params_used carries its source
+            if isinstance(blk, dict):
+                for n in blk.get("params", []):
+                    if n in self.P.all:
+                        self.P(n)
         return K
+
+    def traffic_kpis(self, sh, paid):
+        P = self.P
+        mix = P("mission_mix_by_daypart")
+        up = P("after_school_treat_uplift")
+        by_h = collections.defaultdict(collections.Counter)
+        for x in sh:
+            by_h[int((x["t_arrive"] % DAY_S) // 3600)][x["mission"]] += 1
+        wait_h = collections.defaultdict(list)
+        for x in paid:
+            wait_h[int((x["t_join"] % DAY_S) // 3600)].append(x["wait_s"])
+        return {"arrivals_by_hour": {f"{h:02d}": sum(c.values()) for h, c in sorted(by_h.items())},
+                "missions_by_hour": {f"{h:02d}": dict(c) for h, c in sorted(by_h.items())},
+                "mean_wait_s_by_hour": {f"{h:02d}": round(statistics.mean(v), 1) for h, v in sorted(wait_h.items())},
+                "after_school_treat_uplift": {"param": up, "as_applied": round(mix["15-17"]["treat"] / mix["14-15"]["treat"], 2),
+                                              "note": "applied through mission_mix_by_daypart (15-17 treat share = 2x the 14-15 share), not multiplied again"},
+                "params": ["mission_mix_by_daypart", "after_school_treat_uplift", "weekday_shopping_trip_start_share_by_hour",
+                           "school_escort_trip_start_share_15h", "commute_trip_start_share_17h"]}
 
     def output(self, out_id):
         K = self.kpis()
@@ -1586,6 +1622,7 @@ class OpsSim:
                          "source": GEOM["source"]},
             "timeline": {"frame_s": 60 * self.compress, "n": len(self.frames),
                          "fill_slot_order": self.slot_order, "empty_product_order": self.prod_order,
+                         "shopper_doc": "shoppers[].waypoints = [t_arrive, x, z, what(unit id|lane id|cafe|exit), dwell_s (bays only)]; theatre.scans[i] = time item i of basket was scanned (then off-range items)",
                          "frame_doc": "seg = shoppers per aisle segment (W<n> walkway, FRONT/BACK cross-aisles, TILLS, CAFE); q = people at each lane incl. in service; fill[i] = shelf units / capacity of slot fill_slot_order[i]; empty = indices into empty_product_order with shelf 0; staff = position + task; spills = active spill ids",
                          "frames": self.frames},
             "events": self.events,
@@ -1600,6 +1637,7 @@ class OpsSim:
 def summary_row(K):
     c, s, sp = K["checkout"], K["stock"], K["spills"]
     return {"mean_wait_s": c["mean_wait_s"], "p90_wait_s": c["p90_wait_s"], "abandon_rate": c["abandon_rate"],
+            "mean_time_in_checkout_s": c["mean_time_in_checkout_s"],
             "abandoned": c["abandoned"], "served": c["served"], "throughput_per_open_hour": c["throughput_per_open_hour"],
             "share_self_checkout": c["share_self_checkout"], "oos_events": s["oos_events"],
             "sku_minutes_oos_share": s["sku_minutes_oos_share"], "shoppers_hit_oos_share": s["shoppers_hit_oos_share"],
@@ -1608,8 +1646,22 @@ def summary_row(K):
             "spills": sp["spills"], "mean_spill_response_s": sp["mean_response_s"]}
 
 
+ARMS = {  # arm -> (routing, restock, what it is)
+    "A": ("smart", "priority_bay", "smart routing + bay-priority restock (the proposal)"),
+    "B": ("jsq", "priority_bay", "baseline routing: join shortest visible queue, nearest on ties"),
+    "C": ("smart", "fifo", "baseline restock: first SKU under the trigger first"),
+    "D": ("nearest", "priority_bay", "baseline routing: nearest lane shopper accepts"),
+    "E": ("smart_wait", "priority_bay", "router variant: least predicted work ahead (ignores own service time)"),
+    "F": ("smart_blind", "priority_bay", "ablation: smart cost but router does not count shoppers it already sent"),
+    "G": ("smart", "priority", "restock variant: spec-literal SKU score P(OOS before next round) x demand x margin"),
+}
+KEYS = ["mean_wait_s", "p90_wait_s", "abandon_rate", "mean_time_in_checkout_s", "served", "share_self_checkout",
+        "oos_events", "sku_minutes_oos_share", "shoppers_hit_oos_share", "lost_sales_gbp", "restock_tasks",
+        "restocker_utilisation", "orders", "spills", "mean_spill_response_s"]
+
+
 def paired(a, b):
-    """Mean paired difference b - a with a t-based 95% CI (n seeds)."""
+    """Mean paired difference b - a with a t-based 95% CI over seeds (common random numbers)."""
     d = [y - x for x, y in zip(a, b) if x is not None and y is not None]
     if not d:
         return None
@@ -1621,70 +1673,58 @@ def paired(a, b):
     return {"mean": round(m, 4), "ci95": [round(m - tq * se, 4), round(m + tq * se, 4)], "n": len(d)}
 
 
-def write_results(arms, seeds, args, rows, jev_meta, files, staff):
-    def g(arm, k):
-        return [rows[(arm, s)][k] for s in seeds]
+def verdict(dd, lower_is_better=True):
+    if dd is None or dd["ci95"] is None:
+        return "n/a (needs 2+ seeds)"
+    lo, hi = dd["ci95"]
+    if hi < 0:
+        return "better" if lower_is_better else "worse"
+    if lo > 0:
+        return "worse" if lower_is_better else "better"
+    return "no clear difference (CI spans 0)"
 
-    def mean(arm, k):
-        v = [x for x in g(arm, k) if x is not None]
+
+def report(rows, seeds, arms, label, base, cands, keys):
+    def g(a, k):
+        return [rows[(a, s)][k] for s in seeds]
+
+    def mean(a, k):
+        v = [x for x in g(a, k) if x is not None]
         return round(statistics.mean(v), 3) if v else None
-
-    def verdict(dd, lower_is_better=True, unit=""):
-        if dd is None or dd["ci95"] is None:
-            return "not enough seeds for a CI"
-        lo, hi = dd["ci95"]
-        if hi < 0:
-            return "better" if lower_is_better else "worse"
-        if lo > 0:
-            return "worse" if lower_is_better else "better"
-        return "no clear difference (CI spans 0)"
-
-    L = []
-    L.append("# store ops: results (sim/ops.py)\n")
-    L.append(f"*Generated {dt.datetime.now().isoformat(timespec='minutes')} by `python3 sim/ops.py {' '.join(sys.argv[1:])}`. "
-             f"Seeds {seeds} (common random numbers: every arm sees the same shoppers, baskets, service-time noise and draws), "
-             f"{args.days} trading day(s) from {args.day} {args.hours or '08-22'}, staff {staff}. Day files: {', '.join('`'+f+'`' for f in files)}.*\n")
-    L.append("Every number below comes out of the event log of a run. Parameters and their sources are in each day file's "
-             "`params_used` (`data/ops/params.json` + `data/sim/ops/params_extra.json`). Low-confidence parameters are labelled assumptions there.\n")
-    names = {"A": "smart routing + priority restock", "B": "JSQ routing (baseline) + priority restock",
-             "C": "smart routing + FIFO restock (baseline)", "D": "nearest-lane routing + priority restock"}
-    L.append("## arms (mean over seeds)\n")
-    keys = ["mean_wait_s", "p90_wait_s", "abandon_rate", "served", "throughput_per_open_hour", "share_self_checkout",
-            "oos_events", "sku_minutes_oos_share", "shoppers_hit_oos_share", "lost_sales_gbp", "restock_tasks",
-            "restocker_utilisation", "orders", "spills", "mean_spill_response_s"]
-    L.append("| KPI | " + " | ".join(f"{a}: {names[a]}" for a in arms) + " |")
-    L.append("|---|" + "---|" * len(arms))
-    for k in keys:
-        L.append(f"| {k} | " + " | ".join(str(mean(a, k)) for a in arms) + " |")
-    L.append("")
-    out = {}
-    L.append("## 1. does smart checkout routing help? (A vs B, and A vs D)\n")
-    for other in [x for x in ("B", "D") if x in arms]:
-        L.append(f"**A vs {other} ({names[other]})**, paired over seeds, difference = A - {other}:\n")
-        for k, lib in (("mean_wait_s", True), ("p90_wait_s", True), ("abandon_rate", True), ("throughput_per_open_hour", False)):
-            dd = paired(g(other, k), g("A", k))
-            out[f"A-{other}:{k}"] = dd
-            L.append(f"- {k}: {other} {mean(other, k)} -> A {mean('A', k)}; diff {dd['mean'] if dd else None}, "
-                     f"95% CI {dd['ci95'] if dd else None} -> **{verdict(dd, lib)}**")
+    L, diffs = [], {}
+    for a in cands:
+        L.append(f"**{a} vs {base}** ({ARMS[a][2]} vs {ARMS[base][2]}), difference = {a} - {base}, paired over seeds {seeds}:\n")
+        L.append(f"| KPI | {base} | {a} | diff | 95% CI | verdict for {a} |")
+        L.append("|---|---|---|---|---|---|")
+        for k, lib in keys:
+            dd = paired(g(base, k), g(a, k))
+            diffs[f"{a}-{base}:{k}"] = dd
+            L.append(f"| {k} | {mean(base, k)} | {mean(a, k)} | {dd['mean'] if dd else ''} | {dd['ci95'] if dd else ''} | {verdict(dd, lib)} |")
         L.append("")
-    L.append("## 2. does priority restocking help? (A vs C)\n")
-    for k, lib in (("oos_events", True), ("sku_minutes_oos_share", True), ("shoppers_hit_oos_share", True),
-                   ("lost_sales_gbp", True), ("restock_tasks", True)):
-        dd = paired(g("C", k), g("A", k))
-        out[f"A-C:{k}"] = dd
-        L.append(f"- {k}: FIFO {mean('C', k)} -> priority {mean('A', k)}; diff {dd['mean'] if dd else None}, "
-                 f"95% CI {dd['ci95'] if dd else None} -> **{verdict(dd, lib)}**")
-    L.append("")
-    return L, out
+    return L, diffs
 
 
-def run_one(args, routing, restock, seed, shared, write=True, tag=""):
+def arms_table(rows, seeds, arms):
+    def mean(a, k):
+        v = [rows[(a, s)][k] for s in seeds if rows[(a, s)][k] is not None]
+        return round(statistics.mean(v), 3) if v else None
+    L = ["| KPI | " + " | ".join(f"{a}" for a in arms) + " |", "|---|" + "---|" * len(arms)]
+    for k in KEYS:
+        L.append(f"| {k} | " + " | ".join(str(mean(a, k)) for a in arms) + " |")
+    return L
+
+
+def run_one(args, routing, restock, seed, shared, write=True, tag="", staff_override=None, days=None):
     staff = dict(kv.split("=") for kv in args.staff.split(",")) if args.staff else {}
     staff = {k: int(v) for k, v in staff.items()}
+    staff.update(staff_override or {})
     hours = [int(x) for x in args.hours.split("-")] if args.hours else None
-    sim = OpsSim(seed=seed, days=args.days, dow=args.day, routing=routing, restock=restock, staff=staff,
+    sim = OpsSim(seed=seed, days=days or args.days, dow=args.day, routing=routing, restock=restock, staff=staff,
                  compress=args.compress, use_jev=not args.no_jev, jev_max_calls=args.jev_max_calls, hours=hours,
                  verbose=False, shared=shared)
+    for kv in args.set:
+        n, v = kv.split("=", 1)
+        sim.P.overrides[n] = json.loads(v)
     sim.run()
     out_id = f"{dt.datetime.now().strftime('%Y%m%d_%H%M%S')}_s{seed}_{routing}_{restock}{tag}"
     o = sim.output(out_id)
@@ -1700,18 +1740,20 @@ def run_one(args, routing, restock, seed, shared, write=True, tag=""):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--day", nargs="?", const="Sat", default="Sat", help="day of week to simulate (default Sat, the busiest)")
-    ap.add_argument("--days", type=int, default=1, help="consecutive trading days (manager orders land on day 2+)")
+    ap.add_argument("--days", type=int, default=1, help="consecutive trading days (ambient orders land 2 days later)")
     ap.add_argument("--hours", default=None, help="e.g. 15-17 to simulate only a window (default params open_hours)")
     ap.add_argument("--compress", type=int, default=1, help="timeline frame every N minutes (physics unchanged)")
-    ap.add_argument("--staff", default="restock=4,clean=2,guard=1")
-    ap.add_argument("--routing", choices=["smart", "smart_wait", "jsq", "nearest", "baseline"], default="smart")
+    ap.add_argument("--staff", default="restock=6,clean=2,guard=1")
+    ap.add_argument("--routing", choices=["smart", "smart_wait", "smart_blind", "jsq", "nearest", "baseline"], default="smart")
     ap.add_argument("--restock", choices=["priority_bay", "priority", "fifo"], default="priority_bay")
     ap.add_argument("--seed", type=int, default=1)
-    ap.add_argument("--compare", action="store_true", help="run arms A-D over --seeds and write RESULTS.md")
+    ap.add_argument("--compare", action="store_true", help="run arms A-G over --seeds (CRN) and write RESULTS.json + RESULTS.auto.md")
     ap.add_argument("--seeds", default="1,2,3")
+    ap.add_argument("--arms", default="A,B,C,D,E,F,G")
+    ap.add_argument("--sweep-restock", default="4,6,8", help="with --compare: restocker counts for the A vs C staffing sweep (1 day)")
     ap.add_argument("--no-jev", action="store_true")
     ap.add_argument("--jev-max-calls", type=int, default=400)
-    ap.add_argument("--set", action="append", default=[], help="override a param: name=json (sensitivity)")
+    ap.add_argument("--set", action="append", default=[], help='override a param for sensitivity: name=<json>, e.g. shelf_capacity_multiplier=1')
     args = ap.parse_args()
     if args.routing == "baseline":
         args.routing = "jsq"
@@ -1719,37 +1761,70 @@ def main():
     shared = OpsSim.build_shared(not args.no_jev)
     if not args.compare:
         sim, o, path = run_one(args, args.routing, args.restock, args.seed, shared)
-        K = o["kpis"]
-        print(json.dumps({"file": os.path.relpath(path, ROOT), "summary": summary_row(K), "jev": {k: v for k, v in o["jev"].items() if k in ("calls", "cached", "cost_usd", "fallback_used")},
+        print(json.dumps({"file": os.path.relpath(path, ROOT), "summary": summary_row(o["kpis"]),
+                          "jev": {k: v for k, v in o["jev"].items() if k in ("calls", "cached", "cost_usd", "fallback_used", "halt")},
                           "wall_s": round(time.time() - t0, 1), "size_mb": round(os.path.getsize(path) / 1e6, 2)}, indent=1))
         return
     seeds = [int(x) for x in args.seeds.split(",")]
-    arms = {"A": ("smart", "priority"), "B": ("jsq", "priority"), "C": ("smart", "fifo"), "D": ("nearest", "priority")}
-    rows, files, results = {}, [], {}
+    arms = [a.strip() for a in args.arms.split(",")]
+    rows, results = {}, {}
     for s in seeds:
-        for a, (ro, re_) in arms.items():
-            write = (s == seeds[0] and a in ("A", "B"))  # day files for the replay: smart vs baseline routing, first seed
-            sim, o, path = run_one(args, ro, re_, s, shared, write=write, tag=f"_{a}")
+        for a in arms:
+            ro, re_, _ = ARMS[a]
+            sim, o, _p = run_one(args, ro, re_, s, shared, write=False)
             rows[(a, s)] = summary_row(o["kpis"])
-            results[f"{a}|{s}"] = {"arm": a, "seed": s, "routing": ro, "restock": re_, "kpis": o["kpis"] | {"security": {k: v for k, v in o["kpis"]["security"].items() if k != "incidents"}}}
-            if path:
-                files.append(os.path.relpath(path, ROOT))
+            K = o["kpis"]
+            results[f"{a}|{s}"] = {"arm": a, "seed": s, "routing": ro, "restock": re_,
+                                   "kpis": {**K, "security": {k: v for k, v in K["security"].items() if k != "incidents"}}}
             print(f"[{a} seed {s}] {json.dumps(rows[(a, s)])} ({sim.wall_s:.1f}s)", flush=True)
-    L, diffs = write_results(list(arms), seeds, args, rows, shared["jev_meta"], files, args.staff)
-    jm = shared["jev_meta"]
-    tab = shared["jev_table"]
+    sweep = {}
+    for n in [int(x) for x in args.sweep_restock.split(",") if x]:
+        for pol in ("priority_bay", "fifo"):
+            for s in seeds:
+                sim, o, _p = run_one(args, "smart", pol, s, shared, write=False, staff_override={"restock": n}, days=1)
+                sweep[(n, pol, s)] = summary_row(o["kpis"])
+            print(f"[sweep restock={n} {pol}] {json.dumps({k: round(statistics.mean(sweep[(n, pol, s)][k] for s in seeds), 4) for k in ('sku_minutes_oos_share', 'shoppers_hit_oos_share', 'lost_sales_gbp', 'restocker_utilisation')})}", flush=True)
+    L = [f"# store ops: auto results\n", f"`python3 sim/ops.py {' '.join(sys.argv[1:])}` · seeds {seeds} · {args.days} day(s) from {args.day} · staff {args.staff} · {dt.datetime.now().isoformat(timespec='minutes')}\n",
+         "## arms (mean over seeds)\n", *[f"- {a}: {ARMS[a][0]} routing + {ARMS[a][1]} restock: {ARMS[a][2]}" for a in arms], ""]
+    L += arms_table(rows, seeds, arms) + [""]
+    chk = [("mean_wait_s", True), ("p90_wait_s", True), ("abandon_rate", True), ("mean_time_in_checkout_s", True), ("served", False)]
+    stk = [("sku_minutes_oos_share", True), ("shoppers_hit_oos_share", True), ("oos_events", True), ("lost_sales_gbp", True), ("restock_tasks", True)]
+    diffs = {}
+    if "B" in arms:
+        L.append("## checkout routing vs baseline B (JSQ)\n")
+        l2, d2 = report(rows, seeds, arms, "routing", "B", [a for a in ("A", "E", "F", "D") if a in arms], chk)
+        L += l2
+        diffs.update(d2)
+    if "C" in arms:
+        L.append("## restocking vs baseline C (FIFO)\n")
+        l2, d2 = report(rows, seeds, arms, "restock", "C", [a for a in ("A", "G") if a in arms], stk)
+        L += l2
+        diffs.update(d2)
+    if sweep:
+        L.append("## restocker staffing sweep (1 day, smart routing; mean over seeds)\n")
+        L.append("| restockers | policy | SKU-minutes OOS | shoppers hit OOS | lost sales £ | restocker utilisation |")
+        L.append("|---|---|---|---|---|---|")
+        for n in sorted({k[0] for k in sweep}):
+            for pol in ("fifo", "priority_bay"):
+                r = [sweep[(n, pol, s)] for s in seeds]
+                L.append(f"| {n} | {pol} | {statistics.mean(x['sku_minutes_oos_share'] for x in r):.3f} | {statistics.mean(x['shoppers_hit_oos_share'] for x in r):.3f} | "
+                         f"{statistics.mean(x['lost_sales_gbp'] for x in r):.0f} | {statistics.mean(x['restocker_utilisation'] for x in r):.2f} |")
+            dd = paired([sweep[(n, 'fifo', s)]["lost_sales_gbp"] for s in seeds], [sweep[(n, 'priority_bay', s)]["lost_sales_gbp"] for s in seeds])
+            diffs[f"sweep{n}:lost_sales_gbp"] = dd
+            dd2 = paired([sweep[(n, 'fifo', s)]["sku_minutes_oos_share"] for s in seeds], [sweep[(n, 'priority_bay', s)]["sku_minutes_oos_share"] for s in seeds])
+            diffs[f"sweep{n}:sku_minutes_oos_share"] = dd2
+            L.append(f"| {n} | priority_bay - fifo | {dd2['mean'] if dd2 else ''} {dd2['ci95'] if dd2 else ''} ({verdict(dd2)}) | | {dd['mean'] if dd else ''} {dd['ci95'] if dd else ''} ({verdict(dd)}) | |")
+        L.append("")
+    jm, tab = shared["jev_meta"], shared["jev_table"]
     srcs = collections.Counter(v["source"].split(" (")[0] for v in tab.values())
-    L.append("## Jev calls and cost\n")
-    L.append(f"- one Noul per (persona, mission, basket-size bucket, needs weighing, age-restricted): {len(tab)} combos; "
-             f"{jm['calls']} uncached calls, {jm['cached']} from cache, {jm['fallback_used']} fallbacks, errors {len(jm['errors'])}; "
-             f"**${jm['cost_usd']:.4f}** this run (sources: {dict(srcs)}).")
-    accs = collections.defaultdict(list)
-    for k, v in tab.items():
-        accs[k[2]].append(v["p"])
-    L.append("- mean P(use self-checkout) by basket bucket: " + ", ".join(f"{b} {statistics.mean(v):.2f} (n={len(v)})" for b, v in accs.items()) + ".")
+    L.append("## Jev\n")
+    L.append(f"- {len(tab)} (persona, mission, basket bucket, weighing, age) combos; {jm['calls']} uncached calls, {jm['cached']} cached, "
+             f"{jm['fallback_used']} fallbacks ({dict(srcs)}); halt: {jm.get('halt')}; spend **${jm['cost_usd']:.4f}**.")
     L.append("")
-    json.dump({"seeds": seeds, "arms": {a: {"routing": r, "restock": q} for a, (r, q) in arms.items()},
-               "runs": results, "paired_diffs": diffs, "jev": {k: v for k, v in jm.items()}, "files": files},
+    json.dump({"seeds": seeds, "arms": {a: ARMS[a] for a in arms}, "runs": results, "paired_diffs": diffs,
+               "sweep": {f"{n}|{p}|{s}": v for (n, p, s), v in sweep.items()},
+               "jev": {k: v for k, v in jm.items() if k != "errors"} | {"n_errors": len(jm["errors"]), "first_error": (jm["errors"] or [None])[0]},
+               "cmd": "python3 sim/ops.py " + " ".join(sys.argv[1:])},
               open(os.path.join(OUT_DIR, "RESULTS.json"), "w"), indent=1, default=str)
     with open(os.path.join(OUT_DIR, "RESULTS.auto.md"), "w") as f:
         f.write("\n".join(L) + "\n")

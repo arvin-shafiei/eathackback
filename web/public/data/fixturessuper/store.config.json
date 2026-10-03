@@ -1,0 +1,1635 @@
+{
+ "name": "superstore (fixture, uk tesco-extra-style plan)",
+ "format": "superstore",
+ "aisles": 17,
+ "rows_per_unit": 4,
+ "row_names": {
+  "1": "top",
+  "2": "eye",
+  "3": "lower",
+  "4": "bottom"
+ },
+ "notice_row_map": {
+  "1": "top",
+  "2": "eye",
+  "3": "bottom",
+  "4": "bottom",
+  "source": "assumption: sim/notice.py has alphas for top/eye/bottom only; 'lower' (just below eye) is given the bottom alpha until a sourced lower-shelf ratio is added (conservative)"
+ },
+ "products_per_slot": 6,
+ "departments": [
+  {
+   "id": "food_to_go",
+   "name": "food to go",
+   "sign_text": "food to go",
+   "floor_color": "#ffe9a8",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "produce",
+   "name": "fresh fruit & veg",
+   "sign_text": "fruit & veg",
+   "floor_color": "#cdeec2",
+   "fixture_type": "produce",
+   "aisle_numbers": []
+  },
+  {
+   "id": "bakery",
+   "name": "bakery",
+   "sign_text": "bakery",
+   "floor_color": "#f6dcb4",
+   "fixture_type": "bakery",
+   "aisle_numbers": []
+  },
+  {
+   "id": "meat",
+   "name": "meat & poultry",
+   "sign_text": "meat & poultry",
+   "floor_color": "#ffd3d3",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "fish",
+   "name": "fish",
+   "sign_text": "fish",
+   "floor_color": "#cfe4ff",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "deli",
+   "name": "cooked meats & deli",
+   "sign_text": "deli",
+   "floor_color": "#ffdcc8",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "dairy",
+   "name": "milk, butter & eggs",
+   "sign_text": "dairy & eggs",
+   "floor_color": "#ddefff",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "cheese",
+   "name": "cheese",
+   "sign_text": "cheese",
+   "floor_color": "#fff0b3",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "meat_free",
+   "name": "meat free",
+   "sign_text": "meat free",
+   "floor_color": "#d8f5d0",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "ready_meals",
+   "name": "ready meals & pizza",
+   "sign_text": "ready meals",
+   "floor_color": "#ffd6e0",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "desserts",
+   "name": "chilled desserts",
+   "sign_text": "desserts",
+   "floor_color": "#efd9ff",
+   "fixture_type": "multideck",
+   "aisle_numbers": []
+  },
+  {
+   "id": "free_from",
+   "name": "free from",
+   "sign_text": "free from",
+   "floor_color": "#eef6d8",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    1
+   ]
+  },
+  {
+   "id": "grocery",
+   "name": "food cupboard",
+   "sign_text": "food cupboard",
+   "floor_color": "#f6eee6",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+   ]
+  },
+  {
+   "id": "snacks",
+   "name": "snacks & treats",
+   "sign_text": "snacks & treats",
+   "floor_color": "#fde6d2",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    8,
+    9,
+    10,
+    23
+   ]
+  },
+  {
+   "id": "drinks",
+   "name": "drinks",
+   "sign_text": "drinks",
+   "floor_color": "#ffe0da",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    11,
+    12
+   ]
+  },
+  {
+   "id": "frozen",
+   "name": "frozen",
+   "sign_text": "frozen",
+   "floor_color": "#d4f1ff",
+   "fixture_type": "freezer",
+   "aisle_numbers": [
+    13,
+    14
+   ]
+  },
+  {
+   "id": "bws",
+   "name": "beer, wine & spirits",
+   "sign_text": "beer, wine & spirits",
+   "floor_color": "#f3d2e1",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    15,
+    16
+   ]
+  },
+  {
+   "id": "household",
+   "name": "household",
+   "sign_text": "household",
+   "floor_color": "#e3eaf6",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    24,
+    25,
+    26
+   ]
+  },
+  {
+   "id": "health_beauty",
+   "name": "health & beauty",
+   "sign_text": "health & beauty",
+   "floor_color": "#fde0ef",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    27,
+    28
+   ]
+  },
+  {
+   "id": "baby",
+   "name": "baby",
+   "sign_text": "baby",
+   "floor_color": "#e2f4ff",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    29
+   ]
+  },
+  {
+   "id": "pet",
+   "name": "pet",
+   "sign_text": "pet",
+   "floor_color": "#efe5d6",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    30
+   ]
+  },
+  {
+   "id": "home",
+   "name": "home & seasonal",
+   "sign_text": "home & seasonal",
+   "floor_color": "#ffe6d4",
+   "fixture_type": "gondola",
+   "aisle_numbers": [
+    31,
+    32
+   ]
+  }
+ ],
+ "units": [
+  {
+   "id": "S1",
+   "aisle": 1,
+   "side": "L",
+   "bay": 0,
+   "category": "free_from",
+   "department": "free_from",
+   "aisle_number": 1
+  },
+  {
+   "id": "S2",
+   "aisle": 1,
+   "side": "R",
+   "bay": 0,
+   "category": "free_from",
+   "department": "free_from",
+   "aisle_number": 1
+  },
+  {
+   "id": "S3",
+   "aisle": 1,
+   "side": "L",
+   "bay": 1,
+   "category": "free_from",
+   "department": "free_from",
+   "aisle_number": 1
+  },
+  {
+   "id": "S4",
+   "aisle": 1,
+   "side": "R",
+   "bay": 1,
+   "category": "free_from",
+   "department": "free_from",
+   "aisle_number": 1
+  },
+  {
+   "id": "U3",
+   "aisle": 2,
+   "side": "L",
+   "bay": 0,
+   "category": "breakfast_cereal",
+   "department": "grocery",
+   "aisle_number": 2
+  },
+  {
+   "id": "U4",
+   "aisle": 2,
+   "side": "R",
+   "bay": 0,
+   "category": "breakfast_cereal",
+   "department": "grocery",
+   "aisle_number": 2
+  },
+  {
+   "id": "S5",
+   "aisle": 2,
+   "side": "L",
+   "bay": 1,
+   "category": "crackers",
+   "department": "grocery",
+   "aisle_number": 2
+  },
+  {
+   "id": "S6",
+   "aisle": 2,
+   "side": "R",
+   "bay": 1,
+   "category": "crackers",
+   "department": "grocery",
+   "aisle_number": 2
+  },
+  {
+   "id": "U5",
+   "aisle": 3,
+   "side": "L",
+   "bay": 0,
+   "category": "hot_drinks",
+   "department": "grocery",
+   "aisle_number": 3
+  },
+  {
+   "id": "U6",
+   "aisle": 3,
+   "side": "R",
+   "bay": 0,
+   "category": "hot_drinks",
+   "department": "grocery",
+   "aisle_number": 3
+  },
+  {
+   "id": "S7",
+   "aisle": 3,
+   "side": "L",
+   "bay": 1,
+   "category": "home_baking",
+   "department": "grocery",
+   "aisle_number": 3
+  },
+  {
+   "id": "S8",
+   "aisle": 3,
+   "side": "R",
+   "bay": 1,
+   "category": "home_baking",
+   "department": "grocery",
+   "aisle_number": 3
+  },
+  {
+   "id": "S9",
+   "aisle": 4,
+   "side": "L",
+   "bay": 0,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 4
+  },
+  {
+   "id": "S10",
+   "aisle": 4,
+   "side": "R",
+   "bay": 0,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 4
+  },
+  {
+   "id": "S11",
+   "aisle": 4,
+   "side": "L",
+   "bay": 1,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 4
+  },
+  {
+   "id": "S12",
+   "aisle": 4,
+   "side": "R",
+   "bay": 1,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 4
+  },
+  {
+   "id": "S13",
+   "aisle": 5,
+   "side": "L",
+   "bay": 0,
+   "category": "pasta_rice_noodles",
+   "department": "grocery",
+   "aisle_number": 5
+  },
+  {
+   "id": "S14",
+   "aisle": 5,
+   "side": "R",
+   "bay": 0,
+   "category": "pasta_rice_noodles",
+   "department": "grocery",
+   "aisle_number": 5
+  },
+  {
+   "id": "S15",
+   "aisle": 5,
+   "side": "L",
+   "bay": 1,
+   "category": "pasta_rice_noodles",
+   "department": "grocery",
+   "aisle_number": 5
+  },
+  {
+   "id": "S16",
+   "aisle": 5,
+   "side": "R",
+   "bay": 1,
+   "category": "pasta_rice_noodles",
+   "department": "grocery",
+   "aisle_number": 5
+  },
+  {
+   "id": "S17",
+   "aisle": 6,
+   "side": "L",
+   "bay": 0,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 6
+  },
+  {
+   "id": "S18",
+   "aisle": 6,
+   "side": "R",
+   "bay": 0,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 6
+  },
+  {
+   "id": "S19",
+   "aisle": 6,
+   "side": "L",
+   "bay": 1,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 6
+  },
+  {
+   "id": "S20",
+   "aisle": 6,
+   "side": "R",
+   "bay": 1,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 6
+  },
+  {
+   "id": "S21",
+   "aisle": 7,
+   "side": "L",
+   "bay": 0,
+   "category": "cooking_sauces",
+   "department": "grocery",
+   "aisle_number": 7
+  },
+  {
+   "id": "S22",
+   "aisle": 7,
+   "side": "R",
+   "bay": 0,
+   "category": "cooking_sauces",
+   "department": "grocery",
+   "aisle_number": 7
+  },
+  {
+   "id": "S23",
+   "aisle": 7,
+   "side": "L",
+   "bay": 1,
+   "category": "herbs_spices",
+   "department": "grocery",
+   "aisle_number": 7
+  },
+  {
+   "id": "S24",
+   "aisle": 7,
+   "side": "R",
+   "bay": 1,
+   "category": "herbs_spices",
+   "department": "grocery",
+   "aisle_number": 7
+  },
+  {
+   "id": "U13",
+   "aisle": 8,
+   "side": "L",
+   "bay": 0,
+   "category": "biscuits_chocolate",
+   "department": "snacks",
+   "aisle_number": 8
+  },
+  {
+   "id": "U14",
+   "aisle": 8,
+   "side": "R",
+   "bay": 0,
+   "category": "biscuits_chocolate",
+   "department": "snacks",
+   "aisle_number": 8
+  },
+  {
+   "id": "S25",
+   "aisle": 8,
+   "side": "L",
+   "bay": 1,
+   "category": "nuts_dried_fruit",
+   "department": "snacks",
+   "aisle_number": 8
+  },
+  {
+   "id": "S26",
+   "aisle": 8,
+   "side": "R",
+   "bay": 1,
+   "category": "nuts_dried_fruit",
+   "department": "snacks",
+   "aisle_number": 8
+  },
+  {
+   "id": "U9",
+   "aisle": 9,
+   "side": "L",
+   "bay": 0,
+   "category": "crisps_savoury",
+   "department": "snacks",
+   "aisle_number": 9
+  },
+  {
+   "id": "U10",
+   "aisle": 9,
+   "side": "R",
+   "bay": 0,
+   "category": "crisps_savoury",
+   "department": "snacks",
+   "aisle_number": 9
+  },
+  {
+   "id": "U11",
+   "aisle": 9,
+   "side": "L",
+   "bay": 1,
+   "category": "snack_bars",
+   "department": "snacks",
+   "aisle_number": 9
+  },
+  {
+   "id": "U12",
+   "aisle": 9,
+   "side": "R",
+   "bay": 1,
+   "category": "snack_bars",
+   "department": "snacks",
+   "aisle_number": 9
+  },
+  {
+   "id": "U15",
+   "aisle": 10,
+   "side": "L",
+   "bay": 0,
+   "category": "confectionery_sweets",
+   "department": "snacks",
+   "aisle_number": 10
+  },
+  {
+   "id": "U16",
+   "aisle": 10,
+   "side": "R",
+   "bay": 0,
+   "category": "confectionery_sweets",
+   "department": "snacks",
+   "aisle_number": 10
+  },
+  {
+   "id": "S27",
+   "aisle": 10,
+   "side": "L",
+   "bay": 1,
+   "category": "spreads",
+   "department": "snacks",
+   "aisle_number": 10
+  },
+  {
+   "id": "S28",
+   "aisle": 10,
+   "side": "R",
+   "bay": 1,
+   "category": "spreads",
+   "department": "snacks",
+   "aisle_number": 10
+  },
+  {
+   "id": "U7",
+   "aisle": 11,
+   "side": "L",
+   "bay": 0,
+   "category": "soft_drinks",
+   "department": "drinks",
+   "aisle_number": 11
+  },
+  {
+   "id": "U8",
+   "aisle": 11,
+   "side": "R",
+   "bay": 0,
+   "category": "soft_drinks",
+   "department": "drinks",
+   "aisle_number": 11
+  },
+  {
+   "id": "S29",
+   "aisle": 11,
+   "side": "L",
+   "bay": 1,
+   "category": "squash",
+   "department": "drinks",
+   "aisle_number": 11
+  },
+  {
+   "id": "S30",
+   "aisle": 11,
+   "side": "R",
+   "bay": 1,
+   "category": "squash",
+   "department": "drinks",
+   "aisle_number": 11
+  },
+  {
+   "id": "S31",
+   "aisle": 12,
+   "side": "L",
+   "bay": 0,
+   "category": "water",
+   "department": "drinks",
+   "aisle_number": 12
+  },
+  {
+   "id": "S32",
+   "aisle": 12,
+   "side": "R",
+   "bay": 0,
+   "category": "water",
+   "department": "drinks",
+   "aisle_number": 12
+  },
+  {
+   "id": "S33",
+   "aisle": 12,
+   "side": "L",
+   "bay": 1,
+   "category": "juice",
+   "department": "drinks",
+   "aisle_number": 12
+  },
+  {
+   "id": "S34",
+   "aisle": 12,
+   "side": "R",
+   "bay": 1,
+   "category": "juice",
+   "department": "drinks",
+   "aisle_number": 12
+  },
+  {
+   "id": "U23",
+   "aisle": 13,
+   "side": "L",
+   "bay": 0,
+   "category": "frozen_icecream",
+   "department": "frozen",
+   "aisle_number": 13,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "U24",
+   "aisle": 13,
+   "side": "R",
+   "bay": 0,
+   "category": "frozen_icecream",
+   "department": "frozen",
+   "aisle_number": 13,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S35",
+   "aisle": 13,
+   "side": "L",
+   "bay": 1,
+   "category": "frozen_meals_veg",
+   "department": "frozen",
+   "aisle_number": 13,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S36",
+   "aisle": 13,
+   "side": "R",
+   "bay": 1,
+   "category": "frozen_meals_veg",
+   "department": "frozen",
+   "aisle_number": 13,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S37",
+   "aisle": 14,
+   "side": "L",
+   "bay": 0,
+   "category": "frozen_meals_veg",
+   "department": "frozen",
+   "aisle_number": 14,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S38",
+   "aisle": 14,
+   "side": "R",
+   "bay": 0,
+   "category": "frozen_meals_veg",
+   "department": "frozen",
+   "aisle_number": 14,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S39",
+   "aisle": 14,
+   "side": "L",
+   "bay": 1,
+   "category": "frozen_meals_veg",
+   "department": "frozen",
+   "aisle_number": 14,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S40",
+   "aisle": 14,
+   "side": "R",
+   "bay": 1,
+   "category": "frozen_meals_veg",
+   "department": "frozen",
+   "aisle_number": 14,
+   "fixture_type": "freezer"
+  },
+  {
+   "id": "S41",
+   "aisle": 15,
+   "side": "L",
+   "bay": 0,
+   "category": "beer_cider",
+   "department": "bws",
+   "aisle_number": 15
+  },
+  {
+   "id": "S42",
+   "aisle": 15,
+   "side": "R",
+   "bay": 0,
+   "category": "beer_cider",
+   "department": "bws",
+   "aisle_number": 15
+  },
+  {
+   "id": "S43",
+   "aisle": 15,
+   "side": "L",
+   "bay": 1,
+   "category": "beer_cider",
+   "department": "bws",
+   "aisle_number": 15
+  },
+  {
+   "id": "S44",
+   "aisle": 15,
+   "side": "R",
+   "bay": 1,
+   "category": "beer_cider",
+   "department": "bws",
+   "aisle_number": 15
+  },
+  {
+   "id": "S45",
+   "aisle": 16,
+   "side": "L",
+   "bay": 0,
+   "category": "wine",
+   "department": "bws",
+   "aisle_number": 16
+  },
+  {
+   "id": "S46",
+   "aisle": 16,
+   "side": "R",
+   "bay": 0,
+   "category": "wine",
+   "department": "bws",
+   "aisle_number": 16
+  },
+  {
+   "id": "S47",
+   "aisle": 16,
+   "side": "L",
+   "bay": 1,
+   "category": "spirits_low_no",
+   "department": "bws",
+   "aisle_number": 16
+  },
+  {
+   "id": "S48",
+   "aisle": 16,
+   "side": "R",
+   "bay": 1,
+   "category": "spirits_low_no",
+   "department": "bws",
+   "aisle_number": 16
+  },
+  {
+   "id": "S49",
+   "aisle": 17,
+   "side": "L",
+   "bay": 0,
+   "category": "oils_vinegar",
+   "department": "grocery",
+   "aisle_number": 17
+  },
+  {
+   "id": "S50",
+   "aisle": 17,
+   "side": "R",
+   "bay": 0,
+   "category": "oils_vinegar",
+   "department": "grocery",
+   "aisle_number": 17
+  },
+  {
+   "id": "S51",
+   "aisle": 17,
+   "side": "L",
+   "bay": 1,
+   "category": "oils_vinegar",
+   "department": "grocery",
+   "aisle_number": 17
+  },
+  {
+   "id": "S52",
+   "aisle": 17,
+   "side": "R",
+   "bay": 1,
+   "category": "oils_vinegar",
+   "department": "grocery",
+   "aisle_number": 17
+  },
+  {
+   "id": "S53",
+   "aisle": 18,
+   "side": "L",
+   "bay": 0,
+   "category": "spreads",
+   "department": "grocery",
+   "aisle_number": 18
+  },
+  {
+   "id": "S54",
+   "aisle": 18,
+   "side": "R",
+   "bay": 0,
+   "category": "spreads",
+   "department": "grocery",
+   "aisle_number": 18
+  },
+  {
+   "id": "S55",
+   "aisle": 18,
+   "side": "L",
+   "bay": 1,
+   "category": "spreads",
+   "department": "grocery",
+   "aisle_number": 18
+  },
+  {
+   "id": "S56",
+   "aisle": 18,
+   "side": "R",
+   "bay": 1,
+   "category": "spreads",
+   "department": "grocery",
+   "aisle_number": 18
+  },
+  {
+   "id": "S57",
+   "aisle": 19,
+   "side": "L",
+   "bay": 0,
+   "category": "home_baking",
+   "department": "grocery",
+   "aisle_number": 19
+  },
+  {
+   "id": "S58",
+   "aisle": 19,
+   "side": "R",
+   "bay": 0,
+   "category": "home_baking",
+   "department": "grocery",
+   "aisle_number": 19
+  },
+  {
+   "id": "S59",
+   "aisle": 19,
+   "side": "L",
+   "bay": 1,
+   "category": "home_baking",
+   "department": "grocery",
+   "aisle_number": 19
+  },
+  {
+   "id": "S60",
+   "aisle": 19,
+   "side": "R",
+   "bay": 1,
+   "category": "home_baking",
+   "department": "grocery",
+   "aisle_number": 19
+  },
+  {
+   "id": "S61",
+   "aisle": 20,
+   "side": "L",
+   "bay": 0,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 20
+  },
+  {
+   "id": "S62",
+   "aisle": 20,
+   "side": "R",
+   "bay": 0,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 20
+  },
+  {
+   "id": "S63",
+   "aisle": 20,
+   "side": "L",
+   "bay": 1,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 20
+  },
+  {
+   "id": "S64",
+   "aisle": 20,
+   "side": "R",
+   "bay": 1,
+   "category": "world_foods",
+   "department": "grocery",
+   "aisle_number": 20
+  },
+  {
+   "id": "S65",
+   "aisle": 21,
+   "side": "L",
+   "bay": 0,
+   "category": "cooking_sauces",
+   "department": "grocery",
+   "aisle_number": 21
+  },
+  {
+   "id": "S66",
+   "aisle": 21,
+   "side": "R",
+   "bay": 0,
+   "category": "cooking_sauces",
+   "department": "grocery",
+   "aisle_number": 21
+  },
+  {
+   "id": "S67",
+   "aisle": 21,
+   "side": "L",
+   "bay": 1,
+   "category": "cooking_sauces",
+   "department": "grocery",
+   "aisle_number": 21
+  },
+  {
+   "id": "S68",
+   "aisle": 21,
+   "side": "R",
+   "bay": 1,
+   "category": "cooking_sauces",
+   "department": "grocery",
+   "aisle_number": 21
+  },
+  {
+   "id": "S69",
+   "aisle": 22,
+   "side": "L",
+   "bay": 0,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 22
+  },
+  {
+   "id": "S70",
+   "aisle": 22,
+   "side": "R",
+   "bay": 0,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 22
+  },
+  {
+   "id": "S71",
+   "aisle": 22,
+   "side": "L",
+   "bay": 1,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 22
+  },
+  {
+   "id": "S72",
+   "aisle": 22,
+   "side": "R",
+   "bay": 1,
+   "category": "tins_packets",
+   "department": "grocery",
+   "aisle_number": 22
+  },
+  {
+   "id": "S73",
+   "aisle": 23,
+   "side": "L",
+   "bay": 0,
+   "category": "nuts_dried_fruit",
+   "department": "snacks",
+   "aisle_number": 23
+  },
+  {
+   "id": "S74",
+   "aisle": 23,
+   "side": "R",
+   "bay": 0,
+   "category": "nuts_dried_fruit",
+   "department": "snacks",
+   "aisle_number": 23
+  },
+  {
+   "id": "S75",
+   "aisle": 23,
+   "side": "L",
+   "bay": 1,
+   "category": "nuts_dried_fruit",
+   "department": "snacks",
+   "aisle_number": 23
+  },
+  {
+   "id": "S76",
+   "aisle": 23,
+   "side": "R",
+   "bay": 1,
+   "category": "nuts_dried_fruit",
+   "department": "snacks",
+   "aisle_number": 23
+  },
+  {
+   "id": "S77",
+   "aisle": 24,
+   "side": "L",
+   "bay": 0,
+   "category": "household_cleaning",
+   "department": "household",
+   "aisle_number": 24
+  },
+  {
+   "id": "S78",
+   "aisle": 24,
+   "side": "R",
+   "bay": 0,
+   "category": "household_cleaning",
+   "department": "household",
+   "aisle_number": 24
+  },
+  {
+   "id": "S79",
+   "aisle": 24,
+   "side": "L",
+   "bay": 1,
+   "category": "household_cleaning",
+   "department": "household",
+   "aisle_number": 24
+  },
+  {
+   "id": "S80",
+   "aisle": 24,
+   "side": "R",
+   "bay": 1,
+   "category": "household_cleaning",
+   "department": "household",
+   "aisle_number": 24
+  },
+  {
+   "id": "S81",
+   "aisle": 25,
+   "side": "L",
+   "bay": 0,
+   "category": "laundry",
+   "department": "household",
+   "aisle_number": 25
+  },
+  {
+   "id": "S82",
+   "aisle": 25,
+   "side": "R",
+   "bay": 0,
+   "category": "laundry",
+   "department": "household",
+   "aisle_number": 25
+  },
+  {
+   "id": "S83",
+   "aisle": 25,
+   "side": "L",
+   "bay": 1,
+   "category": "laundry",
+   "department": "household",
+   "aisle_number": 25
+  },
+  {
+   "id": "S84",
+   "aisle": 25,
+   "side": "R",
+   "bay": 1,
+   "category": "laundry",
+   "department": "household",
+   "aisle_number": 25
+  },
+  {
+   "id": "S85",
+   "aisle": 26,
+   "side": "L",
+   "bay": 0,
+   "category": "paper_bin_bags",
+   "department": "household",
+   "aisle_number": 26
+  },
+  {
+   "id": "S86",
+   "aisle": 26,
+   "side": "R",
+   "bay": 0,
+   "category": "paper_bin_bags",
+   "department": "household",
+   "aisle_number": 26
+  },
+  {
+   "id": "S87",
+   "aisle": 26,
+   "side": "L",
+   "bay": 1,
+   "category": "paper_bin_bags",
+   "department": "household",
+   "aisle_number": 26
+  },
+  {
+   "id": "S88",
+   "aisle": 26,
+   "side": "R",
+   "bay": 1,
+   "category": "paper_bin_bags",
+   "department": "household",
+   "aisle_number": 26
+  },
+  {
+   "id": "S89",
+   "aisle": 27,
+   "side": "L",
+   "bay": 0,
+   "category": "toiletries",
+   "department": "health_beauty",
+   "aisle_number": 27
+  },
+  {
+   "id": "S90",
+   "aisle": 27,
+   "side": "R",
+   "bay": 0,
+   "category": "toiletries",
+   "department": "health_beauty",
+   "aisle_number": 27
+  },
+  {
+   "id": "S91",
+   "aisle": 27,
+   "side": "L",
+   "bay": 1,
+   "category": "toiletries",
+   "department": "health_beauty",
+   "aisle_number": 27
+  },
+  {
+   "id": "S92",
+   "aisle": 27,
+   "side": "R",
+   "bay": 1,
+   "category": "toiletries",
+   "department": "health_beauty",
+   "aisle_number": 27
+  },
+  {
+   "id": "S93",
+   "aisle": 28,
+   "side": "L",
+   "bay": 0,
+   "category": "health_medicines",
+   "department": "health_beauty",
+   "aisle_number": 28
+  },
+  {
+   "id": "S94",
+   "aisle": 28,
+   "side": "R",
+   "bay": 0,
+   "category": "health_medicines",
+   "department": "health_beauty",
+   "aisle_number": 28
+  },
+  {
+   "id": "S95",
+   "aisle": 28,
+   "side": "L",
+   "bay": 1,
+   "category": "beauty",
+   "department": "health_beauty",
+   "aisle_number": 28
+  },
+  {
+   "id": "S96",
+   "aisle": 28,
+   "side": "R",
+   "bay": 1,
+   "category": "beauty",
+   "department": "health_beauty",
+   "aisle_number": 28
+  },
+  {
+   "id": "S97",
+   "aisle": 29,
+   "side": "L",
+   "bay": 0,
+   "category": "baby",
+   "department": "baby",
+   "aisle_number": 29
+  },
+  {
+   "id": "S98",
+   "aisle": 29,
+   "side": "R",
+   "bay": 0,
+   "category": "baby",
+   "department": "baby",
+   "aisle_number": 29
+  },
+  {
+   "id": "S99",
+   "aisle": 29,
+   "side": "L",
+   "bay": 1,
+   "category": "baby",
+   "department": "baby",
+   "aisle_number": 29
+  },
+  {
+   "id": "S100",
+   "aisle": 29,
+   "side": "R",
+   "bay": 1,
+   "category": "baby",
+   "department": "baby",
+   "aisle_number": 29
+  },
+  {
+   "id": "S101",
+   "aisle": 30,
+   "side": "L",
+   "bay": 0,
+   "category": "pet_food",
+   "department": "pet",
+   "aisle_number": 30
+  },
+  {
+   "id": "S102",
+   "aisle": 30,
+   "side": "R",
+   "bay": 0,
+   "category": "pet_food",
+   "department": "pet",
+   "aisle_number": 30
+  },
+  {
+   "id": "S103",
+   "aisle": 30,
+   "side": "L",
+   "bay": 1,
+   "category": "pet_food",
+   "department": "pet",
+   "aisle_number": 30
+  },
+  {
+   "id": "S104",
+   "aisle": 30,
+   "side": "R",
+   "bay": 1,
+   "category": "pet_food",
+   "department": "pet",
+   "aisle_number": 30
+  },
+  {
+   "id": "S105",
+   "aisle": 31,
+   "side": "L",
+   "bay": 0,
+   "category": "cookshop",
+   "department": "home",
+   "aisle_number": 31
+  },
+  {
+   "id": "S106",
+   "aisle": 31,
+   "side": "R",
+   "bay": 0,
+   "category": "cookshop",
+   "department": "home",
+   "aisle_number": 31
+  },
+  {
+   "id": "S107",
+   "aisle": 31,
+   "side": "L",
+   "bay": 1,
+   "category": "cookshop",
+   "department": "home",
+   "aisle_number": 31
+  },
+  {
+   "id": "S108",
+   "aisle": 31,
+   "side": "R",
+   "bay": 1,
+   "category": "cookshop",
+   "department": "home",
+   "aisle_number": 31
+  },
+  {
+   "id": "S109",
+   "aisle": 32,
+   "side": "L",
+   "bay": 0,
+   "category": "seasonal",
+   "department": "home",
+   "aisle_number": 32
+  },
+  {
+   "id": "S110",
+   "aisle": 32,
+   "side": "R",
+   "bay": 0,
+   "category": "seasonal",
+   "department": "home",
+   "aisle_number": 32
+  },
+  {
+   "id": "S111",
+   "aisle": 32,
+   "side": "L",
+   "bay": 1,
+   "category": "seasonal",
+   "department": "home",
+   "aisle_number": 32
+  },
+  {
+   "id": "S112",
+   "aisle": 32,
+   "side": "R",
+   "bay": 1,
+   "category": "seasonal",
+   "department": "home",
+   "aisle_number": 32
+  },
+  {
+   "id": "S113",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "food_to_go",
+   "department": "food_to_go"
+  },
+  {
+   "id": "S114",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "fruit",
+   "department": "produce"
+  },
+  {
+   "id": "S115",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "vegetables",
+   "department": "produce"
+  },
+  {
+   "id": "S116",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "salad",
+   "department": "produce"
+  },
+  {
+   "id": "U1",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "bakery_bread",
+   "department": "bakery"
+  },
+  {
+   "id": "U2",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "bakery_bread",
+   "department": "bakery"
+  },
+  {
+   "id": "S117",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "meat_poultry",
+   "department": "meat"
+  },
+  {
+   "id": "S118",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "meat_poultry",
+   "department": "meat"
+  },
+  {
+   "id": "S119",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "meat_poultry",
+   "department": "meat"
+  },
+  {
+   "id": "S120",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "fish",
+   "department": "fish"
+  },
+  {
+   "id": "S121",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "cooked_meats_deli",
+   "department": "deli"
+  },
+  {
+   "id": "S122",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "cooked_meats_deli",
+   "department": "deli"
+  },
+  {
+   "id": "S123",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "milk_butter_eggs",
+   "department": "dairy"
+  },
+  {
+   "id": "S124",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "milk_butter_eggs",
+   "department": "dairy"
+  },
+  {
+   "id": "U21",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "yoghurt",
+   "department": "dairy"
+  },
+  {
+   "id": "U22",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "yoghurt",
+   "department": "dairy"
+  },
+  {
+   "id": "U19",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "plant_milk_dairy_alt",
+   "department": "dairy"
+  },
+  {
+   "id": "U20",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "plant_milk_dairy_alt",
+   "department": "dairy"
+  },
+  {
+   "id": "S125",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "cheese",
+   "department": "cheese"
+  },
+  {
+   "id": "S126",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "cheese",
+   "department": "cheese"
+  },
+  {
+   "id": "S127",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "meat_free",
+   "department": "meat_free"
+  },
+  {
+   "id": "U17",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "ready_meals_soup",
+   "department": "ready_meals"
+  },
+  {
+   "id": "U18",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "ready_meals_soup",
+   "department": "ready_meals"
+  },
+  {
+   "id": "S128",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "pizza",
+   "department": "ready_meals"
+  },
+  {
+   "id": "S129",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "chilled_desserts",
+   "department": "desserts"
+  },
+  {
+   "id": "S130",
+   "aisle": 0,
+   "side": "L",
+   "bay": 0,
+   "category": "chilled_desserts",
+   "department": "desserts"
+  }
+ ],
+ "entrance": {
+  "x": 0,
+  "z": 0
+ },
+ "entrances": [
+  {
+   "id": "E1"
+  },
+  {
+   "id": "E2"
+  }
+ ],
+ "checkout": {
+  "x": 0,
+  "z": 0
+ },
+ "checkouts": {
+  "staffed": 10,
+  "self": 16
+ },
+ "layout_notes": [
+  "fixture: geometry is computed by web/src/layout.ts storePlan from departments + aisle numbers",
+  "assumption: aisle order and department placement follow a typical UK superstore (Tesco Extra style) racetrack"
+ ]
+}

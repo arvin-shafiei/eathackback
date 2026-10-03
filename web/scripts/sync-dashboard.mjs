@@ -169,12 +169,18 @@ write('visits/index.json', visits);
 const runsDir = D('sim', 'runs');
 const agentFiles = ls(runsDir, /^agent_.*jev.*\.json$/);
 const humanFiles = ls(runsDir, /^run_.*jev.*\.json$/);
-// latest = lexicographically last (names start with a YYYYMMDD_HHMMSS timestamp)
-const agentF = agentFiles.at(-1);
-const humanF = humanFiles.at(-1);
+// latest = newest by name (names start with a YYYYMMDD_HHMMSS timestamp) that is a real run: no Jev errors and
+// enough agents (assumption: >= 50 shoppers / >= 20 feeds) so a 10-agent dashboard test never becomes the baseline
+function latestGood(files, minAgents) {
+  for (const f of [...files].reverse()) {
+    const r = readJSON(path.join(runsDir, f));
+    if ((r.cost?.errors ?? 0) === 0 && (r.agents || []).length >= minAgents) return [f, r];
+  }
+  return files.length ? [files[files.length - 1], readJSON(path.join(runsDir, files[files.length - 1]))] : [null, null];
+}
+const [agentF, A] = latestGood(agentFiles, 20);
+const [humanF, H] = latestGood(humanFiles, 50);
 if (agentF && humanF) {
-  const A = readJSON(path.join(runsDir, agentF));
-  const H = readJSON(path.join(runsDir, humanF));
   const aSrc = `data/sim/runs/${agentF}`;
   const hSrc = `data/sim/runs/${humanF}`;
   // earlier non-Jev agent runs (OpenRouter LLMs, retired) for the position-bias comparison
@@ -234,6 +240,7 @@ if (agentF && humanF) {
     position_bias_llm_earlier: llmBias,
     categories,
     method: {
+      run_choice: 'newest run_*jev*.json / agent_*jev*.json with cost.errors == 0 and >= 50 shoppers / >= 20 feeds (assumption: smaller runs are UI tests)',
       share: 'within-category pick share: picked_j / sum(picked) over products in the same category; human = stats.per_product[code].picked in the human run, agent = stats.per_product[code].picked in the agent run. Only categories the agent missions cover (agent_run.missions[].categories).',
       divergence: `D_j = ln(s_agent / s_human) with +${SMOOTH} add-half smoothing on picks (assumption: avoids log(0); README "Divergence per product")`,
       jsd: 'Jensen-Shannon divergence between the human and agent share vectors in each category, log base 2 (0 = identical, 1 = disjoint)',
