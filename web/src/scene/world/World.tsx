@@ -17,6 +17,7 @@ import { Transit, transitSpots } from './Transit';
 import { Air } from './Air';
 import { Ufo } from './Ufo';
 import { Villain } from './Villain';
+import { PlaneCrash } from './PlaneCrash';
 import { snowable } from './wxState';
 
 const noRay = () => null;
@@ -273,6 +274,7 @@ export function World({ cfg }: { cfg: StoreConfig }) {
       <Air W={W} />
       <Ufo W={W} />
       <Villain W={W} />
+      <PlaneCrash W={W} sc={sc} />
       <Weather W={W} />
     </group>
   );

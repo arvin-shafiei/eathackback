@@ -9,6 +9,7 @@ import { gondolaX, storeBounds, storePlan, zRange, type Timeline } from '../layo
 import { Store } from './Store';
 import { TrafficHeat } from './TrafficHeat';
 import { World } from './world/World';
+import { CelebVisit } from './world/CelebVisit';
 import { Shelves } from './Shelves';
 import { Crowd, type ThoughtMode } from './Crowd';
 import { buildBeats } from './beats';
@@ -238,6 +239,7 @@ const SceneCanvas = memo(function SceneCanvas(p: SceneProps) {
       <ambientLight intensity={0.45} />
       <PerfHook />
       <World cfg={p.cfg} />
+      <CelebVisit cfg={p.cfg} />
       <Clock timeRef={p.timeRef} playing={p.playing} speed={p.speed} duration={p.duration} />
       <Suspense fallback={null}>
         <Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={!p.playing}>
