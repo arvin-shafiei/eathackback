@@ -108,8 +108,8 @@ export function Cafe({ cfg, live, products }: Props) {
   const camera = useThree((s) => s.camera), controls = useThree((s) => s.controls) as unknown as { target: THREE.Vector3; update: () => void } | null;
   useEffect(() => {
     const w = window as unknown as { __cafe?: Record<string, unknown> };
-    w.__cafe = { ...(w.__cafe ?? {}), pool, plan: c, focus: () => { camera.position.set(c.x + c.w * 0.25, 8.5, c.z + c.d * 0.5 + 1.5); controls?.target.set(c.x, 0.4, c.z - c.d * 0.12); controls?.update(); } };
-  }, [camera, controls, c, pool]);
+    w.__cafe = { ...(w.__cafe ?? {}), pool, plan: c, t: () => live.current.t, focus: () => { camera.position.set(c.x + c.w * 0.25, 8.5, c.z + c.d * 0.5 + 1.5); controls?.target.set(c.x, 0.4, c.z - c.d * 0.12); controls?.update(); } };
+  }, [camera, controls, c, pool, live]);
 
   const setPhase = (d: D, ph: Phase, t: number, path: XZ[] = []) => { d.phase = ph; d.tPhase = t; d.path = path; };
   const freeSeat = () => fillOrder.find((si) => seatBy.current[si] < 0);
