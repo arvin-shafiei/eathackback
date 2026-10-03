@@ -17,6 +17,7 @@ import { EditPanel } from './ui/EditPanel';
 import { ComparePanel } from './ui/ComparePanel';
 import { AddProductPanel } from './ui/AddProductPanel';
 import { InsightsPanel } from './ui/InsightsPanel';
+import { aiGear, isAIArch, shopperLabel } from './ui/aiArch';
 import { archColor, archLabel, AI_COLOR, ARCH_GEAR, carrierFor } from './theme';
 
 type Panel =
@@ -253,7 +254,7 @@ export default function App() {
   const findEvent = (agentId: string, step: number) => { const a = view?.agents.find((x) => x.agent_id === agentId); return a ? { a, e: a.events.find((x) => x.step === step) } : null; };
   const selAgent = panel?.kind === 'agent' ? panel.id : panel?.kind === 'trace' ? panel.agentId : null;
   const openTrace = (agentId: string, step: number) => setPanel((cur) => ({ kind: 'trace', agentId, step, back: cur && cur.kind !== 'trace' ? cur : cur?.kind === 'trace' ? cur.back : undefined }));
-  const archetypesInRun = view ? [...new Set(view.agents.map((a) => (isAI(a) ? 'ai' : archetypeOf(a, personas))))] : [];
+  const archetypesInRun = view ? [...new Set(view.agents.map((a) => archetypeOf(a, personas)))] : []; // AI agents group by archetype too
   const slotOf = (code: string) => Object.entries(basePlan).find(([, s]) => s.products.includes(code))?.[0];
   const counts = view ? agents.reduce((acc, a) => { const tl = timelines[a.agent_id]; if (!tl) return acc; for (const s of tl.segs) if (s.kind === 'dwell' && s.t0 <= uiTime && s.event) acc[s.event.decision] = (acc[s.event.decision] ?? 0) + 1; return acc; }, {} as Record<string, number>) : {};
 
@@ -270,8 +271,10 @@ export default function App() {
 
   const legend = archetypesInRun.map((a) => {
     const persona = Object.values(personas).find((p) => p.archetype === a);
-    const c = carrierFor(a, persona?.mission, a === 'ai');
-    return { a, c };
+    const ai = isAIArch(a) || a === 'ai_agent';
+    const c = carrierFor(a, persona?.mission, ai);
+    const first = view?.agents.find((x) => archetypeOf(x, personas) === a); // legend row opens this archetype's card
+    return { a, c, ai, persona, first };
   });
   const nShoppers = view?.agents.length ?? 0;
   const nProducts = Object.keys(basePlan).reduce((s, k) => s + (basePlan[k]?.products?.length ?? 0), 0);
@@ -370,10 +373,13 @@ export default function App() {
           {showLegend && (
             <div className="card mini legend">
               <div className="mini-h">who's shopping <button className="link-btn" onClick={() => setShowLegend(false)}>hide</button></div>
-              {legend.map(({ a, c }) => (
-                <div key={a} className="leg">
+              {legend.map(({ a, c, ai, persona, first }) => (
+                <div key={a} className="leg" role={first ? 'button' : undefined} tabIndex={first ? 0 : undefined} style={first ? { cursor: 'pointer' } : undefined}
+                  title={first ? `open the ${ai ? 'agent' : 'persona'} card` : undefined}
+                  onClick={() => first && setPanel({ kind: 'agent', id: first.agent_id })}
+                  onKeyDown={(ev) => { if (first && (ev.key === 'Enter' || ev.key === ' ')) { ev.preventDefault(); setPanel({ kind: 'agent', id: first.agent_id }); } }}>
                   <span className="dot" style={{ background: archColor(a) }} />
-                  <span className="leg-name">{a === 'ai' ? 'ai agent' : archLabel(a)}<em>{a === 'ai' ? '📡 scans the feed' : ARCH_GEAR[a] ?? ''}</em></span>
+                  <span className="leg-name">{ai ? shopperLabel(a === 'ai_agent' ? 'ai_agent' : a, persona) : archLabel(a)}<em>{ai ? aiGear(a) : ARCH_GEAR[a] ?? ''}</em></span>
                   <span className="leg-carrier" title={c === 'trolley' ? 'trolley' : c === 'basket' ? 'basket' : 'no carrier'}>{c === 'trolley' ? '🛒' : c === 'basket' ? '🧺' : '🤖'}</span>
                 </div>
               ))}

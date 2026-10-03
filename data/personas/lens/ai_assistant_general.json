@@ -1,0 +1,248 @@
+{
+ "id": "p_ai_assistant_general",
+ "kind": "ai_agent",
+ "name": "general shopping assistant",
+ "label": "general shopping assistant",
+ "archetype": "ai_assistant_general",
+ "emoji": "🤖",
+ "mission": "feed_mission",
+ "secondary_missions": [
+  "work_drink_snack",
+  "kids_lunchbox",
+  "cheap_breakfast",
+  "high_protein_snack"
+ ],
+ "missions_source": "sim/agent_shopper.py MISSIONS (the 4 user prompts it is handed); seed mission 'healthy-ish fizzy drink and a snack for work under £4' from data/personas/staged_personas_v1.json[10] (Agent-GPT) persona.situation",
+ "budget_gbp": null,
+ "budget_source": "set per mission by the user's prompt (e.g. 'under £4'), read as a hard filter, not a trade-off (data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier BUDGET)",
+ "channel": "agent",
+ "channel_source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier CHANNEL MIX: ChatGPT chat + merchant feeds (Instacart/OpenAI checkout), Agent Mode browsing retailer sites; no in-store channel",
+ "acts_for": "a human user who typed one loose prompt (ChatGPT / Gemini / Perplexity-style assistant)",
+ "population_weight": {
+  "value": 0.03,
+  "source": "IGD: about 3% of people use AI for grocery today; Adyen: 44% open to it (research/02-issue-discovery.md). Share of the AI arm, not of in-store humans"
+ },
+ "ocean": null,
+ "ocean_note": "not a human; personality not applicable. OCEAN is null on purpose: the agent's behaviour is set by its lens, its sim_params and the model that decides (recorded per agent as `model`), not by traits.",
+ "ocean_effects": [],
+ "lens_note": "What a ChatGPT/Gemini-style assistant effectively scores when it reads a product feed. Rating, reviews, badge and sponsored are ACES feed attributes our catalogue does not carry yet, so in this sim they are neutral and the weight effectively falls on price, completeness, claim match and incumbency.",
+ "lens": [
+  {
+   "attribute": "rating",
+   "off_field": "not in data/products/catalog.json (no rating/review/badge/sponsored fields yet): every product scores neutral on this until a review feed is joined",
+   "direction": "higher_better",
+   "weight": 0.218,
+   "why": "The largest ACES coefficient on every model (+4.2 to +11.2 per star); a +0.075-star edge flips 50% of choices.",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2; Incumbent Advantage, arXiv 2606.17443 (https://arxiv.org/html/2606.17443v1), via research/02-issue-discovery.md. weight = 0.65 x |mean beta| x typical spread / sum, where mean beta over the 6 ACES models = row1 +0.76, ln_price -2.06, rating +7.20, ln_reviews +0.69, sponsored -0.33, badge +1.52; spreads (assumption): rating 0.5 star, ln(reviews) 4.6 (30 -> 3,000 reviews), ln(price) 0.69 (price x2), badge/row1/sponsored 0 -> 1. 0.65 = assumption: share of the lens the ACES feed attributes carry; the rest is the structured-data gate, claim match and incumbency (staged Agent-GPT dossier)"
+  },
+  {
+   "attribute": "ln_reviews",
+   "off_field": "not in data/products/catalog.json (no rating/review/badge/sponsored fields yet): every product scores neutral on this until a review feed is joined",
+   "direction": "higher_better",
+   "weight": 0.19,
+   "why": "Review count enters in logs (+0.42 to +0.98): a challenger with 11 reviews loses the tie-break to an incumbent with thousands.",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2; data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier rejection_triggers 'Low review count or no rating'. weight derived as above"
+  },
+  {
+   "attribute": "platform_badge",
+   "off_field": "not in data/products/catalog.json (no rating/review/badge/sponsored fields yet): every product scores neutral on this until a review feed is joined",
+   "direction": "present_better",
+   "weight": 0.091,
+   "why": "'Overall Pick' / 'Top rated' badges lift selection from about 10% to 24-43%.",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2 (badge beta +0.80 to +2.14). weight derived as above"
+  },
+  {
+   "attribute": "price_gbp",
+   "off_field": "catalog price_gbp (ln)",
+   "direction": "lower_better (hard cap filter, then ln-price preference)",
+   "weight": 0.086,
+   "why": "ln(price) beta -1.61 to -2.80. The user's cap ('under £4') is applied first as a filter.",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2; data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier BUDGET. weight derived as above"
+  },
+  {
+   "attribute": "feed_position_1",
+   "off_field": "derived: position in the randomised feed (sim/agent_shopper.py records it per event)",
+   "direction": "model_specific (GPT-4.1 +1.05, GPT-5.1 -0.70)",
+   "weight": 0.045,
+   "why": "Position preference is real but model-specific and 4-10x weaker than a human's; the sim measures it rather than assumes it.",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2; Agents vs humans, 5,000 sessions, arXiv 2608.22697 (https://arxiv.org/abs/2608.22697): agents 'never decline to buy'; position effect 4-10x weaker than humans', via research/02-issue-discovery.md. weight derived as above (abs value of the mean)"
+  },
+  {
+   "attribute": "sponsored_tag",
+   "off_field": "not in data/products/catalog.json (no rating/review/badge/sponsored fields yet): every product scores neutral on this until a review feed is joined",
+   "direction": "absent_better",
+   "weight": 0.02,
+   "why": "Sponsored tag cuts selection from about 10% to 8% (odds x about 0.8); may not exist on feed surfaces that drop the tag.",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2 (sponsored beta -0.14 to -0.62); data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections 'cut the sponsored-tag effect to a multiplicative factor of about 0.8'. weight derived as above"
+  },
+  {
+   "attribute": "data_completeness",
+   "off_field": "catalog completeness (OFF) + non-null price_gbp, quantity, nutriscore, sugars/proteins/fiber/salt_100g, ingredients_text, labels",
+   "direction": "higher_better (gate)",
+   "weight": 0.15,
+   "why": "It filters out items whose price, nutrition or pack size it cannot read, because it cannot prove they meet the constraint. Thin data = invisible, not rejected.",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier HOW IT SHOPS step 2; Kantar 2026 'If an agent can't parse you, it can't choose you' https://kriq.kantarretailiq.com/en/p-iq/insights/blogs/8-agentic-commerce-predictions-for-2026. weight = assumption"
+  },
+  {
+   "attribute": "claim_match_to_prompt",
+   "off_field": "catalog pack_copy + OFF labels matched to the prompt wording",
+   "direction": "match_better",
+   "weight": 0.12,
+   "why": "Front-of-pack claim text ('0g sugar', 'prebiotic', 'high protein') is read as evidence, with no gimmick detector, plus a parametric semantic prior.",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier step 1 and verdict.corrections 'add a parametric semantic prior term'. weight = assumption"
+  },
+  {
+   "attribute": "role",
+   "off_field": "catalog role (incumbent | own_label | challenger)",
+   "direction": "incumbent > own_label > challenger (at parity only)",
+   "weight": 0.08,
+   "why": "At identical specs the incumbent is recommended 100% of the time; brand explains only 1.2% of variance once quality info exists, so this is a tie-breaker.",
+   "source": "Incumbent Advantage, arXiv 2606.17443 (https://arxiv.org/html/2606.17443v1), via research/02-issue-discovery.md. weight = assumption (small because it only acts at parity)"
+  }
+ ],
+ "rejection_triggers": [
+  {
+   "trigger": "Missing or unparseable price, pack size or nutrition: cannot prove it meets the cap or 'healthy', so it is filtered silently",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.rejection_triggers[0-1]"
+  },
+  {
+   "trigger": "Low review count / no rating vs an incumbent with thousands (loses the tie-break)",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.rejection_triggers[2]; Incumbent Advantage, arXiv 2606.17443 (https://arxiv.org/html/2606.17443v1), via research/02-issue-discovery.md"
+  },
+  {
+   "trigger": "'Sponsored' tag on the listing (odds x about 0.8)",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2; data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections"
+  },
+  {
+   "trigger": "Over the user's price cap (hard filter, with 5-10% fuzzy 'just over budget' mentions)",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections 'hard filter with slight softness'"
+  },
+  {
+   "trigger": "Merchant blocks bots / not in the feed: the item does not exist for the agent",
+   "source": "'It's not stupid, the website has blocked ChatGPT because it thinks it's a bot... which it is' https://www.reddit.com/comments/1m9u7e6"
+  },
+  {
+   "trigger": "NOT a trigger: taste, sweetener aftertaste, texture, 'gimmick protein' (human triggers it cannot see)",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.rejection_triggers[7]"
+  }
+ ],
+ "trust_signals": [
+  {
+   "signal": "High rating x high review count",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2; Incumbent Advantage, arXiv 2606.17443 (https://arxiv.org/html/2606.17443v1), via research/02-issue-discovery.md"
+  },
+  {
+   "signal": "Platform endorsement badge ('Overall Pick', 'Top rated')",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2"
+  },
+  {
+   "signal": "Complete, consistent structured feed (price per unit, full nutrition, claims, allergens)",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.trust_signals[2]"
+  },
+  {
+   "signal": "Claim text that matches the prompt wording, read at face value",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.trust_signals[3]"
+  },
+  {
+   "signal": "Recognisable incumbent brand when attributes tie",
+   "source": "Incumbent Advantage, arXiv 2606.17443 (https://arxiv.org/html/2606.17443v1), via research/02-issue-discovery.md"
+  }
+ ],
+ "habits": [
+  {
+   "habit": "Cold account: no memory of past baskets; re-asked, it reshuffles. With memory on, habit about 0.35",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.corrections 'run two memory conditions'"
+  },
+  {
+   "habit": "Always returns a basket; never says 'none of these' in checkout / Agent Mode",
+   "source": "Agents vs humans, 5,000 sessions, arXiv 2608.22697 (https://arxiv.org/abs/2608.22697): agents 'never decline to buy'; position effect 4-10x weaker than humans', via research/02-issue-discovery.md"
+  },
+  {
+   "habit": "Concentrates demand on 2-3 modal SKUs per slot (choice homogeneity)",
+   "source": "Allouah et al., 'What Is Your AI Agent Buying?' arXiv 2508.02630 (https://arxiv.org/abs/2508.02630), conditional-logit table in research/04-3d-sim-evidence-and-tech.md §2 ('choice homogeneity, often concentrating demand on a few modal products')"
+  }
+ ],
+ "says_vs_does": "SAYS a fluent, taste-sounding reason ('refreshing, only 5 kcal, keeps you full'). DOES filter on parseable fields, break ties on rating x reviews and incumbency, follow badges, avoid sponsored tags, and always return something. Source: data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.says_vs_does",
+ "dossier": "I am not a person. I am a general-purpose assistant (ChatGPT, Gemini or similar) that a user has asked to shop for them: 'get me a healthy-ish fizzy drink and a snack for work under £4'. I never see the shelf, the pack or the price sticker. I see a list of product records in whatever order the retailer returned them. I turn 'healthy-ish' into fields I can check, drop anything whose price or nutrition I cannot read, and rank what is left on what I can verify: rating and review count, claim text that matches the request, price, and any badge. If two items tie, I go with the brand I have seen most in training. I always come back with an answer, and I explain it in a confident sentence that sounds like taste. A product that won every blind tasting but has eleven reviews and a half-empty data sheet is, to me, a blank row.",
+ "dossier_word_count_note": "about 150 words; first-person rendering of data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier.profile, not a human composite",
+ "verbatims": [
+  {
+   "quote": "OP literally said \\*\"I gave it barely any detail in my instructions other than to avoid red meat, prioritize health and keep it under $150\"\\*, which is much quicker than adding every single one of those items manually.",
+   "url": "https://www.reddit.com/comments/1m9u7e6",
+   "subreddit": "OpenAI",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "It’s not stupid, the website has blocked ChatGPT because it thinks it’s a bot… which it is",
+   "url": "https://www.reddit.com/comments/1m9u7e6",
+   "subreddit": "OpenAI",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "Can you post your exact prompt? I tried it with the prompt below and it didn't look at the store itself, just returned generic grocery list. make a grocery list for a mexican meal. use items from this grocery store and chose the healthiest versions of each ...",
+   "url": "https://www.reddit.com/comments/1j9pozm",
+   "subreddit": "ChatGPT",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "Advertisers and Marketers salivating at the idea of getting ChatGPT to purchase certain brands over others. What a shitshow.",
+   "url": "https://www.reddit.com/comments/1m9u7e6",
+   "subreddit": "OpenAI",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "I had to swap out a couple of items at the end before checking out but other than that, it did a great job and saved me about 20 minutes which I used to doom scroll social media.",
+   "url": "https://www.reddit.com/comments/1m9u7e6",
+   "subreddit": "OpenAI",
+   "theme": "chatgpt_shopping"
+  },
+  {
+   "quote": "The prices were a bit off, but otherwise a varied, healthy list",
+   "url": "https://www.reddit.com/comments/1hyqe97",
+   "subreddit": "ChatGPT",
+   "theme": "chatgpt_shopping"
+  }
+ ],
+ "counter_evidence": [
+  {
+   "point": "In advisory chat (not checkout) it often lists 2-3 options with health caveats, so 'never declines' holds less strictly",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.unrealistic_claims; Agents vs humans, 5,000 sessions, arXiv 2608.22697 (https://arxiv.org/abs/2608.22697): agents 'never decline to buy'; position effect 4-10x weaker than humans', via research/02-issue-discovery.md (hotel listings, not grocery)"
+  },
+  {
+   "point": "Many feeds never pass the sponsored tag through, so the penalty may not exist on that surface",
+   "source": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.unrealistic_claims"
+  }
+ ],
+ "sim_params": {
+  "p_notice_eye_level": 0.97,
+  "p_notice_bottom_or_side": 0.9,
+  "habit_lockin_0_1": 0.08,
+  "price_sensitivity_0_1": 0.35,
+  "trust_new_brand_0_1": 0.4,
+  "gimmick_reactance_0_1": 0.15,
+  "reads_structured_data_0_1": 0.95,
+  "seconds_at_shelf": 12,
+  "meal_deal_pull_0_1": 0.12,
+  "p_decline": 0.0
+ },
+ "sim_params_scope": "Feed channel: 'eye level' = the top of the feed, 'bottom/side' = lower rows. The agent reads every row.",
+ "sim_params_sources": {
+  "p_notice_eye_level": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.p_notice_eye_level",
+  "p_notice_bottom_or_side": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.p_notice_bottom_or_side",
+  "habit_lockin_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.habit_lockin_0_1",
+  "price_sensitivity_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.price_sensitivity_0_1",
+  "trust_new_brand_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.trust_new_brand_0_1",
+  "gimmick_reactance_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.gimmick_reactance_0_1",
+  "reads_structured_data_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.reads_structured_data_0_1",
+  "seconds_at_shelf": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.seconds_at_shelf",
+  "meal_deal_pull_0_1": "data/personas/staged_personas_v1.json[10] (Agent-GPT) verdict.sim_parameters.meal_deal_pull_0_1",
+  "p_decline": "Agents vs humans, 5,000 sessions, arXiv 2608.22697 (https://arxiv.org/abs/2608.22697): agents 'never decline to buy'; position effect 4-10x weaker than humans', via research/02-issue-discovery.md; advisory-chat exceptions noted in counter_evidence"
+ },
+ "agent_brief": "You shop for a user who typed one loose request. Turn the request into checkable fields, drop items whose price, nutrition or pack size you cannot read, rank the rest on claim match to the request, price within the cap, and how complete and trustworthy the record is; at a tie prefer the familiar brand. Always pick something.",
+ "agent_brief_source": "condensed from data/personas/staged_personas_v1.json[10] (Agent-GPT) dossier HOW IT SHOPS steps 1-6",
+ "notes_for_sim": [
+  "The 4 MISSIONS in sim/agent_shopper.py are this archetype's missions; all agent runs before 2026-10-03 13:30 were this archetype (see migrated_note in those run files).",
+  "Report pick share with Wilson CI and the position-bias block; the decision model is recorded per agent as `model` (e.g. jev-1.13.0 or the OpenRouter jev-router)."
+ ],
+ "lens_weights_sum": 1.0
+}

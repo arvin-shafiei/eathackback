@@ -182,7 +182,9 @@ export function gondolaX(cfg: StoreConfig, aisle: number) {
   const n = P.cols.length - 1;
   if (n <= 0) return 0;
   const a = cfg.aisles > 1 && cfg.aisles !== n ? 1 + ((aisle - 1) * (n - 1)) / (cfg.aisles - 1) : aisle;
-  return P.cols[1] + (a - 1) * G.spacing;
+  // interpolate the real column positions (data-driven plans are not on a uniform G.spacing grid)
+  const i = Math.max(1, Math.min(n, a)), lo = Math.floor(i), hi = Math.min(n, lo + 1);
+  return P.cols[lo] + (i - lo) * (P.cols[hi] - P.cols[lo] || G.spacing);
 }
 
 /** department definitions in play for this config: built-ins merged with cfg.departments */
@@ -224,8 +226,298 @@ function resolveUnits(cfg: StoreConfig): Resolved[] {
   });
 }
 
+// ---------------------------------------------------------------- data-driven plan (formats/*.config.json)
+/** assumption (visual only): numbered centre aisles are drawn as one continuous run of ~6 bays x 1.33 m per side, so an
+ *  aisle reads as an aisle; the generator's 3 m runs (sized to the ~10% range) would be short stubs. Products are
+ *  spread along the full run (slotPlacements + ShelfFill repeat facings to fill). No stat depends on run length. */
+export const AISLE_RUN = 18.0;
+/** assumption (visual only): centre walkway width in data-driven plans. Real UK superstore aisles are ~2.2-3 m; 4 m keeps
+ *  the proportions of a real shop (long runs, narrow-ish aisles) while leaving room for the rendered crowd + trolleys. */
+export const DATA_WALKWAY = 4.0;
+type Knot = [number, number];
+/** monotone piecewise-linear map through knots (slope 1 outside) */
+const pwl = (knots: Knot[]) => (v: number) => {
+  if (!knots.length) return v;
+  if (v <= knots[0][0]) return knots[0][1] + (v - knots[0][0]);
+  for (let i = 1; i < knots.length; i++) {
+    const [a, A] = knots[i - 1], [b, B] = knots[i];
+    if (v <= b) return b - a < 1e-9 ? B : A + ((v - a) * (B - A)) / (b - a);
+  }
+  const [a, A] = knots[knots.length - 1];
+  return A + (v - a);
+};
+
+/**
+ * Real floor plan from a format config (units with x/z/facing, departments with zone rects, checkouts list, café,
+ * entrances/exits/gates, end panels). Data frame: origin front-left, z towards the back wall. Scene frame: back wall at
+ * z = 0, street at +z, x centred. The real topology and order are kept; two stretches are applied for readability
+ * (assumption, visual only): every centre-aisle walkway is widened to G.spacing - G.depth and every centre bank is
+ * drawn AISLE_RUN deep (cross aisle between banks at least 2 end caps + G.midAisle). The checkout bank keeps its real
+ * lane pitch and is centred on the stretched aisle block; exits + gates move with it.
+ */
+function dataPlan(cfg: StoreConfig): StorePlan | null {
+  const C = cfg as StoreConfig & AnyRec;
+  const raw = cfg.units.map((u) => u as unknown as AnyRec);
+  if (!raw.length || !raw.every((u) => typeof u.x === 'number' && typeof u.z === 'number' && typeof u.facing === 'string')) return null;
+  const fp = rec(C.footprint_m);
+  const Wd = num(fp.w, Math.max(...raw.map((u) => u.x as number)) + 1), Dd = num(fp.d, Math.max(...raw.map((u) => u.z as number)) + 1);
+  const R = resolveUnits(cfg);
+  const defs = deptDefs(cfg);
+  const isCentre = (r: Resolved) => (r.fixture === 'gondola' || r.fixture === 'freezer') && r.aisleNo !== null && (r.u as unknown as AnyRec).perimeter !== true;
+  const centre = R.filter(isCentre);
+  const facing = (r: Resolved) => String((r.u as unknown as AnyRec).facing);
+  const ux = (r: Resolved) => (r.u as unknown as AnyRec).x as number, uz = (r: Resolved) => (r.u as unknown as AnyRec).z as number;
+
+  // ---- x stretch: widen walkways between facing gondola faces, gondola bodies = G.depth
+  const faceAt = new Map<number, Set<string>>();
+  for (const r of centre) { const k = Math.round(ux(r) * 100) / 100; (faceAt.get(k) ?? faceAt.set(k, new Set()).get(k)!).add(facing(r)); }
+  const xs = [...faceAt.keys()].sort((a, b) => a - b);
+  const xk: Knot[] = [];
+  if (xs.length) {
+    xk.push([xs[0], xs[0]]);
+    for (let i = 1; i < xs.length; i++) {
+      const a = xs[i - 1], b = xs[i], A = xk[xk.length - 1][1];
+      const fa = faceAt.get(a)!, fb = faceAt.get(b)!;
+      let w = b - a;
+      if (fa.has('+x') && fb.has('-x')) w = DATA_WALKWAY; // walkway
+      else if (fa.has('-x') && fb.has('+x') && b - a < 1.5) w = G.depth; // back-to-back gondola
+      xk.push([b, A + w]);
+    }
+  }
+  const sx = pwl(xk);
+  // ---- z stretch: centre banks AISLE_RUN deep, cross aisle between banks >= 2 end caps + midAisle
+  const iv = centre.map((r) => [uz(r) - r.len / 2, uz(r) + r.len / 2] as [number, number]).sort((a, b) => a[0] - b[0]);
+  const banks: [number, number][] = [];
+  for (const [a, b] of iv) { const l = banks[banks.length - 1]; if (l && a <= l[1] + 0.05) l[1] = Math.max(l[1], b); else banks.push([a, b]); }
+  const zk: Knot[] = [];
+  banks.forEach(([a, b], i) => {
+    if (i === 0) zk.push([a, a]);
+    else { const [pa, pA] = zk[zk.length - 1]; zk.push([a, pA + Math.max(a - pa, 2 * G.endcapDepth + G.midAisle + 0.2)]); }
+    zk.push([b, zk[zk.length - 1][1] + AISLE_RUN]);
+  });
+  const sz = pwl(zk);
+  const W = sx(Wd), D = sz(Dd);
+  const X = (x: number) => sx(x) - W / 2;
+  const Z = (z: number) => D - sz(z);
+  const xMin = -W / 2, xMax = W / 2, zMin = 0, zMax = D;
+
+  // ---- units
+  const ROT: Record<string, number> = { '+x': Math.PI / 2, '-x': -Math.PI / 2, '-z': 0, '+z': Math.PI };
+  const units: Record<string, UnitPlace> = {};
+  const unitPos: StorePlan['unitPos'] = {};
+  const free: Rect[] = []; // freestanding non-gondola fixtures (produce tables, food-to-go chiller)
+  const wallRects: Rect[] = [];
+  const SNAP = 1.3; // assumption: a fixture face within 1.3 m of a wall is a wall fixture (wall multideck depth 1.1 m)
+  for (const r of R) {
+    const u = r.u as unknown as AnyRec, f = facing(r);
+    const alongZ = f === '+x' || f === '-x';
+    let x: number, z: number, len: number;
+    if (alongZ) { const a = Z(uz(r) - r.len / 2), b = Z(uz(r) + r.len / 2); z = (a + b) / 2; len = Math.abs(a - b); x = X(ux(r)); }
+    else { const a = X(ux(r) - r.len / 2), b = X(ux(r) + r.len / 2); x = (a + b) / 2; len = Math.abs(b - a); z = Z(uz(r)); }
+    let wall: UnitPlace['wall'] = null;
+    if (!isCentre(r)) {
+      if (alongZ && ux(r) < SNAP && f === '+x') { wall = 'L'; x = xMin + 0.48; }
+      else if (alongZ && ux(r) > Wd - SNAP && f === '-x') { wall = 'R'; x = xMax - 0.48; }
+      else if (!alongZ && uz(r) > Dd - SNAP && f === '-z') { wall = 'B'; z = zMin + 0.48; }
+    }
+    units[r.u.id] = { x, z, rotY: ROT[f] ?? 0, len: Math.max(0.6, len - 0.06), rows: r.rows, fixture: r.fixture, dept: r.dept.id, aisleNo: isCentre(r) ? r.aisleNo : null, walkway: null, wall, block: null };
+    unitPos[r.u.id] = { bay: num(u.bay, 0), nb: 1 };
+    if (!isCentre(r)) {
+      const h = len / 2, c = Math.cos(ROT[f] ?? 0), s = Math.sin(ROT[f] ?? 0);
+      // footprint: the run, 1 m deep behind the face
+      const bx = x - s * 0.5, bz = z - c * 0.5;
+      const rr: Rect = alongZ ? { x0: bx - 0.5, x1: bx + 0.5, z0: z - h, z1: z + h } : { x0: x - h, x1: x + h, z0: bz - 0.5, z1: bz + 0.5 };
+      (wall ? wallRects : free).push(rr);
+    }
+  }
+
+  // ---- blocks, walkways, gondola runs
+  const bankZ = banks.map(([a, b]) => ({ z0: Z(b), z1: Z(a) })).sort((p, q) => p.z0 - q.z0); // back → front
+  const blocks: StorePlan['blocks'] = bankZ.map((b) => ({ z0: b.z0, z1: b.z1, aisles: [] }));
+  const blockOf = (z: number) => Math.max(0, blocks.findIndex((b) => z >= b.z0 - 0.1 && z <= b.z1 + 0.1));
+  const walkways: Walkway[] = [];
+  const byAisle = new Map<number, Resolved[]>();
+  for (const r of centre) byAisle.set(r.aisleNo!, [...(byAisle.get(r.aisleNo!) ?? []), r]);
+  for (const [no, list] of [...byAisle.entries()].sort((a, b) => a[0] - b[0])) {
+    const Lf = list.filter((r) => facing(r) === '+x'), Rf = list.filter((r) => facing(r) === '-x');
+    const lx = Lf.length ? Math.max(...Lf.map((r) => units[r.u.id].x)) : Math.min(...Rf.map((r) => units[r.u.id].x)) - DATA_WALKWAY;
+    const rx = Rf.length ? Math.min(...Rf.map((r) => units[r.u.id].x)) : lx + DATA_WALKWAY;
+    const b = blockOf(units[list[0].u.id].z);
+    const cnt = new Map<string, number>(); for (const r of list) cnt.set(r.dept.id, (cnt.get(r.dept.id) ?? 0) + 1);
+    const dept = [...cnt.entries()].sort((p, q) => q[1] - p[1])[0][0];
+    const id = walkways.length;
+    walkways.push({ id, aisleNo: no, x: (lx + rx) / 2, z0: blocks[b].z0, z1: blocks[b].z1, block: b, dept, cats: [...new Set(list.map((r) => r.u.category))], fixture: list.some((r) => r.fixture === 'freezer') ? 'freezer' : 'gondola', units: list.map((r) => r.u.id) });
+    blocks[b].aisles.push(no);
+    for (const r of list) { units[r.u.id].walkway = id; units[r.u.id].block = b; }
+  }
+  const gondolas: GondolaRun[] = [];
+  blocks.forEach((blk, b) => {
+    const faces = centre.filter((r) => units[r.u.id].block === b);
+    const bodies = new Map<number, { L: boolean; R: boolean; frozen: boolean }>();
+    for (const r of faces) {
+      const p = units[r.u.id], f = facing(r);
+      const cx = Math.round((f === '-x' ? p.x + G.depth / 2 : p.x - G.depth / 2) * 20) / 20;
+      const g = bodies.get(cx) ?? { L: false, R: false, frozen: false };
+      if (f === '-x') g.L = true; else g.R = true;
+      if (r.fixture === 'freezer') g.frozen = true;
+      bodies.set(cx, g);
+    }
+    [...bodies.entries()].sort((p, q) => p[0] - q[0]).forEach(([gx, g], i) => gondolas.push({ col: i + 1, x: gx, z0: blk.z0, z1: blk.z1, block: b, frozen: g.frozen, faces: { L: g.L, R: g.R } }));
+  });
+  const cols = [0, ...[...new Set(gondolas.map((g) => g.x))].sort((a, b) => a - b)];
+  const z0 = blocks.length ? blocks[0].z0 : D * 0.3, z1 = blocks.length ? blocks[blocks.length - 1].z1 : D * 0.6;
+  const crossFront = z0 - G.crossGap, crossBack = z1 + G.crossGap;
+
+  // ---- checkouts: real lane pitch, bank centred on the stretched aisle block
+  const coList = (Array.isArray(C.checkouts) ? C.checkouts : []).map(rec).filter((c) => typeof c.x === 'number' && typeof c.z === 'number');
+  const cxs = coList.map((c) => c.x as number);
+  const bankL = cxs.length ? Math.min(...cxs) : Wd / 2, bankR = cxs.length ? Math.max(...cxs) : Wd / 2;
+  const off = sx((bankL + bankR) / 2) - (bankL + bankR) / 2;
+  /** front-band x: things beside the bank (exits, gates) move with it, the rest use the stretch */
+  const FX = (x: number) => (x >= bankL - 10 && x <= bankR + 3 ? x + off : sx(x)) - W / 2;
+  const belt = 2.6;
+  const lanes: Lane[] = [];
+  const staffed = coList.filter((c) => /staff|till|manned/.test(String(c.type ?? '')));
+  const selfs = coList.filter((c) => /self|sco/.test(String(c.type ?? '')));
+  staffed.forEach((c, i) => {
+    const cx = FX(c.x as number), cz = Z(c.z as number);
+    const sxx = cx - 0.95;
+    lanes.push({
+      id: String(c.id ?? `T${i + 1}`), kind: 'staffed', idx: i, x: cx, z: cz,
+      stand: { x: sxx, z: cz - belt / 2 + 0.1 }, queueDir: { x: 0, z: -1 },
+      beltStart: { x: cx - 0.12, z: cz - belt / 2 + 0.25 }, beltEnd: { x: cx - 0.12, z: cz + 0.35 },
+      scanner: { x: cx - 0.1, y: 0.99, z: cz + 0.55 }, bag: { x: cx - 0.2, y: 0.99, z: cz + belt / 2 - 0.25 }, cashier: { x: cx + 0.65, z: cz + 0.5 },
+    });
+  });
+  const selfMidZ = selfs.length ? selfs.reduce((s, c) => s + Z(c.z as number), 0) / selfs.length : 0;
+  selfs.forEach((c, i) => {
+    const kx = FX(c.x as number), kz = Z(c.z as number);
+    const face = Math.sign(selfMidZ - kz) || 1;
+    lanes.push({
+      id: String(c.id ?? `S${i + 1}`), kind: 'self', idx: i, x: kx, z: kz,
+      stand: { x: kx, z: kz + face * 0.72 }, queueDir: { x: -1, z: 0 },
+      scanner: { x: kx - 0.1, y: 1.0, z: kz + face * 0.2 }, bag: { x: kx + 0.45, y: 0.82, z: kz + face * 0.12 },
+    });
+  });
+  const checkoutZ = staffed.length ? Z(staffed.reduce((s, c) => s + (c.z as number), 0) / staffed.length) : D - 8;
+  const laneMinX = lanes.length ? Math.min(...lanes.map((l) => l.x)) : 0, laneMaxX = lanes.length ? Math.max(...lanes.map((l) => l.x)) : 0;
+  const laneMinZ = lanes.length ? Math.min(...lanes.map((l) => l.z)) : checkoutZ, laneMaxZ = lanes.length ? Math.max(...lanes.map((l) => l.z)) : checkoutZ;
+  const bank: Rect = { x0: laneMinX - 0.75, x1: laneMaxX + 0.7, z0: Math.min(checkoutZ - 1.75, laneMinZ - 0.6), z1: Math.max(checkoutZ + 1.75, laneMaxZ + 0.6) };
+  const lobbyZ = checkoutZ + belt / 2 + 1.7;
+
+  // ---- doors + gates
+  const ents = (Array.isArray(C.entrances) ? C.entrances : [C.entrance]).map(rec).filter((e) => typeof e.x === 'number');
+  const entrances: StorePlan['entrances'] = (ents.length ? ents : [{ x: Wd * 0.2 }]).map((e) => ({ x: X(e.x as number), z: zMax, nx: 0, nz: -1 }));
+  const exRaw = (Array.isArray(C.exits) ? C.exits : []).map(rec).filter((e) => typeof e.x === 'number');
+  const exits: XY[] = exRaw.length ? exRaw.map((e) => ({ x: FX(e.x as number), z: zMax })) : [{ x: (bank.x0 + bank.x1) / 2, z: zMax }];
+  const gRaw = (Array.isArray(C.security_gates) ? C.security_gates : []).map(rec).filter((g) => typeof g.x === 'number');
+  const gates = gRaw.length ? gRaw.map((g, i) => ({ id: String(g.id ?? `G${i + 1}`), x: FX(g.x as number), z: Z(num(g.z, 1.2)) }))
+    : exits.flatMap((e, i) => [{ id: `G${i + 1}a`, x: e.x - 1.15, z: zMax - 1.3 }, { id: `G${i + 1}b`, x: e.x + 1.15, z: zMax - 1.3 }]);
+
+  // ---- café (real zone, tables, seats, counter)
+  const cr = rec(C.cafe), cz_ = rec(cr.zone);
+  let cafe: StorePlan['cafe'] = { x: xMin, z: zMax, w: 0, d: 0, counter: { x: xMin, z: zMax }, seats: [], tables: [] };
+  if (typeof cz_.x0 === 'number') {
+    const x0 = X(cz_.x0 as number), x1 = X(num(cz_.x1, 0)), za = Z(num(cz_.z1, 0)), zb = Z(cz_.z0 as number);
+    const tables = (Array.isArray(cr.table_positions) ? cr.table_positions : []).map(rec).map((t) => ({ x: X(num(t.x, 0)), z: Z(num(t.z, 0)) }));
+    const seats = (Array.isArray(cr.seats) ? cr.seats : []).map(rec).map((s) => {
+      const t = tables[num(s.table, 0)] ?? tables[0]; const x = X(num(s.x, 0)), z = Z(num(s.z, 0));
+      return { x, z, table: num(s.table, 0), yaw: t ? Math.atan2(t.x - x, t.z - z) : 0 };
+    });
+    const cc = rec(cr.counter);
+    cafe = { x: (x0 + x1) / 2, z: (za + zb) / 2, w: x1 - x0, d: zb - za, counter: { x: X(num(cc.x, num(cr.x, 0))), z: Z(num(cc.z, num(cz_.z1, 0) - 1)) }, seats, tables };
+  }
+  const hasCafe = cafe.w > 0;
+
+  // ---- stockroom (outside a side wall, on the free stretch nearest the back) + goods-in
+  const leftBusy = Object.values(units).filter((p) => p.wall === 'L').map((p) => [p.z - p.len / 2, p.z + p.len / 2]);
+  let doorZ = 3.0;
+  for (let z = 3.0; z < D * 0.6; z += 0.5) if (!leftBusy.some(([a, b]) => z > a - 1.5 && z < b + 1.5)) { doorZ = z; break; }
+  const stockroom = { x: xMin - 4.2, z: doorZ + 2, w: 8, d: 8, door: { x: xMin, z: doorZ } };
+  const gi = rec(C.goods_in);
+  const goodsIn = { x: Math.max(xMin + 3, Math.min(xMax - 3, X(num(gi.x, Wd * 0.9)))), z: zMin };
+
+  // ---- meal deal stand: beside the food-to-go chiller
+  const md = rec(C.meal_deal);
+  const mdUnit = Array.isArray(md.stand_units) ? units[String(md.stand_units[0])] : undefined;
+  const mealDeal = mdUnit ? { x: mdUnit.x + mdUnit.len / 2 + 2.0, z: mdUnit.z - 0.6 } : { x: entrances[0].x + 3, z: zMax - 6 };
+
+  // ---- departments
+  const depts: DeptZone[] = [];
+  const dList = (Array.isArray(C.departments) ? C.departments : []).map(rec);
+  let produceRect: Rect | null = null;
+  let flowers: XY | null = null;
+  for (const dr of dList) {
+    const id = String(dr.id ?? ''); const zr = rec(dr.zone);
+    if (!id || typeof zr.x0 !== 'number') continue;
+    const def = defs[id] ?? DEPT_BY_ID.grocery;
+    const rect: Rect = { x0: X(zr.x0 as number), x1: X(num(zr.x1, 0)), z0: Z(num(zr.z1, 0)), z1: Z(zr.z0 as number) };
+    const kindRaw = String(dr.zone_kind ?? '');
+    const ids = (Array.isArray(dr.units) ? dr.units : []).map(String).filter((u) => units[u]);
+    const aisles = (Array.isArray(dr.aisle_numbers) ? dr.aisle_numbers : []).filter((n): n is number => typeof n === 'number');
+    const first = ids.length ? units[ids[0]] : null;
+    const cx = (rect.x0 + rect.x1) / 2, czz = (rect.z0 + rect.z1) / 2;
+    if (/produce/.test(kindRaw)) {
+      produceRect = rect;
+      const sub = (Array.isArray(dr.sub_zones) ? dr.sub_zones : []).map(rec).find((s) => /flower/.test(String(s.id ?? s.name)));
+      const sr = rec(sub?.zone);
+      if (typeof sr.x0 === 'number') flowers = { x: (X(sr.x0 as number) + X(num(sr.x1, 0))) / 2, z: (Z(num(sr.z0, 0)) + Z(num(sr.z1, 0))) / 2 };
+    }
+    if (aisles.length || /centre|frozen|bws/.test(kindRaw)) {
+      const b = blockOf(czz);
+      depts.push({ ...def, rect, kind: 'aisles', units: ids, aisles, signAt: { x: cx, z: b === blocks.length - 1 ? rect.z1 + 1.2 : rect.z0 - 1.2, rot: 0 } });
+    } else if (first?.wall) {
+      const signAt = first.wall === 'B' ? { x: cx, z: zMin + G.wallDepth + 1.6, rot: 0 } : first.wall === 'L' ? { x: xMin + G.wallDepth + 1.6, z: czz, rot: Math.PI / 2 } : { x: xMax - G.wallDepth - 1.6, z: czz, rot: -Math.PI / 2 };
+      depts.push({ ...def, rect, kind: 'wall', units: ids, aisles: [], signAt });
+    } else {
+      depts.push({ ...def, rect, kind: 'service', units: ids, aisles: [], signAt: { x: cx, z: czz, rot: 0 } });
+    }
+  }
+  const service = (id: string, name: string, sign: string, emoji: string, color: string, rect: Rect, signAt: XY & { rot: number }): DeptZone => ({ id, name, sign, emoji, color, fixture: 'gondola', rank: 90, rect, kind: 'service', units: [], aisles: [], signAt });
+  if (lanes.length) depts.push(service('checkouts', 'checkouts', 'checkouts', '🧾', '#e9e1f2', { x0: bank.x0 - 0.6, x1: bank.x1 + 0.6, z0: bank.z0 - 0.4, z1: bank.z1 + 0.3 }, { x: (bank.x0 + bank.x1) / 2, z: bank.z0 - 1.9, rot: 0 }));
+  if (hasCafe) depts.push(service('cafe', 'café', 'café', '☕', '#f3dcc4', { x0: cafe.x - cafe.w / 2, x1: cafe.x + cafe.w / 2, z0: cafe.z - cafe.d / 2, z1: cafe.z + cafe.d / 2 }, { x: cafe.x, z: cafe.z - cafe.d / 2 - 0.4, rot: 0 }));
+
+  // ---- no promo floor in walkways: the floor between blocks / walls is circulation (promo lives on the end caps)
+  const promoZones: Rect[] = [];
+  const pallets: StorePlan['promo']['pallets'] = [];
+
+  // ---- dividers: end panels between perimeter departments (perpendicular to the wall they sit on)
+  const dividers: Rect[] = [];
+  for (const dv of (Array.isArray(C.dividers) ? C.dividers : []).map(rec)) {
+    if (typeof dv.x !== 'number' || typeof dv.z !== 'number') continue;
+    const x = X(dv.x), z = Z(dv.z);
+    if (dv.z > Dd - SNAP - 0.5) dividers.push({ x0: x - 0.08, x1: x + 0.08, z0: zMin + 0.1, z1: zMin + 1.4 });
+    else if (dv.x > Wd - SNAP - 0.5) dividers.push({ x0: xMax - 1.4, x1: xMax - 0.1, z0: z - 0.08, z1: z + 0.08 });
+    else if (dv.x < SNAP + 0.5) dividers.push({ x0: xMin + 0.1, x1: xMin + 1.4, z0: z - 0.08, z1: z + 0.08 });
+  }
+
+  // ---- router obstacles
+  const obstacles: Rect[] = [];
+  for (const g of gondolas) obstacles.push({ x0: g.x - G.depth / 2 - 0.05, x1: g.x + G.depth / 2 + 0.05, z0: g.z0 - G.endcapDepth, z1: g.z1 + G.endcapDepth });
+  obstacles.push(...free, ...wallRects);
+  obstacles.push({ x0: mealDeal.x - 1.3, x1: mealDeal.x + 1.3, z0: mealDeal.z - 0.55, z1: mealDeal.z + 0.55 });
+  if (flowers) obstacles.push({ x0: flowers.x - 0.9, x1: flowers.x + 0.9, z0: flowers.z - 0.9, z1: flowers.z + 0.9 });
+  if (lanes.length) obstacles.push(bank);
+  for (const pl of pallets) obstacles.push({ x0: pl.x - pl.w / 2, x1: pl.x + pl.w / 2, z0: pl.z - pl.d / 2, z1: pl.z + pl.d / 2 });
+  if (hasCafe) for (const t of cafe.tables) obstacles.push({ x0: t.x - 0.5, x1: t.x + 0.5, z0: t.z - 0.5, z1: t.z + 0.5 });
+  if (hasCafe) obstacles.push({ x0: cafe.counter.x - 1.6, x1: cafe.counter.x + 1.6, z0: cafe.counter.z - 0.4, z1: cafe.counter.z + 0.4 });
+  for (const d of dividers) obstacles.push(d);
+
+  const bounds = { xMin, xMax, zMin, zMax, cx: 0, cz: (zMin + zMax) / 2, w: W, d: D };
+  return {
+    bays: 1, z0, z1, crossFront, crossBack, frontZ: zMax, entrances, exits, gates, lanes, checkoutZ, cafe, stockroom, mealDeal, bounds, unitPos,
+    streetDir: 1, units, walkways, depts, gondolas, blocks, cols, produce: { rect: produceRect, tables: [], flowers }, dividers, bank, goodsIn, obstacles, lobbyZ, promo: { zones: promoZones, pallets },
+  };
+}
+
 export function storePlan(cfg: StoreConfig): StorePlan {
   const hit = plans.get(cfg); if (hit) return hit;
+  const dp = dataPlan(cfg);
+  if (dp) {
+    UNIT_LEN.clear(); for (const [id, u] of Object.entries(dp.units)) UNIT_LEN.set(id, u.len);
+    plans.set(cfg, dp);
+    return dp;
+  }
   const x = cfg as StoreConfig & AnyRec;
   const R = resolveUnits(cfg);
   const lenOf = (r: Resolved) => r.len;
@@ -615,7 +907,8 @@ export function slotPlacements(slot: string, set: { products: string[]; facings:
   if (!set) return [];
   const total = set.products.reduce((s, c) => s + Math.max(1, set.facings?.[c] ?? 1), 0);
   const usable = unitLength(parseSlot(slot).unit) - 0.4;
-  const fw = Math.min(0.62, usable / Math.max(total, 1));
+  // spread the set along the whole run (ShelfFill repeats facings to fill each product's share), so long runs are full
+  const fw = usable / Math.max(total, 1);
   let x = -(total * fw) / 2;
   return set.products.map((code, index) => {
     const f = Math.max(1, set.facings?.[code] ?? 1);

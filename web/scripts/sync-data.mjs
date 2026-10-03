@@ -40,6 +40,13 @@ if (!copy(path.join(ROOT, 'data', 'personas', 'personas.json'), path.join(OUT, '
   }
 }
 
+// AI-agent archetypes (data/personas/lens/*.json with kind "ai_agent") → personas_ai.json, merged into the persona list by src/data.ts
+{
+  const lensDir = path.join(ROOT, 'data', 'personas', 'lens');
+  const ai = fs.existsSync(lensDir) ? fs.readdirSync(lensDir).filter((f) => f.endsWith('.json')).map((f) => { try { return { ...JSON.parse(fs.readFileSync(path.join(lensDir, f), 'utf8')), _file: `data/personas/lens/${f}` }; } catch { return null; } }).filter((p) => p && p.kind === 'ai_agent') : [];
+  if (ai.length) { fs.writeFileSync(path.join(OUT, 'personas_ai.json'), JSON.stringify(ai, null, 1)); copied.push(`data/personas/lens (kind ai_agent: ${ai.length}) → personas_ai.json`); }
+}
+
 const runsDir = path.join(ROOT, 'data', 'sim', 'runs');
 const realRuns = [];
 if (fs.existsSync(runsDir)) {
@@ -47,7 +54,7 @@ if (fs.existsSync(runsDir)) {
     if (!copy(path.join(runsDir, f), path.join(OUT, 'runs', f))) continue;
     try {
       const r = JSON.parse(fs.readFileSync(path.join(runsDir, f), 'utf8'));
-      const ai = (r.agents || []).filter((a) => a.persona_id === 'ai_agent').length;
+      const ai = (r.agents || []).filter((a) => a.persona_id === 'ai_agent' || a.kind === 'ai_agent').length;
       realRuns.push({ run_id: r.run_id || f.replace(/\.json$/, ''), file: f, created: r.created || '', agents: (r.agents || []).length, ai_agents: ai, fixture: false });
     } catch { /* validated above */ }
   }

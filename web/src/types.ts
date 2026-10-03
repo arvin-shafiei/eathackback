@@ -34,6 +34,8 @@ export type Ocean = Partial<Record<'O' | 'C' | 'E' | 'A' | 'N', number>>;
 export interface Sourced { source?: string }
 export interface Persona {
   id: string; name: string; archetype: string; mission?: string; budget_gbp?: number; channel?: string;
+  /** AI-agent archetypes: kind "ai_agent", display label, why OCEAN is empty, the brief the agent is given */
+  kind?: string; label?: string; ocean_note?: string; agent_brief?: string; acts_for?: string;
   ocean: Ocean;
   ocean_effects?: ({ trait: string; effect: string; coef: number } & Sourced)[];
   lens?: ({ attribute: string; off_field?: string; direction: string; weight: number; why?: string } & Sourced)[];
@@ -53,6 +55,8 @@ export interface SimEvent {
 }
 export interface Agent {
   agent_id: string; persona_id: string; archetype?: string; mission?: string; model?: string; ocean?: Ocean;
+  /** "ai_agent" for AI shoppers; archetype_label = display name; prompt_state = what the deciding model saw before the feed */
+  kind?: string; archetype_label?: string; prompt_state?: string; purchase_history?: string[]; mission_text?: string;
   path: string[]; events: SimEvent[];
 }
 export interface ProductStats {
@@ -77,7 +81,9 @@ export interface Run {
 export interface RunIndexEntry { run_id: string; file: string; created?: string; agents?: number; ai_agents?: number; fixture?: boolean }
 
 export type Arm = 'human' | 'ai' | 'both';
-export const isAI = (a: Agent) => a.persona_id === 'ai_agent' || a.persona_id.startsWith('ai_');
+/** AI-agent archetype persona ids (data/personas/lens/ai_*.json with kind "ai_agent"). p_ai_delegator is a HUMAN who uses ChatGPT. */
+export const AI_PERSONA_IDS = new Set(['p_ai_assistant_general', 'p_ai_retailer_assistant', 'p_ai_price_bot']);
+export const isAI = (a: Agent) => a.kind === 'ai_agent' || a.persona_id === 'ai_agent' || AI_PERSONA_IDS.has(a.persona_id) || a.persona_id.startsWith('ai_');
 
 // ---- sim server responses (sim/optimise.py, sim/placement.py)
 export interface OptimiseResult {

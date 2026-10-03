@@ -4,6 +4,7 @@ import { productStats, pct, wilson, archetypeOf } from '../stats';
 import { archColor, archLabel, catColor, catLabel, DECISION, AI_COLOR } from '../theme';
 import { Bar, Src, Sticker } from './bits';
 import { isAI } from '../types';
+import { aiArchOf, aiLabel, modelName, shopperLabel } from './aiArch';
 
 interface Props {
   run: Run; product: Product; arm: Arm; personas: Record<string, Persona>; slot?: string;
@@ -74,7 +75,7 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
       <section>
         <h3>by archetype</h3>
         {s.byArch.map((b) => (
-          <Bar key={b.key} label={archLabel(b.key)} value={b.rate} max={maxArch} color={archColor(b.key)} ci={wilson(b.picked, b.shown).map((x) => Math.min(x, maxArch)) as [number, number]} right={`${b.picked}/${b.shown}`} />
+          <Bar key={b.key} label={shopperLabel(b.key)} value={b.rate} max={maxArch} color={archColor(b.key)} ci={wilson(b.picked, b.shown).map((x) => Math.min(x, maxArch)) as [number, number]} right={`${b.picked}/${b.shown}`} />
         ))}
         {!s.byArch.length && <p className="muted">nobody in this arm stood in front of it.</p>}
       </section>
@@ -87,7 +88,7 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
             {r.items.slice(0, 3).map(({ agent, event }) => (
               <button key={agent.agent_id + event.step} className="quote" onClick={() => onTrace(agent.agent_id, event.step)}>
                 <span className="dot" style={{ background: archColor(archetypeOf(agent, personas)) }} />
-                “{event.reason}” <span className="muted">— {isAI(agent) ? agent.model : personas[agent.persona_id]?.name ?? agent.persona_id} · trace →</span>
+                “{event.reason}” <span className="muted">— {isAI(agent) ? `🤖 ${aiLabel(aiArchOf(agent), personas[agent.persona_id])} (${modelName(agent.model)})` : personas[agent.persona_id]?.name ?? agent.persona_id} · trace →</span>
               </button>
             ))}
           </div>
@@ -99,7 +100,7 @@ export function ProductPanel({ run, product: p, arm, personas, slot, onTrace, on
         <button className="link-btn" onClick={() => setShowAll((v) => !v)}>{showAll ? 'hide' : 'show'} all {s.decisions.length} decisions</button>
         {showAll && s.decisions.map(({ agent, event }) => (
           <button key={agent.agent_id + event.step} className="quote small" onClick={() => onTrace(agent.agent_id, event.step)}>
-            <span aria-hidden>{DECISION[event.decision].emoji}</span> {agent.agent_id} · {archLabel(archetypeOf(agent, personas))}: “{event.reason}”
+            <span aria-hidden>{DECISION[event.decision].emoji}</span> {agent.agent_id} · {shopperLabel(archetypeOf(agent, personas))}: “{event.reason}”
           </button>
         ))}
       </section>

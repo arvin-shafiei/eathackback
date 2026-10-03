@@ -20,6 +20,7 @@ GET  /api/health
 """
 from __future__ import annotations
 
+import contextlib
 import datetime as dt
 import glob
 import json
@@ -38,6 +39,19 @@ import run as simrun  # noqa: E402
 
 MAX_AGENTS = 200  # guard against an accidental huge spend from the UI
 _run_lock = threading.Lock()
+
+
+@contextlib.contextmanager
+def _store_for(body):
+    """Hold the run lock and point the loaders in sim/run.py at the store the request names ("store": "xl").
+    Reset on the way out, so a request that names no store always gets the standard one."""
+    with _run_lock:
+        simrun.STORE_VARIANT = body.get("store") if body.get("store") in simrun.STORE_VARIANTS else None
+        try:
+            yield
+        finally:
+            simrun.STORE_VARIANT = None
+
 USER_SRC = "user-defined (dashboard)"
 OCEAN_KEYS = "OCEAN"
 
@@ -265,9 +279,7 @@ class H(BaseHTTPRequestHandler):
             b = self._body()
             if path == "/api/personas":
                 return self._send(200, build_persona(b))
-            with _run_lock:
-                # the store on screen: every loader in sim/run.py reads this while the lock is held
-                simrun.STORE_VARIANT = b.get("store") if b.get("store") in simrun.STORE_VARIANTS else None
+            with _store_for(b):
                 if path == "/api/run":
                     engine = "mock" if b.get("mock") else b.get("engine", simrun.DEFAULT_ENGINE)
                     pids = b.get("persona_ids") or None

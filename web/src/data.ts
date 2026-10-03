@@ -35,19 +35,23 @@ export async function loadAll(): Promise<Loaded> {
     : stores.find((s) => s.id === 'xl' && !s.fixture) ?? null;
   STORE_VARIANT = pick && pick.dir ? pick : null;
   const sv = STORE_VARIANT ? `${STORE_VARIANT.dir}/` : '';
-  const [config, planogram, catalogRaw, personasRaw, idxRaw, extra] = await Promise.all([
+  const [config, planogram, catalogRaw, personasRaw, idxRaw, extra, aiPersonas] = await Promise.all([
     getJSON<StoreConfig>(`${sv}store.config.json`),
     getJSON<Planogram>(`${sv}planogram.json`),
     getJSON<Product[] | { products: Product[] }>('catalog.json', []),
     getJSON<Persona[] | { personas: Persona[] }>('personas.json', []),
     getJSON<unknown[]>('runs/index.json', []),
     sv ? getJSON<Product[] | { products: Product[] }>(`${sv}catalog_extra.json`, []) : Promise.resolve([] as Product[]),
+    getJSON<Persona[]>('personas_ai.json', []), // AI-agent archetypes (npm run sync writes it from data/personas/lens kind=ai_agent)
   ]);
   const base = Array.isArray(catalogRaw) ? catalogRaw : catalogRaw.products ?? [];
   const have = new Set(base.map((p) => p.code));
   const ex = Array.isArray(extra) ? extra : extra.products ?? [];
   const catalog = [...base, ...ex.filter((p) => !have.has(p.code))];
-  const personas = Array.isArray(personasRaw) ? personasRaw : personasRaw.personas ?? [];
+  const humans = Array.isArray(personasRaw) ? personasRaw : personasRaw.personas ?? [];
+  const seen = new Set(humans.map((p) => p.id));
+  // AI archetypes have ocean: null on purpose (not a human); keep the type an object so radar code never sees null
+  const personas = [...humans, ...(Array.isArray(aiPersonas) ? aiPersonas : []).filter((p) => !seen.has(p.id)).map((p) => ({ ...p, ocean: p.ocean ?? {} }))];
   const runIndex: RunIndexEntry[] = (Array.isArray(idxRaw) ? idxRaw : []).map((r) =>
     typeof r === 'string' ? { run_id: r.replace(/\.json$/, ''), file: r.endsWith('.json') ? r : `${r}.json` } : (r as RunIndexEntry),
   );

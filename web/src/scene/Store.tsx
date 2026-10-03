@@ -573,6 +573,7 @@ function Stockroom({ cfg }: { cfg: StoreConfig }) {
   const s = storePlan(cfg).stockroom;
   const sign = useMemo(() => stickerSign([{ text: 'staff only', size: 96 }, { text: 'stockroom', size: 44, font: '700 44px Inter, system-ui' }], { w: 1024, h: 260, chip: '📦', chipColor: '#FE831B' }), []);
   const rows = Math.max(2, Math.floor(s.d / 2.2));
+  const out = Math.sign(s.x - s.door.x) || 1; // +1: the room is beyond the right wall, -1: beyond the left
   return (
     <group>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[s.x, 0.004, s.z]} receiveShadow raycast={noRay}>
@@ -580,15 +581,15 @@ function Stockroom({ cfg }: { cfg: StoreConfig }) {
         <meshStandardMaterial color="#d9d4dc" roughness={0.95} />
       </mesh>
       {Array.from({ length: rows }, (_, i) => (
-        <group key={i} position={[s.x + s.w / 2 - 0.7, 0, s.z - s.d / 2 + 1 + i * 2.2]}>
+        <group key={i} position={[s.x + out * (s.w / 2 - 0.7), 0, s.z - s.d / 2 + 1 + i * 2.2]}>
           <mesh position={[0, 1, 0]} raycast={noRay}><boxGeometry args={[1, 2, 1.6]} /><meshStandardMaterial color="#c9cfdc" wireframe /></mesh>
           {[0.3, 1.0, 1.65].map((y) => <mesh key={y} position={[0, y, 0]} castShadow raycast={noRay}><boxGeometry args={[0.8, 0.5, 1.4]} /><meshStandardMaterial color={y > 1 ? '#d9a05b' : '#c48a4a'} roughness={0.8} /><Edges color={INK} /></mesh>)}
         </group>
       ))}
       {/* walls of the back room: outer + sides, the shop-side wall has the swing door gap */}
-      <mesh position={[s.x + s.w / 2, 1.3, s.z]} raycast={noRay}><boxGeometry args={[0.2, 2.6, s.d]} /><meshStandardMaterial color="#efe6ea" /></mesh>
+      <mesh position={[s.x + out * s.w / 2, 1.3, s.z]} raycast={noRay}><boxGeometry args={[0.2, 2.6, s.d]} /><meshStandardMaterial color="#efe6ea" /></mesh>
       {[-1, 1].map((k) => <mesh key={k} position={[s.x, 1.3, s.z + k * s.d / 2]} raycast={noRay}><boxGeometry args={[s.w, 2.6, 0.2]} /><meshStandardMaterial color="#efe6ea" /></mesh>)}
-      <mesh position={[s.door.x - 0.15, 2.9, s.door.z]} rotation={[0, -Math.PI / 2, 0]} raycast={noRay}>
+      <mesh position={[s.door.x - out * 0.15, 2.9, s.door.z]} rotation={[0, -out * Math.PI / 2, 0]} raycast={noRay}>
         <planeGeometry args={[2.2, 0.56]} />
         <meshBasicMaterial map={sign} transparent />
       </mesh>
@@ -625,13 +626,18 @@ export function Store(props: StoreProps) {
   };
   // street (+z) wall is a glazed shopfront with door gaps; the rest are solid
   const front = spans(B.xMin, B.xMax, [...P.entrances.map((e) => e.x), ...P.exits.map((e) => e.x)], doorHalf);
-  const right = spans(B.zMin, B.zMax, [P.stockroom.door.z], 1.1);
+  // the stockroom door is a gap in whichever side wall it sits on
+  const sd = P.stockroom.door;
+  const doorOn = Math.abs(sd.x - B.xMax) < 0.5 ? 'R' : Math.abs(sd.x - B.xMin) < 0.5 ? 'L' : null;
+  const right = spans(B.zMin, B.zMax, doorOn === 'R' ? [sd.z] : [], 1.1);
+  const left = spans(B.zMin, B.zMax, doorOn === 'L' ? [sd.z] : [], 1.1);
   const wallBoxes: [number, number, number, number][] = [ // cx, cz, w, d
     [B.cx, B.zMin, B.w + 0.24, 0.24],
-    [B.xMin, B.cz, 0.24, B.d],
+    ...left.map(([a, b]) => [B.xMin, (a + b) / 2, 0.24, b - a] as [number, number, number, number]),
     ...right.map(([a, b]) => [B.xMax, (a + b) / 2, 0.24, b - a] as [number, number, number, number]),
   ];
-  const wallUnits = cfg.units.map((u) => P.units[u.id]).filter((p): p is UnitPlace => !!p && !!p.wall);
+  // every non-gondola fixture (wall runs and freestanding produce tables / chillers) gets a collider
+  const wallUnits = cfg.units.map((u) => P.units[u.id]).filter((p): p is UnitPlace => !!p && p.fixture !== 'gondola' && p.fixture !== 'freezer');
   return (
     <group>
       {/* floor + outdoor car park apron */}

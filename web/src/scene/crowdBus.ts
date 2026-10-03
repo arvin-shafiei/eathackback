@@ -12,7 +12,11 @@ export type CrowdEvent =
   | { type: 'scan'; agentId: string; lane: string; kind: 'staffed' | 'self'; code: string; t: number } // beep
   | { type: 'bag'; agentId: string; lane: string; t: number }
   | { type: 'pay'; agentId: string; lane: string; t: number }
-  | { type: 'bonk'; a: string; b: string; x: number; z: number };
+  | { type: 'bonk'; a: string; b: string; x: number; z: number }
+  /** café hand-off: the crowd walks the shopper to the café entrance and hides them until `tEnd`; Cafe.tsx animates
+   *  the visit (counter, seat `seat`, sitting) using the shopper's look (`color`, `arch`). cafe_leave = back at the door */
+  | { type: 'cafe_enter'; shopperId: string; agentId: string; t: number; tEnd: number; seat: number | null; x: number; z: number; color: string; arch: string }
+  | { type: 'cafe_leave'; shopperId: string; agentId: string; t: number; x: number; z: number };
 
 type Fn = (e: CrowdEvent) => void;
 const subs = new Set<Fn>();

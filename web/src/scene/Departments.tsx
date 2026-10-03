@@ -55,15 +55,25 @@ function pastel(hex: string) {
 function buildStatic(P: StorePlan) {
   const k = new Kit();
   const B = P.bounds;
-  // department floor tints + a darker border strip around each zone
+  // floor: one walkway colour; a subtle department tint only under the fixtures (+ the shelf-front strip), and under
+  // the service areas (checkouts). Café has its own wood floor.
+  const byId = new Map(P.depts.map((d) => [d.id, d]));
+  for (const p of Object.values(P.units)) {
+    const d = byId.get(p.dept); if (!d) continue;
+    const c = Math.cos(p.rotY), s = Math.sin(p.rotY), h = p.len / 2 + 0.05;
+    // from 1.0 m behind the face (fixture body) to 0.9 m in front of it
+    const ax = p.x - s * 1.0, az = p.z - c * 1.0, bx = p.x + s * 0.9, bz = p.z + c * 0.9;
+    const alongZ = Math.abs(s) > 0.5;
+    const x0 = alongZ ? Math.min(ax, bx) : p.x - h, x1 = alongZ ? Math.max(ax, bx) : p.x + h;
+    const z0 = alongZ ? p.z - h : Math.min(az, bz), z1 = alongZ ? p.z + h : Math.max(az, bz);
+    k.floor(Math.max(B.xMin, x0), Math.max(B.zMin, z0), Math.min(B.xMax, x1), Math.min(B.zMax, z1), 0.004, pastel(d.color));
+  }
   for (const d of P.depts) {
+    if (d.kind !== 'service' || d.id === 'cafe' || d.units.length) continue;
     const r = d.rect;
     const x0 = Math.max(B.xMin, r.x0), x1 = Math.min(B.xMax, r.x1), z0 = Math.max(B.zMin, r.z0), z1 = Math.min(B.zMax, r.z1);
     if (x1 - x0 < 0.2 || z1 - z0 < 0.2) continue;
-    k.floor(x0, z0, x1, z1, 0.004, pastel(d.color));
-    const bc = pastel(d.color).lerp(new THREE.Color(d.color), 0.7).multiplyScalar(0.85), t = 0.16;
-    k.floor(x0, z0, x1, z0 + t, 0.006, bc); k.floor(x0, z1 - t, x1, z1, 0.006, bc);
-    k.floor(x0, z0, x0 + t, z1, 0.006, bc); k.floor(x1 - t, z0, x1, z1, 0.006, bc);
+    k.floor(x0, z0, x1, z1, 0.003, pastel(d.color));
   }
   // racetrack: a dashed guide line around the main aisle block (UK stores mark the main walkways with a floor finish)
   const g0 = Math.min(...P.gondolas.map((g) => g.x)) - G.depth / 2 - 1.8, g1 = Math.max(...P.gondolas.map((g) => g.x)) + G.depth / 2 + 1.8;
