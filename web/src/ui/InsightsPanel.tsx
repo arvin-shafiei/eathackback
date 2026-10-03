@@ -12,6 +12,7 @@ import { AI_COLOR, DECISION, archColor, archLabel, catColor, catLabel, prodLabel
 import { Bar, Sticker } from './bits';
 import type { InsightsProps } from './featureProps';
 import { PlacementSection } from './PlacementSection';
+import { InterviewSection } from './InterviewSection';
 import { Select } from './Select';
 import './insights.css';
 
@@ -51,6 +52,7 @@ export function InsightsPanel(props: InsightsProps) {
           <BehaviourSection run={run} code={p.code} name={p.name} personas={personas} />
           <LostToSection run={run} code={p.code} products={products} aiLoaded={sample.ai_loaded} onPickProduct={onPickProduct} />
           <RejectSection run={run} code={p.code} personas={personas} onTrace={onTrace} />
+          <InterviewSection run={run} code={p.code} name={p.name} personas={personas} />
           <NeighbourSection codes={slotProducts(planogram, slot)} me={p.code} slot={slot} human={human} products={products} onPickProduct={onPickProduct} />
         </div>
       )}
