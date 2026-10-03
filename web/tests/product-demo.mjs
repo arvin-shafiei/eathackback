@@ -19,6 +19,11 @@ try {
   const overview = page.getByRole('complementary', { name: /product analytics/ });
   await overview.waitFor({ timeout: 60000 });
   assert.match(await overview.innerText(), /Medaglioni ai funghi/);
+  const ranking = overview.locator('.rk-head');
+  assert.equal(await ranking.getAttribute('aria-expanded'), 'false');
+  await ranking.click();
+  assert.equal(await overview.locator('.rk-cols .rk-row').count(), 20);
+  await ranking.click();
   const handled = e => typeof e.picked_up === 'boolean' ? e.picked_up : e.stage_reached ? ['put_back', 'taken'].includes(e.stage_reached) : e.noticed && ['pick', 'reject'].includes(e.decision);
   assert.deepEqual((await overview.locator('.ins-funnel-row > b').allTextContents()).map(Number), [events.length, events.filter(e => e.noticed).length, events.filter(handled).length, events.filter(e => e.decision === 'pick').length]);
   const shelf = page.getByRole('region', { name: 'shelf rearrangement preview' });
@@ -66,6 +71,14 @@ try {
   const size = await overview.evaluate(e => ({ width: e.clientWidth, scroll: e.scrollWidth, right: e.getBoundingClientRect().right }));
   assert.ok(size.scroll <= size.width + 1 && size.right <= 1280, JSON.stringify(size));
   await page.screenshot({ path: `${output}/superstore-1280.png` });
+  await page.getByRole('button', { name: 'watch', exact: true }).click();
+  await page.getByRole('list', { name: 'leaderboard' }).getByRole('listitem').first().click();
+  const productPanel = page.getByRole('complementary', { name: /^product / });
+  await productPanel.waitFor();
+  const selectedName = await productPanel.getAttribute('aria-label');
+  await productPanel.getByRole('button', { name: 'view product analytics →', exact: true }).click();
+  await overview.waitFor();
+  assert.equal(await overview.getAttribute('aria-label'), selectedName.replace('product ', 'product analytics for '));
   await page.route('**/api/rearrange/suggest', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'offline' }) }));
   await page.reload();
   await page.getByText('shelf suggestions are unavailable.', { exact: false }).waitFor();
