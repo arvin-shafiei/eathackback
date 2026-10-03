@@ -1,4 +1,6 @@
-# simsbury: 2:00 demo video
+# simsbury: 2:00 demo video (screen plan)
+
+Just the words to read: `pitch/voiceover.md`.
 
 Rubric (from the brief): **O** Originality 30% · **B** Build & execution 30% · **V** Value & relevance, with evidence, 25% · **D** Demo & communication 15%.
 
@@ -34,7 +36,7 @@ Record 1080p. Hard-refresh every tab (Cmd+Shift+R) first. Captions lowercase, �
 > It never saw the person who picked it up… looked at it… and put it back."
 
 ### 0:12–0:25 · what simsbury is *(O, B)*
-**Screen:** pull back over the whole store: aisles, bakery, the crowd moving.
+**Screen:** pull back over the whole store, shoppers moving.
 
 > "So we built the shop that *can* see it.
 > simsbury is a living supermarket. Real UK products. Shoppers built from ten thousand real Reddit comments and published shelf research.
@@ -117,4 +119,3 @@ Same story, slower, then 30 s:
 
 - superstore slow: open tab A first and leave it.
 - sim server down: `python3 sim/server.py 8788`. If rearrange still fails, cut it and stay on analytics longer.
-- the plane crash, creator visit or UFO might play on their own. They're fine in the background; don't wait for them.
